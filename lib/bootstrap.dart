@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:app/firebase_options.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -23,8 +25,11 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
+    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
   };
 
   Bloc.observer = const AppBlocObserver();
@@ -34,5 +39,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  
   runApp(await builder());
 }
