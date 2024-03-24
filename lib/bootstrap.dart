@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:app/firebase_options.dart';
+import 'package:app/services/hive_service.dart';
+import 'package:app/utils/singletons.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -43,6 +45,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+
+  Singletons.setup();
+
+  await getIt<HiveService>().initBoxes();
 
   runApp(await builder());
 }

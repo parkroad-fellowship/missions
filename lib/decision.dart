@@ -2,6 +2,7 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class DecisionPage extends StatefulWidget {
@@ -14,12 +15,7 @@ class DecisionPage extends StatefulWidget {
 class _DecisionPageState extends State<DecisionPage> {
   void _redirectToPage(BuildContext context, {required String routeName}) {
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        Navigator.popAndPushNamed(
-          context,
-          routeName,
-        );
-      },
+      (_) => GoRouter.of(context).go(routeName),
     );
   }
 
