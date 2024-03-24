@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "899177334428",
+    "project_id": "parkroad-fellowship",
+    "storage_bucket": "parkroad-fellowship.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899177334428:android:06ab6f756456b259b18f59",
+        "android_client_info": {
+          "package_name": "org.parkroadfellowship.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGInAr3kSnJEKL2-k2ivMgZNKkztbb8wE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
