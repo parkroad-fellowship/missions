@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:app/firebase_options.dart';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -28,6 +30,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   Bloc.observer = const AppBlocObserver();
 
   // Add cross-flavor configuration here
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(await builder());
 }
