@@ -59,10 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyANTOmzEa9nDBAWLjd5qI4bbc0BKD0AMVk',
-    appId: '1:899177334428:ios:eda74a88d2919adeb18f59',
+    appId: '1:899177334428:ios:8c874ad35ffb3c53b18f59',
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
     storageBucket: 'parkroad-fellowship.appspot.com',
-    iosBundleId: 'org.parkroadfellowship.app',
+    iosClientId:
+        '899177334428-7b3buao7utld8bvikbkqjcruvm0b9tsh.apps.googleusercontent.com',
+    iosBundleId: 'org.parkroadfellowship.app-dev-miller',
   );
 }
