@@ -154,6 +154,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
+				A5CFB3BF35CC6BC5882ECDAE /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 			);
 			buildRules = (
 			);
@@ -256,6 +257,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+		};
+		A5CFB3BF35CC6BC5882ECDAE /* [firebase_crashlytics] Crashlytics Upload Symbols */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"",
+				"\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/\"",
+				"\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist\"",
+				"\"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)\"",
+				"\"$(PROJECT_DIR)/firebase_app_id_file.json\"",
+			);
+			name = "[firebase_crashlytics] Crashlytics Upload Symbols";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" ";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -369,6 +393,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = App;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -377,7 +402,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -394,7 +419,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -462,6 +487,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = App;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -470,7 +496,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -486,7 +512,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -550,6 +576,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = App;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -558,7 +585,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -574,7 +601,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -643,6 +670,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[DEV] App";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -651,7 +679,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -668,7 +696,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -734,6 +762,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[DEV] App";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -742,7 +771,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -758,7 +787,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -824,6 +853,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[DEV] App";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -832,7 +862,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -848,7 +878,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -917,6 +947,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-stg";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[STG] App";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -925,7 +956,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.stg;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.stg";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -942,7 +973,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1010,6 +1041,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-stg";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[STG] App";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1018,7 +1050,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.stg;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.stg";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1034,7 +1066,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
@@ -1098,6 +1130,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-stg";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[STG] App";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -1106,7 +1139,7 @@
 					"@executable_path/Frameworks",
 				);
 				PACKAGE_CONFIG = .dart_tool/package_config.json;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.stg;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.stg";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1122,7 +1155,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.parkroadfellowship.app.RunnerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.parkroadfellowship.app-dev-miller-local.RunnerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner";
