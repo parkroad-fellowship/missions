@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     projectId: 'parkroad-fellowship',
     storageBucket: 'parkroad-fellowship.appspot.com',
     iosClientId:
-        '899177334428-7b3buao7utld8bvikbkqjcruvm0b9tsh.apps.googleusercontent.com',
+        '899177334428-7b3buao7utld8bvikbkqjcruvm0b9tsh.apps.googleusercontent'
+        '.com',
     iosBundleId: 'org.parkroadfellowship.app-dev-miller',
   );
 }
