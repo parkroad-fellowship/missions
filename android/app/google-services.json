@@ -12,7 +12,12 @@
           "package_name": "org.parkroadfellowship.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "899177334428-qjr723cqsth4nag4mvg4fkst7cfe5k4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBGInAr3kSnJEKL2-k2ivMgZNKkztbb8wE"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899177334428-qjr723cqsth4nag4mvg4fkst7cfe5k4m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "899177334428-acekgguh0up2o8en4qvc8ird697cnil1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org"
+              }
+            }
+          ]
         }
       }
     }

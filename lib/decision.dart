@@ -1,10 +1,11 @@
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 
+@RoutePage()
 class DecisionPage extends StatefulWidget {
   const DecisionPage({super.key});
 
@@ -13,9 +14,12 @@ class DecisionPage extends StatefulWidget {
 }
 
 class _DecisionPageState extends State<DecisionPage> {
-  void _redirectToPage(BuildContext context, {required String routeName}) {
+  void _redirectToPage(
+    BuildContext context,
+    String routeName,
+  ) {
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => GoRouter.of(context).go(routeName),
+      (_) => context.router.pushNamed(routeName),
     );
   }
 
@@ -31,18 +35,18 @@ class _DecisionPageState extends State<DecisionPage> {
         if (accessToken == null) {
           _redirectToPage(
             context,
-            routeName: PRFSuperAppRouter.authRoute,
+            PRFSuperAppRouter.signInRoute,
           );
         } else {
           _redirectToPage(
             context,
-            routeName: PRFSuperAppRouter.landingPage,
+            PRFSuperAppRouter.landingRoute,
           );
         }
         return Scaffold(
           body: Center(
             child: ExtendedImage.asset(
-              'assets/images/logo-white.png',
+              'assets/images/app-icon.png',
               width: 222,
               cacheRawData: true,
             ),

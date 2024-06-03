@@ -115,3 +115,5 @@ app.*.map.json
 # Build files
 *.g.dart
 *.freezed.dart
+*.gr.dart
+lib/versioning/build_version.dart

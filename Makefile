@@ -1,5 +1,5 @@
 icons:
-		dart run flutter_launcher_icons:main && dart run icons_launcher:create
+		dart run flutter_launcher_icons:main && dart run icons_launcher:create && dart run icons_launcher:create --flavor dev && dart run icons_launcher:create --flavor stg
 
 splash:
 		dart run flutter_native_splash:create
@@ -14,7 +14,7 @@ localize:
 		flutter gen-l10n
 
 apk:
-		flutter build apk  --flavor production --target lib/main_production.dart
+		flutter build apk  --flavor production --target lib/main_production.dart -vv
 
 sort:
 		dart run import_sorter:main

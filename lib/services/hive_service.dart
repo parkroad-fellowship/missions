@@ -1,13 +1,19 @@
+import 'package:app/models/adapters.dart';
+import 'package:app/models/auth.dart';
 import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logger/logger.dart';
 
 abstract class HiveService {
   Future<void> initBoxes();
+  void clearPrefs();
+  void clearBox();
 
   void persistToken(String token);
   String? retrieveToken();
 
-  void clearBox();
+  void persistProfile(PRFUser profile);
+  PRFUser? retrieveProfile();
 }
 
 class HiveServiceImplementation implements HiveService {
@@ -15,7 +21,18 @@ class HiveServiceImplementation implements HiveService {
   Future<void> initBoxes() async {
     await Hive.initFlutter();
 
+    Hive.registerAdapter(PRFUserAdapter());
+
     await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+  }
+
+  @override
+  void clearPrefs() {
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .deleteAll(<String>[
+      'accessToken',
+      'profile',
+    ]);
   }
 
   @override
@@ -35,5 +52,18 @@ class HiveServiceImplementation implements HiveService {
     final accessToken = box.get('accessToken') as String?;
     if (accessToken == null) return null;
     return accessToken;
+  }
+
+  @override
+  void persistProfile(PRFUser profile) {
+    Logger().i('Persisting profile: $profile');
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .put('profile', profile);
+  }
+
+  @override
+  PRFUser? retrieveProfile() {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    return box.get('profile') as PRFUser?;
   }
 }
