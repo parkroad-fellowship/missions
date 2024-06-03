@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:app/firebase_options.dart';
-import 'package:app/services/hive_service.dart';
-import 'package:app/utils/singletons.dart';
+import 'package:app/services/_index.dart';
+import 'package:app/utils/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -27,28 +28,29 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-  WidgetsFlutterBinding.ensureInitialized();
+  await runZonedGuarded(() async {
+    Bloc.observer = const AppBlocObserver();
 
-  FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
-    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
-  };
+    await getIt<HiveService>().initBoxes();
 
-  Bloc.observer = const AppBlocObserver();
+    await Firebase.initializeApp(
+      options:
+          Platform.isAndroid ? DefaultFirebaseOptions.currentPlatform : null,
+    );
 
-  // Add cross-flavor configuration here
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+    runApp(await builder());
+  }, (error, stackTrace) {
+    if (kDebugMode) {
+      log(error.toString(), stackTrace: stackTrace);
+    } else {
+      FlutterError.onError = (errorDetails) {
+        FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+      };
 
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-
-  Singletons.setup();
-
-  await getIt<HiveService>().initBoxes();
-
-  runApp(await builder());
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+    }
+  });
 }
