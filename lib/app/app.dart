@@ -9,6 +9,7 @@ class PRFSuperApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(
+        colorSchemeSeed: AppTheme.appTheme().kPrimaryColorV2,
         appBarTheme: AppBarTheme(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),

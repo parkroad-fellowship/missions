@@ -40,7 +40,7 @@ class _DecisionPageState extends State<DecisionPage> {
         } else {
           _redirectToPage(
             context,
-            PRFSuperAppRouter.landingPage,
+            PRFSuperAppRouter.landingRoute,
           );
         }
         return Scaffold(
