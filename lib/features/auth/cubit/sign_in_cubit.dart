@@ -5,25 +5,25 @@ import 'package:app/services/auth_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'login_state.dart';
-part 'login_cubit.freezed.dart';
+part 'sign_in_state.dart';
+part 'sign_in_cubit.freezed.dart';
 
-class LoginCubit extends Cubit<LoginState> {
-  LoginCubit({
+class SigninCubit extends Cubit<SignInState> {
+  SigninCubit({
     required AuthService authService,
     required HiveService hiveService,
-  }) : super(const LoginState.initial()) {
+  }) : super(const SignInState.initial()) {
     _authService = authService;
     _hiveService = hiveService;
   }
   late HiveService _hiveService;
   late AuthService _authService;
 
-  Future<void> login({
+  Future<void> signIn({
     required String email,
     required String password,
   }) async {
-    emit(const LoginState.loading());
+    emit(const SignInState.loading());
     try {
       final token = await _authService.signIn(
         signInDTO: SignInDTO(
@@ -38,11 +38,11 @@ class LoginCubit extends Cubit<LoginState> {
 
       _hiveService.persistProfile(user);
 
-      emit(const LoginState.loaded());
+      emit(const SignInState.loaded());
     } on Failure catch (e) {
-      emit(LoginState.error(e.message));
+      emit(SignInState.error(e.message));
     } catch (e) {
-      emit(const LoginState.error('An unknown error occurred'));
+      emit(const SignInState.error('An unknown error occurred'));
     }
   }
 }

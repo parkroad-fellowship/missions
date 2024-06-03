@@ -1,4 +1,4 @@
-import 'package:app/features/home/account/cubit/log_out_cubit.dart';
+import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -30,7 +30,7 @@ class AccountPageHandset extends StatelessWidget {
         elevation: 0,
         leading: const SizedBox.shrink(),
         actions: <Widget>[
-          BlocListener<LogOutCubit, LogOutState>(
+          BlocListener<SignOutCubit, SignOutState>(
             listener: (context, state) {
               state.maybeWhen(
                 orElse: () =>
@@ -38,7 +38,7 @@ class AccountPageHandset extends StatelessWidget {
               );
             },
             child: GestureDetector(
-              onTap: () => context.read<LogOutCubit>().logOut(),
+              onTap: () => context.read<SignOutCubit>().signOut(),
               child: Padding(
                 padding: const EdgeInsets.only(right: 17),
                 child: Center(

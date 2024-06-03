@@ -1,9 +1,10 @@
-import 'package:app/features/auth/cubit/login_cubit.dart';
+import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +16,9 @@ class SignInHandset extends StatefulWidget {
 }
 
 class _SignInHandsetState extends State<SignInHandset> {
-  final _emailController = TextEditingController();
+  final _emailController = TextEditingController(
+    text: kDebugMode ? 'admin@parkroadfellowship.org' : '',
+  );
   final _passwordController = TextEditingController();
   final _hidePasswordNotifier = ValueNotifier<bool>(true);
 
@@ -44,7 +47,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                 ),
                 Align(
                   child: Text(
-                    l10n.login,
+                    l10n.signIn,
                     style: CustomTextTheme.customTextTheme().displayLarge,
                   ),
                 ),
@@ -71,7 +74,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                   },
                 ),
                 const SizedBox(height: 15),
-                BlocConsumer<LoginCubit, LoginState>(
+                BlocConsumer<SigninCubit, SignInState>(
                   listener: (context, state) {
                     state.maybeWhen(
                       loading: () => setState(() {
@@ -98,7 +101,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                     return state.maybeWhen(
                       orElse: () => PrimaryButton(
                         onPressed: () {
-                          context.read<LoginCubit>().login(
+                          context.read<SigninCubit>().signIn(
                                 email: _emailController.text.trim(),
                                 password: _passwordController.text.trim(),
                               );

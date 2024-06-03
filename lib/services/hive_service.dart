@@ -1,3 +1,4 @@
+import 'package:app/models/adapters.dart';
 import 'package:app/models/auth.dart';
 import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,6 +21,8 @@ class HiveServiceImplementation implements HiveService {
   Future<void> initBoxes() async {
     await Hive.initFlutter();
 
+    Hive.registerAdapter(PRFUserAdapter());
+
     await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
   }
 
@@ -27,7 +30,7 @@ class HiveServiceImplementation implements HiveService {
   void clearPrefs() {
     Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
         .deleteAll(<String>[
-      'access_token',
+      'accessToken',
       'profile',
     ]);
   }
