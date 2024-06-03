@@ -5,14 +5,14 @@ import 'package:logger/logger.dart';
 
 abstract class HiveService {
   Future<void> initBoxes();
+  void clearPrefs();
+  void clearBox();
 
   void persistToken(String token);
   String? retrieveToken();
 
   void persistProfile(PRFUser profile);
   PRFUser? retrieveProfile();
-
-  void clearBox();
 }
 
 class HiveServiceImplementation implements HiveService {
@@ -21,6 +21,15 @@ class HiveServiceImplementation implements HiveService {
     await Hive.initFlutter();
 
     await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+  }
+
+  @override
+  void clearPrefs() {
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .deleteAll(<String>[
+      'access_token',
+      'profile',
+    ]);
   }
 
   @override
