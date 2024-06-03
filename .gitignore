@@ -115,3 +115,4 @@ app.*.map.json
 # Build files
 *.g.dart
 *.freezed.dart
+*.gr.dart

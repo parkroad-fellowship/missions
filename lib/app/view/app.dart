@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      routerConfig: PRFSuperAppRouter.router,
+      routerConfig: PRFSuperAppRouter().config(),
     );
   }
 }
