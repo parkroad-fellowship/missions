@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 
-@RoutePage()
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+class SignInHandset extends StatelessWidget {
+  const SignInHandset({super.key});
 
   @override
   Widget build(BuildContext context) {

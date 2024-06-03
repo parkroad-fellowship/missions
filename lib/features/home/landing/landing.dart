@@ -1,5 +1,7 @@
+import 'package:app/features/home/landing/_handset.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 @RoutePage()
 class LandingPage extends StatefulWidget {
@@ -12,6 +14,11 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return AdaptiveBuilder(
+      defaultBuilder: (_, __) => const LandingPageHandset(),
+      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
+        handset: (_, __) => const LandingPageHandset(),
+      ),
+    );
   }
 }

@@ -35,7 +35,7 @@ class _DecisionPageState extends State<DecisionPage> {
         if (accessToken == null) {
           _redirectToPage(
             context,
-            PRFSuperAppRouter.authRoute,
+            PRFSuperAppRouter.signInRoute,
           );
         } else {
           _redirectToPage(
