@@ -14,7 +14,7 @@ localize:
 		flutter gen-l10n
 
 apk:
-		flutter build apk  --flavor production --target lib/main_production.dart
+		flutter build apk  --flavor production --target lib/main_production.dart -vv
 
 sort:
 		dart run import_sorter:main
