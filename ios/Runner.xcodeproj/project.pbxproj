@@ -528,7 +528,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = App;
+				FLAVOR_APP_NAME = "Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -623,7 +623,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = App;
+				FLAVOR_APP_NAME = "Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -713,7 +713,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = App;
+				FLAVOR_APP_NAME = "Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -808,7 +808,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] App";
+				FLAVOR_APP_NAME = "[DEV] Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -901,7 +901,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] App";
+				FLAVOR_APP_NAME = "[DEV] Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -993,7 +993,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] App";
+				FLAVOR_APP_NAME = "[DEV] Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1088,7 +1088,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] App";
+				FLAVOR_APP_NAME = "[STG] Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1183,7 +1183,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] App";
+				FLAVOR_APP_NAME = "[STG] Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1273,7 +1273,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M23M6C88KJ;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] App";
+				FLAVOR_APP_NAME = "[STG] Parkroad Fellowship";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
