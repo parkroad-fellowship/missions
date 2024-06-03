@@ -20,7 +20,7 @@ Future<void> main() async {
   await bootstrap(
     () => MultiBlocProvider(
       providers: Singletons.registerCubits(),
-      child: const App(),
+      child: const PRFSuperApp(),
     ),
   );
 }

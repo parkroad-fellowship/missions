@@ -1,1 +1,22 @@
-export 'view/app.dart';
+import 'package:app/l10n/l10n.dart';
+import 'package:app/utils/_index.dart';
+import 'package:flutter/material.dart';
+
+class PRFSuperApp extends StatelessWidget {
+  const PRFSuperApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        ),
+        useMaterial3: true,
+      ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      routerConfig: PRFSuperAppRouter().config(),
+    );
+  }
+}
