@@ -1,9 +1,5 @@
-import 'package:app/decision.dart';
-import 'package:app/features/auth/auth.dart';
-import 'package:app/features/home/landing.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 
 @AutoRouterConfig()
 class PRFSuperAppRouter extends $PRFSuperAppRouter {
