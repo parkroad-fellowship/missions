@@ -191,7 +191,7 @@ class AccountPageHandset extends StatelessWidget {
                   ),
                   child: Text.rich(
                     TextSpan(
-                    text: l10n.byUsing,
+                      text: l10n.byUsing,
                       style: CustomTextTheme.customTextTheme()
                           .displaySmall!
                           .copyWith(

@@ -1,4 +1,3 @@
-
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -23,21 +22,18 @@ class _ProfilePageHandsetState extends State<ProfilePageHandset> {
       appBar: AppBar(
         title: Text(
           l10n.myProfile,
-          style:
-              CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+          style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: const <Widget>[
-  
-        ],
+        actions: const <Widget>[],
       ),
       body: ValueListenableBuilder(
         valueListenable: Hive.box<dynamic>(
-         PRFSuperAppConfig.instance!.values.hiveBox,
+          PRFSuperAppConfig.instance!.values.hiveBox,
         ).listenable(),
         builder: (context, box, _) {
           final profile = getIt<HiveService>().retrieveProfile();
