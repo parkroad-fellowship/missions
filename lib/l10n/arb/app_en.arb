@@ -8,8 +8,8 @@
     "@signIn": {},
     "signingIn": "Signing In ...",
     "@signingIn": {},
-    "myMissions": "My Missions",
-    "@myMissions": {},
+    "missions": "Missions",
+    "@missions": {},
     "myAccount": "My Account",
     "@myAccount": {},
     "signOut": "Sign Out",
@@ -33,5 +33,81 @@
     "and": " and ",
     "@and": {},
     "privacyPolicy": " Privacy Policy",
-    "@privacyPolicy": {}
+    "@privacyPolicy": {},
+    "noMissions": "No missions",
+    "@noMissions": {},
+    "pleaseWait": "Please wait for an update from the missions desk",
+    "@pleaseWait": {},
+    "missionStart": "Starts on: {missionDate}, {missionTime}",
+    "@missionStart": {
+        "placeholders": {
+            "missionDate": {
+                "type": "String"
+            },
+            "missionTime": {
+                "type": "String"
+            }
+        }
+    },
+    "missionEnd": "Ends on: {missionDate}, {missionTime}",
+    "@missionEnd": {
+        "placeholders": {
+            "missionDate": {
+                "type": "String"
+            },
+            "missionTime": {
+                "type": "String"
+            }
+        }
+    },
+    "missionType": "Mission Type: {missionType}",
+    "@missionType": {
+        "placeholders": {
+            "missionType": {
+                "type": "String"
+            }
+        }
+    },
+    "missionDetails": "Mission Details",
+    "@missionDetails": {},
+    "sendMe": "Send Me",
+    "@sendMe": {},
+    "going": "Missionaries",
+    "@going": {},
+    "missionGround": "Mission Ground",
+    "@missionGround": {},
+    "noSubscribers": "No subscribers",
+    "@noSubscribers": {},
+    "comingFrom": "Coming from: {residence}",
+    "@comingFrom": {
+        "placeholders": {
+            "residence": {
+                "type": "String"
+            }
+        }
+    },
+    "successfullySubscribed": "Your request for this mission has been received. Please wait to be approved.",
+    "@successfullySubscribed": {},
+    "myMissions": "My Missions",
+    "@myMissions": {},
+    "address": "Address & Directions",
+    "@address": {},
+    "missionPrepNotes": "Preparation Notes",
+    "@missionPrepNotes": {},
+    "population": "Population: {totalStudents} learners",
+    "@population": {
+        "placeholders": {
+            "totalStudents": {
+                "type": "int"
+            }
+        }
+    },
+    "upcoming": "Upcoming",
+    "@upcoming": {},
+    "noUpcomingMissions": "No upcoming missions",
+    "@noUpcomingMissions": {},
+    "past": "Past",
+    "@past": {},
+    "noPastMissions": "No past missions",
+    "@noPastMissions": {}
 }

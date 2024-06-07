@@ -35,7 +35,7 @@ class NetworkUtil {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           options.headers['Authorization'] =
-              'Bearer ${HiveServiceImplementation().retrieveToken() ?? ''}';
+              'Bearer ${getIt<HiveService>().retrieveToken() ?? ''}';
           return handler.next(options);
         },
       ),
@@ -113,9 +113,14 @@ class NetworkUtil {
   Future<Map<String, dynamic>> postReq(
     String url, {
     String? body,
+    Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient().post<dynamic>(url, data: body);
+      final response = await _getHttpClient().post<dynamic>(
+        url,
+        data: body,
+        queryParameters: queryParameters,
+      );
 
       final responseBody = response.data as Map<String, dynamic>;
 
@@ -150,6 +155,14 @@ class NetworkUtil {
         );
       }
 
+      if (err.response?.statusCode == 422) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
       if (DioExceptionType.unknown == err.type) {
         _logger
           ..d('Error: $err')
@@ -168,9 +181,14 @@ class NetworkUtil {
   Future<Map<String, dynamic>> putReq(
     String url, {
     String? body,
+    Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient().put<dynamic>(url, data: body);
+      final response = await _getHttpClient().put<dynamic>(
+        url,
+        data: body,
+        queryParameters: queryParameters,
+      );
 
       final responseBody = response.data as Map<String, dynamic>;
 

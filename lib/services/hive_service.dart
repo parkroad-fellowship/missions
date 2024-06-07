@@ -1,5 +1,6 @@
 import 'package:app/models/adapters.dart';
 import 'package:app/models/auth.dart';
+import 'package:app/models/prf_member.dart';
 import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
@@ -14,9 +15,10 @@ abstract class HiveService {
 
   void persistProfile(PRFUser profile);
   PRFUser? retrieveProfile();
+  PRFMember? retrieveMember();
 }
 
-class HiveServiceImplementation implements HiveService {
+class HiveServiceImpl implements HiveService {
   @override
   Future<void> initBoxes() async {
     await Hive.initFlutter();
@@ -65,5 +67,10 @@ class HiveServiceImplementation implements HiveService {
   PRFUser? retrieveProfile() {
     final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
     return box.get('profile') as PRFUser?;
+  }
+
+  @override
+  PRFMember? retrieveMember() {
+    return retrieveProfile()!.member;
   }
 }

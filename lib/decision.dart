@@ -30,7 +30,7 @@ class _DecisionPageState extends State<DecisionPage> {
           Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
               .listenable(),
       builder: (context, _, __) {
-        final accessToken = HiveServiceImplementation().retrieveToken();
+        final accessToken = getIt<HiveService>().retrieveToken();
 
         if (accessToken == null) {
           _redirectToPage(

@@ -1,3 +1,4 @@
+import 'package:app/models/prf_member.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // Generated model files
@@ -24,6 +25,7 @@ class PRFUser with _$PRFUser {
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
     required List<PRFRole> roles,
+    PRFMember? member,
   }) = _PRFUser;
 
   factory PRFUser.fromJson(Map<String, dynamic> json) =>

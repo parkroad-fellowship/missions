@@ -9,8 +9,8 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      baseDomain: 'prf.test',
-      hiveBox: 'prf-super-app-dev',
+      baseDomain: 'c57xgesagz.sharedwithexpose.com',
+      hiveBox: 'prf-super-app-dev--',
       urlScheme: 'https',
     ),
   );
