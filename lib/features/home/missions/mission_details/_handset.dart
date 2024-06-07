@@ -1,4 +1,6 @@
 import 'package:app/enums/prf_mission_status.dart';
+import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
@@ -110,7 +112,17 @@ class _MissionsDetailsPageHandsetState
                           return ElevatedButton(
                             onPressed: () async => context
                                 .read<SubscribeCubit>()
-                                .subscribe(missionUlid: mission.ulid),
+                                .subscribe(missionUlid: mission.ulid)
+                                .then(
+                                  (_) => context
+                                      .read<GetSubscribersCubit>()
+                                      .getSubscriptions(
+                                        missionUlid: mission.ulid,
+                                        subscriptionStatus:
+                                            PRFMissionSubscriptionStatus
+                                                .pending,
+                                      ),
+                                ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   AppTheme.appTheme().kPrimaryColorV2,
