@@ -78,10 +78,49 @@ class _MissionsDetailsPageHandsetState
                       ),
                     ),
                   ),
+                  const Spacer(),
+                  if (PRFMissionStatusExtension.fromIndex(
+                        mission.status,
+                      ) ==
+                      PRFMissionStatus.approved)
+                    SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.05,
+                      width: MediaQuery.sizeOf(context).height * 0.2,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              l10n.sendMe,
+                              style: CustomTextTheme.customTextTheme()
+                                  .displayLarge!
+                                  .copyWith(
+                                    color: AppTheme.appTheme().kBackgroundColor,
+                                    fontSize: 14,
+                                  ),
+                            ),
+                            Icon(
+                              Icons.hail_rounded,
+                              size: 16,
+                              color: AppTheme.appTheme().kBackgroundColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
+            const SizedBox(height: 16),
             const Divider(),
+            const SizedBox(height: 16),
           ],
         ),
       ),

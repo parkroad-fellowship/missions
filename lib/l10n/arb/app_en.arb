@@ -69,5 +69,7 @@
         }
     },
     "missionDetails": "Mission Details",
-    "@missionDetails": {}
+    "@missionDetails": {},
+    "sendMe": "Send Me",
+    "@sendMe": {}
 }
