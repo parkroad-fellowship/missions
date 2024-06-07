@@ -86,9 +86,10 @@ class _MissionsDetailsPageHandsetState
                   ),
                   const Spacer(),
                   if (PRFMissionStatusExtension.fromIndex(
-                        mission.status,
-                      ) ==
-                      PRFMissionStatus.approved)
+                            mission.status,
+                          ) ==
+                          PRFMissionStatus.approved &&
+                      !mission.loggedInMemberHasSubscribed)
                     SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.05,
                       width: MediaQuery.sizeOf(context).height * 0.2,

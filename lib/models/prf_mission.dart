@@ -19,6 +19,8 @@ class PRFMission with _$PRFMission {
     int status,
     @JsonKey(name: 'created_at') String createdAt,
     @JsonKey(name: 'updated_at') String updatedAt, {
+    @JsonKey(name: 'logged_in_member_has_subscribed')
+    required bool loggedInMemberHasSubscribed,
     PRFSchool? school,
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,
     @JsonKey(name: 'mission_type') PRFMissionType? missionType,
