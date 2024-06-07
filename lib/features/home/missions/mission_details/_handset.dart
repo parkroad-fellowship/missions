@@ -1,4 +1,5 @@
 import 'package:app/enums/prf_mission_status.dart';
+import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/utils/_index.dart';
@@ -121,6 +122,38 @@ class _MissionsDetailsPageHandsetState
             const SizedBox(height: 16),
             const Divider(),
             const SizedBox(height: 16),
+            DefaultTabController(
+              length: 2,
+              child: Column(
+                children: <Widget>[
+                  TabBar(
+                    labelStyle:
+                        CustomTextTheme.customTextTheme().bodySmall?.copyWith(
+                              color: AppTheme.appTheme().kPrimaryColorV2,
+                            ),
+                    indicatorColor: AppTheme.appTheme().kPrimaryColorV2,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(text: l10n.going),
+                      Tab(text: l10n.going),
+                    ],
+                  ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.84,
+                    child: TabBarView(
+                      children: [
+                        SubscribersView(
+                          missionUlid: mission.ulid,
+                        ),
+                        SubscribersView(
+                          missionUlid: mission.ulid,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -15,11 +15,12 @@ class PRFMember with _$PRFMember {
     int gender,
     @JsonKey(name: 'first_name') String firstName,
     @JsonKey(name: 'last_name') String lastName,
+    @JsonKey(name: 'full_name') String fullName,
     @JsonKey(name: 'phone_number') String phoneNumber,
     String email,
     String residence,
-    @JsonKey(name: 'church_volunteer') String churchVolunteer,
     String pastor, {
+    @JsonKey(name: 'church_volunteer') required bool churchVolunteer,
     @JsonKey(name: 'accept_terms') required bool acceptTerms,
     @JsonKey(name: 'approved') required bool approved,
     @JsonKey(name: 'postal_address') required String postalAddress,

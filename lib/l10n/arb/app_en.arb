@@ -71,5 +71,17 @@
     "missionDetails": "Mission Details",
     "@missionDetails": {},
     "sendMe": "Send Me",
-    "@sendMe": {}
+    "@sendMe": {},
+    "going": "Going",
+    "@going": {},
+    "noSubscribers": "No subscribers",
+    "@noSubscribers": {},
+    "comingFrom": "Coming from: {residence}",
+    "@comingFrom": {
+        "placeholders": {
+            "residence": {
+                "type": "String"
+            }
+        }
+    }
 }
