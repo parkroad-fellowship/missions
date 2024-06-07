@@ -1,9 +1,11 @@
 import 'package:app/enums/prf_mission_status.dart';
+import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MissionsDetailsPageHandset extends StatefulWidget {
   const MissionsDetailsPageHandset({
@@ -87,33 +89,59 @@ class _MissionsDetailsPageHandsetState
                     SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.05,
                       width: MediaQuery.sizeOf(context).height * 0.2,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              l10n.sendMe,
-                              style: CustomTextTheme.customTextTheme()
-                                  .displayLarge!
-                                  .copyWith(
+                      child: BlocConsumer<SubscribeCubit, SubscribeState>(
+                        listener: (context, state) {
+                          state.mapOrNull(
+                            loaded: (_) {
+                              ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text(l10n.successfullySubscribed)));
+                            },
+                            error: (error) {
+                              ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                                  SnackBar(content: Text(error.message)));
+                            },
+                          );
+                        },
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () async => context
+                                .read<SubscribeCubit>()
+                                .subscribe(missionUlid: mission.ulid),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  AppTheme.appTheme().kPrimaryColorV2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  l10n.sendMe,
+                                  style: CustomTextTheme.customTextTheme()
+                                      .displayLarge!
+                                      .copyWith(
+                                        color: AppTheme.appTheme()
+                                            .kBackgroundColor,
+                                        fontSize: 14,
+                                      ),
+                                ),
+                                state.maybeWhen(
+                                  orElse: () => Icon(
+                                    Icons.hail_rounded,
+                                    size: 16,
                                     color: AppTheme.appTheme().kBackgroundColor,
-                                    fontSize: 14,
                                   ),
+                                  loading: () =>
+                                      const CircularProgressIndicator(),
+                                ),
+                              ],
                             ),
-                            Icon(
-                              Icons.hail_rounded,
-                              size: 16,
-                              color: AppTheme.appTheme().kBackgroundColor,
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                     ),
                 ],

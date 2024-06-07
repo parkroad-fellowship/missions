@@ -83,5 +83,7 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "successfullySubscribed": "Your request for this mission has been received. Please wait to be approved.",
+    "@successfullySubscribed": {}
 }
