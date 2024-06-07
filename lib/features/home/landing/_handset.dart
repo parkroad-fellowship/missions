@@ -51,7 +51,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                   ),
                 ),
               ),
-              label: l10n.myMissions,
+              label: l10n.missions,
             ),
             BottomNavigationBarItem(
               icon: Padding(

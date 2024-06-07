@@ -17,7 +17,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          l10n.myMissions,
+          l10n.missions,
           style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
