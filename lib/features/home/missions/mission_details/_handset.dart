@@ -77,6 +77,10 @@ class _MissionsDetailsPageHandsetState
                       PRFMissionStatusExtension.fromIndex(
                         mission.status,
                       ).name,
+                      style:
+                          CustomTextTheme.customTextTheme().bodySmall?.copyWith(
+                                color: Colors.white,
+                              ),
                     ),
                     backgroundColor: PRFMissionStatusExtension.switchColor(
                       PRFMissionStatusExtension.fromIndex(
@@ -164,8 +168,6 @@ class _MissionsDetailsPageHandsetState
               ),
             ),
             const SizedBox(height: 16),
-            const Divider(),
-            const SizedBox(height: 16),
             DefaultTabController(
               length: 2,
               child: Column(
@@ -183,7 +185,7 @@ class _MissionsDetailsPageHandsetState
                     ],
                   ),
                   SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.84,
+                    height: MediaQuery.sizeOf(context).height * 0.65,
                     child: TabBarView(
                       children: [
                         SubscribersView(missionUlid: mission.ulid),
