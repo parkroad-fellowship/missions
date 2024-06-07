@@ -3,15 +3,14 @@ import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'get_member_mission_subscriptions_state.dart';
-part 'get_member_mission_subscriptions_cubit.freezed.dart';
+part 'get_past_member_missions_state.dart';
+part 'get_past_member_missions_cubit.freezed.dart';
 
-class GetMemberMissionSubscriptionsCubit
-    extends Cubit<GetMemberMissionSubscriptionsState> {
-  GetMemberMissionSubscriptionsCubit({
+class GetPastMemberMissionsCubit extends Cubit<GetPastMemberMissionsState> {
+  GetPastMemberMissionsCubit({
     required MissionService missionService,
     required HiveService hiveService,
-  }) : super(const GetMemberMissionSubscriptionsState.initial()) {
+  }) : super(const GetPastMemberMissionsState.initial()) {
     _missionService = missionService;
     _hiveService = hiveService;
   }
@@ -19,22 +18,22 @@ class GetMemberMissionSubscriptionsCubit
   late MissionService _missionService;
   late HiveService _hiveService;
 
-  Future<void> getUpcomingMissions() async {
-    emit(const GetMemberMissionSubscriptionsState.loading());
+  Future<void> getPastMissions() async {
+    emit(const GetPastMemberMissionsState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
       final missionSubscriptions = await _missionService.getSubscriptions(
         includes: 'mission.missionType,mission.school',
         memberUlid: member.ulid,
-        upcoming: true,
+        past: true,
       );
       emit(
-        GetMemberMissionSubscriptionsState.loaded(
+        GetPastMemberMissionsState.loaded(
           missionSubscriptions: missionSubscriptions,
         ),
       );
     } catch (e) {
-      emit(GetMemberMissionSubscriptionsState.error(e.toString()));
+      emit(GetPastMemberMissionsState.error(e.toString()));
     }
   }
 }

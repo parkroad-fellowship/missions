@@ -101,5 +101,13 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "upcoming": "Upcoming",
+    "@upcoming": {},
+    "noUpcomingMissions": "No upcoming missions",
+    "@noUpcomingMissions": {},
+    "past": "Past",
+    "@past": {},
+    "noPastMissions": "No past missions",
+    "@noPastMissions": {}
 }

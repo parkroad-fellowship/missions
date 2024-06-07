@@ -13,6 +13,8 @@ abstract class MissionService {
     String? missionUlid,
     String? memberUlid,
     String? includes,
+    bool? past,
+    bool? upcoming,
     PRFMissionSubscriptionStatus? subscriptionStatus,
   });
   Future<PRFMissionSubscription> subscribe({
@@ -47,6 +49,8 @@ class MissionServiceImpl implements MissionService {
     String? missionUlid,
     String? memberUlid,
     String? includes,
+    bool? past,
+    bool? upcoming,
     PRFMissionSubscriptionStatus? subscriptionStatus,
   }) async {
     try {
@@ -58,6 +62,8 @@ class MissionServiceImpl implements MissionService {
           if (includes != null) 'include': includes,
           if (subscriptionStatus != null)
             'filter[status_key]': subscriptionStatus.apiKey,
+          if (past != null) 'filter[past]': true,
+          if (upcoming != null) 'filter[upcoming]': true,
         },
       );
 
