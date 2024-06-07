@@ -10,8 +10,9 @@ final getIt = GetIt.instance;
 class Singletons {
   static void setup() {
     getIt
-      ..registerSingleton<HiveService>(HiveServiceImplementation())
-      ..registerSingleton<AuthService>(AuthServiceImpl());
+      ..registerSingleton<HiveService>(HiveServiceImpl())
+      ..registerSingleton<AuthService>(AuthServiceImpl())
+      ..registerSingleton<MissionService>(MissionServiceImpl());
   }
 
   static List<BlocProvider> registerCubits() {

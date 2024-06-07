@@ -16,7 +16,7 @@ abstract class HiveService {
   PRFUser? retrieveProfile();
 }
 
-class HiveServiceImplementation implements HiveService {
+class HiveServiceImpl implements HiveService {
   @override
   Future<void> initBoxes() async {
     await Hive.initFlutter();
