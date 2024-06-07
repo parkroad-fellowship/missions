@@ -2,6 +2,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
@@ -52,23 +53,10 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 IconButton(
                   onPressed: () async {
                     final school = mission.school!;
-                    // final uri = Uri.parse(
-                    //   'geo:'
-                    //   'q=${school.latitude},${school.longitude}&mode=d',
-                    // );
-                    final uri = Uri(
-                      scheme: 'geo',
-                      host: '0,0',
-                      queryParameters: {
-                        'q': '${school.latitude},${school.longitude}',
-                        'mode': 'd',
-                      },
+                    await MapsLauncher.launchCoordinates(
+                      school.latitude,
+                      school.longitude,
                     );
-                    try {
-                      await launchUrl(uri);
-                    } catch (e) {
-                      Logger().e(e);
-                    }
                   },
                   icon: const Icon(Icons.map_rounded),
                 ),
