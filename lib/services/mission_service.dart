@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/models/prf_mission_subscription.dart';
@@ -29,6 +30,7 @@ class MissionServiceImpl implements MissionService {
         '/missions',
         queryParameters: {
           'include': 'school,missionType',
+          'filter[status_key]': PRFMissionStatus.approved.apiKey,
         },
       );
 

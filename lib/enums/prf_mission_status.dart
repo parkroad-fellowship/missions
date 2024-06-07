@@ -49,4 +49,19 @@ extension PRFMissionStatusExtension on PRFMissionStatus {
         return AppTheme.appTheme().kRedColor;
     }
   }
+
+  int get apiKey {
+    switch (this) {
+      case PRFMissionStatus.pending:
+        return 1;
+      case PRFMissionStatus.approved:
+        return 2;
+      case PRFMissionStatus.rejected:
+        return 3;
+      case PRFMissionStatus.cancelled:
+        return 4;
+      case PRFMissionStatus.serviced:
+        return 5;
+    }
+  }
 }
