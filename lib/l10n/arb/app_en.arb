@@ -38,8 +38,19 @@
     "@noMissions": {},
     "pleaseWait": "Please wait for an update from the missions desk",
     "@pleaseWait": {},
-    "missionStart": "Mission Date: {missionDate}, {missionTime}",
+    "missionStart": "Starts on: {missionDate}, {missionTime}",
     "@missionStart": {
+        "placeholders": {
+            "missionDate": {
+                "type": "String"
+            },
+            "missionTime": {
+                "type": "String"
+            }
+        }
+    },
+    "missionEnd": "Ends on: {missionDate}, {missionTime}",
+    "@missionEnd": {
         "placeholders": {
             "missionDate": {
                 "type": "String"
@@ -56,5 +67,7 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "missionDetails": "Mission Details",
+    "@missionDetails": {}
 }

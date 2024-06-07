@@ -3,10 +3,14 @@ import 'package:auto_route/auto_route.dart';
 
 @AutoRouterConfig()
 class PRFSuperAppRouter extends $PRFSuperAppRouter {
+  // Auth
   static const String decisionRoute = '/';
   static const String signInRoute = '/sign-in';
+
+  // Landing
   static const String landingRoute = '/landing';
   static const String profileRoute = '/profile';
+  static const String missionDetailsRoute = '/mission-details';
 
   @override
   List<AutoRoute> get routes => [
@@ -14,5 +18,6 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
         AutoRoute(page: SignInRoute.page, path: signInRoute),
         AutoRoute(page: LandingRoute.page, path: landingRoute),
         AutoRoute(page: ProfileRoute.page, path: profileRoute),
+        AutoRoute(page: MissionsDetailsRoute.page, path: missionDetailsRoute),
       ];
 }
