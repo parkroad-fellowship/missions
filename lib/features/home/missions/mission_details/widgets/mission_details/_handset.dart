@@ -1,9 +1,7 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
   const MissionDetailsViewHandset({
