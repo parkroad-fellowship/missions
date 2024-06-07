@@ -7,6 +7,7 @@ part 'prf_school.g.dart';
 class PRFSchool with _$PRFSchool {
   factory PRFSchool(
     String ulid,
+    String name,
     @JsonKey(name: 'total_students') int totalStudents,
     String address,
     double latitude,

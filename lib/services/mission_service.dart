@@ -20,7 +20,9 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.getReq(
         '/missions',
-        queryParameters: {},
+        queryParameters: {
+          'include': 'school,missionType',
+        },
       );
 
       return PRFMissionsResponse.fromJson(res).data;

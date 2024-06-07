@@ -7,6 +7,12 @@ class Misc {
     return DateFormat.yMMMd().add_jm().format(dateTime.toLocal());
   }
 
+  static String formatDate(DateTime dateTime) =>
+      DateFormat.yMMMMd().format(dateTime.toLocal());
+
+  static String formatTime(DateTime dateTime) =>
+      DateFormat.jm().format(dateTime.toLocal());
+
   static String getUserNameInitials(String userName) {
     var initials = 'U';
     if (userName.isNotEmpty) {
