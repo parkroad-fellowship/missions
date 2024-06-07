@@ -77,6 +77,10 @@ class _MyMissionsDetailsPageHandsetState
                       PRFMissionStatusExtension.fromIndex(
                         mission.status,
                       ).name,
+                      style:
+                          CustomTextTheme.customTextTheme().bodySmall?.copyWith(
+                                color: Colors.white,
+                              ),
                     ),
                     backgroundColor: PRFMissionStatusExtension.switchColor(
                       PRFMissionStatusExtension.fromIndex(
