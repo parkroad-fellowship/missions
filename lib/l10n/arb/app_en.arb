@@ -74,6 +74,8 @@
     "@sendMe": {},
     "going": "Missionaries",
     "@going": {},
+    "missionGround": "Mission Ground",
+    "@missionGround": {},
     "noSubscribers": "No subscribers",
     "@noSubscribers": {},
     "comingFrom": "Coming from: {residence}",
@@ -87,5 +89,17 @@
     "successfullySubscribed": "Your request for this mission has been received. Please wait to be approved.",
     "@successfullySubscribed": {},
     "myMissions": "My Missions",
-    "@myMissions": {}
+    "@myMissions": {},
+    "address": "Address & Directions",
+    "@address": {},
+    "missionPrepNotes": "Preparation Notes",
+    "@missionPrepNotes": {},
+    "population": "Population: {totalStudents} learners",
+    "@population": {
+        "placeholders": {
+            "totalStudents": {
+                "type": "int"
+            }
+        }
+    }
 }

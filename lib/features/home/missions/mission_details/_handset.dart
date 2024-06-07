@@ -2,6 +2,7 @@ import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_mission.dart';
@@ -177,19 +178,15 @@ class _MissionsDetailsPageHandsetState
                     isScrollable: true,
                     tabs: [
                       Tab(text: l10n.going),
-                      Tab(text: l10n.going),
+                      Tab(text: l10n.missionGround),
                     ],
                   ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.84,
                     child: TabBarView(
                       children: [
-                        SubscribersView(
-                          missionUlid: mission.ulid,
-                        ),
-                        SubscribersView(
-                          missionUlid: mission.ulid,
-                        ),
+                        SubscribersView(missionUlid: mission.ulid),
+                        MissionDetailsView(mission: mission),
                       ],
                     ),
                   ),
