@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
@@ -17,9 +18,10 @@ class SubscribersViewHandset extends StatefulWidget {
 class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
   @override
   void initState() {
-    context
-        .read<GetSubscribersCubit>()
-        .getSubscriptions(missionUlid: widget.missionUlid);
+    context.read<GetSubscribersCubit>().getSubscriptions(
+          missionUlid: widget.missionUlid,
+          subscriptionStatus: PRFMissionSubscriptionStatus.pending,
+        );
 
     super.initState();
   }

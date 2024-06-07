@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/models/prf_mission_subscription_dto.dart';
@@ -9,6 +10,7 @@ abstract class MissionService {
   Future<List<PRFMission>> getMissions();
   Future<List<PRFMissionSubscription>> getSubscriptions({
     required String missionUlid,
+    PRFMissionSubscriptionStatus? subscriptionStatus,
   });
   Future<PRFMissionSubscription> subscribe({
     required PRFMissionSubscriptionDTO subscriptionDTO,
@@ -37,12 +39,15 @@ class MissionServiceImpl implements MissionService {
   @override
   Future<List<PRFMissionSubscription>> getSubscriptions({
     required String missionUlid,
+    PRFMissionSubscriptionStatus? subscriptionStatus,
   }) async {
     try {
       final res = await _networkUtil.getReq(
         '/mission-subscriptions',
         queryParameters: {
           'include': 'member',
+          if (subscriptionStatus != null)
+            'filter[status_key]': subscriptionStatus.apiKey,
         },
       );
 
