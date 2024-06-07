@@ -31,6 +31,8 @@ class MissionServiceImpl implements MissionService {
         queryParameters: {
           'include': 'school,missionType',
           'filter[status_key]': PRFMissionStatus.approved.apiKey,
+          'order_by': 'start_date',
+          'order_direction': 'asc',
         },
       );
 
