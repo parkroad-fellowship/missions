@@ -94,13 +94,15 @@ class _MissionsDetailsPageHandsetState
                           state.mapOrNull(
                             loaded: (_) {
                               ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text(l10n.successfullySubscribed)));
+                                SnackBar(
+                                  content: Text(l10n.successfullySubscribed),
+                                ),
+                              );
                             },
                             error: (error) {
                               ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-                                  SnackBar(content: Text(error.message)));
+                                SnackBar(content: Text(error.message)),
+                              );
                             },
                           );
                         },

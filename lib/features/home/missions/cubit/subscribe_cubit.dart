@@ -1,8 +1,7 @@
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/models/prf_mission_subscription_dto.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/hive_service.dart';
-import 'package:app/services/mission_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -38,6 +37,8 @@ class SubscribeCubit extends Cubit<SubscribeState> {
           subscription: missionSubscription,
         ),
       );
+    } on Failure catch (e) {
+      emit(SubscribeState.error(e.message));
     } catch (e) {
       emit(SubscribeState.error(e.toString()));
     }

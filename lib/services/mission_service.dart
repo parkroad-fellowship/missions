@@ -35,7 +35,7 @@ class MissionServiceImpl implements MissionService {
   }
 
   @override
-   Future<List<PRFMissionSubscription>> getSubscriptions({
+  Future<List<PRFMissionSubscription>> getSubscriptions({
     required String missionUlid,
   }) async {
     try {

@@ -155,6 +155,14 @@ class NetworkUtil {
         );
       }
 
+      if (err.response?.statusCode == 422) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
       if (DioExceptionType.unknown == err.type) {
         _logger
           ..d('Error: $err')

@@ -71,6 +71,6 @@ class HiveServiceImpl implements HiveService {
 
   @override
   PRFMember? retrieveMember() {
-   return retrieveProfile()!.member;
+    return retrieveProfile()!.member;
   }
 }
