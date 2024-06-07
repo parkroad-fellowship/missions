@@ -1,7 +1,6 @@
 import 'package:app/models/auth.dart';
 import 'package:app/models/failure.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/auth_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_member.freezed.dart';
 part 'prf_member.g.dart';
+
 @freezed
 class PRFMember with _$PRFMember {
   factory PRFMember(

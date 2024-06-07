@@ -1,4 +1,3 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_profession.freezed.dart';
@@ -13,7 +12,7 @@ class PRFProfession with _$PRFProfession {
     @JsonKey(name: 'created_at') String createdAt,
     @JsonKey(name: 'updated_at') String updatedAt,
   ) = _PRFProfession;
-	
+
   factory PRFProfession.fromJson(Map<String, dynamic> json) =>
-			_$PRFProfessionFromJson(json);
+      _$PRFProfessionFromJson(json);
 }

@@ -1,4 +1,3 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_church.freezed.dart';
@@ -13,7 +12,7 @@ class PRFChurch with _$PRFChurch {
     @JsonKey(name: 'created_at') String createdAt,
     @JsonKey(name: 'updated_at') String updatedAt,
   ) = _PRFChurch;
-	
+
   factory PRFChurch.fromJson(Map<String, dynamic> json) =>
-			_$PRFChurchFromJson(json);
+      _$PRFChurchFromJson(json);
 }

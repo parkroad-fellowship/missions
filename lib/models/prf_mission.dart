@@ -18,7 +18,6 @@ class PRFMission with _$PRFMission {
     @JsonKey(name: 'created_at') String createdAt,
     @JsonKey(name: 'updated_at') String updatedAt, {
     @JsonKey(name: 'end_date') DateTime? endDate,
-    
     @JsonKey(name: 'end_time') DateTime? endTime,
     PRFSchool? school,
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,
