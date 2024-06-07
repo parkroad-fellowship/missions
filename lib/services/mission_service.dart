@@ -9,7 +9,9 @@ import 'package:app/utils/_index.dart';
 abstract class MissionService {
   Future<List<PRFMission>> getMissions();
   Future<List<PRFMissionSubscription>> getSubscriptions({
-    required String missionUlid,
+    String? missionUlid,
+    String? memberUlid,
+    String? includes,
     PRFMissionSubscriptionStatus? subscriptionStatus,
   });
   Future<PRFMissionSubscription> subscribe({
@@ -38,14 +40,18 @@ class MissionServiceImpl implements MissionService {
 
   @override
   Future<List<PRFMissionSubscription>> getSubscriptions({
-    required String missionUlid,
+    String? missionUlid,
+    String? memberUlid,
+    String? includes,
     PRFMissionSubscriptionStatus? subscriptionStatus,
   }) async {
     try {
       final res = await _networkUtil.getReq(
         '/mission-subscriptions',
         queryParameters: {
-          'include': 'member',
+          if (memberUlid != null) 'filter[member_ulid]': memberUlid,
+          if (missionUlid != null) 'filter[mission_ulid]': missionUlid,
+          if (includes != null) 'include': includes,
           if (subscriptionStatus != null)
             'filter[status_key]': subscriptionStatus.apiKey,
         },

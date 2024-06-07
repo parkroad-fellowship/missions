@@ -101,7 +101,6 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                                     l10n.comingFrom(
                                       subscription.member!.residence,
                                     ),
-                                    overflow: TextOverflow.clip,
                                   ),
                                 ],
                               ),

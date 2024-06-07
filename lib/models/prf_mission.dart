@@ -11,9 +11,9 @@ class PRFMission with _$PRFMission {
   factory PRFMission(
     String ulid,
     @JsonKey(name: 'start_date') DateTime startDate,
-    @JsonKey(name: 'start_time') DateTime startTime,
+    @JsonKey(name: 'start_time') String startTime,
     @JsonKey(name: 'end_date') DateTime endDate,
-    @JsonKey(name: 'end_time') DateTime endTime,
+    @JsonKey(name: 'end_time') String endTime,
     int capacity,
     @JsonKey(name: 'mission_prep_notes') String missionPrepNotes,
     int status,

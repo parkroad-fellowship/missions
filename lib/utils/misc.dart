@@ -10,8 +10,8 @@ class Misc {
   static String formatDate(DateTime dateTime) =>
       DateFormat.yMMMMd().format(dateTime.toLocal());
 
-  static String formatTime(DateTime dateTime) =>
-      DateFormat.jm().format(dateTime.toLocal());
+  static String formatTime(String time) =>
+      DateFormat.jm().format(DateTime.parse('2012-02-27 $time'));
 
   static String getUserNameInitials(String userName) {
     var initials = 'U';

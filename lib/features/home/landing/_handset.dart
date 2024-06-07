@@ -1,5 +1,6 @@
 import 'package:app/features/home/account/account.dart';
 import 'package:app/features/home/missions/missions.dart';
+import 'package:app/features/home/my_missions/my_missions.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
 
   final List<Widget> _pages = const [
     MissionsPage(),
+    MyMissionsPage(),
     AccountPage(),
   ];
 
@@ -60,8 +62,24 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                   height: 25,
                   width: 25,
                   child: Icon(
-                    Icons.person,
+                    Icons.list,
                     color: _currentIndex == 1
+                        ? AppTheme.appTheme().kPrimaryColorV2
+                        : AppTheme.appTheme().kDullGreyColor,
+                  ),
+                ),
+              ),
+              label: l10n.myMissions,
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: Icon(
+                    Icons.person,
+                    color: _currentIndex == 2
                         ? AppTheme.appTheme().kPrimaryColorV2
                         : AppTheme.appTheme().kDullGreyColor,
                   ),

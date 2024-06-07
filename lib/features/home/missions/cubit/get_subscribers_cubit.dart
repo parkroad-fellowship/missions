@@ -26,6 +26,7 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
       final missionSubscriptions = await _missionService.getSubscriptions(
         missionUlid: missionUlid,
         subscriptionStatus: subscriptionStatus,
+        includes: 'member',
       );
       emit(
         GetSubscribersState.loaded(

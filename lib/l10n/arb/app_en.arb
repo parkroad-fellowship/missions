@@ -85,5 +85,7 @@
         }
     },
     "successfullySubscribed": "Your request for this mission has been received. Please wait to be approved.",
-    "@successfullySubscribed": {}
+    "@successfullySubscribed": {},
+    "myMissions": "My Missions",
+    "@myMissions": {}
 }

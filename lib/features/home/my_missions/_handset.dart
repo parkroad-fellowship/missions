@@ -1,5 +1,5 @@
 import 'package:app/enums/prf_mission_status.dart';
-import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
+import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
@@ -7,17 +7,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MissionsPageHandset extends StatefulWidget {
-  const MissionsPageHandset({super.key});
+class MyMissionsPageHandset extends StatefulWidget {
+  const MyMissionsPageHandset({super.key});
 
   @override
-  State<MissionsPageHandset> createState() => _MissionsPageHandsetState();
+  State<MyMissionsPageHandset> createState() => _MyMissionsPageHandsetState();
 }
 
-class _MissionsPageHandsetState extends State<MissionsPageHandset> {
+class _MyMissionsPageHandsetState extends State<MyMissionsPageHandset> {
   @override
   void initState() {
-    context.read<GetMissionsCubit>().getMissions();
+    context.read<GetMemberMissionSubscriptionsCubit>().getMissions();
     super.initState();
   }
 
@@ -28,7 +28,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          l10n.missions,
+          l10n.myMissions,
           style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -40,13 +40,14 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: BlocBuilder<GetMissionsCubit, GetMissionsState>(
+        child: BlocBuilder<GetMemberMissionSubscriptionsCubit,
+            GetMemberMissionSubscriptionsState>(
           builder: (context, state) {
             return state.maybeWhen(
               orElse: () => const Center(child: CircularProgressIndicator()),
               error: (message) => Center(child: Text(message)),
-              loaded: (missions) {
-                if (missions.isEmpty) {
+              loaded: (missionSubscriptions) {
+                if (missionSubscriptions.isEmpty) {
                   return Column(
                     children: [
                       const Spacer(),
@@ -93,9 +94,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                 }
                 return ListView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: missions.length,
+                  itemCount: missionSubscriptions.length,
                   itemBuilder: (context, index) {
-                    final mission = missions[index];
+                    final missionSubscription = missionSubscriptions[index];
                     return ExpansionTile(
                       initiallyExpanded: true,
                       trailing: Icon(
@@ -104,7 +105,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                         size: 24,
                       ),
                       title: Text(
-                        mission.school!.name.toUpperCase(),
+                        missionSubscription.mission!.school!.name.toUpperCase(),
                         style: CustomTextTheme.customTextTheme()
                             .headlineSmall!
                             .copyWith(
@@ -120,10 +121,14 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                           contentPadding: const EdgeInsets.only(left: 20),
                           visualDensity: VisualDensity.compact,
                           onTap: () => context.router.push(
-                            MissionsDetailsRoute(mission: mission),
+                            MyMissionsDetailsRoute(
+                              mission: missionSubscription.mission!,
+                            ),
                           ),
                           title: Text(
-                            l10n.missionType(mission.missionType!.name),
+                            l10n.missionType(
+                              missionSubscription.mission!.missionType!.name,
+                            ),
                             style: CustomTextTheme.customTextTheme()
                                 .headlineMedium!
                                 .copyWith(
@@ -137,8 +142,12 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                             children: [
                               Text(
                                 l10n.missionStart(
-                                  Misc.formatDate(mission.startDate),
-                                  Misc.formatTime(mission.startTime),
+                                  Misc.formatDate(
+                                    missionSubscription.mission!.startDate,
+                                  ),
+                                  Misc.formatTime(
+                                    missionSubscription.mission!.startTime,
+                                  ),
                                 ),
                                 style: CustomTextTheme.customTextTheme()
                                     .bodySmall!
@@ -149,7 +158,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                               ),
                               Text(
                                 PRFMissionStatusExtension.fromIndex(
-                                  mission.status,
+                                  missionSubscription.mission!.status,
                                 ).name,
                                 style: CustomTextTheme.customTextTheme()
                                     .titleMedium!
@@ -158,7 +167,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                                       color:
                                           PRFMissionStatusExtension.switchColor(
                                         PRFMissionStatusExtension.fromIndex(
-                                          mission.status,
+                                          missionSubscription.mission!.status,
                                         ),
                                       ),
                                     ),
