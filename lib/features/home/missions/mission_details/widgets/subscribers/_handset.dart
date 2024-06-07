@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
@@ -117,26 +118,30 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                           flex: 2,
                           child: Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: IconButton(
-                                  onPressed: () async {
-                                    final uri = Uri(
-                                      scheme: 'tel',
-                                      path: subscription.member!.phoneNumber,
+                              IconButton(
+                                onPressed: () async {
+                                  final uri = Uri(
+                                    scheme: 'tel',
+                                    path: subscription.member!.phoneNumber,
+                                  );
+                                  if (await canLaunchUrl(uri)) {
+                                    await launchUrl(
+                                      uri,
+                                      mode: LaunchMode.externalApplication,
                                     );
-                                    if (await canLaunchUrl(uri)) {
-                                      await launchUrl(
-                                        uri,
-                                        mode: LaunchMode.externalApplication,
-                                      );
-                                    }
-                                  },
-                                  icon: Icon(
-                                    Icons.call,
-                                    color: AppTheme.appTheme().kPrimaryColorV2,
-                                  ),
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.call,
+                                  color: AppTheme.appTheme().kPrimaryColorV2,
                                 ),
+                              ),
+                              Text(
+                                PRFMissionSubscriptionStatusExtension.fromIndex(
+                                  subscription.status,
+                                ).name,
+                                style:
+                                    CustomTextTheme.customTextTheme().bodySmall,
                               ),
                             ],
                           ),
