@@ -35,6 +35,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<HiveService>().initBoxes();
 
+    getIt<NotificationService>().init();
+
     await Firebase.initializeApp(
       options:
           Platform.isAndroid ? DefaultFirebaseOptions.currentPlatform : null,

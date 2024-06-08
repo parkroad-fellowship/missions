@@ -16,7 +16,8 @@ class Singletons {
     getIt
       ..registerSingleton<HiveService>(HiveServiceImpl())
       ..registerSingleton<AuthService>(AuthServiceImpl())
-      ..registerSingleton<MissionService>(MissionServiceImpl());
+      ..registerSingleton<MissionService>(MissionServiceImpl())
+      ..registerSingleton<NotificationService>(NotificationServiceImpl());
   }
 
   static List<BlocProvider> registerCubits() {
