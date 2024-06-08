@@ -10,6 +10,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -37,6 +39,24 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       options:
           Platform.isAndroid ? DefaultFirebaseOptions.currentPlatform : null,
     );
+
+    try {
+      final wsUrl = Uri(
+        scheme: 'ws',
+        host: PRFSuperAppConfig.instance!.values.baseDomain,
+        port: 8080,
+        path: 'app/${PRFSuperAppConfig.instance!.values.socketKey}',
+      );
+      final channel = WebSocketChannel.connect(wsUrl);
+
+      await channel.ready;
+
+      channel.stream.listen((message) {
+        Logger().i('Received: $message');
+      });
+    } catch (e) {
+      Logger().e(e);
+    }
 
     runApp(await builder());
   }, (error, stackTrace) {

@@ -9,9 +9,10 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      baseDomain: 'prf-missions.fly.dev',
-      hiveBox: 'prf-super-app-dev--',
+      baseDomain: 'prf.test',
+      hiveBox: 'prf-super-app-dev---',
       urlScheme: 'https',
+      socketKey: 'yvnlkaqadqiadutrs9sa',
     ),
   );
 

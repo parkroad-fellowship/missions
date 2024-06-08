@@ -3,11 +3,13 @@ class PRFSuperAppValues {
     required this.urlScheme,
     required this.baseDomain,
     required this.hiveBox,
+    required this.socketKey,
   });
 
   final String urlScheme;
   final String baseDomain;
   final String hiveBox;
+  final String socketKey;
 }
 
 class PRFSuperAppConfig {

@@ -62,4 +62,6 @@ class Singletons {
       ),
     ];
   }
+
+  static void setupWebsocketConnection() {}
 }
