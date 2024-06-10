@@ -1,5 +1,6 @@
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
@@ -57,6 +58,12 @@ class Singletons {
       ),
       BlocProvider<GetPastMemberMissionsCubit>(
         create: (context) => GetPastMemberMissionsCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetClassGroupsCubit>(
+        create: (context) => GetClassGroupsCubit(
           missionService: getIt(),
           hiveService: getIt(),
         ),

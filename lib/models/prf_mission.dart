@@ -10,7 +10,6 @@ part 'prf_mission.g.dart';
 class PRFMission with _$PRFMission {
   factory PRFMission(
     String ulid,
-    
     @JsonKey(name: 'start_date') DateTime startDate,
     @JsonKey(name: 'start_time') String startTime,
     @JsonKey(name: 'end_date') DateTime endDate,

@@ -1,5 +1,6 @@
 import 'package:app/models/adapters.dart';
 import 'package:app/models/auth.dart';
+import 'package:app/models/prf_class_group.dart';
 import 'package:app/models/prf_member.dart';
 import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -16,6 +17,9 @@ abstract class HiveService {
   void persistProfile(PRFUser profile);
   PRFUser? retrieveProfile();
   PRFMember? retrieveMember();
+
+  void persistClassGroups(PRFClassGroupResponse classGroups);
+  List<PRFClassGroup> retrieveClassGroups();
 }
 
 class HiveServiceImpl implements HiveService {
@@ -23,7 +27,9 @@ class HiveServiceImpl implements HiveService {
   Future<void> initBoxes() async {
     await Hive.initFlutter();
 
-    Hive.registerAdapter(PRFUserAdapter());
+    Hive
+      ..registerAdapter(PRFUserAdapter())
+      ..registerAdapter(PRFClassGroupResponseAdapter());
 
     await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
   }
@@ -72,5 +78,19 @@ class HiveServiceImpl implements HiveService {
   @override
   PRFMember? retrieveMember() {
     return retrieveProfile()!.member;
+  }
+
+  @override
+  void persistClassGroups(PRFClassGroupResponse classGroups) {
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .put('classGroups', classGroups);
+  }
+
+  @override
+  List<PRFClassGroup> retrieveClassGroups() {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    final classGroups = box.get('classGroups') as PRFClassGroupResponse?;
+    if (classGroups == null) return [];
+    return classGroups.data;
   }
 }

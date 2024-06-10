@@ -3,6 +3,7 @@ import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_mission.dart';
@@ -171,7 +172,7 @@ class _MyMissionsDetailsPageHandsetState
             const Divider(),
             const SizedBox(height: 16),
             DefaultTabController(
-              length: 2,
+              length: 3,
               child: Column(
                 children: <Widget>[
                   TabBar(
@@ -184,6 +185,7 @@ class _MyMissionsDetailsPageHandsetState
                     tabs: [
                       Tab(text: l10n.going),
                       Tab(text: l10n.missionGround),
+                      Tab(text: l10n.souls),
                     ],
                   ),
                   SizedBox(
@@ -192,6 +194,7 @@ class _MyMissionsDetailsPageHandsetState
                       children: [
                         SubscribersView(missionUlid: mission.ulid),
                         MissionDetailsView(mission: mission),
+                        SoulsView(missionUlid: mission.ulid),
                       ],
                     ),
                   ),

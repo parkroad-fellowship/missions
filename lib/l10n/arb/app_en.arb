@@ -110,6 +110,8 @@
     "@past": {},
     "noPastMissions": "No past missions",
     "@noPastMissions": {},
-    "theme":"Theme/Topic",
-    "@theme": {}
+    "theme": "Theme/Topic",
+    "@theme": {},
+    "souls": "Souls",
+    "@souls": {}
 }

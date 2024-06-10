@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/models/prf_class_group.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/models/prf_mission_subscription_dto.dart';
@@ -20,6 +21,7 @@ abstract class MissionService {
   Future<PRFMissionSubscription> subscribe({
     required PRFMissionSubscriptionDTO subscriptionDTO,
   });
+  Future<List<PRFClassGroup>> getClassGroups();
 }
 
 class MissionServiceImpl implements MissionService {
@@ -85,6 +87,19 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFMissionSubscription.fromJson(res);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<PRFClassGroup>> getClassGroups() async {
+    try {
+      final res = await _networkUtil.getReq(
+        '/class-groups',
+      );
+
+      return PRFClassGroupResponse.fromJson(res).data;
     } catch (e) {
       rethrow;
     }
