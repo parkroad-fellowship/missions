@@ -2,11 +2,13 @@ import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_past_member_missions_cubit.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/soul_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -18,7 +20,8 @@ class Singletons {
       ..registerSingleton<HiveService>(HiveServiceImpl())
       ..registerSingleton<AuthService>(AuthServiceImpl())
       ..registerSingleton<MissionService>(MissionServiceImpl())
-      ..registerSingleton<NotificationService>(NotificationServiceImpl());
+      ..registerSingleton<NotificationService>(NotificationServiceImpl())
+      ..registerSingleton<SoulService>(SoulServiceImpl());
   }
 
   static List<BlocProvider> registerCubits() {
@@ -62,9 +65,14 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
+      BlocProvider<GetSoulsCubit>(
+        create: (context) => GetSoulsCubit(
+          soulService: getIt(),
+        ),
+      ),
       BlocProvider<GetClassGroupsCubit>(
         create: (context) => GetClassGroupsCubit(
-          missionService: getIt(),
+          soulService: getIt(),
           hiveService: getIt(),
         ),
       ),

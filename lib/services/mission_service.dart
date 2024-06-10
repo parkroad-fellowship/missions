@@ -21,7 +21,6 @@ abstract class MissionService {
   Future<PRFMissionSubscription> subscribe({
     required PRFMissionSubscriptionDTO subscriptionDTO,
   });
-  Future<List<PRFClassGroup>> getClassGroups();
 }
 
 class MissionServiceImpl implements MissionService {
@@ -87,19 +86,6 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFMissionSubscription.fromJson(res);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<List<PRFClassGroup>> getClassGroups() async {
-    try {
-      final res = await _networkUtil.getReq(
-        '/class-groups',
-      );
-
-      return PRFClassGroupResponse.fromJson(res).data;
     } catch (e) {
       rethrow;
     }

@@ -21,15 +21,6 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
   void initState() {
     context.read<GetMissionsCubit>().getMissions();
 
-    getIt<NotificationService>().createNotification(
-      content: NotificationContent(
-        id: 10,
-        channelKey: 'basic_channel',
-        title: 'Hello World!',
-        body: 'This is my first notification!',
-      ),
-    );
-
     super.initState();
   }
 
