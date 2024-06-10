@@ -18,7 +18,6 @@ class PRFDebriefNote with _$PRFDebriefNote {
       _$PRFDebriefNoteFromJson(json);
 }
 
-
 @freezed
 class PRFDebriefNoteResponse with _$PRFDebriefNoteResponse {
   const factory PRFDebriefNoteResponse({

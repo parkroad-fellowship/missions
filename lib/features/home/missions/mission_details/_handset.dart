@@ -234,7 +234,7 @@ class _MissionsDetailsPageHandsetState
                     minPageHeight: 0,
                     maxPageHeight: 0.9,
                   );
-                } 
+                }
                 if (_currentTab == 3) {
                   WoltModalSheet.show<void>(
                     context: context,
@@ -243,7 +243,9 @@ class _MissionsDetailsPageHandsetState
                         WoltModalSheetPage(
                           child: SizedBox(
                             height: MediaQuery.sizeOf(context).height * 0.8,
-                            child: AddDebriefNoteViewHandset(missionUlid: mission.ulid),
+                            child: AddDebriefNoteViewHandset(
+                              missionUlid: mission.ulid,
+                            ),
                           ),
                         ),
                       ];

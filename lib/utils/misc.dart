@@ -31,7 +31,7 @@ class Misc {
       (value * pow(10, fractionalDigits)).truncate() /
       pow(10, fractionalDigits);
 
-    static String getAppVersion() {
+  static String getAppVersion() {
     return packageVersion.replaceRange(6, packageVersion.length, '');
   }
 

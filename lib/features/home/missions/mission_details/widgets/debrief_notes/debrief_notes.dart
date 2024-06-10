@@ -1,5 +1,4 @@
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/_handset.dart';
-import 'package:app/features/home/missions/mission_details/widgets/souls/_handset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
