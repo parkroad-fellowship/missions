@@ -20,8 +20,6 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
   }) async {
     emit(const GetSoulsState.loading());
     try {
-
-
       final souls = await _soulService.getSouls(missionUlid: missionUlid);
       emit(GetSoulsState.loaded(souls: souls));
     } catch (e) {
