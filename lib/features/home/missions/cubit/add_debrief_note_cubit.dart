@@ -25,7 +25,7 @@ class AddDebriefNoteCubit extends Cubit<AddDebriefNoteState> {
       final debriefNote = await _debriefService.addDebriefNote(
         debriefNoteDTO: PRFDebriefNoteDTO(
           missionUlid: missionUlid,
-          debriefNote: note,
+          note: note,
         ),
       );
       emit(AddDebriefNoteState.loaded(debriefNote: debriefNote));

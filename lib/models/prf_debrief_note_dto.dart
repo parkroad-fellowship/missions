@@ -7,8 +7,8 @@ part 'prf_debrief_note_dto.g.dart';
 @freezed
 class PRFDebriefNoteDTO with _$PRFDebriefNoteDTO {
   factory PRFDebriefNoteDTO({
-    required String missionUlid,
-    required String debriefNote,
+   @JsonKey(name: 'mission_ulid') required String missionUlid,
+    required String note,
   }) = _PRFDebriefNoteDTO;
 	
   factory PRFDebriefNoteDTO.fromJson(Map<String, dynamic> json) =>

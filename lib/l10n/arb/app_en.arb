@@ -129,5 +129,9 @@
     "selectClass": "Select Class",
     "@selectClass": {},
     "debriefNotes": "Debrief Notes",
-    "@debriefNotes": {}
+    "@debriefNotes": {},
+    "note": "Note",
+    "@note": {},
+    "noteRecorded": "Note recorded",
+    "@noteRecorded": {}
 }
