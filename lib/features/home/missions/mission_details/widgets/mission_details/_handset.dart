@@ -28,6 +28,17 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
         children: [
           ListTile(
             contentPadding: EdgeInsets.zero,
+            title: Text(l10n.theme),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(mission.theme!),
+              ],
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
             title: Text(l10n.population(mission.school!.totalStudents)),
           ),
           const Divider(),

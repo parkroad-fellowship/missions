@@ -109,5 +109,7 @@
     "past": "Past",
     "@past": {},
     "noPastMissions": "No past missions",
-    "@noPastMissions": {}
+    "@noPastMissions": {},
+    "theme":"Theme/Topic",
+    "@theme": {}
 }

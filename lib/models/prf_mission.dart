@@ -10,6 +10,7 @@ part 'prf_mission.g.dart';
 class PRFMission with _$PRFMission {
   factory PRFMission(
     String ulid,
+    
     @JsonKey(name: 'start_date') DateTime startDate,
     @JsonKey(name: 'start_time') String startTime,
     @JsonKey(name: 'end_date') DateTime endDate,
@@ -21,6 +22,7 @@ class PRFMission with _$PRFMission {
     @JsonKey(name: 'updated_at') String updatedAt, {
     @JsonKey(name: 'logged_in_member_has_subscribed')
     required bool loggedInMemberHasSubscribed,
+    @Default('Open Topic') String? theme,
     PRFSchool? school,
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,
     @JsonKey(name: 'mission_type') PRFMissionType? missionType,
