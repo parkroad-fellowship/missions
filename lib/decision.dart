@@ -46,7 +46,7 @@ class _DecisionPageState extends State<DecisionPage> {
         return Scaffold(
           body: Center(
             child: ExtendedImage.asset(
-              'assets/images/app-icon.png',
+              'assets/images/app-logo.png',
               width: 222,
               cacheRawData: true,
             ),

@@ -40,7 +40,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                 const Spacer(),
                 Center(
                   child: ExtendedImage.asset(
-                    'assets/images/app-icon.png',
+                    'assets/images/app-logo.png',
                     height: 200,
                     width: 232,
                   ),

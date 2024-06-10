@@ -61,4 +61,3 @@ flutter:
   generate: true
   assets:
     - assets/images/
-    # - assets/images/app-icon.png # Uncomment this line to include the app icon on iOS
