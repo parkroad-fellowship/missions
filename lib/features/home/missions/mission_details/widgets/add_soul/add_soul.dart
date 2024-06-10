@@ -1,5 +1,4 @@
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/_handset.dart';
-import 'package:app/features/home/missions/mission_details/widgets/subscribers/_handset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
@@ -14,8 +13,7 @@ class AddSoulView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          AddSoulViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, __) => AddSoulViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => AddSoulViewHandset(missionUlid: missionUlid),
       ),

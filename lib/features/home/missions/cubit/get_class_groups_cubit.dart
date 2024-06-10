@@ -1,6 +1,5 @@
 import 'package:app/models/prf_class_group.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/soul_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
