@@ -1,3 +1,4 @@
+import 'package:app/models/prf_contact.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_school.freezed.dart';
@@ -17,6 +18,7 @@ class PRFSchool with _$PRFSchool {
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     String? description,
     String? directions,
+   @JsonKey(name: 'school_contacts') List<PRFContact>? contacts,
   }) = _PRFSchool;
 
   factory PRFSchool.fromJson(Map<String, dynamic> json) =>

@@ -31,7 +31,7 @@ class MissionServiceImpl implements MissionService {
       final res = await _networkUtil.getReq(
         '/missions',
         queryParameters: {
-          'include': 'school,missionType',
+          'include': 'school,missionType,school.schoolContacts.contactType',
           'filter[status_key]': PRFMissionStatus.approved.apiKey,
           'order_by': 'start_date',
           'order_direction': 'asc',

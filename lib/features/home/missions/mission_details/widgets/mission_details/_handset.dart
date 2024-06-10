@@ -2,6 +2,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
   const MissionDetailsViewHandset({
@@ -50,6 +51,41 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               children: <Widget>[
                 Text(mission.missionPrepNotes),
               ],
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(l10n.contactPersons),
+          ),
+          ...mission.school!.contacts!.map(
+            (contact) => ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(contact.name),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    contact.name,
+                    overflow: TextOverflow.clip,
+                  ),
+                ],
+              ),
+              trailing: IconButton(
+                onPressed: () async {
+                  final uri = Uri(
+                    scheme: 'tel',
+                    path: contact.phone,
+                  );
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(
+                      uri,
+                      mode: LaunchMode.externalApplication,
+                    );
+                  }
+                },
+                icon: const Icon(Icons.phone),
+              ),
             ),
           ),
           const Divider(),

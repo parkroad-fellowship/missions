@@ -133,5 +133,7 @@
     "note": "Note",
     "@note": {},
     "noteRecorded": "Note recorded",
-    "@noteRecorded": {}
+    "@noteRecorded": {},
+    "contactPersons": "Contact Persons",
+    "@contactPersons": {}
 }
