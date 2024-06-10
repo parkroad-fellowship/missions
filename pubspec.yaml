@@ -60,5 +60,5 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-    - assets/images/
-    - assets/images/app-icon.png
+  - assets/images/
+  - assets/images/app-icon.png
