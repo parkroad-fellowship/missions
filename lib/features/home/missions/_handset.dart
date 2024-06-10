@@ -18,6 +18,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
   @override
   void initState() {
     context.read<GetMissionsCubit>().getMissions();
+
     super.initState();
   }
 

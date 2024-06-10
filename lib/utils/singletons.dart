@@ -1,6 +1,11 @@
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
+import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
+import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
@@ -16,7 +21,10 @@ class Singletons {
     getIt
       ..registerSingleton<HiveService>(HiveServiceImpl())
       ..registerSingleton<AuthService>(AuthServiceImpl())
-      ..registerSingleton<MissionService>(MissionServiceImpl());
+      ..registerSingleton<MissionService>(MissionServiceImpl())
+      ..registerSingleton<NotificationService>(NotificationServiceImpl())
+      ..registerSingleton<SoulService>(SoulServiceImpl())
+      ..registerSingleton<DebriefService>(DebriefServiceImpl());
   }
 
   static List<BlocProvider> registerCubits() {
@@ -60,6 +68,35 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
+      BlocProvider<GetSoulsCubit>(
+        create: (context) => GetSoulsCubit(
+          soulService: getIt(),
+        ),
+      ),
+      BlocProvider<GetClassGroupsCubit>(
+        create: (context) => GetClassGroupsCubit(
+          soulService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<AddSoulCubit>(
+        create: (context) => AddSoulCubit(
+          soulService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetDebriefNotesCubit>(
+        create: (context) => GetDebriefNotesCubit(
+          debriefService: getIt(),
+        ),
+      ),
+      BlocProvider<AddDebriefNoteCubit>(
+        create: (context) => AddDebriefNoteCubit(
+          debriefService: getIt(),
+        ),
+      ),
     ];
   }
+
+  static void setupWebsocketConnection() {}
 }

@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:app/versioning/build_version.dart';
 import 'package:intl/intl.dart';
+import 'package:slugify/slugify.dart' as slugify;
 
 class Misc {
   static String formatDateTime(DateTime dateTime) {
@@ -28,4 +30,12 @@ class Misc {
   static double truncateToDecimalPlaces(double value, int fractionalDigits) =>
       (value * pow(10, fractionalDigits)).truncate() /
       pow(10, fractionalDigits);
+
+  static String getAppVersion() {
+    return packageVersion.replaceRange(6, packageVersion.length, '');
+  }
+
+  static String getSluggedAppVersion() {
+    return slugify.slugify(getAppVersion());
+  }
 }
