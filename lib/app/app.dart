@@ -34,6 +34,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorSchemeSeed: AppTheme.appTheme().kPrimaryColorV2,
         appBarTheme: AppBarTheme(
