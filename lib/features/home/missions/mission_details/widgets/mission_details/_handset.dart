@@ -66,7 +66,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    contact.name,
+                    contact.contactType!.name,
                     overflow: TextOverflow.clip,
                   ),
                 ],
