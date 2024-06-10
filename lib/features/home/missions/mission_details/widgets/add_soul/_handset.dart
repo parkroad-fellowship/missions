@@ -155,6 +155,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                       );
                       return;
                     }
+                    Navigator.of(context).pop();
                     await context.read<AddSoulCubit>().addSoul(
                           missionUlid: widget.missionUlid,
                           classGroup: selectedClassGroup!,

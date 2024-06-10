@@ -68,7 +68,6 @@ class Singletons {
       BlocProvider<GetSoulsCubit>(
         create: (context) => GetSoulsCubit(
           soulService: getIt(),
-          hiveService: getIt(),
         ),
       ),
       BlocProvider<GetClassGroupsCubit>(
