@@ -10,8 +10,8 @@ class PRFSoul with _$PRFSoul {
   factory PRFSoul(
     String ulid,
     @JsonKey(name: 'full_name') String fullName,
-    @JsonKey(name: 'created_at') String createdAt,
-    @JsonKey(name: 'updated_at') String updatedAt, {
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
     PRFMission? mission,
     @JsonKey(name: 'class_group') PRFClassGroup? classGroup,
   }) = _PRFSoul;

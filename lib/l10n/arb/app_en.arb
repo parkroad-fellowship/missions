@@ -127,5 +127,7 @@
     "recording": "Recording ...",
     "@recording": {},
     "selectClass": "Select Class",
-    "@selectClass": {}
+    "@selectClass": {},
+    "debriefNotes": "Debrief Notes",
+    "@debriefNotes": {}
 }

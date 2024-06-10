@@ -10,8 +10,8 @@ class PRFMissionSubscription with _$PRFMissionSubscription {
   factory PRFMissionSubscription(
     String ulid,
     int status,
-    @JsonKey(name: 'created_at') String createdAt,
-    @JsonKey(name: 'updated_at') String updatedAt, {
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
     PRFMission? mission,
     PRFMember? member,
   }) = _PRFMissionSubscription;

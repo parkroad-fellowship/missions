@@ -9,8 +9,8 @@ class PRFProfession with _$PRFProfession {
     String ulid,
     String name,
     @JsonKey(name: 'is_active') int isActive,
-    @JsonKey(name: 'created_at') String createdAt,
-    @JsonKey(name: 'updated_at') String updatedAt,
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt,
   ) = _PRFProfession;
 
   factory PRFProfession.fromJson(Map<String, dynamic> json) =>

@@ -1,0 +1,16 @@
+
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'prf_debrief_note_dto.freezed.dart';
+part 'prf_debrief_note_dto.g.dart';
+
+@freezed
+class PRFDebriefNoteDTO with _$PRFDebriefNoteDTO {
+  factory PRFDebriefNoteDTO({
+    required String missionUlid,
+    required String debriefNote,
+  }) = _PRFDebriefNoteDTO;
+	
+  factory PRFDebriefNoteDTO.fromJson(Map<String, dynamic> json) =>
+			_$PRFDebriefNoteDTOFromJson(json);
+}

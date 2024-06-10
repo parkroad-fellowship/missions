@@ -13,8 +13,8 @@ class PRFSchool with _$PRFSchool {
     double latitude,
     double longitude,
     @JsonKey(name: 'is_active') int isActive,
-    @JsonKey(name: 'created_at') String createdAt,
-    @JsonKey(name: 'updated_at') String updatedAt, {
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
     String? description,
     String? directions,
   }) = _PRFSchool;

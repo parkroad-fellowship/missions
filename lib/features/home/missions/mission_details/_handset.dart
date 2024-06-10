@@ -3,6 +3,7 @@ import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
@@ -174,7 +175,7 @@ class _MissionsDetailsPageHandsetState
             ),
             const SizedBox(height: 16),
             DefaultTabController(
-              length: 3,
+              length: 4,
               child: Column(
                 children: <Widget>[
                   TabBar(
@@ -191,6 +192,7 @@ class _MissionsDetailsPageHandsetState
                       Tab(text: l10n.going),
                       Tab(text: l10n.missionGround),
                       Tab(text: l10n.souls),
+                      Tab(text: l10n.debriefNotes),
                     ],
                   ),
                   SizedBox(
@@ -200,6 +202,7 @@ class _MissionsDetailsPageHandsetState
                         SubscribersView(missionUlid: mission.ulid),
                         MissionDetailsView(mission: mission),
                         SoulsView(missionUlid: mission.ulid),
+                        DebriefNotesView(missionUlid: mission.ulid),
                       ],
                     ),
                   ),

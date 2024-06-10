@@ -17,8 +17,8 @@ class PRFMission with _$PRFMission {
     int capacity,
     @JsonKey(name: 'mission_prep_notes') String missionPrepNotes,
     int status,
-    @JsonKey(name: 'created_at') String createdAt,
-    @JsonKey(name: 'updated_at') String updatedAt, {
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
     @JsonKey(name: 'logged_in_member_has_subscribed')
     required bool loggedInMemberHasSubscribed,
     @Default('Open Topic') String? theme,
