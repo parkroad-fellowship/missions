@@ -24,7 +24,8 @@ class GetMemberMissionSubscriptionsCubit
     try {
       final member = _hiveService.retrieveMember()!;
       final missionSubscriptions = await _missionService.getSubscriptions(
-        includes: 'mission.missionType,mission.school',
+        includes: 'mission.missionType,mission.school,'
+            'mission.school.schoolContacts.contactType',
         memberUlid: member.ulid,
         upcoming: true,
       );
