@@ -19,7 +19,7 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
   late SoulService _soulService;
   late HiveService _hiveService;
 
-  Future<void> getMissions() async {
+  Future<void> getClassGroups() async {
     emit(const GetClassGroupsState.loading());
     try {
       final localClassGroups = _hiveService.retrieveClassGroups();

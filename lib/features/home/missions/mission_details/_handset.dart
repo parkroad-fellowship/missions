@@ -2,6 +2,7 @@ import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
@@ -10,6 +11,7 @@ import 'package:app/models/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class MissionsDetailsPageHandset extends StatefulWidget {
   const MissionsDetailsPageHandset({
@@ -27,6 +29,8 @@ class MissionsDetailsPageHandset extends StatefulWidget {
 class _MissionsDetailsPageHandsetState
     extends State<MissionsDetailsPageHandset> {
   PRFMission get mission => widget.mission;
+
+  int _currentTab = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +178,9 @@ class _MissionsDetailsPageHandsetState
               child: Column(
                 children: <Widget>[
                   TabBar(
+                    onTap: (value) => setState(() {
+                      _currentTab = value;
+                    }),
                     labelStyle:
                         CustomTextTheme.customTextTheme().bodySmall?.copyWith(
                               color: AppTheme.appTheme().kPrimaryColorV2,
@@ -202,6 +209,30 @@ class _MissionsDetailsPageHandsetState
           ],
         ),
       ),
+      floatingActionButton: _currentTab == 2
+          ? FloatingActionButton(
+              onPressed: () => WoltModalSheet.show<void>(
+                context: context,
+                pageListBuilder: (modalSheetContext) {
+                  return [
+                    WoltModalSheetPage(
+                      child: SizedBox(
+                        height: MediaQuery.sizeOf(context).height * 0.8,
+                        child: AddSoulView(missionUlid: mission.ulid),
+                      ),
+                    ),
+                  ];
+                },
+                maxDialogWidth: 560,
+                minDialogWidth: 400,
+                minPageHeight: 0,
+                maxPageHeight: 0.9,
+              ),
+              backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+              tooltip: l10n.recordSoul,
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 }

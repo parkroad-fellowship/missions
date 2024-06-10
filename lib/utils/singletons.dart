@@ -1,5 +1,6 @@
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
+import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
@@ -76,6 +77,13 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
+      BlocProvider<AddSoulCubit>(
+        create: (context) => AddSoulCubit(
+          soulService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      
     ];
   }
 
