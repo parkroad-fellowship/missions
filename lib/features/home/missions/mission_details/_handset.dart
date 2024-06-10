@@ -180,6 +180,7 @@ class _MissionsDetailsPageHandsetState
               child: Column(
                 children: <Widget>[
                   TabBar(
+                    tabAlignment: TabAlignment.center,
                     onTap: (value) => setState(() {
                       _currentTab = value;
                     }),
