@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 1.2.00+1200
+version: 1.0.00+1000
 publish_to: none
 
 environment:
@@ -60,5 +60,5 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-  - assets/images/
-  - assets/images/app-icon.png
+    - assets/images/
+    # - assets/images/app-icon.png # Uncomment this line to include the app icon on iOS
