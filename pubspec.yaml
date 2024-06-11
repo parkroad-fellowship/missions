@@ -21,7 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
-  flutter_bloc: ^8.1.5
+  flutter_bloc: ^8.1.6
   flutter_localizations:
     sdk: flutter
 
