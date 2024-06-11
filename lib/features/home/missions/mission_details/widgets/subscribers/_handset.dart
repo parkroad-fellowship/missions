@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_role.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -95,6 +96,21 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                                       ),
                                     ),
                                   ),
+                                  if (subscription.missionRole !=
+                                      PRFMissionRole.member.apiKey)
+                                    Text(
+                                      PRFMissionRoleExtension.fromIndex(
+                                        subscription.missionRole,
+                                      ).name,
+                                      style: CustomTextTheme.customTextTheme()
+                                          .headlineSmall!
+                                          .copyWith(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.appTheme()
+                                                .kPrimaryColorV2,
+                                          ),
+                                    ),
                                 ],
                               ),
                               Container(
