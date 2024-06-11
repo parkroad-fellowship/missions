@@ -1,6 +1,5 @@
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/prf_class_group.dart';
 import 'package:app/utils/_index.dart';
