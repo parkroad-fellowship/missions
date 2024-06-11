@@ -1,5 +1,7 @@
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_debrief_note/_handset.dart';
@@ -234,6 +236,10 @@ class _MyMissionsDetailsPageHandsetState
                     minDialogWidth: 400,
                     minPageHeight: 0,
                     maxPageHeight: 0.9,
+                  ).then(
+                    (_) => context
+                        .read<GetSoulsCubit>()
+                        .getSouls(missionUlid: mission.ulid),
                   );
                 }
                 if (_currentTab == 3) {
@@ -255,6 +261,10 @@ class _MyMissionsDetailsPageHandsetState
                     minDialogWidth: 400,
                     minPageHeight: 0,
                     maxPageHeight: 0.9,
+                  ).then(
+                    (_) => context
+                        .read<GetDebriefNotesCubit>()
+                        .getDebriefNotes(missionUlid: mission.ulid),
                   );
                 }
               },

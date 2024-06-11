@@ -47,6 +47,7 @@ class HiveServiceImpl implements HiveService {
         .deleteAll(<String>[
       'accessToken',
       'profile',
+      'classGroups',
     ]);
   }
 

@@ -27,12 +27,6 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
   PRFClassGroup? selectedClassGroup;
 
   @override
-  void initState() {
-    context.read<GetClassGroupsCubit>().getClassGroups();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
@@ -132,15 +126,12 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                   setState(() {
                     _isLoading = false;
                   });
+                  Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(l10n.soulRecorded),
                     ),
                   );
-                  Navigator.of(context).pop();
-                  context.read<GetSoulsCubit>().getSouls(
-                        missionUlid: widget.missionUlid,
-                      );
                 },
               );
             },

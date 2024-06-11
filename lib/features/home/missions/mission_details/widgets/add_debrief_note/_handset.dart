@@ -1,6 +1,4 @@
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
@@ -26,7 +24,6 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
 
   @override
   void initState() {
-    context.read<GetClassGroupsCubit>().getClassGroups();
     super.initState();
   }
 
@@ -66,15 +63,12 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                   setState(() {
                     _isLoading = false;
                   });
+                  Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(l10n.noteRecorded),
                     ),
                   );
-                  Navigator.of(context).pop();
-                  context
-                      .read<GetDebriefNotesCubit>()
-                      .getDebriefNotes(missionUlid: widget.missionUlid);
                 },
               );
             },

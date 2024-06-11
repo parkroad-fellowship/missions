@@ -1,9 +1,11 @@
 import 'package:app/features/home/account/account.dart';
+import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/missions.dart';
 import 'package:app/features/home/my_missions/my_missions.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LandingPageHandset extends StatefulWidget {
   const LandingPageHandset({super.key});
@@ -14,6 +16,12 @@ class LandingPageHandset extends StatefulWidget {
 
 class _LandingPageHandsetState extends State<LandingPageHandset> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    context.read<GetClassGroupsCubit>().getClassGroups();
+    super.initState();
+  }
 
   final List<Widget> _pages = const [
     MissionsPage(),
