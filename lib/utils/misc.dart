@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/versioning/build_version.dart';
@@ -47,5 +48,10 @@ class Misc {
                 PRFMissionSubscriptionStatus.approved.apiKey ||
             mission.loggedInMemberMissionSubscription!.status ==
                 PRFMissionSubscriptionStatus.pending.apiKey);
+  }
+
+  static bool canSubscribeToMission(PRFMission mission) {
+    return mission.status == PRFMissionStatus.approved.apiKey &&
+        mission.capacity > mission.missionSubscriptionsNeeded;
   }
 }

@@ -1,5 +1,4 @@
 import 'package:app/enums/prf_mission_status.dart';
-import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
@@ -102,7 +101,8 @@ class _MyMissionsDetailsPageHandsetState
                             mission.status,
                           ) ==
                           PRFMissionStatus.approved &&
-                      !Misc.memberHasSubscribed(mission))
+                      !Misc.memberHasSubscribed(mission) &&
+                      Misc.canSubscribeToMission(mission))
                     SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.05,
                       width: MediaQuery.sizeOf(context).height * 0.2,
@@ -133,7 +133,6 @@ class _MyMissionsDetailsPageHandsetState
                                       .read<GetSubscribersCubit>()
                                       .getSubscriptions(
                                         missionUlid: mission.ulid,
-                                   
                                       ),
                                 ),
                             style: ElevatedButton.styleFrom(
@@ -215,7 +214,6 @@ class _MyMissionsDetailsPageHandsetState
                                       .read<GetSubscribersCubit>()
                                       .getSubscriptions(
                                         missionUlid: mission.ulid,
-                                    
                                       ),
                                 ),
                             style: ElevatedButton.styleFrom(

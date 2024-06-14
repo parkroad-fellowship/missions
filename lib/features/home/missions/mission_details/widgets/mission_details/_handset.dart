@@ -45,6 +45,16 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
           const Divider(),
           ListTile(
             contentPadding: EdgeInsets.zero,
+            title: Text(l10n.missionariesRequested(mission.capacity)),
+            subtitle: Text(
+              l10n.missionariesNeeded(
+                mission.missionSubscriptionsNeeded,
+              ),
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
             title: Text(l10n.missionPrepNotes),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

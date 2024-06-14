@@ -9,7 +9,6 @@ part 'prf_mission.g.dart';
 
 @freezed
 class PRFMission with _$PRFMission {
-  
   factory PRFMission(
     String ulid,
     @JsonKey(name: 'start_date') DateTime startDate,
@@ -19,6 +18,8 @@ class PRFMission with _$PRFMission {
     int capacity,
     @JsonKey(name: 'mission_prep_notes') String missionPrepNotes,
     int status,
+    @JsonKey(name: 'mission_subscriptions_needed')
+    int missionSubscriptionsNeeded,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     @JsonKey(name: 'logged_in_member_mission_subscription')
