@@ -1,3 +1,4 @@
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_debrief_note.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
@@ -23,6 +24,8 @@ class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
       final debriefNotes =
           await _debriefService.getDebriefNotes(missionUlid: missionUlid);
       emit(GetDebriefNotesState.loaded(debriefNotes: debriefNotes));
+    } on Failure catch (e) {
+      emit(GetDebriefNotesState.error(e.message));
     } catch (e) {
       emit(GetDebriefNotesState.error(e.toString()));
     }

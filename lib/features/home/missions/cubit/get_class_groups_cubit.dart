@@ -1,3 +1,4 @@
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_class_group.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
@@ -38,6 +39,8 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
           classGroups: classGroups,
         ),
       );
+    } on Failure catch (e) {
+      emit(GetClassGroupsState.error(e.message));
     } catch (e) {
       emit(GetClassGroupsState.error(e.toString()));
     }

@@ -1,3 +1,4 @@
+import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/models/prf_mission_type.dart';
 import 'package:app/models/prf_school.dart';
 import 'package:app/models/prf_school_term.dart';
@@ -17,10 +18,12 @@ class PRFMission with _$PRFMission {
     int capacity,
     @JsonKey(name: 'mission_prep_notes') String missionPrepNotes,
     int status,
+    @JsonKey(name: 'mission_subscriptions_needed')
+    int missionSubscriptionsNeeded,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
-    @JsonKey(name: 'logged_in_member_has_subscribed')
-    required bool loggedInMemberHasSubscribed,
+    @JsonKey(name: 'logged_in_member_mission_subscription')
+    PRFMissionSubscription? loggedInMemberMissionSubscription,
     @Default('Open Topic') String? theme,
     PRFSchool? school,
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,

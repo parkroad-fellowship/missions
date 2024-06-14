@@ -8,6 +8,7 @@ import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_past_member_missions_cubit.dart';
 import 'package:app/services/_index.dart';
@@ -52,6 +53,12 @@ class Singletons {
       ),
       BlocProvider<SubscribeCubit>(
         create: (context) => SubscribeCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<WithdrawCubit>(
+        create: (context) => WithdrawCubit(
           missionService: getIt(),
           hiveService: getIt(),
         ),

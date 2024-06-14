@@ -135,5 +135,25 @@
     "noteRecorded": "Note recorded",
     "@noteRecorded": {},
     "contactPersons": "Contact Persons",
-    "@contactPersons": {}
+    "@contactPersons": {},
+    "successfullyWithdrawn": "You have successfully withdrawn from this mission",
+    "@successfullyWithdrawn": {},
+    "withdraw": "Withdraw",
+    "@withdraw": {},
+    "missionariesNeeded": "Missionaries Needed: {missionariesNeeded}",
+    "@missionariesNeeded": {
+        "placeholders": {
+            "missionariesNeeded": {
+                "type": "int"
+            }
+        }
+    },
+    "missionariesRequested": "Missionaries Requested: {missionariesRequested}",
+    "@missionariesRequested": {
+        "placeholders": {
+            "missionariesRequested": {
+                "type": "int"
+            }
+        }
+    }
 }

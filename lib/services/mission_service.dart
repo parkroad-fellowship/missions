@@ -5,6 +5,7 @@ import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/models/prf_mission_subscription_dto.dart';
+import 'package:app/models/prf_mission_subscription_update_dto.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class MissionService {
@@ -20,6 +21,10 @@ abstract class MissionService {
   Future<PRFMissionSubscription> subscribe({
     required PRFMissionSubscriptionDTO subscriptionDTO,
   });
+  Future<PRFMissionSubscription> updateSubscription({
+    required String missionSubscriptionUlid,
+    required PRFMissionSubscriptionUpdateDTO subscriptionDTO,
+  });
 }
 
 class MissionServiceImpl implements MissionService {
@@ -31,7 +36,8 @@ class MissionServiceImpl implements MissionService {
       final res = await _networkUtil.getReq(
         '/missions',
         queryParameters: {
-          'include': 'school,missionType,school.schoolContacts.contactType',
+          'include': 'school,missionType,school.schoolContacts.contactType,'
+              'loggedInMemberMissionSubscription',
           'filter[status_key]': PRFMissionStatus.approved.apiKey,
           'order_by': 'start_date',
           'order_direction': 'asc',
@@ -84,7 +90,29 @@ class MissionServiceImpl implements MissionService {
         queryParameters: {},
       );
 
-      return PRFMissionSubscription.fromJson(res);
+      return PRFMissionSubscription.fromJson(
+        res['data'] as Map<String, dynamic>,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PRFMissionSubscription> updateSubscription({
+    required String missionSubscriptionUlid,
+    required PRFMissionSubscriptionUpdateDTO subscriptionDTO,
+  }) async {
+    try {
+      final res = await _networkUtil.putReq(
+        '/mission-subscriptions/$missionSubscriptionUlid',
+        body: json.encode(subscriptionDTO.toJson()),
+        queryParameters: {},
+      );
+
+      return PRFMissionSubscription.fromJson(
+        res['data'] as Map<String, dynamic>,
+      );
     } catch (e) {
       rethrow;
     }

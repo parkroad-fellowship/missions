@@ -1,3 +1,4 @@
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_debrief_note.dart';
 import 'package:app/models/prf_debrief_note_dto.dart';
 import 'package:app/services/_index.dart';
@@ -29,6 +30,8 @@ class AddDebriefNoteCubit extends Cubit<AddDebriefNoteState> {
         ),
       );
       emit(AddDebriefNoteState.loaded(debriefNote: debriefNote));
+    } on Failure catch (e) {
+      emit(AddDebriefNoteState.error(e.message));
     } catch (e) {
       emit(AddDebriefNoteState.error(e.toString()));
     }

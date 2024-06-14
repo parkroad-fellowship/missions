@@ -95,6 +95,14 @@ class NetworkUtil {
         );
       }
 
+      if (err.response?.statusCode == 500) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
       if (DioExceptionType.unknown == err.type) {
         _logger
           ..d('Error: $err')
@@ -163,6 +171,14 @@ class NetworkUtil {
         );
       }
 
+      if (err.response?.statusCode == 500) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
       if (DioExceptionType.unknown == err.type) {
         _logger
           ..d('Error: $err')
@@ -219,6 +235,22 @@ class NetworkUtil {
       if (err.response?.statusCode == 404) {
         throw Failure(
           message: 'Not found',
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (err.response?.statusCode == 422) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (err.response?.statusCode == 500) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
           statusCode: err.response?.statusCode,
         );
       }
@@ -284,6 +316,22 @@ class NetworkUtil {
       if (err.response?.statusCode == 404) {
         throw Failure(
           message: 'Not found',
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (err.response?.statusCode == 422) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (err.response?.statusCode == 500) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
           statusCode: err.response?.statusCode,
         );
       }
