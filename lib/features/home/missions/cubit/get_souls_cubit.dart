@@ -1,3 +1,4 @@
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_soul.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
@@ -22,6 +23,8 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
     try {
       final souls = await _soulService.getSouls(missionUlid: missionUlid);
       emit(GetSoulsState.loaded(souls: souls));
+    } on Failure catch (e) {
+      emit(GetSoulsState.error(e.message));
     } catch (e) {
       emit(GetSoulsState.error(e.toString()));
     }

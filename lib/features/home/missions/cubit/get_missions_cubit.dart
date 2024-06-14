@@ -1,3 +1,4 @@
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/mission_service.dart';
@@ -25,6 +26,8 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
           missions: missions,
         ),
       );
+    } on Failure catch (e) {
+      emit(GetMissionsState.error(e.message));
     } catch (e) {
       emit(GetMissionsState.error(e.toString()));
     }

@@ -1,4 +1,5 @@
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/mission_service.dart';
@@ -32,6 +33,8 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
           subscriptions: missionSubscriptions,
         ),
       );
+    } on Failure catch (e) {
+      emit(GetSubscribersState.error(e.message));
     } catch (e) {
       emit(GetSubscribersState.error(e.toString()));
     }

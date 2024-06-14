@@ -1,3 +1,4 @@
+import 'package:app/models/failure.dart';
 import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
@@ -33,6 +34,8 @@ class GetPastMemberMissionsCubit extends Cubit<GetPastMemberMissionsState> {
           missionSubscriptions: missionSubscriptions,
         ),
       );
+    } on Failure catch (e) {
+      emit(GetPastMemberMissionsState.error(e.message));
     } catch (e) {
       emit(GetPastMemberMissionsState.error(e.toString()));
     }
