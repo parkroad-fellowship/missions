@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/models/prf_mission.dart';
 import 'package:app/versioning/build_version.dart';
 import 'package:intl/intl.dart';
 import 'package:slugify/slugify.dart' as slugify;
@@ -37,5 +39,13 @@ class Misc {
 
   static String getSluggedAppVersion() {
     return slugify.slugify(getAppVersion());
+  }
+
+  static bool memberHasSubscribed(PRFMission mission) {
+    return mission.loggedInMemberMissionSubscription != null &&
+        (mission.loggedInMemberMissionSubscription!.status ==
+                PRFMissionSubscriptionStatus.approved.apiKey ||
+            mission.loggedInMemberMissionSubscription!.status ==
+                PRFMissionSubscriptionStatus.pending.apiKey);
   }
 }

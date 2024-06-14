@@ -135,5 +135,9 @@
     "noteRecorded": "Note recorded",
     "@noteRecorded": {},
     "contactPersons": "Contact Persons",
-    "@contactPersons": {}
+    "@contactPersons": {},
+    "successfullyWithdrawn": "You have successfully withdrawn from this mission",
+    "@successfullyWithdrawn": {},
+    "withdraw": "Withdraw",
+    "@withdraw": {}
 }

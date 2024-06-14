@@ -1,3 +1,4 @@
+import 'package:app/models/prf_mission_subscription.dart';
 import 'package:app/models/prf_mission_type.dart';
 import 'package:app/models/prf_school.dart';
 import 'package:app/models/prf_school_term.dart';
@@ -8,6 +9,7 @@ part 'prf_mission.g.dart';
 
 @freezed
 class PRFMission with _$PRFMission {
+  
   factory PRFMission(
     String ulid,
     @JsonKey(name: 'start_date') DateTime startDate,
@@ -19,8 +21,8 @@ class PRFMission with _$PRFMission {
     int status,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
-    @JsonKey(name: 'logged_in_member_has_subscribed')
-    required bool loggedInMemberHasSubscribed,
+    @JsonKey(name: 'logged_in_member_mission_subscription')
+    PRFMissionSubscription? loggedInMemberMissionSubscription,
     @Default('Open Topic') String? theme,
     PRFSchool? school,
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,

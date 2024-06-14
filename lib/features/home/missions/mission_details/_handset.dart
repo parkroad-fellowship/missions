@@ -4,6 +4,7 @@ import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_debrief_note/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
@@ -102,7 +103,7 @@ class _MissionsDetailsPageHandsetState
                             mission.status,
                           ) ==
                           PRFMissionStatus.approved &&
-                      !mission.loggedInMemberHasSubscribed)
+                      !Misc.memberHasSubscribed(mission))
                     SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.05,
                       width: MediaQuery.sizeOf(context).height * 0.2,
@@ -133,9 +134,6 @@ class _MissionsDetailsPageHandsetState
                                       .read<GetSubscribersCubit>()
                                       .getSubscriptions(
                                         missionUlid: mission.ulid,
-                                        subscriptionStatus:
-                                            PRFMissionSubscriptionStatus
-                                                .pending,
                                       ),
                                 ),
                             style: ElevatedButton.styleFrom(
@@ -161,6 +159,87 @@ class _MissionsDetailsPageHandsetState
                                 state.maybeWhen(
                                   orElse: () => Icon(
                                     Icons.hail_rounded,
+                                    size: 16,
+                                    color: AppTheme.appTheme().kBackgroundColor,
+                                  ),
+                                  loading: () => const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  if (PRFMissionStatusExtension.fromIndex(
+                            mission.status,
+                          ) ==
+                          PRFMissionStatus.approved &&
+                      Misc.memberHasSubscribed(mission))
+                    SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.05,
+                      width: MediaQuery.sizeOf(context).height * 0.2,
+                      child: BlocConsumer<WithdrawCubit, WithdrawState>(
+                        listener: (context, state) {
+                          state.mapOrNull(
+                            loaded: (_) {
+                              ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                                SnackBar(
+                                  content: Text(l10n.successfullyWithdrawn),
+                                ),
+                              );
+                            },
+                            error: (error) {
+                              ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                                SnackBar(content: Text(error.message)),
+                              );
+                            },
+                          );
+                        },
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed: () async => context
+                                .read<WithdrawCubit>()
+                                .withdraw(
+                                  missionUlid: mission.ulid,
+                                  missionSubscriptionUlid: mission
+                                      .loggedInMemberMissionSubscription!.ulid,
+                                )
+                                .then(
+                                  (_) => context
+                                      .read<GetSubscribersCubit>()
+                                      .getSubscriptions(
+                                        missionUlid: mission.ulid,
+                                      ),
+                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  AppTheme.appTheme().kPrimaryColorV2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  l10n.withdraw,
+                                  style: CustomTextTheme.customTextTheme()
+                                      .displayLarge!
+                                      .copyWith(
+                                        color: AppTheme.appTheme()
+                                            .kBackgroundColor,
+                                        fontSize: 14,
+                                      ),
+                                ),
+                                state.maybeWhen(
+                                  orElse: () => Icon(
+                                    Icons.exposure_neg_1_outlined,
                                     size: 16,
                                     color: AppTheme.appTheme().kBackgroundColor,
                                   ),

@@ -19,13 +19,12 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
 
   Future<void> getSubscriptions({
     required String missionUlid,
-    PRFMissionSubscriptionStatus? subscriptionStatus,
   }) async {
     emit(const GetSubscribersState.loading());
     try {
       final missionSubscriptions = await _missionService.getSubscriptions(
         missionUlid: missionUlid,
-        subscriptionStatus: subscriptionStatus,
+        subscriptionStatus: PRFMissionSubscriptionStatus.approved,
         includes: 'member',
       );
       emit(
