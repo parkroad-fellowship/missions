@@ -84,7 +84,8 @@ class MissionServiceImpl implements MissionService {
         queryParameters: {},
       );
 
-      return PRFMissionSubscription.fromJson(res);
+      return PRFMissionSubscription.fromJson(
+          res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
