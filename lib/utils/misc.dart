@@ -52,6 +52,6 @@ class Misc {
 
   static bool canSubscribeToMission(PRFMission mission) {
     return mission.status == PRFMissionStatus.approved.apiKey &&
-        mission.capacity > mission.missionSubscriptionsNeeded;
+        mission.missionSubscriptionsNeeded > 0;
   }
 }
