@@ -41,7 +41,6 @@ class MissionServiceImpl implements MissionService {
           'filter[status_key]': PRFMissionStatus.approved.apiKey,
           'order_by': 'start_date',
           'order_direction': 'asc',
-          'limit': 1,
         },
       );
 
