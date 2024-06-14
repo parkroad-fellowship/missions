@@ -81,23 +81,6 @@ class _MissionsDetailsPageHandsetState
               alignment: Alignment.centerLeft,
               child: Row(
                 children: [
-                  Chip(
-                    label: Text(
-                      PRFMissionStatusExtension.fromIndex(
-                        mission.status,
-                      ).name,
-                      style:
-                          CustomTextTheme.customTextTheme().bodySmall?.copyWith(
-                                color: Colors.white,
-                              ),
-                    ),
-                    backgroundColor: PRFMissionStatusExtension.switchColor(
-                      PRFMissionStatusExtension.fromIndex(
-                        mission.status,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
                   if (PRFMissionStatusExtension.fromIndex(
                             mission.status,
                           ) ==
