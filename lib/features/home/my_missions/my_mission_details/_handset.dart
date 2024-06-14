@@ -163,8 +163,13 @@ class _MyMissionsDetailsPageHandsetState
                                     size: 16,
                                     color: AppTheme.appTheme().kBackgroundColor,
                                   ),
-                                  loading: () =>
-                                      const CircularProgressIndicator(),
+                                  loading: () => const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
