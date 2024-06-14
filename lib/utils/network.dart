@@ -239,8 +239,7 @@ class NetworkUtil {
         );
       }
 
-
-if (err.response?.statusCode == 422) {
+      if (err.response?.statusCode == 422) {
         throw Failure(
           // ignore: avoid_dynamic_calls
           message: err.response?.data['message'] as String,
