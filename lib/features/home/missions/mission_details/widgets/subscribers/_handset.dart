@@ -19,10 +19,9 @@ class SubscribersViewHandset extends StatefulWidget {
 class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
   @override
   void initState() {
-    context.read<GetSubscribersCubit>().getSubscriptions(
-          missionUlid: widget.missionUlid,
-          // subscriptionStatus: PRFMissionSubscriptionStatus.pending,
-        );
+    context
+        .read<GetSubscribersCubit>()
+        .getSubscriptions(missionUlid: widget.missionUlid);
 
     super.initState();
   }
