@@ -1,4 +1,4 @@
-enum PRFMissionRole { member, leader, assistant }
+enum PRFMissionRole { member, leader, assistant, discipleshipTrainer }
 
 extension PRFMissionRoleExtension on PRFMissionRole {
   String get name {
@@ -9,6 +9,8 @@ extension PRFMissionRoleExtension on PRFMissionRole {
         return 'Mission Leader';
       case PRFMissionRole.assistant:
         return 'Assistant Mission Leader';
+      case PRFMissionRole.discipleshipTrainer:
+        return 'Discipleship Trainer';
     }
   }
 
@@ -20,6 +22,8 @@ extension PRFMissionRoleExtension on PRFMissionRole {
         return PRFMissionRole.leader;
       case 3:
         return PRFMissionRole.assistant;
+      case 4:
+        return PRFMissionRole.discipleshipTrainer;
       default:
         return PRFMissionRole.member;
     }
@@ -33,6 +37,8 @@ extension PRFMissionRoleExtension on PRFMissionRole {
         return 2;
       case PRFMissionRole.assistant:
         return 3;
+      case PRFMissionRole.discipleshipTrainer:
+        return 4;
     }
   }
 }
