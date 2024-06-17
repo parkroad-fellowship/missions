@@ -1,4 +1,4 @@
-name: Build production APK
+name: Release to production
 
 on:
   pull_request:
@@ -32,25 +32,25 @@ jobs:
       - name: 🕵️ Analyze
         run: flutter analyze lib
 
-      # - name: ⚙️ Download Android keystore
-      #   id: android_keystore
-      #   uses: timheuer/base64-to-file@v1.2
-      #   with:
-      #     fileName: key.jks
-      #     encodedString: ${{ secrets.RELEASE_KEYSTORE }}
+      - name: ⚙️ Download Android keystore
+        id: android_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: key.jks
+          encodedString: ${{ secrets.RELEASE_KEYSTORE }}
 
-      # - name: Create key.properties
-      #   run: |
-      #     echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-      #     echo "storePassword=${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" >> android/key.properties
-      #     echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
-      #     echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
+      - name: 🔐 Create key.properties
+        run: |
+          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+          echo "storePassword=${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
-      # - name: ⚙️ Build AAB
-      #   run: flutter build appbundle  --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
+      - name: ⚙️ Build AAB
+        run: flutter build appbundle  --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
 
-      - name: ⚙️ Build APK
-        run: flutter build apk --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
+      # - name: ⚙️ Build APK
+      #   run: flutter build apk --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
 
       # - name: Upload debug symbols to GitHub Artifacts
       #   uses: actions/upload-artifact@v4
@@ -58,22 +58,22 @@ jobs:
       #     name: debug-symbols-production-aab
       #     path: debug-symbols
 
-      # - name: ⚙️ Setup Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: "3.0"
-      #     bundler-cache: true
+      - name: ⚙️ Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.0"
+          bundler-cache: true
 
-      # - name: ⚙️ Download bundle dependencies
-      #   run: |
-      #     gem install bundler:2.0.2
-      #     bundle install
+      - name: ⚙️ Download bundle dependencies
+        run: |
+          gem install bundler:2.0.2
+          bundle install
 
-      # - name: 🚀 Release to Google Play (Production)
-      #   env:
-      #     SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
-      #     SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
-      #   run: |
-      #     bundle exec fastlane supply \
-      #     --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
-      #     --track production
+      - name: 🚀 Release to Google Play (Production)
+        env:
+          SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
+        run: |
+          bundle exec fastlane supply \
+          --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
+          --track production
