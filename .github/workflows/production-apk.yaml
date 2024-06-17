@@ -55,6 +55,6 @@ jobs:
           with:
             appId: ${{ secrets.FIREBASE_PROD_APP_ID }}
             serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-            groups: internal-production
+            groups: dev-team
             file: build/app/outputs/flutter-apk/app-production-release.apk
 
