@@ -177,5 +177,7 @@
                 "type": "double"
             }
         }
-    }
+    },
+    "modules": "Modules",
+    "@modules": {}
 }

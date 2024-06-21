@@ -121,6 +121,7 @@ class Singletons {
       BlocProvider<GetCourseModulesCubit>(
         create: (context) => GetCourseModulesCubit(
           lmsService: getIt(),
+          localDBService: getIt(),
         ),
       ),
     ];
