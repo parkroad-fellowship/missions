@@ -2,6 +2,8 @@ import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/router.gr.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 class ModuleDetailsPageHandset extends StatefulWidget {
@@ -101,9 +103,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       minLeadingWidth: 10.5,
                       contentPadding: const EdgeInsets.only(left: 20),
                       visualDensity: VisualDensity.compact,
-                      // onTap: () => context.router.push(
-                      //   ModuleDetailsRoute(module: module),
-                      // ),
+                      onTap: () => context.router.push(
+                        LessonDetailsRoute(lesson: lesson),
+                      ),
                       title: Text(
                         PRFCompletionStatusExtension.fromIndex(
                           lesson.lessonMember?.completionStatus ?? 0,

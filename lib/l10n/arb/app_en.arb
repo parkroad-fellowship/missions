@@ -183,5 +183,15 @@
     "moduleDetails": "Module Details",
     "@moduleDetails": {},
     "lessons": "Lessons",
-    "@lessons": {}
+    "@lessons": {},
+    "lessonDetails": "Lesson Details",
+    "@lessonDetails": {},
+    "content": "Content",
+    "@content": {},
+    "video": "Video (Tap to play)",
+    "@video": {},
+    "document": "Document (Tap to view)",
+    "@document": {},
+    "audio": "Audio (Tap to play)",
+    "@audio": {}
 }
