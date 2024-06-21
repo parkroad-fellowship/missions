@@ -155,5 +155,7 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "learn": "Learn",
+    "@learn": {}
 }

@@ -1,4 +1,5 @@
 import 'package:app/features/home/account/account.dart';
+import 'package:app/features/home/lms/lms.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/missions.dart';
 import 'package:app/features/home/my_missions/my_missions.dart';
@@ -26,6 +27,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
   final List<Widget> _pages = const [
     MissionsPage(),
     MyMissionsPage(),
+    LMSPage(),
     AccountPage(),
   ];
 
@@ -86,8 +88,24 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                   height: 25,
                   width: 25,
                   child: Icon(
-                    Icons.person,
+                    Icons.menu_book_rounded,
                     color: _currentIndex == 2
+                        ? AppTheme.appTheme().kPrimaryColorV2
+                        : AppTheme.appTheme().kDullGreyColor,
+                  ),
+                ),
+              ),
+              label: l10n.learn,
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: Icon(
+                    Icons.person,
+                    color: _currentIndex == 3
                         ? AppTheme.appTheme().kPrimaryColorV2
                         : AppTheme.appTheme().kDullGreyColor,
                   ),
