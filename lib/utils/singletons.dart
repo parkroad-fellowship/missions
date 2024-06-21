@@ -16,19 +16,26 @@ import 'package:app/features/home/my_missions/cubit/get_past_member_missions_cub
 import 'package:app/services/_index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:isar/isar.dart';
 
 final getIt = GetIt.instance;
+late Isar prfDBInstance;
 
 class Singletons {
   static void setup() {
     getIt
       ..registerSingleton<HiveService>(HiveServiceImpl())
+      ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
       ..registerSingleton<AuthService>(AuthServiceImpl())
       ..registerSingleton<MissionService>(MissionServiceImpl())
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
       ..registerSingleton<DebriefService>(DebriefServiceImpl())
       ..registerSingleton<LMSService>(LMSServiceImpl());
+  }
+
+  static Future<void> setupDatabase() async {
+    prfDBInstance = await getIt<LocalDBService>().initDatabase();
   }
 
   static List<BlocProvider> registerCubits() {
@@ -108,6 +115,7 @@ class Singletons {
       BlocProvider<GetCoursesCubit>(
         create: (context) => GetCoursesCubit(
           lmsService: getIt(),
+          localDBService: getIt(),
         ),
       ),
       BlocProvider<GetCourseModulesCubit>(

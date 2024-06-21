@@ -17,6 +17,7 @@ Future<void> main() async {
   );
 
   Singletons.setup();
+  await Singletons.setupDatabase();
 
   await bootstrap(
     () => MultiBlocProvider(
