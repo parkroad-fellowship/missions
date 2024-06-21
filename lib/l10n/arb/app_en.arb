@@ -179,5 +179,9 @@
         }
     },
     "modules": "Modules",
-    "@modules": {}
+    "@modules": {},
+    "moduleDetails": "Module Details",
+    "@moduleDetails": {},
+    "lessons": "Lessons",
+    "@lessons": {}
 }

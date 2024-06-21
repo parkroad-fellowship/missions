@@ -150,6 +150,79 @@ class LocalDBServiceImpl implements LocalDBService {
                           courseModule.module!.memberModule!.completedAt,
                     )
                   : null,
+              lessonModules: courseModule.module!.lessonModules
+                  ?.map(
+                    (lessonModule) => PRFLocalLessonModule(
+                      ulid: lessonModule.ulid,
+                      order: lessonModule.order,
+                      createdAt: lessonModule.createdAt,
+                      updatedAt: lessonModule.updatedAt,
+                      lesson: PRFLocalLesson(
+                        ulid: lessonModule.lesson!.ulid,
+                        name: lessonModule.lesson!.name,
+                        slug: lessonModule.lesson!.slug,
+                        description: lessonModule.lesson!.description,
+                        type: lessonModule.lesson!.type,
+                        isActive: lessonModule.lesson!.isActive,
+                        createdAt: lessonModule.lesson!.createdAt,
+                        updatedAt: lessonModule.lesson!.updatedAt,
+                        content: lessonModule.lesson!.content,
+                        videoUrl: lessonModule.lesson!.videoUrl,
+                        audioUrl: lessonModule.lesson!.audioUrl,
+                        documentUrl: lessonModule.lesson!.documentUrl,
+                        deletedAt: lessonModule.lesson!.deletedAt,
+                        audios: lessonModule.lesson!.audios
+                            ?.map(
+                              (audio) => PRFLocalMedia(
+                                collectionName: audio.collectionName,
+                                fileName: audio.fileName,
+                                publicURL: audio.publicURL,
+                                publicFullURL: audio.publicFullURL,
+                                size: audio.size,
+                                humanReadableSize: audio.humanReadableSize,
+                                mimeType: audio.mimeType,
+                                name: audio.name,
+                                createdAt: audio.createdAt,
+                                updatedAt: audio.updatedAt,
+                              ),
+                            )
+                            .toList(),
+                        documents: lessonModule.lesson!.documents
+                            ?.map(
+                              (document) => PRFLocalMedia(
+                                collectionName: document.collectionName,
+                                fileName: document.fileName,
+                                publicURL: document.publicURL,
+                                publicFullURL: document.publicFullURL,
+                                size: document.size,
+                                humanReadableSize: document.humanReadableSize,
+                                mimeType: document.mimeType,
+                                name: document.name,
+                                createdAt: document.createdAt,
+                                updatedAt: document.updatedAt,
+                              ),
+                            )
+                            .toList(),
+                        videos: lessonModule.lesson!.videos
+                            ?.map(
+                              (video) => PRFLocalMedia(
+                                collectionName: video.collectionName,
+                                fileName: video.fileName,
+                                publicURL: video.publicURL,
+                                publicFullURL: video.publicFullURL,
+                                size: video.size,
+                                humanReadableSize: video.humanReadableSize,
+                                mimeType: video.mimeType,
+                                name: video.name,
+                                createdAt: video.createdAt,
+                                updatedAt: video.updatedAt,
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         );

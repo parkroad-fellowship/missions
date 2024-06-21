@@ -12,7 +12,7 @@ class PRFLesson with _$PRFLesson {
     String name,
     String slug,
     String description,
-    String type,
+    int type,
     @JsonKey(name: 'is_active') int isActive,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
