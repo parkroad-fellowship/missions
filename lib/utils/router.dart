@@ -13,6 +13,9 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
   static const String missionDetailsRoute = '/mission-details';
   static const String myMissionDetailsRoute = '/my-mission-details';
 
+  // Course Work
+  static const String courseDetailsRoute = '/course-details';
+
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: DecisionRoute.page, path: decisionRoute),
@@ -24,5 +27,6 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
           page: MyMissionsDetailsRoute.page,
           path: myMissionDetailsRoute,
         ),
+        AutoRoute(page: CourseDetailsRoute.page, path: courseDetailsRoute),
       ];
 }

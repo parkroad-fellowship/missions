@@ -165,5 +165,17 @@
                 "type": "double"
             }
         }
+    },
+    "courseDetails": "Course Details",
+    "@courseDetails": {},
+    "description": "Description",
+    "@description": {},
+    "percentage": "{progress}%",
+    "@percentage": {
+        "placeholders": {
+            "progress": {
+                "type": "double"
+            }
+        }
     }
 }

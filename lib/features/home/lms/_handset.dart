@@ -2,6 +2,8 @@ import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/router.gr.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -135,9 +137,9 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                               minLeadingWidth: 10.5,
                               contentPadding: const EdgeInsets.only(left: 20),
                               visualDensity: VisualDensity.compact,
-                              // onTap: () => context.router.push(
-                              //   MissionsDetailsRoute(mission: mission),
-                              // ),
+                              onTap: () => context.router.push(
+                                CourseDetailsRoute(course: course),
+                              ),
                               title: Text(
                                 l10n.progress(
                                   course.courseMember?.percentComplete ?? 0,
