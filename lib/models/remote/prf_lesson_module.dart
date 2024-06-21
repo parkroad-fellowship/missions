@@ -1,0 +1,21 @@
+import 'package:app/models/remote/prf_lesson_member.dart';
+import 'package:app/models/remote/prf_module.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'prf_lesson_module.freezed.dart';
+part 'prf_lesson_module.g.dart';
+
+@freezed
+class PRFLessonModule with _$PRFLessonModule {
+  factory PRFLessonModule(
+    String ulid,
+    int order,
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    PRFModule? module,
+    @JsonKey(name: 'lesson_member') PRFLessonMember? lessonMember,
+  }) = _PRFLessonModule;
+
+  factory PRFLessonModule.fromJson(Map<String, dynamic> json) =>
+      _$PRFLessonModuleFromJson(json);
+}

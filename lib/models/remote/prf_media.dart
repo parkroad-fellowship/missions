@@ -1,0 +1,23 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'prf_media.freezed.dart';
+part 'prf_media.g.dart';
+
+@freezed
+class PRFMedia with _$PRFMedia {
+  factory PRFMedia(
+    @JsonKey(name: 'public_url') String publicURL,
+    @JsonKey(name: 'public_full_url') String publicFullURL,
+    int size,
+    @JsonKey(name: 'human_readable_size') String humanReadableSize,
+    @JsonKey(name: 'mime_type') String mimeType,
+    String name,
+    @JsonKey(name: 'file_name') String fileName,
+    @JsonKey(name: 'collection_name') String collectionName,
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt,
+  ) = _PRFMedia;
+
+  factory PRFMedia.fromJson(Map<String, dynamic> json) =>
+      _$PRFMediaFromJson(json);
+}
