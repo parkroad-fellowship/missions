@@ -32,7 +32,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     Bloc.observer = const AppBlocObserver();
 
     await getIt<HiveService>().initBoxes();
-    
 
     getIt<NotificationService>().init();
 
