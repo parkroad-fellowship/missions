@@ -2,6 +2,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LessonDetailsHandset extends StatefulWidget {
@@ -50,7 +51,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 ],
               ),
             ),
-
+            const Divider(),
             // Lesson content
             if (lesson.content != null)
               ListTile(
@@ -59,7 +60,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(lesson.content!),
+                    HtmlWidget(lesson.content!),
                   ],
                 ),
               ),
@@ -86,8 +87,8 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 },
               ),
 
-              // Lesson document
-              if (lesson.documentUrl != null)
+            // Lesson document
+            if (lesson.documentUrl != null)
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(l10n.document),
@@ -129,6 +130,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   }
                 },
               ),
+            const Divider(),
           ],
         ),
       ),

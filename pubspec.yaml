@@ -26,6 +26,7 @@ dependencies:
     sdk: flutter
 
   flutter_svg: ^2.0.10+1
+  flutter_widget_from_html: ^0.15.1
   freezed_annotation: ^2.4.1
   get_it: ^7.7.0
   google_fonts: ^6.2.1
