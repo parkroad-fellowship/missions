@@ -38,133 +38,142 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
-          builder: (context, state) => state.maybeWhen(
-            orElse: () => const Center(child: CircularProgressIndicator()),
-            error: (message) => Center(child: Text(message)),
-            loaded: () => StreamBuilder(
-              stream: getIt<LocalDBService>().getCourses(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              BlocBuilder<GetCoursesCubit, GetCoursesState>(
+                builder: (context, state) => state.maybeWhen(
+                  orElse: () => const Center(child: LinearProgressIndicator()),
+                  error: (message) => Center(child: Text(message)),
+                  loaded: SizedBox.shrink,
+                ),
+              ),
+              StreamBuilder(
+                stream: getIt<LocalDBService>().getCourses(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                final courses = snapshot.data;
+                  final courses = snapshot.data;
 
-                if (courses != null && courses.isEmpty) {
-                  return RefreshIndicator(
-                    onRefresh: () =>
-                        context.read<GetCoursesCubit>().getCourses(),
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        const Icon(
-                          Icons.directions_walk,
-                        ),
-                        Center(
-                          child: Text(
-                            l10n.noMissions,
-                            style: CustomTextTheme.customTextTheme()
-                                .headlineMedium!
-                                .copyWith(
-                                  color: AppTheme.appTheme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.05,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                l10n.pleaseWait,
-                                style: CustomTextTheme.customTextTheme()
-                                    .displayLarge!
-                                    .copyWith(
-                                      color:
-                                          AppTheme.appTheme().kPrimaryColorV2,
-                                      fontSize: 14,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                  );
-                }
-
-                return RefreshIndicator(
-                  onRefresh: () => context.read<GetCoursesCubit>().getCourses(),
-                  child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: courses!.length,
-                    itemBuilder: (context, index) {
-                      final course = courses[index];
-                      return ExpansionTile(
-                        initiallyExpanded: true,
-                        trailing: Icon(
-                          Icons.keyboard_arrow_right,
-                          color: AppTheme.appTheme().kDullGreyColor,
-                          size: 24,
-                        ),
-                        title: Text(
-                          course.name.toUpperCase(),
-                          style: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
-                                color:
-                                    AppTheme.appTheme().kAccent2BackgroundColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
+                  if (courses != null && courses.isEmpty) {
+                    return RefreshIndicator(
+                      onRefresh: () =>
+                          context.read<GetCoursesCubit>().getCourses(),
+                      child: Column(
                         children: [
-                          ListTile(
-                            dense: true,
-                            minLeadingWidth: 10.5,
-                            contentPadding: const EdgeInsets.only(left: 20),
-                            visualDensity: VisualDensity.compact,
-                            // onTap: () => context.router.push(
-                            //   MissionsDetailsRoute(mission: mission),
-                            // ),
-                            title: Text(
-                              l10n.progress(
-                                course.courseMember?.percentComplete ?? 0,
-                              ),
+                          const Spacer(),
+                          const Icon(
+                            Icons.directions_walk,
+                          ),
+                          Center(
+                            child: Text(
+                              l10n.noMissions,
                               style: CustomTextTheme.customTextTheme()
                                   .headlineMedium!
                                   .copyWith(
-                                    color: Colors.black,
+                                    color: AppTheme.appTheme().kDullGreyColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 15,
                                   ),
                             ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.05,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  course.description,
+                                  l10n.pleaseWait,
                                   style: CustomTextTheme.customTextTheme()
-                                      .bodySmall!
+                                      .displayLarge!
                                       .copyWith(
-                                        color: Colors.black,
+                                        color:
+                                            AppTheme.appTheme().kPrimaryColorV2,
                                         fontSize: 14,
                                       ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 5),
+                          const Spacer(),
                         ],
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                      ),
+                    );
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: () =>
+                        context.read<GetCoursesCubit>().getCourses(),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: courses!.length,
+                      itemBuilder: (context, index) {
+                        final course = courses[index];
+                        return ExpansionTile(
+                          initiallyExpanded: true,
+                          trailing: Icon(
+                            Icons.keyboard_arrow_right,
+                            color: AppTheme.appTheme().kDullGreyColor,
+                            size: 24,
+                          ),
+                          title: Text(
+                            course.name.toUpperCase(),
+                            style: CustomTextTheme.customTextTheme()
+                                .headlineSmall!
+                                .copyWith(
+                                  color: AppTheme.appTheme()
+                                      .kAccent2BackgroundColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                          children: [
+                            ListTile(
+                              dense: true,
+                              minLeadingWidth: 10.5,
+                              contentPadding: const EdgeInsets.only(left: 20),
+                              visualDensity: VisualDensity.compact,
+                              // onTap: () => context.router.push(
+                              //   MissionsDetailsRoute(mission: mission),
+                              // ),
+                              title: Text(
+                                l10n.progress(
+                                  course.courseMember?.percentComplete ?? 0,
+                                ),
+                                style: CustomTextTheme.customTextTheme()
+                                    .headlineMedium!
+                                    .copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                    ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    course.description,
+                                    style: CustomTextTheme.customTextTheme()
+                                        .bodySmall!
+                                        .copyWith(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
