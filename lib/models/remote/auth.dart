@@ -1,4 +1,4 @@
-import 'package:app/models/prf_member.dart';
+import 'package:app/models/remote/prf_member.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // Generated model files

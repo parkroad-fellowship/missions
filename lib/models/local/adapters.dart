@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:app/models/auth.dart';
-import 'package:app/models/prf_class_group.dart';
-import 'package:app/models/prf_soul.dart';
+import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/prf_soul.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class PRFUserAdapter extends TypeAdapter<PRFUser> {

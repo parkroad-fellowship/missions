@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/models/auth.dart';
+import 'package:app/models/remote/auth.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class AuthService {

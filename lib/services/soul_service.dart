@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:app/models/prf_class_group.dart';
-import 'package:app/models/prf_soul.dart';
-import 'package:app/models/prf_soul_dto.dart';
+import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/prf_soul.dart';
+import 'package:app/models/remote/prf_soul_dto.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class SoulService {

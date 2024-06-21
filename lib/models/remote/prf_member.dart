@@ -1,8 +1,8 @@
-import 'package:app/models/auth.dart';
-import 'package:app/models/prf_church.dart';
-import 'package:app/models/prf_marital_status.dart';
-import 'package:app/models/prf_mission.dart';
-import 'package:app/models/prf_profession.dart';
+import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/prf_church.dart';
+import 'package:app/models/remote/prf_marital_status.dart';
+import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/models/remote/prf_profession.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_member.freezed.dart';
