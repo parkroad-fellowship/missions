@@ -1,5 +1,4 @@
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/services/_index.dart';
@@ -77,12 +76,11 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.modules.toUpperCase(),
-                style: CustomTextTheme.customTextTheme()
-                    .headlineMedium!
-                    .copyWith(
-                      color: AppTheme.appTheme().kAccent2BackgroundColor,
-                      fontWeight: FontWeight.w600,
-                    ),
+                style:
+                    CustomTextTheme.customTextTheme().headlineMedium!.copyWith(
+                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                          fontWeight: FontWeight.w600,
+                        ),
               ),
             ),
             BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
