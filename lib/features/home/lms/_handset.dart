@@ -130,6 +130,18 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                             // onTap: () => context.router.push(
                             //   MissionsDetailsRoute(mission: mission),
                             // ),
+                            title: Text(
+                              l10n.progress(
+                                course.courseMember?.percentComplete ?? 0,
+                              ),
+                              style: CustomTextTheme.customTextTheme()
+                                  .headlineMedium!
+                                  .copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

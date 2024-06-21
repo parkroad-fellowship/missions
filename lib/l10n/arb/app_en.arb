@@ -157,5 +157,13 @@
         }
     },
     "learn": "Learn",
-    "@learn": {}
+    "@learn": {},
+    "progress": "Progress: {progress}%",
+    "@progress": {
+        "placeholders": {
+            "progress": {
+                "type": "double"
+            }
+        }
+    }
 }
