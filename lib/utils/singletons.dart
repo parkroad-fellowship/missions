@@ -1,5 +1,7 @@
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
+import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
+import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
@@ -25,7 +27,8 @@ class Singletons {
       ..registerSingleton<MissionService>(MissionServiceImpl())
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
-      ..registerSingleton<DebriefService>(DebriefServiceImpl());
+      ..registerSingleton<DebriefService>(DebriefServiceImpl())
+      ..registerSingleton<LMSService>(LMSServiceImpl());
   }
 
   static List<BlocProvider> registerCubits() {
@@ -100,6 +103,16 @@ class Singletons {
       BlocProvider<AddDebriefNoteCubit>(
         create: (context) => AddDebriefNoteCubit(
           debriefService: getIt(),
+        ),
+      ),
+      BlocProvider<GetCoursesCubit>(
+        create: (context) => GetCoursesCubit(
+          lmsService: getIt(),
+        ),
+      ),
+      BlocProvider<GetCourseModulesCubit>(
+        create: (context) => GetCourseModulesCubit(
+          lmsService: getIt(),
         ),
       ),
     ];
