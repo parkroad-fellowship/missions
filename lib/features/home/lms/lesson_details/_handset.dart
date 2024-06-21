@@ -1,28 +1,40 @@
+import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LessonDetailsHandset extends StatefulWidget {
   const LessonDetailsHandset({
-    required this.lesson,
+    required this.lessonModule,
+    required this.courseUlid,
+    required this.moduleUlid,
     super.key,
   });
 
-  final PRFLocalLesson lesson;
+  final PRFLocalLessonModule lessonModule;
+  final String courseUlid;
+  final String moduleUlid;
 
   @override
   State<LessonDetailsHandset> createState() => _LessonDetailsHandsetState();
 }
 
 class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
-  PRFLocalLesson get lesson => widget.lesson;
+  PRFLocalLessonModule get lessonModule => widget.lessonModule;
+  String get courseUlid => widget.courseUlid;
+  String get moduleUlid => widget.moduleUlid;
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final lesson = lessonModule.lesson!;
 
     return Scaffold(
       appBar: AppBar(
@@ -131,6 +143,55 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 },
               ),
             const Divider(),
+            const SizedBox(height: 32),
+            BlocConsumer<FinishLessonCubit, FinishLessonState>(
+              listener: (context, state) {
+                state.maybeWhen(
+                  loading: () => setState(() {
+                    _isLoading = !_isLoading;
+                  }),
+                  loaded: () {
+                    setState(() {
+                      _isLoading = !_isLoading;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.completed),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                  error: (message) {
+                    setState(() {
+                      _isLoading = !_isLoading;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(message),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  },
+                  orElse: () {},
+                );
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => PrimaryButton(
+                    onPressed: () async =>
+                        context.read<FinishLessonCubit>().finishLesson(
+                              lessonUlid: lesson.ulid!,
+                              moduleUlid: moduleUlid,
+                              courseUlid: courseUlid,
+                            ),
+                    title: _isLoading ? l10n.completing : l10n.complete,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

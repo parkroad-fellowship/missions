@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 
 class ModuleDetailsPageHandset extends StatefulWidget {
   const ModuleDetailsPageHandset({
-    required this.module,
+    required this.courseModule,
     super.key,
   });
 
-  final PRFLocalModule module;
+  final PRFLocalCourseModule courseModule;
 
   @override
   State<ModuleDetailsPageHandset> createState() =>
@@ -20,11 +20,12 @@ class ModuleDetailsPageHandset extends StatefulWidget {
 }
 
 class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
-  PRFLocalModule get module => widget.module;
+  PRFLocalCourseModule get courseModule => widget.courseModule;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final module = courseModule.module;
 
     return Scaffold(
       appBar: AppBar(
@@ -104,7 +105,11 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       contentPadding: const EdgeInsets.only(left: 20),
                       visualDensity: VisualDensity.compact,
                       onTap: () => context.router.push(
-                        LessonDetailsRoute(lesson: lesson),
+                        LessonDetailsRoute(
+                          lessonModule: module.lessonModules![index],
+                          courseUlid: courseModule.courseUlid,
+                          moduleUlid: courseModule.module.ulid!,
+                        ),
                       ),
                       title: Text(
                         PRFCompletionStatusExtension.fromIndex(

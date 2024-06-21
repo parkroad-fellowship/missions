@@ -1,5 +1,6 @@
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
+import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
@@ -122,6 +123,12 @@ class Singletons {
         create: (context) => GetCourseModulesCubit(
           lmsService: getIt(),
           localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<FinishLessonCubit>(
+        create: (context) => FinishLessonCubit(
+          lmsService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];

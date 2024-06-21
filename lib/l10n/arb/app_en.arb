@@ -193,5 +193,11 @@
     "document": "Document (Tap to view)",
     "@document": {},
     "audio": "Audio (Tap to play)",
-    "@audio": {}
+    "@audio": {},
+    "complete": "Complete",
+    "@complete": {},
+    "completing": "Completing ...",
+    "@completing": {},
+    "completed": "Completed",
+    "@completed": {}
 }

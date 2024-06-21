@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
+import 'package:app/models/remote/prf_lesson_member_dto.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class LMSService {
@@ -9,6 +12,9 @@ abstract class LMSService {
   Future<List<PRFCourseModule>> getCourseModules({
     String? courseUlid,
     String? includes,
+  });
+  Future<void> finishLesson({
+    required PRFLessonMemberDTO lessonMemberDTO,
   });
 }
 
@@ -48,6 +54,20 @@ class LMSServiceImpl implements LMSService {
       );
 
       return PRFCourseModuleResponse.fromJson(res).data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> finishLesson({
+    required PRFLessonMemberDTO lessonMemberDTO,
+  }) async {
+    try {
+      await _networkUtil.postReq(
+        '/lesson-members',
+        body: json.encode(lessonMemberDTO.toJson()),
+      );
     } catch (e) {
       rethrow;
     }

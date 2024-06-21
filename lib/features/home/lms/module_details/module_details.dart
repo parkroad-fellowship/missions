@@ -7,18 +7,20 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 @RoutePage()
 class ModuleDetailsPage extends StatelessWidget {
   const ModuleDetailsPage({
-    required this.module,
+    required this.courseModule,
     super.key,
   });
 
-  final PRFLocalModule module;
+  final PRFLocalCourseModule courseModule;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => ModuleDetailsPageHandset(module: module),
+      defaultBuilder: (_, __) =>
+          ModuleDetailsPageHandset(courseModule: courseModule),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => ModuleDetailsPageHandset(module: module),
+        handset: (_, __) =>
+            ModuleDetailsPageHandset(courseModule: courseModule),
       ),
     );
   }

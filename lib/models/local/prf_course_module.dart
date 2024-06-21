@@ -25,8 +25,6 @@ class PRFLocalCourseModule {
   late PRFLocalModule module;
 }
 
-//     @JsonKey(name: 'lesson_modules') List<PRFLessonModule>? lessonModules,
-
 @embedded
 class PRFLocalModule {
   PRFLocalModule({

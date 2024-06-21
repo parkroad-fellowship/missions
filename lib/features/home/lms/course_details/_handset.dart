@@ -183,7 +183,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                             contentPadding: const EdgeInsets.only(left: 20),
                             visualDensity: VisualDensity.compact,
                             onTap: () => context.router.push(
-                              ModuleDetailsRoute(module: module),
+                              ModuleDetailsRoute(
+                                courseModule: coursesModules[index],
+                              ),
                             ),
                             title: Text(
                               l10n.progress(

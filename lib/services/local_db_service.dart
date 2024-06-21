@@ -113,7 +113,7 @@ class LocalDBServiceImpl implements LocalDBService {
             createdAt: courseModule.createdAt,
             updatedAt: courseModule.updatedAt,
             module: PRFLocalModule(
-              ulid: courseModule.ulid,
+              ulid: courseModule.module!.ulid,
               name: courseModule.module!.name,
               slug: courseModule.module!.slug,
               description: courseModule.module!.description,
