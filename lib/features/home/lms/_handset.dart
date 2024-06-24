@@ -47,7 +47,46 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                 builder: (context, state) => state.maybeWhen(
                   orElse: () => const Center(child: LinearProgressIndicator()),
                   error: (message) => Center(child: Text(message)),
-                  loaded: SizedBox.shrink,
+                  loaded: (isEmpty) => isEmpty
+                      ? Column(
+                          children: [
+                            const Icon(
+                              Icons.timer,
+                            ),
+                            Center(
+                              child: Text(
+                                l10n.noCourses,
+                                style: CustomTextTheme.customTextTheme()
+                                    .headlineMedium!
+                                    .copyWith(
+                                      color: AppTheme.appTheme().kDullGreyColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: MediaQuery.sizeOf(context).height * 0.05,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    l10n.yetToBeEnroled,
+                                    style: CustomTextTheme.customTextTheme()
+                                        .displayLarge!
+                                        .copyWith(
+                                          color: AppTheme.appTheme()
+                                              .kPrimaryColorV2,
+                                          fontSize: 14,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ),
               StreamBuilder(
@@ -60,49 +99,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                   final courses = snapshot.data;
 
                   if (courses != null && courses.isEmpty) {
-                    return RefreshIndicator(
-                      onRefresh: () =>
-                          context.read<GetCoursesCubit>().getCourses(),
-                      child: Column(
-                        children: [
-                          const Spacer(),
-                          const Icon(
-                            Icons.directions_walk,
-                          ),
-                          Center(
-                            child: Text(
-                              l10n.noMissions,
-                              style: CustomTextTheme.customTextTheme()
-                                  .headlineMedium!
-                                  .copyWith(
-                                    color: AppTheme.appTheme().kDullGreyColor,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            height: MediaQuery.sizeOf(context).height * 0.05,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  l10n.pleaseWait,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .displayLarge!
-                                      .copyWith(
-                                        color:
-                                            AppTheme.appTheme().kPrimaryColorV2,
-                                        fontSize: 14,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    );
+                    return const SizedBox.shrink();
                   }
 
                   return RefreshIndicator(

@@ -199,5 +199,9 @@
     "completing": "Completing ...",
     "@completing": {},
     "completed": "Completed",
-    "@completed": {}
+    "@completed": {},
+    "noCourses": "No courses",
+    "@noCourses": {},
+    "yetToBeEnroled": "You are yet to be enroled for a course",
+    "@yetToBeEnroled": {}
 }

@@ -7,8 +7,8 @@ import 'package:app/utils/_index.dart';
 
 abstract class LMSService {
   Future<List<PRFCourse>> getCourses({
+    List<String> groups = const <String>[],
     String? includes,
-    List<String>? groups,
   });
   Future<List<PRFCourseModule>> getCourseModules({
     String? courseUlid,
@@ -24,15 +24,15 @@ class LMSServiceImpl implements LMSService {
 
   @override
   Future<List<PRFCourse>> getCourses({
+    List<String> groups = const <String>[],
     String? includes,
-     List<String>? groups,
   }) async {
     try {
       final res = await _networkUtil.getReq(
         '/courses',
         queryParameters: {
           if (includes != null) 'include': includes,
-          if (groups != null) 'filter[group_ulids]': groups,
+          'filter[group_ulids]': groups.join(','),
         },
       );
 

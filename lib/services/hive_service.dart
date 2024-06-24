@@ -18,6 +18,7 @@ abstract class HiveService {
   void persistProfile(PRFUser profile);
   PRFUser? retrieveProfile();
   PRFMember? retrieveMember();
+  List<String>? retrieveMemberGroupUlids();
 
   void persistClassGroups(PRFClassGroupResponse classGroups);
   List<PRFClassGroup> retrieveClassGroups();
@@ -86,6 +87,15 @@ class HiveServiceImpl implements HiveService {
   @override
   PRFMember? retrieveMember() {
     return retrieveProfile()!.member;
+  }
+
+  @override
+  List<String>? retrieveMemberGroupUlids() {
+    return retrieveMember()!
+            .groupMembers
+            ?.map((groupMember) => groupMember.group!.ulid)
+            .toList() ??
+        [];
   }
 
   @override
