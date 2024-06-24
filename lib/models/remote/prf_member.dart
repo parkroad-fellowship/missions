@@ -1,8 +1,9 @@
-import 'package:app/models/auth.dart';
-import 'package:app/models/prf_church.dart';
-import 'package:app/models/prf_marital_status.dart';
-import 'package:app/models/prf_mission.dart';
-import 'package:app/models/prf_profession.dart';
+import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/prf_church.dart';
+import 'package:app/models/remote/prf_group_member.dart';
+import 'package:app/models/remote/prf_marital_status.dart';
+import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/models/remote/prf_profession.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_member.freezed.dart';
@@ -33,6 +34,7 @@ class PRFMember with _$PRFMember {
     PRFProfession? profession,
     PRFChurch? church,
     List<PRFMission>? missions,
+    @JsonKey(name: 'group_members') List<PRFGroupMember>? groupMembers,
   }) = _PRFMember;
 
   factory PRFMember.fromJson(Map<String, dynamic> json) =>

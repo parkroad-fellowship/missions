@@ -1,7 +1,7 @@
-import 'package:app/models/prf_mission_subscription.dart';
-import 'package:app/models/prf_mission_type.dart';
-import 'package:app/models/prf_school.dart';
-import 'package:app/models/prf_school_term.dart';
+import 'package:app/models/remote/prf_mission_subscription.dart';
+import 'package:app/models/remote/prf_mission_type.dart';
+import 'package:app/models/remote/prf_school.dart';
+import 'package:app/models/remote/prf_school_term.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_mission.freezed.dart';

@@ -155,5 +155,53 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "learn": "Learn",
+    "@learn": {},
+    "progress": "Progress: {progress}%",
+    "@progress": {
+        "placeholders": {
+            "progress": {
+                "type": "double"
+            }
+        }
+    },
+    "courseDetails": "Course Details",
+    "@courseDetails": {},
+    "description": "Description",
+    "@description": {},
+    "percentage": "{progress}%",
+    "@percentage": {
+        "placeholders": {
+            "progress": {
+                "type": "double"
+            }
+        }
+    },
+    "modules": "Modules",
+    "@modules": {},
+    "moduleDetails": "Module Details",
+    "@moduleDetails": {},
+    "lessons": "Lessons",
+    "@lessons": {},
+    "lessonDetails": "Lesson Details",
+    "@lessonDetails": {},
+    "content": "Content",
+    "@content": {},
+    "video": "Video (Tap to play)",
+    "@video": {},
+    "document": "Document (Tap to view)",
+    "@document": {},
+    "audio": "Audio (Tap to play)",
+    "@audio": {},
+    "complete": "Complete",
+    "@complete": {},
+    "completing": "Completing ...",
+    "@completing": {},
+    "completed": "Completed",
+    "@completed": {},
+    "noCourses": "No courses",
+    "@noCourses": {},
+    "yetToBeEnroled": "You are yet to be enroled for a course",
+    "@yetToBeEnroled": {}
 }

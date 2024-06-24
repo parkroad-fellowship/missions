@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
-import 'package:app/models/prf_mission.dart';
+import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/versioning/build_version.dart';
 import 'package:intl/intl.dart';
 import 'package:slugify/slugify.dart' as slugify;

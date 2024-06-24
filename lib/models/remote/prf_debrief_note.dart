@@ -1,4 +1,4 @@
-import 'package:app/models/prf_mission.dart';
+import 'package:app/models/remote/prf_mission.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_debrief_note.freezed.dart';

@@ -1,6 +1,6 @@
 import 'package:app/enums/prf_mission_subscription_status.dart';
-import 'package:app/models/failure.dart';
-import 'package:app/models/prf_mission_subscription.dart';
+import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/mission_service.dart';
 import 'package:bloc/bloc.dart';

@@ -10,13 +10,14 @@ Future<void> main() async {
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
       baseDomain: 'prf.test',
-      hiveBox: 'prf-super-app-dev-----',
+      hiveBox: 'prf-super-app-dev------',
       urlScheme: 'https',
       socketKey: 'yvnlkaqadqiadutrs9sa',
     ),
   );
 
   Singletons.setup();
+  await Singletons.setupDatabase();
 
   await bootstrap(
     () => MultiBlocProvider(

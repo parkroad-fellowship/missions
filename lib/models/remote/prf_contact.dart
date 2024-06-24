@@ -1,4 +1,4 @@
-import 'package:app/models/prf_contact_type.dart';
+import 'package:app/models/remote/prf_contact_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_contact.freezed.dart';

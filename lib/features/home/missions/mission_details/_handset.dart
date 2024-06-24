@@ -11,7 +11,7 @@ import 'package:app/features/home/missions/mission_details/widgets/mission_detai
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/prf_mission.dart';
+import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

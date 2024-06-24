@@ -1,7 +1,7 @@
-import 'package:app/models/failure.dart';
-import 'package:app/models/prf_class_group.dart';
-import 'package:app/models/prf_soul.dart';
-import 'package:app/models/prf_soul_dto.dart';
+import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/prf_soul.dart';
+import 'package:app/models/remote/prf_soul_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

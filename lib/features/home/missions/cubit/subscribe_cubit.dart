@@ -1,6 +1,6 @@
-import 'package:app/models/failure.dart';
-import 'package:app/models/prf_mission_subscription.dart';
-import 'package:app/models/prf_mission_subscription_dto.dart';
+import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/prf_mission_subscription.dart';
+import 'package:app/models/remote/prf_mission_subscription_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

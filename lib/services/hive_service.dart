@@ -1,8 +1,8 @@
-import 'package:app/models/adapters.dart';
-import 'package:app/models/auth.dart';
-import 'package:app/models/prf_class_group.dart';
-import 'package:app/models/prf_member.dart';
-import 'package:app/models/prf_soul.dart';
+import 'package:app/models/local/adapters.dart';
+import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/prf_member.dart';
+import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
@@ -18,6 +18,7 @@ abstract class HiveService {
   void persistProfile(PRFUser profile);
   PRFUser? retrieveProfile();
   PRFMember? retrieveMember();
+  List<String>? retrieveMemberGroupUlids();
 
   void persistClassGroups(PRFClassGroupResponse classGroups);
   List<PRFClassGroup> retrieveClassGroups();
@@ -86,6 +87,15 @@ class HiveServiceImpl implements HiveService {
   @override
   PRFMember? retrieveMember() {
     return retrieveProfile()!.member;
+  }
+
+  @override
+  List<String>? retrieveMemberGroupUlids() {
+    return retrieveMember()!
+            .groupMembers
+            ?.map((groupMember) => groupMember.group!.ulid)
+            .toList() ??
+        [];
   }
 
   @override
