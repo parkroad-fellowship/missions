@@ -50,6 +50,7 @@ class Singletons {
       BlocProvider<SignOutCubit>(
         create: (context) => SignOutCubit(
           hiveService: getIt(),
+          localDBService: getIt(),
         ),
       ),
       BlocProvider<GetMissionsCubit>(
@@ -117,6 +118,7 @@ class Singletons {
         create: (context) => GetCoursesCubit(
           lmsService: getIt(),
           localDBService: getIt(),
+          hiveService: getIt(),
         ),
       ),
       BlocProvider<GetCourseModulesCubit>(

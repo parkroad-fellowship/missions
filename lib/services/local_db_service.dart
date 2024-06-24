@@ -39,7 +39,9 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<void> clearAllTables() async {
-    await prfDBInstance.pRFLocalCourses.buildQuery<dynamic>().deleteAll();
+    await prfDBInstance.writeTxn(() async {
+      await prfDBInstance.clear();
+    });
   }
 
   @override
