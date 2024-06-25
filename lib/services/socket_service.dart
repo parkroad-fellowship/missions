@@ -39,6 +39,8 @@ class SocketServiceImpl implements SocketService {
     required PusherChannelsClient client,
     required String channelName,
   }) {
+    final token = HiveServiceImpl().retrieveToken()!;
+
     return client.privateChannel(
       'private-$channelName',
       authorizationDelegate:
@@ -51,9 +53,8 @@ class SocketServiceImpl implements SocketService {
           Logger().e(exception);
           Logger().e(trace);
         },
-        headers: const {
-          'Authorization':
-              'Bearer 2|A3xCSnIbJtM3DW6Kf4Jch6EyW37XVnPj55I9M8GDe5c48ec4',
+        headers: {
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       ),
