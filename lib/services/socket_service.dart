@@ -1,27 +1,16 @@
+import 'package:app/models/remote/socket_config.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
 
 abstract class SocketService {
-  PusherChannelsClient initClient();
-  Future<void> connectClient({required PusherChannelsClient client});
-  PrivateChannel registerToPrivateChannel({
-    required PusherChannelsClient client,
-    required String channelName,
-  });
-  void bindEventToChannel({
-    required Channel channel,
-    required String eventName,
-  });
-  void subscribeToPrivateChannelsEvent({
-    required PusherChannelsClient client,
-    required List<Channel> channels,
-  });
+  SocketConfig config();
+  Future<void> init();
 }
 
 class SocketServiceImpl implements SocketService {
-  @override
-  PusherChannelsClient initClient() {
+  PusherChannelsClient _initClient() {
     final hostOptions = PusherChannelsOptions.fromHost(
       scheme: PRFSuperAppConfig.instance!.values.socketScheme,
       host: PRFSuperAppConfig.instance!.values.baseDomain,
@@ -42,13 +31,11 @@ class SocketServiceImpl implements SocketService {
     );
   }
 
-  @override
-  Future<void> connectClient({required PusherChannelsClient client}) async {
+  Future<void> _connectClient({required PusherChannelsClient client}) async {
     await client.connect();
   }
 
-  @override
-  PrivateChannel registerToPrivateChannel({
+  PrivateChannel _registerToPrivateChannel({
     required PusherChannelsClient client,
     required String channelName,
   }) {
@@ -73,8 +60,7 @@ class SocketServiceImpl implements SocketService {
     );
   }
 
-  @override
-  void subscribeToPrivateChannelsEvent({
+  void _subscribeToPrivateChannelsEvent({
     required PusherChannelsClient client,
     required List<Channel> channels,
   }) {
@@ -86,15 +72,60 @@ class SocketServiceImpl implements SocketService {
     });
   }
 
-  @override
-  void bindEventToChannel({
+  void _bindEventToChannel({
     required Channel channel,
     required String eventName,
   }) {
-    // Sample listener
+    // Handle data from the socket server here
     channel.bind(eventName).listen((event) {
       Logger().i('Event from the private channel fired!');
       Logger().e(event.data);
     });
+  }
+
+  @override
+  Future<void> init() async {
+    final socketConfig = config();
+    final client = _initClient();
+
+    final configuredChannels = <PrivateChannel>[];
+
+    socketConfig.channels.forEach((channelName, events) {
+      final channel = _registerToPrivateChannel(
+        client: client,
+        channelName: channelName,
+      );
+
+      for (final eventName in events) {
+        _bindEventToChannel(
+          channel: channel,
+          eventName: eventName,
+        );
+      }
+
+      configuredChannels.add(channel);
+    });
+
+    _subscribeToPrivateChannelsEvent(
+      client: client,
+      channels: configuredChannels,
+    );
+
+    await _connectClient(client: client);
+  }
+
+  @override
+  SocketConfig config() {
+    final user = HiveServiceImpl().retrieveProfile()!;
+    // Register all channels and their events here
+    // Assumption here is that there's only one channel for that user
+    // Should more be needed, this function may need adjusting
+    return SocketConfig(
+      channels: <String, List<String>>{
+        'App.Models.User.${user.ulid}': <String>[
+          r'App\Events\CoolBeans',
+        ],
+      },
+    );
   }
 }

@@ -33,31 +33,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<HiveService>().initBoxes();
 
-    // Socket connection
+    final userUlid = getIt<HiveService>().retrieveProfile()?.ulid;
 
-    final client = getIt<SocketService>().initClient();
-
-    final notificationsChannel =
-        getIt<SocketService>().registerToPrivateChannel(
-      client: client,
-      channelName: 'App.Models.User.01j15rmk017dz0z3eapt63p0gp',
-    );
-
-    getIt<SocketService>().bindEventToChannel(
-      channel: notificationsChannel,
-      eventName: r'App\Events\CoolBeans',
-    );
-
-    getIt<SocketService>().subscribeToPrivateChannelsEvent(
-      client: client,
-      channels: [
-        notificationsChannel,
-      ],
-    );
-
-    await getIt<SocketService>().connectClient(client: client);
-
-    // End: Socket Connection
+    if (userUlid != null) {
+      await getIt<SocketService>().init();
+    }
 
     getIt<NotificationService>().init();
 

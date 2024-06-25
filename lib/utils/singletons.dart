@@ -46,6 +46,7 @@ class Singletons {
         create: (context) => SigninCubit(
           authService: getIt(),
           hiveService: getIt(),
+          socketService: getIt(),
         ),
       ),
       BlocProvider<SignOutCubit>(
