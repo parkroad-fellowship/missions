@@ -35,54 +35,31 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<HiveService>().initBoxes();
 
-    final hostOptions = PusherChannelsOptions.fromHost(
-      scheme: 'ws',
-      host: PRFSuperAppConfig.instance!.values.baseDomain,
-      key: PRFSuperAppConfig.instance!.values.socketKey,
-      port: 8080,
-    );
-// prints wss://my.domain.com:443/app/my_key?client=dart&version=0.8.0&protocol=7
+    // Socket connection
+    
+    final client = getIt<SocketService>().initClient();
 
-    Logger().e(hostOptions.uri);
-
-    final client = PusherChannelsClient.websocket(
-      options: hostOptions,
-      connectionErrorHandler: (exception, trace, refresh) {
-        refresh();
-      },
-      activityDurationOverride: const Duration(
-        seconds: 120,
-      ),
+    final notificationsChannel =
+        getIt<SocketService>().registerToPrivateChannel(
+      client: client,
+      channelName: 'App.Models.User.01j15rmk017dz0z3eapt63p0gp',
     );
 
-    final myPrivateChannel = client.privateChannel(
-      'private-App.Models.User.01j15rmk017dz0z3eapt63p0gp',
-      authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate
-              .forPrivateChannel(
-        authorizationEndpoint: Uri.parse(
-          '${PRFSuperAppConfig.instance!.values.urlScheme}://${PRFSuperAppConfig.instance!.values.baseDomain}/broadcasting/auth',
-        ),
-        headers: const {},
-      ),
+    getIt<SocketService>().bindEventToChannel(
+      channel: notificationsChannel,
+      eventName: r'App\Events\CoolBeans',
     );
 
-    final allChannels = <Channel>[
-      myPrivateChannel,
-    ];
+    getIt<SocketService>().subscribeToPrivateChannelsEvent(
+      client: client,
+      channels: [
+        notificationsChannel,
+      ],
+    );
 
-    client.onConnectionEstablished.listen((_) {
-      for (final channel in allChannels) {
-        channel.subscribeIfNotUnsubscribed();
-      }
-    });
+    await getIt<SocketService>().connectClient(client: client);
 
-    myPrivateChannel.bind('CoolBeans').listen((event) {
-      Logger().i('Event from the private channel fired!');
-      Logger().e(event);
-    });
-
-    await client.connect();
+    // End: Socket Connection
 
     getIt<NotificationService>().init();
 

@@ -23,7 +23,7 @@ class NetworkUtil {
     final dio = Dio(
       BaseOptions(
         baseUrl:
-            '${PRFSuperAppConfig.instance!.values.urlScheme}://${PRFSuperAppConfig.instance!.values.baseDomain}/api/v1',
+            '${PRFSuperAppConfig.instance!.values.baseUrl}/api/v1',
         contentType: 'application/json',
         headers: <String, dynamic>{'Accept': 'application/json'},
         connectTimeout: const Duration(seconds: 60 * 1000),

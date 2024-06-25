@@ -13,6 +13,8 @@ Future<void> main() async {
       hiveBox: 'prf-super-app-${Misc.getSluggedAppVersion()}',
       urlScheme: 'https',
       socketKey: '',
+      socketScheme: 'wss',
+      socketPort: 8080,
     ),
   );
 
