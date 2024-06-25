@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:app/enums/prf_event.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -10,6 +13,14 @@ abstract class SocketService {
 }
 
 class SocketServiceImpl implements SocketService {
+  SocketServiceImpl({
+    required LocalDBService localDBService,
+  }) {
+    _localDBService = localDBService;
+  }
+
+  late LocalDBService _localDBService;
+
   PusherChannelsClient _initClient() {
     final hostOptions = PusherChannelsOptions.fromHost(
       scheme: PRFSuperAppConfig.instance!.values.socketScheme,
@@ -79,8 +90,16 @@ class SocketServiceImpl implements SocketService {
   }) {
     // Handle data from the socket server here
     channel.bind(eventName).listen((event) {
-      Logger().i('Event from the private channel fired!');
+      Logger().i('$eventName from the private channel ${channel.name} fired!');
       Logger().e(event.data);
+
+      final data = json.decode(event.data as String) as Map<String, dynamic>;
+
+      switch (PRFEventExtension.fromIndex(data['event'] as int)) {
+        case PRFEvent.coolBeans:
+          Logger().i('Cool beans event fired!');
+          return;
+      }
     });
   }
 

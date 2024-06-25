@@ -33,7 +33,9 @@ class Singletons {
       ..registerSingleton<SoulService>(SoulServiceImpl())
       ..registerSingleton<DebriefService>(DebriefServiceImpl())
       ..registerSingleton<LMSService>(LMSServiceImpl())
-      ..registerSingleton<SocketService>(SocketServiceImpl());
+      ..registerSingleton<SocketService>(
+        SocketServiceImpl(localDBService: getIt()),
+      );
   }
 
   static Future<void> setupDatabase() async {
