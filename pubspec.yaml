@@ -15,10 +15,10 @@ dependencies:
   dart_pusher_channels: ^1.2.2+1
   dio: ^5.4.3+1
   extended_image: ^8.2.1
-  firebase_analytics: ^11.0.1
-  firebase_auth: ^5.1.0
-  firebase_core: ^3.1.0
-  firebase_crashlytics: ^4.0.1
+  firebase_analytics: ^11.1.0
+  firebase_auth: ^5.1.1
+  firebase_core: ^3.1.1
+  firebase_crashlytics: ^4.0.2
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
@@ -59,7 +59,7 @@ dev_dependencies:
   isar_generator: ^3.1.0+1
   json_serializable: ^6.8.0
   mocktail: ^1.0.4
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^6.0.0
 
 flutter:
   uses-material-design: true
