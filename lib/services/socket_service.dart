@@ -85,13 +85,13 @@ class SocketServiceImpl implements SocketService {
       }
     });
   }
-  
+
   @override
   void bindEventToChannel({
     required Channel channel,
     required String eventName,
   }) {
-       // Sample listener
+    // Sample listener
     channel.bind(eventName).listen((event) {
       Logger().i('Event from the private channel fired!');
       Logger().e(event.data);

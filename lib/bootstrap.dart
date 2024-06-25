@@ -6,12 +6,10 @@ import 'package:app/firebase_options.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:bloc/bloc.dart';
-import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logger/logger.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -36,7 +34,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     await getIt<HiveService>().initBoxes();
 
     // Socket connection
-    
+
     final client = getIt<SocketService>().initClient();
 
     final notificationsChannel =
