@@ -100,18 +100,18 @@ class SocketServiceImpl implements SocketService {
 
       switch (PRFEventExtension.fromIndex(data['event'] as int)) {
         case PRFEvent.courseMemberUpdated:
+          Logger().f(data['data']);
           final courseData = PRFCourse.fromJson(
             data['data'] as Map<String, dynamic>,
           );
-          Logger().d(courseData);
 
           _localDBService.persistCourses(courses: <PRFCourse>[courseData]);
 
         case PRFEvent.memberModuleUpdated:
+          Logger().f(data['data']);
           final courseModuleData = PRFCourseModule.fromJson(
             data['data'] as Map<String, dynamic>,
           );
-          Logger().d(courseModuleData);
 
           _localDBService.persistCourseModules(
             courseUlid: courseModuleData.course!.ulid,
@@ -123,7 +123,6 @@ class SocketServiceImpl implements SocketService {
           final lessonModuleData = PRFLessonModule.fromJson(
             data['data'] as Map<String, dynamic>,
           );
-          Logger().f(lessonModuleData.toJson());
 
           _localDBService.persistLessonModules(
             lessonModules: [lessonModuleData],

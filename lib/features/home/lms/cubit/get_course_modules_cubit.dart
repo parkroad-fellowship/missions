@@ -26,7 +26,7 @@ class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
       final courseModules = await _lmsService.getCourseModules(
         courseUlid: courseUlid,
         includes: 'course.thumbnail,course.courseMember,module.thumbnail,'
-            'module.memberModule,module.lessonModules.lesson,'
+            'memberModule,module.lessonModules.lesson,'
             'module.lessonModules.lessonMember,module.lessonModules.module',
       );
 

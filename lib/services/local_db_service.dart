@@ -108,9 +108,7 @@ class LocalDBServiceImpl implements LocalDBService {
     await for (final localCourse in prfDBInstance.pRFLocalCourses
         .filter()
         .idGreaterThan(0)
-        
         .build()
-        
         .watch(fireImmediately: true)) {
       yield localCourse;
     }
@@ -145,6 +143,17 @@ class LocalDBServiceImpl implements LocalDBService {
             order: courseModule.order,
             createdAt: courseModule.createdAt,
             updatedAt: courseModule.updatedAt,
+            memberModule: courseModule.memberModule != null
+                ? PRFLocalMemberModule(
+                    ulid: courseModule.memberModule!.ulid,
+                    percentComplete: courseModule.memberModule!.percentComplete,
+                    completionStatus:
+                        courseModule.memberModule!.completionStatus,
+                    createdAt: courseModule.memberModule!.createdAt,
+                    updatedAt: courseModule.memberModule!.updatedAt,
+                    completedAt: courseModule.memberModule!.completedAt,
+                  )
+                : null,
             module: PRFLocalModule(
               ulid: courseModule.module!.ulid,
               name: courseModule.module!.name,
@@ -204,7 +213,6 @@ class LocalDBServiceImpl implements LocalDBService {
         .filter()
         .ulidEqualTo(courseModuleUlid)
         .build()
-      
         .watch(fireImmediately: true)) {
       yield localCourseModule.first;
     }
