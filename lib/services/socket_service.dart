@@ -113,9 +113,10 @@ class SocketServiceImpl implements SocketService {
           );
           Logger().d(courseModuleData);
 
-          _localDBService.persistCourseModules(
-            courseModules: <PRFCourseModule>[courseModuleData],
-            courseUlid: courseModuleData.course!.ulid,
+          _localDBService.updateCourseModuleProgress(
+            courseModuleUlid: courseModuleData.ulid,
+            percentComplete:
+                courseModuleData.module!.memberModule!.percentComplete,
           );
           return;
       }
