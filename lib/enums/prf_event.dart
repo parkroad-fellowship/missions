@@ -1,6 +1,7 @@
 enum PRFEvent {
   courseMemberUpdated,
   memberModuleUpdated,
+  lessonMemberUpdated,
 }
 
 extension PRFEventExtension on PRFEvent {
@@ -10,6 +11,8 @@ extension PRFEventExtension on PRFEvent {
         return 'Course Member Updated';
       case PRFEvent.memberModuleUpdated:
         return 'Member Module Updated';
+      case PRFEvent.lessonMemberUpdated:
+        return 'Lesson Member Updated';
     }
   }
 
@@ -19,6 +22,8 @@ extension PRFEventExtension on PRFEvent {
         return PRFEvent.courseMemberUpdated;
       case 2:
         return PRFEvent.memberModuleUpdated;
+      case 3:
+        return PRFEvent.lessonMemberUpdated;
       default:
         return PRFEvent.courseMemberUpdated;
     }
@@ -30,6 +35,8 @@ extension PRFEventExtension on PRFEvent {
         return 1;
       case PRFEvent.memberModuleUpdated:
         return 2;
+      case PRFEvent.lessonMemberUpdated:
+        return 3;
     }
   }
 }

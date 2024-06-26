@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/enums/prf_event.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
+import 'package:app/models/remote/prf_lesson_member.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -105,7 +106,6 @@ class SocketServiceImpl implements SocketService {
           Logger().d(courseData);
 
           _localDBService.persistCourses(courses: <PRFCourse>[courseData]);
-          return;
 
         case PRFEvent.memberModuleUpdated:
           final courseModuleData = PRFCourseModule.fromJson(
@@ -118,7 +118,19 @@ class SocketServiceImpl implements SocketService {
             percentComplete:
                 courseModuleData.module!.memberModule!.percentComplete,
           );
-          return;
+
+        case PRFEvent.lessonMemberUpdated:
+          final lessonMemberData = PRFLessonMember.fromJson(
+            data['data'] as Map<String, dynamic>,
+          );
+          Logger().d(lessonMemberData);
+
+        // _localDBService.updateLessonMemberProgress(
+        //   courseUlid: lessonMemberData.course!.ulid,
+        //   moduleUlid: lessonMemberData.module!.ulid,
+        //   lessonMemberUlid: lessonMemberData.ulid,
+        //   completionStatus: lessonMemberData.completionStatus,
+        // );
       }
     });
   }
@@ -165,6 +177,7 @@ class SocketServiceImpl implements SocketService {
         'App.Models.User.${user.ulid}': <String>[
           r'App\Events\CourseMember\Updated',
           r'App\Events\MemberModule\Updated',
+          r'App\Events\LessonMember\Created',
         ],
       },
     );

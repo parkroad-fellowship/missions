@@ -26,6 +26,12 @@ abstract class LocalDBService {
     required String courseModuleUlid,
     required double percentComplete,
   });
+  Future<void> updateLessonMemberProgress({
+    required String courseUlid,
+    required String moduleUlid,
+    required String lessonMemberUlid,
+    required int completionStatus,
+  });
   Stream<List<PRFLocalCourseModule>> getCourseModules({
     required String courseUlid,
   });
@@ -295,5 +301,37 @@ class LocalDBServiceImpl implements LocalDBService {
         .watch(fireImmediately: true)) {
       yield localCourseModule.first;
     }
+  }
+
+  @override
+  Future<void> updateLessonMemberProgress({
+    required String courseUlid,
+    required String moduleUlid,
+    required String lessonMemberUlid,
+    required int completionStatus,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      final courseModule = await prfDBInstance.pRFLocalCourseModules
+          .filter()
+          .courseUlidEqualTo(courseUlid)
+          .module((q) => q.ulidEqualTo(moduleUlid))
+          .build()
+          .findFirst();
+
+      final lessonModule = courseModule!.module.lessonModules!.firstWhere(
+        (element) => element.lessonMember?.ulid == lessonMemberUlid,
+      );
+
+      lessonModule.lessonMember?.completionStatus = completionStatus;
+
+      courseModule.module.lessonModules = courseModule.module.lessonModules!
+          .map(
+            (element) =>
+                element.ulid == lessonModule.ulid ? lessonModule : element,
+          )
+          .toList();
+
+      await prfDBInstance.pRFLocalCourseModules.put(courseModule);
+    });
   }
 }
