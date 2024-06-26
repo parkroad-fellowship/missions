@@ -109,7 +109,7 @@ class LocalDBServiceImpl implements LocalDBService {
         .filter()
         .idGreaterThan(0)
         .build()
-        .watch(fireImmediately: true)) {
+        .watch(fireImmediately: true).asBroadcastStream()) {
       yield localCourse;
     }
   }
@@ -123,7 +123,7 @@ class LocalDBServiceImpl implements LocalDBService {
         .ulidEqualTo(courseUlid)
         .sortByCreatedAt()
         .build()
-        .watch(fireImmediately: true)) {
+        .watch(fireImmediately: true).asBroadcastStream()) {
       yield localCourse.first;
     }
   }
@@ -200,7 +200,7 @@ class LocalDBServiceImpl implements LocalDBService {
         .courseUlidEqualTo(courseUlid)
         .sortByOrder()
         .build()
-        .watch(fireImmediately: true)) {
+        .watch(fireImmediately: true).asBroadcastStream()) {
       yield localCourseModule;
     }
   }
@@ -213,7 +213,7 @@ class LocalDBServiceImpl implements LocalDBService {
         .filter()
         .ulidEqualTo(courseModuleUlid)
         .build()
-        .watch(fireImmediately: true)) {
+        .watch(fireImmediately: true).asBroadcastStream()) {
       yield localCourseModule.first;
     }
   }
@@ -315,7 +315,7 @@ class LocalDBServiceImpl implements LocalDBService {
         .moduleUlidEqualTo(moduleUlid)
         .sortByOrder()
         .build()
-        .watch(fireImmediately: true)) {
+        .watch(fireImmediately: true).asBroadcastStream()) {
       yield localLessonModule;
     }
   }
