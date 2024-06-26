@@ -17,7 +17,7 @@ extension PRFEventExtension on PRFEvent {
     switch (index) {
       case 1:
         return PRFEvent.courseMemberUpdated;
-        case 2:
+      case 2:
         return PRFEvent.memberModuleUpdated;
       default:
         return PRFEvent.courseMemberUpdated;

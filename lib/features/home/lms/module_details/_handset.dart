@@ -42,7 +42,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: Text(
-              l10n.percentage(module.memberModule?.percentComplete ?? 0),
+              l10n.percentage(
+                module.memberModule?.percentComplete?.toInt() ?? 0,
+              ),
               style: CustomTextTheme.customTextTheme()
                   .displaySmall
                   ?.copyWith(fontWeight: FontWeight.w600),

@@ -139,7 +139,9 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                               ),
                               title: Text(
                                 l10n.progress(
-                                  course.courseMember?.percentComplete ?? 0,
+                                  course.courseMember?.percentComplete
+                                          ?.toInt() ??
+                                      0,
                                 ),
                                 style: CustomTextTheme.customTextTheme()
                                     .headlineMedium!

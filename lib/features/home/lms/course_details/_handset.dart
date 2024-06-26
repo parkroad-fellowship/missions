@@ -51,7 +51,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: Text(
-              l10n.percentage(course.courseMember?.percentComplete ?? 0),
+              l10n.percentage(
+                course.courseMember?.percentComplete?.toInt() ?? 0,
+              ),
               style: CustomTextTheme.customTextTheme()
                   .displaySmall
                   ?.copyWith(fontWeight: FontWeight.w600),
@@ -189,7 +191,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                             ),
                             title: Text(
                               l10n.progress(
-                                module.memberModule?.percentComplete ?? 0,
+                                module.memberModule?.percentComplete?.toInt() ??
+                                    0,
                               ),
                               style: CustomTextTheme.customTextTheme()
                                   .headlineMedium!
