@@ -13,9 +13,9 @@ class PRFLessonModule with _$PRFLessonModule {
     int order,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
-    PRFModule? module,
     @JsonKey(name: 'lesson_member') PRFLessonMember? lessonMember,
     PRFLesson? lesson,
+    PRFModule? module,
   }) = _PRFLessonModule;
 
   factory PRFLessonModule.fromJson(Map<String, dynamic> json) =>

@@ -27,7 +27,7 @@ class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
         courseUlid: courseUlid,
         includes: 'course.thumbnail,course.courseMember,module.thumbnail,'
             'module.memberModule,module.lessonModules.lesson,'
-            'module.lessonModules.lessonMember',
+            'module.lessonModules.lessonMember,module.lessonModules.module',
       );
 
       await _localDBService.persistCourseModules(

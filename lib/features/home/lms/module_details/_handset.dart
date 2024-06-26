@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course_module.dart';
+import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
@@ -53,11 +54,11 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   return const SizedBox.shrink();
                 }
 
-                final module = snapshot.data!.module;
+                final courseModule = snapshot.data!;
 
                 return Text(
                   l10n.percentage(
-                    module.memberModule?.percentComplete?.toInt() ?? 0,
+                    courseModule.memberModule?.percentComplete?.toInt() ?? 0,
                   ),
                   style: CustomTextTheme.customTextTheme()
                       .displaySmall
@@ -118,23 +119,23 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                         ),
               ),
             ),
-            StreamBuilder<PRFLocalCourseModule>(
-              stream: getIt<LocalDBService>().getCourseModule(
-                courseModuleUlid: courseModuleUlid,
+            StreamBuilder<List<PRFLocalLessonModule>>(
+              stream: getIt<LocalDBService>().getLessonModules(
+                moduleUlid: widget.moduleUlid,
               ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SizedBox.shrink();
                 }
 
-                final module = snapshot.data!.module;
+                final lessonModules = snapshot.data!;
 
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: module.lessonModules!.length,
+                  itemCount: lessonModules.length,
                   itemBuilder: (context, index) {
-                    final lesson = module.lessonModules![index].lesson!;
+                    final lesson = lessonModules[index].lesson;
                     return ExpansionTile(
                       initiallyExpanded: true,
                       trailing: Icon(
@@ -160,14 +161,17 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                           visualDensity: VisualDensity.compact,
                           onTap: () => context.router.push(
                             LessonDetailsRoute(
-                              lessonModule: module.lessonModules![index],
+                              lessonModule: lessonModules[index],
                               courseUlid: widget.courseUlid,
                               moduleUlid: widget.moduleUlid,
                             ),
                           ),
                           title: Text(
                             PRFCompletionStatusExtension.fromIndex(
-                              lesson.lessonMember?.completionStatus ?? 0,
+                              lessonModules[index]
+                                      .lessonMember
+                                      ?.completionStatus ??
+                                  0,
                             ).name,
                             style: CustomTextTheme.customTextTheme()
                                 .headlineMedium!

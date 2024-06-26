@@ -49,7 +49,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     runApp(await builder());
   }, (error, stackTrace) {
     if (kDebugMode) {
-      // log(error.toString(), stackTrace: stackTrace);
+      log(error.toString(), stackTrace: stackTrace);
     } else {
       FlutterError.onError = (errorDetails) {
         FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);

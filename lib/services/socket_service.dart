@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:app/enums/prf_event.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
-import 'package:app/models/remote/prf_lesson_member.dart';
+import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -113,24 +113,21 @@ class SocketServiceImpl implements SocketService {
           );
           Logger().d(courseModuleData);
 
-          _localDBService.updateCourseModuleProgress(
-            courseModuleUlid: courseModuleData.ulid,
-            percentComplete:
-                courseModuleData.module!.memberModule!.percentComplete,
+          _localDBService.persistCourseModules(
+            courseUlid: courseModuleData.course!.ulid,
+            courseModules: [courseModuleData],
           );
 
         case PRFEvent.lessonMemberUpdated:
-          final lessonMemberData = PRFLessonMember.fromJson(
+          Logger().f(data['data']);
+          final lessonModuleData = PRFLessonModule.fromJson(
             data['data'] as Map<String, dynamic>,
           );
-          Logger().d(lessonMemberData);
+          Logger().f(lessonModuleData.toJson());
 
-        // _localDBService.updateLessonMemberProgress(
-        //   courseUlid: lessonMemberData.course!.ulid,
-        //   moduleUlid: lessonMemberData.module!.ulid,
-        //   lessonMemberUlid: lessonMemberData.ulid,
-        //   completionStatus: lessonMemberData.completionStatus,
-        // );
+          _localDBService.persistLessonModules(
+            lessonModules: [lessonModuleData],
+          );
       }
     });
   }

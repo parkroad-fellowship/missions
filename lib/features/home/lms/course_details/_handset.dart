@@ -189,7 +189,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: coursesModules!.length,
                     itemBuilder: (context, index) {
-                      final module = coursesModules[index].module;
+                      final courseModule = coursesModules[index];
                       return ExpansionTile(
                         initiallyExpanded: true,
                         trailing: Icon(
@@ -198,7 +198,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           size: 24,
                         ),
                         title: Text(
-                          module.name!.toUpperCase(),
+                          courseModule.module.name!.toUpperCase(),
                           style: CustomTextTheme.customTextTheme()
                               .headlineSmall!
                               .copyWith(
@@ -220,7 +220,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                             ),
                             title: Text(
                               l10n.progress(
-                                module.memberModule?.percentComplete?.toInt() ??
+                                courseModule.memberModule?.percentComplete
+                                        ?.toInt() ??
                                     0,
                               ),
                               style: CustomTextTheme.customTextTheme()
@@ -235,7 +236,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  module.description!,
+                                  courseModule.module.description!,
                                   style: CustomTextTheme.customTextTheme()
                                       .bodySmall!
                                       .copyWith(

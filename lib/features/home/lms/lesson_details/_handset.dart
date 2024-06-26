@@ -1,6 +1,6 @@
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_course_module.dart';
+import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final lesson = lessonModule.lesson!;
+    final lesson = lessonModule.lesson;
 
     return Scaffold(
       appBar: AppBar(
