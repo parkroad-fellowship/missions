@@ -7,11 +7,8 @@ class PRFLocalCourse {
   PRFLocalCourse({
     required this.ulid,
     required this.name,
-    required this.slug,
     required this.description,
-    required this.isActive,
     required this.createdAt,
-    required this.updatedAt,
     this.thumbnail,
     this.courseMember,
   });
@@ -21,11 +18,8 @@ class PRFLocalCourse {
   @Index(unique: true, replace: true)
   late String ulid;
   late String name;
-  late String slug;
   late String description;
-  late int isActive;
   late DateTime createdAt;
-  late DateTime updatedAt;
   PRFLocalMedia? thumbnail;
   PRFLocalCourseMember? courseMember;
 }

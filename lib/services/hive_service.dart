@@ -59,6 +59,7 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistToken(String token) {
+    Logger().d(token);
     Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
         .put('accessToken', token);
   }

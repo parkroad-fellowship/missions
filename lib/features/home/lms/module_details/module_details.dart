@@ -16,11 +16,17 @@ class ModuleDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          ModuleDetailsPageHandset(courseModule: courseModule),
+      defaultBuilder: (_, __) => ModuleDetailsPageHandset(
+        courseModuleUlid: courseModule.ulid,
+        moduleUlid: courseModule.module.ulid!,
+        courseUlid: courseModule.courseUlid,
+      ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) =>
-            ModuleDetailsPageHandset(courseModule: courseModule),
+        handset: (_, __) => ModuleDetailsPageHandset(
+          courseModuleUlid: courseModule.ulid,
+          moduleUlid: courseModule.module.ulid!,
+          courseUlid: courseModule.courseUlid,
+        ),
       ),
     );
   }

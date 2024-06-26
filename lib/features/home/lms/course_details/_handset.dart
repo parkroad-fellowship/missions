@@ -10,11 +10,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CourseDetailsPageHandset extends StatefulWidget {
   const CourseDetailsPageHandset({
-    required this.course,
+    required this.courseUlid,
     super.key,
   });
 
-  final PRFLocalCourse course;
+  final String courseUlid;
 
   @override
   State<CourseDetailsPageHandset> createState() =>
@@ -22,13 +22,13 @@ class CourseDetailsPageHandset extends StatefulWidget {
 }
 
 class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
-  PRFLocalCourse get course => widget.course;
+  String get courseUlid => widget.courseUlid;
 
   @override
   void initState() {
     context
         .read<GetCourseModulesCubit>()
-        .getCourseModules(courseUlid: course.ulid);
+        .getCourseModules(courseUlid: courseUlid);
     super.initState();
   }
 
@@ -50,11 +50,22 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: Text(
-              l10n.percentage(course.courseMember?.percentComplete ?? 0),
-              style: CustomTextTheme.customTextTheme()
-                  .displaySmall
-                  ?.copyWith(fontWeight: FontWeight.w600),
+            child: StreamBuilder<PRFLocalCourse>(
+              stream: getIt<LocalDBService>().getCourse(courseUlid: courseUlid),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final course = snapshot.data;
+                return Text(
+                  l10n.percentage(
+                    course!.courseMember?.percentComplete!.toInt() ?? 0,
+                  ),
+                  style: CustomTextTheme.customTextTheme()
+                      .displaySmall
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                );
+              },
             ),
           ),
         ],
@@ -65,12 +76,32 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text(course.name.toUpperCase()),
+              title: StreamBuilder<PRFLocalCourse>(
+                stream:
+                    getIt<LocalDBService>().getCourse(courseUlid: courseUlid),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final course = snapshot.data;
+                  return Text(course!.name);
+                },
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(l10n.description),
-                  Text(course.description),
+                  StreamBuilder<PRFLocalCourse>(
+                    stream: getIt<LocalDBService>()
+                        .getCourse(courseUlid: courseUlid),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final course = snapshot.data;
+                      return Text(course!.description);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -94,7 +125,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
             ),
             StreamBuilder(
               stream: getIt<LocalDBService>()
-                  .getCourseModules(courseUlid: course.ulid),
+                  .getCourseModules(courseUlid: courseUlid),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -106,7 +137,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   return RefreshIndicator(
                     onRefresh: () => context
                         .read<GetCourseModulesCubit>()
-                        .getCourseModules(courseUlid: course.ulid),
+                        .getCourseModules(courseUlid: courseUlid),
                     child: Column(
                       children: [
                         const Spacer(),
@@ -152,13 +183,13 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                 return RefreshIndicator(
                   onRefresh: () => context
                       .read<GetCourseModulesCubit>()
-                      .getCourseModules(courseUlid: course.ulid),
+                      .getCourseModules(courseUlid: courseUlid),
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: coursesModules!.length,
                     itemBuilder: (context, index) {
-                      final module = coursesModules[index].module;
+                      final courseModule = coursesModules[index];
                       return ExpansionTile(
                         initiallyExpanded: true,
                         trailing: Icon(
@@ -167,7 +198,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           size: 24,
                         ),
                         title: Text(
-                          module.name!.toUpperCase(),
+                          courseModule.module.name!.toUpperCase(),
                           style: CustomTextTheme.customTextTheme()
                               .headlineSmall!
                               .copyWith(
@@ -189,7 +220,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                             ),
                             title: Text(
                               l10n.progress(
-                                module.memberModule?.percentComplete ?? 0,
+                                courseModule.memberModule?.percentComplete
+                                        ?.toInt() ??
+                                    0,
                               ),
                               style: CustomTextTheme.customTextTheme()
                                   .headlineMedium!
@@ -203,7 +236,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  module.description!,
+                                  courseModule.module.description!,
                                   style: CustomTextTheme.customTextTheme()
                                       .bodySmall!
                                       .copyWith(

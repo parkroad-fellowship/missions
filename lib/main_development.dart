@@ -9,10 +9,12 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      baseDomain: 'prf.test',
       hiveBox: 'prf-super-app-dev------',
-      urlScheme: 'https',
+      baseDomain: 'prf-sockets.test',
+      urlScheme: 'http',
       socketKey: 'yvnlkaqadqiadutrs9sa',
+      socketScheme: 'ws',
+      socketPort: 8080,
     ),
   );
 

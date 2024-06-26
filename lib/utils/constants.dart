@@ -4,12 +4,18 @@ class PRFSuperAppValues {
     required this.baseDomain,
     required this.hiveBox,
     required this.socketKey,
+    required this.socketScheme,
+    required this.socketPort,
   });
 
   final String urlScheme;
   final String baseDomain;
   final String hiveBox;
   final String socketKey;
+  final String socketScheme;
+  final int socketPort;
+
+  String get baseUrl => '$urlScheme://$baseDomain';
 }
 
 class PRFSuperAppConfig {

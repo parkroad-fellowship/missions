@@ -33,6 +33,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<HiveService>().initBoxes();
 
+    final userUlid = getIt<HiveService>().retrieveProfile()?.ulid;
+
+    if (userUlid != null) {
+      await getIt<SocketService>().init();
+    }
+
     getIt<NotificationService>().init();
 
     await Firebase.initializeApp(

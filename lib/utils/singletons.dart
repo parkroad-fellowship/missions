@@ -32,7 +32,10 @@ class Singletons {
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
       ..registerSingleton<DebriefService>(DebriefServiceImpl())
-      ..registerSingleton<LMSService>(LMSServiceImpl());
+      ..registerSingleton<LMSService>(LMSServiceImpl())
+      ..registerSingleton<SocketService>(
+        SocketServiceImpl(localDBService: getIt()),
+      );
   }
 
   static Future<void> setupDatabase() async {
@@ -45,6 +48,7 @@ class Singletons {
         create: (context) => SigninCubit(
           authService: getIt(),
           hiveService: getIt(),
+          socketService: getIt(),
         ),
       ),
       BlocProvider<SignOutCubit>(

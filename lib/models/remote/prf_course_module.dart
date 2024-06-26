@@ -1,4 +1,5 @@
 import 'package:app/models/remote/prf_course.dart';
+import 'package:app/models/remote/prf_member_module.dart';
 import 'package:app/models/remote/prf_module.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -14,6 +15,7 @@ class PRFCourseModule with _$PRFCourseModule {
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     PRFCourse? course,
     PRFModule? module,
+    @JsonKey(name: 'member_module') PRFMemberModule? memberModule,
   }) = _PRFCourseModule;
 
   factory PRFCourseModule.fromJson(Map<String, dynamic> json) =>

@@ -135,11 +135,13 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                               contentPadding: const EdgeInsets.only(left: 20),
                               visualDensity: VisualDensity.compact,
                               onTap: () => context.router.push(
-                                CourseDetailsRoute(course: course),
+                                CourseDetailsRoute(courseUlid: course.ulid),
                               ),
                               title: Text(
                                 l10n.progress(
-                                  course.courseMember?.percentComplete ?? 0,
+                                  course.courseMember?.percentComplete
+                                          ?.toInt() ??
+                                      0,
                                 ),
                                 style: CustomTextTheme.customTextTheme()
                                     .headlineMedium!

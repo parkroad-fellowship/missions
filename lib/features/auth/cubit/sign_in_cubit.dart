@@ -11,12 +11,15 @@ class SigninCubit extends Cubit<SignInState> {
   SigninCubit({
     required AuthService authService,
     required HiveService hiveService,
+    required SocketService socketService,
   }) : super(const SignInState.initial()) {
     _authService = authService;
     _hiveService = hiveService;
+    _socketService = socketService;
   }
   late HiveService _hiveService;
   late AuthService _authService;
+  late SocketService _socketService;
 
   Future<void> signIn({
     required String email,
@@ -36,6 +39,8 @@ class SigninCubit extends Cubit<SignInState> {
       final user = await _authService.getUser();
 
       _hiveService.persistProfile(user);
+
+      await _socketService.init();
 
       emit(const SignInState.loaded());
     } on Failure catch (e) {
