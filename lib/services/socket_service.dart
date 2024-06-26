@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/enums/prf_event.dart';
 import 'package:app/models/remote/prf_course.dart';
+import 'package:app/models/remote/prf_course_module.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -98,14 +99,24 @@ class SocketServiceImpl implements SocketService {
 
       switch (PRFEventExtension.fromIndex(data['event'] as int)) {
         case PRFEvent.courseMemberUpdated:
-          Logger().i('Cool beans event fired!');
-
           final courseData = PRFCourse.fromJson(
             data['data'] as Map<String, dynamic>,
           );
           Logger().d(courseData);
 
           _localDBService.persistCourses(courses: <PRFCourse>[courseData]);
+          return;
+
+        case PRFEvent.memberModuleUpdated:
+          final courseModuleData = PRFCourseModule.fromJson(
+            data['data'] as Map<String, dynamic>,
+          );
+          Logger().d(courseModuleData);
+
+          _localDBService.persistCourseModules(
+            courseModules: <PRFCourseModule>[courseModuleData],
+            courseUlid: courseModuleData.course!.ulid,
+          );
           return;
       }
     });
@@ -152,6 +163,7 @@ class SocketServiceImpl implements SocketService {
       channels: <String, List<String>>{
         'App.Models.User.${user.ulid}': <String>[
           r'App\Events\CourseMember\Updated',
+          r'App\Events\MemberModule\Updated',
         ],
       },
     );
