@@ -108,7 +108,9 @@ class LocalDBServiceImpl implements LocalDBService {
     await for (final localCourse in prfDBInstance.pRFLocalCourses
         .filter()
         .idGreaterThan(0)
+        
         .build()
+        
         .watch(fireImmediately: true)) {
       yield localCourse;
     }
@@ -121,6 +123,7 @@ class LocalDBServiceImpl implements LocalDBService {
     await for (final localCourse in prfDBInstance.pRFLocalCourses
         .filter()
         .ulidEqualTo(courseUlid)
+        .sortByCreatedAt()
         .build()
         .watch(fireImmediately: true)) {
       yield localCourse.first;
@@ -186,6 +189,7 @@ class LocalDBServiceImpl implements LocalDBService {
     await for (final localCourseModule in prfDBInstance.pRFLocalCourseModules
         .filter()
         .courseUlidEqualTo(courseUlid)
+        .sortByOrder()
         .build()
         .watch(fireImmediately: true)) {
       yield localCourseModule;
@@ -200,6 +204,7 @@ class LocalDBServiceImpl implements LocalDBService {
         .filter()
         .ulidEqualTo(courseModuleUlid)
         .build()
+      
         .watch(fireImmediately: true)) {
       yield localCourseModule.first;
     }
@@ -300,6 +305,7 @@ class LocalDBServiceImpl implements LocalDBService {
     await for (final localLessonModule in prfDBInstance.pRFLocalLessonModules
         .filter()
         .moduleUlidEqualTo(moduleUlid)
+        .sortByOrder()
         .build()
         .watch(fireImmediately: true)) {
       yield localLessonModule;
