@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
@@ -144,54 +145,58 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
               ),
             const Divider(),
             const SizedBox(height: 32),
-            BlocConsumer<FinishLessonCubit, FinishLessonState>(
-              listener: (context, state) {
-                state.maybeWhen(
-                  loading: () => setState(() {
-                    _isLoading = !_isLoading;
-                  }),
-                  loaded: () {
-                    setState(() {
+            if (lessonModule.lessonMember == null ||
+                (lessonModule.lessonMember != null &&
+                    lessonModule.lessonMember!.completionStatus !=
+                        PRFCompletionStatus.complete.apiKey))
+              BlocConsumer<FinishLessonCubit, FinishLessonState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                    loading: () => setState(() {
                       _isLoading = !_isLoading;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.completed),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    Navigator.of(context).pop();
-                  },
-                  error: (message) {
-                    setState(() {
-                      _isLoading = !_isLoading;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  },
-                  orElse: () {},
-                );
-              },
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    onPressed: () async =>
-                        context.read<FinishLessonCubit>().finishLesson(
-                              lessonUlid: lesson.ulid!,
-                              moduleUlid: moduleUlid,
-                              courseUlid: courseUlid,
-                            ),
-                    title: _isLoading ? l10n.completing : l10n.complete,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                  ),
-                );
-              },
-            ),
+                    }),
+                    loaded: () {
+                      setState(() {
+                        _isLoading = !_isLoading;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(l10n.completed),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    error: (message) {
+                      setState(() {
+                        _isLoading = !_isLoading;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(message),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    },
+                    orElse: () {},
+                  );
+                },
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () => PrimaryButton(
+                      onPressed: () async =>
+                          context.read<FinishLessonCubit>().finishLesson(
+                                lessonUlid: lesson.ulid!,
+                                moduleUlid: moduleUlid,
+                                courseUlid: courseUlid,
+                              ),
+                      title: _isLoading ? l10n.completing : l10n.complete,
+                      disabled: _isLoading,
+                      isLoading: _isLoading ? true : null,
+                    ),
+                  );
+                },
+              ),
           ],
         ),
       ),
