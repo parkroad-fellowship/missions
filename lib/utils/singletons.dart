@@ -179,8 +179,6 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
-
-      
     ];
   }
 }
