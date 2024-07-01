@@ -10,7 +10,7 @@ import 'package:app/utils/_index.dart';
 abstract class StudentService {
   Future<List<PRFFaq>> getFaqs();
   Future<List<PRFStudentEnquiry>> getStudentEnquiries({
-    required String studentUlid,
+    String? studentUlid,
   });
   Future<PRFStudentEnquiry> createStudentEnquiry({
     required PRFStudentEnquiryDTO studentEnquiryDTO,
@@ -40,13 +40,13 @@ class StudentServiceImpl implements StudentService {
 
   @override
   Future<List<PRFStudentEnquiry>> getStudentEnquiries({
-    required String studentUlid,
+    String? studentUlid,
   }) async {
     try {
       final res = await _networkUtil.getReq(
         '/student-enquiries',
         queryParameters: {
-          'filter[student_ulid]': studentUlid,
+          if (studentUlid != null) 'filter[student_ulid]': studentUlid,
         },
       );
 

@@ -15,6 +15,9 @@ import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_past_member_missions_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/features/student_home/enquiries/cubit/create_enquiry_cubit.dart';
 import 'package:app/features/student_home/enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/student_home/enquiries/cubit/get_student_enquiries_cubit.dart';
@@ -178,6 +181,24 @@ class Singletons {
         create: (context) => CreateStudentEnquiryReplyCubit(
           studentService: getIt(),
           hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetEnquiriesCubit>(
+        create: (context) => GetEnquiriesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<CreateEnquiryReplyCubit>(
+        create: (context) => CreateEnquiryReplyCubit(
+          studentService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetEnquiryRepliesCubit>(
+        create: (context) => GetEnquiryRepliesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
         ),
       ),
     ];

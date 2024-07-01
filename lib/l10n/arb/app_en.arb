@@ -256,5 +256,9 @@
     "replying": "Replying ...",
     "@replying": {},
     "rules": "Don't share your contact information or any personal information in your questions or replies",
-    "@rules": {}
+    "@rules": {},
+    "studentEnquiries": "Students",
+    "@studentEnquiries": {},
+    "studentQuestions": "Student Questions",
+    "@studentQuestions": {}
 }
