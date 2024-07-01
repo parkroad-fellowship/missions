@@ -75,6 +75,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
                     setState(() {
                       _isLoading = false;
                     });
+                    _enquiryController.clear();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

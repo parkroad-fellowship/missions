@@ -221,6 +221,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                                 setState(() {
                                   _isLoading = false;
                                 });
+                                _enquiryReplyController.clear();
                                 Navigator.of(context).pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(l10n.replySent)),
