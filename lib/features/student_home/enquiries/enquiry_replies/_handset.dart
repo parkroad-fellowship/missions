@@ -161,6 +161,9 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                                 color: Colors.black,
                                 fontSize: 14,
                               ),
+                          textAlign: enquiryReply.isStudent
+                              ? TextAlign.right
+                              : TextAlign.left,
                         ),
                       );
                     },

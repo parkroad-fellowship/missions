@@ -9,6 +9,8 @@ class PRFLocalStudentEnquiryReply {
     required this.studentEnquiryUlid,
     required this.content,
     required this.createdAt,
+    required this.commentorableType,
+    required this.isStudent,
   });
 
   Id id = Isar.autoIncrement;
@@ -18,4 +20,6 @@ class PRFLocalStudentEnquiryReply {
   final String studentEnquiryUlid;
   final String content;
   final DateTime createdAt;
+  final int commentorableType;
+  final bool isStudent;
 }

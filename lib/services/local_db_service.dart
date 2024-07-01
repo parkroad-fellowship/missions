@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
@@ -386,6 +387,9 @@ class LocalDBServiceImpl implements LocalDBService {
             studentEnquiryUlid: studentEnquiryUlid,
             content: reply.content,
             createdAt: reply.createdAt,
+            commentorableType: reply.commentorableType,
+            isStudent: PRFMorphType.fromAPIKey(reply.commentorableType) ==
+                PRFMorphType.student,
           ),
         );
       }

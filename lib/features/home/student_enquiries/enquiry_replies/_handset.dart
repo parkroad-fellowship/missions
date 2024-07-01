@@ -96,8 +96,7 @@ class _StudentEnquiryRepliesPageHandsetState
                         ),
               ),
             ),
-            BlocBuilder<GetEnquiryRepliesCubit,
-                GetEnquiryRepliesState>(
+            BlocBuilder<GetEnquiryRepliesCubit, GetEnquiryRepliesState>(
               builder: (context, state) => state.maybeWhen(
                 orElse: () => const Center(child: LinearProgressIndicator()),
                 error: (message) => Center(child: Text(message)),
@@ -162,6 +161,9 @@ class _StudentEnquiryRepliesPageHandsetState
                                 color: Colors.black,
                                 fontSize: 14,
                               ),
+                          textAlign: enquiryReply.isStudent
+                              ? TextAlign.left
+                              : TextAlign.right,
                         ),
                       );
                     },
