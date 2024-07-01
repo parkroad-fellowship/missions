@@ -229,6 +229,8 @@
             }
         }
     },
-    "faq": "FAQ",
-    "@faq": {}
+    "faq": "FAQs",
+    "@faq": {},
+    "noFaqs": "No FAQs",
+    "@noFaqs": {}
 }

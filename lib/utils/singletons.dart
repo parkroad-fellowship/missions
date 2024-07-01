@@ -15,6 +15,7 @@ import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_past_member_missions_cubit.dart';
+import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/services/_index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -36,7 +37,8 @@ class Singletons {
       ..registerSingleton<LMSService>(LMSServiceImpl())
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
-      );
+      )
+      ..registerSingleton<StudentService>(StudentServiceImpl());
   }
 
   static Future<void> setupDatabase() async {
@@ -141,6 +143,11 @@ class Singletons {
         create: (context) => FinishLessonCubit(
           lmsService: getIt(),
           hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetFaqsCubit>(
+        create: (context) => GetFaqsCubit(
+          studentService: getIt(),
         ),
       ),
     ];
