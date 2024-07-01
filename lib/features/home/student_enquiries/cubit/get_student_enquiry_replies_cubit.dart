@@ -5,8 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'get_student_enquiry_replies_state.dart';
 part 'get_student_enquiry_replies_cubit.freezed.dart';
 
-class GetEnquiryRepliesCubit
-    extends Cubit<GetEnquiryRepliesState> {
+class GetEnquiryRepliesCubit extends Cubit<GetEnquiryRepliesState> {
   GetEnquiryRepliesCubit({
     required StudentService studentService,
     required LocalDBService localDBService,

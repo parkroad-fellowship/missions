@@ -4,6 +4,7 @@ import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,11 +67,10 @@ class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
                         .getStudentEnquiries(),
                     child: Column(
                       children: [
-                        const Spacer(),
                         const Icon(Icons.directions_walk),
                         Center(
                           child: Text(
-                            l10n.noReplies,
+                            l10n.noQuestions,
                             style: CustomTextTheme.customTextTheme()
                                 .headlineMedium!
                                 .copyWith(
@@ -80,25 +80,13 @@ class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.05,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                l10n.pleaseWait,
-                                style: CustomTextTheme.customTextTheme()
-                                    .displayLarge!
-                                    .copyWith(
-                                      color:
-                                          AppTheme.appTheme().kPrimaryColorV2,
-                                      fontSize: 14,
-                                    ),
-                              ),
-                            ],
+                        PrimaryButton(
+                          onPressed: () => context.router.pushNamed(
+                            PRFSuperAppRouter.createStudentEnquiryRoute,
                           ),
+                          title: l10n.askQuestion,
+                          disabled: false,
                         ),
-                        const Spacer(),
                       ],
                     ),
                   );

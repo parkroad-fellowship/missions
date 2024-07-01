@@ -67,7 +67,6 @@ class _StudentEnquiriesPageHandsetState
                         context.read<GetEnquiriesCubit>().getStudentEnquiries(),
                     child: Column(
                       children: [
-                        const Spacer(),
                         const Icon(Icons.directions_walk),
                         Center(
                           child: Text(
@@ -99,7 +98,6 @@ class _StudentEnquiriesPageHandsetState
                             ],
                           ),
                         ),
-                        const Spacer(),
                       ],
                     ),
                   );

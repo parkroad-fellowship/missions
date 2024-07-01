@@ -9,7 +9,7 @@ class PRFStudentEnquiryReply with _$PRFStudentEnquiryReply {
   factory PRFStudentEnquiryReply(
     String ulid,
     String content,
-        @JsonKey(name: 'commentorable_type') int commentorableType,
+    @JsonKey(name: 'commentorable_type') int commentorableType,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     @JsonKey(name: 'student_enquiry') PRFStudentEnquiry? studentEnquiry,
