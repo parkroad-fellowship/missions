@@ -1,3 +1,4 @@
+import 'package:app/features/auth/cubit/register_student_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
@@ -49,6 +50,11 @@ class Singletons {
           authService: getIt(),
           hiveService: getIt(),
           socketService: getIt(),
+        ),
+      ),
+      BlocProvider<RegisterStudentCubit>(
+        create: (context) => RegisterStudentCubit(
+          authService: getIt(),
         ),
       ),
       BlocProvider<SignOutCubit>(

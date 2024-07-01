@@ -26,6 +26,7 @@ class PRFUser with _$PRFUser {
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
     required List<PRFRole> roles,
     PRFMember? member,
+    int? password,
   }) = _PRFUser;
 
   factory PRFUser.fromJson(Map<String, dynamic> json) =>

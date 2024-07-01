@@ -6,6 +6,7 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
   // Auth
   static const String decisionRoute = '/';
   static const String signInRoute = '/sign-in';
+  static const String registerStudentRoute = '/register-student';
 
   // Landing
   static const String landingRoute = '/landing';
@@ -20,11 +21,17 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
 
   @override
   List<AutoRoute> get routes => [
+        // Auth
         AutoRoute(page: DecisionRoute.page, path: decisionRoute),
         AutoRoute(page: SignInRoute.page, path: signInRoute),
+        AutoRoute(page: StudentIntroRoute.page, path: registerStudentRoute),
+
+        // Landing
         AutoRoute(page: LandingRoute.page, path: landingRoute),
         AutoRoute(page: ProfileRoute.page, path: profileRoute),
         AutoRoute(page: MissionsDetailsRoute.page, path: missionDetailsRoute),
+
+        // Course Work
         AutoRoute(
           page: MyMissionsDetailsRoute.page,
           path: myMissionDetailsRoute,

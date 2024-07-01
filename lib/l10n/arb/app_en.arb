@@ -203,5 +203,30 @@
     "noCourses": "No courses",
     "@noCourses": {},
     "yetToBeEnroled": "You are yet to be enroled for a course",
-    "@yetToBeEnroled": {}
+    "@yetToBeEnroled": {},
+    "registerStudent": "Register as a new student",
+    "@registerStudent": {},
+    "registerNewStudent": "Register a new student account",
+    "@registerNewStudent": {},
+    "studentIntro": "To keep your identity private, you get a random credentials that you can use to access the app. Please ensure to save them somewhere if you want to come back to the app at another time.",
+    "@studentInto": {},
+    "iAmReady": "I am ready",
+    "@iAmReady": {},
+    "registering": "Registering ...",
+    "@registering": {},
+    "registered": "You have been registered successfully. Please save your credentials somewhere safe.",
+    "@registered": {},
+    "iHaveWritten": "I have written them down",
+    "@iHaveWritten": {},
+    "credentials": "Your credentials\nEmail: {email}\nPassword: {password}",
+    "@credentials": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            },
+            "password": {
+                "type": "int"
+            }
+        }
+    }
 }
