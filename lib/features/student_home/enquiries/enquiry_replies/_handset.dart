@@ -151,14 +151,14 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                         contentPadding: const EdgeInsets.only(left: 20),
                         visualDensity: VisualDensity.compact,
                         subtitle: Text(
-                              enquiryReply.content,
-                              style: CustomTextTheme.customTextTheme()
-                                  .bodySmall!
-                                  .copyWith(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                            ),
+                          enquiryReply.content,
+                          style: CustomTextTheme.customTextTheme()
+                              .bodySmall!
+                              .copyWith(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                        ),
                       );
                     },
                   ),

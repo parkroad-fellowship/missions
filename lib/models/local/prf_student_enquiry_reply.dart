@@ -2,7 +2,6 @@ import 'package:isar/isar.dart';
 
 part 'prf_student_enquiry_reply.g.dart';
 
-
 @collection
 class PRFLocalStudentEnquiryReply {
   PRFLocalStudentEnquiryReply({

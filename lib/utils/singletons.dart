@@ -159,13 +159,12 @@ class Singletons {
           localDBService: getIt(),
         ),
       ),
-BlocProvider<GetStudentEnquiryRepliesCubit>(
+      BlocProvider<GetStudentEnquiryRepliesCubit>(
         create: (context) => GetStudentEnquiryRepliesCubit(
           studentService: getIt(),
           localDBService: getIt(),
         ),
       ),
-      
     ];
   }
 
