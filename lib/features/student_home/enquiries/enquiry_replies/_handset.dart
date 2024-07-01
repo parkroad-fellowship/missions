@@ -56,6 +56,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -103,7 +104,6 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                         .getStudentEnquiryReplies(enquiryUlid: enquiry.ulid),
                     child: Column(
                       children: [
-                        const Spacer(),
                         const Icon(Icons.directions_walk),
                         Center(
                           child: Text(
@@ -117,25 +117,6 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.05,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                l10n.pleaseWait,
-                                style: CustomTextTheme.customTextTheme()
-                                    .displayLarge!
-                                    .copyWith(
-                                      color:
-                                          AppTheme.appTheme().kPrimaryColorV2,
-                                      fontSize: 14,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
                       ],
                     ),
                   );
@@ -195,6 +176,15 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                             color: AppTheme.appTheme().kBlackColor,
                           ),
                         ),
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: FormFieldLabel(
+                            label: l10n.rules,
+                            isRequired: true,
+                            color: AppTheme.appTheme().kErrorColor,
+                          ),
+                        ),
                         const SizedBox(height: 6),
                         InputFormField(
                           hintText: l10n.reply,
@@ -217,9 +207,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                                 });
                                 Navigator.of(context).pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(l10n.replySent),
-                                  ),
+                                  SnackBar(content: Text(l10n.replySent)),
                                 );
                               },
                             );

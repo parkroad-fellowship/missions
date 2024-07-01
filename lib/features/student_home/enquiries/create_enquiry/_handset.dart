@@ -48,6 +48,15 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               ),
             ),
             const SizedBox(height: 6),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.rules,
+                isRequired: true,
+                color: AppTheme.appTheme().kErrorColor,
+              ),
+            ),
+            const SizedBox(height: 8),
             InputFormField(
               hintText: l10n.enquiry,
               controller: _enquiryController,

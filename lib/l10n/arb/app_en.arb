@@ -254,5 +254,7 @@
     "replySent": "Your reply has been sent",
     "@replySent": {},
     "replying": "Replying ...",
-    "@replying": {}
+    "@replying": {},
+    "rules": "Don't share your contact information or any personal information in your questions or replies",
+    "@rules": {}
 }
