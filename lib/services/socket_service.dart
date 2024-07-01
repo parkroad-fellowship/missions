@@ -4,6 +4,7 @@ import 'package:app/enums/prf_event.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
+import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -11,8 +12,10 @@ import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
 
 abstract class SocketService {
-  SocketConfig config();
-  Future<void> init();
+  SocketConfig defaultConfig();
+  Future<void> init({
+    required SocketConfig socketConfig,
+  });
 }
 
 class SocketServiceImpl implements SocketService {
@@ -98,7 +101,7 @@ class SocketServiceImpl implements SocketService {
 
       final data = json.decode(event.data as String) as Map<String, dynamic>;
 
-      switch (PRFEventExtension.fromIndex(data['event'] as int)) {
+      switch (PRFEvent.fromIndex(data['event'] as int)) {
         case PRFEvent.courseMemberUpdated:
           Logger().f(data['data']);
           final courseData = PRFCourse.fromJson(
@@ -127,13 +130,25 @@ class SocketServiceImpl implements SocketService {
           _localDBService.persistLessonModules(
             lessonModules: [lessonModuleData],
           );
+
+        case PRFEvent.studentEnquiryReplyCreated:
+          Logger().f(data['data']);
+          final studentEnquiryReplyData = PRFStudentEnquiryReply.fromJson(
+            data['data'] as Map<String, dynamic>,
+          );
+
+          _localDBService.persistStudentEnquiryReplies(
+            studentEnquiryUlid: studentEnquiryReplyData.studentEnquiry!.ulid,
+            replies: [studentEnquiryReplyData],
+          );
       }
     });
   }
 
   @override
-  Future<void> init() async {
-    final socketConfig = config();
+  Future<void> init({
+    required SocketConfig socketConfig,
+  }) async {
     final client = _initClient();
 
     final configuredChannels = <PrivateChannel>[];
@@ -163,7 +178,7 @@ class SocketServiceImpl implements SocketService {
   }
 
   @override
-  SocketConfig config() {
+  SocketConfig defaultConfig() {
     final user = HiveServiceImpl().retrieveProfile()!;
     // Register all channels and their events here
     // Assumption here is that there's only one channel for that user

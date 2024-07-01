@@ -1,3 +1,4 @@
+import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_student_enquiry_reply.freezed.dart';
@@ -9,8 +10,9 @@ class PRFStudentEnquiryReply with _$PRFStudentEnquiryReply {
     String ulid,
     String content,
     @JsonKey(name: 'created_at') DateTime createdAt,
-    @JsonKey(name: 'updated_at') DateTime updatedAt,
-  ) = _PRFStudentEnquiryReply;
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @JsonKey(name: 'student_enquiry') PRFStudentEnquiry? studentEnquiry,
+  }) = _PRFStudentEnquiryReply;
 
   factory PRFStudentEnquiryReply.fromJson(Map<String, dynamic> json) =>
       _$PRFStudentEnquiryReplyFromJson(json);

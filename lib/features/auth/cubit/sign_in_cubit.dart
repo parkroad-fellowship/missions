@@ -1,5 +1,6 @@
 import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -40,7 +41,13 @@ class SigninCubit extends Cubit<SignInState> {
 
       _hiveService.persistProfile(user);
 
-      await _socketService.init();
+      await _socketService.init(
+        socketConfig: SocketConfig(
+          channels: {
+            ..._socketService.defaultConfig().channels,
+          },
+        ),
+      );
 
       emit(const SignInState.loaded());
     } on Failure catch (e) {

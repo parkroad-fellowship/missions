@@ -3,6 +3,7 @@ import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_re
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
+import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
@@ -34,7 +35,22 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
     context
         .read<GetStudentEnquiryRepliesCubit>()
         .getStudentEnquiryReplies(enquiryUlid: enquiry.ulid);
+
+    _subscribeToEnquiryReplies();
     super.initState();
+  }
+
+  Future<void> _subscribeToEnquiryReplies() async {
+    await getIt<SocketService>().init(
+      socketConfig: SocketConfig(
+        channels: {
+          ...getIt<SocketService>().defaultConfig().channels,
+          'App.Models.StudentEnquiry.${enquiry.ulid}': <String>[
+            r'App\Events\StudentEnquiryReply\Created',
+          ],
+        },
+      ),
+    );
   }
 
   @override

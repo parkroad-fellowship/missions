@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:app/firebase_options.dart';
+import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:bloc/bloc.dart';
@@ -36,7 +37,15 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     final userUlid = getIt<HiveService>().retrieveProfile()?.ulid;
 
     if (userUlid != null) {
-      await getIt<SocketService>().init();
+      final defaultConfig = getIt<SocketService>().defaultConfig();
+
+      await getIt<SocketService>().init(
+        socketConfig: SocketConfig(
+          channels: {
+            ...defaultConfig.channels,
+          },
+        ),
+      );
     }
 
     getIt<NotificationService>().init();
