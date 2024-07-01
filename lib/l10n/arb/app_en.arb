@@ -236,5 +236,11 @@
     "myQuestions": "My Questions",
     "@myQuestions": {},
     "noQuestions": "No questions",
-    "@noQuestions": {}
+    "@noQuestions": {},
+    "replies": "Replies",
+    "@replies": {},
+    "noReplies": "No replies yet",
+    "@noReplies": {},
+    "yourQuestion": "Your Question",
+    "@yourQuestion": {}
 }

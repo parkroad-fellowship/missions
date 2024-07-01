@@ -1,24 +1,33 @@
-import 'package:app/features/student_home/enquiries/cubit/get_student_enquiries_cubit.dart';
+import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
+import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/router.gr.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EnquiriesPageHandset extends StatefulWidget {
-  const EnquiriesPageHandset({super.key});
+class EnquiryRepliesPageHandset extends StatefulWidget {
+  const EnquiryRepliesPageHandset({
+    required this.enquiry,
+    super.key,
+  });
+
+  final PRFLocalStudentEnquiry enquiry;
 
   @override
-  State<EnquiriesPageHandset> createState() => _EnquiriesPageHandsetState();
+  State<EnquiryRepliesPageHandset> createState() =>
+      _EnquiryRepliesPageHandsetState();
 }
 
-class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
+class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
+  PRFLocalStudentEnquiry get enquiry => widget.enquiry;
+
   @override
   void initState() {
-    context.read<GetStudentEnquiriesCubit>().getStudentEnquiries();
+    context
+        .read<GetStudentEnquiryRepliesCubit>()
+        .getStudentEnquiryReplies(enquiryUlid: enquiry.ulid);
     super.initState();
   }
 
@@ -29,7 +38,7 @@ class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          l10n.myQuestions,
+          l10n.replies,
           style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -42,27 +51,50 @@ class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
           children: [
-            BlocBuilder<GetStudentEnquiriesCubit, GetStudentEnquiriesState>(
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(l10n.yourQuestion),
+                  Text(enquiry.content),
+                ],
+              ),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                l10n.replies.toUpperCase(),
+                style:
+                    CustomTextTheme.customTextTheme().headlineMedium!.copyWith(
+                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+              ),
+            ),
+            BlocBuilder<GetStudentEnquiryRepliesCubit,
+                GetStudentEnquiryRepliesState>(
               builder: (context, state) => state.maybeWhen(
                 orElse: () => const Center(child: LinearProgressIndicator()),
                 error: (message) => Center(child: Text(message)),
                 loaded: SizedBox.shrink,
               ),
             ),
-            StreamBuilder<List<PRFLocalStudentEnquiry>>(
-              stream: getIt<LocalDBService>().getStudentEnquiries(),
+            StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
+              stream: getIt<LocalDBService>()
+                  .getStudentEnquiryReplies(studentEnquiryUlid: enquiry.ulid),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                final enquiries = snapshot.data;
+                final enquiryReplies = snapshot.data;
 
-                if (enquiries != null && enquiries.isEmpty) {
+                if (enquiryReplies != null && enquiryReplies.isEmpty) {
                   return RefreshIndicator(
                     onRefresh: () => context
-                        .read<GetStudentEnquiriesCubit>()
-                        .getStudentEnquiries(),
+                        .read<GetStudentEnquiryRepliesCubit>()
+                        .getStudentEnquiryReplies(enquiryUlid: enquiry.ulid),
                     child: Column(
                       children: [
                         const Spacer(),
@@ -105,32 +137,28 @@ class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
 
                 return RefreshIndicator(
                   onRefresh: () => context
-                      .read<GetStudentEnquiriesCubit>()
-                      .getStudentEnquiries(),
+                      .read<GetStudentEnquiryRepliesCubit>()
+                      .getStudentEnquiryReplies(enquiryUlid: enquiry.ulid),
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: enquiries!.length,
+                    itemCount: enquiryReplies!.length,
                     itemBuilder: (context, index) {
-                      final enquiry = enquiries[index];
+                      final enquiryReply = enquiryReplies[index];
                       return ListTile(
                         dense: true,
                         minLeadingWidth: 10.5,
                         contentPadding: const EdgeInsets.only(left: 20),
                         visualDensity: VisualDensity.compact,
                         subtitle: Text(
-                          enquiry.content,
-                          style: CustomTextTheme.customTextTheme()
-                              .bodySmall!
-                              .copyWith(
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => context.router.push(
-                          EnquiryRepliesRoute(enquiry: enquiry),
-                        ),
+                              enquiryReply.content,
+                              style: CustomTextTheme.customTextTheme()
+                                  .bodySmall!
+                                  .copyWith(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                            ),
                       );
                     },
                   ),

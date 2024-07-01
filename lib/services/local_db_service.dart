@@ -1,9 +1,13 @@
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
+import 'package:app/models/local/prf_student_enquiry.dart';
+import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
+import 'package:app/models/remote/prf_student_enquiry.dart';
+import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/utils/_index.dart';
 import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
@@ -38,6 +42,18 @@ abstract class LocalDBService {
   Stream<List<PRFLocalLessonModule>> getLessonModules({
     required String moduleUlid,
   });
+  Future<void> persistStudentEnquiries({
+    required List<PRFStudentEnquiry> enquiries,
+  });
+  Stream<List<PRFLocalStudentEnquiry>> getStudentEnquiries();
+
+  Future<void> persistStudentEnquiryReplies({
+    required String studentEnquiryUlid,
+    required List<PRFStudentEnquiryReply> replies,
+  });
+  Stream<List<PRFLocalStudentEnquiryReply>> getStudentEnquiryReplies({
+    required String studentEnquiryUlid,
+  });
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -49,6 +65,8 @@ class LocalDBServiceImpl implements LocalDBService {
         PRFLocalCourseSchema,
         PRFLocalCourseModuleSchema,
         PRFLocalLessonModuleSchema,
+        PRFLocalStudentEnquirySchema,
+        PRFLocalStudentEnquiryReplySchema,
       ],
       directory: dir.path,
     );
@@ -322,6 +340,69 @@ class LocalDBServiceImpl implements LocalDBService {
         .watch(fireImmediately: true)
         .asBroadcastStream()) {
       yield localLessonModule;
+    }
+  }
+
+  @override
+  Future<void> persistStudentEnquiries({
+    required List<PRFStudentEnquiry> enquiries,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final enquiry in enquiries) {
+        await prfDBInstance.pRFLocalStudentEnquirys.put(
+          PRFLocalStudentEnquiry(
+            ulid: enquiry.ulid,
+            content: enquiry.content,
+            createdAt: enquiry.createdAt,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Stream<List<PRFLocalStudentEnquiry>> getStudentEnquiries() async* {
+    await for (final localEnquiry in prfDBInstance.pRFLocalStudentEnquirys
+        .filter()
+        .idGreaterThan(0)
+        .build()
+        .watch(fireImmediately: true)
+        .asBroadcastStream()) {
+      yield localEnquiry;
+    }
+  }
+
+  @override
+  Future<void> persistStudentEnquiryReplies({
+    required String studentEnquiryUlid,
+    required List<PRFStudentEnquiryReply> replies,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final reply in replies) {
+        await prfDBInstance.pRFLocalStudentEnquiryReplys.put(
+          PRFLocalStudentEnquiryReply(
+            ulid: reply.ulid,
+            studentEnquiryUlid: studentEnquiryUlid,
+            content: reply.content,
+            createdAt: reply.createdAt,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Stream<List<PRFLocalStudentEnquiryReply>> getStudentEnquiryReplies({
+    required String studentEnquiryUlid,
+  }) async* {
+    await for (final localReply in prfDBInstance.pRFLocalStudentEnquiryReplys
+        .filter()
+        .studentEnquiryUlidEqualTo(studentEnquiryUlid)
+        .sortByCreatedAt()
+        .build()
+        .watch(fireImmediately: true)
+        .asBroadcastStream()) {
+      yield localReply;
     }
   }
 }
