@@ -365,6 +365,7 @@ class LocalDBServiceImpl implements LocalDBService {
     await for (final localEnquiry in prfDBInstance.pRFLocalStudentEnquirys
         .filter()
         .idGreaterThan(0)
+        .sortByCreatedAtDesc()
         .build()
         .watch(fireImmediately: true)
         .asBroadcastStream()) {

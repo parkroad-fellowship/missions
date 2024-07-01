@@ -171,6 +171,7 @@ class Singletons {
         create: (context) => CreateEnquiryCubit(
           studentService: getIt(),
           hiveService: getIt(),
+          localDBService: getIt(),
         ),
       ),
       BlocProvider<CreateStudentEnquiryReplyCubit>(

@@ -10,13 +10,16 @@ class CreateEnquiryCubit extends Cubit<CreateEnquiryState> {
   CreateEnquiryCubit({
     required HiveService hiveService,
     required StudentService studentService,
+    required LocalDBService localDBService,
   }) : super(const CreateEnquiryState.initial()) {
     _hiveService = hiveService;
     _studentService = studentService;
+    _localDBService = localDBService;
   }
 
   late HiveService _hiveService;
   late StudentService _studentService;
+  late LocalDBService _localDBService;
 
   Future<void> createEnquiry({
     required String content,
@@ -25,12 +28,14 @@ class CreateEnquiryCubit extends Cubit<CreateEnquiryState> {
     try {
       final studentUlid = _hiveService.retrieveStudentUlid();
 
-      await _studentService.createStudentEnquiry(
+      final enquiry = await _studentService.createStudentEnquiry(
         studentEnquiryDTO: PRFStudentEnquiryDTO(
           studentUlid: studentUlid,
           content: content,
         ),
       );
+
+      await _localDBService.persistStudentEnquiries(enquiries: [enquiry]);
 
       emit(const CreateEnquiryState.loaded());
     } catch (e) {
