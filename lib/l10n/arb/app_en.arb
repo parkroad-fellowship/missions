@@ -232,5 +232,9 @@
     "faq": "FAQs",
     "@faq": {},
     "noFaqs": "No FAQs",
-    "@noFaqs": {}
+    "@noFaqs": {},
+    "myQuestions": "My Questions",
+    "@myQuestions": {},
+    "noQuestions": "No questions",
+    "@noQuestions": {}
 }

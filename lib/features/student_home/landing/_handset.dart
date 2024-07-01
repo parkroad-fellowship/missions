@@ -1,4 +1,5 @@
 import 'package:app/features/student_home/account/account.dart';
+import 'package:app/features/student_home/enquiries/enquiries.dart';
 import 'package:app/features/student_home/faqs/faqs.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
@@ -17,6 +18,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
 
   final List<Widget> _pages = const [
     FAQPage(),
+    EnquiriesPage(),
     StudentAccountPage(),
   ];
 
@@ -61,8 +63,24 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   height: 25,
                   width: 25,
                   child: Icon(
-                    Icons.person,
+                    Icons.question_mark_outlined,
                     color: _currentIndex == 1
+                        ? AppTheme.appTheme().kPrimaryColorV2
+                        : AppTheme.appTheme().kDullGreyColor,
+                  ),
+                ),
+              ),
+              label: l10n.myQuestions,
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: Icon(
+                    Icons.person,
+                    color: _currentIndex == 2
                         ? AppTheme.appTheme().kPrimaryColorV2
                         : AppTheme.appTheme().kDullGreyColor,
                   ),

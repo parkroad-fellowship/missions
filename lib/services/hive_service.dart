@@ -19,6 +19,7 @@ abstract class HiveService {
   PRFUser? retrieveProfile();
   PRFMember? retrieveMember();
   List<String>? retrieveMemberGroupUlids();
+  String retrieveStudentUlid();
 
   void persistClassGroups(PRFClassGroupResponse classGroups);
   List<PRFClassGroup> retrieveClassGroups();
@@ -141,5 +142,12 @@ class HiveServiceImpl implements HiveService {
   void clearSouls(String missionUlid) {
     Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
         .delete('souls-$missionUlid');
+  }
+
+  @override
+  String retrieveStudentUlid() {
+    final profile = retrieveProfile();
+    if (profile == null) return '';
+    return profile.student!.ulid;
   }
 }

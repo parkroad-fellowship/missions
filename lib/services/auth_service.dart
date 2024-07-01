@@ -32,7 +32,7 @@ class AuthServiceImpl implements AuthService {
       final response = await _networkUtil.getReq(
         '/auth/me',
         queryParameters: <String, dynamic>{
-          'include': 'roles.permissions,member.groupMembers.group',
+          'include': 'roles.permissions,member.groupMembers.group,student',
         },
       );
 
