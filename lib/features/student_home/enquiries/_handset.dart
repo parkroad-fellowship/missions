@@ -28,6 +28,7 @@ class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           l10n.myQuestions,
           style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
@@ -139,6 +140,12 @@ class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.router
+            .pushNamed(PRFSuperAppRouter.createStudentEnquiryRoute),
+        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

@@ -1,11 +1,16 @@
+import 'package:app/features/student_home/enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class EnquiryRepliesPageHandset extends StatefulWidget {
   const EnquiryRepliesPageHandset({
@@ -22,6 +27,9 @@ class EnquiryRepliesPageHandset extends StatefulWidget {
 
 class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
   PRFLocalStudentEnquiry get enquiry => widget.enquiry;
+
+  final _enquiryReplyController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -167,6 +175,89 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => WoltModalSheet.show<void>(
+          context: context,
+          pageListBuilder: (modalSheetContext) {
+            return [
+              WoltModalSheetPage(
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: FormFieldLabel(
+                            label: l10n.reply,
+                            isRequired: true,
+                            color: AppTheme.appTheme().kBlackColor,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        InputFormField(
+                          hintText: l10n.reply,
+                          controller: _enquiryReplyController,
+                          isTextBox: true,
+                        ),
+                        const SizedBox(height: 16),
+                        BlocConsumer<CreateStudentEnquiryReplyCubit,
+                            CreateStudentEnquiryReplyState>(
+                          listener: (context, state) {
+                            state.mapOrNull(
+                              loading: (_) {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                              },
+                              loaded: (_) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(l10n.replySent),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          builder: (context, state) {
+                            return state.maybeWhen(
+                              orElse: () => PrimaryButton(
+                                title: _isLoading ? l10n.replying : l10n.reply,
+                                disabled: _isLoading,
+                                isLoading: _isLoading ? true : null,
+                                onPressed: () async {
+                                  await context
+                                      .read<CreateStudentEnquiryReplyCubit>()
+                                      .createStudentEnquiryReply(
+                                        studentEnquiryUlid: enquiry.ulid,
+                                        content: _enquiryReplyController.text,
+                                      );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ];
+          },
+          maxDialogWidth: 560,
+          minDialogWidth: 400,
+          minPageHeight: 0,
+          maxPageHeight: 0.9,
+        ),
+        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

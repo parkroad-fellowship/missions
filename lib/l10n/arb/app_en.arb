@@ -242,5 +242,17 @@
     "noReplies": "No replies yet",
     "@noReplies": {},
     "yourQuestion": "Your Question",
-    "@yourQuestion": {}
+    "@yourQuestion": {},
+    "createQuestion": "Create Question",
+    "@createQuestion": {},
+    "enquiry": "Enquiry",
+    "@enquiry": {},
+    "enquiryRecorded": "Your enquiry has been recorded. Please wait for a response",
+    "@enquiryRecorded": {},
+    "reply": "Reply",
+    "@reply": {},
+    "replySent": "Your reply has been sent",
+    "@replySent": {},
+    "replying": "Replying ...",
+    "@replying": {}
 }
