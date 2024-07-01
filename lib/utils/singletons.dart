@@ -1,3 +1,4 @@
+import 'package:app/features/auth/cubit/register_student_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
@@ -14,6 +15,14 @@ import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/my_missions/cubit/get_past_member_missions_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/features/student_home/enquiries/cubit/create_enquiry_cubit.dart';
+import 'package:app/features/student_home/enquiries/cubit/create_student_enquiry_reply_cubit.dart';
+import 'package:app/features/student_home/enquiries/cubit/get_student_enquiries_cubit.dart';
+import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/services/_index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -35,7 +44,8 @@ class Singletons {
       ..registerSingleton<LMSService>(LMSServiceImpl())
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
-      );
+      )
+      ..registerSingleton<StudentService>(StudentServiceImpl());
   }
 
   static Future<void> setupDatabase() async {
@@ -49,6 +59,11 @@ class Singletons {
           authService: getIt(),
           hiveService: getIt(),
           socketService: getIt(),
+        ),
+      ),
+      BlocProvider<RegisterStudentCubit>(
+        create: (context) => RegisterStudentCubit(
+          authService: getIt(),
         ),
       ),
       BlocProvider<SignOutCubit>(
@@ -137,8 +152,55 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
+      BlocProvider<GetFaqsCubit>(
+        create: (context) => GetFaqsCubit(
+          studentService: getIt(),
+        ),
+      ),
+      BlocProvider<GetStudentEnquiriesCubit>(
+        create: (context) => GetStudentEnquiriesCubit(
+          studentService: getIt(),
+          hiveService: getIt(),
+          localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<GetStudentEnquiryRepliesCubit>(
+        create: (context) => GetStudentEnquiryRepliesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<CreateEnquiryCubit>(
+        create: (context) => CreateEnquiryCubit(
+          studentService: getIt(),
+          hiveService: getIt(),
+          localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<CreateStudentEnquiryReplyCubit>(
+        create: (context) => CreateStudentEnquiryReplyCubit(
+          studentService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetEnquiriesCubit>(
+        create: (context) => GetEnquiriesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<CreateEnquiryReplyCubit>(
+        create: (context) => CreateEnquiryReplyCubit(
+          studentService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetEnquiryRepliesCubit>(
+        create: (context) => GetEnquiryRepliesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
+        ),
+      ),
     ];
   }
-
-  static void setupWebsocketConnection() {}
 }

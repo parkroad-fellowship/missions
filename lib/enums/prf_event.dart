@@ -2,9 +2,8 @@ enum PRFEvent {
   courseMemberUpdated,
   memberModuleUpdated,
   lessonMemberUpdated,
-}
+  studentEnquiryReplyCreated;
 
-extension PRFEventExtension on PRFEvent {
   String get name {
     switch (this) {
       case PRFEvent.courseMemberUpdated:
@@ -13,6 +12,8 @@ extension PRFEventExtension on PRFEvent {
         return 'Member Module Updated';
       case PRFEvent.lessonMemberUpdated:
         return 'Lesson Member Updated';
+      case PRFEvent.studentEnquiryReplyCreated:
+        return 'Student Enquiry Reply Created';
     }
   }
 
@@ -24,6 +25,8 @@ extension PRFEventExtension on PRFEvent {
         return PRFEvent.memberModuleUpdated;
       case 3:
         return PRFEvent.lessonMemberUpdated;
+      case 4:
+        return PRFEvent.studentEnquiryReplyCreated;
       default:
         return PRFEvent.courseMemberUpdated;
     }
@@ -37,6 +40,8 @@ extension PRFEventExtension on PRFEvent {
         return 2;
       case PRFEvent.lessonMemberUpdated:
         return 3;
+      case PRFEvent.studentEnquiryReplyCreated:
+        return 4;
     }
   }
 }

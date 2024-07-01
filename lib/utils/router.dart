@@ -6,12 +6,20 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
   // Auth
   static const String decisionRoute = '/';
   static const String signInRoute = '/sign-in';
+  static const String registerStudentRoute = '/register-student';
 
   // Landing
   static const String landingRoute = '/landing';
   static const String profileRoute = '/profile';
   static const String missionDetailsRoute = '/mission-details';
   static const String myMissionDetailsRoute = '/my-mission-details';
+  static const String repliesRoute = '/replies';
+
+  // Student Landing
+  static const String studentLandingRoute = '/student-landing';
+  static const String studentProfileRoute = '/student-profile';
+  static const String studentRepliesRoute = '/student-replies';
+  static const String createStudentEnquiryRoute = '/create-student-enquiry';
 
   // Course Work
   static const String courseDetailsRoute = '/course-details';
@@ -20,11 +28,27 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
 
   @override
   List<AutoRoute> get routes => [
+        // Auth
         AutoRoute(page: DecisionRoute.page, path: decisionRoute),
         AutoRoute(page: SignInRoute.page, path: signInRoute),
+        AutoRoute(page: StudentIntroRoute.page, path: registerStudentRoute),
+
+        // Landing
         AutoRoute(page: LandingRoute.page, path: landingRoute),
         AutoRoute(page: ProfileRoute.page, path: profileRoute),
         AutoRoute(page: MissionsDetailsRoute.page, path: missionDetailsRoute),
+        AutoRoute(page: StudentEnquiryRepliesRoute.page, path: repliesRoute),
+
+        // Student Landing
+        AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),
+        AutoRoute(page: StudentProfileRoute.page, path: studentProfileRoute),
+        AutoRoute(page: EnquiryRepliesRoute.page, path: studentRepliesRoute),
+        AutoRoute(
+          page: CreateEnquiryRoute.page,
+          path: createStudentEnquiryRoute,
+        ),
+
+        // Course Work
         AutoRoute(
           page: MyMissionsDetailsRoute.page,
           path: myMissionDetailsRoute,

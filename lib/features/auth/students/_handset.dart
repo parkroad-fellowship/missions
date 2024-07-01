@@ -1,0 +1,136 @@
+import 'package:app/features/auth/cubit/register_student_cubit.dart';
+import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/auth.dart';
+import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:extended_image/extended_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class StudentIntroPageHandset extends StatefulWidget {
+  const StudentIntroPageHandset({super.key});
+
+  @override
+  State<StudentIntroPageHandset> createState() =>
+      _StudentIntroPageHandsetState();
+}
+
+class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
+  bool _isLoading = false;
+  bool registrationIsHidden = false;
+  PRFUser? credentials;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Spacer(),
+                Center(
+                  child: ExtendedImage.asset(
+                    'assets/images/app-logo.png',
+                    height: 200,
+                    width: 232,
+                  ),
+                ),
+                Align(
+                  child: Text(
+                    l10n.registerNewStudent,
+                    style: CustomTextTheme.customTextTheme().displayMedium,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Align(
+                  child: Text(
+                    l10n.studentIntro,
+                    style: CustomTextTheme.customTextTheme().bodySmall,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                if (!registrationIsHidden)
+                  BlocConsumer<RegisterStudentCubit, RegisterStudentState>(
+                    listener: (context, state) {
+                      state.maybeWhen(
+                        loading: () => setState(() {
+                          _isLoading = !_isLoading;
+                        }),
+                        loaded: (user) {
+                          credentials = user;
+
+                          setState(() {
+                            _isLoading = !_isLoading;
+                            registrationIsHidden = true;
+                          });
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(l10n.registered),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+                        error: (message) {
+                          setState(() {
+                            _isLoading = !_isLoading;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(message),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        },
+                        orElse: () {},
+                      );
+                    },
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        orElse: () => PrimaryButton(
+                          onPressed: () => context
+                              .read<RegisterStudentCubit>()
+                              .registerStudent(),
+                          title: _isLoading ? l10n.registering : l10n.iAmReady,
+                          disabled: _isLoading,
+                          isLoading: _isLoading ? true : null,
+                        ),
+                      );
+                    },
+                  ),
+                if (registrationIsHidden)
+                  Align(
+                    child: Text(
+                      l10n.credentials(
+                        credentials!.email,
+                        credentials!.password!,
+                      ),
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
+                  ),
+                if (registrationIsHidden)
+                  Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    child: PrimaryButton(
+                      onPressed: () => context.router
+                          .popUntilRouteWithPath(PRFSuperAppRouter.signInRoute),
+                      title: l10n.iHaveWritten,
+                      disabled: false,
+                    ),
+                  ),
+                const Spacer(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_roles.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -38,10 +39,19 @@ class _DecisionPageState extends State<DecisionPage> {
             PRFSuperAppRouter.signInRoute,
           );
         } else {
-          _redirectToPage(
-            context,
-            PRFSuperAppRouter.landingRoute,
+          final profile = getIt<HiveService>().retrieveProfile()!;
+          final result = profile.roles.where(
+            (role) => role.name == PrfRole.student.label,
           );
+
+          if (result.isEmpty) {
+            _redirectToPage(
+              context,
+              PRFSuperAppRouter.landingRoute,
+            );
+          } else {
+            _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
+          }
         }
         return Scaffold(
           body: Center(

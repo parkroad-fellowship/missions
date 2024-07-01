@@ -2,6 +2,7 @@ import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/secondary_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
@@ -73,7 +74,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                     );
                   },
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 16),
                 BlocConsumer<SigninCubit, SignInState>(
                   listener: (context, state) {
                     state.maybeWhen(
@@ -112,6 +113,13 @@ class _SignInHandsetState extends State<SignInHandset> {
                       ),
                     );
                   },
+                ),
+                const SizedBox(height: 32),
+                SecondaryButton(
+                  onPressed: () => context.router
+                      .pushNamed(PRFSuperAppRouter.registerStudentRoute),
+                  title: l10n.registerStudent,
+                  disabled: false,
                 ),
                 const Spacer(),
               ],

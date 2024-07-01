@@ -1,4 +1,5 @@
 import 'package:app/models/remote/prf_member.dart';
+import 'package:app/models/remote/prf_student.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // Generated model files
@@ -26,6 +27,8 @@ class PRFUser with _$PRFUser {
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
     required List<PRFRole> roles,
     PRFMember? member,
+    int? password,
+    PRFStudent? student,
   }) = _PRFUser;
 
   factory PRFUser.fromJson(Map<String, dynamic> json) =>
