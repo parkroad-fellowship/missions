@@ -154,6 +154,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         .copyWith(
                                           color: Colors.black,
                                           fontSize: 14,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                   ),
                                 ],

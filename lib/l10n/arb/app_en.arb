@@ -269,7 +269,7 @@
     "@noAnnouncements": {},
     "pleaseWaitForOS": "Please wait for an update from the organising secretary's desk",
     "@pleaseWaitForOS": {},
-    "publishedAt": "Announced on: {publishingDate}",
+    "publishedAt": "Date: {publishingDate}",
     "@publishedAt": {
         "placeholders": {
             "publishingDate": {

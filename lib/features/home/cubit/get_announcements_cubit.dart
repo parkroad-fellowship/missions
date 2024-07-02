@@ -28,7 +28,6 @@ class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
 
       final announcements = await _missionService.getAnnouncements(
         groups: memberGroupUlids ?? [],
-        upcoming: true,
       );
 
       await _localDBService.persistAnnouncements(
