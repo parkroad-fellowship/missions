@@ -10,9 +10,8 @@ class NotificationBell extends StatelessWidget {
     return IconButton(
       onPressed: () =>
           context.router.pushNamed(PRFSuperAppRouter.announcementsRoute),
-      icon: const Icon(
-        Icons.notifications_none,
-        color: Colors.black,
+      icon: const Badge(
+        child: Icon(Icons.notifications_none),
       ),
     );
   }
