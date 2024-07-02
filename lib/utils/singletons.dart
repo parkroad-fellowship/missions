@@ -1,6 +1,7 @@
 import 'package:app/features/auth/cubit/register_student_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
+import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
@@ -199,6 +200,13 @@ class Singletons {
         create: (context) => GetEnquiryRepliesCubit(
           studentService: getIt(),
           localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<GetAnnouncementsCubit>(
+        create: (context) => GetAnnouncementsCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];

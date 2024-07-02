@@ -1,9 +1,11 @@
 import 'package:app/enums/prf_morph_types.dart';
+import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
+import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
@@ -55,6 +57,10 @@ abstract class LocalDBService {
   Stream<List<PRFLocalStudentEnquiryReply>> getStudentEnquiryReplies({
     required String studentEnquiryUlid,
   });
+  Future<void> persistAnnouncements({
+    required List<PRFAnnouncement> announcements,
+  });
+  Stream<List<PRFLocalAnnouncement>> getAnnouncements();
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -68,6 +74,7 @@ class LocalDBServiceImpl implements LocalDBService {
         PRFLocalLessonModuleSchema,
         PRFLocalStudentEnquirySchema,
         PRFLocalStudentEnquiryReplySchema,
+        PRFLocalAnnouncementSchema,
       ],
       directory: dir.path,
     );
@@ -408,6 +415,41 @@ class LocalDBServiceImpl implements LocalDBService {
         .watch(fireImmediately: true)
         .asBroadcastStream()) {
       yield localReply;
+    }
+  }
+
+  @override
+  Future<void> persistAnnouncements({
+    required List<PRFAnnouncement> announcements,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final announcement in announcements) {
+        await prfDBInstance.pRFLocalAnnouncements.put(
+          PRFLocalAnnouncement(
+            ulid: announcement.ulid,
+            title: announcement.title,
+            content: announcement.content,
+            createdAt: announcement.createdAt,
+            updatedAt: announcement.updatedAt,
+            publishedAt: announcement.publishedAt,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Stream<List<PRFLocalAnnouncement>> getAnnouncements() async* {
+    await for (final localAnnouncement in prfDBInstance.pRFLocalAnnouncements
+        .filter()
+        .idGreaterThan(0)
+        .sortByPublishedAtDesc()
+        .build()
+        .watch(fireImmediately: true)
+        .asBroadcastStream()) {
+      yield localAnnouncement
+          .map((localAnnouncement) => localAnnouncement)
+          .toList();
     }
   }
 }

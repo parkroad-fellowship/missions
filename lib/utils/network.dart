@@ -41,12 +41,12 @@ class NetworkUtil {
     );
 
     if (kDebugMode) {
-      // dio.interceptors.add(
-      //   PrettyDioLogger(
-      //     requestHeader: true,
-      //     requestBody: true,
-      //   ),
-      // );
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+        ),
+      );
     }
 
     (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =

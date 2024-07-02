@@ -1,4 +1,5 @@
 import 'package:app/features/home/account/account.dart';
+import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/lms/lms.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/missions.dart';
@@ -22,6 +23,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
   @override
   void initState() {
     context.read<GetClassGroupsCubit>().getClassGroups();
+    context.read<GetAnnouncementsCubit>().getAnnouncements();
     super.initState();
   }
 
