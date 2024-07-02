@@ -1,7 +1,9 @@
 class SocketConfig {
   SocketConfig({
-    required this.channels,
+    required this.privateChannels,
+    this.presenceChannels,
   });
 
-  final Map<String, List<String>> channels;
+  final Map<String, List<String>> privateChannels;
+  final Map<String, List<String>>? presenceChannels;
 }
