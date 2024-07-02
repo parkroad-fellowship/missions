@@ -262,5 +262,19 @@
     "studentQuestions": "Student Questions",
     "@studentQuestions": {},
     "askQuestion": "Ask a Question",
-    "@askQuestion": {}
+    "@askQuestion": {},
+    "announcements": "Announcements",
+    "@announcements": {},
+    "noAnnouncements": "No announcements",
+    "@noAnnouncements": {},
+    "pleaseWaitForOS": "Please wait for an update from the organising secretary's desk",
+    "@pleaseWaitForOS": {},
+    "publishedAt": "Date: {publishingDate}",
+    "@publishedAt": {
+        "placeholders": {
+            "publishingDate": {
+                "type": "String"
+            }
+        }
+    }
 }

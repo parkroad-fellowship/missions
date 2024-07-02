@@ -44,12 +44,14 @@ class _StudentEnquiryRepliesPageHandsetState
   Future<void> _subscribeToEnquiryReplies() async {
     await getIt<SocketService>().init(
       socketConfig: SocketConfig(
-        channels: {
-          ...getIt<SocketService>().defaultConfig().channels,
+        privateChannels: {
+          ...getIt<SocketService>().defaultConfig().privateChannels,
           'App.Models.StudentEnquiry.${enquiry.ulid}': <String>[
             r'App\Events\StudentEnquiryReply\Created',
           ],
         },
+        presenceChannels:
+            getIt<SocketService>().defaultConfig().presenceChannels,
       ),
     );
   }

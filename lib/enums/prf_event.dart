@@ -45,3 +45,30 @@ enum PRFEvent {
     }
   }
 }
+
+enum PRFPresenceEvent {
+  announcementGroupCreated;
+
+  String get name {
+    switch (this) {
+      case PRFPresenceEvent.announcementGroupCreated:
+        return 'Announcement Group Created';
+    }
+  }
+
+  static PRFPresenceEvent fromIndex(int index) {
+    switch (index) {
+      case 5:
+        return PRFPresenceEvent.announcementGroupCreated;
+      default:
+        return PRFPresenceEvent.announcementGroupCreated;
+    }
+  }
+
+  int get apiKey {
+    switch (this) {
+      case PRFPresenceEvent.announcementGroupCreated:
+        return 5;
+    }
+  }
+}

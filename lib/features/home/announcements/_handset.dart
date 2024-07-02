@@ -1,27 +1,20 @@
-import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
+import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/router.gr.dart';
-import 'package:app/widgets/notification_bell.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LMSPageHandset extends StatefulWidget {
-  const LMSPageHandset({super.key});
+class AnnouncementsPageHandset extends StatefulWidget {
+  const AnnouncementsPageHandset({super.key});
 
   @override
-  State<LMSPageHandset> createState() => _LMSPageHandsetState();
+  State<AnnouncementsPageHandset> createState() =>
+      _AnnouncementsPageHandsetState();
 }
 
-class _LMSPageHandsetState extends State<LMSPageHandset> {
-  @override
-  void initState() {
-    context.read<GetCoursesCubit>().getCourses();
-    super.initState();
-  }
-
+class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -29,7 +22,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          l10n.learn,
+          l10n.announcements,
           style: CustomTextTheme.customTextTheme()
               .displayLarge
               ?.copyWith(fontWeight: FontWeight.w600),
@@ -37,9 +30,12 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: const SizedBox.shrink(),
-        actions: const [
-          NotificationBell(),
+        actions: [
+          IconButton(
+            onPressed: () =>
+                context.read<GetAnnouncementsCubit>().getAnnouncements(),
+            icon: const Icon(Icons.refresh),
+          ),
         ],
       ),
       body: Padding(
@@ -47,7 +43,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              BlocBuilder<GetCoursesCubit, GetCoursesState>(
+              BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
                 builder: (context, state) => state.maybeWhen(
                   orElse: () => const Center(child: LinearProgressIndicator()),
                   error: (message) => Center(child: Text(message)),
@@ -59,7 +55,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                             ),
                             Center(
                               child: Text(
-                                l10n.noCourses,
+                                l10n.noAnnouncements,
                                 style: CustomTextTheme.customTextTheme()
                                     .headlineMedium!
                                     .copyWith(
@@ -76,13 +72,14 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
-                                    l10n.yetToBeEnroled,
+                                    l10n.pleaseWaitForOS,
+                                    maxLines: 2,
                                     style: CustomTextTheme.customTextTheme()
                                         .displayLarge!
                                         .copyWith(
                                           color: AppTheme.appTheme()
                                               .kPrimaryColorV2,
-                                          fontSize: 14,
+                                          fontSize: 12,
                                         ),
                                   ),
                                 ],
@@ -93,37 +90,33 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                       : const SizedBox.shrink(),
                 ),
               ),
-              StreamBuilder(
-                stream: getIt<LocalDBService>().getCourses(),
+              StreamBuilder<List<PRFLocalAnnouncement>>(
+                stream: getIt<LocalDBService>().getAnnouncements(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  final courses = snapshot.data;
+                  final announcements = snapshot.data;
 
-                  if (courses != null && courses.isEmpty) {
+                  if (announcements != null && announcements.isEmpty) {
                     return const SizedBox.shrink();
                   }
 
                   return RefreshIndicator(
-                    onRefresh: () =>
-                        context.read<GetCoursesCubit>().getCourses(),
+                    onRefresh: () => context
+                        .read<GetAnnouncementsCubit>()
+                        .getAnnouncements(),
                     child: ListView.builder(
                       shrinkWrap: true,
                       physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: courses!.length,
+                      itemCount: announcements!.length,
                       itemBuilder: (context, index) {
-                        final course = courses[index];
+                        final announcement = announcements[index];
                         return ExpansionTile(
                           initiallyExpanded: true,
-                          trailing: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: AppTheme.appTheme().kDullGreyColor,
-                            size: 24,
-                          ),
                           title: Text(
-                            course.name.toUpperCase(),
+                            announcement.title.toUpperCase(),
                             style: CustomTextTheme.customTextTheme()
                                 .headlineSmall!
                                 .copyWith(
@@ -138,33 +131,30 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                               minLeadingWidth: 10.5,
                               contentPadding: const EdgeInsets.only(left: 20),
                               visualDensity: VisualDensity.compact,
-                              onTap: () => context.router.push(
-                                CourseDetailsRoute(courseUlid: course.ulid),
-                              ),
-                              title: Text(
-                                l10n.progress(
-                                  course.courseMember?.percentComplete
-                                          ?.toInt() ??
-                                      0,
-                                ),
-                                style: CustomTextTheme.customTextTheme()
-                                    .headlineMedium!
-                                    .copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                    ),
-                              ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    course.description,
+                                    announcement.content,
                                     style: CustomTextTheme.customTextTheme()
                                         .bodySmall!
                                         .copyWith(
                                           color: Colors.black,
                                           fontSize: 14,
+                                        ),
+                                  ),
+                                  Text(
+                                    l10n.publishedAt(
+                                      Misc.formatDateTime(
+                                        announcement.publishedAt,
+                                      ),
+                                    ),
+                                    style: CustomTextTheme.customTextTheme()
+                                        .bodySmall!
+                                        .copyWith(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                   ),
                                 ],

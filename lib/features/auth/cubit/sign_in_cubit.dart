@@ -43,9 +43,8 @@ class SigninCubit extends Cubit<SignInState> {
 
       await _socketService.init(
         socketConfig: SocketConfig(
-          channels: {
-            ..._socketService.defaultConfig().channels,
-          },
+          privateChannels: _socketService.defaultConfig().privateChannels,
+          presenceChannels: _socketService.defaultConfig().presenceChannels,
         ),
       );
 

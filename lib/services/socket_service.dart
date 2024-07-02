@@ -35,8 +35,6 @@ class SocketServiceImpl implements SocketService {
       port: PRFSuperAppConfig.instance!.values.socketPort,
     );
 
-    Logger().i(hostOptions.uri);
-
     return PusherChannelsClient.websocket(
       options: hostOptions,
       connectionErrorHandler: (exception, trace, refresh) {
@@ -78,6 +76,32 @@ class SocketServiceImpl implements SocketService {
     );
   }
 
+  PresenceChannel _registerToPresenceChannel({
+    required PusherChannelsClient client,
+    required String channelName,
+  }) {
+    final token = HiveServiceImpl().retrieveToken()!;
+
+    return client.presenceChannel(
+      'presence-$channelName',
+      authorizationDelegate:
+          EndpointAuthorizableChannelTokenAuthorizationDelegate
+              .forPresenceChannel(
+        authorizationEndpoint: Uri.parse(
+          '${PRFSuperAppConfig.instance!.values.baseUrl}/broadcasting/auth',
+        ),
+        onAuthFailed: (exception, trace) {
+          Logger().e(exception);
+          Logger().e(trace);
+        },
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+  }
+
   void _subscribeToPrivateChannelsEvent({
     required PusherChannelsClient client,
     required List<Channel> channels,
@@ -85,9 +109,49 @@ class SocketServiceImpl implements SocketService {
     client.onConnectionEstablished.listen((_) {
       for (final channel in channels) {
         channel.subscribeIfNotUnsubscribed();
-        Logger().i('Subscribed to channel: ${channel.name}');
+        Logger().i('Subscribed to private channel: ${channel.name}');
       }
     });
+  }
+
+  void _subscribeToPresenceChannelsEvent({
+    required PusherChannelsClient client,
+    required List<Channel> channels,
+  }) {
+    client.onConnectionEstablished.listen((_) {
+      for (final channel in channels) {
+        channel.subscribeIfNotUnsubscribed();
+        Logger().i('Subscribed to presence channel: ${channel.name}');
+      }
+    });
+  }
+
+  void _bindEventToPresenceChannel({
+    required PresenceChannel channel,
+    required String eventName,
+  }) {
+    // Handle data from the socket server here
+    channel
+      ..whenMemberAdded().listen((event) {
+        Logger().i('Member added to the presence channel ${channel.name}!');
+        Logger().e(event.data);
+      })
+      ..whenMemberRemoved().listen((event) {
+        Logger().i('Member removed from the presence channel ${channel.name}!');
+        Logger().e(event.data);
+      })
+      ..bind(eventName).listen((event) {
+        Logger()
+            .i('$eventName from the presence channel ${channel.name} fired!');
+        Logger().e(event.data);
+
+        final data = json.decode(event.data as String) as Map<String, dynamic>;
+
+        switch (PRFPresenceEvent.fromIndex(data['event'] as int)) {
+          case PRFPresenceEvent.announcementGroupCreated:
+            Logger().f(data['data']);
+        }
+      });
   }
 
   void _bindEventToChannel({
@@ -152,26 +216,47 @@ class SocketServiceImpl implements SocketService {
     final client = _initClient();
 
     final configuredChannels = <PrivateChannel>[];
+    final configuredPresenceChannels = <PresenceChannel>[];
 
-    socketConfig.channels.forEach((channelName, events) {
-      final channel = _registerToPrivateChannel(
+    socketConfig.privateChannels.forEach((channelName, events) {
+      final privateChannel = _registerToPrivateChannel(
         client: client,
         channelName: channelName,
       );
 
       for (final eventName in events) {
         _bindEventToChannel(
-          channel: channel,
+          channel: privateChannel,
           eventName: eventName,
         );
       }
 
-      configuredChannels.add(channel);
+      configuredChannels.add(privateChannel);
     });
 
     _subscribeToPrivateChannelsEvent(
       client: client,
       channels: configuredChannels,
+    );
+
+    socketConfig.presenceChannels?.forEach((channelName, events) {
+      final presenceChannel = _registerToPresenceChannel(
+        client: client,
+        channelName: channelName,
+      );
+
+      for (final eventName in events) {
+        _bindEventToPresenceChannel(
+          channel: presenceChannel,
+          eventName: eventName,
+        );
+      }
+
+      configuredPresenceChannels.add(presenceChannel);
+    });
+    _subscribeToPresenceChannelsEvent(
+      client: client,
+      channels: configuredPresenceChannels,
     );
 
     await _connectClient(client: client);
@@ -183,14 +268,32 @@ class SocketServiceImpl implements SocketService {
     // Register all channels and their events here
     // Assumption here is that there's only one channel for that user
     // Should more be needed, this function may need adjusting
-    return SocketConfig(
-      channels: <String, List<String>>{
-        'App.Models.User.${user.ulid}': <String>[
-          r'App\Events\CourseMember\Updated',
-          r'App\Events\MemberModule\Updated',
-          r'App\Events\LessonMember\Created',
+
+    final privateChannels = <String, List<String>>{
+      'App.Models.User.${user.ulid}': <String>[
+        r'App\Events\CourseMember\Updated',
+        r'App\Events\MemberModule\Updated',
+        r'App\Events\LessonMember\Created',
+      ],
+    };
+
+    final groups = user.member?.groupMembers
+        ?.map((groupMember) => groupMember.group?.ulid)
+        .toList();
+
+    final presenceChannels = <String, List<String>>{};
+
+    groups?.forEach((groupUlid) {
+      presenceChannels.addAll({
+        'App.Models.Group.$groupUlid': <String>[
+          r'App\Events\AnnouncementGroup\Created',
         ],
-      },
+      });
+    });
+
+    return SocketConfig(
+      privateChannels: privateChannels,
+      presenceChannels: presenceChannels,
     );
   }
 }

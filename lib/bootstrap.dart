@@ -41,9 +41,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
       await getIt<SocketService>().init(
         socketConfig: SocketConfig(
-          channels: {
-            ...defaultConfig.channels,
-          },
+          privateChannels: defaultConfig.privateChannels,
+          presenceChannels: defaultConfig.presenceChannels,
         ),
       );
     }

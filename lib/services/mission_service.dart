@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_dto.dart';
@@ -24,6 +25,12 @@ abstract class MissionService {
   Future<PRFMissionSubscription> updateSubscription({
     required String missionSubscriptionUlid,
     required PRFMissionSubscriptionUpdateDTO subscriptionDTO,
+  });
+  Future<List<PRFAnnouncement>> getAnnouncements({
+    List<String> groups = const <String>[],
+    String? includes,
+    bool? past,
+    bool? upcoming,
   });
 }
 
@@ -113,6 +120,32 @@ class MissionServiceImpl implements MissionService {
       return PRFMissionSubscription.fromJson(
         res['data'] as Map<String, dynamic>,
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<PRFAnnouncement>> getAnnouncements({
+    List<String> groups = const <String>[],
+    String? includes,
+    bool? past,
+    bool? upcoming,
+  }) async {
+    try {
+      final res = await _networkUtil.getReq(
+        '/announcements',
+        queryParameters: {
+          if (includes != null) 'include': includes,
+          'filter[group_ulids]': groups.join(','),
+          if (past != null) 'filter[past]': true,
+          if (upcoming != null) 'filter[upcoming]': true,
+          'order_by': 'published_at',
+          'order_direction': 'desc',
+        },
+      );
+
+      return PRFAnnouncementResponse.fromJson(res).data;
     } catch (e) {
       rethrow;
     }
