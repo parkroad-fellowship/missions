@@ -30,6 +30,13 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () =>
+                context.read<GetAnnouncementsCubit>().getAnnouncements(),
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
