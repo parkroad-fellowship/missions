@@ -278,5 +278,11 @@
         }
     },
     "missionQuestions": "Mission Questions",
-    "@missionQuestions": {}
+    "@missionQuestions": {},
+    "addQuestion": "Add Question",
+    "@addQuestion": {},
+    "questionRecorded": "This question has been recorded",
+    "@questionRecorded": {},
+    "recordQuestion": "Record question",
+    "@recordQuestion": {}
 }
