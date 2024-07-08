@@ -299,10 +299,6 @@ class _MyMissionsDetailsPageHandsetState
                         ),
                       ];
                     },
-                    maxDialogWidth: 560,
-                    minDialogWidth: 400,
-                    minPageHeight: 0,
-                    maxPageHeight: 0.9,
                   ).then(
                     (_) => context
                         .read<GetSoulsCubit>()
@@ -324,10 +320,6 @@ class _MyMissionsDetailsPageHandsetState
                         ),
                       ];
                     },
-                    maxDialogWidth: 560,
-                    minDialogWidth: 400,
-                    minPageHeight: 0,
-                    maxPageHeight: 0.9,
                   ).then(
                     (_) => context
                         .read<GetDebriefNotesCubit>()
