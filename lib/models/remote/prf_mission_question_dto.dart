@@ -1,4 +1,3 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_mission_question_dto.freezed.dart';
@@ -9,9 +8,8 @@ class PRFMissionQuestionDTO with _$PRFMissionQuestionDTO {
   factory PRFMissionQuestionDTO({
     required String question,
     @JsonKey(name: 'mission_ulid') required String missionUlid,
-
   }) = _PRFMissionQuestionDTO;
-	
+
   factory PRFMissionQuestionDTO.fromJson(Map<String, dynamic> json) =>
-			_$PRFMissionQuestionDTOFromJson(json);
+      _$PRFMissionQuestionDTOFromJson(json);
 }

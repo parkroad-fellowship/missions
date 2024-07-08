@@ -38,7 +38,6 @@ class _MissionQuestionsViewHandsetState
         return state.maybeWhen(
           orElse: () => const Center(child: CircularProgressIndicator()),
           loaded: (missionQuestions) {
-
             if (missionQuestions.isEmpty) {
               return Center(
                 child: Text(
