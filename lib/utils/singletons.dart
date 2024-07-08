@@ -9,6 +9,7 @@ import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
@@ -207,6 +208,11 @@ class Singletons {
           missionService: getIt(),
           localDBService: getIt(),
           hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetMissionQuestionsCubit>(
+        create: (context) => GetMissionQuestionsCubit(
+          debriefService: getIt(),
         ),
       ),
     ];

@@ -276,5 +276,7 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "missionQuestions": "Mission Questions",
+    "@missionQuestions": {}
 }

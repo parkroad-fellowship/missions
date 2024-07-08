@@ -8,6 +8,7 @@ import 'package:app/features/home/missions/mission_details/widgets/add_debrief_n
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
@@ -246,7 +247,7 @@ class _MyMissionsDetailsPageHandsetState
             const Divider(),
             const SizedBox(height: 16),
             DefaultTabController(
-              length: 4,
+              length: 5,
               child: Column(
                 children: <Widget>[
                   TabBar(
@@ -264,6 +265,7 @@ class _MyMissionsDetailsPageHandsetState
                       Tab(text: l10n.missionGround),
                       Tab(text: l10n.souls),
                       Tab(text: l10n.debriefNotes),
+                      Tab(text: l10n.missionQuestions),
                     ],
                   ),
                   SizedBox(
@@ -274,6 +276,7 @@ class _MyMissionsDetailsPageHandsetState
                         MissionDetailsView(mission: mission),
                         SoulsView(missionUlid: mission.ulid),
                         DebriefNotesView(missionUlid: mission.ulid),
+                        MissionQuestionsView(missionUlid: mission.ulid),
                       ],
                     ),
                   ),
