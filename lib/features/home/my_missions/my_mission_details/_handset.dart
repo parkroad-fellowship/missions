@@ -1,13 +1,16 @@
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_debrief_note/_handset.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_mission_question/add_mission_question.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
@@ -246,7 +249,7 @@ class _MyMissionsDetailsPageHandsetState
             const Divider(),
             const SizedBox(height: 16),
             DefaultTabController(
-              length: 4,
+              length: 5,
               child: Column(
                 children: <Widget>[
                   TabBar(
@@ -264,6 +267,7 @@ class _MyMissionsDetailsPageHandsetState
                       Tab(text: l10n.missionGround),
                       Tab(text: l10n.souls),
                       Tab(text: l10n.debriefNotes),
+                      Tab(text: l10n.missionQuestions),
                     ],
                   ),
                   SizedBox(
@@ -274,6 +278,7 @@ class _MyMissionsDetailsPageHandsetState
                         MissionDetailsView(mission: mission),
                         SoulsView(missionUlid: mission.ulid),
                         DebriefNotesView(missionUlid: mission.ulid),
+                        MissionQuestionsView(missionUlid: mission.ulid),
                       ],
                     ),
                   ),
@@ -283,63 +288,78 @@ class _MyMissionsDetailsPageHandsetState
           ],
         ),
       ),
-      floatingActionButton: _currentTab == 2 || _currentTab == 3
-          ? FloatingActionButton(
-              onPressed: () {
-                if (_currentTab == 2) {
-                  WoltModalSheet.show<void>(
-                    context: context,
-                    pageListBuilder: (modalSheetContext) {
-                      return [
-                        WoltModalSheetPage(
-                          child: SizedBox(
-                            height: MediaQuery.sizeOf(context).height * 0.8,
-                            child: AddSoulView(missionUlid: mission.ulid),
-                          ),
-                        ),
-                      ];
-                    },
-                    maxDialogWidth: 560,
-                    minDialogWidth: 400,
-                    minPageHeight: 0,
-                    maxPageHeight: 0.9,
-                  ).then(
-                    (_) => context
-                        .read<GetSoulsCubit>()
-                        .getSouls(missionUlid: mission.ulid),
-                  );
-                }
-                if (_currentTab == 3) {
-                  WoltModalSheet.show<void>(
-                    context: context,
-                    pageListBuilder: (modalSheetContext) {
-                      return [
-                        WoltModalSheetPage(
-                          child: SizedBox(
-                            height: MediaQuery.sizeOf(context).height * 0.8,
-                            child: AddDebriefNoteViewHandset(
-                              missionUlid: mission.ulid,
+      floatingActionButton:
+          _currentTab == 2 || _currentTab == 3 || _currentTab == 4
+              ? FloatingActionButton(
+                  onPressed: () {
+                    if (_currentTab == 2) {
+                      WoltModalSheet.show<void>(
+                        context: context,
+                        pageListBuilder: (modalSheetContext) {
+                          return [
+                            WoltModalSheetPage(
+                              child: SizedBox(
+                                height: MediaQuery.sizeOf(context).height * 0.8,
+                                child: AddSoulView(missionUlid: mission.ulid),
+                              ),
                             ),
-                          ),
-                        ),
-                      ];
-                    },
-                    maxDialogWidth: 560,
-                    minDialogWidth: 400,
-                    minPageHeight: 0,
-                    maxPageHeight: 0.9,
-                  ).then(
-                    (_) => context
-                        .read<GetDebriefNotesCubit>()
-                        .getDebriefNotes(missionUlid: mission.ulid),
-                  );
-                }
-              },
-              backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
-              tooltip: l10n.recordSoul,
-              child: const Icon(Icons.add, color: Colors.white),
-            )
-          : null,
+                          ];
+                        },
+                      ).then(
+                        (_) => context
+                            .read<GetSoulsCubit>()
+                            .getSouls(missionUlid: mission.ulid),
+                      );
+                    }
+                    if (_currentTab == 3) {
+                      WoltModalSheet.show<void>(
+                        context: context,
+                        pageListBuilder: (modalSheetContext) {
+                          return [
+                            WoltModalSheetPage(
+                              child: SizedBox(
+                                height: MediaQuery.sizeOf(context).height * 0.8,
+                                child: AddDebriefNoteViewHandset(
+                                  missionUlid: mission.ulid,
+                                ),
+                              ),
+                            ),
+                          ];
+                        },
+                      ).then(
+                        (_) => context
+                            .read<GetDebriefNotesCubit>()
+                            .getDebriefNotes(missionUlid: mission.ulid),
+                      );
+                    }
+
+                    if (_currentTab == 4) {
+                      WoltModalSheet.show<void>(
+                        context: context,
+                        pageListBuilder: (modalSheetContext) {
+                          return [
+                            WoltModalSheetPage(
+                              child: SizedBox(
+                                height: MediaQuery.sizeOf(context).height * 0.8,
+                                child: AddMissionQuestionView(
+                                  missionUlid: mission.ulid,
+                                ),
+                              ),
+                            ),
+                          ];
+                        },
+                      ).then(
+                        (_) => context
+                            .read<GetMissionQuestionsCubit>()
+                            .getMissionQuestions(missionUlid: mission.ulid),
+                      );
+                    }
+                  },
+                  backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+                  tooltip: l10n.recordQuestion,
+                  child: const Icon(Icons.add, color: Colors.white),
+                )
+              : null,
     );
   }
 }

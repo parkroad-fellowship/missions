@@ -259,10 +259,6 @@ class _StudentEnquiryRepliesPageHandsetState
               ),
             ];
           },
-          maxDialogWidth: 560,
-          minDialogWidth: 400,
-          minPageHeight: 0,
-          maxPageHeight: 0.9,
         ),
         backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
         child: const Icon(Icons.add, color: Colors.white),

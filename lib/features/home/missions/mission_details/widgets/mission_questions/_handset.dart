@@ -1,11 +1,11 @@
-import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DebriefNotesViewHandset extends StatefulWidget {
-  const DebriefNotesViewHandset({
+class MissionQuestionsViewHandset extends StatefulWidget {
+  const MissionQuestionsViewHandset({
     required this.missionUlid,
     super.key,
   });
@@ -13,18 +13,19 @@ class DebriefNotesViewHandset extends StatefulWidget {
   final String missionUlid;
 
   @override
-  State<DebriefNotesViewHandset> createState() =>
-      _DebriefNotesViewHandsetState();
+  State<MissionQuestionsViewHandset> createState() =>
+      _MissionQuestionsViewHandsetState();
 }
 
-class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
+class _MissionQuestionsViewHandsetState
+    extends State<MissionQuestionsViewHandset> {
   String get missionUlid => widget.missionUlid;
 
   @override
   void initState() {
     context
-        .read<GetDebriefNotesCubit>()
-        .getDebriefNotes(missionUlid: missionUlid);
+        .read<GetMissionQuestionsCubit>()
+        .getMissionQuestions(missionUlid: missionUlid);
     super.initState();
   }
 
@@ -32,12 +33,12 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<GetDebriefNotesCubit, GetDebriefNotesState>(
+    return BlocBuilder<GetMissionQuestionsCubit, GetMissionQuestionsState>(
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => const Center(child: CircularProgressIndicator()),
-          loaded: (debriefNotes) {
-            if (debriefNotes.isEmpty) {
+          loaded: (missionQuestions) {
+            if (missionQuestions.isEmpty) {
               return Center(
                 child: Text(
                   l10n.noSubscribers,
@@ -54,13 +55,14 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
             return ListView.separated(
               shrinkWrap: true,
               physics: const ScrollPhysics(),
-              itemCount: debriefNotes.length,
+              itemCount: missionQuestions.length,
               separatorBuilder: (context, index) => const Divider(),
               itemBuilder: (context, index) {
-                final debriefNote = debriefNotes[index];
+                final missionQuestion = missionQuestions[index];
                 return ListTile(
-                  title: Text(debriefNote.note),
-                  subtitle: Text(Misc.formatDateTime(debriefNote.createdAt)),
+                  title: Text(missionQuestion.question),
+                  subtitle:
+                      Text(Misc.formatDateTime(missionQuestion.createdAt)),
                   onTap: () {},
                 );
               },
