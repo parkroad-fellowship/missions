@@ -7,8 +7,11 @@ import 'package:app/features/home/my_missions/my_missions.dart';
 import 'package:app/features/home/student_enquiries/student_enquiries.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class LandingPageHandset extends StatefulWidget {
   const LandingPageHandset({super.key});
@@ -18,8 +21,6 @@ class LandingPageHandset extends StatefulWidget {
 }
 
 class _LandingPageHandsetState extends State<LandingPageHandset> {
-  int _currentIndex = 0;
-
   @override
   void initState() {
     context.read<GetClassGroupsCubit>().getClassGroups();
@@ -28,10 +29,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
   }
 
   final List<Widget> _pages = const [
-    MissionsPage(),
     MyMissionsPage(),
-    LMSPage(),
-    StudentEnquiriesPage(),
     AccountPage(),
   ];
 
@@ -42,99 +40,146 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: _pages[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          selectedIconTheme: IconThemeData(
-            color: AppTheme.appTheme().kBlackColor,
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 64.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 80.h,
+                  ),
+                  child: Text(
+                    'I want to',
+                    style: CustomTextTheme.customTextTheme()
+                        .displayLarge
+                        ?.copyWith(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 88.sp,
+                        ),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                HomeActionCard(
+                  title: l10n.goToAMission,
+                  assetPath: 'assets/svgs/missions.svg',
+                  onTap: () =>
+                      context.router.pushNamed(PRFSuperAppRouter.missionsRoute),
+                ),
+                SizedBox(height: 32.h),
+                HomeActionCard(
+                  title: l10n.learnSomething,
+                  assetPath: 'assets/svgs/lms.svg',
+                  onTap: () =>
+                      context.router.pushNamed(PRFSuperAppRouter.lmsRoute),
+                ),
+                SizedBox(height: 32.h),
+                HomeActionCard(
+                  title: l10n.ministerToAStudent,
+                  assetPath: 'assets/svgs/student_ministry.svg',
+                  onTap: () => context.router
+                      .pushNamed(PRFSuperAppRouter.studentEnquiriesRoute),
+                ),
+              ],
+            ),
           ),
-          selectedItemColor: Colors.black,
-          backgroundColor: Colors.white,
-          currentIndex: _currentIndex,
-          onTap: (int index) => setState(() => _currentIndex = index),
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.search,
-                    color: _currentIndex == 0
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.missions,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.list,
-                    color: _currentIndex == 1
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.myMissions,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.menu_book_rounded,
-                    color: _currentIndex == 2
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.learn,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.online_prediction_outlined,
-                    color: _currentIndex == 3
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.studentEnquiries,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.person,
-                    color: _currentIndex == 4
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.myAccount,
-            ),
-          ],
         ),
+      ),
+    );
+  }
+}
+
+class HomeActionCard extends StatelessWidget {
+  const HomeActionCard({
+    required this.title,
+    required this.assetPath,
+    this.onTap,
+    super.key,
+  });
+
+  final String title;
+  final String assetPath;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          Container(
+            width: width,
+            padding: EdgeInsets.symmetric(
+              horizontal: 100.w,
+              vertical: 80.h,
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            decoration: BoxDecoration(
+              color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(1),
+              borderRadius: BorderRadius.circular(48.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  assetPath,
+                  height: 250.h,
+                ),
+                SizedBox(height: 100.h),
+                Text(
+                  title,
+                  style:
+                      CustomTextTheme.customTextTheme().displayLarge?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: SizedBox(
+                height: 225.h,
+                width: 210.w,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 140.r,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppTheme.appTheme().kPrimaryColorV2,
+                  shape: BoxShape.circle,
+                ),
+                child: SizedBox(
+                  width: 230.w,
+                  height: 230.h,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.play_arrow_rounded,
+                      color: Colors.white,
+                      size: 400.dg,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

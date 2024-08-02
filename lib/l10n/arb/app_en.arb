@@ -286,5 +286,11 @@
     "recordQuestion": "Record question",
     "@recordQuestion": {},
     "noNotes": "No notes",
-    "@noNotes": {}
+    "@noNotes": {},
+    "goToAMission": "Go for a mission",
+    "@goToAMission": {},
+    "learnSomething": "Learn something",
+    "@learnSomething": {},
+    "ministerToAStudent": "Minister to a student",
+    "@ministerToAStudent": {}
 }

@@ -26,6 +26,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.10+1
   flutter_widget_from_html: ^0.15.1
   freezed_annotation: ^2.4.4
@@ -66,3 +67,4 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/svgs/
