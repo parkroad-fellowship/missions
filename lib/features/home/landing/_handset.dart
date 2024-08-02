@@ -9,6 +9,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -64,25 +65,52 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                HomeActionCard(
-                  title: l10n.goToAMission,
-                  assetPath: 'assets/svgs/missions.svg',
-                  onTap: () =>
-                      context.router.pushNamed(PRFSuperAppRouter.missionsRoute),
+                Animate(
+                  effects: [
+                    MoveEffect(
+                      duration: .5.seconds,
+                      curve: Curves.easeOutQuad,
+                      begin: const Offset(-160, 0),
+                    ),
+                  ],
+                  child: HomeActionCard(
+                    title: l10n.goToAMission,
+                    assetPath: 'assets/svgs/missions.svg',
+                    onTap: () => context.router
+                        .pushNamed(PRFSuperAppRouter.missionsRoute),
+                  ),
                 ),
                 SizedBox(height: 32.h),
-                HomeActionCard(
-                  title: l10n.learnSomething,
-                  assetPath: 'assets/svgs/lms.svg',
-                  onTap: () =>
-                      context.router.pushNamed(PRFSuperAppRouter.lmsRoute),
+                Animate(
+                  effects: [
+                    MoveEffect(
+                      duration: .5.seconds,
+                      curve: Curves.easeOutQuad,
+                      begin: const Offset(160, 0),
+                    ),
+                  ],
+                  child: HomeActionCard(
+                    title: l10n.learnSomething,
+                    assetPath: 'assets/svgs/lms.svg',
+                    onTap: () =>
+                        context.router.pushNamed(PRFSuperAppRouter.lmsRoute),
+                  ),
                 ),
                 SizedBox(height: 32.h),
-                HomeActionCard(
-                  title: l10n.ministerToAStudent,
-                  assetPath: 'assets/svgs/student_ministry.svg',
-                  onTap: () => context.router
-                      .pushNamed(PRFSuperAppRouter.studentEnquiriesRoute),
+                Animate(
+                  effects: [
+                    MoveEffect(
+                      duration: .5.seconds,
+                      curve: Curves.easeOutQuad,
+                      begin: const Offset(-160, 0),
+                    ),
+                  ],
+                  child: HomeActionCard(
+                    title: l10n.ministerToAStudent,
+                    assetPath: 'assets/svgs/student_ministry.svg',
+                    onTap: () => context.router
+                        .pushNamed(PRFSuperAppRouter.studentEnquiriesRoute),
+                  ),
                 ),
               ],
             ),
