@@ -40,7 +40,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
             if (debriefNotes.isEmpty) {
               return Center(
                 child: Text(
-                  l10n.noSubscribers,
+                  l10n.noNotes,
                   style:
                       CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
                             fontSize: 14,

@@ -284,5 +284,7 @@
     "questionRecorded": "This question has been recorded",
     "@questionRecorded": {},
     "recordQuestion": "Record question",
-    "@recordQuestion": {}
+    "@recordQuestion": {},
+    "noNotes": "No notes",
+    "@noNotes": {}
 }
