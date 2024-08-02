@@ -28,7 +28,6 @@ class AccountPageHandset extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: const SizedBox.shrink(),
         actions: <Widget>[
           BlocListener<SignOutCubit, SignOutState>(
             listener: (context, state) {

@@ -287,6 +287,16 @@
     "@recordQuestion": {},
     "noNotes": "No notes",
     "@noNotes": {},
+    "hello": "Hello, {name}",
+    "@hello": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "iWantTo": "Right now, I want to",
+    "@iWantTo": {},
     "goToAMission": "Go for a mission",
     "@goToAMission": {},
     "learnSomething": "Learn something",

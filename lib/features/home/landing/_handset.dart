@@ -1,12 +1,9 @@
-import 'package:app/features/home/account/account.dart';
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
-import 'package:app/features/home/lms/lms.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/missions.dart';
-import 'package:app/features/home/my_missions/my_missions.dart';
-import 'package:app/features/home/student_enquiries/student_enquiries.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/notification_bell.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -29,11 +26,6 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
     super.initState();
   }
 
-  final List<Widget> _pages = const [
-    MyMissionsPage(),
-    AccountPage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -47,14 +39,57 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 64.h),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 80.h,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => context.router.pushNamed(
+                          PRFSuperAppRouter.accountRoute,
+                        ),
+                        child: CircleAvatar(
+                          radius: 70.r,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            child: Text(
+                              Misc.getUserNameInitials(
+                                getIt<HiveService>().retrieveProfile()!.name,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 32.w),
+                      Text(
+                        l10n.hello(
+                          getIt<HiveService>()
+                              .retrieveProfile()!
+                              .member!
+                              .lastName,
+                        ),
+                        style: CustomTextTheme.customTextTheme()
+                            .displayLarge
+                            ?.copyWith(fontSize: 60.sp),
+                      ),
+                      const Spacer(),
+                      Animate(
+                        effects: [
+                          ShimmerEffect(
+                            duration: 1.seconds,
+                          ),
+                          const ShakeEffect(),
+                        ],
+                        child: const NotificationBell(),
+                      ),
+                    ],
                   ),
+                ),
+                SizedBox(height: 48.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w) +
+                      EdgeInsets.only(bottom: 80.h),
                   child: Text(
-                    'I want to',
+                    l10n.iWantTo,
                     style: CustomTextTheme.customTextTheme()
                         .displayLarge
                         ?.copyWith(
