@@ -12,6 +12,7 @@ dependencies:
   awesome_notifications_core: ^0.9.3
   bloc: ^8.1.4
   build_version: ^2.1.1
+  collection: ^1.18.0
   dart_pusher_channels: ^1.2.2+1
   dio: ^5.5.0
   extended_image: ^8.2.1

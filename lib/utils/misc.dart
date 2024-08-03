@@ -17,6 +17,8 @@ class Misc {
 
   static String formatTime(String time) =>
       DateFormat.jm().format(DateTime.parse('2012-02-27 $time'));
+  static String formatTimeFromDateTime(DateTime dateTime) =>
+      DateFormat.jm().format(dateTime);
 
   static String getUserNameInitials(String userName) {
     var initials = 'U';
