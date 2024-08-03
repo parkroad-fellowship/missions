@@ -9,14 +9,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EnquiriesPageHandset extends StatefulWidget {
-  const EnquiriesPageHandset({super.key});
+class LearnerEnquiriesPageHandset extends StatefulWidget {
+  const LearnerEnquiriesPageHandset({super.key});
 
   @override
-  State<EnquiriesPageHandset> createState() => _EnquiriesPageHandsetState();
+  State<LearnerEnquiriesPageHandset> createState() =>
+      _LearnerEnquiriesPageHandsetState();
 }
 
-class _EnquiriesPageHandsetState extends State<EnquiriesPageHandset> {
+class _LearnerEnquiriesPageHandsetState
+    extends State<LearnerEnquiriesPageHandset> {
   @override
   void initState() {
     context.read<GetStudentEnquiriesCubit>().getStudentEnquiries();
