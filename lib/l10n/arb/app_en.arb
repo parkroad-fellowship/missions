@@ -72,7 +72,7 @@
     "@missionDetails": {},
     "sendMe": "Send Me",
     "@sendMe": {},
-    "going": "Missionaries",
+    "going": "Missioners",
     "@going": {},
     "missionGround": "Mission Ground",
     "@missionGround": {},
@@ -140,7 +140,7 @@
     "@successfullyWithdrawn": {},
     "withdraw": "Withdraw",
     "@withdraw": {},
-    "missionariesNeeded": "Missionaries Needed: {missionariesNeeded}",
+    "missionariesNeeded": "Missioners Needed: {missionariesNeeded}",
     "@missionariesNeeded": {
         "placeholders": {
             "missionariesNeeded": {
@@ -148,7 +148,7 @@
             }
         }
     },
-    "missionariesRequested": "Missionaries Requested: {missionariesRequested}",
+    "missionariesRequested": "Missioners Requested: {missionariesRequested}",
     "@missionariesRequested": {
         "placeholders": {
             "missionariesRequested": {

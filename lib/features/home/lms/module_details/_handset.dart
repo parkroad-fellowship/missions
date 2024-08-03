@@ -243,17 +243,14 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
-                      flex: 8,
-                      child: Text(
-                        lessonModule.lesson.name!,
-                        style: CustomTextTheme.customTextTheme()
-                            .displayLarge
-                            ?.copyWith(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
+                    Text(
+                      lessonModule.lesson.name!,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     const Spacer(),
                     Container(
