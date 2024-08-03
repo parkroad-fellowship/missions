@@ -80,7 +80,8 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       padding: EdgeInsets.only(right: 16.w),
                       child: StreamBuilder<PRFLocalCourseModule>(
                         stream: getIt<LocalDBService>().getCourseModule(
-                            courseModuleUlid: courseModuleUlid),
+                          courseModuleUlid: courseModuleUlid,
+                        ),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return const Center(
@@ -253,32 +254,31 @@ class ModuleDetailsActionCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                     Container(
-                        alignment: Alignment.centerRight,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 32.w,
-                          vertical: 4.h,
-                        ),
-                        child: Icon(
-                          PRFCompletionStatus.fromIndex(
-                            lessonModule.lessonMember?.completionStatus ?? 0,
-                          ).icon,
-                        ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
                       ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 32.w,
+                        vertical: 4.h,
+                      ),
+                      child: Icon(
+                        PRFCompletionStatus.fromIndex(
+                          lessonModule.lessonMember?.completionStatus ?? 0,
+                        ).icon,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 16.h),
                 Text(
                   lessonModule.lesson.description!,
-                  style: CustomTextTheme.customTextTheme()
-                      .headlineSmall
-                      ?.copyWith(
-                        color: AppTheme.appTheme().kBlackColor,
-                      ),
+                  style:
+                      CustomTextTheme.customTextTheme().headlineSmall?.copyWith(
+                            color: AppTheme.appTheme().kBlackColor,
+                          ),
                 ),
               ],
             ),
