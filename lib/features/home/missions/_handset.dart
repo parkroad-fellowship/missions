@@ -1,6 +1,6 @@
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
-import 'package:app/features/home/my_missions/cubit/get_member_mission_subscriptions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
@@ -276,7 +276,7 @@ class MissionActionCard extends StatelessWidget {
             width: width,
             padding: EdgeInsets.symmetric(
               horizontal: 50.w,
-              vertical: 80.h,
+              vertical: 60.h,
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(

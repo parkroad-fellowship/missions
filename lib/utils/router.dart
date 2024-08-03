@@ -60,10 +60,6 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
         ),
 
         // Course Work
-        AutoRoute(
-          page: MyMissionsDetailsRoute.page,
-          path: myMissionDetailsRoute,
-        ),
         AutoRoute(page: CourseDetailsRoute.page, path: courseDetailsRoute),
         AutoRoute(page: ModuleDetailsRoute.page, path: moduleDetailsRoute),
         AutoRoute(page: LessonDetailsRoute.page, path: lessonDetailsRoute),
