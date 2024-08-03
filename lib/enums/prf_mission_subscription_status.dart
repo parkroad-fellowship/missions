@@ -1,7 +1,8 @@
-enum PRFMissionSubscriptionStatus { pending, approved, withdrawn }
+enum PRFMissionSubscriptionStatus {
+  pending,
+  approved,
+  withdrawn;
 
-extension PRFMissionSubscriptionStatusExtension
-    on PRFMissionSubscriptionStatus {
   int get apiKey {
     switch (this) {
       case PRFMissionSubscriptionStatus.pending:

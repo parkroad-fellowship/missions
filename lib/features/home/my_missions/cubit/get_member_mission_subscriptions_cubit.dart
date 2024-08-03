@@ -28,7 +28,6 @@ class GetMemberMissionSubscriptionsCubit
         includes: 'mission.missionType,mission.school,'
             'mission.school.schoolContacts.contactType',
         memberUlid: member.ulid,
-        upcoming: true,
       );
       emit(
         GetMemberMissionSubscriptionsState.loaded(

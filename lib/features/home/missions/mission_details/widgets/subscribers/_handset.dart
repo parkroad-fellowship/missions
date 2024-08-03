@@ -152,7 +152,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                                 ),
                               ),
                               Text(
-                                PRFMissionSubscriptionStatusExtension.fromIndex(
+                                PRFMissionSubscriptionStatus.fromIndex(
                                   subscription.status,
                                 ).name,
                                 style:
