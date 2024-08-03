@@ -1,10 +1,12 @@
-import 'package:app/enums/prf_mission_role.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SubscribersViewHandset extends StatefulWidget {
@@ -53,123 +55,102 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
               shrinkWrap: true,
               physics: const ScrollPhysics(),
               itemCount: subscriptions.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                final subscription = subscriptions[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Flexible(
-                          flex: 8,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Card(
-                                    elevation: 0,
-                                    color: AppTheme.appTheme()
-                                        .kPrimaryColorV2Accent,
-                                    surfaceTintColor: AppTheme.appTheme()
-                                        .kPrimaryColorV2Accent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 5,
-                                        horizontal: 8,
-                                      ),
-                                      child: Text(
-                                        subscription.member!.fullName,
-                                        style: CustomTextTheme.customTextTheme()
-                                            .headlineSmall!
-                                            .copyWith(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppTheme.appTheme()
-                                                  .kPrimaryColorV2,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                  if (subscription.missionRole !=
-                                      PRFMissionRole.member.apiKey)
-                                    Text(
-                                      PRFMissionRoleExtension.fromIndex(
-                                        subscription.missionRole,
-                                      ).name,
-                                      style: CustomTextTheme.customTextTheme()
-                                          .headlineSmall!
-                                          .copyWith(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppTheme.appTheme()
-                                                .kPrimaryColorV2,
-                                          ),
-                                    ),
-                                ],
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      l10n.comingFrom(
-                                        subscription.member!.residence,
-                                      ),
-                                      overflow: TextOverflow.clip,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  final uri = Uri(
-                                    scheme: 'tel',
-                                    path: subscription.member!.phoneNumber,
-                                  );
-                                  if (await canLaunchUrl(uri)) {
-                                    await launchUrl(
-                                      uri,
-                                      mode: LaunchMode.externalApplication,
-                                    );
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.call,
-                                  color: AppTheme.appTheme().kPrimaryColorV2,
-                                ),
-                              ),
-                              Text(
-                                PRFMissionSubscriptionStatusExtension.fromIndex(
-                                  subscription.status,
-                                ).name,
-                                style:
-                                    CustomTextTheme.customTextTheme().bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+              separatorBuilder: (context, index) => SizedBox(height: 16.h),
+              itemBuilder: (context, index) =>
+                  SubscriberActionCard(subscription: subscriptions[index]),
             );
           },
         );
       },
+    );
+  }
+}
+
+class SubscriberActionCard extends StatelessWidget {
+  const SubscriberActionCard({
+    required this.subscription,
+    super.key,
+  });
+
+  final PRFMissionSubscription subscription;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    return Animate(
+      effects: const [
+        SaturateEffect(),
+      ],
+      child: Stack(
+        children: [
+          Container(
+            width: width,
+            padding: EdgeInsets.symmetric(
+              horizontal: 50.w,
+              vertical: 60.h,
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            decoration: BoxDecoration(
+              color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(.3),
+              borderRadius: BorderRadius.circular(48.r),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      subscription.member!.fullName,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      PRFMissionSubscriptionStatus.fromIndex(
+                        subscription.status,
+                      ).name,
+                    ),
+                    SizedBox(height: 16.h),
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  alignment: Alignment.centerRight,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 32.w,
+                    vertical: 4.h,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.call),
+                    color: AppTheme.appTheme().kPrimaryColorV2,
+                    onPressed: () async {
+                      final uri = Uri(
+                        scheme: 'tel',
+                        path: subscription.member!.phoneNumber,
+                      );
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(
+                          uri,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -9,16 +9,21 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
   static const String registerStudentRoute = '/register-student';
 
   // Landing
+  static const String missionsRoute = '/missions';
+  static const String lmsRoute = '/lms';
+  static const String studentEnquiriesRoute = '/student-enquiries';
+  static const String accountRoute = '/account';
   static const String announcementsRoute = '/announcements';
   static const String landingRoute = '/landing';
-  static const String profileRoute = '/profile';
   static const String missionDetailsRoute = '/mission-details';
   static const String myMissionDetailsRoute = '/my-mission-details';
   static const String repliesRoute = '/replies';
 
   // Student Landing
   static const String studentLandingRoute = '/student-landing';
-  static const String studentProfileRoute = '/student-profile';
+  static const String learnerEnquiriesRoute = '/learner-enquiries';
+  static const String learnerFaqs = '/learner-faqs';
+  static const String studentAccountRoute = '/student-account';
   static const String studentRepliesRoute = '/student-replies';
   static const String createStudentEnquiryRoute = '/create-student-enquiry';
 
@@ -35,15 +40,26 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
         AutoRoute(page: StudentIntroRoute.page, path: registerStudentRoute),
 
         // Landing
+        AutoRoute(page: MissionsRoute.page, path: missionsRoute),
+        AutoRoute(page: LMSRoute.page, path: lmsRoute),
+        AutoRoute(
+          page: StudentEnquiriesRoute.page,
+          path: studentEnquiriesRoute,
+        ),
+        AutoRoute(page: AccountRoute.page, path: accountRoute),
         AutoRoute(page: AnnouncementsRoute.page, path: announcementsRoute),
         AutoRoute(page: LandingRoute.page, path: landingRoute),
-        AutoRoute(page: ProfileRoute.page, path: profileRoute),
         AutoRoute(page: MissionsDetailsRoute.page, path: missionDetailsRoute),
         AutoRoute(page: StudentEnquiryRepliesRoute.page, path: repliesRoute),
 
         // Student Landing
         AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),
-        AutoRoute(page: StudentProfileRoute.page, path: studentProfileRoute),
+        AutoRoute(
+          page: LearnerEnquiriesRoute.page,
+          path: learnerEnquiriesRoute,
+        ),
+        AutoRoute(page: FAQRoute.page, path: learnerFaqs),
+        AutoRoute(page: StudentAccountRoute.page, path: studentAccountRoute),
         AutoRoute(page: EnquiryRepliesRoute.page, path: studentRepliesRoute),
         AutoRoute(
           page: CreateEnquiryRoute.page,
@@ -51,10 +67,6 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
         ),
 
         // Course Work
-        AutoRoute(
-          page: MyMissionsDetailsRoute.page,
-          path: myMissionDetailsRoute,
-        ),
         AutoRoute(page: CourseDetailsRoute.page, path: courseDetailsRoute),
         AutoRoute(page: ModuleDetailsRoute.page, path: moduleDetailsRoute),
         AutoRoute(page: LessonDetailsRoute.page, path: lessonDetailsRoute),

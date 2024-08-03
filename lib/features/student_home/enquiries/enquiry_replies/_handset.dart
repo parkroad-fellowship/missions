@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/features/student_home/enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -7,8 +8,11 @@ import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class EnquiryRepliesPageHandset extends StatefulWidget {
@@ -58,210 +62,209 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n.replies,
-          style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(l10n.yourQuestion),
-                  Text(enquiry.content),
-                ],
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.replies.toUpperCase(),
-                style:
-                    CustomTextTheme.customTextTheme().headlineMedium!.copyWith(
-                          color: AppTheme.appTheme().kAccent2BackgroundColor,
-                          fontWeight: FontWeight.w600,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            // Start Navigation Bar
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              pinned: true,
+              flexibleSpace: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 80.w),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          width: 1.w,
                         ),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back_ios),
+                        padding: const EdgeInsets.only(left: 8),
+                        onPressed: () => context.router.popUntilRouteWithPath(
+                          PRFSuperAppRouter.learnerEnquiriesRoute,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      l10n.replies,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(fontSize: 80.sp),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
               ),
             ),
-            BlocBuilder<GetStudentEnquiryRepliesCubit,
-                GetStudentEnquiryRepliesState>(
-              builder: (context, state) => state.maybeWhen(
-                orElse: () => const Center(child: LinearProgressIndicator()),
-                error: (message) => Center(child: Text(message)),
-                loaded: SizedBox.shrink,
-              ),
-            ),
+            // End Navigation Bar
+            SliverToBoxAdapter(child: SizedBox(height: 48.h)),
             StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
               stream: getIt<LocalDBService>()
                   .getStudentEnquiryReplies(studentEnquiryUlid: enquiry.ulid),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final enquiryReplies = snapshot.data;
-
-                if (enquiryReplies != null && enquiryReplies.isEmpty) {
-                  return RefreshIndicator(
-                    onRefresh: () => context
-                        .read<GetStudentEnquiryRepliesCubit>()
-                        .getStudentEnquiryReplies(enquiryUlid: enquiry.ulid),
-                    child: Column(
-                      children: [
-                        const Icon(Icons.directions_walk),
-                        Center(
-                          child: Text(
-                            l10n.noReplies,
-                            style: CustomTextTheme.customTextTheme()
-                                .headlineMedium!
-                                .copyWith(
-                                  color: AppTheme.appTheme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
 
-                return RefreshIndicator(
-                  onRefresh: () => context
-                      .read<GetStudentEnquiryRepliesCubit>()
-                      .getStudentEnquiryReplies(enquiryUlid: enquiry.ulid),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: enquiryReplies!.length,
-                    itemBuilder: (context, index) {
-                      final enquiryReply = enquiryReplies[index];
-                      return ListTile(
-                        dense: true,
-                        minLeadingWidth: 10.5,
-                        contentPadding: const EdgeInsets.only(left: 20),
-                        visualDensity: VisualDensity.compact,
-                        subtitle: Text(
-                          enquiryReply.content,
-                          style: CustomTextTheme.customTextTheme()
-                              .bodySmall!
-                              .copyWith(
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                          textAlign: enquiryReply.isStudent
-                              ? TextAlign.right
-                              : TextAlign.left,
-                        ),
-                      );
-                    },
+                final enquiryReplies = [
+                  // Add the enquiry as the first item
+                  PRFLocalStudentEnquiryReply(
+                    ulid: enquiry.ulid,
+                    studentEnquiryUlid: enquiry.ulid,
+                    content: enquiry.content,
+                    createdAt: enquiry.createdAt,
+                    commentorableType: PRFMorphType.student.apiKey,
+                    isStudent: true,
                   ),
+                  if (snapshot.data != null) ...snapshot.data!,
+                ];
+
+                return SliverList.builder(
+                  itemCount: enquiryReplies.length,
+                  itemBuilder: (context, index) {
+                    final enquiryReply = enquiryReplies[index];
+
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32.w),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 16.h) +
+                            EdgeInsets.only(
+                              left: enquiryReply.isStudent ? 88.w : 0,
+                              right: enquiryReply.isStudent ? 0 : 88.w,
+                            ),
+                        width: MediaQuery.sizeOf(context).width * 0.5,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 48.w,
+                          vertical: 32.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: enquiryReply.isStudent
+                              ? AppTheme.appTheme()
+                                  .kSecondaryColorV2
+                                  .withOpacity(.2)
+                              : AppTheme.appTheme().kGreyColor.withOpacity(.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(enquiryReply.content),
+                      ),
+                    );
+                  },
                 );
               },
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => WoltModalSheet.show<void>(
-          context: context,
-          pageListBuilder: (modalSheetContext) {
-            return [
-              WoltModalSheetPage(
-                child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 16),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: FormFieldLabel(
-                            label: l10n.reply,
-                            isRequired: true,
-                            color: AppTheme.appTheme().kBlackColor,
+      floatingActionButton: Animate(
+        effects: const [
+          FadeEffect(
+            duration: Duration(milliseconds: 500),
+            delay: Duration(milliseconds: 500),
+          ),
+          ShakeEffect(
+            duration: Duration(milliseconds: 500),
+            delay: Duration(milliseconds: 500),
+          ),
+        ],
+        child: FloatingActionButton(
+          onPressed: () => WoltModalSheet.show<void>(
+            context: context,
+            pageListBuilder: (modalSheetContext) {
+              return [
+                WoltModalSheetPage(
+                  child: SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: FormFieldLabel(
+                              label: l10n.reply,
+                              isRequired: true,
+                              color: AppTheme.appTheme().kBlackColor,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: FormFieldLabel(
-                            label: l10n.rules,
-                            isRequired: true,
-                            color: AppTheme.appTheme().kErrorColor,
+                          const SizedBox(height: 8),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: FormFieldLabel(
+                              label: l10n.rules,
+                              isRequired: true,
+                              color: AppTheme.appTheme().kErrorColor,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 6),
-                        InputFormField(
-                          hintText: l10n.reply,
-                          controller: _enquiryReplyController,
-                          isTextBox: true,
-                        ),
-                        const SizedBox(height: 16),
-                        BlocConsumer<CreateStudentEnquiryReplyCubit,
-                            CreateStudentEnquiryReplyState>(
-                          listener: (context, state) {
-                            state.mapOrNull(
-                              loading: (_) {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                              },
-                              loaded: (_) {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                _enquiryReplyController.clear();
-                                Navigator.of(context).pop();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(l10n.replySent)),
-                                );
-                              },
-                            );
-                          },
-                          builder: (context, state) {
-                            return state.maybeWhen(
-                              orElse: () => PrimaryButton(
-                                title: _isLoading ? l10n.replying : l10n.reply,
-                                disabled: _isLoading,
-                                isLoading: _isLoading ? true : null,
-                                onPressed: () async {
-                                  await context
-                                      .read<CreateStudentEnquiryReplyCubit>()
-                                      .createStudentEnquiryReply(
-                                        studentEnquiryUlid: enquiry.ulid,
-                                        content: _enquiryReplyController.text,
-                                      );
+                          const SizedBox(height: 6),
+                          InputFormField(
+                            hintText: l10n.reply,
+                            controller: _enquiryReplyController,
+                            isTextBox: true,
+                          ),
+                          const SizedBox(height: 16),
+                          BlocConsumer<CreateStudentEnquiryReplyCubit,
+                              CreateStudentEnquiryReplyState>(
+                            listener: (context, state) {
+                              state.mapOrNull(
+                                loading: (_) {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
                                 },
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                                loaded: (_) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  _enquiryReplyController.clear();
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(l10n.replySent)),
+                                  );
+                                },
+                              );
+                            },
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => PrimaryButton(
+                                  title:
+                                      _isLoading ? l10n.replying : l10n.reply,
+                                  disabled: _isLoading,
+                                  isLoading: _isLoading ? true : null,
+                                  onPressed: () async {
+                                    await context
+                                        .read<CreateStudentEnquiryReplyCubit>()
+                                        .createStudentEnquiryReply(
+                                          studentEnquiryUlid: enquiry.ulid,
+                                          content: _enquiryReplyController.text,
+                                        );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ];
-          },
+              ];
+            },
+          ),
+          backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+          child: const Icon(Icons.add, color: Colors.white),
         ),
-        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
-        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

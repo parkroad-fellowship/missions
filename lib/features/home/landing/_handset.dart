@@ -1,14 +1,14 @@
-import 'package:app/features/home/account/account.dart';
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
-import 'package:app/features/home/lms/lms.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/missions.dart';
-import 'package:app/features/home/my_missions/my_missions.dart';
-import 'package:app/features/home/student_enquiries/student_enquiries.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LandingPageHandset extends StatefulWidget {
   const LandingPageHandset({super.key});
@@ -18,22 +18,12 @@ class LandingPageHandset extends StatefulWidget {
 }
 
 class _LandingPageHandsetState extends State<LandingPageHandset> {
-  int _currentIndex = 0;
-
   @override
   void initState() {
     context.read<GetClassGroupsCubit>().getClassGroups();
     context.read<GetAnnouncementsCubit>().getAnnouncements();
     super.initState();
   }
-
-  final List<Widget> _pages = const [
-    MissionsPage(),
-    MyMissionsPage(),
-    LMSPage(),
-    StudentEnquiriesPage(),
-    AccountPage(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,98 +32,146 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: _pages[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          selectedIconTheme: IconThemeData(
-            color: AppTheme.appTheme().kBlackColor,
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => context.router.pushNamed(
+                          PRFSuperAppRouter.accountRoute,
+                        ),
+                        child: CircleAvatar(
+                          radius: 70.r,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            child: Text(
+                              Misc.getUserNameInitials(
+                                getIt<HiveService>().retrieveProfile()!.name,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 32.w),
+                      Text(
+                        l10n.hello(
+                          getIt<HiveService>()
+                              .retrieveProfile()!
+                              .member!
+                              .lastName,
+                        ),
+                        style: CustomTextTheme.customTextTheme()
+                            .displayLarge
+                            ?.copyWith(fontSize: 60.sp),
+                      ),
+                      const Spacer(),
+                      Animate(
+                        effects: [
+                          ShimmerEffect(
+                            duration: 1.seconds,
+                          ),
+                          const ShakeEffect(),
+                        ],
+                        child: GestureDetector(
+                          onTap: () => context.router
+                              .pushNamed(PRFSuperAppRouter.announcementsRoute),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                width: 1.w,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 70.r,
+                              backgroundColor: Colors.transparent,
+                              child: const Badge(
+                                child: Icon(
+                                  Icons.notifications_none,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 48.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w) +
+                      EdgeInsets.only(bottom: 80.h),
+                  child: Text(
+                    l10n.iWantTo,
+                    style: CustomTextTheme.customTextTheme()
+                        .displayLarge
+                        ?.copyWith(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 88.sp,
+                        ),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Animate(
+                  effects: [
+                    MoveEffect(
+                      duration: .5.seconds,
+                      curve: Curves.easeOutQuad,
+                      begin: const Offset(-160, 0),
+                    ),
+                  ],
+                  child: HomeActionCard(
+                    title: l10n.goToAMission,
+                    assetPath: 'assets/svgs/missions.svg',
+                    onTap: () => context.router
+                        .pushNamed(PRFSuperAppRouter.missionsRoute),
+                  ),
+                ),
+                SizedBox(height: 32.h),
+                Animate(
+                  effects: [
+                    MoveEffect(
+                      duration: .5.seconds,
+                      curve: Curves.easeOutQuad,
+                      begin: const Offset(160, 0),
+                    ),
+                  ],
+                  child: HomeActionCard(
+                    title: l10n.learnSomething,
+                    assetPath: 'assets/svgs/lms.svg',
+                    onTap: () =>
+                        context.router.pushNamed(PRFSuperAppRouter.lmsRoute),
+                  ),
+                ),
+                SizedBox(height: 32.h),
+                Animate(
+                  effects: [
+                    MoveEffect(
+                      duration: .5.seconds,
+                      curve: Curves.easeOutQuad,
+                      begin: const Offset(-160, 0),
+                    ),
+                  ],
+                  child: HomeActionCard(
+                    title: l10n.ministerToAStudent,
+                    assetPath: 'assets/svgs/student_ministry.svg',
+                    onTap: () => context.router
+                        .pushNamed(PRFSuperAppRouter.studentEnquiriesRoute),
+                  ),
+                ),
+              ],
+            ),
           ),
-          selectedItemColor: Colors.black,
-          backgroundColor: Colors.white,
-          currentIndex: _currentIndex,
-          onTap: (int index) => setState(() => _currentIndex = index),
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.search,
-                    color: _currentIndex == 0
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.missions,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.list,
-                    color: _currentIndex == 1
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.myMissions,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.menu_book_rounded,
-                    color: _currentIndex == 2
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.learn,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.online_prediction_outlined,
-                    color: _currentIndex == 3
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.studentEnquiries,
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: SizedBox(
-                  height: 25,
-                  width: 25,
-                  child: Icon(
-                    Icons.person,
-                    color: _currentIndex == 4
-                        ? AppTheme.appTheme().kPrimaryColorV2
-                        : AppTheme.appTheme().kDullGreyColor,
-                  ),
-                ),
-              ),
-              label: l10n.myAccount,
-            ),
-          ],
         ),
       ),
     );

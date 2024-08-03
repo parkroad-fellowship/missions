@@ -12,6 +12,7 @@ import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/utils/_index.dart';
+import 'package:collection/collection.dart' as collection;
 import 'package:isar/isar.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -60,7 +61,7 @@ abstract class LocalDBService {
   Future<void> persistAnnouncements({
     required List<PRFAnnouncement> announcements,
   });
-  Stream<List<PRFLocalAnnouncement>> getAnnouncements();
+  Stream<Map<DateTime, List<PRFLocalAnnouncement>>> getAnnouncements();
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -439,7 +440,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Stream<List<PRFLocalAnnouncement>> getAnnouncements() async* {
+  Stream<Map<DateTime, List<PRFLocalAnnouncement>>> getAnnouncements() async* {
     await for (final localAnnouncement in prfDBInstance.pRFLocalAnnouncements
         .filter()
         .idGreaterThan(0)
@@ -447,9 +448,12 @@ class LocalDBServiceImpl implements LocalDBService {
         .build()
         .watch(fireImmediately: true)
         .asBroadcastStream()) {
-      yield localAnnouncement
-          .map((localAnnouncement) => localAnnouncement)
-          .toList();
+      final groupedEntries = collection.groupBy<PRFLocalAnnouncement, DateTime>(
+        localAnnouncement.toList(),
+        (PRFLocalAnnouncement entry) => entry.publishedAt,
+      );
+
+      yield groupedEntries;
     }
   }
 }

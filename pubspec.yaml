@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.2.00+2200
+version: 2.3.00+2300
 publish_to: none
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
   awesome_notifications_core: ^0.9.3
   bloc: ^8.1.4
   build_version: ^2.1.1
+  collection: ^1.18.0
   dart_pusher_channels: ^1.2.2+1
   dio: ^5.5.0
   extended_image: ^8.2.1
@@ -22,10 +23,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
+  flutter_animate: ^4.5.0
   flutter_bloc: ^8.1.6
   flutter_localizations:
     sdk: flutter
 
+  flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.10+1
   flutter_widget_from_html: ^0.15.1
   freezed_annotation: ^2.4.4
@@ -66,3 +69,4 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/svgs/

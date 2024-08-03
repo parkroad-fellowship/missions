@@ -72,7 +72,7 @@
     "@missionDetails": {},
     "sendMe": "Send Me",
     "@sendMe": {},
-    "going": "Missionaries",
+    "going": "Missioners",
     "@going": {},
     "missionGround": "Mission Ground",
     "@missionGround": {},
@@ -140,7 +140,7 @@
     "@successfullyWithdrawn": {},
     "withdraw": "Withdraw",
     "@withdraw": {},
-    "missionariesNeeded": "Missionaries Needed: {missionariesNeeded}",
+    "missionariesNeeded": "Missioners Needed: {missionariesNeeded} more",
     "@missionariesNeeded": {
         "placeholders": {
             "missionariesNeeded": {
@@ -148,7 +148,7 @@
             }
         }
     },
-    "missionariesRequested": "Missionaries Requested: {missionariesRequested}",
+    "missionariesRequested": "Missioners Requested: {missionariesRequested}",
     "@missionariesRequested": {
         "placeholders": {
             "missionariesRequested": {
@@ -261,7 +261,7 @@
     "@studentEnquiries": {},
     "studentQuestions": "Student Questions",
     "@studentQuestions": {},
-    "askQuestion": "Ask a Question",
+    "askQuestion": "to ask a question",
     "@askQuestion": {},
     "announcements": "Announcements",
     "@announcements": {},
@@ -284,5 +284,45 @@
     "questionRecorded": "This question has been recorded",
     "@questionRecorded": {},
     "recordQuestion": "Record question",
-    "@recordQuestion": {}
+    "@recordQuestion": {},
+    "noNotes": "No notes",
+    "@noNotes": {},
+    "hello": "Hello, {name}",
+    "@hello": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "iWantTo": "Right now, I want to",
+    "@iWantTo": {},
+    "goToAMission": "Go for a mission",
+    "@goToAMission": {},
+    "learnSomething": "Learn something",
+    "@learnSomething": {},
+    "ministerToAStudent": "Minister to a student",
+    "@ministerToAStudent": {},
+    "all": "All",
+    "@all": {},
+    "subscribed": "Subscribed",
+    "@subscribed": {},
+    "version": "Version: {version}",
+    "@version": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    },
+    "faqs": "for some answers",
+    "@faqs": {},
+    "lookingFor": "I am looking",
+    "@lookingFor": {},
+    "askAQuestion": "Ask a question",
+    "@askAQuestion": {},
+    "ask": "Ask",
+    "@ask": {},
+    "questions": "Questions",
+    "@questions": {}
 }

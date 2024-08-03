@@ -1,18 +1,20 @@
 import 'package:app/features/student_home/enquiries/_handset.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
-class EnquiriesPage extends StatelessWidget {
-  const EnquiriesPage({
+@RoutePage()
+class LearnerEnquiriesPage extends StatelessWidget {
+  const LearnerEnquiriesPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const EnquiriesPageHandset(),
+      defaultBuilder: (_, __) => const LearnerEnquiriesPageHandset(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const EnquiriesPageHandset(),
+        handset: (_, __) => const LearnerEnquiriesPageHandset(),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme.appTheme()
       : kPrimaryColorV2 = const Color(0xff17154c),
+        kSecondaryColorV2 = const Color(0xff93d500),
         kPrimaryColorV2Accent = const Color(0xFFFCE7D8),
         kPrimaryColorV3 = const Color(0xFF00BDD6),
         kPrimaryColorV3Accent = const Color(0xFFC8F9FF),
@@ -23,6 +24,7 @@ class AppTheme {
 
   // v2
   late Color kPrimaryColorV2;
+  late Color kSecondaryColorV2;
   late Color kPrimaryColorV2Accent;
   late Color kPrimaryColorV3;
   late Color kPrimaryColorV3Accent;

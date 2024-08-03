@@ -4,14 +4,15 @@ import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'get_past_member_missions_state.dart';
-part 'get_past_member_missions_cubit.freezed.dart';
+part 'get_member_mission_subscriptions_state.dart';
+part 'get_member_mission_subscriptions_cubit.freezed.dart';
 
-class GetPastMemberMissionsCubit extends Cubit<GetPastMemberMissionsState> {
-  GetPastMemberMissionsCubit({
+class GetMemberMissionSubscriptionsCubit
+    extends Cubit<GetMemberMissionSubscriptionsState> {
+  GetMemberMissionSubscriptionsCubit({
     required MissionService missionService,
     required HiveService hiveService,
-  }) : super(const GetPastMemberMissionsState.initial()) {
+  }) : super(const GetMemberMissionSubscriptionsState.initial()) {
     _missionService = missionService;
     _hiveService = hiveService;
   }
@@ -19,25 +20,24 @@ class GetPastMemberMissionsCubit extends Cubit<GetPastMemberMissionsState> {
   late MissionService _missionService;
   late HiveService _hiveService;
 
-  Future<void> getPastMissions() async {
-    emit(const GetPastMemberMissionsState.loading());
+  Future<void> getUpcomingMissions() async {
+    emit(const GetMemberMissionSubscriptionsState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
       final missionSubscriptions = await _missionService.getSubscriptions(
         includes: 'mission.missionType,mission.school,'
             'mission.school.schoolContacts.contactType',
         memberUlid: member.ulid,
-        past: true,
       );
       emit(
-        GetPastMemberMissionsState.loaded(
+        GetMemberMissionSubscriptionsState.loaded(
           missionSubscriptions: missionSubscriptions,
         ),
       );
     } on Failure catch (e) {
-      emit(GetPastMemberMissionsState.error(e.message));
+      emit(GetMemberMissionSubscriptionsState.error(e.message));
     } catch (e) {
-      emit(GetPastMemberMissionsState.error(e.toString()));
+      emit(GetMemberMissionSubscriptionsState.error(e.toString()));
     }
   }
 }

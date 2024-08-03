@@ -1,12 +1,15 @@
-import 'package:app/enums/prf_mission_status.dart';
+import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
-import 'package:app/widgets/notification_bell.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MissionsPageHandset extends StatefulWidget {
   const MissionsPageHandset({super.key});
@@ -19,7 +22,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
   @override
   void initState() {
     context.read<GetMissionsCubit>().getMissions();
-
+    context.read<GetMemberMissionSubscriptionsCubit>().getUpcomingMissions();
     super.initState();
   }
 
@@ -27,164 +30,302 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n.missions,
-          style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            l10n.missions,
+            style: CustomTextTheme.customTextTheme()
+                .displayLarge
+                ?.copyWith(fontSize: 80.sp),
+          ),
+          leading: Container(
+            margin: const EdgeInsets.only(left: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: AppTheme.appTheme().kPrimaryColorV2,
+                width: 1.w,
               ),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              padding: const EdgeInsets.only(left: 16, right: 8),
+              onPressed: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.landingRoute,
+              ),
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          bottom: TabBar(
+            dividerColor: Colors.white,
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            labelStyle:
+                CustomTextTheme.customTextTheme().displayMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.appTheme().kPrimaryColorV2,
+                    ),
+            indicatorColor: Colors.white,
+            overlayColor: WidgetStateProperty.all(Colors.transparent),
+            tabs: [
+              Tab(text: l10n.all),
+              Tab(text: l10n.subscribed),
+            ],
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: const SizedBox.shrink(),
-        actions: const [
-          NotificationBell(),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: BlocBuilder<GetMissionsCubit, GetMissionsState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              orElse: () => const Center(child: CircularProgressIndicator()),
-              error: (message) => Center(child: Text(message)),
-              loaded: (missions) {
-                if (missions.isEmpty) {
-                  return RefreshIndicator(
-                    onRefresh: () =>
-                        context.read<GetMissionsCubit>().getMissions(),
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        const Icon(
-                          Icons.directions_walk,
-                        ),
-                        Center(
-                          child: Text(
-                            l10n.noMissions,
-                            style: CustomTextTheme.customTextTheme()
-                                .headlineMedium!
-                                .copyWith(
-                                  color: AppTheme.appTheme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.05,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: TabBarView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: BlocBuilder<GetMissionsCubit, GetMissionsState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (message) => Center(child: Text(message)),
+                    loaded: (missions) {
+                      if (missions.isEmpty) {
+                        return RefreshIndicator(
+                          onRefresh: () =>
+                              context.read<GetMissionsCubit>().getMissions(),
+                          child: Column(
                             children: [
-                              Text(
-                                l10n.pleaseWait,
-                                style: CustomTextTheme.customTextTheme()
-                                    .displayLarge!
-                                    .copyWith(
-                                      color:
-                                          AppTheme.appTheme().kPrimaryColorV2,
-                                      fontSize: 14,
-                                    ),
+                              const Spacer(),
+                              const Icon(
+                                Icons.directions_walk,
                               ),
+                              Center(
+                                child: Text(
+                                  l10n.noMissions,
+                                  style: CustomTextTheme.customTextTheme()
+                                      .headlineMedium!
+                                      .copyWith(
+                                        color:
+                                            AppTheme.appTheme().kDullGreyColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      l10n.pleaseWait,
+                                      style: CustomTextTheme.customTextTheme()
+                                          .displayLarge!
+                                          .copyWith(
+                                            color: AppTheme.appTheme()
+                                                .kPrimaryColorV2,
+                                            fontSize: 14,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
                             ],
                           ),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                  );
-                }
-                return RefreshIndicator(
-                  onRefresh: () =>
-                      context.read<GetMissionsCubit>().getMissions(),
-                  child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: missions.length,
-                    itemBuilder: (context, index) {
-                      final mission = missions[index];
-                      return ExpansionTile(
-                        initiallyExpanded: true,
-                        trailing: Icon(
-                          Icons.keyboard_arrow_right,
-                          color: AppTheme.appTheme().kDullGreyColor,
-                          size: 24,
-                        ),
-                        title: Text(
-                          mission.school!.name.toUpperCase(),
-                          style: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
-                                color:
-                                    AppTheme.appTheme().kAccent2BackgroundColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                        children: [
-                          ListTile(
-                            dense: true,
-                            minLeadingWidth: 10.5,
-                            contentPadding: const EdgeInsets.only(left: 20),
-                            visualDensity: VisualDensity.compact,
+                        );
+                      }
+                      return RefreshIndicator(
+                        onRefresh: () =>
+                            context.read<GetMissionsCubit>().getMissions(),
+                        child: ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: missions.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 16.h),
+                          itemBuilder: (context, index) => MissionActionCard(
+                            mission: missions[index],
                             onTap: () => context.router.push(
-                              MissionsDetailsRoute(mission: mission),
-                            ),
-                            title: Text(
-                              l10n.missionType(mission.missionType!.name),
-                              style: CustomTextTheme.customTextTheme()
-                                  .headlineMedium!
-                                  .copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                  ),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  l10n.missionStart(
-                                    Misc.formatDate(mission.startDate),
-                                    Misc.formatTime(mission.startTime),
-                                  ),
-                                  style: CustomTextTheme.customTextTheme()
-                                      .bodySmall!
-                                      .copyWith(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                      ),
-                                ),
-                                Text(
-                                  PRFMissionStatusExtension.fromIndex(
-                                    mission.status,
-                                  ).name,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .titleMedium!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: PRFMissionStatusExtension
-                                            .switchColor(
-                                          PRFMissionStatusExtension.fromIndex(
-                                            mission.status,
-                                          ),
-                                        ),
-                                      ),
-                                ),
-                              ],
+                              MissionsDetailsRoute(
+                                mission: missions[index],
+                              ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                        ],
+                        ),
                       );
                     },
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: BlocBuilder<GetMemberMissionSubscriptionsCubit,
+                  GetMemberMissionSubscriptionsState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (message) => Center(child: Text(message)),
+                    loaded: (missions) {
+                      if (missions.isEmpty) {
+                        return RefreshIndicator(
+                          onRefresh: () => context
+                              .read<GetMemberMissionSubscriptionsCubit>()
+                              .getUpcomingMissions(),
+                          child: Column(
+                            children: [
+                              const Spacer(),
+                              const Icon(Icons.directions_walk),
+                              Center(
+                                child: Text(
+                                  l10n.noMissions,
+                                  style: CustomTextTheme.customTextTheme()
+                                      .headlineMedium!
+                                      .copyWith(
+                                        color:
+                                            AppTheme.appTheme().kDullGreyColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      l10n.pleaseWait,
+                                      style: CustomTextTheme.customTextTheme()
+                                          .displayLarge!
+                                          .copyWith(
+                                            color: AppTheme.appTheme()
+                                                .kPrimaryColorV2,
+                                            fontSize: 14,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                            ],
+                          ),
+                        );
+                      }
+                      return RefreshIndicator(
+                        onRefresh: () =>
+                            context.read<GetMissionsCubit>().getMissions(),
+                        child: ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: missions.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 16.h),
+                          itemBuilder: (context, index) {
+                            final mission = missions[index].mission;
+                            return MissionActionCard(
+                              mission: mission!,
+                              status: missions[index].status,
+                              onTap: () => context.router.push(
+                                MissionsDetailsRoute(
+                                  mission: missions[index].mission!,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MissionActionCard extends StatelessWidget {
+  const MissionActionCard({
+    required this.mission,
+    this.status,
+    this.onTap,
+    super.key,
+  });
+
+  final PRFMission mission;
+
+  final int? status;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    final width = MediaQuery.sizeOf(context).width;
+    return Animate(
+      effects: const [
+        SaturateEffect(),
+      ],
+      child: GestureDetector(
+        onTap: onTap,
+        child: Stack(
+          children: [
+            Container(
+              width: width,
+              padding: EdgeInsets.symmetric(
+                horizontal: 50.w,
+                vertical: 60.h,
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              decoration: BoxDecoration(
+                color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(.3),
+                borderRadius: BorderRadius.circular(48.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (status != null)
+                    Text(
+                      PRFMissionSubscriptionStatus.fromIndex(
+                        status!,
+                      ).name,
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
+                  Text(
+                    mission.school!.name,
+                    style: CustomTextTheme.customTextTheme()
+                        .displayLarge
+                        ?.copyWith(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
-                );
-              },
-            );
-          },
+                  SizedBox(height: 16.h),
+                  Text(
+                    l10n.missionStart(
+                      Misc.formatDate(mission.startDate),
+                      Misc.formatTime(mission.startTime),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    mission.missionType!.name,
+                    style: CustomTextTheme.customTextTheme()
+                        .headlineMedium
+                        ?.copyWith(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -25,7 +25,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          l10n.createQuestion,
+          l10n.ask,
           style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -88,7 +88,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
+                    title: _isLoading ? l10n.recording : l10n.ask,
                     disabled: _isLoading,
                     isLoading: _isLoading ? true : null,
                     onPressed: () async {

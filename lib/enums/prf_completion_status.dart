@@ -1,6 +1,9 @@
-enum PRFCompletionStatus { incomplete, complete }
+import 'package:flutter/material.dart';
 
-extension PRFCompletionStatusExtension on PRFCompletionStatus {
+enum PRFCompletionStatus {
+  incomplete,
+  complete;
+
   String get name {
     switch (this) {
       case PRFCompletionStatus.incomplete:
@@ -27,6 +30,15 @@ extension PRFCompletionStatusExtension on PRFCompletionStatus {
         return 1;
       case PRFCompletionStatus.complete:
         return 2;
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case PRFCompletionStatus.incomplete:
+        return Icons.check;
+      case PRFCompletionStatus.complete:
+        return Icons.watch_later_outlined;
     }
   }
 }

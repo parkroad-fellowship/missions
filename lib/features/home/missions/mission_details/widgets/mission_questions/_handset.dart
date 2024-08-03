@@ -1,8 +1,11 @@
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MissionQuestionsViewHandset extends StatefulWidget {
   const MissionQuestionsViewHandset({
@@ -56,20 +59,61 @@ class _MissionQuestionsViewHandsetState
               shrinkWrap: true,
               physics: const ScrollPhysics(),
               itemCount: missionQuestions.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                final missionQuestion = missionQuestions[index];
-                return ListTile(
-                  title: Text(missionQuestion.question),
-                  subtitle:
-                      Text(Misc.formatDateTime(missionQuestion.createdAt)),
-                  onTap: () {},
-                );
-              },
+              separatorBuilder: (context, index) => SizedBox(height: 8.h),
+              itemBuilder: (context, index) =>
+                  MissionQuestionCard(missionQuestion: missionQuestions[index]),
             );
           },
         );
       },
+    );
+  }
+}
+
+class MissionQuestionCard extends StatelessWidget {
+  const MissionQuestionCard({
+    required this.missionQuestion,
+    super.key,
+  });
+
+  final PRFMissionQuestion missionQuestion;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    return Animate(
+      effects: const [SaturateEffect()],
+      child: Stack(
+        children: [
+          Container(
+            width: width,
+            padding: EdgeInsets.symmetric(
+              horizontal: 50.w,
+              vertical: 60.h,
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            decoration: BoxDecoration(
+              color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(.3),
+              borderRadius: BorderRadius.circular(48.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  missionQuestion.question,
+                  style: CustomTextTheme.customTextTheme().bodySmall,
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  Misc.formatDateTime(missionQuestion.createdAt),
+                  style: CustomTextTheme.customTextTheme().bodySmall,
+                ),
+                SizedBox(height: 8.h),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
