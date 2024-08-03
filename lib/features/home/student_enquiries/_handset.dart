@@ -150,7 +150,7 @@ class _StudentEnquiriesPageHandsetState
                           Misc.getUserNameInitials(enquiry.content),
                         ),
                       ),
-                      subtitle: Text(
+                      title: Text(
                         enquiry.content,
                         style: CustomTextTheme.customTextTheme()
                             .bodySmall!
