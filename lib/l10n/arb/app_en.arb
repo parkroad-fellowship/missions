@@ -322,5 +322,7 @@
     "askAQuestion": "Ask a question",
     "@askAQuestion": {},
     "ask": "Ask",
-    "@ask": {}
+    "@ask": {},
+    "questions": "Questions",
+    "@questions": {}
 }

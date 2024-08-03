@@ -98,9 +98,15 @@ class DebriefNoteCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(debriefNote.note),
+                Text(
+                  debriefNote.note,
+                  style: CustomTextTheme.customTextTheme().bodySmall,
+                ),
                 SizedBox(height: 8.h),
-                Text(Misc.formatDateTime(debriefNote.createdAt)),
+                Text(
+                  Misc.formatDateTime(debriefNote.createdAt),
+                  style: CustomTextTheme.customTextTheme().bodySmall,
+                ),
                 SizedBox(height: 8.h),
               ],
             ),

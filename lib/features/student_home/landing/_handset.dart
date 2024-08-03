@@ -89,7 +89,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   ],
                   child: HomeActionCard(
                     title: l10n.faqs,
-                    assetPath: 'assets/svgs/missions.svg',
+                    assetPath: 'assets/svgs/explore.svg',
                     onTap: () =>
                         context.router.pushNamed(PRFSuperAppRouter.learnerFaqs),
                   ),
@@ -105,7 +105,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   ],
                   child: HomeActionCard(
                     title: l10n.askQuestion,
-                    assetPath: 'assets/svgs/lms.svg',
+                    assetPath: 'assets/svgs/ask.svg',
                     onTap: () => context.router
                         .pushNamed(PRFSuperAppRouter.learnerEnquiriesRoute),
                   ),
