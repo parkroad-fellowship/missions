@@ -99,9 +99,15 @@ class MissionQuestionCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(missionQuestion.question),
+                Text(
+                  missionQuestion.question,
+                  style: CustomTextTheme.customTextTheme().bodySmall,
+                ),
                 SizedBox(height: 8.h),
-                Text(Misc.formatDateTime(missionQuestion.createdAt)),
+                Text(
+                  Misc.formatDateTime(missionQuestion.createdAt),
+                  style: CustomTextTheme.customTextTheme().bodySmall,
+                ),
                 SizedBox(height: 8.h),
               ],
             ),
