@@ -59,7 +59,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                 final course = snapshot.data;
                 return Text(
                   l10n.percentage(
-                    course!.courseMember?.percentComplete!.toInt() ?? 0,
+                    course!.courseMember?.percentComplete! ?? 0,
                   ),
                   style: CustomTextTheme.customTextTheme()
                       .displaySmall
@@ -220,9 +220,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                             ),
                             title: Text(
                               l10n.progress(
-                                courseModule.memberModule?.percentComplete
-                                        ?.toInt() ??
-                                    0,
+                                courseModule.memberModule?.percentComplete ?? 0,
                               ),
                               style: CustomTextTheme.customTextTheme()
                                   .headlineMedium!

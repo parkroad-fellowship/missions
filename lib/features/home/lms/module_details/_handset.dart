@@ -58,7 +58,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
 
                 return Text(
                   l10n.percentage(
-                    courseModule.memberModule?.percentComplete?.toInt() ?? 0,
+                    courseModule.memberModule?.percentComplete ?? 0,
                   ),
                   style: CustomTextTheme.customTextTheme()
                       .displaySmall

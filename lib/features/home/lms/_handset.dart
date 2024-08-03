@@ -1,11 +1,13 @@
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_course.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LMSPageHandset extends StatefulWidget {
   const LMSPageHandset({super.key});
@@ -26,157 +28,158 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
     final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          l10n.learn,
-          style: CustomTextTheme.customTextTheme()
-              .displayLarge
-              ?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: const SizedBox.shrink(),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              BlocBuilder<GetCoursesCubit, GetCoursesState>(
-                builder: (context, state) => state.maybeWhen(
-                  orElse: () => const Center(child: LinearProgressIndicator()),
-                  error: (message) => Center(child: Text(message)),
-                  loaded: (isEmpty) => isEmpty
-                      ? Column(
-                          children: [
-                            const Icon(
-                              Icons.timer,
-                            ),
-                            Center(
-                              child: Text(
-                                l10n.noCourses,
-                                style: CustomTextTheme.customTextTheme()
-                                    .headlineMedium!
-                                    .copyWith(
-                                      color: AppTheme.appTheme().kDullGreyColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.05,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    l10n.yetToBeEnroled,
-                                    style: CustomTextTheme.customTextTheme()
-                                        .displayLarge!
-                                        .copyWith(
-                                          color: AppTheme.appTheme()
-                                              .kPrimaryColorV2,
-                                          fontSize: 14,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            // Start Navigation Bar
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              pinned: true,
+              flexibleSpace: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 80.w),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          width: 1.w,
+                        ),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back_ios),
+                        padding: const EdgeInsets.only(left: 8),
+                        onPressed: () => context.router.popUntilRouteWithPath(
+                          PRFSuperAppRouter.landingRoute,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      l10n.learn,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(fontSize: 80.sp),
+                    ),
+                    const Spacer(),
+                  ],
                 ),
               ),
-              StreamBuilder(
-                stream: getIt<LocalDBService>().getCourses(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  final courses = snapshot.data;
-
-                  if (courses != null && courses.isEmpty) {
-                    return const SizedBox.shrink();
-                  }
-
-                  return RefreshIndicator(
-                    onRefresh: () =>
-                        context.read<GetCoursesCubit>().getCourses(),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: courses!.length,
-                      itemBuilder: (context, index) {
-                        final course = courses[index];
-                        return ExpansionTile(
-                          initiallyExpanded: true,
-                          trailing: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: AppTheme.appTheme().kDullGreyColor,
-                            size: 24,
-                          ),
-                          title: Text(
-                            course.name.toUpperCase(),
-                            style: CustomTextTheme.customTextTheme()
-                                .headlineSmall!
-                                .copyWith(
-                                  color: AppTheme.appTheme()
-                                      .kAccent2BackgroundColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                          children: [
-                            ListTile(
-                              dense: true,
-                              minLeadingWidth: 10.5,
-                              contentPadding: const EdgeInsets.only(left: 20),
-                              visualDensity: VisualDensity.compact,
-                              onTap: () => context.router.push(
-                                CourseDetailsRoute(courseUlid: course.ulid),
-                              ),
-                              title: Text(
-                                l10n.progress(
-                                  course.courseMember?.percentComplete
-                                          ?.toInt() ??
-                                      0,
-                                ),
-                                style: CustomTextTheme.customTextTheme()
-                                    .headlineMedium!
-                                    .copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                    ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    course.description,
-                                    style: CustomTextTheme.customTextTheme()
-                                        .bodySmall!
-                                        .copyWith(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                          ],
-                        );
-                      },
-                    ),
+            ),
+            // End Navigation Bar
+            SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+            StreamBuilder(
+              stream: getIt<LocalDBService>().getCourses(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
                   );
-                },
-              ),
-            ],
-          ),
+                }
+
+                final courses = snapshot.data;
+
+                if (courses != null && courses.isEmpty) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                return SliverList.separated(
+                  itemCount: courses!.length,
+                  itemBuilder: (context, index) => CourseActionCard(
+                    course: courses[index],
+                  ),
+                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
+                );
+              },
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class CourseActionCard extends StatelessWidget {
+  const CourseActionCard({
+    required this.course,
+    super.key,
+  });
+
+  final PRFLocalCourse course;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    final width = MediaQuery.sizeOf(context).width;
+    return GestureDetector(
+      onTap: () => context.router.push(
+        CourseDetailsRoute(courseUlid: course.ulid),
+      ),
+      child: Stack(
+        children: [
+          Container(
+            width: width,
+            padding: EdgeInsets.symmetric(
+              horizontal: 50.w,
+              vertical: 80.h,
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            decoration: BoxDecoration(
+              color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(.3),
+              borderRadius: BorderRadius.circular(48.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      course.name,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                    const Spacer(),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 32.w,
+                        vertical: 4.h,
+                      ),
+                      child: Text(
+                        l10n.percentage(
+                          course.courseMember?.percentComplete ?? 0,
+                        ),
+                        style: CustomTextTheme.customTextTheme().bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  course.description,
+                  style: CustomTextTheme.customTextTheme()
+                      .headlineMedium
+                      ?.copyWith(
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
