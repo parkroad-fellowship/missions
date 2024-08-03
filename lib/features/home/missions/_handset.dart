@@ -7,6 +7,7 @@ import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -63,8 +64,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
             isScrollable: true,
             tabAlignment: TabAlignment.start,
             labelStyle:
-                CustomTextTheme.customTextTheme().displayLarge!.copyWith(
-                      fontWeight: FontWeight.w300,
+                CustomTextTheme.customTextTheme().displayMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
                       color: AppTheme.appTheme().kPrimaryColorV2,
                     ),
             indicatorColor: Colors.white,
@@ -268,60 +269,65 @@ class MissionActionCard extends StatelessWidget {
     final l10n = context.l10n;
 
     final width = MediaQuery.sizeOf(context).width;
-    return GestureDetector(
-      onTap: onTap,
-      child: Stack(
-        children: [
-          Container(
-            width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(.3),
-              borderRadius: BorderRadius.circular(48.r),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (status != null)
+    return Animate(
+      effects: const [
+        SaturateEffect(),
+      ],
+      child: GestureDetector(
+        onTap: onTap,
+        child: Stack(
+          children: [
+            Container(
+              width: width,
+              padding: EdgeInsets.symmetric(
+                horizontal: 50.w,
+                vertical: 60.h,
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              decoration: BoxDecoration(
+                color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(.3),
+                borderRadius: BorderRadius.circular(48.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (status != null)
+                    Text(
+                      PRFMissionSubscriptionStatus.fromIndex(
+                        status!,
+                      ).name,
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
                   Text(
-                    PRFMissionSubscriptionStatus.fromIndex(
-                      status!,
-                    ).name,
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    mission.school!.name,
+                    style:
+                        CustomTextTheme.customTextTheme().displayLarge?.copyWith(
+                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              fontWeight: FontWeight.w600,
+                            ),
                   ),
-                Text(
-                  mission.school!.name,
-                  style:
-                      CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  l10n.missionStart(
-                    Misc.formatDate(mission.startDate),
-                    Misc.formatTime(mission.startTime),
+                  SizedBox(height: 16.h),
+                  Text(
+                    l10n.missionStart(
+                      Misc.formatDate(mission.startDate),
+                      Misc.formatTime(mission.startTime),
+                    ),
                   ),
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  mission.missionType!.name,
-                  style: CustomTextTheme.customTextTheme()
-                      .headlineMedium
-                      ?.copyWith(
-                        color: AppTheme.appTheme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ],
+                  SizedBox(height: 16.h),
+                  Text(
+                    mission.missionType!.name,
+                    style: CustomTextTheme.customTextTheme()
+                        .headlineMedium
+                        ?.copyWith(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
