@@ -255,10 +255,9 @@ class CourseDetailsActionCard extends StatelessWidget {
                 Text(
                   courseModule.module.description!,
                   style: CustomTextTheme.customTextTheme()
-                      .headlineMedium
+                      .headlineSmall
                       ?.copyWith(
-                        color: AppTheme.appTheme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
+                        color: AppTheme.appTheme().kBlackColor,
                       ),
                 ),
               ],
