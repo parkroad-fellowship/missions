@@ -1,5 +1,6 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,6 +28,27 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(mission.school!.name.toUpperCase()),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  l10n.missionStart(
+                    Misc.formatDate(mission.startDate),
+                    Misc.formatTime(mission.startTime),
+                  ),
+                ),
+                Text(
+                  l10n.missionEnd(
+                    Misc.formatDate(mission.endDate),
+                    Misc.formatTime(mission.endTime),
+                  ),
+                ),
+              ],
+            ),
+          ),
           ListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(l10n.theme),

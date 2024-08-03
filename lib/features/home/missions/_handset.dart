@@ -1,6 +1,6 @@
 import 'package:app/enums/prf_mission_subscription_status.dart';
-import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
@@ -300,11 +300,12 @@ class MissionActionCard extends StatelessWidget {
                     ),
                   Text(
                     mission.school!.name,
-                    style:
-                        CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    style: CustomTextTheme.customTextTheme()
+                        .displayLarge
+                        ?.copyWith(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   SizedBox(height: 16.h),
                   Text(
