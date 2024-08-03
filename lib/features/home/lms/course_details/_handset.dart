@@ -107,7 +107,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           final course = snapshot.data;
                           return Text(
                             l10n.percentage(
-                              course!.courseMember?.percentComplete! ?? 0,
+                              course!.courseMember?.percentComplete!.toInt() ??
+                                  0,
                             ),
                             style: CustomTextTheme.customTextTheme()
                                 .displaySmall
@@ -244,7 +245,8 @@ class CourseDetailsActionCard extends StatelessWidget {
                       ),
                       child: Text(
                         l10n.percentage(
-                          courseModule.memberModule?.percentComplete ?? 0,
+                          courseModule.memberModule?.percentComplete?.toInt() ??
+                              0,
                         ),
                         style: CustomTextTheme.customTextTheme().bodySmall,
                       ),

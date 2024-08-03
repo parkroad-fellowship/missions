@@ -91,7 +91,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                           final courseModule = snapshot.data!;
                           return Text(
                             l10n.percentage(
-                              courseModule.memberModule?.percentComplete ?? 0,
+                              courseModule.memberModule?.percentComplete
+                                      ?.toInt() ??
+                                  0,
                             ),
                             style: CustomTextTheme.customTextTheme()
                                 .displaySmall
