@@ -68,8 +68,12 @@ class _StudentEnquiryRepliesPageHandsetState
         child: CustomScrollView(
           slivers: [
             // Start Navigation Bar
-            SliverToBoxAdapter(
-              child: Padding(
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              pinned: true,
+              flexibleSpace: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 80.w),
                 child: Row(
                   children: [
@@ -103,7 +107,6 @@ class _StudentEnquiryRepliesPageHandsetState
               ),
             ),
             // End Navigation Bar
-            SliverToBoxAdapter(child: Divider()),
             SliverToBoxAdapter(child: SizedBox(height: 48.h)),
             StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
               stream: getIt<LocalDBService>()
@@ -134,14 +137,13 @@ class _StudentEnquiryRepliesPageHandsetState
                     final enquiryReply = enquiryReplies[index];
 
                     return Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 32.w),
+                      padding: EdgeInsets.symmetric(horizontal: 32.w),
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 16.h) +
                             EdgeInsets.only(
                               left: enquiryReply.isStudent ? 0 : 88.w,
                               right: enquiryReply.isStudent ? 88.w : 0,
                             ),
-                          
                         width: MediaQuery.sizeOf(context).width * 0.5,
                         padding: EdgeInsets.symmetric(
                           horizontal: 48.w,
@@ -149,7 +151,9 @@ class _StudentEnquiryRepliesPageHandsetState
                         ),
                         decoration: BoxDecoration(
                           color: enquiryReply.isStudent
-                              ? AppTheme.appTheme().kSecondaryColorV2.withOpacity(.2)
+                              ? AppTheme.appTheme()
+                                  .kSecondaryColorV2
+                                  .withOpacity(.2)
                               : AppTheme.appTheme().kGreyColor.withOpacity(.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
