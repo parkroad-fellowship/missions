@@ -43,6 +43,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
           appBarTheme: AppBarTheme(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
+          scaffoldBackgroundColor: Colors.white,
           useMaterial3: true,
         ),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
