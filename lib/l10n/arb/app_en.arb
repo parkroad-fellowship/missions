@@ -318,5 +318,9 @@
     "faqs": "for some answers",
     "@faqs": {},
     "lookingFor": "I am looking",
-    "@lookingFor": {}
+    "@lookingFor": {},
+    "askAQuestion": "Ask a question",
+    "@askAQuestion": {},
+    "ask": "Ask",
+    "@ask": {}
 }

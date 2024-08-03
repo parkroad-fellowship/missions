@@ -92,12 +92,13 @@ class _StudentEnquiriesPageHandsetState
                 final enquiries = snapshot.data;
 
                 if (enquiries != null && enquiries.isEmpty) {
-                  return SliverToBoxAdapter(
+                  return SliverFillRemaining(
                     child: RefreshIndicator(
                       onRefresh: () => context
                           .read<GetEnquiriesCubit>()
                           .getStudentEnquiries(),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(Icons.directions_walk),
                           Center(
