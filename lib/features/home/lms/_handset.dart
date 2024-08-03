@@ -3,7 +3,6 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
-import 'package:app/widgets/notification_bell.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,9 +37,6 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: const SizedBox.shrink(),
-        actions: const [
-          NotificationBell(),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
