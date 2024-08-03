@@ -306,5 +306,13 @@
     "all": "All",
     "@all": {},
     "subscribed": "Subscribed",
-    "@subscribed": {}
+    "@subscribed": {},
+    "version": "Version: {version}",
+    "@version": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            }
+        }
+    }
 }
