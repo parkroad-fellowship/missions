@@ -302,5 +302,9 @@
     "learnSomething": "Learn something",
     "@learnSomething": {},
     "ministerToAStudent": "Minister to a student",
-    "@ministerToAStudent": {}
+    "@ministerToAStudent": {},
+    "all": "All",
+    "@all": {},
+    "subscribed": "Subscribed",
+    "@subscribed": {}
 }

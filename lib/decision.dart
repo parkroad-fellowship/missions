@@ -47,7 +47,7 @@ class _DecisionPageState extends State<DecisionPage> {
           if (result.isEmpty) {
             _redirectToPage(
               context,
-              PRFSuperAppRouter.landingRoute,
+              PRFSuperAppRouter.missionsRoute,
             );
           } else {
             _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
