@@ -159,7 +159,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: BlocBuilder<GetMemberMissionSubscriptionsCubit,
                   GetMemberMissionSubscriptionsState>(
                 builder: (context, state) {
@@ -176,9 +176,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                           child: Column(
                             children: [
                               const Spacer(),
-                              const Icon(
-                                Icons.directions_walk,
-                              ),
+                              const Icon(Icons.directions_walk),
                               Center(
                                 child: Text(
                                   l10n.noMissions,

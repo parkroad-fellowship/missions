@@ -140,7 +140,7 @@
     "@successfullyWithdrawn": {},
     "withdraw": "Withdraw",
     "@withdraw": {},
-    "missionariesNeeded": "Missioners Needed: {missionariesNeeded}",
+    "missionariesNeeded": "Missioners Needed: {missionariesNeeded} more",
     "@missionariesNeeded": {
         "placeholders": {
             "missionariesNeeded": {
