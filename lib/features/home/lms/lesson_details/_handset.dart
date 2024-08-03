@@ -48,6 +48,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        surfaceTintColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -59,7 +60,6 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(l10n.description),
                   Text(lesson.description!),
                 ],
               ),
@@ -200,6 +200,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
           ],
         ),
       ),
+      
     );
   }
 }

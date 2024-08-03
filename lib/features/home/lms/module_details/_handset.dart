@@ -42,6 +42,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         actions: [
           Padding(
@@ -91,7 +92,6 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(l10n.description),
                   StreamBuilder<PRFLocalCourseModule>(
                     stream: getIt<LocalDBService>().getCourseModule(
                       courseModuleUlid: courseModuleUlid,
