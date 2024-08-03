@@ -41,6 +41,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                 ?.copyWith(fontSize: 80.sp),
           ),
           leading: Container(
+            margin: const EdgeInsets.only(left: 8),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -51,7 +52,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
             ),
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
-              padding: const EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 16, right: 8),
               onPressed: () => context.router.popUntilRouteWithPath(
                 PRFSuperAppRouter.landingRoute,
               ),
