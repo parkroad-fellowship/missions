@@ -177,10 +177,14 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     .read<SubscribeCubit>()
                     .subscribe(missionUlid: mission.ulid)
                     .then(
-                      (_) => context
+                  (_) {
+                    if (context.mounted) {
+                      context
                           .read<GetSubscribersCubit>()
-                          .getSubscriptions(missionUlid: mission.ulid),
-                    ),
+                          .getSubscriptions(missionUlid: mission.ulid);
+                    }
+                  },
+                ),
                 backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
                 label: Text(
                   l10n.sendMe,
@@ -211,9 +215,13 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     ];
                   },
                 ).then(
-                  (_) => context
-                      .read<GetSoulsCubit>()
-                      .getSouls(missionUlid: mission.ulid),
+                  (_) {
+                    if (context.mounted) {
+                      context
+                          .read<GetSoulsCubit>()
+                          .getSouls(missionUlid: mission.ulid);
+                    }
+                  },
                 );
               }
               if (_currentTab == 3) {
@@ -232,9 +240,13 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     ];
                   },
                 ).then(
-                  (_) => context
-                      .read<GetDebriefNotesCubit>()
-                      .getDebriefNotes(missionUlid: mission.ulid),
+                  (_) {
+                    if (context.mounted) {
+                      context
+                          .read<GetDebriefNotesCubit>()
+                          .getDebriefNotes(missionUlid: mission.ulid);
+                    }
+                  },
                 );
               }
               if (_currentTab == 4) {
@@ -253,9 +265,13 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     ];
                   },
                 ).then(
-                  (_) => context
-                      .read<GetMissionQuestionsCubit>()
-                      .getMissionQuestions(missionUlid: mission.ulid),
+                  (_) {
+                    if (context.mounted) {
+                      context
+                          .read<GetMissionQuestionsCubit>()
+                          .getMissionQuestions(missionUlid: mission.ulid);
+                    }
+                  },
                 );
               }
             },
