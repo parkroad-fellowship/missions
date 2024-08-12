@@ -3,6 +3,8 @@ import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
+import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
+import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
@@ -221,6 +223,18 @@ class Singletons {
         create: (context) => GetPrayerPromptsCubit(
           missionService: getIt(),
           notificationService: getIt(),
+        ),
+      ),
+      BlocProvider<SavePrayerResponseCubit>(
+        create: (context) => SavePrayerResponseCubit(
+          localDBService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<UploadPrayerResponseCubit>(
+        create: (context) => UploadPrayerResponseCubit(
+          localDBService: getIt(),
+          missionService: getIt(),
         ),
       ),
     ];

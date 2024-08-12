@@ -8,6 +8,7 @@ import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_dto.dart';
 import 'package:app/models/remote/prf_mission_subscription_update_dto.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
+import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class MissionService {
@@ -34,6 +35,9 @@ abstract class MissionService {
     bool? upcoming,
   });
   Future<List<PRFPrayerPrompt>> getPrayerPrompts();
+  Future<PRFPrayerResponse> respondToPrayerPrompt({
+    required PRFPrayerResponseDTO prayerResponse,
+  });
 }
 
 class MissionServiceImpl implements MissionService {
@@ -164,6 +168,27 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFPrayerPromptResponse.fromJson(res).data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PRFPrayerResponse> respondToPrayerPrompt({
+    required PRFPrayerResponseDTO prayerResponse,
+  }) async {
+    try {
+      final res = await _networkUtil.postReq(
+        '/prayer-responses',
+        queryParameters: {
+          'include': 'prayerPrompt',
+        },
+        body: json.encode(prayerResponse.toJson()),
+      );
+
+      return PRFPrayerResponse.fromJson(
+        res['data'] as Map<String, dynamic>,
+      );
     } catch (e) {
       rethrow;
     }

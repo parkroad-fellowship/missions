@@ -1,14 +1,20 @@
 import 'dart:math';
 
+import 'package:app/app/app.dart';
 import 'package:app/enums/prf_notification_type.dart';
 import 'package:app/enums/prf_time_of_day.dart';
+import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
+import 'package:app/l10n/l10n.dart';
+import 'package:app/main_production.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.dart';
 import 'package:app/utils/singletons.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
 abstract class NotificationService {
@@ -57,6 +63,8 @@ abstract class NotificationService {
           await showDialog<dynamic>(
             context: getIt<PRFSuperAppRouter>().navigatorKey.currentContext!,
             builder: (context) {
+              final l10n = context.l10n;
+
               return Center(
                 child: Material(
                   color: Colors.transparent,
@@ -80,7 +88,7 @@ abstract class NotificationService {
                                   color: AppTheme.appTheme().kPrimaryColorV2,
                                 ),
                                 title: Text(
-                                  'Prayer Alert',
+                                  l10n.prayerAlert,
                                   style: CustomTextTheme.customTextTheme()
                                       .displayMedium
                                       ?.copyWith(
@@ -107,10 +115,22 @@ abstract class NotificationService {
                                 alignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   PrimaryButton(
-                                    title: 'Amen',
+                                    title: l10n.amen,
                                     disabled: false,
                                     onPressed: () {
-                                      // Tell the server I have prayed
+                                      context
+                                          .read<SavePrayerResponseCubit>()
+                                          .savePrayerResponse(
+                                            prayerPromptUlid:
+                                                payload['prayer_prompt_ulid']!,
+                                          )
+                                          .then(
+                                        (_) {
+                                          if (context.mounted) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                      );
                                     },
                                   ),
                                 ],

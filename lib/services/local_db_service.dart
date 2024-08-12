@@ -3,12 +3,14 @@ import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
+import 'package:app/models/local/prf_prayer_response.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
+import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/utils/_index.dart';
@@ -62,6 +64,13 @@ abstract class LocalDBService {
     required List<PRFAnnouncement> announcements,
   });
   Stream<Map<DateTime, List<PRFLocalAnnouncement>>> getAnnouncements();
+  Future<void> persistPrayerResponses({
+    required List<PRFPrayerResponseDTO> prayerResponses,
+  });
+  List<PRFPrayerResponseDTO> retrievePrayerResponses();
+  void deletePrayerResponse({
+    required String prayerPromptUlid,
+  });
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -76,6 +85,7 @@ class LocalDBServiceImpl implements LocalDBService {
         PRFLocalStudentEnquirySchema,
         PRFLocalStudentEnquiryReplySchema,
         PRFLocalAnnouncementSchema,
+        PRFLocalPrayerResponseSchema,
       ],
       directory: dir.path,
     );
@@ -455,5 +465,48 @@ class LocalDBServiceImpl implements LocalDBService {
 
       yield groupedEntries;
     }
+  }
+
+  @override
+  Future<void> persistPrayerResponses({
+    required List<PRFPrayerResponseDTO> prayerResponses,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final prayerResponse in prayerResponses) {
+        await prfDBInstance.pRFLocalPrayerResponses.put(
+          PRFLocalPrayerResponse(
+            memberUlid: prayerResponse.memberUlid,
+            prayerPromptUlid: prayerResponse.prayerPromptUlid,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  List<PRFPrayerResponseDTO> retrievePrayerResponses() {
+    final responses = prfDBInstance.pRFLocalPrayerResponses
+        .filter()
+        .idGreaterThan(0)
+        .build()
+        .findAllSync();
+    return responses
+        .map<PRFPrayerResponseDTO>(
+          (response) => PRFPrayerResponseDTO(
+            prayerPromptUlid: response.prayerPromptUlid,
+            memberUlid: response.memberUlid,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  void deletePrayerResponse({required String prayerPromptUlid}) {
+    prfDBInstance.writeTxnSync(() async {
+      prfDBInstance.pRFLocalPrayerResponses
+          .filter()
+          .prayerPromptUlidEqualTo(prayerPromptUlid)
+          .deleteFirstSync();
+    });
   }
 }
