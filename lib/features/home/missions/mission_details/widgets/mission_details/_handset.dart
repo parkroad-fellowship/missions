@@ -3,7 +3,7 @@ import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
@@ -154,10 +154,51 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   IconButton(
                     onPressed: () async {
                       final school = mission.school!;
-                      await MapsLauncher.launchCoordinates(
-                        school.latitude,
-                        school.longitude,
-                      );
+
+                      final isGoogleMapAvaialable =
+                          await MapLauncher.isMapAvailable(MapType.google);
+
+                      if (isGoogleMapAvaialable ?? false) {
+                        await MapLauncher.showMarker(
+                          mapType: MapType.google,
+                          coords: Coords(
+                            school.latitude,
+                            school.longitude,
+                          ),
+                          title: school.name,
+                        );
+                        return;
+                      }
+
+                      final isGoogleGoMapAvailable =
+                          await MapLauncher.isMapAvailable(MapType.googleGo);
+
+                      if (isGoogleGoMapAvailable ?? false) {
+                        await MapLauncher.showMarker(
+                          mapType: MapType.googleGo,
+                          coords: Coords(
+                            school.latitude,
+                            school.longitude,
+                          ),
+                          title: school.name,
+                        );
+                        return;
+                      }
+
+                      final isAppleMapAvailable =
+                          await MapLauncher.isMapAvailable(MapType.apple);
+
+                      if (isAppleMapAvailable ?? false) {
+                        await MapLauncher.showMarker(
+                          mapType: MapType.apple,
+                          coords: Coords(
+                            school.latitude,
+                            school.longitude,
+                          ),
+                          title: school.name,
+                        );
+                        return;
+                      }
                     },
                     icon: const Icon(Icons.map_rounded),
                   ),

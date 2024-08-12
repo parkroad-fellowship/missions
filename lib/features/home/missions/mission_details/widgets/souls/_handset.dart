@@ -56,7 +56,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
               shrinkWrap: true,
               physics: const ScrollPhysics(),
               itemCount: souls.length,
-              separatorBuilder: (context, index) => const Divider(),
+              separatorBuilder: (context, index) => SizedBox(height: 16.h),
               itemBuilder: (context, index) => SoulCard(soul: souls[index]),
             );
           },

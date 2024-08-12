@@ -326,5 +326,9 @@
     "questions": "Questions",
     "@questions": {},
     "memberships": "Memberships",
-    "@memberships": {}
+    "@memberships": {},
+    "prayerAlert": "Prayer watch",
+    "@prayerAlert": {},
+    "amen": "Amen",
+    "@amen": {}
 }
