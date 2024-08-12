@@ -2,6 +2,7 @@ import 'package:app/features/auth/cubit/register_student_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
+import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
@@ -26,6 +27,7 @@ import 'package:app/features/student_home/enquiries/cubit/get_student_enquiries_
 import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
@@ -36,6 +38,7 @@ late Isar prfDBInstance;
 class Singletons {
   static void setup() {
     getIt
+      ..registerSingleton<PRFSuperAppRouter>(PRFSuperAppRouter())
       ..registerSingleton<HiveService>(HiveServiceImpl())
       ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
       ..registerSingleton<AuthService>(AuthServiceImpl())
@@ -212,6 +215,12 @@ class Singletons {
       BlocProvider<AddMissionQuestionCubit>(
         create: (context) => AddMissionQuestionCubit(
           debriefService: getIt(),
+        ),
+      ),
+      BlocProvider<GetPrayerPromptsCubit>(
+        create: (context) => GetPrayerPromptsCubit(
+          missionService: getIt(),
+          notificationService: getIt(),
         ),
       ),
     ];

@@ -8,14 +8,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PRFSuperApp extends StatefulWidget {
   const PRFSuperApp({super.key});
 
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
-
   @override
   State<PRFSuperApp> createState() => _PRFSuperAppState();
 }
 
 class _PRFSuperAppState extends State<PRFSuperApp> {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     AwesomeNotifications().setListeners(
@@ -48,7 +48,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
         ),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: PRFSuperAppRouter().config(),
+        routerConfig: getIt<PRFSuperAppRouter>().config(),
       ),
     );
   }
