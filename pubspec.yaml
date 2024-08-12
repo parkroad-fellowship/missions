@@ -41,7 +41,7 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   json_annotation: ^4.9.0
   logger: ^2.4.0
-  maps_launcher: ^2.2.1
+  map_launcher: ^3.3.1
   path_provider: ^2.1.4
   pretty_dio_logger: ^1.4.0
   slugify: ^2.0.0
