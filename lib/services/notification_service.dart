@@ -218,7 +218,6 @@ class NotificationServiceImpl implements NotificationService {
           hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
           repeats: true,
         ),
-
       );
     }
   }
