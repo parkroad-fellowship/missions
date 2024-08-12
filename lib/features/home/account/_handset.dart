@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_membership_type.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
@@ -142,111 +143,192 @@ class AccountPageHandset extends StatelessWidget {
                           enabled: false,
                         ),
                       ),
-                      SizedBox(height: 40.h),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            bottom: 20,
-                            top: 30,
-                          ),
-                          child: Text.rich(
-                            TextSpan(
-                              text: l10n.byUsing,
-                              style: CustomTextTheme.customTextTheme()
-                                  .displaySmall!
-                                  .copyWith(
-                                    fontSize: 12,
-                                    color: const Color(0xFF727272),
-                                    height: 1.5,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                              children: [
-                                TextSpan(
-                                  text: l10n.terms,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .displaySmall!
-                                      .copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color:
-                                            AppTheme.appTheme().kPrimaryColorV2,
-                                      ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () async {
-                                      final uri = Uri(
-                                        scheme: 'https',
-                                        host: 'parkroadfellowship.org',
-                                        path: '/privacy-policy',
-                                      );
-                                      if (await canLaunchUrl(uri)) {
-                                        await launchUrl(
-                                          uri,
-                                          mode: LaunchMode.externalApplication,
-                                        );
-                                      }
-                                    },
-                                ),
-                                TextSpan(
-                                  text: l10n.and,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .displaySmall!
-                                      .copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.normal,
-                                        color: AppTheme.appTheme().kBlackColor,
-                                      ),
-                                ),
-                                TextSpan(
-                                  text: l10n.privacyPolicy,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .displaySmall!
-                                      .copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color:
-                                            AppTheme.appTheme().kPrimaryColorV2,
-                                      ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () async {
-                                      final uri = Uri(
-                                        scheme: 'https',
-                                        host: 'parkroadfellowship.org',
-                                        path: 'privacy-policy',
-                                      );
-                                      if (await canLaunchUrl(uri)) {
-                                        await launchUrl(
-                                          uri,
-                                          mode: LaunchMode.externalApplication,
-                                        );
-                                      }
-                                    },
-                                ),
-                              ],
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Text(
-                          l10n.version(Misc.getAppVersion()),
-                          style: CustomTextTheme.customTextTheme()
-                              .displaySmall!
-                              .copyWith(
-                                fontSize: 12,
-                                color: const Color(0xFF727272),
-                                height: 1.5,
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                      ),
                     ],
                   ),
                 );
               },
+            ),
+            ValueListenableBuilder(
+              valueListenable: Hive.box<dynamic>(
+                PRFSuperAppConfig.instance!.values.hiveBox,
+              ).listenable(),
+              builder: (context, box, _) {
+                final profile = getIt<HiveService>().retrieveProfile();
+                if (profile == null) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                if (profile.member == null) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                if (profile.member!.memberships == null) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                return SliverToBoxAdapter(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 64.w),
+                    padding: EdgeInsets.symmetric(horizontal: 40.w),
+                    child: Text(
+                      l10n.memberships,
+                      style: CustomTextTheme.customTextTheme()
+                          .headlineMedium!
+                          .copyWith(
+                            color: AppTheme.appTheme().kBlackColor,
+                            fontSize: 54.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            ValueListenableBuilder(
+              valueListenable: Hive.box<dynamic>(
+                PRFSuperAppConfig.instance!.values.hiveBox,
+              ).listenable(),
+              builder: (context, box, _) {
+                final profile = getIt<HiveService>().retrieveProfile();
+                if (profile == null) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                if (profile.member == null) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                if (profile.member!.memberships == null) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                return SliverList.builder(
+                  itemCount: profile.member!.memberships!.length,
+                  itemBuilder: (context, index) => ListTile(
+                    title: Text(
+                      profile.member!.memberships![index].spiritualYear!.name,
+                      style: CustomTextTheme.customTextTheme()
+                          .bodySmall
+                          ?.copyWith(fontSize: 48.sp),
+                    ),
+                    subtitle: Text(
+                      PrfMembershipType.fromIndex(
+                        profile.member!.memberships![index].type,
+                      ).name,
+                      style: CustomTextTheme.customTextTheme()
+                          .bodySmall
+                          ?.copyWith(fontSize: 40.sp),
+                    ),
+                    trailing: Icon(
+                      profile.member!.memberships![index].approved
+                          ? Icons.check_outlined
+                          : Icons.pending_actions,
+                    ),
+                  ),
+                );
+              },
+            ),
+            SliverToBoxAdapter(child: SizedBox(height: 40.h)),
+            SliverToBoxAdapter(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    bottom: 20,
+                    top: 30,
+                  ),
+                  child: Text.rich(
+                    TextSpan(
+                      text: l10n.byUsing,
+                      style: CustomTextTheme.customTextTheme()
+                          .displaySmall!
+                          .copyWith(
+                            fontSize: 12,
+                            color: const Color(0xFF727272),
+                            height: 1.5,
+                            fontWeight: FontWeight.w500,
+                          ),
+                      children: [
+                        TextSpan(
+                          text: l10n.terms,
+                          style: CustomTextTheme.customTextTheme()
+                              .displaySmall!
+                              .copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                              ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              final uri = Uri(
+                                scheme: 'https',
+                                host: 'parkroadfellowship.org',
+                                path: '/privacy-policy',
+                              );
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(
+                                  uri,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              }
+                            },
+                        ),
+                        TextSpan(
+                          text: l10n.and,
+                          style: CustomTextTheme.customTextTheme()
+                              .displaySmall!
+                              .copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                color: AppTheme.appTheme().kBlackColor,
+                              ),
+                        ),
+                        TextSpan(
+                          text: l10n.privacyPolicy,
+                          style: CustomTextTheme.customTextTheme()
+                              .displaySmall!
+                              .copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                              ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              final uri = Uri(
+                                scheme: 'https',
+                                host: 'parkroadfellowship.org',
+                                path: 'privacy-policy',
+                              );
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(
+                                  uri,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              }
+                            },
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  l10n.version(Misc.getAppVersion()),
+                  style:
+                      CustomTextTheme.customTextTheme().displaySmall!.copyWith(
+                            fontSize: 12,
+                            color: const Color(0xFF727272),
+                            height: 1.5,
+                            fontWeight: FontWeight.w500,
+                          ),
+                ),
+              ),
             ),
           ],
         ),

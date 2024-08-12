@@ -8,10 +8,8 @@ enum PrfRole {
   followUp,
   treasurer,
   member,
-  student,
-}
+  student;
 
-extension PRFRoleExtension on PrfRole {
   String get label {
     switch (this) {
       case PrfRole.superAdmin:
