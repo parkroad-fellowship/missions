@@ -1,6 +1,9 @@
-enum PRFMissionRole { member, leader, assistant, discipleshipTrainer }
+enum PRFMissionRole {
+  member,
+  leader,
+  assistant,
+  discipleshipTrainer;
 
-extension PRFMissionRoleExtension on PRFMissionRole {
   String get name {
     switch (this) {
       case PRFMissionRole.member:

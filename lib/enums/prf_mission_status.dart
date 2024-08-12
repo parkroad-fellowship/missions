@@ -1,9 +1,13 @@
 import 'package:app/utils/_index.dart';
 import 'package:flutter/widgets.dart';
 
-enum PRFMissionStatus { pending, approved, rejected, cancelled, serviced }
+enum PRFMissionStatus {
+  pending,
+  approved,
+  rejected,
+  cancelled,
+  serviced;
 
-extension PRFMissionStatusExtension on PRFMissionStatus {
   String get name {
     switch (this) {
       case PRFMissionStatus.pending:
