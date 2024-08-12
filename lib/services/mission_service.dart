@@ -164,6 +164,7 @@ class MissionServiceImpl implements MissionService {
         '/prayer-prompts',
         queryParameters: {
           'limit': 100,
+          'filter[is_active]': 2,
         },
       );
 
