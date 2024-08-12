@@ -213,12 +213,11 @@ class NotificationServiceImpl implements NotificationService {
           },
         ),
         // Show this notification at a particular time of day
-
-        // schedule: NotificationCalendar(
-        //   weekday: prayerPrompt.dayOfWeek,
-        //   hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
-        //   repeats: true,
-        // ),
+        schedule: NotificationCalendar(
+          weekday: prayerPrompt.dayOfWeek,
+          hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
+          repeats: true,
+        ),
 
       );
     }
