@@ -13,9 +13,6 @@ class PRFSuperApp extends StatefulWidget {
 }
 
 class _PRFSuperAppState extends State<PRFSuperApp> {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
-
   @override
   void initState() {
     AwesomeNotifications().setListeners(

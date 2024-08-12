@@ -1,16 +1,10 @@
 import 'dart:math';
 
-import 'package:app/app/app.dart';
 import 'package:app/enums/prf_notification_type.dart';
-import 'package:app/enums/prf_time_of_day.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/main_production.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/router.dart';
-import 'package:app/utils/singletons.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
