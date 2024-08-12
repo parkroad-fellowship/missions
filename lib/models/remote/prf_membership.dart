@@ -4,8 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'prf_membership.freezed.dart';
 part 'prf_membership.g.dart';
 
-
-
 @freezed
 class PRFMembership with _$PRFMembership {
   factory PRFMembership(
