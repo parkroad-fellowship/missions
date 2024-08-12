@@ -324,5 +324,7 @@
     "ask": "Ask",
     "@ask": {},
     "questions": "Questions",
-    "@questions": {}
+    "@questions": {},
+    "memberships": "Memberships",
+    "@memberships": {}
 }
