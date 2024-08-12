@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_role.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -97,26 +98,46 @@ class SubscriberActionCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      subscription.member!.fullName,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      PRFMissionSubscriptionStatus.fromIndex(
-                        subscription.status,
-                      ).name,
-                    ),
-                    SizedBox(height: 16.h),
-                  ],
+                Flexible(
+                  flex: 8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: subscription.member!.fullName,
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                fontWeight: FontWeight.w600,
+                              ),
+                          children: [
+                            if (subscription.missionRole !=
+                                PRFMissionRole.member.apiKey)
+                              TextSpan(
+                                text: ' ${PRFMissionRole.fromIndex(
+                                  subscription.missionRole,
+                                ).name}',
+                                style: CustomTextTheme.customTextTheme()
+                                    .displaySmall
+                                    ?.copyWith(
+                                      color:
+                                          AppTheme.appTheme().kPrimaryColorV2,
+                                    ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        PRFMissionSubscriptionStatus.fromIndex(
+                          subscription.status,
+                        ).name,
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
+                  ),
                 ),
                 const Spacer(),
                 Container(
