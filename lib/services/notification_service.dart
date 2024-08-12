@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/enums/prf_notification_type.dart';
+import 'package:app/enums/prf_time_of_day.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
@@ -26,21 +27,21 @@ abstract class NotificationService {
   static Future<void> onNotificationCreatedMethod(
     ReceivedNotification receivedNotification,
   ) async {
-    Logger().d(receivedNotification);
+    // Logger().d(receivedNotification);
   }
 
   @pragma('vm:entry-point')
   static Future<void> onNotificationDisplayedMethod(
     ReceivedNotification receivedNotification,
   ) async {
-    Logger().d(receivedNotification);
+    // Logger().d(receivedNotification);
   }
 
   @pragma('vm:entry-point')
   static Future<void> onDismissActionReceivedMethod(
     ReceivedAction receivedAction,
   ) async {
-    Logger().d(receivedAction);
+    // Logger().d(receivedAction);
   }
 
   @pragma('vm:entry-point')
@@ -200,6 +201,7 @@ class NotificationServiceImpl implements NotificationService {
     for (final prayerPrompt in prayerPrompts) {
       AwesomeNotifications().createNotification(
         content: NotificationContent(
+          autoDismissible: false,
           id: Random().nextInt(356),
           channelKey: 'prayer_prompts',
           title: 'PRF: Prayer watch',
@@ -213,10 +215,11 @@ class NotificationServiceImpl implements NotificationService {
         // Show this notification at a particular time of day
 
         // schedule: NotificationCalendar(
-        //   // weekday: prayerPrompt.dayOfWeek,
-        //   // hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
+        //   weekday: prayerPrompt.dayOfWeek,
+        //   hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
         //   repeats: true,
         // ),
+
       );
     }
   }
