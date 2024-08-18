@@ -13,8 +13,8 @@ dependencies:
   bloc: ^8.1.4
   build_version: ^2.1.1
   collection: ^1.18.0
-  dart_pusher_channels: ^1.2.2+1
-  dio: ^5.5.0
+  dart_pusher_channels: ^1.2.3
+  dio: ^5.6.0
   extended_image: ^8.2.1
   firebase_analytics: ^11.2.1
   firebase_auth: ^5.1.4
@@ -41,7 +41,7 @@ dependencies:
   isar_flutter_libs: ^3.1.0+1
   json_annotation: ^4.9.0
   logger: ^2.4.0
-  map_launcher: ^3.3.1
+  map_launcher: ^3.4.0
   path_provider: ^2.1.4
   pretty_dio_logger: ^1.4.0
   slugify: ^2.0.0
@@ -63,9 +63,6 @@ dev_dependencies:
   json_serializable: ^6.8.0
   mocktail: ^1.0.4
   very_good_analysis: ^6.0.0
-
-dependency_overrides:
-  pinenacl: ^0.6.0
 
 flutter:
   uses-material-design: true
