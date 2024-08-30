@@ -64,8 +64,8 @@ class AccountPageHandset extends StatelessWidget {
                       child: BlocListener<SignOutCubit, SignOutState>(
                         listener: (context, state) {
                           state.maybeWhen(
-                            orElse: () => context.router
-                                .replaceAll([const DecisionRoute()]),
+                            orElse: () => context.router.pushNamed(
+                                PRFSuperAppRouter.decisionRoute),
                           );
                         },
                         child: GestureDetector(

@@ -15,6 +15,35 @@ class DecisionPage extends StatefulWidget {
 }
 
 class _DecisionPageState extends State<DecisionPage> {
+  @override
+  void initState() {
+    final accessToken = getIt<HiveService>().retrieveToken();
+
+    if (accessToken == null) {
+      _redirectToPage(
+        context,
+        PRFSuperAppRouter.signInRoute,
+      );
+    } else {
+      final profile = getIt<HiveService>().retrieveProfile()!;
+      final result = profile.roles.where(
+        (role) => role.name == PrfRole.student.label,
+      );
+
+      if (result.isEmpty) {
+        _redirectToPage(
+          context,
+          PRFSuperAppRouter.landingRoute,
+        );
+      } else {
+        _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
+      }
+    }
+
+    super.initState();
+  }
+
+
   void _redirectToPage(
     BuildContext context,
     String routeName,
@@ -26,43 +55,17 @@ class _DecisionPageState extends State<DecisionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable:
-          Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-              .listenable(),
-      builder: (context, _, __) {
-        final accessToken = getIt<HiveService>().retrieveToken();
-
-        if (accessToken == null) {
-          _redirectToPage(
-            context,
-            PRFSuperAppRouter.signInRoute,
-          );
-        } else {
-          final profile = getIt<HiveService>().retrieveProfile()!;
-          final result = profile.roles.where(
-            (role) => role.name == PrfRole.student.label,
-          );
-
-          if (result.isEmpty) {
-            _redirectToPage(
-              context,
-              PRFSuperAppRouter.landingRoute,
-            );
-          } else {
-            _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
-          }
-        }
-        return Scaffold(
-          body: Center(
-            child: ExtendedImage.asset(
-              'assets/images/app-logo.png',
-              width: 222,
-              cacheRawData: true,
-            ),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Center(
+          child: ExtendedImage.asset(
+            'assets/images/app-logo.png',
+            width: 222,
+            cacheRawData: true,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
