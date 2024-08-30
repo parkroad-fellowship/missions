@@ -170,7 +170,7 @@ class HiveServiceImpl implements HiveService {
   (String, int?) retrieveStudentCredentials() {
     final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
     final credentials = box.get('studentCredentials') as List<dynamic>?;
-    if (credentials == null) return ('', 0);
+    if (credentials == null) return ('', null);
     return (credentials[0] as String, credentials[1] as int?);
   }
 }
