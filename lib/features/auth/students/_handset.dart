@@ -18,7 +18,6 @@ class StudentIntroPageHandset extends StatefulWidget {
 
 class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
   bool _isLoading = false;
-  bool registrationIsHidden = false;
   PRFUser? credentials;
 
   @override
@@ -56,75 +55,57 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                if (!registrationIsHidden)
-                  BlocConsumer<RegisterStudentCubit, RegisterStudentState>(
-                    listener: (context, state) {
-                      state.maybeWhen(
-                        loading: () => setState(() {
+                BlocConsumer<RegisterStudentCubit, RegisterStudentState>(
+                  listener: (context, state) {
+                    state.maybeWhen(
+                      loading: () => setState(() {
+                        _isLoading = !_isLoading;
+                      }),
+                      loaded: (user) {
+                        credentials = user;
+
+                        setState(() {
                           _isLoading = !_isLoading;
-                        }),
-                        loaded: (user) {
-                          credentials = user;
+                        });
 
-                          setState(() {
-                            _isLoading = !_isLoading;
-                            registrationIsHidden = true;
-                          });
+                        context.router.popUntilRouteWithPath(
+                          PRFSuperAppRouter.decisionRoute,
+                        );
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(l10n.registered),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                        },
-                        error: (message) {
-                          setState(() {
-                            _isLoading = !_isLoading;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(message),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        },
-                        orElse: () {},
-                      );
-                    },
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        orElse: () => PrimaryButton(
-                          onPressed: () => context
-                              .read<RegisterStudentCubit>()
-                              .registerStudent(),
-                          title: _isLoading ? l10n.registering : l10n.iAmReady,
-                          disabled: _isLoading,
-                          isLoading: _isLoading ? true : null,
-                        ),
-                      );
-                    },
-                  ),
-                if (registrationIsHidden)
-                  Align(
-                    child: Text(
-                      l10n.credentials(
-                        credentials!.email,
-                        credentials!.password!,
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.registered),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      },
+                      error: (message) {
+                        setState(() {
+                          _isLoading = !_isLoading;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(message),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      },
+                      orElse: () {},
+                    );
+                  },
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      orElse: () => PrimaryButton(
+                        onPressed: () => context
+                            .read<RegisterStudentCubit>()
+                            .registerStudent(),
+                        title: _isLoading ? l10n.registering : l10n.iAmReady,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
                       ),
-                      style: CustomTextTheme.customTextTheme().bodySmall,
-                    ),
-                  ),
-                if (registrationIsHidden)
-                  Container(
-                    margin: const EdgeInsets.only(top: 16),
-                    child: PrimaryButton(
-                      onPressed: () => context.router
-                          .popUntilRouteWithPath(PRFSuperAppRouter.signInRoute),
-                      title: l10n.iHaveWritten,
-                      disabled: false,
-                    ),
-                  ),
+                    );
+                  },
+                ),
                 const Spacer(),
               ],
             ),

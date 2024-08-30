@@ -20,6 +20,11 @@ abstract class HiveService {
   PRFMember? retrieveMember();
   List<String>? retrieveMemberGroupUlids();
   String retrieveStudentUlid();
+  void persistStudentCredentials({
+    required String email,
+    int? password,
+  });
+  (String email, int? password) retrieveStudentCredentials();
 
   void persistClassGroups(PRFClassGroupResponse classGroups);
   List<PRFClassGroup> retrieveClassGroups();
@@ -50,6 +55,7 @@ class HiveServiceImpl implements HiveService {
       'accessToken',
       'profile',
       'classGroups',
+      'studentCredentials',
     ]);
   }
 
@@ -149,5 +155,22 @@ class HiveServiceImpl implements HiveService {
     final profile = retrieveProfile();
     if (profile == null) return '';
     return profile.student!.ulid;
+  }
+
+  @override
+  void persistStudentCredentials({
+    required String email,
+    int? password,
+  }) {
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .put('studentCredentials', [email, password]);
+  }
+
+  @override
+  (String, int?) retrieveStudentCredentials() {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    final credentials = box.get('studentCredentials') as List<dynamic>?;
+    if (credentials == null) return ('', 0);
+    return (credentials[0] as String, credentials[1] as int?);
   }
 }
