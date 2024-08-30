@@ -28,6 +28,7 @@ class PRFUser with _$PRFUser {
     required List<PRFRole> roles,
     PRFMember? member,
     int? password,
+    String? token,
     PRFStudent? student,
   }) = _PRFUser;
 

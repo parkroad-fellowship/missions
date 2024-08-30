@@ -3,7 +3,6 @@ import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
@@ -64,8 +63,9 @@ class AccountPageHandset extends StatelessWidget {
                       child: BlocListener<SignOutCubit, SignOutState>(
                         listener: (context, state) {
                           state.maybeWhen(
-                            orElse: () => context.router
-                                .replaceAll([const DecisionRoute()]),
+                            orElse: () => context.router.pushNamed(
+                              PRFSuperAppRouter.decisionRoute,
+                            ),
                           );
                         },
                         child: GestureDetector(
