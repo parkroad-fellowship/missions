@@ -6,6 +6,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class StudentLandingPageHandset extends StatefulWidget {
   const StudentLandingPageHandset({super.key});
@@ -29,7 +31,6 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 88.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Row(
@@ -111,6 +112,65 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   ),
                 ),
                 SizedBox(height: 32.h),
+                ValueListenableBuilder(
+                  valueListenable: Hive.box<dynamic>(
+                          PRFSuperAppConfig.instance!.values.hiveBox)
+                      .listenable(),
+                  builder: (context, _, __) {
+                    final (email, password) =
+                        getIt<HiveService>().retrieveStudentCredentials();
+                    if (password == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return Animate(
+                      effects: [
+                        MoveEffect(
+                          duration: .5.seconds,
+                          curve: Curves.easeOutQuad,
+                          begin: const Offset(160, 0),
+                        ),
+                      ],
+                      child: HomeActionCard(
+                        title: l10n.viewCredentials,
+                        assetPath: 'assets/svgs/credentials.svg',
+                        onTap: () {
+                          WoltModalSheet.show<void>(
+                            context: context,
+                            pageListBuilder: (modalSheetContext) {
+                              return [
+                                WoltModalSheetPage(
+                                  
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.sizeOf(context).height * 0.4,
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                            child: Text(
+                                              l10n.credentials(
+                                                email,
+                                                password,
+                                              ),
+                                              style: CustomTextTheme
+                                                      .customTextTheme()
+                                                  .headlineLarge,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ];
+                            },
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

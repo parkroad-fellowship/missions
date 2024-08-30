@@ -218,7 +218,7 @@
     "@registered": {},
     "iHaveWritten": "I have written them down",
     "@iHaveWritten": {},
-    "credentials": "Your credentials\nEmail: {email}\nPassword: {password}",
+    "credentials": "Your credentials\n\nEmail: {email}\nPassword: {password}\n\nPlease write them down, they will disappear once you log out",
     "@credentials": {
         "placeholders": {
             "email": {
@@ -330,5 +330,7 @@
     "prayerAlert": "Prayer watch",
     "@prayerAlert": {},
     "amen": "Amen",
-    "@amen": {}
+    "@amen": {},
+    "viewCredentials": "for my private credentials",
+    "@viewCredentials": {}
 }
