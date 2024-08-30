@@ -114,8 +114,8 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                 SizedBox(height: 32.h),
                 ValueListenableBuilder(
                   valueListenable: Hive.box<dynamic>(
-                          PRFSuperAppConfig.instance!.values.hiveBox)
-                      .listenable(),
+                    PRFSuperAppConfig.instance!.values.hiveBox,
+                  ).listenable(),
                   builder: (context, _, __) {
                     final (email, password) =
                         getIt<HiveService>().retrieveStudentCredentials();
@@ -139,12 +139,14 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                             pageListBuilder: (modalSheetContext) {
                               return [
                                 WoltModalSheetPage(
-                                  
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                    ),
                                     child: SizedBox(
                                       height:
-                                          MediaQuery.sizeOf(context).height * 0.4,
+                                          MediaQuery.sizeOf(context).height *
+                                              0.4,
                                       child: Column(
                                         children: [
                                           Align(
