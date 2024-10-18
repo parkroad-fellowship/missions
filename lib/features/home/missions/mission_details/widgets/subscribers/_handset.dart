@@ -1,5 +1,4 @@
 import 'package:app/enums/prf_mission_role.dart';
-import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';

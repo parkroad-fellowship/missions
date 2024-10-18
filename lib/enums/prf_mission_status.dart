@@ -29,7 +29,6 @@ enum PRFMissionStatus {
     }
   }
 
-
   static Color switchColor(PRFMissionStatus status) {
     switch (status) {
       case PRFMissionStatus.approved:

@@ -10,7 +10,8 @@ class PRFStudentEnquiryReplyDTO with _$PRFStudentEnquiryReplyDTO {
     @JsonKey(name: 'student_enquiry_ulid') required String studentEnquiryUlid,
     required String content,
     @JsonKey(name: 'commentorable_ulid') required String commentorableUlid,
-    @JsonKey(name: 'commentorable_type') required PRFMorphType commentorableType,
+    @JsonKey(name: 'commentorable_type')
+    required PRFMorphType commentorableType,
   }) = _PRFStudentEnquiryReplyDTO;
 
   factory PRFStudentEnquiryReplyDTO.fromJson(Map<String, dynamic> json) =>

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-
 enum PRFCompletionStatus {
   @JsonValue(1)
   incomplete,

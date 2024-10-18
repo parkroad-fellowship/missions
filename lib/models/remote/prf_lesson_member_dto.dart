@@ -11,7 +11,8 @@ class PRFLessonMemberDTO with _$PRFLessonMemberDTO {
     @JsonKey(name: 'module_ulid') required String moduleUlid,
     @JsonKey(name: 'course_ulid') required String courseUlid,
     @JsonKey(name: 'member_ulid') required String memberUlid,
-    @JsonKey(name: 'completion_status') required PRFCompletionStatus completionStatus,
+    @JsonKey(name: 'completion_status')
+    required PRFCompletionStatus completionStatus,
   }) = _PRFLessonMemberDTO;
 
   factory PRFLessonMemberDTO.fromJson(Map<String, dynamic> json) =>
