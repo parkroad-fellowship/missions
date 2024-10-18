@@ -8,14 +8,14 @@ environment:
 
 dependencies:
   auto_route: ^8.3.0
-  awesome_notifications: ^0.9.3+1
-  awesome_notifications_core: ^0.9.3
+  awesome_notifications: ^0.10.0
+  awesome_notifications_core: ^0.10.0
   bloc: ^8.1.4
   build_version: ^2.1.1
   collection: ^1.18.0
   dart_pusher_channels: ^1.2.3
   dio: ^5.7.0
-  extended_image: ^8.3.1
+  extended_image: ^9.0.3
   firebase_analytics: ^11.3.0
   firebase_auth: ^5.2.0
   firebase_core: ^3.4.0
@@ -45,7 +45,7 @@ dependencies:
   path_provider: ^2.1.4
   pretty_dio_logger: ^1.4.0
   slugify: ^2.0.0
-  url_launcher: ^6.3.0
+  url_launcher: ^6.3.1
   wolt_modal_sheet: ^0.9.3
 
 dev_dependencies:
