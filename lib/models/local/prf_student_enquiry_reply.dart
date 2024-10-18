@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_morph_types.dart';
 import 'package:isar/isar.dart';
 
 part 'prf_student_enquiry_reply.g.dart';
@@ -20,6 +21,7 @@ class PRFLocalStudentEnquiryReply {
   final String studentEnquiryUlid;
   final String content;
   final DateTime createdAt;
-  final int commentorableType;
+  @Enumerated(EnumType.name)
+  final PRFMorphType commentorableType;
   final bool isStudent;
 }

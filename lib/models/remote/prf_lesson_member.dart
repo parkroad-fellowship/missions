@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_lesson.dart';
 import 'package:app/models/remote/prf_member.dart';
@@ -11,7 +12,7 @@ part 'prf_lesson_member.g.dart';
 class PRFLessonMember with _$PRFLessonMember {
   factory PRFLessonMember(
     String ulid,
-    @JsonKey(name: 'completion_status') int completionStatus,
+    @JsonKey(name: 'completion_status') PRFCompletionStatus completionStatus,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     @JsonKey(name: 'completed_at') DateTime? completedAt,

@@ -36,7 +36,7 @@ class FinishLessonCubit extends Cubit<FinishLessonState> {
           moduleUlid: moduleUlid,
           courseUlid: courseUlid,
           memberUlid: member.ulid,
-          completionStatus: PRFCompletionStatus.complete.apiKey,
+          completionStatus: PRFCompletionStatus.complete,
         ),
       );
 

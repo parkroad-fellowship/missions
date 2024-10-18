@@ -406,7 +406,7 @@ class LocalDBServiceImpl implements LocalDBService {
             content: reply.content,
             createdAt: reply.createdAt,
             commentorableType: reply.commentorableType,
-            isStudent: PRFMorphType.fromAPIKey(reply.commentorableType) ==
+            isStudent: reply.commentorableType ==
                 PRFMorphType.student,
           ),
         );

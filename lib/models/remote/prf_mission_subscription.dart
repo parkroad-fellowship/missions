@@ -1,3 +1,5 @@
+import 'package:app/enums/prf_mission_role.dart';
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/prf_member.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -9,8 +11,8 @@ part 'prf_mission_subscription.g.dart';
 class PRFMissionSubscription with _$PRFMissionSubscription {
   factory PRFMissionSubscription(
     String ulid,
-    int status,
-    @JsonKey(name: 'mission_role') int missionRole,
+    PRFMissionSubscriptionStatus status,
+    @JsonKey(name: 'mission_role') PRFMissionRole missionRole,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     PRFMission? mission,

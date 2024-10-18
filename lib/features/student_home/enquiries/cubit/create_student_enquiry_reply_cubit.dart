@@ -31,7 +31,7 @@ class CreateStudentEnquiryReplyCubit
         studentEnquiryReplyDTO: PRFStudentEnquiryReplyDTO(
           content: content,
           studentEnquiryUlid: studentEnquiryUlid,
-          commentorableType: PRFMorphType.student.apiKey,
+          commentorableType: PRFMorphType.student,
           commentorableUlid: studentUlid,
         ),
       );

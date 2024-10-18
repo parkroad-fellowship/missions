@@ -1,24 +1,8 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 enum PRFMorphType {
+  @JsonValue(1)
   member,
+  @JsonValue(2)
   student;
-
-  static PRFMorphType fromAPIKey(int apiKey) {
-    switch (apiKey) {
-      case 1:
-        return PRFMorphType.member;
-      case 2:
-        return PRFMorphType.student;
-      default:
-        return PRFMorphType.member;
-    }
-  }
-
-  int get apiKey {
-    switch (this) {
-      case PRFMorphType.member:
-        return 1;
-      case PRFMorphType.student:
-        return 2;
-    }
-  }
 }

@@ -1,11 +1,17 @@
 import 'package:app/utils/_index.dart';
 import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFMissionStatus {
+  @JsonValue(1)
   pending,
+  @JsonValue(2)
   approved,
+  @JsonValue(3)
   rejected,
+  @JsonValue(4)
   cancelled,
+  @JsonValue(5)
   serviced;
 
   String get name {
@@ -23,22 +29,6 @@ enum PRFMissionStatus {
     }
   }
 
-  static PRFMissionStatus fromIndex(int index) {
-    switch (index) {
-      case 1:
-        return PRFMissionStatus.pending;
-      case 2:
-        return PRFMissionStatus.approved;
-      case 3:
-        return PRFMissionStatus.rejected;
-      case 4:
-        return PRFMissionStatus.cancelled;
-      case 5:
-        return PRFMissionStatus.serviced;
-      default:
-        return PRFMissionStatus.pending;
-    }
-  }
 
   static Color switchColor(PRFMissionStatus status) {
     switch (status) {
@@ -51,21 +41,6 @@ enum PRFMissionStatus {
       case PRFMissionStatus.rejected:
       case PRFMissionStatus.cancelled:
         return AppTheme.appTheme().kRedColor;
-    }
-  }
-
-  int get apiKey {
-    switch (this) {
-      case PRFMissionStatus.pending:
-        return 1;
-      case PRFMissionStatus.approved:
-        return 2;
-      case PRFMissionStatus.rejected:
-        return 3;
-      case PRFMissionStatus.cancelled:
-        return 4;
-      case PRFMissionStatus.serviced:
-        return 5;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_member.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,7 +11,7 @@ class PRFCourseMember with _$PRFCourseMember {
   factory PRFCourseMember(
     String ulid,
     @JsonKey(name: 'percent_complete') double percentComplete,
-    @JsonKey(name: 'completion_status') int completionStatus,
+    @JsonKey(name: 'completion_status') PRFCompletionStatus completionStatus,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     @JsonKey(name: 'completed_at') DateTime? completedAt,

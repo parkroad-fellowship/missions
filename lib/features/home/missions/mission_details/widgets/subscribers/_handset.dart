@@ -114,11 +114,9 @@ class SubscriberActionCard extends StatelessWidget {
                               ),
                           children: [
                             if (subscription.missionRole !=
-                                PRFMissionRole.member.apiKey)
+                                PRFMissionRole.member)
                               TextSpan(
-                                text: ' ${PRFMissionRole.fromIndex(
-                                  subscription.missionRole,
-                                ).name}',
+                                text: ' ${subscription.missionRole.name}',
                                 style: CustomTextTheme.customTextTheme()
                                     .displaySmall
                                     ?.copyWith(
@@ -131,9 +129,7 @@ class SubscriberActionCard extends StatelessWidget {
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        PRFMissionSubscriptionStatus.fromIndex(
-                          subscription.status,
-                        ).name,
+                        subscription.status.name,
                       ),
                       SizedBox(height: 16.h),
                     ],

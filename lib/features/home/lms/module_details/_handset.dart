@@ -264,10 +264,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                         vertical: 4.h,
                       ),
                       child: Icon(
-                        PRFCompletionStatus.fromIndex(
-                          lessonModule.lessonMember?.completionStatus ?? 0,
-                        ).icon,
-                      ),
+                          lessonModule.lessonMember?.completionStatus?.icon,),
                     ),
                   ],
                 ),

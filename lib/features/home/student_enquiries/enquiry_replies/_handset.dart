@@ -126,7 +126,7 @@ class _StudentEnquiryRepliesPageHandsetState
                     studentEnquiryUlid: enquiry.ulid,
                     content: enquiry.content,
                     createdAt: enquiry.createdAt,
-                    commentorableType: PRFMorphType.student.apiKey,
+                    commentorableType: PRFMorphType.student,
                     isStudent: true,
                   ),
                   if (snapshot.data != null) ...snapshot.data!,

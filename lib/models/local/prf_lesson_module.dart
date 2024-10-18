@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:isar/isar.dart';
 
@@ -70,7 +71,10 @@ class PRFLocalLessonMember {
   });
 
   String? ulid;
-  int? completionStatus;
+
+  @Enumerated(EnumType.name)
+  PRFCompletionStatus? completionStatus;
+
   DateTime? createdAt;
   DateTime? completedAt;
 }

@@ -1,18 +1,12 @@
-enum PRFMissionSubscriptionStatus {
-  pending,
-  approved,
-  withdrawn;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  int get apiKey {
-    switch (this) {
-      case PRFMissionSubscriptionStatus.pending:
-        return 1;
-      case PRFMissionSubscriptionStatus.approved:
-        return 2;
-      case PRFMissionSubscriptionStatus.withdrawn:
-        return 3;
-    }
-  }
+enum PRFMissionSubscriptionStatus {
+  @JsonValue(1)
+  pending,
+  @JsonValue(2)
+  approved,
+  @JsonValue(3)
+  withdrawn;
 
   String get name {
     switch (this) {
@@ -22,19 +16,6 @@ enum PRFMissionSubscriptionStatus {
         return 'Approved';
       case PRFMissionSubscriptionStatus.withdrawn:
         return 'Withdrawn';
-    }
-  }
-
-  static PRFMissionSubscriptionStatus fromIndex(int index) {
-    switch (index) {
-      case 1:
-        return PRFMissionSubscriptionStatus.pending;
-      case 2:
-        return PRFMissionSubscriptionStatus.approved;
-      case 3:
-        return PRFMissionSubscriptionStatus.withdrawn;
-      default:
-        return PRFMissionSubscriptionStatus.pending;
     }
   }
 }

@@ -259,7 +259,7 @@ class MissionActionCard extends StatelessWidget {
 
   final PRFMission mission;
 
-  final int? status;
+  final PRFMissionSubscriptionStatus? status;
   final void Function()? onTap;
 
   @override
@@ -291,9 +291,7 @@ class MissionActionCard extends StatelessWidget {
                 children: [
                   if (status != null)
                     Text(
-                      PRFMissionSubscriptionStatus.fromIndex(
-                        status!,
-                      ).name,
+                      status!.name,
                       style: CustomTextTheme.customTextTheme().bodySmall,
                     ),
                   Text(
