@@ -1,7 +1,13 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 enum PRFEvent {
+  @JsonValue(1)
   courseMemberUpdated,
+  @JsonValue(2)
   memberModuleUpdated,
+  @JsonValue(3)
   lessonMemberUpdated,
+  @JsonValue(4)
   studentEnquiryReplyCreated;
 
   String get name {
@@ -31,22 +37,10 @@ enum PRFEvent {
         return PRFEvent.courseMemberUpdated;
     }
   }
-
-  int get apiKey {
-    switch (this) {
-      case PRFEvent.courseMemberUpdated:
-        return 1;
-      case PRFEvent.memberModuleUpdated:
-        return 2;
-      case PRFEvent.lessonMemberUpdated:
-        return 3;
-      case PRFEvent.studentEnquiryReplyCreated:
-        return 4;
-    }
-  }
 }
 
 enum PRFPresenceEvent {
+  @JsonValue(5)
   announcementGroupCreated;
 
   String get name {
@@ -62,13 +56,6 @@ enum PRFPresenceEvent {
         return PRFPresenceEvent.announcementGroupCreated;
       default:
         return PRFPresenceEvent.announcementGroupCreated;
-    }
-  }
-
-  int get apiKey {
-    switch (this) {
-      case PRFPresenceEvent.announcementGroupCreated:
-        return 5;
     }
   }
 }

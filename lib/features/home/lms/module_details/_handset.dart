@@ -1,4 +1,3 @@
-import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
@@ -264,9 +263,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                         vertical: 4.h,
                       ),
                       child: Icon(
-                        PRFCompletionStatus.fromIndex(
-                          lessonModule.lessonMember?.completionStatus ?? 0,
-                        ).icon,
+                        lessonModule.lessonMember?.completionStatus?.icon,
                       ),
                     ),
                   ],

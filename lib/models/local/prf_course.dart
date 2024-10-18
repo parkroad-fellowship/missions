@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_completion_status.dart';
 import 'package:isar/isar.dart';
 
 part 'prf_course.g.dart';
@@ -37,7 +38,8 @@ class PRFLocalCourseMember {
 
   String? ulid;
   double? percentComplete;
-  int? completionStatus;
+  @Enumerated(EnumType.name)
+  PRFCompletionStatus? completionStatus;
   DateTime? createdAt;
   DateTime? updatedAt;
   DateTime? completedAt;

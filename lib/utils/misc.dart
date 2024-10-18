@@ -47,13 +47,13 @@ class Misc {
   static bool memberHasSubscribed(PRFMission mission) {
     return mission.loggedInMemberMissionSubscription != null &&
         (mission.loggedInMemberMissionSubscription!.status ==
-                PRFMissionSubscriptionStatus.approved.apiKey ||
+                PRFMissionSubscriptionStatus.approved ||
             mission.loggedInMemberMissionSubscription!.status ==
-                PRFMissionSubscriptionStatus.pending.apiKey);
+                PRFMissionSubscriptionStatus.pending);
   }
 
   static bool canSubscribeToMission(PRFMission mission) {
-    return mission.status == PRFMissionStatus.approved.apiKey &&
+    return mission.status == PRFMissionStatus.approved &&
         mission.missionSubscriptionsNeeded > 0;
   }
 }

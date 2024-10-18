@@ -202,7 +202,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   if (lessonModule.lessonMember == null ||
                       (lessonModule.lessonMember != null &&
                           lessonModule.lessonMember!.completionStatus !=
-                              PRFCompletionStatus.complete.apiKey))
+                              PRFCompletionStatus.complete))
                     BlocConsumer<FinishLessonCubit, FinishLessonState>(
                       listener: (context, state) {
                         state.maybeWhen(

@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_type.dart';
 import 'package:app/models/remote/prf_school.dart';
@@ -17,7 +18,7 @@ class PRFMission with _$PRFMission {
     @JsonKey(name: 'end_time') String endTime,
     int capacity,
     @JsonKey(name: 'mission_prep_notes') String missionPrepNotes,
-    int status,
+    PRFMissionStatus status,
     @JsonKey(name: 'mission_subscriptions_needed')
     int missionSubscriptionsNeeded,
     @JsonKey(name: 'created_at') DateTime createdAt,

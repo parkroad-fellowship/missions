@@ -1,11 +1,17 @@
 import 'package:app/utils/_index.dart';
 import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFMissionStatus {
+  @JsonValue(1)
   pending,
+  @JsonValue(2)
   approved,
+  @JsonValue(3)
   rejected,
+  @JsonValue(4)
   cancelled,
+  @JsonValue(5)
   serviced;
 
   String get name {
@@ -20,23 +26,6 @@ enum PRFMissionStatus {
         return 'Cancelled';
       case PRFMissionStatus.serviced:
         return 'Serviced';
-    }
-  }
-
-  static PRFMissionStatus fromIndex(int index) {
-    switch (index) {
-      case 1:
-        return PRFMissionStatus.pending;
-      case 2:
-        return PRFMissionStatus.approved;
-      case 3:
-        return PRFMissionStatus.rejected;
-      case 4:
-        return PRFMissionStatus.cancelled;
-      case 5:
-        return PRFMissionStatus.serviced;
-      default:
-        return PRFMissionStatus.pending;
     }
   }
 

@@ -34,7 +34,7 @@ class WithdrawCubit extends Cubit<WithdrawState> {
         subscriptionDTO: PRFMissionSubscriptionUpdateDTO(
           missionUlid: missionUlid,
           memberUlid: member.ulid,
-          status: PRFMissionSubscriptionStatus.withdrawn.apiKey,
+          status: PRFMissionSubscriptionStatus.withdrawn,
         ),
       );
       emit(WithdrawState.loaded(subscription: missionSubscription));

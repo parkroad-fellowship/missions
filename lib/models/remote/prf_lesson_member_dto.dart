@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_completion_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_lesson_member_dto.freezed.dart';
@@ -10,7 +11,8 @@ class PRFLessonMemberDTO with _$PRFLessonMemberDTO {
     @JsonKey(name: 'module_ulid') required String moduleUlid,
     @JsonKey(name: 'course_ulid') required String courseUlid,
     @JsonKey(name: 'member_ulid') required String memberUlid,
-    @JsonKey(name: 'completion_status') required int completionStatus,
+    @JsonKey(name: 'completion_status')
+    required PRFCompletionStatus completionStatus,
   }) = _PRFLessonMemberDTO;
 
   factory PRFLessonMemberDTO.fromJson(Map<String, dynamic> json) =>

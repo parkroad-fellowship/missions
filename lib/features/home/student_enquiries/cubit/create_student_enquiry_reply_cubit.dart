@@ -30,7 +30,7 @@ class CreateEnquiryReplyCubit extends Cubit<CreateEnquiryReplyState> {
         studentEnquiryReplyDTO: PRFStudentEnquiryReplyDTO(
           content: content,
           studentEnquiryUlid: studentEnquiryUlid,
-          commentorableType: PRFMorphType.member.apiKey,
+          commentorableType: PRFMorphType.member,
           commentorableUlid: member.ulid,
         ),
       );

@@ -1,5 +1,4 @@
 import 'package:app/enums/prf_mission_role.dart';
-import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
@@ -114,11 +113,9 @@ class SubscriberActionCard extends StatelessWidget {
                               ),
                           children: [
                             if (subscription.missionRole !=
-                                PRFMissionRole.member.apiKey)
+                                PRFMissionRole.member)
                               TextSpan(
-                                text: ' ${PRFMissionRole.fromIndex(
-                                  subscription.missionRole,
-                                ).name}',
+                                text: ' ${subscription.missionRole.name}',
                                 style: CustomTextTheme.customTextTheme()
                                     .displaySmall
                                     ?.copyWith(
@@ -131,9 +128,7 @@ class SubscriberActionCard extends StatelessWidget {
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        PRFMissionSubscriptionStatus.fromIndex(
-                          subscription.status,
-                        ).name,
+                        subscription.status.name,
                       ),
                       SizedBox(height: 16.h),
                     ],
