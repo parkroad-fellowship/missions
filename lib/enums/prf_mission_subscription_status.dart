@@ -18,4 +18,15 @@ enum PRFMissionSubscriptionStatus {
         return 'Withdrawn';
     }
   }
+
+  int get apiKey {
+    switch (this) {
+      case PRFMissionSubscriptionStatus.pending:
+        return 1;
+      case PRFMissionSubscriptionStatus.approved:
+        return 2;
+      case PRFMissionSubscriptionStatus.withdrawn:
+        return 3;
+    }
+  }
 }
