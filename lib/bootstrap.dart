@@ -29,7 +29,7 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-  await runZonedGuarded(() async {
+  try {
     Bloc.observer = const AppBlocObserver();
 
     await getIt<HiveService>().initBoxes();
@@ -55,7 +55,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     );
 
     runApp(await builder());
-  }, (error, stackTrace) {
+  } catch (error, stackTrace) {
     if (kDebugMode) {
       log(error.toString(), stackTrace: stackTrace);
     } else {
@@ -68,5 +68,5 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         return true;
       };
     }
-  });
+  }
 }
