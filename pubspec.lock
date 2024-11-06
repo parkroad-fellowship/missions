@@ -373,10 +373,10 @@ packages:
     dependency: "direct main"
     description:
       name: extended_image
-      sha256: bd4d1aa63ab0816091d95fc47e8d44731bf683b03578dbc1d7a9dc3b91c7f62f
+      sha256: "613875dc319f17546ea07499b5f0774755709a19a36dfde812e5eda9eb7a5c8c"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.4"
+    version: "9.0.7"
   extended_image_library:
     dependency: transitive
     description:
@@ -583,10 +583,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_svg
-      sha256: "7b4ca6cf3304575fe9c8ec64813c8d02ee41d2afe60bcfe0678bcb5375d596a2"
+      sha256: de82e6bf958cec7190fbc1c5298282c851228e35ae2b14e2b103e7f777818c64
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.10+1"
+    version: "2.0.13"
   flutter_test:
     dependency: "direct dev"
     description: flutter
