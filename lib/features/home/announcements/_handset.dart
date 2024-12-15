@@ -206,7 +206,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                     decoration: BoxDecoration(
                                       color: AppTheme.appTheme()
                                           .kSecondaryColorV2
-                                          .withOpacity(1),
+                                          .withValues(alpha: 1),
                                       borderRadius: BorderRadius.circular(48.r),
                                     ),
                                     child: ListTile(

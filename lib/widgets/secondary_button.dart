@@ -26,10 +26,10 @@ class SecondaryButton extends StatelessWidget {
         return MaterialButton(
           color: isAlert ?? false
               ? (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kErrorColor.withOpacity(0.4)
+                  ? AppTheme.appTheme().kErrorColor.withValues(alpha: .4)
                   : AppTheme.appTheme().kErrorColor
               : (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kBackgroundColor.withOpacity(0.4)
+                  ? AppTheme.appTheme().kBackgroundColor.withValues(alpha: .4)
                   : AppTheme.appTheme().kBackgroundColor,
           minWidth: double.infinity,
           height: height ?? 55,

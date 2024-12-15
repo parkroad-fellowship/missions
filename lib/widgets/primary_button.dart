@@ -26,10 +26,10 @@ class PrimaryButton extends StatelessWidget {
         return MaterialButton(
           color: isAlert ?? false
               ? (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kErrorColor.withOpacity(0.4)
+                  ? AppTheme.appTheme().kErrorColor.withValues(alpha: .4)
                   : AppTheme.appTheme().kErrorColor
               : (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kPrimaryColorV2.withOpacity(0.4)
+                  ? AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: .4)
                   : AppTheme.appTheme().kPrimaryColorV2,
           minWidth: double.infinity,
           height: height ?? 55,

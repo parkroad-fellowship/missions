@@ -91,7 +91,8 @@ class SubscriberActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(.3),
+              color:
+                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(

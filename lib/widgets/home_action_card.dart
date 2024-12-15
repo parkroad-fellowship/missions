@@ -30,7 +30,7 @@ class HomeActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: AppTheme.appTheme().kSecondaryColorV2.withOpacity(1),
+              color: AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: 1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(

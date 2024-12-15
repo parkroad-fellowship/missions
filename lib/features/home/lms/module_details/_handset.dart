@@ -233,7 +233,8 @@ class ModuleDetailsActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: AppTheme.appTheme().kPrimaryColorV2.withOpacity(.1),
+              color:
+                  AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: width),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(

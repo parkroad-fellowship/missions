@@ -152,8 +152,10 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                           color: enquiryReply.isStudent
                               ? AppTheme.appTheme()
                                   .kSecondaryColorV2
-                                  .withOpacity(.2)
-                              : AppTheme.appTheme().kGreyColor.withOpacity(.2),
+                                  .withValues(alpha: .2)
+                              : AppTheme.appTheme()
+                                  .kGreyColor
+                                  .withValues(alpha: .2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(enquiryReply.content),
