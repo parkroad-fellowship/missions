@@ -55,22 +55,22 @@ jobs:
       - name: ⚙️ Build AAB
         run: flutter build appbundle  --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
 
-      # - name: ⚙️ Setup Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: "3.0"
-      #     bundler-cache: true
+      - name: ⚙️ Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.0"
+          bundler-cache: true
 
-      # - name: ⚙️ Download bundle dependencies
-      #   run: |
-      #     gem install bundler:2.0.2
-      #     bundle install
+      - name: ⚙️ Download bundle dependencies
+        run: |
+          gem install bundler:2.0.2
+          bundle install
 
-      # - name: 🚀 Release to Google Play (Production)
-      #   env:
-      #     SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
-      #     SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
-      #   run: |
-      #     bundle exec fastlane supply \
-      #     --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
-      #     --track production
+      - name: 🚀 Release to Google Play (Production)
+        env:
+          SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
+        run: |
+          bundle exec fastlane supply \
+          --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
+          --track production

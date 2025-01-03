@@ -20,7 +20,7 @@ sort:
 		dart run import_sorter:main
 
 aab:
-		flutter build appbundle  --flavor production --target lib/main_production.dart
+		flutter build appbundle  --flavor production --target lib/main_production.dart --release
 
 run:
 		flutter run --release  --flavor production --target lib/main_production.dart
