@@ -333,10 +333,6 @@
     "@amen": {},
     "viewCredentials": "for my private credentials",
     "@viewCredentials": {},
-    "memberSignIn": "Members",
-    "@memberSignIn": {},
     "studentEmail": "Enter student assigned email",
-    "@studentEmail": {},
-    "studentSignIn": "Students",
-    "@studentSignIn": {}
+    "@studentEmail": {}
 }

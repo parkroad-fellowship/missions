@@ -7,7 +7,6 @@ import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/secondary_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -78,7 +77,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        l10n.studentSignIn,
+                        l10n.signIn,
                         style: CustomTextTheme.customTextTheme().displayLarge,
                       ),
                     ),
@@ -152,16 +151,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       disabled: false,
                     ),
                     const Divider(),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Text(
-                          l10n.memberSignIn,
-                          style: CustomTextTheme.customTextTheme().displayLarge,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 32),
                     BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
                       builder: (context, signInWithGoogleState) {
                         return BlocBuilder<SocialLoginCubit, SocialLoginState>(
