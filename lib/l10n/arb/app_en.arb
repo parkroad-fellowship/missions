@@ -209,7 +209,7 @@
     "registerNewStudent": "Register a new student account",
     "@registerNewStudent": {},
     "studentIntro": "To keep your identity private, you get a random credentials that you can use to access the app. Please ensure to save them somewhere if you want to come back to the app at another time.",
-    "@studentInto": {},
+    "@studentIntro": {},
     "iAmReady": "I am ready",
     "@iAmReady": {},
     "registering": "Registering ...",
@@ -332,5 +332,7 @@
     "amen": "Amen",
     "@amen": {},
     "viewCredentials": "for my private credentials",
-    "@viewCredentials": {}
+    "@viewCredentials": {},
+    "studentEmail": "Enter student assigned email",
+    "@studentEmail": {}
 }

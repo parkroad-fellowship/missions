@@ -2,42 +2,25 @@
   "project_info": {
     "project_number": "899177334428",
     "project_id": "parkroad-fellowship",
-    "storage_bucket": "parkroad-fellowship.appspot.com"
+    "storage_bucket": "parkroad-fellowship.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:899177334428:android:06ab6f756456b259b18f59",
+        "mobilesdk_app_id": "1:899177334428:android:0c399ecc63460bc4b18f59",
         "android_client_info": {
           "package_name": "org.parkroadfellowship.app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "899177334428-qjr723cqsth4nag4mvg4fkst7cfe5k4m.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBGInAr3kSnJEKL2-k2ivMgZNKkztbb8wE"
+          "current_key": "AIzaSyAPRptZXBum6K_NdaTF5alei7Z9H55kIfg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "899177334428-qjr723cqsth4nag4mvg4fkst7cfe5k4m.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "899177334428-acekgguh0up2o8en4qvc8ird697cnil1.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

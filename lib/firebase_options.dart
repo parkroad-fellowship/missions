@@ -16,10 +16,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -50,22 +47,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBGInAr3kSnJEKL2-k2ivMgZNKkztbb8wE',
-    appId: '1:899177334428:android:06ab6f756456b259b18f59',
+    apiKey: 'AIzaSyAPRptZXBum6K_NdaTF5alei7Z9H55kIfg',
+    appId: '1:899177334428:android:0c399ecc63460bc4b18f59',
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
-    storageBucket: 'parkroad-fellowship.appspot.com',
+    storageBucket: 'parkroad-fellowship.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyANTOmzEa9nDBAWLjd5qI4bbc0BKD0AMVk',
-    appId: '1:899177334428:ios:8c874ad35ffb3c53b18f59',
+    apiKey: 'AIzaSyD4GCdn77Z79Z7lxkNbaUImu7iVYGDBSw4',
+    appId: '1:899177334428:ios:1447634a6c2d9dd0b18f59',
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
-    storageBucket: 'parkroad-fellowship.appspot.com',
-    iosClientId:
-        '899177334428-7b3buao7utld8bvikbkqjcruvm0b9tsh.apps.googleusercontent'
-        '.com',
-    iosBundleId: 'org.parkroadfellowship.app-dev-miller',
+    storageBucket: 'parkroad-fellowship.firebasestorage.app',
+    iosClientId: '899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g'
+        '.apps.googleusercontent.com',
+    iosBundleId: 'org.parkroadfellowship.app',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCJjit7qKk0sqo0cxNrhreR0gNfSTlSc00',
+    appId: '1:899177334428:web:f93f20d18f092d8cb18f59',
+    messagingSenderId: '899177334428',
+    projectId: 'parkroad-fellowship',
+    authDomain: 'parkroad-fellowship.firebaseapp.com',
+    storageBucket: 'parkroad-fellowship.firebasestorage.app',
+    measurementId: 'G-8PMMBCWG0R',
   );
 }
