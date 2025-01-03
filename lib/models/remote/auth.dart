@@ -56,3 +56,14 @@ class PRFPermission with _$PRFPermission {
   factory PRFPermission.fromJson(Map<String, dynamic> json) =>
       _$PRFPermissionFromJson(json);
 }
+
+@freezed
+class SocialAuthDTO with _$SocialAuthDTO {
+  factory SocialAuthDTO({
+    required String provider,
+    @JsonKey(name: 'access_token') required String accessToken,
+  }) = _SocialAuthDTO;
+
+  factory SocialAuthDTO.fromJson(Map<String, dynamic> json) =>
+      _$SocialAuthDTOFromJson(json);
+}

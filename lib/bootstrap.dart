@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/socket_config.dart';
@@ -32,6 +31,13 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   try {
     Bloc.observer = const AppBlocObserver();
 
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    Singletons.setup();
+    await Singletons.setupDatabase();
+
     await getIt<HiveService>().initBoxes();
 
     final userUlid = getIt<HiveService>().retrieveProfile()?.ulid;
@@ -48,11 +54,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     }
 
     getIt<NotificationService>().init();
-
-    await Firebase.initializeApp(
-      options:
-          Platform.isAndroid ? DefaultFirebaseOptions.currentPlatform : null,
-    );
 
     runApp(await builder());
   } catch (error, stackTrace) {

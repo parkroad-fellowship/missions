@@ -10,16 +10,19 @@ Future<void> main() async {
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
       hiveBox: 'prf-super-app-${Misc.getSluggedAppVersion()}',
-      baseDomain: 'prf-missions.fly.dev',
-      urlScheme: 'https',
+      // baseDomain: 'api.parkroadfellowship.org',
+      // urlScheme: 'https',
+      // socketKey: 'yvnlkaqadqiadutrs9sa',
+      // socketScheme: 'wss',
+      // socketPort: 9000,
+
+      baseDomain: 'prf-sockets.test',
+      urlScheme: 'http',
       socketKey: 'yvnlkaqadqiadutrs9sa',
-      socketScheme: 'wss',
-      socketPort: 9000,
+      socketScheme: 'ws',
+      socketPort: 8080,
     ),
   );
-
-  Singletons.setup();
-  await Singletons.setupDatabase();
 
   await bootstrap(
     () => MultiBlocProvider(
