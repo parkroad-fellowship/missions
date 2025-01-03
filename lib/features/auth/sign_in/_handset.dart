@@ -19,12 +19,8 @@ class SignInHandset extends StatefulWidget {
 }
 
 class _SignInHandsetState extends State<SignInHandset> {
-  final _emailController = TextEditingController(
-    text: kDebugMode ? 'swift.antonina@parkroadfellowship.org' : '',
-  );
-  final _passwordController = TextEditingController(
-    text: kDebugMode ? 'password' : '',
-  );
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _hidePasswordNotifier = ValueNotifier<bool>(true);
 
   bool _isLoading = false;
@@ -87,7 +83,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                     ),
                     const SizedBox(height: 20),
                     InputFormField(
-                      hintText: l10n.enterEmail,
+                      hintText: l10n.studentEmail,
                       controller: _emailController,
                       enabled: !_isLoading,
                     ),

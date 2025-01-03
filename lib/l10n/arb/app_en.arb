@@ -334,5 +334,7 @@
     "viewCredentials": "for my private credentials",
     "@viewCredentials": {},
     "or": "or",
-    "@or": {}
+    "@or": {},
+    "studentEmail": "Enter student assigned email",
+    "@studentEmail": {}
 }
