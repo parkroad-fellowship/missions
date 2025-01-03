@@ -72,8 +72,8 @@ class GoogleAuthButton extends StatelessWidget {
                     fontSize: 14,
                     fontStyle: FontStyle.normal,
                     color: (isLoading ?? false)
-                        ? Colors.black
-                        : Colors.black.withValues(alpha: .4),
+                        ? Colors.black.withValues(alpha: .4)
+                        : Colors.black,
                     fontFamily: 'Helvetica Neue',
                     fontWeight: FontWeight.w700,
                   ),
