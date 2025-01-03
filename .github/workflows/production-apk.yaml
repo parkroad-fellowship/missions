@@ -4,6 +4,7 @@ on:
     pull_request:
       branches:
         - main
+        - staging
   
 jobs:
     build:
@@ -53,7 +54,7 @@ jobs:
             echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
         - name: ⚙️ Build APK
-          run: flutter build apk  --flavor production --target lib/main_production.dart
+          run: flutter build apk  --flavor production --target lib/main_production.dart --release
 
 
         - name: ☁ Upload artifact to Firebase App Distribution
