@@ -10,17 +10,11 @@ Future<void> main() async {
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
       hiveBox: 'prf-super-app-${Misc.getSluggedAppVersion()}',
-      // baseDomain: 'api.parkroadfellowship.org',
-      // urlScheme: 'https',
-      // socketKey: 'yvnlkaqadqiadutrs9sa',
-      // socketScheme: 'wss',
-      // socketPort: 9000,
-
-      baseDomain: 'prf-sockets.test',
-      urlScheme: 'http',
+      baseDomain: 'api.parkroadfellowship.org',
+      urlScheme: 'https',
       socketKey: 'yvnlkaqadqiadutrs9sa',
-      socketScheme: 'ws',
-      socketPort: 8080,
+      socketScheme: 'wss',
+      socketPort: 9000,
     ),
   );
 
