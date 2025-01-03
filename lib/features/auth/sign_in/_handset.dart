@@ -76,8 +76,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                       ),
                     ),
                     Align(
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        l10n.signIn,
+                        l10n.studentSignIn,
                         style: CustomTextTheme.customTextTheme().displayLarge,
                       ),
                     ),
@@ -143,13 +144,20 @@ class _SignInHandsetState extends State<SignInHandset> {
                         );
                       },
                     ),
+                    const SizedBox(height: 8),
+                    SecondaryButton(
+                      onPressed: () => context.router
+                          .pushNamed(PRFSuperAppRouter.registerStudentRoute),
+                      title: l10n.registerStudent,
+                      disabled: false,
+                    ),
+                    const Divider(),
                     const SizedBox(height: 16),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          l10n.or,
-                          style: CustomTextTheme.customTextTheme().bodySmall,
+                          l10n.memberSignIn,
+                          style: CustomTextTheme.customTextTheme().displayLarge,
                         ),
                       ],
                     ),
@@ -194,13 +202,6 @@ class _SignInHandsetState extends State<SignInHandset> {
                           },
                         );
                       },
-                    ),
-                    const SizedBox(height: 32),
-                    SecondaryButton(
-                      onPressed: () => context.router
-                          .pushNamed(PRFSuperAppRouter.registerStudentRoute),
-                      title: l10n.registerStudent,
-                      disabled: false,
                     ),
                     const Spacer(),
                   ],
