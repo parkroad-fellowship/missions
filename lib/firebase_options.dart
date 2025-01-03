@@ -47,33 +47,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBGInAr3kSnJEKL2-k2ivMgZNKkztbb8wE',
-    appId: '1:899177334428:android:06ab6f756456b259b18f59',
+    apiKey: 'AIzaSyAPRptZXBum6K_NdaTF5alei7Z9H55kIfg',
+    appId: '1:899177334428:android:0c399ecc63460bc4b18f59',
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
     storageBucket: 'parkroad-fellowship.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyANTOmzEa9nDBAWLjd5qI4bbc0BKD0AMVk',
-    appId: '1:899177334428:ios:eda74a88d2919adeb18f59',
+    apiKey: 'AIzaSyD4GCdn77Z79Z7lxkNbaUImu7iVYGDBSw4',
+    appId: '1:899177334428:ios:1447634a6c2d9dd0b18f59',
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
     storageBucket: 'parkroad-fellowship.firebasestorage.app',
-    androidClientId: '899177334428-2mm4hnn68jv1i6vjlga1fh760kbrie9g'
+    iosClientId: '899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g'
         '.apps.googleusercontent.com',
-    iosClientId: '899177334428-kb9p9jd7o1hkf7g8uv91p9et6okqo61b.apps'
-        '.googleusercontent.com',
     iosBundleId: 'org.parkroadfellowship.app',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBtoWvVanpkvax0saoT3407f-Pxuz_QESg',
-    appId: '1:899177334428:web:0459423571358ad6b18f59',
+    apiKey: 'AIzaSyCJjit7qKk0sqo0cxNrhreR0gNfSTlSc00',
+    appId: '1:899177334428:web:f93f20d18f092d8cb18f59',
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
     authDomain: 'parkroad-fellowship.firebaseapp.com',
     storageBucket: 'parkroad-fellowship.firebasestorage.app',
-    measurementId: 'G-CLDG64NTV0',
+    measurementId: 'G-8PMMBCWG0R',
   );
 }

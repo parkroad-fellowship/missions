@@ -7,53 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:899177334428:android:06ab6f756456b259b18f59",
+        "mobilesdk_app_id": "1:899177334428:android:0c399ecc63460bc4b18f59",
         "android_client_info": {
           "package_name": "org.parkroadfellowship.app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "899177334428-2mm4hnn68jv1i6vjlga1fh760kbrie9g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.parkroadfellowship.app",
-            "certificate_hash": "164f4b522a4065a0af57a3027704b6760fe6432b"
-          }
-        },
-        {
-          "client_id": "899177334428-tknbpbv5l0gkol5d33e94dctnerlrh9p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.parkroadfellowship.app",
-            "certificate_hash": "e22a058138e6356324b553f5047c14af86bcb0aa"
-          }
-        },
-        {
-          "client_id": "899177334428-p77c14626ol7ufflqqu4d3qqd9imrv7j.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBGInAr3kSnJEKL2-k2ivMgZNKkztbb8wE"
+          "current_key": "AIzaSyAPRptZXBum6K_NdaTF5alei7Z9H55kIfg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "899177334428-p77c14626ol7ufflqqu4d3qqd9imrv7j.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "899177334428-7b3buao7utld8bvikbkqjcruvm0b9tsh.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org.parkroadfellowship.app-dev-miller"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

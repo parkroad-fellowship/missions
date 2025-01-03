@@ -81,11 +81,11 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.899177334428-kb9p9jd7o1hkf7g8uv91p9et6okqo61b</string>
+				<string>com.googleusercontent.apps.899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g</string>
 			</array>
 		</dict>
 	</array>
 	<key>GIDClientID</key>
-	<string>899177334428-kb9p9jd7o1hkf7g8uv91p9et6okqo61b.apps.googleusercontent.com</string>
+	<string>899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g.apps.googleusercontent.com</string>
 </dict>
 </plist>
