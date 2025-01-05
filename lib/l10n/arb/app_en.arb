@@ -343,7 +343,7 @@
     "@expenseCategory": {},
     "chargeType": "Charge Type",
     "@chargeType": {},
-    "amountSpent": "Amount Spent",
+    "amountSpent": "Amount spent",
     "@amountSpent": {},
     "selectExpenseCategory": "Select Expense Category",
     "@selectExpenseCategory": {},
@@ -375,6 +375,14 @@
     "@unitCost": {},
     "quantity": "Quantity",
     "@quantity": {},
-    "totalCost": "Total Cost",
-    "@totalCost": {}
+    "totalCost": "Total (KES)",
+    "@totalCost": {},
+    "item": "Item",
+    "@item": {},
+    "unitCostAndQty": "Unit Cost & Quantity",
+    "@unitCostAndQty": {},
+    "summary": "Summary",
+    "@summary": {},
+    "breakdown": "Breakdown",
+    "@breakdown": {}
 }

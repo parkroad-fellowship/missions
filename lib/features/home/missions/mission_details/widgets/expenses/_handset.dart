@@ -1,3 +1,4 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
   const ExpensesViewHandset({
@@ -51,6 +53,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
             ),
           ),
           loaded: (missionExpense) {
+            Logger().f(missionExpense.expenses);
             return CustomScrollView(
               slivers: [
                 // Start Navigation Bar
@@ -60,15 +63,16 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                     child: DataTable(
                       columns: [
                         DataColumn(
-                            label: Text(
-                          'Summary',
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        )),
+                          label: Text(
+                           l10n.summary,
+                            style: CustomTextTheme.customTextTheme()
+                                .displayLarge
+                                ?.copyWith(
+                                  color: AppTheme.appTheme().kPrimaryColorV2,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ),
                         const DataColumn(label: Text('')),
                       ],
                       rows: [
@@ -167,11 +171,44 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                 // End Navigation Bar
                 SliverToBoxAdapter(child: Divider()),
                 SliverToBoxAdapter(child: SizedBox(height: 48.h)),
-                SliverList.separated(
-                  itemCount: missionExpense.expenses.length,
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemBuilder: (context, index) => ExpenseCard(
-                    expense: missionExpense.expenses[index],
+                SliverToBoxAdapter(
+                  child: Text(
+                    l10n.breakdown,
+                    style: CustomTextTheme.customTextTheme()
+                        .displayLarge
+                        ?.copyWith(
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: DataTable(
+                    columns: [
+                      DataColumn(label: Text(l10n.item)),
+                      DataColumn(label: Text(l10n.unitCostAndQty)),
+                      DataColumn(label: Text(l10n.totalCost)),
+                    ],
+                    rows: missionExpense.expenses
+                        .map((expense) => DataRow(cells: [
+                              DataCell(Text(expense.expenseCategory!.name)),
+                              DataCell(Text(
+                                NumberFormat.currency(
+                                      locale: 'en_KE',
+                                      symbol: '',
+                                      decimalDigits: 0,
+                                    ).format(expense.unitCost) +
+                                    ' (${expense.quantity})',
+                              )),
+                              DataCell(Text(
+                                NumberFormat.currency(
+                                  locale: 'en_KE',
+                                  symbol: '',
+                                  decimalDigits: 0,
+                                ).format(expense.lineTotal),
+                              )),
+                            ]))
+                        .toList(),
                   ),
                 ),
               ],
