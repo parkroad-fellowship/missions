@@ -18,6 +18,7 @@ class PRFSuperAppValues {
   final int socketPort;
 
   String get baseUrl => '$urlScheme://$baseDomain';
+  String get globalHiveAuthBox => 'prf-super-app-auth';
 }
 
 class PRFSuperAppConfig {
