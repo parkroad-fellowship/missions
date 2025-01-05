@@ -53,13 +53,32 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
             ),
           ),
           loaded: (missionExpense) {
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              itemCount: missionExpense.expenses.length,
-              separatorBuilder: (context, index) => SizedBox(height: 16.h),
-              itemBuilder: (context, index) =>
-                  ExpenseCard(expense: missionExpense.expenses[index]),
+            return CustomScrollView(
+              slivers: [
+                // Start Navigation Bar
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80.w),
+                    child: Row(
+                      children: [
+                        Text(
+                          l10n.amountReceived(missionExpense.amountReceived),
+                          style: CustomTextTheme.customTextTheme().bodyLarge,
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
+                ),
+                // End Navigation Bar
+                SliverToBoxAdapter(child: SizedBox(height: 48.h)),
+                SliverList.separated(
+                    itemCount: missionExpense.expenses.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) => ExpenseCard(
+                          expense: missionExpense.expenses[index],
+                        )),
+              ],
             );
           },
         );
@@ -118,7 +137,6 @@ class ExpenseCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(expense.expenseCategory!.name),
-                    
                     Text(
                       "${DateFormat.yMMMMEEEEd().format(expense.createdAt)} "
                       "${DateFormat.jm().format(expense.createdAt)}",

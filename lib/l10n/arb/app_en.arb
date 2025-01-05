@@ -354,5 +354,13 @@
     "enterConfirmationMessage": "Enter Confirmation Message",
     "@enterConfirmationMessage": {},
     "askMissionDeskToDisburseFunds": "Ask the missions desk to disburse funds",
-    "@askMissionDeskToDisburseFunds": {}
+    "@askMissionDeskToDisburseFunds": {},
+    "amountReceived": "Amount received: {amountReceived}",
+    "@amountReceived": {
+        "placeholders": {
+            "amountReceived": {
+                "type": "int"
+            }
+        }
+    }
 }
