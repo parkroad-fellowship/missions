@@ -58,9 +58,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 32.w),
                     child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('')),
-                        DataColumn(label: Text('')),
+                      columns: [
+                        DataColumn(
+                            label: Text(
+                          'Summary',
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        )),
+                        const DataColumn(label: Text('')),
                       ],
                       rows: [
                         DataRow(
@@ -156,6 +165,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   ),
                 ),
                 // End Navigation Bar
+                SliverToBoxAdapter(child: Divider()),
                 SliverToBoxAdapter(child: SizedBox(height: 48.h)),
                 SliverList.separated(
                   itemCount: missionExpense.expenses.length,
