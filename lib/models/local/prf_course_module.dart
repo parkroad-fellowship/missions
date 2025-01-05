@@ -60,7 +60,7 @@ class PRFLocalMemberModule {
 
   String? ulid;
   double? percentComplete;
-  @Enumerated(EnumType.name)
+  @Enumerated(EnumType.ordinal32)
   PRFCompletionStatus? completionStatus;
   DateTime? createdAt;
   DateTime? updatedAt;
