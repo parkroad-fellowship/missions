@@ -1,6 +1,7 @@
 import 'package:app/models/local/adapters.dart';
 import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_member.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
@@ -34,6 +35,9 @@ abstract class HiveService {
   void persistSoul(PRFSoul soul, String missionUlid);
   List<PRFSoul> retrieveSouls(String missionUlid);
   void clearSouls(String missionUlid);
+
+  void persistExpenseCategories(PRFExpenseCategoryResponse expenseCategories);
+  List<PRFExpenseCategory> retrieveExpenseCategories();
 }
 
 class HiveServiceImpl implements HiveService {
@@ -203,5 +207,20 @@ class HiveServiceImpl implements HiveService {
     final credentials = box.get('studentCredentials') as List<dynamic>?;
     if (credentials == null) return ('', null);
     return (credentials[0] as String, credentials[1] as int?);
+  }
+
+  @override
+  void persistExpenseCategories(PRFExpenseCategoryResponse expenseCategories) {
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .put('expenseCategories', expenseCategories);
+  }
+
+  @override
+  List<PRFExpenseCategory> retrieveExpenseCategories() {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    final expenseCategories =
+        box.get('expenseCategories') as PRFExpenseCategoryResponse?;
+    if (expenseCategories == null) return [];
+    return expenseCategories.data;
   }
 }

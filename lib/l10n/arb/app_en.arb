@@ -334,5 +334,15 @@
     "viewCredentials": "for my private credentials",
     "@viewCredentials": {},
     "studentEmail": "Enter student assigned email",
-    "@studentEmail": {}
+    "@studentEmail": {},
+    "expenses": "Expenses",
+    "@expenses": {},
+    "confirmationMessage": "Confirmation Message",
+    "@confirmationMessage": {},
+    "expenseCategory": "Expense Category",
+    "@expenseCategory": {},
+    "chargeType": "Charge Type",
+    "@chargeType": {},
+    "amountSpent": "Amount Spent",
+    "@amountSpent": {}
 }

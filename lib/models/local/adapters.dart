@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -58,6 +60,45 @@ class PRFSoulsAdapter extends TypeAdapter<PRFSoulResponse> {
 
   @override
   void write(BinaryWriter writer, PRFSoulResponse obj) {
+    writer.write(json.encode(obj.toJson()));
+  }
+}
+
+class PRFExpenseCategoryResponseAdapter
+    extends TypeAdapter<PRFExpenseCategoryResponse> {
+  @override
+  final typeId = 3;
+
+  @override
+  PRFExpenseCategoryResponse read(BinaryReader reader) {
+    return PRFExpenseCategoryResponse.fromJson(
+      Map<String, dynamic>.of(
+        json.decode(reader.read() as String) as Map<String, dynamic>,
+      ),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, PRFExpenseCategoryResponse obj) {
+    writer.write(json.encode(obj.toJson()));
+  }
+}
+
+class PRFMissionExpenseResponseAdapter extends TypeAdapter<PRFMissionExpense> {
+  @override
+  final typeId = 4;
+
+  @override
+  PRFMissionExpense read(BinaryReader reader) {
+    return PRFMissionExpense.fromJson(
+      Map<String, dynamic>.of(
+        json.decode(reader.read() as String) as Map<String, dynamic>,
+      ),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, PRFMissionExpense obj) {
     writer.write(json.encode(obj.toJson()));
   }
 }

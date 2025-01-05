@@ -1,0 +1,50 @@
+import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/services/_index.dart';
+import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'get_expense_categories_state.dart';
+part 'get_expense_categories_cubit.freezed.dart';
+
+class GetExpenseCategoriesCubit extends Cubit<GetExpenseCategoriesState> {
+  GetExpenseCategoriesCubit({
+    required MissionService missionService,
+    required HiveService hiveService,
+  }) : super(const GetExpenseCategoriesState.initial()) {
+    _missionService = missionService;
+    _hiveService = hiveService;
+  }
+
+  late MissionService _missionService;
+  late HiveService _hiveService;
+
+  Future<void> getExpenseCategories() async {
+    emit(const GetExpenseCategoriesState.loading());
+    try {
+      final localExpenseCategories = _hiveService.retrieveExpenseCategories();
+      if (localExpenseCategories.isNotEmpty) {
+        emit(
+          GetExpenseCategoriesState.loaded(
+            expenseCategories: localExpenseCategories,
+          ),
+        );
+        return;
+      }
+
+      final expenseCategories = await _missionService.getExpenseCategories();
+      _hiveService.persistExpenseCategories(
+        PRFExpenseCategoryResponse(expenseCategories),
+      );
+      emit(
+        GetExpenseCategoriesState.loaded(
+          expenseCategories: expenseCategories,
+        ),
+      );
+    } on Failure catch (e) {
+      emit(GetExpenseCategoriesState.error(message: e.message));
+    } catch (e) {
+      emit(GetExpenseCategoriesState.error(message: e.toString()));
+    }
+  }
+}

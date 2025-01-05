@@ -15,6 +15,7 @@ import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
@@ -249,6 +250,12 @@ class Singletons {
         create: (context) => UploadPrayerResponseCubit(
           localDBService: getIt(),
           missionService: getIt(),
+        ),
+      ),
+      BlocProvider<GetExpenseCategoriesCubit>(
+        create: (context) => GetExpenseCategoriesCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];
