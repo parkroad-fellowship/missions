@@ -1,4 +1,5 @@
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/widgets/add_token/add_token.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/utils/_index.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
   const ExpensesViewHandset({
@@ -51,120 +54,244 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
             ),
           ),
           loaded: (missionExpense) {
-            return CustomScrollView(
-              slivers: [
-                // Start Navigation Bar
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32.w),
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('')),
-                        DataColumn(label: Text('')),
-                      ],
-                      rows: [
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.amountReceived)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountReceived),
+            Logger().f(missionExpense.expenses);
+            return RefreshIndicator(
+              onRefresh: () => context
+                  .read<GetMissionExpenseCubit>()
+                  .getMissionExpense(missionUlid: missionUlid),
+              child: CustomScrollView(
+                slivers: [
+                  // Start Navigation Bar
+                  SliverToBoxAdapter(
+                    child: Row(
+                      children: [
+                        Text(
+                          l10n.summary,
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ),
-                          ],
                         ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.amountSpent)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountSpent),
+                        const Spacer(),
+                        BlocBuilder<GetMissionExpenseCubit,
+                            GetMissionExpenseState>(
+                          builder: (context, state) {
+                            return IconButton(
+                              icon: state.maybeWhen(
+                                orElse: () => const Icon(Icons.refresh),
+                                loading: () =>
+                                    const CircularProgressIndicator(),
+                                loaded: (_) => const Icon(Icons.refresh),
                               ),
-                            ),
-                          ],
+                              onPressed: () => context
+                                  .read<GetMissionExpenseCubit>()
+                                  .getMissionExpense(missionUlid: missionUlid),
+                            );
+                          },
                         ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.tokenAmount)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.tokenAmount),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.amountToRefund)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountToRefund),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.refundedAmount)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountRefunded),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.balance)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.balance),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.fullyRefunded)),
-                            DataCell(
-                              Text(
-                                missionExpense.isRefunded ? l10n.yes : l10n.no,
-                              ),
-                            ),
-                          ],
+                        IconButton(
+                          icon: const Icon(Icons.mail),
+                          onPressed: () => WoltModalSheet.show<void>(
+                            context: context,
+                            pageListBuilder: (modalSheetContext) {
+                              return [
+                                WoltModalSheetPage(
+                                  child: SizedBox(
+                                    height:
+                                        MediaQuery.sizeOf(context).height * 0.8,
+                                    child: AddTokenView(
+                                      missionExpenseUlid: missionExpense.ulid,
+                                    ),
+                                  ),
+                                ),
+                              ];
+                            },
+                          ).then(
+                            (_) {
+                              if (context.mounted) {
+                                context
+                                    .read<GetMissionExpenseCubit>()
+                                    .getMissionExpense(
+                                      missionUlid: missionUlid,
+                                    );
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                // End Navigation Bar
-                SliverToBoxAdapter(child: SizedBox(height: 48.h)),
-                SliverList.separated(
-                  itemCount: missionExpense.expenses.length,
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemBuilder: (context, index) => ExpenseCard(
-                    expense: missionExpense.expenses[index],
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32.w),
+                      child: DataTable(
+                        columns: [
+                          DataColumn(label: Text(l10n.item)),
+                          DataColumn(label: Text(l10n.figure)),
+                        ],
+                        rows: [
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.amountReceived)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountReceived),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.amountSpent)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountSpent),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.balance)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.balance),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.tokenAmount)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.tokenAmount),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.refundCharge)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.refundCharge),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.amountToRefund)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountToRefund),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.refundedAmount)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountRefunded),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.fullyRefunded)),
+                              DataCell(
+                                Text(
+                                  missionExpense.isRefunded
+                                      ? l10n.yes
+                                      : l10n.no,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  // End Navigation Bar
+                  const SliverToBoxAdapter(child: Divider()),
+                  SliverToBoxAdapter(child: SizedBox(height: 48.h)),
+                  SliverToBoxAdapter(
+                    child: Text(
+                      l10n.breakdown,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: DataTable(
+                      columns: [
+                        DataColumn(label: Text(l10n.item)),
+                        DataColumn(label: Text(l10n.unitCostAndQty)),
+                        DataColumn(label: Text(l10n.totalCost)),
+                      ],
+                      rows: missionExpense.expenses
+                          .map(
+                            (expense) => DataRow(
+                              cells: [
+                                DataCell(Text(expense.expenseCategory!.name)),
+                                DataCell(
+                                  Text(
+                                    '${NumberFormat.currency(
+                                      locale: 'en_KE',
+                                      symbol: '',
+                                      decimalDigits: 0,
+                                    ).format(expense.unitCost)} x'
+                                    ' ${expense.quantity}',
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    NumberFormat.currency(
+                                      locale: 'en_KE',
+                                      symbol: '',
+                                      decimalDigits: 0,
+                                    ).format(expense.lineTotal),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );
@@ -209,7 +336,7 @@ class ExpenseCard extends StatelessWidget {
                   NumberFormat.currency(
                     locale: 'en_KE',
                     symbol: 'KES ',
-                  ).format(expense.amount),
+                  ).format(expense.unitCost),
                   style:
                       CustomTextTheme.customTextTheme().displayLarge?.copyWith(
                             color: AppTheme.appTheme().kPrimaryColorV2,
