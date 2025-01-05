@@ -379,7 +379,7 @@
     "@totalCost": {},
     "item": "Item",
     "@item": {},
-    "unitCostAndQty": "Unit Cost & Quantity",
+    "unitCostAndQty": "Unit Cost \n& Quantity",
     "@unitCostAndQty": {},
     "summary": "Summary",
     "@summary": {},

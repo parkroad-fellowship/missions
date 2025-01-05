@@ -108,6 +108,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                           ),
                           DataRow(
                             cells: [
+                              DataCell(Text(l10n.balance)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.balance),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
                               DataCell(Text(l10n.tokenAmount)),
                               DataCell(
                                 Text(
@@ -158,19 +171,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                               ),
                             ],
                           ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.balance)),
-                              DataCell(
-                                Text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.balance),
-                                ),
-                              ),
-                            ],
-                          ),
+                          
                           DataRow(
                             cells: [
                               DataCell(Text(l10n.fullyRefunded)),
