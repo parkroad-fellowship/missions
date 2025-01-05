@@ -45,6 +45,10 @@ abstract class MissionService {
   Future<List<PRFExpenseCategory>> getExpenseCategories();
   Future<PRFMissionExpense> getMissionExpense({required String missionUlid});
   Future<PRFExpense> addExpense({required PRFExpenseDTO expenseDTO});
+  Future<PRFMissionExpense> addToken({
+    required String missionExpenseUlid,
+    required int tokenAmount,
+  });
 }
 
 class MissionServiceImpl implements MissionService {
@@ -245,6 +249,23 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFExpense.fromJson(res['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PRFMissionExpense> addToken({
+    required String missionExpenseUlid,
+    required int tokenAmount,
+  }) async {
+    try {
+      final res = await _networkUtil.putReq(
+        '/mission-expenses/$missionExpenseUlid',
+        body: json.encode({'token_amount': tokenAmount}),
+      );
+
+      return PRFMissionExpense.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }

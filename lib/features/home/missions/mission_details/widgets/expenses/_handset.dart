@@ -1,4 +1,5 @@
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/widgets/add_token/add_token.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/utils/_index.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
   const ExpensesViewHandset({
@@ -61,14 +63,64 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                 slivers: [
                   // Start Navigation Bar
                   SliverToBoxAdapter(
-                    child: Text(
-                      l10n.summary,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
+                    child: Row(
+                      children: [
+                        Text(
+                          l10n.summary,
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                        Spacer(),
+                        BlocBuilder<GetMissionExpenseCubit,
+                            GetMissionExpenseState>(
+                          builder: (context, state) {
+                            return IconButton(
+                              icon: state.maybeWhen(
+                                orElse: () => const Icon(Icons.refresh),
+                                loading: () =>
+                                    const CircularProgressIndicator(),
+                                loaded: (_) => const Icon(Icons.refresh),
+                              ),
+                              onPressed: () => context
+                                  .read<GetMissionExpenseCubit>()
+                                  .getMissionExpense(missionUlid: missionUlid),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.mail),
+                          onPressed: () => WoltModalSheet.show<void>(
+                            context: context,
+                            pageListBuilder: (modalSheetContext) {
+                              return [
+                                WoltModalSheetPage(
+                                  child: SizedBox(
+                                    height:
+                                        MediaQuery.sizeOf(context).height * 0.8,
+                                    child: AddTokenView(
+                                      missionExpenseUlid: missionExpense.ulid,
+                                    ),
+                                  ),
+                                ),
+                              ];
+                            },
+                          ).then(
+                            (_) {
+                              if (context.mounted) {
+                                context
+                                    .read<GetMissionExpenseCubit>()
+                                    .getMissionExpense(
+                                      missionUlid: missionUlid,
+                                    );
+                              }
+                            },
                           ),
+                        ),
+                      ],
                     ),
                   ),
                   SliverToBoxAdapter(
@@ -171,7 +223,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                               ),
                             ],
                           ),
-                          
                           DataRow(
                             cells: [
                               DataCell(Text(l10n.fullyRefunded)),

@@ -388,5 +388,7 @@
     "figure": "Figure",
     "@figure": {},
     "refundCharge": "Cost to refund",
-    "@refundCharge": {}
+    "@refundCharge": {},
+    "tokenRecorded": "Token recorded",
+    "@tokenRecorded": {}
 }
