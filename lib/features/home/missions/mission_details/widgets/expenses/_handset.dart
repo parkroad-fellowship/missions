@@ -56,14 +56,101 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                 // Start Navigation Bar
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 80.w),
-                    child: Row(
-                      children: [
-                        Text(
-                          l10n.amountReceived(missionExpense.amountReceived),
-                          style: CustomTextTheme.customTextTheme().bodyLarge,
+                    padding: EdgeInsets.symmetric(horizontal: 32.w),
+                    child: DataTable(
+                      columns: const [
+                        DataColumn(label: Text('')),
+                        DataColumn(label: Text('')),
+                      ],
+                      rows: [
+                        DataRow(
+                          cells: [
+                            DataCell(Text(l10n.amountReceived)),
+                            DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'en_KE',
+                                  symbol: 'KES ',
+                                ).format(missionExpense.amountReceived),
+                              ),
+                            ),
+                          ],
                         ),
-                        const Spacer(),
+                        DataRow(
+                          cells: [
+                            DataCell(Text(l10n.amountSpent)),
+                            DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'en_KE',
+                                  symbol: 'KES ',
+                                ).format(missionExpense.amountSpent),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text(l10n.tokenAmount)),
+                            DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'en_KE',
+                                  symbol: 'KES ',
+                                ).format(missionExpense.tokenAmount),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text(l10n.amountToRefund)),
+                            DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'en_KE',
+                                  symbol: 'KES ',
+                                ).format(missionExpense.amountToRefund),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text(l10n.refundedAmount)),
+                            DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'en_KE',
+                                  symbol: 'KES ',
+                                ).format(missionExpense.amountRefunded),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text(l10n.balance)),
+                            DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'en_KE',
+                                  symbol: 'KES ',
+                                ).format(missionExpense.balance),
+                              ),
+                            ),
+                          ],
+                        ),
+                        DataRow(
+                          cells: [
+                            DataCell(Text(l10n.fullyRefunded)),
+                            DataCell(
+                              Text(
+                                missionExpense.isRefunded ? l10n.yes : l10n.no,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

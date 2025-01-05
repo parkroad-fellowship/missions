@@ -1,7 +1,6 @@
 import 'package:app/enums/prf_charge_type.dart';
 import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/utils/_index.dart';
@@ -257,25 +256,14 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       return;
                     }
 
-                    await context
-                        .read<AddExpenseCubit>()
-                        .addExpense(
+                    await context.read<AddExpenseCubit>().addExpense(
                           missionUlid: widget.missionUlid,
                           expenseCategoryUlid: selectedExpenseCategory!.ulid,
                           amount: _amountController.text,
                           chargeType: selectedChargeType!,
                           confirmationMessage:
                               _confirmationMessageController.text,
-                        )
-                        .then((_) {
-                      if (context.mounted) {
-                        context
-                            .read<GetMissionExpenseCubit>()
-                            .getMissionExpense(
-                              missionUlid: widget.missionUlid,
-                            );
-                      }
-                    });
+                        );
                   },
                 ),
               );

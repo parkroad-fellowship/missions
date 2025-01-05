@@ -1,4 +1,5 @@
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
@@ -295,11 +296,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   },
                 ).then(
                   (_) {
-                    // if (context.mounted) {
-                    //   context
-                    //       .read<GetMissionQuestionsCubit>()
-                    //       .getMissionQuestions(missionUlid: mission.ulid);
-                    // }
+                    if (context.mounted) {
+                      context
+                          .read<GetMissionExpenseCubit>()
+                          .getMissionExpense(missionUlid: mission.ulid);
+                    }
                   },
                 );
               }

@@ -355,12 +355,20 @@
     "@enterConfirmationMessage": {},
     "askMissionDeskToDisburseFunds": "Ask the missions desk to disburse funds",
     "@askMissionDeskToDisburseFunds": {},
-    "amountReceived": "Amount received: {amountReceived}",
-    "@amountReceived": {
-        "placeholders": {
-            "amountReceived": {
-                "type": "int"
-            }
-        }
-    }
+    "amountReceived": "Amount received",
+    "@amountReceived": {},
+    "tokenAmount": "Token from institution",
+    "@tokenAmount": {},
+    "amountToRefund": "Amount to refund",
+    "@amountToRefund": {},
+    "refundedAmount": "Refunded amount",
+    "@refundedAmount": {},
+    "fullyRefunded": "Fully refunded?",
+    "@fullyRefunded": {},
+    "balance": "Balance",
+    "@balance": {},
+    "yes": "Yes",
+    "@yes": {},
+    "no": "No",
+    "@no": {}
 }

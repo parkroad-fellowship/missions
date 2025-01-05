@@ -9,6 +9,8 @@ class PRFMissionExpense with _$PRFMissionExpense {
   factory PRFMissionExpense(
     String ulid,
     @JsonKey(name: 'amount_received') int amountReceived,
+    @JsonKey(name: 'amount_spent') int amountSpent,
+    @JsonKey(name: 'balance') int balance,
     @JsonKey(name: 'token_amount') int tokenAmount,
     @JsonKey(name: 'amount_to_refund') int amountToRefund,
     @JsonKey(name: 'amount_refunded') int amountRefunded,
