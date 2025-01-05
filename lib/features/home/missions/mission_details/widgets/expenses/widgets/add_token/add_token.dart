@@ -1,4 +1,3 @@
-import 'package:app/features/home/missions/mission_details/widgets/expenses/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/widgets/add_token/_handset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -14,9 +13,11 @@ class AddTokenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
+      defaultBuilder: (_, __) =>
+          AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
+        handset: (_, __) =>
+            AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
       ),
     );
   }

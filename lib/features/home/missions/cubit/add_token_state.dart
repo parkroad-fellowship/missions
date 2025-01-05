@@ -6,6 +6,6 @@ class AddTokenState with _$AddTokenState {
   const factory AddTokenState.loading() = _Loading;
   const factory AddTokenState.loaded() = _Loaded;
   const factory AddTokenState.error(
-     String message,
+    String message,
   ) = _Error;
 }

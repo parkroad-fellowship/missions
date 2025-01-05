@@ -74,7 +74,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         BlocBuilder<GetMissionExpenseCubit,
                             GetMissionExpenseState>(
                           builder: (context, state) {

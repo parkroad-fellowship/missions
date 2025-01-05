@@ -2,15 +2,14 @@ import 'package:app/features/home/missions/cubit/add_token_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/color_pallete.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/form_field_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddTokenViewHandset extends StatefulWidget {
   const AddTokenViewHandset({
-    super.key,
     required this.missionExpenseUlid,
+    super.key,
   });
 
   final String missionExpenseUlid;
@@ -79,7 +78,6 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                   disabled: _isLoading,
                   isLoading: _isLoading ? true : null,
                   onPressed: () async {
-                    
                     if (_amountController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -91,9 +89,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
 
                     await context.read<AddTokenCubit>().addToken(
                           missionExpenseUlid: widget.missionExpenseUlid,
-                          
-                          tokenAmount:
-                              _amountController.text,
+                          tokenAmount: _amountController.text,
                         );
                   },
                 ),
