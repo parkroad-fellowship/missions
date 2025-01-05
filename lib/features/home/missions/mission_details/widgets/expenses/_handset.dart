@@ -53,172 +53,180 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
           ),
           loaded: (missionExpense) {
             Logger().f(missionExpense.expenses);
-            return CustomScrollView(
-              slivers: [
-                // Start Navigation Bar
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32.w),
-                    child: DataTable(
-                      columns: [
-                        DataColumn(
-                          label: Text(
-                            l10n.summary,
-                            style: CustomTextTheme.customTextTheme()
-                                .displayLarge
-                                ?.copyWith(
-                                  color: AppTheme.appTheme().kPrimaryColorV2,
-                                  fontWeight: FontWeight.w600,
-                                ),
+            return RefreshIndicator(
+              onRefresh: () => context
+                  .read<GetMissionExpenseCubit>()
+                  .getMissionExpense(missionUlid: missionUlid),
+              child: CustomScrollView(
+                slivers: [
+                  // Start Navigation Bar
+                  SliverToBoxAdapter(
+                    child: Text(
+                      l10n.summary,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
                           ),
-                        ),
-                        const DataColumn(label: Text('')),
-                      ],
-                      rows: [
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.amountReceived)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountReceived),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.amountSpent)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountSpent),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.tokenAmount)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.tokenAmount),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.amountToRefund)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountToRefund),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.refundedAmount)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.amountRefunded),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.balance)),
-                            DataCell(
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: 'KES ',
-                                ).format(missionExpense.balance),
-                              ),
-                            ),
-                          ],
-                        ),
-                        DataRow(
-                          cells: [
-                            DataCell(Text(l10n.fullyRefunded)),
-                            DataCell(
-                              Text(
-                                missionExpense.isRefunded ? l10n.yes : l10n.no,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
                     ),
                   ),
-                ),
-                // End Navigation Bar
-                const SliverToBoxAdapter(child: Divider()),
-                SliverToBoxAdapter(child: SizedBox(height: 48.h)),
-                SliverToBoxAdapter(
-                  child: Text(
-                    l10n.breakdown,
-                    style: CustomTextTheme.customTextTheme()
-                        .displayLarge
-                        ?.copyWith(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: DataTable(
-                    columns: [
-                      DataColumn(label: Text(l10n.item)),
-                      DataColumn(label: Text(l10n.unitCostAndQty)),
-                      DataColumn(label: Text(l10n.totalCost)),
-                    ],
-                    rows: missionExpense.expenses
-                        .map(
-                          (expense) => DataRow(
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32.w),
+                      child: DataTable(
+                        columns: [
+                          DataColumn(label: Text(l10n.item)),
+                          DataColumn(label: Text(l10n.figure)),
+                        ],
+                        rows: [
+                          DataRow(
                             cells: [
-                              DataCell(Text(expense.expenseCategory!.name)),
-                              DataCell(
-                                Text(
-                                  '${NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: '',
-                                    decimalDigits: 0,
-                                  ).format(expense.unitCost)} x'
-                                  ' ${expense.quantity}',
-                                ),
-                              ),
+                              DataCell(Text(l10n.amountReceived)),
                               DataCell(
                                 Text(
                                   NumberFormat.currency(
                                     locale: 'en_KE',
-                                    symbol: '',
-                                    decimalDigits: 0,
-                                  ).format(expense.lineTotal),
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountReceived),
                                 ),
                               ),
                             ],
                           ),
-                        )
-                        .toList(),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.amountSpent)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountSpent),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.tokenAmount)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.tokenAmount),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.amountToRefund)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountToRefund),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.refundedAmount)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.amountRefunded),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.balance)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.balance),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
+                              DataCell(Text(l10n.fullyRefunded)),
+                              DataCell(
+                                Text(
+                                  missionExpense.isRefunded
+                                      ? l10n.yes
+                                      : l10n.no,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  // End Navigation Bar
+                  const SliverToBoxAdapter(child: Divider()),
+                  SliverToBoxAdapter(child: SizedBox(height: 48.h)),
+                  SliverToBoxAdapter(
+                    child: Text(
+                      l10n.breakdown,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: DataTable(
+                      columns: [
+                        DataColumn(label: Text(l10n.item)),
+                        DataColumn(label: Text(l10n.unitCostAndQty)),
+                        DataColumn(label: Text(l10n.totalCost)),
+                      ],
+                      rows: missionExpense.expenses
+                          .map(
+                            (expense) => DataRow(
+                              cells: [
+                                DataCell(Text(expense.expenseCategory!.name)),
+                                DataCell(
+                                  Text(
+                                    '${NumberFormat.currency(
+                                      locale: 'en_KE',
+                                      symbol: '',
+                                      decimalDigits: 0,
+                                    ).format(expense.unitCost)} x'
+                                    ' ${expense.quantity}',
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    NumberFormat.currency(
+                                      locale: 'en_KE',
+                                      symbol: '',
+                                      decimalDigits: 0,
+                                    ).format(expense.lineTotal),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );

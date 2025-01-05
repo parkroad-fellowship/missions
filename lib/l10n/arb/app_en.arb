@@ -384,5 +384,7 @@
     "summary": "Summary",
     "@summary": {},
     "breakdown": "Breakdown",
-    "@breakdown": {}
+    "@breakdown": {},
+    "figure": "Figure",
+    "@figure": {}
 }
