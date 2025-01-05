@@ -18,6 +18,7 @@ import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
@@ -259,13 +260,18 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
-BlocProvider<AddExpenseCubit>(
+      BlocProvider<GetMissionExpenseCubit>(
+        create: (context) => GetMissionExpenseCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<AddExpenseCubit>(
         create: (context) => AddExpenseCubit(
           missionService: getIt(),
           hiveService: getIt(),
         ),
       ),
-      
     ];
   }
 }

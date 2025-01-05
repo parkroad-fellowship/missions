@@ -352,5 +352,7 @@
     "enterAmount": "Enter Amount",
     "@enterAmount": {},
     "enterConfirmationMessage": "Enter Confirmation Message",
-    "@enterConfirmationMessage": {}
+    "@enterConfirmationMessage": {},
+    "askMissionDeskToDisburseFunds": "Ask the missions desk to disburse funds",
+    "@askMissionDeskToDisburseFunds": {}
 }

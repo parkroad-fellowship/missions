@@ -59,7 +59,9 @@ class HiveServiceImpl implements HiveService {
     Hive
       ..registerAdapter(PRFUserAdapter())
       ..registerAdapter(PRFClassGroupResponseAdapter())
-      ..registerAdapter(PRFSoulsAdapter());
+      ..registerAdapter(PRFSoulsAdapter())
+      ..registerAdapter(PRFExpenseCategoryResponseAdapter())
+      ..registerAdapter(PRFMissionExpenseResponseAdapter());
 
     await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
     await Hive.openBox<dynamic>(

@@ -7,6 +7,7 @@ import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_expense_dto.dart';
 import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_dto.dart';
 import 'package:app/models/remote/prf_mission_subscription_update_dto.dart';
@@ -42,6 +43,7 @@ abstract class MissionService {
     required PRFPrayerResponseDTO prayerResponse,
   });
   Future<List<PRFExpenseCategory>> getExpenseCategories();
+  Future<PRFMissionExpense> getMissionExpense({required String missionUlid});
   Future<PRFExpense> addExpense({required PRFExpenseDTO expenseDTO});
 }
 
@@ -217,6 +219,24 @@ class MissionServiceImpl implements MissionService {
   }
 
   @override
+  Future<PRFMissionExpense> getMissionExpense({
+    required String missionUlid,
+  }) async {
+    try {
+      final res = await _networkUtil.getReq(
+        '/mission-expenses/$missionUlid',
+        queryParameters: {
+          'include': 'expenses.expenseCategory',
+        },
+      );
+
+      return PRFMissionExpense.fromJson(res['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<PRFExpense> addExpense({required PRFExpenseDTO expenseDTO}) async {
     try {
       final res = await _networkUtil.postReq('/expenses',
@@ -227,4 +247,6 @@ class MissionServiceImpl implements MissionService {
       rethrow;
     }
   }
+
+  
 }

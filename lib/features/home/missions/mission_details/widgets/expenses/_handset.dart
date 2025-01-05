@@ -1,11 +1,14 @@
+import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
   const ExpensesViewHandset({
@@ -24,7 +27,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
 
   @override
   void initState() {
-    context.read<GetSoulsCubit>().getSouls(missionUlid: missionUlid);
+    context
+        .read<GetMissionExpenseCubit>()
+        .getMissionExpense(missionUlid: missionUlid);
 
     super.initState();
   }
@@ -33,31 +38,28 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<GetSoulsCubit, GetSoulsState>(
+    return BlocBuilder<GetMissionExpenseCubit, GetMissionExpenseState>(
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => const Center(child: CircularProgressIndicator()),
-          loaded: (souls) {
-            if (souls.isEmpty) {
-              return Center(
-                child: Text(
-                  l10n.noSubscribers,
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                          ),
-                ),
-              );
-            }
-
+          empty: () => Center(
+            child: Text(
+              l10n.askMissionDeskToDisburseFunds,
+              style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.appTheme().kPrimaryColorV2,
+                  ),
+            ),
+          ),
+          loaded: (missionExpense) {
             return ListView.separated(
               shrinkWrap: true,
               physics: const ScrollPhysics(),
-              itemCount: souls.length,
+              itemCount: missionExpense.expenses.length,
               separatorBuilder: (context, index) => SizedBox(height: 16.h),
-              itemBuilder: (context, index) => SoulCard(soul: souls[index]),
+              itemBuilder: (context, index) =>
+                  ExpenseCard(expense: missionExpense.expenses[index]),
             );
           },
         );
@@ -66,13 +68,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
   }
 }
 
-class SoulCard extends StatelessWidget {
-  const SoulCard({
-    required this.soul,
+class ExpenseCard extends StatelessWidget {
+  const ExpenseCard({
+    required this.expense,
     super.key,
   });
 
-  final PRFSoul soul;
+  final PRFExpense expense;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,10 @@ class SoulCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  soul.fullName,
+                  NumberFormat.currency(
+                    locale: 'en_KE',
+                    symbol: 'KES ',
+                  ).format(expense.amount),
                   style:
                       CustomTextTheme.customTextTheme().displayLarge?.copyWith(
                             color: AppTheme.appTheme().kPrimaryColorV2,
@@ -107,7 +112,19 @@ class SoulCard extends StatelessWidget {
                           ),
                 ),
                 SizedBox(height: 16.h),
-                Text(soul.classGroup!.name),
+                Text(expense.confirmationMessage.toString()),
+                SizedBox(height: 16.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(expense.expenseCategory!.name),
+                    
+                    Text(
+                      "${DateFormat.yMMMMEEEEd().format(expense.createdAt)} "
+                      "${DateFormat.jm().format(expense.createdAt)}",
+                    ),
+                  ],
+                ),
                 SizedBox(height: 16.h),
               ],
             ),

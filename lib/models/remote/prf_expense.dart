@@ -15,7 +15,7 @@ class PRFExpense with _$PRFExpense {
     @JsonEnum() @JsonKey(name: 'expenseable_type') PRFMorphType expenseableType,
     @JsonEnum() @JsonKey(name: 'channel_type') PRFChannelType channelType,
     @JsonEnum() @JsonKey(name: 'charge_type') PRFChargeType chargeType,
-    int amout,
+    int amount,
     int charge,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {

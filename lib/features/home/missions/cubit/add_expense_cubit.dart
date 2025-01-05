@@ -25,7 +25,6 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
 
   Future<void> addExpense({
     required String missionUlid,
-    required String missionExpenseUlid,
     required String expenseCategoryUlid,
     required String amount,
     required PRFChargeType chargeType,
@@ -34,11 +33,12 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     emit(const AddExpenseState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
+      final missionExpense = _hiveService.retrieveMissionExpense(missionUlid);
 
       final expense = await _missionService.addExpense(
         expenseDTO: PRFExpenseDTO(
           expenseableType: PRFMorphType.missionExpense.apiKey,
-          expenseableUlid: missionExpenseUlid,
+          expenseableUlid: missionExpense.ulid,
           expenseCategoryUlid: expenseCategoryUlid,
           memberUlid: member.ulid,
           channelType: PRFChannelType.mPesa.apiKey,

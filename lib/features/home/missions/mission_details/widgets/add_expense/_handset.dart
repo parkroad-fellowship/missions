@@ -195,7 +195,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             isTextBox: true,
           ),
           const SizedBox(height: 16),
-          BlocConsumer<AddSoulCubit, AddSoulState>(
+          BlocConsumer<AddExpenseCubit, AddExpenseState>(
             listener: (context, state) {
               state.mapOrNull(
                 loading: (_) {
@@ -261,7 +261,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
 
                     await context.read<AddExpenseCubit>().addExpense(
                           missionUlid: widget.missionUlid,
-                          missionExpenseUlid: 'missionExpenseUlid',
+    
                           expenseCategoryUlid: selectedExpenseCategory!.ulid,
                           amount: _amountController.text,
                           chargeType: selectedChargeType!,
