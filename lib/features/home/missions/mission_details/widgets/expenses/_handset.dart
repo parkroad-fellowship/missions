@@ -121,6 +121,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                           ),
                           DataRow(
                             cells: [
+                              DataCell(Text(l10n.refundCharge)),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: 'KES ',
+                                  ).format(missionExpense.refundCharge),
+                                ),
+                              ),
+                            ],
+                          ),
+                          DataRow(
+                            cells: [
                               DataCell(Text(l10n.amountToRefund)),
                               DataCell(
                                 Text(

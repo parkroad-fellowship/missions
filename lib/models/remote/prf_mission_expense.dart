@@ -10,10 +10,11 @@ class PRFMissionExpense with _$PRFMissionExpense {
     String ulid,
     @JsonKey(name: 'amount_received') int amountReceived,
     @JsonKey(name: 'amount_spent') int amountSpent,
-    @JsonKey(name: 'balance') int balance,
+    int balance,
     @JsonKey(name: 'token_amount') int tokenAmount,
     @JsonKey(name: 'amount_to_refund') int amountToRefund,
     @JsonKey(name: 'amount_refunded') int amountRefunded,
+    @JsonKey(name: 'refund_charge') int refundCharge,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     @JsonKey(name: 'is_refunded') required bool isRefunded,
