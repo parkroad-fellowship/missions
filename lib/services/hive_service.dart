@@ -1,8 +1,10 @@
 import 'package:app/models/local/adapters.dart';
 import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_member.dart';
+import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -38,6 +40,15 @@ abstract class HiveService {
 
   void persistExpenseCategories(PRFExpenseCategoryResponse expenseCategories);
   List<PRFExpenseCategory> retrieveExpenseCategories();
+
+  void persistMissionExpense(
+    PRFMissionExpense missionExpense,
+    String missionUlid,
+  );
+  void persistExpense(PRFExpense expense, String missionUlid);
+  List<PRFExpense> retrieveExpenses(String missionUlid);
+  void clearExpenses(String missionUlid);
+  PRFMissionExpense retrieveMissionExpense(String missionUlid);
 }
 
 class HiveServiceImpl implements HiveService {
@@ -222,5 +233,50 @@ class HiveServiceImpl implements HiveService {
         box.get('expenseCategories') as PRFExpenseCategoryResponse?;
     if (expenseCategories == null) return [];
     return expenseCategories.data;
+  }
+
+  @override
+  void clearExpenses(String missionUlid) {
+    final missionExpense = retrieveMissionExpense(missionUlid);
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox).put(
+      'mission-expenses-$missionUlid',
+      missionExpense.copyWith(expenses: []),
+    );
+  }
+
+  @override
+  void persistMissionExpense(
+    PRFMissionExpense missionExpense,
+    String missionUlid,
+  ) {
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .put('mission-expenses-$missionUlid', missionExpense);
+  }
+
+  @override
+  List<PRFExpense> retrieveExpenses(String missionUlid) {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    final missionExpense =
+        box.get('mission-expenses-$missionUlid') as PRFMissionExpense?;
+    if (missionExpense == null) return [];
+    return missionExpense.expenses.reversed.toList();
+  }
+
+  @override
+  PRFMissionExpense retrieveMissionExpense(String missionUlid) {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    return box.get('mission-expenses-$missionUlid') as PRFMissionExpense;
+  }
+
+  @override
+  void persistExpense(PRFExpense expense, String missionUlid) {
+    final missionExpense = retrieveMissionExpense(missionUlid);
+
+    final modified = List<PRFExpense>.from(missionExpense.expenses)
+      ..add(expense);
+    persistMissionExpense(
+      missionExpense.copyWith(expenses: modified),
+      missionUlid,
+    );
   }
 }

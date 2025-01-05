@@ -11,4 +11,11 @@ enum PRFChannelType {
         return 'M-Pesa';
     }
   }
+
+  int get apiKey {
+    switch (this) {
+      case PRFChannelType.mPesa:
+        return 1;
+    }
+  } 
 }

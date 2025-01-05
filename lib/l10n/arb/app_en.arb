@@ -344,5 +344,13 @@
     "chargeType": "Charge Type",
     "@chargeType": {},
     "amountSpent": "Amount Spent",
-    "@amountSpent": {}
+    "@amountSpent": {},
+    "selectExpenseCategory": "Select Expense Category",
+    "@selectExpenseCategory": {},
+    "selectChargeType": "Select Charge Type",
+    "@selectChargeType": {},
+    "enterAmount": "Enter Amount",
+    "@enterAmount": {},
+    "enterConfirmationMessage": "Enter Confirmation Message",
+    "@enterConfirmationMessage": {}
 }

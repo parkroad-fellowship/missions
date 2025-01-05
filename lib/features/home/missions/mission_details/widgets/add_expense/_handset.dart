@@ -1,4 +1,5 @@
 import 'package:app/enums/prf_charge_type.dart';
+import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
@@ -225,11 +226,47 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     if (selectedExpenseCategory == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(l10n.selectClass),
+                          content: Text(l10n.selectExpenseCategory),
                         ),
                       );
                       return;
                     }
+
+                    if (selectedChargeType == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(l10n.selectChargeType),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (_amountController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(l10n.enterAmount),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (_confirmationMessageController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(l10n.enterConfirmationMessage),
+                        ),
+                      );
+                      return;
+                    }
+
+                    await context.read<AddExpenseCubit>().addExpense(
+                          missionUlid: widget.missionUlid,
+                          missionExpenseUlid: 'missionExpenseUlid',
+                          expenseCategoryUlid: selectedExpenseCategory!.ulid,
+                          amount: _amountController.text,
+                          chargeType: selectedChargeType!,
+                          confirmationMessage: _confirmationMessageController.text,
+                        );
                   },
                 ),
               );

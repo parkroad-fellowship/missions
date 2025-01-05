@@ -23,4 +23,17 @@ enum PRFChargeType {
         return 'ATM Withdrawal';
     }
   }
+
+  int get apiKey {
+    switch (this) {
+      case PRFChargeType.primary:
+        return 1;
+      case PRFChargeType.otherRegisteredUser:
+        return 2;
+      case PRFChargeType.agentWithdrawal:
+        return 3;
+      case PRFChargeType.atmWithdrawal:
+        return 4;
+    }
+  }
 }

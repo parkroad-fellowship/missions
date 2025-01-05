@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/prf_announcement.dart';
+import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/models/remote/prf_expense_dto.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_dto.dart';
@@ -40,6 +42,7 @@ abstract class MissionService {
     required PRFPrayerResponseDTO prayerResponse,
   });
   Future<List<PRFExpenseCategory>> getExpenseCategories();
+  Future<PRFExpense> addExpense({required PRFExpenseDTO expenseDTO});
 }
 
 class MissionServiceImpl implements MissionService {
@@ -208,6 +211,18 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFExpenseCategoryResponse.fromJson(res).data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PRFExpense> addExpense({required PRFExpenseDTO expenseDTO}) async {
+    try {
+      final res = await _networkUtil.postReq('/expenses',
+          body: json.encode(expenseDTO.toJson()));
+
+      return PRFExpense.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
