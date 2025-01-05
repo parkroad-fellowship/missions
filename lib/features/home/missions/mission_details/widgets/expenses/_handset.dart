@@ -1,4 +1,3 @@
-import 'package:data_table_2/data_table_2.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
@@ -64,7 +63,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                       columns: [
                         DataColumn(
                           label: Text(
-                           l10n.summary,
+                            l10n.summary,
                             style: CustomTextTheme.customTextTheme()
                                 .displayLarge
                                 ?.copyWith(
@@ -169,7 +168,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   ),
                 ),
                 // End Navigation Bar
-                SliverToBoxAdapter(child: Divider()),
+                const SliverToBoxAdapter(child: Divider()),
                 SliverToBoxAdapter(child: SizedBox(height: 48.h)),
                 SliverToBoxAdapter(
                   child: Text(
@@ -190,24 +189,32 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                       DataColumn(label: Text(l10n.totalCost)),
                     ],
                     rows: missionExpense.expenses
-                        .map((expense) => DataRow(cells: [
+                        .map(
+                          (expense) => DataRow(
+                            cells: [
                               DataCell(Text(expense.expenseCategory!.name)),
-                              DataCell(Text(
-                                NumberFormat.currency(
-                                      locale: 'en_KE',
-                                      symbol: '',
-                                      decimalDigits: 0,
-                                    ).format(expense.unitCost) +
-                                    ' (${expense.quantity})',
-                              )),
-                              DataCell(Text(
-                                NumberFormat.currency(
-                                  locale: 'en_KE',
-                                  symbol: '',
-                                  decimalDigits: 0,
-                                ).format(expense.lineTotal),
-                              )),
-                            ]))
+                              DataCell(
+                                Text(
+                                  '${NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: '',
+                                    decimalDigits: 0,
+                                  ).format(expense.unitCost)} x'
+                                  ' ${expense.quantity}',
+                                ),
+                              ),
+                              DataCell(
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'en_KE',
+                                    symbol: '',
+                                    decimalDigits: 0,
+                                  ).format(expense.lineTotal),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
