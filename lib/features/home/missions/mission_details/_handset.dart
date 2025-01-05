@@ -1,12 +1,15 @@
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_debrief_note/_handset.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_expense/add_expense.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_mission_question/add_mission_question.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
@@ -49,7 +52,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
   @override
   void initState() {
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     _tabController.addListener(_changeTab);
 
     super.initState();
@@ -131,6 +134,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     Tab(text: l10n.souls),
                     Tab(text: l10n.debriefNotes),
                     Tab(text: l10n.missionQuestions),
+                    Tab(text: l10n.expenses),
                   ],
                 ),
               ),
@@ -145,6 +149,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       SoulsView(missionUlid: mission.ulid),
                       DebriefNotesView(missionUlid: mission.ulid),
                       MissionQuestionsView(missionUlid: mission.ulid),
+                      ExpensesView(missionUlid: mission.ulid),
                     ],
                   ),
                 ),
@@ -199,7 +204,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               );
             },
           ),
-        > 1 && < 5 => FloatingActionButton(
+        > 1 && < 6 => FloatingActionButton(
             onPressed: () {
               if (_currentTab == 2) {
                 WoltModalSheet.show<void>(
@@ -270,6 +275,31 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       context
                           .read<GetMissionQuestionsCubit>()
                           .getMissionQuestions(missionUlid: mission.ulid);
+                    }
+                  },
+                );
+              }
+              if (_currentTab == 5) {
+                WoltModalSheet.show<void>(
+                  context: context,
+                  pageListBuilder: (modalSheetContext) {
+                    return [
+                      WoltModalSheetPage(
+                        child: SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.8,
+                          child: AddExpenseView(
+                            missionUlid: mission.ulid,
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                ).then(
+                  (_) {
+                    if (context.mounted) {
+                      context
+                          .read<GetMissionExpenseCubit>()
+                          .getMissionExpense(missionUlid: mission.ulid);
                     }
                   },
                 );
