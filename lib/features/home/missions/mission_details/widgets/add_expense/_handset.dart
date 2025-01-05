@@ -22,8 +22,10 @@ class AddExpenseViewHandset extends StatefulWidget {
 }
 
 class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
-  final _amountController = TextEditingController();
+  final _unitCostController = TextEditingController();
+  final _quantityController = TextEditingController();
   final _confirmationMessageController = TextEditingController();
+
   bool _isLoading = false;
 
   PRFExpenseCategory? selectedExpenseCategory;
@@ -161,7 +163,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
           Align(
             alignment: Alignment.centerLeft,
             child: FormFieldLabel(
-              label: l10n.amountSpent,
+              label: l10n.unitCost,
               isRequired: true,
               color: AppTheme.appTheme().kBlackColor,
             ),
@@ -169,8 +171,27 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
           const SizedBox(height: 6),
           const SizedBox(height: 6),
           InputFormField(
-            hintText: l10n.amountSpent,
-            controller: _amountController,
+            hintText: l10n.unitCost,
+            controller: _unitCostController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          ),
+          const SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: FormFieldLabel(
+              label: l10n.quantity,
+              isRequired: true,
+              color: AppTheme.appTheme().kBlackColor,
+            ),
+          ),
+          const SizedBox(height: 6),
+          const SizedBox(height: 6),
+          InputFormField(
+            hintText: l10n.quantity,
+            controller: _quantityController,
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
@@ -238,7 +259,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       return;
                     }
 
-                    if (_amountController.text.isEmpty) {
+                    if (_unitCostController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(l10n.enterAmount),
@@ -259,7 +280,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     await context.read<AddExpenseCubit>().addExpense(
                           missionUlid: widget.missionUlid,
                           expenseCategoryUlid: selectedExpenseCategory!.ulid,
-                          amount: _amountController.text,
+                          unitCost: _unitCostController.text,
+                          quantity: _quantityController.text,
                           chargeType: selectedChargeType!,
                           confirmationMessage:
                               _confirmationMessageController.text,

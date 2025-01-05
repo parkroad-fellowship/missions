@@ -209,7 +209,7 @@ class ExpenseCard extends StatelessWidget {
                   NumberFormat.currency(
                     locale: 'en_KE',
                     symbol: 'KES ',
-                  ).format(expense.amount),
+                  ).format(expense.unitCost),
                   style:
                       CustomTextTheme.customTextTheme().displayLarge?.copyWith(
                             color: AppTheme.appTheme().kPrimaryColorV2,

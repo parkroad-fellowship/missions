@@ -370,5 +370,11 @@
     "yes": "Yes",
     "@yes": {},
     "no": "No",
-    "@no": {}
+    "@no": {},
+    "unitCost": "Unit Cost",
+    "@unitCost": {},
+    "quantity": "Quantity",
+    "@quantity": {},
+    "totalCost": "Total Cost",
+    "@totalCost": {}
 }

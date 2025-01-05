@@ -26,7 +26,8 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
   Future<void> addExpense({
     required String missionUlid,
     required String expenseCategoryUlid,
-    required String amount,
+    required String unitCost,
+    required String quantity,
     required PRFChargeType chargeType,
     required String confirmationMessage,
   }) async {
@@ -44,7 +45,8 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           channelType: PRFChannelType.mPesa.apiKey,
           chargeType: chargeType.apiKey,
           confirmationMessage: confirmationMessage,
-          amount: int.parse(amount),
+          unitCost: int.parse(unitCost),
+          quantity: int.parse(quantity),
         ),
       );
 
