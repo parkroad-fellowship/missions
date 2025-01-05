@@ -30,7 +30,7 @@ class SocketServiceImpl implements SocketService {
   PusherChannelsClient _initClient() {
     final hostOptions = PusherChannelsOptions.fromHost(
       scheme: PRFSuperAppConfig.instance!.values.socketScheme,
-      host: PRFSuperAppConfig.instance!.values.baseDomain,
+      host: PRFSuperAppConfig.instance!.values.socketDomain,
       key: PRFSuperAppConfig.instance!.values.socketKey,
       port: PRFSuperAppConfig.instance!.values.socketPort,
     );
@@ -47,7 +47,15 @@ class SocketServiceImpl implements SocketService {
   }
 
   Future<void> _connectClient({required PusherChannelsClient client}) async {
-    await client.connect();
+    await client.connect().then((onValue) {
+      Logger().i('Successfully connected to the socket server');
+    }).onError((error, stackTrace) {
+      Logger().e(
+        'An error occured connecting to the socket server',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    });
   }
 
   PrivateChannel _registerToPrivateChannel({
@@ -259,6 +267,7 @@ class SocketServiceImpl implements SocketService {
       channels: configuredPresenceChannels,
     );
 
+    Logger().f('Hello there my dear?');
     await _connectClient(client: client);
   }
 

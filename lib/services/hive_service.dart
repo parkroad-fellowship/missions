@@ -14,6 +14,7 @@ abstract class HiveService {
 
   void persistToken(String token);
   String? retrieveToken();
+  bool isLoggedOut();
 
   void persistProfile(PRFUser profile);
   PRFUser? retrieveProfile();
@@ -46,6 +47,9 @@ class HiveServiceImpl implements HiveService {
       ..registerAdapter(PRFSoulsAdapter());
 
     await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    await Hive.openBox<dynamic>(
+      PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+    );
   }
 
   @override
@@ -66,9 +70,16 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistToken(String token) {
-    Logger().d(token);
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox).put(
+      'tokenExpiryTime',
+      DateTime.now().add(const Duration(days: 3)).toString(),
+    );
+
     Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
         .put('accessToken', token);
+
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.globalHiveAuthBox)
+        .put('isLoggedOut', false);
   }
 
   @override
@@ -76,7 +87,27 @@ class HiveServiceImpl implements HiveService {
     final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
     final accessToken = box.get('accessToken') as String?;
     if (accessToken == null) return null;
+
+    final expiryTime = box.get('tokenExpiryTime') as String?;
+    if (expiryTime == null) return null;
+
+    final expiry = DateTime.parse(expiryTime);
+    if (DateTime.now().isAfter(expiry)) {
+      clearPrefs();
+      Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.globalHiveAuthBox)
+          .put('isLoggedOut', true);
+      return null;
+    }
+
     return accessToken;
+  }
+
+  @override
+  bool isLoggedOut() {
+    return Hive.box<dynamic>(
+          PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+        ).get('isLoggedOut') as bool? ??
+        false;
   }
 
   @override

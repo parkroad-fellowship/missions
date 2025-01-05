@@ -12,6 +12,7 @@ Future<void> main() async {
       hiveBox: 'prf-super-app-dev---------',
       baseDomain: 'prf-sockets.test',
       urlScheme: 'http',
+      socketDomain: 'prf-sockets.test',
       socketKey: 'yvnlkaqadqiadutrs9sa',
       socketScheme: 'ws',
       socketPort: 8080,

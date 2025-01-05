@@ -4,7 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 enum PRFCompletionStatus {
   @JsonValue(1)
   incomplete,
-
   @JsonValue(2)
   complete;
 

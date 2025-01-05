@@ -12,6 +12,7 @@ Future<void> main() async {
       hiveBox: 'prf-super-app-stg',
       baseDomain: 'prf-missions.fly.dev',
       urlScheme: 'https',
+      socketDomain: 'prf-missions.fly.dev',
       socketKey: 'yvnlkaqadqiadutrs9sa',
       socketScheme: 'wss',
       socketPort: 9000,

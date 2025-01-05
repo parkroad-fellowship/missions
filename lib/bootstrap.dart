@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -45,12 +46,16 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     if (userUlid != null) {
       final defaultConfig = getIt<SocketService>().defaultConfig();
 
-      await getIt<SocketService>().init(
-        socketConfig: SocketConfig(
-          privateChannels: defaultConfig.privateChannels,
-          presenceChannels: defaultConfig.presenceChannels,
-        ),
-      );
+      try {
+        await getIt<SocketService>().init(
+          socketConfig: SocketConfig(
+            privateChannels: defaultConfig.privateChannels,
+            presenceChannels: defaultConfig.presenceChannels,
+          ),
+        );
+      } catch (e) {
+        Logger().e('SocketService init error: $e');
+      }
     }
 
     getIt<NotificationService>().init();

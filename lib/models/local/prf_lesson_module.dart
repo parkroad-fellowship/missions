@@ -72,7 +72,7 @@ class PRFLocalLessonMember {
 
   String? ulid;
 
-  @Enumerated(EnumType.name)
+  @Enumerated(EnumType.ordinal32)
   PRFCompletionStatus? completionStatus;
 
   DateTime? createdAt;

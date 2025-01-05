@@ -3,6 +3,7 @@ class PRFSuperAppValues {
     required this.urlScheme,
     required this.baseDomain,
     required this.hiveBox,
+    required this.socketDomain,
     required this.socketKey,
     required this.socketScheme,
     required this.socketPort,
@@ -11,11 +12,13 @@ class PRFSuperAppValues {
   final String urlScheme;
   final String baseDomain;
   final String hiveBox;
+  final String socketDomain;
   final String socketKey;
   final String socketScheme;
   final int socketPort;
 
   String get baseUrl => '$urlScheme://$baseDomain';
+  String get globalHiveAuthBox => 'prf-super-app-auth';
 }
 
 class PRFSuperAppConfig {
