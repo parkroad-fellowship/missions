@@ -1,11 +1,8 @@
 import 'package:app/enums/prf_charge_type.dart';
 import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
-import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
@@ -271,12 +268,13 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                               _confirmationMessageController.text,
                         )
                         .then((_) {
-                      if (context.mounted)
+                      if (context.mounted) {
                         context
                             .read<GetMissionExpenseCubit>()
                             .getMissionExpense(
                               missionUlid: widget.missionUlid,
                             );
+                      }
                     });
                   },
                 ),

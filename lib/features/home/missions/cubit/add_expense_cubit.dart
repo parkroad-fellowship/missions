@@ -15,7 +15,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
   AddExpenseCubit({
     required MissionService missionService,
     required HiveService hiveService,
-  }) : super(AddExpenseState.initial()) {
+  }) : super(const AddExpenseState.initial()) {
     _missionService = missionService;
     _hiveService = hiveService;
   }

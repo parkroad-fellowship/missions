@@ -11,7 +11,7 @@ class GetMissionExpenseCubit extends Cubit<GetMissionExpenseState> {
   GetMissionExpenseCubit({
     required MissionService missionService,
     required HiveService hiveService,
-  }) : super(GetMissionExpenseState.initial()) {
+  }) : super(const GetMissionExpenseState.initial()) {
     _missionService = missionService;
     _hiveService = hiveService;
   }

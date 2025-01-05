@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFChannelType {
@@ -17,5 +16,5 @@ enum PRFChannelType {
       case PRFChannelType.mPesa:
         return 1;
     }
-  } 
+  }
 }

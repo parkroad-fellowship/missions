@@ -239,14 +239,14 @@ class MissionServiceImpl implements MissionService {
   @override
   Future<PRFExpense> addExpense({required PRFExpenseDTO expenseDTO}) async {
     try {
-      final res = await _networkUtil.postReq('/expenses',
-          body: json.encode(expenseDTO.toJson()));
+      final res = await _networkUtil.postReq(
+        '/expenses',
+        body: json.encode(expenseDTO.toJson()),
+      );
 
       return PRFExpense.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
   }
-
-  
 }

@@ -1,8 +1,6 @@
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
-import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -73,11 +71,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                 // End Navigation Bar
                 SliverToBoxAdapter(child: SizedBox(height: 48.h)),
                 SliverList.separated(
-                    itemCount: missionExpense.expenses.length,
-                    separatorBuilder: (context, index) => const Divider(),
-                    itemBuilder: (context, index) => ExpenseCard(
-                          expense: missionExpense.expenses[index],
-                        )),
+                  itemCount: missionExpense.expenses.length,
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemBuilder: (context, index) => ExpenseCard(
+                    expense: missionExpense.expenses[index],
+                  ),
+                ),
               ],
             );
           },
@@ -138,8 +137,8 @@ class ExpenseCard extends StatelessWidget {
                   children: [
                     Text(expense.expenseCategory!.name),
                     Text(
-                      "${DateFormat.yMMMMEEEEd().format(expense.createdAt)} "
-                      "${DateFormat.jm().format(expense.createdAt)}",
+                      '${DateFormat.yMMMMEEEEd().format(expense.createdAt)} '
+                      '${DateFormat.jm().format(expense.createdAt)}',
                     ),
                   ],
                 ),

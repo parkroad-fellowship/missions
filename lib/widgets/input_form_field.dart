@@ -22,7 +22,7 @@ class InputFormField extends StatefulWidget {
     this.keyboardType,
     this.onChanged,
     this.maxLength,
-     this.inputFormatters = const [],
+    this.inputFormatters = const [],
   });
   final String hintText;
   final TextEditingController controller;
@@ -49,7 +49,6 @@ class _InputFormFieldState extends State<InputFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
       keyboardType: widget.keyboardType,
       enabled: widget.enabled,
       readOnly: widget.readOnly ?? false,
