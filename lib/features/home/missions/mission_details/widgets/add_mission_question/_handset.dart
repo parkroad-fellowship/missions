@@ -86,6 +86,7 @@ class _AddMissionQuestionViewHandsetState
                 );
               },
             ),
+            const SizedBox(height: 32),
           ],
         ),
       ),

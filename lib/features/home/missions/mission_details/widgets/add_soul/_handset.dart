@@ -160,6 +160,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                 );
               },
             ),
+            const SizedBox(height: 32),
           ],
         ),
       ),

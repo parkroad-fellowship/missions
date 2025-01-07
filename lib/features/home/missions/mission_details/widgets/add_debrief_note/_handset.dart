@@ -84,6 +84,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                 );
               },
             ),
+            const SizedBox(height: 32),
           ],
         ),
       ),

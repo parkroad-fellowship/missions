@@ -293,6 +293,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                 );
               },
             ),
+            const SizedBox(height: 32),
           ],
         ),
       ),
