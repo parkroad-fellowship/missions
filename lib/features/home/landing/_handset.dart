@@ -87,7 +87,8 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                           ],
                           child: GestureDetector(
                             onTap: () => context.router.pushNamed(
-                                PRFSuperAppRouter.announcementsRoute,),
+                              PRFSuperAppRouter.announcementsRoute,
+                            ),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
