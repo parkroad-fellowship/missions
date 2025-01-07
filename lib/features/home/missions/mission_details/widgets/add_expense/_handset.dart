@@ -110,7 +110,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
-                label: l10n.chargeType,
+                label: l10n.transactionType,
                 isRequired: true,
                 color: AppTheme.appTheme().kBlackColor,
               ),
@@ -121,7 +121,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                 return DropdownMenu<PRFChargeType>(
                   width: constraints.maxWidth,
                   initialSelection: selectedChargeType,
-                  hintText: l10n.chargeType,
+                  hintText: l10n.transactionType,
                   dropdownMenuEntries: PRFChargeType.values
                       .map(
                         (chargeType) => DropdownMenuEntry<PRFChargeType>(
@@ -255,7 +255,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       if (selectedChargeType == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(l10n.selectChargeType),
+                            content: Text(l10n.selectTransactionType),
                           ),
                         );
                         return;
