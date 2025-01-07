@@ -29,63 +29,65 @@ class _AddMissionQuestionViewHandsetState
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          const SizedBox(height: 16),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: FormFieldLabel(
-              label: l10n.addQuestion,
-              isRequired: true,
-              color: AppTheme.appTheme().kBlackColor,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.addQuestion,
+                isRequired: true,
+                color: AppTheme.appTheme().kBlackColor,
+              ),
             ),
-          ),
-          const SizedBox(height: 6),
-          InputFormField(
-            hintText: l10n.addQuestion,
-            controller: _questionController,
-          ),
-          const SizedBox(height: 16),
-          BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(
-            listener: (context, state) {
-              state.mapOrNull(
-                loading: (_) {
-                  setState(() {
-                    _isLoading = true;
-                  });
-                },
-                loaded: (_) {
-                  setState(() {
-                    _isLoading = false;
-                  });
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l10n.questionRecorded),
-                    ),
-                  );
-                },
-              );
-            },
-            builder: (context, state) {
-              return state.maybeWhen(
-                orElse: () => PrimaryButton(
-                  title: _isLoading ? l10n.recording : l10n.record,
-                  disabled: _isLoading,
-                  isLoading: _isLoading ? true : null,
-                  onPressed: () async {
-                    await context
-                        .read<AddMissionQuestionCubit>()
-                        .addMissionQuestion(
-                          missionUlid: widget.missionUlid,
-                          question: _questionController.text,
-                        );
+            const SizedBox(height: 6),
+            InputFormField(
+              hintText: l10n.addQuestion,
+              controller: _questionController,
+            ),
+            const SizedBox(height: 16),
+            BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(
+              listener: (context, state) {
+                state.mapOrNull(
+                  loading: (_) {
+                    setState(() {
+                      _isLoading = true;
+                    });
                   },
-                ),
-              );
-            },
-          ),
-        ],
+                  loaded: (_) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.questionRecorded),
+                      ),
+                    );
+                  },
+                );
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => PrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      await context
+                          .read<AddMissionQuestionCubit>()
+                          .addMissionQuestion(
+                            missionUlid: widget.missionUlid,
+                            question: _questionController.text,
+                          );
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
