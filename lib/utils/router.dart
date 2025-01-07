@@ -12,6 +12,7 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
   static const String missionsRoute = '/missions';
   static const String lmsRoute = '/lms';
   static const String studentEnquiriesRoute = '/student-enquiries';
+  static const String memberLearnerFaqs = '/member-learner-faqs';
   static const String accountRoute = '/account';
   static const String announcementsRoute = '/announcements';
   static const String landingRoute = '/landing';
@@ -51,6 +52,7 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
         AutoRoute(page: LandingRoute.page, path: landingRoute),
         AutoRoute(page: MissionsDetailsRoute.page, path: missionDetailsRoute),
         AutoRoute(page: StudentEnquiryRepliesRoute.page, path: repliesRoute),
+        AutoRoute(page: MemberFAQRoute.page, path: memberLearnerFaqs),
 
         // Student Landing
         AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),

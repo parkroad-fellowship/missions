@@ -392,5 +392,7 @@
     "tokenRecorded": "Token recorded",
     "@tokenRecorded": {},
     "expenseRecorded": "Expense recorded",
-    "@expenseRecorded": {}
+    "@expenseRecorded": {},
+    "studentFaqs": "View Student FAQs",
+    "@studentFaqs": {}
 }

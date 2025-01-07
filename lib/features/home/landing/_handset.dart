@@ -40,142 +40,161 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
       child: Scaffold(
         body: SafeArea(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.accountRoute,
-                        ),
-                        child: CircleAvatar(
-                          radius: 70.r,
-                          backgroundColor: Colors.white,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => context.router.pushNamed(
+                            PRFSuperAppRouter.accountRoute,
+                          ),
                           child: CircleAvatar(
-                            child: Text(
-                              Misc.getUserNameInitials(
-                                getIt<HiveService>().retrieveProfile()!.name,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 32.w),
-                      Text(
-                        l10n.hello(
-                          getIt<HiveService>()
-                              .retrieveProfile()!
-                              .member!
-                              .lastName,
-                        ),
-                        style: CustomTextTheme.customTextTheme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 60.sp),
-                      ),
-                      const Spacer(),
-                      Animate(
-                        effects: [
-                          ShimmerEffect(
-                            duration: 1.seconds,
-                          ),
-                          const ShakeEffect(),
-                        ],
-                        child: GestureDetector(
-                          onTap: () => context.router
-                              .pushNamed(PRFSuperAppRouter.announcementsRoute),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
-                                width: 1.w,
-                              ),
-                            ),
+                            radius: 70.r,
+                            backgroundColor: Colors.white,
                             child: CircleAvatar(
-                              radius: 70.r,
-                              backgroundColor: Colors.transparent,
-                              child: const Badge(
-                                child: Icon(
-                                  Icons.notifications_none,
-                                  size: 30,
+                              child: Text(
+                                Misc.getUserNameInitials(
+                                  getIt<HiveService>().retrieveProfile()!.name,
                                 ),
                               ),
                             ),
                           ),
                         ),
+                        SizedBox(width: 32.w),
+                        Text(
+                          l10n.hello(
+                            getIt<HiveService>()
+                                .retrieveProfile()!
+                                .member!
+                                .lastName,
+                          ),
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(fontSize: 60.sp),
+                        ),
+                        const Spacer(),
+                        Animate(
+                          effects: [
+                            ShimmerEffect(
+                              duration: 1.seconds,
+                            ),
+                            const ShakeEffect(),
+                          ],
+                          child: GestureDetector(
+                            onTap: () => context.router.pushNamed(
+                              PRFSuperAppRouter.announcementsRoute,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: AppTheme.appTheme().kPrimaryColorV2,
+                                  width: 1.w,
+                                ),
+                              ),
+                              child: CircleAvatar(
+                                radius: 70.r,
+                                backgroundColor: Colors.transparent,
+                                child: const Badge(
+                                  child: Icon(
+                                    Icons.notifications_none,
+                                    size: 30,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 48.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w) +
+                        EdgeInsets.only(bottom: 80.h),
+                    child: Text(
+                      l10n.iWantTo,
+                      style: CustomTextTheme.customTextTheme()
+                          .displayLarge
+                          ?.copyWith(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 88.sp,
+                          ),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Animate(
+                    effects: [
+                      MoveEffect(
+                        duration: .5.seconds,
+                        curve: Curves.easeOutQuad,
+                        begin: const Offset(-160, 0),
                       ),
                     ],
-                  ),
-                ),
-                SizedBox(height: 48.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w) +
-                      EdgeInsets.only(bottom: 80.h),
-                  child: Text(
-                    l10n.iWantTo,
-                    style: CustomTextTheme.customTextTheme()
-                        .displayLarge
-                        ?.copyWith(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 88.sp,
-                        ),
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                Animate(
-                  effects: [
-                    MoveEffect(
-                      duration: .5.seconds,
-                      curve: Curves.easeOutQuad,
-                      begin: const Offset(-160, 0),
+                    child: HomeActionCard(
+                      title: l10n.goToAMission,
+                      assetPath: 'assets/svgs/missions.svg',
+                      onTap: () => context.router
+                          .pushNamed(PRFSuperAppRouter.missionsRoute),
                     ),
-                  ],
-                  child: HomeActionCard(
-                    title: l10n.goToAMission,
-                    assetPath: 'assets/svgs/missions.svg',
-                    onTap: () => context.router
-                        .pushNamed(PRFSuperAppRouter.missionsRoute),
                   ),
-                ),
-                SizedBox(height: 32.h),
-                Animate(
-                  effects: [
-                    MoveEffect(
-                      duration: .5.seconds,
-                      curve: Curves.easeOutQuad,
-                      begin: const Offset(160, 0),
+                  SizedBox(height: 32.h),
+                  Animate(
+                    effects: [
+                      MoveEffect(
+                        duration: .5.seconds,
+                        curve: Curves.easeOutQuad,
+                        begin: const Offset(160, 0),
+                      ),
+                    ],
+                    child: HomeActionCard(
+                      title: l10n.learnSomething,
+                      assetPath: 'assets/svgs/lms.svg',
+                      onTap: () =>
+                          context.router.pushNamed(PRFSuperAppRouter.lmsRoute),
                     ),
-                  ],
-                  child: HomeActionCard(
-                    title: l10n.learnSomething,
-                    assetPath: 'assets/svgs/lms.svg',
-                    onTap: () =>
-                        context.router.pushNamed(PRFSuperAppRouter.lmsRoute),
                   ),
-                ),
-                SizedBox(height: 32.h),
-                Animate(
-                  effects: [
-                    MoveEffect(
-                      duration: .5.seconds,
-                      curve: Curves.easeOutQuad,
-                      begin: const Offset(-160, 0),
+                  SizedBox(height: 32.h),
+                  Animate(
+                    effects: [
+                      MoveEffect(
+                        duration: .5.seconds,
+                        curve: Curves.easeOutQuad,
+                        begin: const Offset(-160, 0),
+                      ),
+                    ],
+                    child: HomeActionCard(
+                      title: l10n.studentFaqs,
+                      assetPath: 'assets/svgs/explore.svg',
+                      onTap: () => context.router
+                          .pushNamed(PRFSuperAppRouter.memberLearnerFaqs),
                     ),
-                  ],
-                  child: HomeActionCard(
-                    title: l10n.ministerToAStudent,
-                    assetPath: 'assets/svgs/student_ministry.svg',
-                    onTap: () => context.router
-                        .pushNamed(PRFSuperAppRouter.studentEnquiriesRoute),
                   ),
-                ),
-              ],
+                  SizedBox(height: 32.h),
+                  Animate(
+                    effects: [
+                      MoveEffect(
+                        duration: .5.seconds,
+                        curve: Curves.easeOutQuad,
+                        begin: const Offset(-160, 0),
+                      ),
+                    ],
+                    child: HomeActionCard(
+                      title: l10n.ministerToAStudent,
+                      assetPath: 'assets/svgs/student_ministry.svg',
+                      onTap: () => context.router
+                          .pushNamed(PRFSuperAppRouter.studentEnquiriesRoute),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
