@@ -2,26 +2,26 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFChargeType {
   @JsonValue(1)
-  primary,
+  mpesaDefault,
   @JsonValue(2)
-  otherRegisteredUser,
+  mpesaOtherRegisteredUser,
   @JsonValue(3)
-  agentWithdrawal,
+  mpesaAgentWithdrawal,
   @JsonValue(4)
-  atmWithdrawal,
+  mpesaATMWithdrawal,
   @JsonValue(5)
   cash;
 
   String get name {
     switch (this) {
-      case PRFChargeType.primary:
-        return 'MPESA User/Till/Paybill';
-      case PRFChargeType.otherRegisteredUser:
-        return 'Other Registered User';
-      case PRFChargeType.agentWithdrawal:
-        return 'Agent Withdrawal';
-      case PRFChargeType.atmWithdrawal:
-        return 'ATM Withdrawal';
+      case PRFChargeType.mpesaDefault:
+        return '(MPESA) User/Till/Paybill';
+      case PRFChargeType.mpesaOtherRegisteredUser:
+        return '(MPESA) Other Registered User';
+      case PRFChargeType.mpesaAgentWithdrawal:
+        return '(MPESA) Agent Withdrawal';
+      case PRFChargeType.mpesaATMWithdrawal:
+        return '(MPESA) ATM Withdrawal';
       case PRFChargeType.cash:
         return 'Cash';
     }
@@ -29,13 +29,13 @@ enum PRFChargeType {
 
   int get apiKey {
     switch (this) {
-      case PRFChargeType.primary:
+      case PRFChargeType.mpesaDefault:
         return 1;
-      case PRFChargeType.otherRegisteredUser:
+      case PRFChargeType.mpesaOtherRegisteredUser:
         return 2;
-      case PRFChargeType.agentWithdrawal:
+      case PRFChargeType.mpesaAgentWithdrawal:
         return 3;
-      case PRFChargeType.atmWithdrawal:
+      case PRFChargeType.mpesaATMWithdrawal:
         return 4;
       case PRFChargeType.cash:
         return 5;
