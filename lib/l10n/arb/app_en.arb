@@ -359,7 +359,7 @@
     "@amountReceived": {},
     "tokenAmount": "Token from institution",
     "@tokenAmount": {},
-    "amountToRefund": "Amount to refund \n(Cost removed)",
+    "amountToRefund": "Amount to refund \n(Charge removed)",
     "@amountToRefund": {},
     "refundedAmount": "Refunded amount",
     "@refundedAmount": {},
