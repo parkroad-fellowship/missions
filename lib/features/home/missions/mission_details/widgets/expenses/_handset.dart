@@ -149,7 +149,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                             cells: [
                               DataCell(Text(l10n.amountSpent)),
                               DataCell(
-                                Text(
+                                _text(
                                   NumberFormat.currency(
                                     locale: 'en_KE',
                                     symbol: 'KES ',
@@ -162,7 +162,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                             cells: [
                               DataCell(Text(l10n.balance)),
                               DataCell(
-                                Text(
+                                _text(
                                   NumberFormat.currency(
                                     locale: 'en_KE',
                                     symbol: 'KES ',
@@ -175,7 +175,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                             cells: [
                               DataCell(Text(l10n.tokenAmount)),
                               DataCell(
-                                Text(
+                                _text(
                                   NumberFormat.currency(
                                     locale: 'en_KE',
                                     symbol: 'KES ',
@@ -188,7 +188,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                             cells: [
                               DataCell(Text(l10n.refundCharge)),
                               DataCell(
-                                Text(
+                                _text(
                                   NumberFormat.currency(
                                     locale: 'en_KE',
                                     symbol: 'KES ',
@@ -201,7 +201,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                             cells: [
                               DataCell(Text(l10n.amountToRefund)),
                               DataCell(
-                                Text(
+                                _text(
                                   NumberFormat.currency(
                                     locale: 'en_KE',
                                     symbol: 'KES ',
@@ -214,7 +214,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                             cells: [
                               DataCell(Text(l10n.refundedAmount)),
                               DataCell(
-                                Text(
+                                _text(
                                   NumberFormat.currency(
                                     locale: 'en_KE',
                                     symbol: 'KES ',
@@ -256,9 +256,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   SliverToBoxAdapter(
                     child: DataTable(
                       columns: [
-                        DataColumn(label: Text(l10n.item)),
-                        DataColumn(label: Text(l10n.unitCostAndQty)),
-                        DataColumn(label: Text(l10n.totalCost)),
+                        DataColumn(label: _text(l10n.item)),
+                        DataColumn(label: _text(l10n.unitCostAndQty)),
+                        DataColumn(label: _text(l10n.totalCost)),
                       ],
                       rows: missionExpense.expenses
                           .map(
@@ -266,7 +266,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                               cells: [
                                 DataCell(Text(expense.expenseCategory!.name)),
                                 DataCell(
-                                  Text(
+                                  _text(
                                     '${NumberFormat.currency(
                                       locale: 'en_KE',
                                       symbol: '',
@@ -276,12 +276,17 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                                   ),
                                 ),
                                 DataCell(
-                                  Text(
-                                    NumberFormat.currency(
+                                  _text(
+                                    '${NumberFormat.currency(
                                       locale: 'en_KE',
                                       symbol: '',
                                       decimalDigits: 0,
-                                    ).format(expense.lineTotal),
+                                    ).format(expense.lineTotal)} \n'
+                                    '(${NumberFormat.currency(
+                                      decimalDigits: 0,
+                                      locale: 'en_KE',
+                                      symbol: '',
+                                    ).format(expense.charge)})',
                                   ),
                                 ),
                               ],
@@ -298,6 +303,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
       },
     );
   }
+}
+
+Widget _text(String text) {
+  return Text(
+    text,
+    overflow: TextOverflow.ellipsis,
+  );
 }
 
 class ExpenseCard extends StatelessWidget {
