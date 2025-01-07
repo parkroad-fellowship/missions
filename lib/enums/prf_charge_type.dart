@@ -8,18 +8,22 @@ enum PRFChargeType {
   @JsonValue(3)
   agentWithdrawal,
   @JsonValue(4)
-  atmWithdrawal;
+  atmWithdrawal,
+  @JsonValue(5)
+  cash;
 
   String get name {
     switch (this) {
       case PRFChargeType.primary:
-        return 'Default';
+        return 'MPESA User/Till/Paybill';
       case PRFChargeType.otherRegisteredUser:
         return 'Other Registered User';
       case PRFChargeType.agentWithdrawal:
         return 'Agent Withdrawal';
       case PRFChargeType.atmWithdrawal:
         return 'ATM Withdrawal';
+      case PRFChargeType.cash:
+        return 'Cash';
     }
   }
 
@@ -33,6 +37,8 @@ enum PRFChargeType {
         return 3;
       case PRFChargeType.atmWithdrawal:
         return 4;
+      case PRFChargeType.cash:
+        return 5;
     }
   }
 }
