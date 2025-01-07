@@ -390,5 +390,7 @@
     "refundCharge": "Cost to refund",
     "@refundCharge": {},
     "tokenRecorded": "Token recorded",
-    "@tokenRecorded": {}
+    "@tokenRecorded": {},
+    "expenseRecorded": "Expense recorded",
+    "@expenseRecorded": {}
 }

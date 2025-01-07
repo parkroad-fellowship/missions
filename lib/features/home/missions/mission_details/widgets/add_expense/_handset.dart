@@ -230,7 +230,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(l10n.soulRecorded),
+                        content: Text(l10n.expenseRecorded),
                       ),
                     );
                   },
