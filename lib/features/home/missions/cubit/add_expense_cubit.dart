@@ -1,4 +1,3 @@
-import 'package:app/enums/prf_channel_type.dart';
 import 'package:app/enums/prf_charge_type.dart';
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/remote/failure.dart';
@@ -42,7 +41,6 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           expenseableUlid: missionExpense.ulid,
           expenseCategoryUlid: expenseCategoryUlid,
           memberUlid: member.ulid,
-          channelType: PRFChannelType.mPesa.apiKey,
           chargeType: chargeType.apiKey,
           confirmationMessage: confirmationMessage,
           unitCost: int.parse(unitCost),

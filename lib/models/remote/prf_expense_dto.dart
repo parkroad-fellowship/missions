@@ -8,7 +8,6 @@ class PRFExpenseDTO with _$PRFExpenseDTO {
   factory PRFExpenseDTO({
     @JsonKey(name: 'expense_category_ulid') required String expenseCategoryUlid,
     @JsonKey(name: 'member_ulid') required String memberUlid,
-    @JsonKey(name: 'channel_type') required int channelType,
     @JsonKey(name: 'charge_type') required int chargeType,
     @JsonKey(name: 'expenseable_ulid') required String expenseableUlid,
     @JsonKey(name: 'expenseable_type') required int expenseableType,

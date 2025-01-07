@@ -9,7 +9,7 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      hiveBox: 'prf-app-local-3',
+      hiveBox: 'prf-app-local-4',
       baseDomain: 'prf-sockets.test',
       urlScheme: 'http',
       socketDomain: 'prf-sockets.test',

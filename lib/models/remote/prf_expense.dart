@@ -1,4 +1,3 @@
-import 'package:app/enums/prf_channel_type.dart';
 import 'package:app/enums/prf_charge_type.dart';
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
@@ -13,7 +12,6 @@ class PRFExpense with _$PRFExpense {
   factory PRFExpense(
     String ulid,
     @JsonEnum() @JsonKey(name: 'expenseable_type') PRFMorphType expenseableType,
-    @JsonEnum() @JsonKey(name: 'channel_type') PRFChannelType channelType,
     @JsonEnum() @JsonKey(name: 'charge_type') PRFChargeType chargeType,
     @JsonKey(name: 'unit_cost') int unitCost,
     int quantity,
