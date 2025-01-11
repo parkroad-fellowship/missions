@@ -221,12 +221,44 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
             SizedBox(height: 8.h),
             ListTile(
               contentPadding: EdgeInsets.zero,
+              title: Row(
+                children: [
+                  Text(
+                    l10n.depaturePlanning,
+                    style: CustomTextTheme.customTextTheme().headlineMedium,
+                  ),
+                  const Spacer(),
+                ],
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    l10n.estimatedDistance(mission.school!.distance.toString()),
+                    style: CustomTextTheme.customTextTheme().bodySmall,
+                  ),
+                  Text(
+                    l10n.estimatedTravelTime(
+                      mission.school!.staticDuration.toString(),
+                    ),
+                    style: CustomTextTheme.customTextTheme().bodySmall,
+                  ),Text(
+                    l10n.estimationDisclaimer,
+                    style: CustomTextTheme.customTextTheme().bodySmall?.copyWith(
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 8.h),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.weather,
                 style: CustomTextTheme.customTextTheme().headlineMedium,
               ),
             ),
-            SizedBox(height: 8.h),
             ...mission.weatherForecasts.map(
               (forecast) => ListTile(
                 contentPadding: EdgeInsets.zero,
