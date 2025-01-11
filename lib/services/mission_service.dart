@@ -61,7 +61,7 @@ class MissionServiceImpl implements MissionService {
         '/missions',
         queryParameters: {
           'include': 'school,missionType,school.schoolContacts.contactType,'
-              'loggedInMemberMissionSubscription',
+              'loggedInMemberMissionSubscription,weatherForecasts',
           'filter[status_key]': PRFMissionStatus.approved.apiKey,
           'order_by': 'start_date',
           'order_direction': 'asc',

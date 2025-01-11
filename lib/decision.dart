@@ -16,6 +16,7 @@ class DecisionPage extends StatefulWidget {
 class _DecisionPageState extends State<DecisionPage> {
   @override
   void initState() {
+    super.initState();
     final accessToken = getIt<HiveService>().retrieveToken();
 
     if (accessToken == null) {
@@ -23,23 +24,33 @@ class _DecisionPageState extends State<DecisionPage> {
         context,
         PRFSuperAppRouter.signInRoute,
       );
-    } else {
-      final profile = getIt<HiveService>().retrieveProfile()!;
-      final result = profile.roles.where(
-        (role) => role.name == PrfRole.student.label,
-      );
-
-      if (result.isEmpty) {
-        _redirectToPage(
-          context,
-          PRFSuperAppRouter.landingRoute,
-        );
-      } else {
-        _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
-      }
+      return;
     }
 
-    super.initState();
+    final profile = getIt<HiveService>().retrieveProfile()!;
+
+    if (profile.member == null) {
+      _redirectToPage(
+        context,
+        PRFSuperAppRouter.signInRoute,
+      );
+      return;
+    }
+
+    final result = profile.roles.where(
+      (role) => role.name == PrfRole.student.label,
+    );
+
+    if (result.isEmpty) {
+      _redirectToPage(
+        context,
+        PRFSuperAppRouter.landingRoute,
+      );
+      return;
+    } else {
+      _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
+      return;
+    }
   }
 
   void _redirectToPage(
