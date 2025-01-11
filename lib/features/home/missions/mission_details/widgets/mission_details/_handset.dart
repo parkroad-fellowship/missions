@@ -219,6 +219,73 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               ),
             ),
             SizedBox(height: 8.h),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                l10n.weather,
+                style: CustomTextTheme.customTextTheme().headlineMedium,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            ...mission.weatherForecasts.map(
+              (forecast) => ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  l10n.day(
+                    mission.weatherForecasts.indexOf(forecast) + 1,
+                    forecast.weatherCodeDescription,
+                  ),
+                  style: CustomTextTheme.customTextTheme().headlineMedium,
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 4.h,
+                  children: <Widget>[
+                    Text(
+                      l10n.temperature(
+                        forecast.temperature.apparentMin,
+                        forecast.temperature.apparentMax,
+                        forecast.temperature.apparentAvg,
+                      ),
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
+                    Text(
+                      l10n.humidity(
+                        forecast.humidity.min,
+                        forecast.humidity.max,
+                        forecast.humidity.avg,
+                      ),
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
+                    Text(
+                      l10n.visibility(
+                        forecast.visibility.min,
+                        forecast.visibility.max,
+                        forecast.visibility.avg,
+                      ),
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
+                    Text(
+                      l10n.precipitationProbability(
+                        forecast.precipitationProbability.min,
+                        forecast.precipitationProbability.max,
+                        forecast.precipitationProbability.avg,
+                      ),
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
+                    Text(
+                      l10n.dressingRecommendations,
+                      style: CustomTextTheme.customTextTheme().headlineMedium,
+                    ),
+                    Text(
+                      forecast.dressingRecommendations,
+                      style: CustomTextTheme.customTextTheme().bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 8.h),
           ],
         ),
       ),

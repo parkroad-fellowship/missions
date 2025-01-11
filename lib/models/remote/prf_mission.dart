@@ -4,6 +4,7 @@ import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_type.dart';
 import 'package:app/models/remote/prf_school.dart';
 import 'package:app/models/remote/prf_school_term.dart';
+import 'package:app/models/remote/prf_weather_forecast.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_mission.freezed.dart';
@@ -31,6 +32,9 @@ class PRFMission with _$PRFMission {
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,
     @JsonKey(name: 'mission_type') PRFMissionType? missionType,
     @JsonKey(name: 'mission_expense') PRFMissionExpense? missionExpense,
+    @JsonKey(name: 'weather_forecasts')
+    @Default([])
+    List<PRFWeatherForecast> weatherForecasts,
   }) = _PRFMission;
 
   factory PRFMission.fromJson(Map<String, dynamic> json) =>

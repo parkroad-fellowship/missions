@@ -394,5 +394,76 @@
     "expenseRecorded": "Expense recorded",
     "@expenseRecorded": {},
     "studentFaqs": "View Student FAQs",
-    "@studentFaqs": {}
+    "@studentFaqs": {},
+    "weather": "Weather",
+    "@weather": {},
+    "temperature": "Temperature: {min} - {max} ({avg})",
+    "@temperature": {
+        "placeholders": {
+            "min": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            },
+            "avg": {
+                "type": "String"
+            }
+        }
+    },
+    "humidity": "Humidity: {min} - {max} ({avg})",
+    "@humidity": {
+        "placeholders": {
+            "min": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            },
+            "avg": {
+                "type": "String"
+            }
+        }
+    },
+    "visibility": "Visibility: {min} - {max} ({avg})",
+    "@visibility": {
+        "placeholders": {
+            "min": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            },
+            "avg": {
+                "type": "String"
+            }
+        }
+    },
+    "precipitationProbability": "Precipitation Probability: {min} - {max} ({avg})",
+    "@precipitationProbability": {
+        "placeholders": {
+            "min": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            },
+            "avg": {
+                "type": "String"
+            }
+        }
+    },
+    "dressingRecommendations": "Dressing Recommendations",
+    "@dressingRecommendations": {},
+    "day": "Day {day} | {summary}",
+    "@day": {
+        "placeholders": {
+            "day": {
+                "type": "int"
+            },
+            "summary": {
+                "type": "String"
+            }
+        }
+    }
 }
