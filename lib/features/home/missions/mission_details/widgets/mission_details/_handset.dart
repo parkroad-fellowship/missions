@@ -242,11 +242,12 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       mission.school!.staticDuration.toString(),
                     ),
                     style: CustomTextTheme.customTextTheme().bodySmall,
-                  ),Text(
+                  ),
+                  Text(
                     l10n.estimationDisclaimer,
-                    style: CustomTextTheme.customTextTheme().bodySmall?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    ),
+                    style: CustomTextTheme.customTextTheme()
+                        .bodySmall
+                        ?.copyWith(fontStyle: FontStyle.italic),
                   ),
                 ],
               ),

@@ -484,6 +484,6 @@
             }
         }
     },
-    "estimationDisclaimer": "This estimate is made from Tumaini House to the mission ground and may not be accurate. Please plan accordingly.",
+    "estimationDisclaimer": "* This estimate is made from Tumaini House to the mission ground and may not be accurate. Please plan accordingly.",
     "@estimationDisclaimer": {}
 }
