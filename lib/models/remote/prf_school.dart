@@ -18,6 +18,8 @@ class PRFSchool with _$PRFSchool {
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     String? description,
     String? directions,
+    String? distance,
+    @JsonKey(name: 'static_duration') String? staticDuration,
     @JsonKey(name: 'school_contacts') List<PRFContact>? contacts,
   }) = _PRFSchool;
 

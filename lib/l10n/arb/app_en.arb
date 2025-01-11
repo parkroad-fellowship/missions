@@ -465,5 +465,25 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "depaturePlanning": "Depature Planning",
+    "@depaturePlanning": {},
+    "estimatedTravelTime": "Estimated Travel Time: {time}",
+    "@estimatedTravelTime": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "estimatedDistance": "Estimated Distance: {distance}",
+    "@estimatedDistance": {
+        "placeholders": {
+            "distance": {
+                "type": "String"
+            }
+        }
+    },
+    "estimationDisclaimer": "* This estimate is made from Tumaini House to the mission ground and may not be accurate. Please plan accordingly.",
+    "@estimationDisclaimer": {}
 }
