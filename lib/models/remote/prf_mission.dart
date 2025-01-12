@@ -19,12 +19,12 @@ class PRFMission with _$PRFMission {
     @JsonKey(name: 'end_date') DateTime endDate,
     @JsonKey(name: 'end_time') String endTime,
     int capacity,
-    @JsonKey(name: 'mission_prep_notes') String missionPrepNotes,
     PRFMissionStatus status,
     @JsonKey(name: 'mission_subscriptions_needed')
     int missionSubscriptionsNeeded,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @JsonKey(name: 'mission_prep_notes') String? missionPrepNotes,
     @JsonKey(name: 'logged_in_member_mission_subscription')
     PRFMissionSubscription? loggedInMemberMissionSubscription,
     @Default('Open Topic') String? theme,

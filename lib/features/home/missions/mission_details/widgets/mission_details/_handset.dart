@@ -96,7 +96,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    mission.missionPrepNotes,
+                    mission.missionPrepNotes.toString(),
                     style: CustomTextTheme.customTextTheme().bodySmall,
                   ),
                 ],
