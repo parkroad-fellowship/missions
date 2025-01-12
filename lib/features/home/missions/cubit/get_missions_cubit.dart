@@ -21,11 +21,7 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
     emit(const GetMissionsState.loading());
     try {
       final missions = await _missionService.getMissions();
-      emit(
-        GetMissionsState.loaded(
-          missions: missions,
-        ),
-      );
+      emit(GetMissionsState.loaded(missions: missions));
     } on Failure catch (e) {
       emit(GetMissionsState.error(e.message));
     } catch (e) {
