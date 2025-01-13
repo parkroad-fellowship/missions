@@ -6,8 +6,7 @@ part 'prf_media.g.dart';
 @freezed
 class PRFMedia with _$PRFMedia {
   factory PRFMedia(
-    @JsonKey(name: 'public_url') String publicURL,
-    @JsonKey(name: 'public_full_url') String publicFullURL,
+    @JsonKey(name: 'public_temporary_url') String temporaryURL,
     int size,
     @JsonKey(name: 'human_readable_size') String humanReadableSize,
     @JsonKey(name: 'mime_type') String mimeType,
@@ -20,4 +19,14 @@ class PRFMedia with _$PRFMedia {
 
   factory PRFMedia.fromJson(Map<String, dynamic> json) =>
       _$PRFMediaFromJson(json);
+}
+
+@freezed
+class PRFMediaResponse with _$PRFMediaResponse {
+  factory PRFMediaResponse({
+    required List<PRFMedia> data,
+  }) = _PRFMediaResponse;
+
+  factory PRFMediaResponse.fromJson(Map<String, dynamic> json) =>
+      _$PRFMediaResponseFromJson(json);
 }

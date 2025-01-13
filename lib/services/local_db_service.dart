@@ -3,12 +3,14 @@ import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
+import 'package:app/models/local/prf_media_upload.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
+import 'package:app/models/remote/prf_image_dto.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
@@ -71,6 +73,15 @@ abstract class LocalDBService {
   void deletePrayerResponse({
     required String prayerPromptUlid,
   });
+
+  Future<void> persistMediaUploads({
+    required List<PRFImageDTO> imageDTOs,
+  });
+  List<PRFImageDTO> retrieveMediaUploads();
+  void deleteMediaUpload({
+    required String modelUlid,
+    required String path,
+  });
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -86,6 +97,7 @@ class LocalDBServiceImpl implements LocalDBService {
         PRFLocalStudentEnquiryReplySchema,
         PRFLocalAnnouncementSchema,
         PRFLocalPrayerResponseSchema,
+        PRFLocalMediaUploadSchema,
       ],
       directory: dir.path,
     );
@@ -114,8 +126,7 @@ class LocalDBServiceImpl implements LocalDBService {
                 ? PRFLocalMedia(
                     collectionName: course.thumbnail!.collectionName,
                     fileName: course.thumbnail!.fileName,
-                    publicURL: course.thumbnail!.publicURL,
-                    publicFullURL: course.thumbnail!.publicFullURL,
+                    temporaryURL: course.thumbnail!.temporaryURL,
                     size: course.thumbnail!.size,
                     humanReadableSize: course.thumbnail!.humanReadableSize,
                     mimeType: course.thumbnail!.mimeType,
@@ -203,9 +214,8 @@ class LocalDBServiceImpl implements LocalDBService {
                       collectionName:
                           courseModule.module!.thumbnail!.collectionName,
                       fileName: courseModule.module!.thumbnail!.fileName,
-                      publicURL: courseModule.module!.thumbnail!.publicURL,
-                      publicFullURL:
-                          courseModule.module!.thumbnail!.publicFullURL,
+                      temporaryURL:
+                          courseModule.module!.thumbnail!.temporaryURL,
                       size: courseModule.module!.thumbnail!.size,
                       humanReadableSize:
                           courseModule.module!.thumbnail!.humanReadableSize,
@@ -297,8 +307,7 @@ class LocalDBServiceImpl implements LocalDBService {
                     (audio) => PRFLocalMedia(
                       collectionName: audio.collectionName,
                       fileName: audio.fileName,
-                      publicURL: audio.publicURL,
-                      publicFullURL: audio.publicFullURL,
+                      temporaryURL: audio.temporaryURL,
                       size: audio.size,
                       humanReadableSize: audio.humanReadableSize,
                       mimeType: audio.mimeType,
@@ -313,8 +322,7 @@ class LocalDBServiceImpl implements LocalDBService {
                     (document) => PRFLocalMedia(
                       collectionName: document.collectionName,
                       fileName: document.fileName,
-                      publicURL: document.publicURL,
-                      publicFullURL: document.publicFullURL,
+                      temporaryURL: document.temporaryURL,
                       size: document.size,
                       humanReadableSize: document.humanReadableSize,
                       mimeType: document.mimeType,
@@ -329,8 +337,7 @@ class LocalDBServiceImpl implements LocalDBService {
                     (video) => PRFLocalMedia(
                       collectionName: video.collectionName,
                       fileName: video.fileName,
-                      publicURL: video.publicURL,
-                      publicFullURL: video.publicFullURL,
+                      temporaryURL: video.temporaryURL,
                       size: video.size,
                       humanReadableSize: video.humanReadableSize,
                       mimeType: video.mimeType,
@@ -505,6 +512,55 @@ class LocalDBServiceImpl implements LocalDBService {
       prfDBInstance.pRFLocalPrayerResponses
           .filter()
           .prayerPromptUlidEqualTo(prayerPromptUlid)
+          .deleteFirstSync();
+    });
+  }
+
+  @override
+  Future<void> persistMediaUploads({
+    required List<PRFImageDTO> imageDTOs,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final imageDTO in imageDTOs) {
+        await prfDBInstance.pRFLocalMediaUploads.put(
+          PRFLocalMediaUpload(
+            modelUlid: imageDTO.modelUlid,
+            model: imageDTO.model,
+            path: imageDTO.path,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  List<PRFImageDTO> retrieveMediaUploads() {
+    final responses = prfDBInstance.pRFLocalMediaUploads
+        .filter()
+        .idGreaterThan(0)
+        .build()
+        .findAllSync();
+    return responses
+        .map<PRFImageDTO>(
+          (response) => PRFImageDTO(
+            modelUlid: response.modelUlid,
+            model: response.model,
+            path: response.path,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  void deleteMediaUpload({
+    required String modelUlid,
+    required String path,
+  }) {
+    prfDBInstance.writeTxnSync(() async {
+      prfDBInstance.pRFLocalMediaUploads
+          .filter()
+          .modelUlidEqualTo(modelUlid)
+          .pathEqualTo(path)
           .deleteFirstSync();
     });
   }

@@ -485,5 +485,17 @@
         }
     },
     "estimationDisclaimer": "* This estimate is made from Tumaini House to the mission ground and may not be accurate. Please plan accordingly.",
-    "@estimationDisclaimer": {}
+    "@estimationDisclaimer": {},
+    "gallery": "Gallery",
+    "@gallery": {},
+    "upload": "Upload",
+    "@upload": {},
+    "willUpload": "Your media will be uploaded as you continue to use the app",
+    "@willUpload": {},
+    "doneUploading": "Your media has been uploaded, you can refresh the page to see them.",
+    "@doneUploading": {},
+    "tapToAdd": "Tap here to add",
+    "@tapToAdd": {},
+    "cancel": "Cancel",
+    "@cancel": {}
 }

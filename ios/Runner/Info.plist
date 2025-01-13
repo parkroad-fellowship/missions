@@ -87,5 +87,7 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g.apps.googleusercontent.com</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(FLAVOR_APP_NAME) needs to access your images and videos for upload.</string>
 </dict>
 </plist>

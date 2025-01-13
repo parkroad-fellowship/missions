@@ -6,10 +6,12 @@ import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_debrief_note/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_expense/add_expense.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_mission_question/add_mission_question.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
@@ -41,6 +43,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     with SingleTickerProviderStateMixin {
   PRFMission get mission => widget.mission;
 
+  int tabCount = 7;
+
   late TabController _tabController;
   int _currentTab = 0;
 
@@ -52,7 +56,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
   @override
   void initState() {
-    _tabController = TabController(length: 6, vsync: this);
+    _tabController = TabController(length: tabCount, vsync: this);
     _tabController.addListener(_changeTab);
 
     super.initState();
@@ -70,7 +74,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
     return Scaffold(
       body: DefaultTabController(
-        length: 5,
+        length: tabCount,
         child: SafeArea(
           child: CustomScrollView(
             slivers: [
@@ -135,6 +139,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     Tab(text: l10n.debriefNotes),
                     Tab(text: l10n.missionQuestions),
                     Tab(text: l10n.expenses),
+                    Tab(text: l10n.gallery),
                   ],
                 ),
               ),
@@ -150,6 +155,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       DebriefNotesView(missionUlid: mission.ulid),
                       MissionQuestionsView(missionUlid: mission.ulid),
                       ExpensesView(missionUlid: mission.ulid),
+                      GalleryView(missionUlid: mission.ulid),
                     ],
                   ),
                 ),
@@ -204,7 +210,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               );
             },
           ),
-        > 1 && < 6 => FloatingActionButton(
+        > 1 && < 7 => FloatingActionButton(
             onPressed: () {
               if (_currentTab == 2) {
                 WoltModalSheet.show<void>(
@@ -262,9 +268,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       WoltModalSheetPage(
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddMissionQuestionView(
-                            missionUlid: mission.ulid,
-                          ),
+                          child:
+                              AddMissionQuestionView(missionUlid: mission.ulid),
                         ),
                       ),
                     ];
@@ -287,9 +292,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       WoltModalSheetPage(
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddExpenseView(
-                            missionUlid: mission.ulid,
-                          ),
+                          child: AddExpenseView(missionUlid: mission.ulid),
                         ),
                       ),
                     ];
@@ -300,6 +303,30 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       context
                           .read<GetMissionExpenseCubit>()
                           .getMissionExpense(missionUlid: mission.ulid);
+                    }
+                  },
+                );
+              }
+
+              if (_currentTab == 6) {
+                WoltModalSheet.show<void>(
+                  context: context,
+                  pageListBuilder: (modalSheetContext) {
+                    return [
+                      WoltModalSheetPage(
+                        child: SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.8,
+                          child: AddMediaView(missionUlid: mission.ulid),
+                        ),
+                      ),
+                    ];
+                  },
+                ).then(
+                  (_) {
+                    if (context.mounted) {
+                      // context
+                      //     .read<GetMissionExpenseCubit>()
+                      //     .getMissionExpense(missionUlid: mission.ulid);
                     }
                   },
                 );

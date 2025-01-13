@@ -653,6 +653,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  full_screen_image:
+    dependency: "direct main"
+    description:
+      name: full_screen_image
+      sha256: "97831b00d07b17c674ba3a4eddcee306dbd0d7c66851f1b67856e12daeb9b3aa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   fwfh_cached_network_image:
     dependency: transitive
     description:
@@ -1165,6 +1173,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  photo_manager:
+    dependency: transitive
+    description:
+      name: photo_manager
+      sha256: dc26184676b26d722d656073ca8fe29203d7631ec613aed1a9679de3aa1f52c2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.3"
+  photo_manager_image_provider:
+    dependency: transitive
+    description:
+      name: photo_manager_image_provider
+      sha256: b6015b67b32f345f57cf32c126f871bced2501236c405aafaefa885f7c821e4f
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   pinenacl:
     dependency: transitive
     description:
@@ -1706,6 +1730,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.3"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+2"
   vm_service:
     dependency: transitive
     description:
@@ -1794,6 +1826,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.17.0"
+  wechat_assets_picker:
+    dependency: "direct main"
+    description:
+      name: wechat_assets_picker
+      sha256: fe1dc02e68f9aabbfc63023f868f284fca3bd81d4e132a45292065e9b1de32a2
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.4.2"
+  wechat_picker_library:
+    dependency: transitive
+    description:
+      name: wechat_picker_library
+      sha256: a42e09cb85b15fc9410f6a69671371cc60aa99c4a1f7967f6593a7f665f6f47a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   win32:
     dependency: transitive
     description:

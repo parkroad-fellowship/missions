@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.13.01+21301
+version: 2.14.00+21300
 publish_to: none
 
 environment:
@@ -32,6 +32,7 @@ dependencies:
   flutter_svg: ^2.0.17
   flutter_widget_from_html: ^0.15.3
   freezed_annotation: ^2.4.4
+  full_screen_image: ^2.0.0
   get_it: ^8.0.2
   google_fonts: ^6.2.1
   google_sign_in: ^6.2.2
@@ -50,6 +51,7 @@ dependencies:
   slugify: ^2.0.0
   upgrader: ^11.3.1
   url_launcher: ^6.3.1
+  wechat_assets_picker: ^9.4.2
   wolt_modal_sheet: ^0.10.0
 
 dev_dependencies:
