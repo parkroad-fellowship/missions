@@ -3,12 +3,14 @@ import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
+import 'package:app/models/local/prf_media_upload.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
+import 'package:app/models/remote/prf_image_dto.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
@@ -70,6 +72,15 @@ abstract class LocalDBService {
   List<PRFPrayerResponseDTO> retrievePrayerResponses();
   void deletePrayerResponse({
     required String prayerPromptUlid,
+  });
+
+  Future<void> persistMediaUploads({
+    required List<PRFImageDTO> imageDTOs,
+  });
+  List<PRFImageDTO> retrieveMediaUploads();
+  void deleteMediaUpload({
+    required String modelUlid,
+    required String path,
   });
 }
 
@@ -500,6 +511,55 @@ class LocalDBServiceImpl implements LocalDBService {
       prfDBInstance.pRFLocalPrayerResponses
           .filter()
           .prayerPromptUlidEqualTo(prayerPromptUlid)
+          .deleteFirstSync();
+    });
+  }
+
+  @override
+  Future<void> persistMediaUploads({
+    required List<PRFImageDTO> imageDTOs,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final imageDTO in imageDTOs) {
+        await prfDBInstance.pRFLocalMediaUploads.put(
+          PRFLocalMediaUpload(
+            modelUlid: imageDTO.modelUlid,
+            model: imageDTO.model,
+            path: imageDTO.path,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  List<PRFImageDTO> retrieveMediaUploads() {
+    final responses = prfDBInstance.pRFLocalMediaUploads
+        .filter()
+        .idGreaterThan(0)
+        .build()
+        .findAllSync();
+    return responses
+        .map<PRFImageDTO>(
+          (response) => PRFImageDTO(
+            modelUlid: response.modelUlid,
+            model: response.model,
+            path: response.path,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  void deleteMediaUpload({
+    required String modelUlid,
+    required String path,
+  }) {
+    prfDBInstance.writeTxnSync(() async {
+      prfDBInstance.pRFLocalMediaUploads
+          .filter()
+          .modelUlidEqualTo(modelUlid)
+          .pathEqualTo(path)
           .deleteFirstSync();
     });
   }
