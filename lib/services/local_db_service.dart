@@ -97,6 +97,7 @@ class LocalDBServiceImpl implements LocalDBService {
         PRFLocalStudentEnquiryReplySchema,
         PRFLocalAnnouncementSchema,
         PRFLocalPrayerResponseSchema,
+        PRFLocalMediaUploadSchema,
       ],
       directory: dir.path,
     );
