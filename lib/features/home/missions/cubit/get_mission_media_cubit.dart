@@ -27,7 +27,7 @@ class GetMissionMediaCubit extends Cubit<GetMissionMediaState> {
         model: model,
       );
 
-      if(media.isEmpty) {
+      if (media.isEmpty) {
         emit(const GetMissionMediaState.empty());
         return;
       }

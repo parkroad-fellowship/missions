@@ -1,6 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
-import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/l10n/l10n.dart';
@@ -94,20 +93,19 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     child: PrimaryButton(
                       title: l10n.addPhotos,
                       disabled: false,
-                      onPressed: () =>
-                          WoltModalSheet.show<void>(
-                  context: context,
-                  pageListBuilder: (modalSheetContext) {
-                    return [
-                      WoltModalSheetPage(
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddMediaView(missionUlid: missionUlid),
-                        ),
+                      onPressed: () => WoltModalSheet.show<void>(
+                        context: context,
+                        pageListBuilder: (modalSheetContext) {
+                          return [
+                            WoltModalSheetPage(
+                              child: SizedBox(
+                                height: MediaQuery.sizeOf(context).height * 0.8,
+                                child: AddMediaView(missionUlid: missionUlid),
+                              ),
+                            ),
+                          ];
+                        },
                       ),
-                    ];
-                  },
-                ),
                     ),
                   ),
                 ),

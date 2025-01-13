@@ -6,6 +6,6 @@ class GetMissionMediaState with _$GetMissionMediaState {
   const factory GetMissionMediaState.loading() = _Loading;
   const factory GetMissionMediaState.loaded({required List<PRFMedia> media}) =
       _Loaded;
-      const factory GetMissionMediaState.empty() = _Empty;
+  const factory GetMissionMediaState.empty() = _Empty;
   const factory GetMissionMediaState.error(String message) = _Error;
 }
