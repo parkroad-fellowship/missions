@@ -8,3 +8,4 @@ export 'notification_service.dart';
 export 'socket_service.dart';
 export 'soul_service.dart';
 export 'student_service.dart';
+export 'media_service.dart';

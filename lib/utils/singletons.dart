@@ -58,7 +58,8 @@ class Singletons {
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
       )
-      ..registerSingleton<StudentService>(StudentServiceImpl());
+      ..registerSingleton<StudentService>(StudentServiceImpl())
+      ..registerSingleton<MediaService>(MediaServiceImpl());
   }
 
   static Future<void> setupDatabase() async {

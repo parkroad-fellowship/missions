@@ -48,8 +48,7 @@ class PRFLocalCourseMember {
 @embedded
 class PRFLocalMedia {
   PRFLocalMedia({
-    this.publicURL,
-    this.publicFullURL,
+    this.temporaryURL,
     this.size,
     this.humanReadableSize,
     this.mimeType,
@@ -60,8 +59,7 @@ class PRFLocalMedia {
     this.updatedAt,
   });
 
-  String? publicURL;
-  String? publicFullURL;
+  String? temporaryURL;
   int? size;
   String? humanReadableSize;
   String? mimeType;
