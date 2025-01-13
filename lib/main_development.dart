@@ -9,13 +9,13 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      hiveBox: 'prf-app-local-4',
-      baseDomain: 'prf-sockets.test',
+      hiveBox: 'prf-super-app-${Misc.getSluggedAppVersion()}',
+      baseDomain: 'prf.test',
       urlScheme: 'http',
-      socketDomain: 'prf-sockets.test',
+      socketDomain: 'prf.test',
       socketKey: 'yvnlkaqadqiadutrs9sa',
       socketScheme: 'ws',
-      socketPort: 8080,
+      socketPort: 9000,
     ),
   );
 
