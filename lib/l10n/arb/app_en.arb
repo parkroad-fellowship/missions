@@ -497,5 +497,7 @@
     "tapToAdd": "Tap here to add",
     "@tapToAdd": {},
     "cancel": "Cancel",
-    "@cancel": {}
+    "@cancel": {},
+    "sessions": "Sessions",
+    "@sessions": {}
 }

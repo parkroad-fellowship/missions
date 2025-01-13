@@ -10,6 +10,7 @@ import 'package:app/models/remote/prf_expense_dto.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
+import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_dto.dart';
 import 'package:app/models/remote/prf_mission_subscription_update_dto.dart';
@@ -54,6 +55,9 @@ abstract class MissionService {
   Future<List<PRFMedia>> getMissionMedia({
     required String missionUlid,
     required PRFMediaModel model,
+  });
+  Future<List<PRFMissionSession>> getMissionSessions({
+    required String missionUlid,
   });
 }
 
@@ -294,5 +298,24 @@ class MissionServiceImpl implements MissionService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<List<PRFMissionSession>> getMissionSessions({
+    required String missionUlid,
+  }) async {
+    // try {
+      final res = await _networkUtil.getReq(
+        '/mission-sessions',
+        queryParameters: {
+          'filter[mission_ulid]': missionUlid,
+          'include': 'facilitator,speaker,classGroup',
+        },
+      );
+
+      return PRFMissionSessionsResponse.fromJson(res).data;
+    // } catch (e) {
+    //   rethrow;
+    // }
   }
 }
