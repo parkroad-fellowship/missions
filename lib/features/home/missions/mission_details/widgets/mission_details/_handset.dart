@@ -311,7 +311,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       style: CustomTextTheme.customTextTheme().headlineMedium,
                     ),
                     Text(
-                      forecast.dressingRecommendations,
+                      forecast.dressingRecommendations.toString(),
                       style: CustomTextTheme.customTextTheme().bodySmall,
                     ),
                   ],
