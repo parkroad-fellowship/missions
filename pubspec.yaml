@@ -32,6 +32,7 @@ dependencies:
   flutter_svg: ^2.0.17
   flutter_widget_from_html: ^0.15.3
   freezed_annotation: ^2.4.4
+  full_screen_image: ^2.0.0
   get_it: ^8.0.2
   google_fonts: ^6.2.1
   google_sign_in: ^6.2.2

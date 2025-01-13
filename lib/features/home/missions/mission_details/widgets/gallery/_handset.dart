@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:full_screen_image/full_screen_image.dart';
 
 class GalleryViewHandset extends StatefulWidget {
   const GalleryViewHandset({
@@ -109,9 +110,12 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                             // animate: true,
                             // endOffset: Offset(0, 0),
                             // startOffset: Offset(0, 0.5),
-                            child: ExtendedImage.network(
-                              mediaItem.temporaryURL,
-                              fit: BoxFit.cover,
+                            child: FullScreenWidget(
+                              disposeLevel: DisposeLevel.High,
+                              child: ExtendedImage.network(
+                                mediaItem.temporaryURL,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           );
                         },
