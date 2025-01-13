@@ -511,5 +511,19 @@
     "speaker": "Speaker",
     "@speaker": {},
     "notes": "Preparation notes",
-    "@notes": {}
+    "@notes": {},
+    "selectFacilitator": "Select Facilitator",
+    "@selectFacilitator": {},
+    "selectSpeaker": "Select Speaker",
+    "@selectSpeaker": {},
+    "enterNotes": "Enter preparation notes",
+    "@enterNotes": {},
+    "addStartEnd": "Add start and end time",
+    "@addStartEnd": {},
+    "sessionRecorded": "Session recorded",
+    "@sessionRecorded": {},
+    "startTime": "Start Time",
+    "@startTime": {},
+    "endTime": "End Time",
+    "@endTime": {}
 }

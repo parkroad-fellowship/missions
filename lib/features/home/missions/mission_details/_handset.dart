@@ -1,6 +1,7 @@
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
@@ -8,6 +9,7 @@ import 'package:app/features/home/missions/mission_details/widgets/add_debrief_n
 import 'package:app/features/home/missions/mission_details/widgets/add_expense/add_expense.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_mission_question/add_mission_question.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_session/add_session.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
@@ -216,27 +218,27 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
         > 1 && < 8 => FloatingActionButton(
             onPressed: () {
               if (_currentTab == 2) {
-                // WoltModalSheet.show<void>(
-                //   context: context,
-                //   pageListBuilder: (modalSheetContext) {
-                //     return [
-                //       WoltModalSheetPage(
-                //         child: SizedBox(
-                //           height: MediaQuery.sizeOf(context).height * 0.8,
-                //           child: AddSoulView(missionUlid: mission.ulid),
-                //         ),
-                //       ),
-                //     ];
-                //   },
-                // ).then(
-                //   (_) {
-                //     if (context.mounted) {
-                //       context
-                //           .read<GetSoulsCubit>()
-                //           .getSouls(missionUlid: mission.ulid);
-                //     }
-                //   },
-                // );
+                WoltModalSheet.show<void>(
+                  context: context,
+                  pageListBuilder: (modalSheetContext) {
+                    return [
+                      WoltModalSheetPage(
+                        child: SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.8,
+                          child: AddSessionView(missionUlid: mission.ulid),
+                        ),
+                      ),
+                    ];
+                  },
+                ).then(
+                  (_) {
+                    if (context.mounted) {
+                      context
+                          .read<GetMissionSessionsCubit>()
+                          .getMissionSessions(missionUlid: mission.ulid);
+                    }
+                  },
+                );
               }
               if (_currentTab == 3) {
                 WoltModalSheet.show<void>(

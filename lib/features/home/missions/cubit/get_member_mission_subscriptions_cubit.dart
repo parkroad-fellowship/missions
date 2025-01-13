@@ -20,7 +20,7 @@ class GetMemberMissionSubscriptionsCubit
   late MissionService _missionService;
   late HiveService _hiveService;
 
-  Future<void> getUpcomingMissions() async {
+  Future<void> getSubscriptions() async {
     emit(const GetMemberMissionSubscriptionsState.loading());
     try {
       final member = _hiveService.retrieveMember()!;

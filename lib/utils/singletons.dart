@@ -13,6 +13,7 @@ import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
+import 'package:app/features/home/missions/cubit/add_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_token_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
@@ -302,6 +303,11 @@ class Singletons {
       ),
       BlocProvider<GetMissionSessionsCubit>(
         create: (context) => GetMissionSessionsCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<AddMissionSessionCubit>(
+        create: (context) => AddMissionSessionCubit(
           missionService: getIt(),
         ),
       ),

@@ -1,0 +1,27 @@
+import 'package:app/features/home/missions/mission_details/widgets/add_expense/_handset.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_session/_handset.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+
+class AddSessionView extends StatelessWidget {
+  const AddSessionView({
+    required this.missionUlid,
+    super.key,
+  });
+
+  final String missionUlid;
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveBuilder(
+      defaultBuilder: (_, __) => AddSessionViewHandset(
+        missionUlid: missionUlid,
+      ),
+      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
+        handset: (_, __) => AddSessionViewHandset(
+          missionUlid: missionUlid,
+        ),
+      ),
+    );
+  }
+}
