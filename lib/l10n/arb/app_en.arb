@@ -494,6 +494,8 @@
     "@willUpload": {},
     "doneUploading": "Your media has been uploaded, you can refresh the page to see them.",
     "@doneUploading": {},
-    "tapToAdd": "Tap to add",
-    "@tapToAdd": {}
+    "tapToAdd": "Tap here to add",
+    "@tapToAdd": {},
+    "cancel": "Cancel",
+    "@cancel": {}
 }

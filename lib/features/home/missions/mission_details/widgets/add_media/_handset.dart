@@ -9,6 +9,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_image_dto.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/secondary_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,8 +28,11 @@ class AddMediaViewHandset extends StatefulWidget {
 }
 
 class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
-  bool _isLoading = false;
-  // List<PRFImageDTO> _selectedImages = [];
+  @override
+  void initState() {
+    context.read<SelectMediaCubit>().clearMedia();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,86 +71,102 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   ),
                   loaded: (images) {
                     if (images.isNotEmpty) {
-                      // _selectedImages = images;
-                      return Row(
-                        children: [
-                          Flexible(
-                            flex: 8,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * .75,
-                              height: 200,
-                              child: PageView.builder(
-                                itemCount: images.length,
-                                itemBuilder: (context, index) {
-                                  return Image.file(
-                                    File(images[index].path),
-                                    fit: BoxFit.fitWidth,
-                                    color: Colors.black54,
-                                    colorBlendMode: BlendMode.darken,
-                                  );
+                      return SizedBox(
+                        height: MediaQuery.sizeOf(context).height * 0.6,
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 4.0,
+                            mainAxisSpacing: 4.0,
+                          ),
+                          itemCount: images.length +
+                              1, // Add one more item for the picker tile
+                          itemBuilder: (context, index) {
+                            if (index == images.length) {
+                              return GestureDetector(
+                                onTap: () {
+                                  // Open the image picker
+                                  context.read<SelectMediaCubit>().selectMedia(
+                                        context: context,
+                                        model: PRFMediaModel.missionPhotos,
+                                        modelUlid: widget.missionUlid,
+                                        previousMedia: images,
+                                      );
                                 },
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            flex: 2,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.clear,
-                                    size: 20,
+                                child: Container(
+                                  color: Colors.grey[300],
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 50,
+                                    color: Colors.grey[700],
                                   ),
-                                  onPressed: () => context
-                                      .read<SelectMediaCubit>()
-                                      .clearMedia(),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
+                              );
+                            }
+
+                            return Image.file(
+                              File(images[index].path),
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
                       );
                     }
-                    return GestureDetector(
+
+                    return ListTile(
+                      title: Text(
+                        l10n.tapToAdd,
+                        style: CustomTextTheme.customTextTheme().displayLarge,
+                      ),
+                      leading: const Icon(
+                        Icons.insert_photo_outlined,
+                        size: 32,
+                        color: Color(0xffc4c4c4),
+                      ),
                       onTap: () => context.read<SelectMediaCubit>().selectMedia(
                             context: context,
                             model: PRFMediaModel.missionPhotos,
                             modelUlid: widget.missionUlid,
                           ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            l10n.tapToAdd,
-                            textAlign: TextAlign.center,
-                            style:
-                                CustomTextTheme.customTextTheme().headlineSmall,
-                          ),
-                          Icon(
-                            Icons.insert_photo_outlined,
-                            size: 24.sp,
-                          ),
-                        ],
-                      ),
                     );
                   },
                 ),
               ),
+              const SizedBox(height: 32),
+              BlocBuilder<SelectMediaCubit, SelectMediaState>(
+                builder: (context, state) {
+                  final isDisabled = state.maybeWhen(
+                    loaded: (media) => media.isEmpty,
+                    orElse: () => true,
+                  );
+
+                  return PrimaryButton(
+                    title: l10n.upload,
+                    disabled: isDisabled,
+                    onPressed: isDisabled
+                        ? () {}
+                        : () async {
+                            Navigator.of(context).pop(); // Close the dialog
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(l10n.willUpload),
+                              ),
+                            );
+                            await context
+                                .read<UploadMediaCubit>()
+                                .uploadMedia();
+                          },
+                  );
+                },
+              ),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
-              PrimaryButton(
-                title: l10n.upload,
+              SecondaryButton(
+                title: l10n.cancel,
                 disabled: false,
                 onPressed: () async {
                   Navigator.of(context).pop(); // Close the dialog
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l10n.willUpload),
-                    ),
-                  ); // Notify the user that the images will be uploaded
-                  await context.read<UploadMediaCubit>().uploadMedia();
+                  context.read<SelectMediaCubit>().clearMedia();
                 },
               ),
               const SizedBox(height: 32),

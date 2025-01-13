@@ -24,6 +24,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     required BuildContext context,
     required String modelUlid,
     required PRFMediaModel model,
+    List<PRFImageDTO> previousMedia = const [],
   }) async {
     final media = await _mediaService.getAssetImages(
       context,
@@ -33,7 +34,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
 
     await _localDBService.persistMediaUploads(imageDTOs: media);
 
-    emit(SelectMediaState.loaded(media: media));
+    emit(SelectMediaState.loaded(media: [...previousMedia, ...media]));
   }
 
   void clearMedia() {
