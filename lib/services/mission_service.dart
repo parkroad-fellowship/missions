@@ -67,6 +67,7 @@ abstract class MissionService {
     required String missionSessionUlid,
     required PRFMissionSessionDTO sessionDTO,
   });
+  Future<void> deleteSession({required String missionSessionUlid});
 }
 
 class MissionServiceImpl implements MissionService {
@@ -355,6 +356,15 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFMissionSession.fromJson(res['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteSession({required String missionSessionUlid}) async {
+    try {
+      await _networkUtil.deleteReq('/mission-sessions/$missionSessionUlid');
     } catch (e) {
       rethrow;
     }

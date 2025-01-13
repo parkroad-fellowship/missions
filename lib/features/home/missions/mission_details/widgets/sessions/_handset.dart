@@ -1,3 +1,4 @@
+import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
 import 'package:app/l10n/l10n.dart';
@@ -64,16 +65,31 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    DateFormat.EEEE()
-                        .format(missionSessions.keys.elementAt(index)),
-                    style: CustomTextTheme.customTextTheme()
-                        .headlineSmall!
-                        .copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.appTheme().kBlackColor,
-                        ),
+                  Row(
+                    children: [
+                      Text(
+                        DateFormat.EEEE()
+                            .format(missionSessions.keys.elementAt(index)),
+                        style: CustomTextTheme.customTextTheme()
+                            .headlineSmall!
+                            .copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.appTheme().kBlackColor,
+                            ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        l10n.info,
+                        style: CustomTextTheme.customTextTheme()
+                            .headlineSmall!
+                            .copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.appTheme().kBlackColor,
+                            ),
+                      ),
+                    ],
                   ),
                   ListView.builder(
                     shrinkWrap: true,
@@ -113,91 +129,163 @@ class MissionSessionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Animate(
-      effects: const [
-        SaturateEffect(),
-      ],
-      child: GestureDetector(
-        onDoubleTap: () => WoltModalSheet.show<void>(
+    final borderSide = BorderSide(
+      color: AppTheme.appTheme().kPrimaryColorV2,
+    );
+    return GestureDetector(
+      onTap: () => WoltModalSheet.show<void>(
+        context: context,
+        pageListBuilder: (modalSheetContext) {
+          return [
+            WoltModalSheetPage(
+              child: SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.8,
+                child: UpdateSessionView(
+                  missionUlid: missionUlid,
+                  missionSession: missionSession,
+                ),
+              ),
+            ),
+          ];
+        },
+      ).then(
+        (_) {
+          if (context.mounted) {
+            context
+                .read<GetMissionSessionsCubit>()
+                .getMissionSessions(missionUlid: missionUlid);
+          }
+        },
+      ),
+      // On double tap, show an alert dialog to confirm deletion
+      onLongPress: () async {
+        await showDialog<void>(
           context: context,
-          pageListBuilder: (modalSheetContext) {
-            return [
-              WoltModalSheetPage(
-                child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.8,
-                  child: UpdateSessionView(
-                    missionUlid: missionUlid,
-                    missionSession: missionSession,
-                  ),
+          builder: (context) {
+            return AlertDialog(
+              title: Text(l10n.deleteSession),
+              content: Text(l10n.confirmDelete),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.cancel),
                 ),
-              ),
-            ];
+                BlocConsumer<DeleteMissionSessionCubit,
+                    DeleteMissionSessionState>(
+                  listener: (context, state) {
+                    state.mapOrNull(
+                      loaded: (_) {
+                        Navigator.of(context).pop();
+                        context
+                            .read<GetMissionSessionsCubit>()
+                            .getMissionSessions(missionUlid: missionUlid);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.sessionDeleted),
+                          ),
+                        );
+                      },
+                      error: (e) {
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.message),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  builder: (context, state) {
+                    return TextButton(
+                      onPressed: () {
+                        context
+                            .read<DeleteMissionSessionCubit>()
+                            .deleteMissionSession(
+                              missionSessionUlid: missionSession.ulid,
+                            );
+                      },
+                      child: state.maybeWhen(
+                        orElse: () => Text(l10n.delete),
+                        loading: () => const CircularProgressIndicator(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
           },
-        ).then(
-          (_) {
-            if (context.mounted) {
-              context
-                  .read<GetMissionSessionsCubit>()
-                  .getMissionSessions(missionUlid: missionUlid);
-            }
-          },
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border(
+            top: borderSide,
+            left: borderSide,
+            right: borderSide,
+          ),
         ),
-        child: DataTable(
-          columns: [
-            _createDataColumn(l10n.info),
-            _createDataColumn(l10n.blank),
+        child: Animate(
+          effects: const [
+            SaturateEffect(),
           ],
-          rows: [
-            DataRow(
-              cells: [
-                DataCell(_createText(l10n.time)),
-                DataCell(
-                  _createText(
-                    '${DateFormat.Hm().format(missionSession.startsAt)} -'
-                    ' ${DateFormat.Hm().format(missionSession.endsAt)}',
-                  ),
-                ),
-              ],
-            ),
-            DataRow(
-              cells: [
-                DataCell(_createText(l10n.facilitator)),
-                DataCell(_createText(missionSession.facilitator!.fullName)),
-              ],
-            ),
-            if (missionSession.speaker != null)
+          child: DataTable(
+            columns: [
+              _createDataColumn(l10n.blank),
+              _createDataColumn(l10n.blank),
+            ],
+            rows: [
               DataRow(
                 cells: [
-                  DataCell(_createText(l10n.speaker)),
-                  DataCell(_createText(missionSession.speaker!.fullName)),
+                  DataCell(_createText(l10n.time)),
+                  DataCell(
+                    _createText(
+                      '${DateFormat.Hm().format(missionSession.startsAt)} -'
+                      ' ${DateFormat.Hm().format(missionSession.endsAt)}',
+                    ),
+                  ),
                 ],
               ),
-            if (missionSession.classGroup != null)
               DataRow(
                 cells: [
-                  DataCell(_createText(l10n.classGroup)),
-                  DataCell(_createText(missionSession.classGroup!.name)),
+                  DataCell(_createText(l10n.facilitator)),
+                  DataCell(_createText(missionSession.facilitator!.fullName)),
                 ],
               ),
-            DataRow(
-              cells: [
-                DataCell(_createText(l10n.notes)),
-                DataCell(
-                  Text(
-                    missionSession.notes,
-                    overflow: TextOverflow.visible,
-                    style: CustomTextTheme.customTextTheme()
-                        .headlineSmall!
-                        .copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: AppTheme.appTheme().kBlackColor,
-                        ),
-                  ),
+              if (missionSession.speaker != null)
+                DataRow(
+                  cells: [
+                    DataCell(_createText(l10n.speaker)),
+                    DataCell(_createText(missionSession.speaker!.fullName)),
+                  ],
                 ),
-              ],
-            ),
-          ],
+              if (missionSession.classGroup != null)
+                DataRow(
+                  cells: [
+                    DataCell(_createText(l10n.classGroup)),
+                    DataCell(_createText(missionSession.classGroup!.name)),
+                  ],
+                ),
+              DataRow(
+                cells: [
+                  DataCell(_createText(l10n.notes)),
+                  DataCell(
+                    Text(
+                      missionSession.notes,
+                      overflow: TextOverflow.visible,
+                      style: CustomTextTheme.customTextTheme()
+                          .headlineSmall!
+                          .copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppTheme.appTheme().kBlackColor,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

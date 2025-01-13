@@ -502,7 +502,7 @@
     "@noSessions": {},
     "sessions": "Sessions",
     "@sessions": {},
-    "info": "Double tap to edit ✎",
+    "info": "Tap any session to edit \nLong press to delete",
     "@info": {},
     "time": "Start - End",
     "@time": {},
@@ -527,5 +527,13 @@
     "endTime": "End Time",
     "@endTime": {},
     "blank": "",
-    "@blank": {}
+    "@blank": {},
+    "confirmDelete": "Are you sure you want to delete this?",
+    "@confirmDelete": {},
+    "deleteSession": "Delete Session",
+    "@deleteSession": {},
+    "delete": "Delete",
+    "@delete": {},
+    "sessionDeleted": "Session deleted",
+    "@sessionDeleted": {}
 }

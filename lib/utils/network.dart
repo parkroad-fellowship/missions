@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/models/remote/failure.dart';
@@ -214,6 +215,66 @@ class NetworkUtil {
       }
 
       return responseBody;
+    } on SocketException catch (_) {
+      throw Failure(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw Failure(message: 'Session timeout');
+    } on DioException catch (err) {
+      _logger
+        ..d('Error: $err')
+        ..i('${err.response?.statusCode}')
+        ..i('Error: ${err.response?.data}');
+
+      if (err.response?.statusCode == 401) {
+        throw Failure(
+          message: 'Session timeout',
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (err.response?.statusCode == 404) {
+        throw Failure(
+          message: 'Not found',
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (err.response?.statusCode == 422) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (err.response?.statusCode == 500) {
+        throw Failure(
+          // ignore: avoid_dynamic_calls
+          message: err.response?.data['message'] as String,
+          statusCode: err.response?.statusCode,
+        );
+      }
+
+      if (DioExceptionType.unknown == err.type) {
+        _logger
+          ..d('Error: $err')
+          ..i('${err.response?.statusCode}')
+          ..i('Error: ${err.response?.data}');
+        throw Exception('Server error');
+      } else if (DioExceptionType.connectionTimeout == err.type) {
+        throw const SocketException('No internet connection');
+      } else if (DioExceptionType.connectionError == err.type) {
+        throw const SocketException('No Internet Connection');
+      }
+      throw Exception('Server error');
+    }
+  }
+
+  Future<void> deleteReq(String url) async {
+    try {
+      await _getHttpClient().delete<dynamic>(
+        url,
+      );
     } on SocketException catch (_) {
       throw Failure(message: 'No internet connection');
     } on TimeoutException catch (_) {
