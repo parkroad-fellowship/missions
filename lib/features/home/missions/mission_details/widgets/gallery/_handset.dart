@@ -52,6 +52,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             listener: (context, state) {
               state.mapOrNull(
                 loaded: (_) {
+                  context.read<GetMissionMediaCubit>().getMissionMedia(
+                        missionUlid: missionUlid,
+                        model: PRFMediaModel.missionPhotos,
+                      );
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(l10n.doneUploading),
@@ -82,9 +86,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: () => const SliverToBoxAdapter(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
                 loaded: (mediaItems) {
                   return SliverPadding(
