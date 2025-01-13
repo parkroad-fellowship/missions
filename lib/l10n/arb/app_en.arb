@@ -535,5 +535,9 @@
     "delete": "Delete",
     "@delete": {},
     "sessionDeleted": "Session deleted",
-    "@sessionDeleted": {}
+    "@sessionDeleted": {},
+    "noPhotos": "No photos",
+    "@noPhotos": {},
+    "addPhotos": "Add Photos",
+    "@addPhotos": {}
 }

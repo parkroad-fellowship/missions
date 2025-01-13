@@ -7,15 +7,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+ 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      hiveBox: 'prf-app-local-4',
-      baseDomain: 'prf-sockets.test',
-      urlScheme: 'http',
-      socketDomain: 'prf-sockets.test',
+      hiveBox: 'prf-super-app-${Misc.getSluggedAppVersion()}',
+      baseDomain: 'api.parkroadfellowship.org',
+      urlScheme: 'https',
+      socketDomain: 'ws.parkroadfellowship.org',
       socketKey: 'yvnlkaqadqiadutrs9sa',
-      socketScheme: 'ws',
-      socketPort: 8080,
+      socketScheme: 'wss',
+      socketPort: 443,
     ),
   );
 

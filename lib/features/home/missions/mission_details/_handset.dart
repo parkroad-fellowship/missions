@@ -349,14 +349,6 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       ),
                     ];
                   },
-                ).then(
-                  (_) {
-                    if (context.mounted) {
-                      // context
-                      //     .read<GetMissionExpenseCubit>()
-                      //     .getMissionExpense(missionUlid: mission.ulid);
-                    }
-                  },
                 );
               }
             },
