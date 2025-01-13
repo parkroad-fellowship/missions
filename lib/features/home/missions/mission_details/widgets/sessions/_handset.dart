@@ -53,42 +53,45 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
             ),
           ),
           loaded: (missionSessions) => ListView.separated(
-            shrinkWrap: true,
-            physics: const ScrollPhysics(),
-            itemCount: missionSessions.length,
-            separatorBuilder: (context, index) => Divider(),
-            itemBuilder: (context, index) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  DateFormat.EEEE()
-                      .format(missionSessions.keys.elementAt(index)),
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+              shrinkWrap: true,
+              physics: const ScrollPhysics(),
+              itemCount: missionSessions.length,
+              separatorBuilder: (context, index) => Divider(),
+              itemBuilder: (context, index) {
+                final sortedDailySessions = List<PRFMissionSession>.from(
+                    missionSessions.values.elementAt(index))
+                  ..sort((a, b) => a.startsAt.compareTo(b.startsAt));
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      DateFormat.EEEE()
+                          .format(missionSessions.keys.elementAt(index)),
+                      style: CustomTextTheme.customTextTheme()
+                          .headlineSmall!
+                          .copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.appTheme().kBlackColor,
                           ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  itemCount: missionSessions.values.elementAt(index).length,
-                  itemBuilder: (context, i) {
-                    final missionSession =
-                        missionSessions.values.elementAt(index)[i];
-                    return Column(
-                      children: [
-                        MissionSessionCard(missionSession: missionSession),
-                        SizedBox(height: 8),
-                      ],
-                    );
-                  },
-                ),
-                 SizedBox(height: 16),
-              ],
-            ),
-          ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      itemCount: sortedDailySessions.length,
+                      itemBuilder: (context, i) => Column(
+                        children: [
+                          MissionSessionCard(
+                              missionSession: sortedDailySessions[i]),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                );
+              }),
         );
       },
     );

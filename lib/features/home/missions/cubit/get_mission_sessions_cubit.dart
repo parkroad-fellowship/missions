@@ -24,10 +24,6 @@ class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
       final missionSessions =
           await _missionService.getMissionSessions(missionUlid: missionUlid);
 
-      // // Sort the mission sessions by start date
-      // final copy = List<PRFMissionSession>.from(missionSessions)
-      //   ..sort((a, b) => a.startsAt.compareTo(b.startsAt));
-
       final groupedSessions = collection.groupBy<PRFMissionSession, DateTime>(
         missionSessions,
         (session) => DateTime(session.startsAt.year, session.startsAt.month,
