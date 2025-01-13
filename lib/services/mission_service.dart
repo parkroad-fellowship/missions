@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_expense_dto.dart';
+import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
@@ -48,6 +50,10 @@ abstract class MissionService {
   Future<PRFMissionExpense> addToken({
     required String missionExpenseUlid,
     required int tokenAmount,
+  });
+  Future<List<PRFMedia>> getMissionMedia({
+    required String missionUlid,
+    required PRFMediaModel model,
   });
 }
 
@@ -266,6 +272,25 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFMissionExpense.fromJson(res['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<PRFMedia>> getMissionMedia({
+    required String missionUlid,
+    required PRFMediaModel model,
+  }) async {
+    try {
+      final res = await _networkUtil.getReq(
+        '/missions/$missionUlid/media',
+        queryParameters: {
+          'collection': model.collection,
+        },
+      );
+
+      return PRFMediaResponse.fromJson(res).data;
     } catch (e) {
       rethrow;
     }

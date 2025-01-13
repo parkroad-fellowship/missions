@@ -1,8 +1,11 @@
+import 'package:app/enums/prf_media_model.dart';
+import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/utils/_index.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,9 +28,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
   @override
   void initState() {
-    context
-        .read<GetMissionQuestionsCubit>()
-        .getMissionQuestions(missionUlid: missionUlid);
+    context.read<GetMissionMediaCubit>().getMissionMedia(
+          missionUlid: missionUlid,
+          model: PRFMediaModel.missionPhotos,
+        );
     super.initState();
   }
 
@@ -36,9 +40,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     final l10n = context.l10n;
 
     return RefreshIndicator(
-      onRefresh: () async {
-        //  TODO: Fetch images
-      },
+      onRefresh: () => context.read<GetMissionMediaCubit>().getMissionMedia(
+            missionUlid: missionUlid,
+            model: PRFMediaModel.missionPhotos,
+          ),
       child: CustomScrollView(
         slivers: [
           // Progress indicator for images uploading in the background
@@ -71,54 +76,58 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             },
           ),
           // Gallery
-          SliverToBoxAdapter(child: Text('Gallery')),
-          // BlocBuilder<GetMissionQuestionsCubit, GetMissionQuestionsState>(
-          //   builder: (context, state) {
-          //     return state.map(
-          //       loading: (_) => const SliverToBoxAdapter(
-          //         child: Center(
-          //           child: CircularProgressIndicator(),
-          //         ),
-          //       ),
-          //       loaded: (questions) {
-          //         return SliverPadding(
-          //           padding: EdgeInsets.symmetric(
-          //             horizontal: 16.w,
-          //             vertical: 16.h,
-          //           ),
-          //           sliver: SliverGrid(
-          //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //               crossAxisCount: 3,
-          //               crossAxisSpacing: 16.w,
-          //               mainAxisSpacing: 16.h,
-          //             ),
-          //             delegate: SliverChildBuilderDelegate(
-          //               (context, index) {
-          //                 final question = questions[index];
-          //                 return Animate(
-          //                   duration: Duration(milliseconds: 500),
-          //                   animate: true,
-          //                   endOffset: Offset(0, 0),
-          //                   startOffset: Offset(0, 0.5),
-          //                   child: Image.network(
-          //                     question.mediaUrl,
-          //                     fit: BoxFit.cover,
-          //                   ),
-          //                 );
-          //               },
-          //               childCount: questions.length,
-          //             ),
-          //           ),
-          //         );
-          //       },
-          //       error: (error) => SliverToBoxAdapter(
-          //         child: Center(
-          //           child: Text(error.message),
-          //         ),
-          //       ),
-          //     );
-          //   },
-          // ),
+
+          BlocBuilder<GetMissionMediaCubit, GetMissionMediaState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                orElse: () => const SliverToBoxAdapter(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                loaded: (mediaItems) {
+                  return SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 16.h,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 16.w,
+                        mainAxisSpacing: 16.h,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final mediaItem = mediaItems[index];
+                          return Animate(
+                            effects: [
+                              FadeEffect(),
+                              ScaleEffect(),
+                            ],
+                            // duration: Duration(milliseconds: 500),
+                            // animate: true,
+                            // endOffset: Offset(0, 0),
+                            // startOffset: Offset(0, 0.5),
+                            child: ExtendedImage.network(
+                              mediaItem.temporaryURL,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                        childCount: mediaItems.length,
+                      ),
+                    ),
+                  );
+                },
+                error: (error) => SliverToBoxAdapter(
+                  child: Center(
+                    child: Text(error),
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

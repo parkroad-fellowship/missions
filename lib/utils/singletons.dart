@@ -20,6 +20,7 @@ import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
@@ -291,6 +292,11 @@ class Singletons {
         create: (context) => UploadMediaCubit(
           mediaService: getIt(),
           localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<GetMissionMediaCubit>(
+        create: (context) => GetMissionMediaCubit(
+          missionService: getIt(),
         ),
       ),
     ];
