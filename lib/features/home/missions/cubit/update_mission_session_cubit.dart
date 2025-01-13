@@ -40,9 +40,11 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
           classGroupUlid: classGroupUlid,
         ),
       );
-      emit(UpdateMissionSessionState.loaded(
-        missionSession: updatedMissionSession,
-      ));
+      emit(
+        UpdateMissionSessionState.loaded(
+          missionSession: updatedMissionSession,
+        ),
+      );
     } catch (e) {
       emit(UpdateMissionSessionState.error(e.toString()));
     }
