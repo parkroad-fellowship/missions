@@ -63,6 +63,10 @@ abstract class MissionService {
   Future<PRFMissionSession> addSession({
     required PRFMissionSessionDTO sessionDTO,
   });
+  Future<PRFMissionSession> updateSession({
+    required String missionSessionUlid,
+    required PRFMissionSessionDTO sessionDTO,
+  });
 }
 
 class MissionServiceImpl implements MissionService {
@@ -330,6 +334,23 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.postReq(
         '/mission-sessions',
+        body: json.encode(sessionDTO.toJson()),
+      );
+
+      return PRFMissionSession.fromJson(res['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PRFMissionSession> updateSession({
+    required String missionSessionUlid,
+    required PRFMissionSessionDTO sessionDTO,
+  }) async {
+    try {
+      final res = await _networkUtil.putReq(
+        '/mission-sessions/$missionSessionUlid',
         body: json.encode(sessionDTO.toJson()),
       );
 

@@ -29,6 +29,7 @@ import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
@@ -308,6 +309,11 @@ class Singletons {
       ),
       BlocProvider<AddMissionSessionCubit>(
         create: (context) => AddMissionSessionCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<UpdateMissionSessionCubit>(
+        create: (context) => UpdateMissionSessionCubit(
           missionService: getIt(),
         ),
       ),

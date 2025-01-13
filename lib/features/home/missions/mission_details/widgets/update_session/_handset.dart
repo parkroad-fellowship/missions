@@ -1,9 +1,11 @@
 import 'package:app/features/home/missions/cubit/add_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
+import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_member.dart';
+import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +15,24 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 import 'package:intl/intl.dart';
 
-class AddSessionViewHandset extends StatefulWidget {
-  const AddSessionViewHandset({
+class UpdateSessionViewHandset extends StatefulWidget {
+  const UpdateSessionViewHandset({
     required this.missionUlid,
+    required this.missionSession,
     super.key,
   });
 
   final String missionUlid;
+  final PRFMissionSession missionSession;
 
   @override
-  State<AddSessionViewHandset> createState() => _AddSessionViewHandsetState();
+  State<UpdateSessionViewHandset> createState() =>
+      _UpdateSessionViewHandsetState();
 }
 
-class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
+class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
+  PRFMissionSession get missionSession => widget.missionSession;
+
   final _notesController = TextEditingController();
   final _startDateController = TextEditingController();
   final _endDateController = TextEditingController();
@@ -45,6 +52,17 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
         .read<GetSubscribersCubit>()
         .getSubscriptions(missionUlid: widget.missionUlid);
     context.read<GetClassGroupsCubit>().getClassGroups();
+
+    // Initialize the fields with the current values
+    selectedFacilitator = missionSession.facilitator;
+    selectedSpeaker = missionSession.speaker;
+    selectedClassGroup = missionSession.classGroup;
+    startsAt = missionSession.startsAt;
+    endsAt = missionSession.endsAt;
+    _notesController.text = missionSession.notes;
+    _startDateController.text =
+        DateFormat.MMMMEEEEd().add_Hm().format(startsAt!);
+    _endDateController.text = DateFormat.MMMMEEEEd().add_Hm().format(endsAt!);
   }
 
   @override
@@ -304,7 +322,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               isTextBox: true,
             ),
             const SizedBox(height: 16),
-            BlocConsumer<AddMissionSessionCubit, AddMissionSessionState>(
+            BlocConsumer<UpdateMissionSessionCubit, UpdateMissionSessionState>(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {
@@ -368,8 +386,11 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                         return;
                       }
 
-                      await context.read<AddMissionSessionCubit>().addSession(
+                      await context
+                          .read<UpdateMissionSessionCubit>()
+                          .updateMissionSession(
                             missionUlid: widget.missionUlid,
+                            missionSessionUlid: missionSession.ulid,
                             facilitatorUlid: selectedFacilitator!.ulid,
                             startsAt: startsAt!,
                             endsAt: endsAt!,

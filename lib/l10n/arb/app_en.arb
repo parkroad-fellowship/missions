@@ -502,7 +502,7 @@
     "@noSessions": {},
     "sessions": "Sessions",
     "@sessions": {},
-    "info": "",
+    "info": "Double tap to edit ✎",
     "@info": {},
     "time": "Start - End",
     "@time": {},
@@ -525,5 +525,7 @@
     "startTime": "Start Time",
     "@startTime": {},
     "endTime": "End Time",
-    "@endTime": {}
+    "@endTime": {},
+    "blank": "",
+    "@blank": {}
 }
