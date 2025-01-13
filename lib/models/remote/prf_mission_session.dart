@@ -13,9 +13,8 @@ class PRFMissionSession with _$PRFMissionSession {
     String ulid,
     @JsonKey(name: 'starts_at') DateTime startsAt,
     @JsonKey(name: 'ends_at') DateTime endsAt,
-    String notes,
-     {
-      @Default(0) int order,
+    String notes, {
+    @Default(0) int order,
     PRFMember? facilitator,
     PRFMember? speaker,
     PRFMission? mission,

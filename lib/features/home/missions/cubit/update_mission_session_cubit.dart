@@ -6,5 +6,6 @@ part 'update_mission_session_state.dart';
 part 'update_mission_session_cubit.freezed.dart';
 
 class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
-  UpdateMissionSessionCubit() : super(UpdateMissionSessionState.initial());
+  UpdateMissionSessionCubit()
+      : super(const UpdateMissionSessionState.initial());
 }

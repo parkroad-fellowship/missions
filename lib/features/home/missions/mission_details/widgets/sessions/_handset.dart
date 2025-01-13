@@ -1,13 +1,10 @@
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_session.dart';
-import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class SessionsViewHandset extends StatefulWidget {
@@ -53,45 +50,47 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
             ),
           ),
           loaded: (missionSessions) => ListView.separated(
-              shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              itemCount: missionSessions.length,
-              separatorBuilder: (context, index) => Divider(),
-              itemBuilder: (context, index) {
-                final sortedDailySessions = List<PRFMissionSession>.from(
-                    missionSessions.values.elementAt(index))
-                  ..sort((a, b) => a.startsAt.compareTo(b.startsAt));
+            shrinkWrap: true,
+            physics: const ScrollPhysics(),
+            itemCount: missionSessions.length,
+            separatorBuilder: (context, index) => const Divider(),
+            itemBuilder: (context, index) {
+              final sortedDailySessions = List<PRFMissionSession>.from(
+                missionSessions.values.elementAt(index),
+              )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      DateFormat.EEEE()
-                          .format(missionSessions.keys.elementAt(index)),
-                      style: CustomTextTheme.customTextTheme()
-                          .headlineSmall!
-                          .copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.appTheme().kBlackColor,
-                          ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    DateFormat.EEEE()
+                        .format(missionSessions.keys.elementAt(index)),
+                    style: CustomTextTheme.customTextTheme()
+                        .headlineSmall!
+                        .copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.appTheme().kBlackColor,
+                        ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemCount: sortedDailySessions.length,
+                    itemBuilder: (context, i) => Column(
+                      children: [
+                        MissionSessionCard(
+                          missionSession: sortedDailySessions[i],
+                        ),
+                        const SizedBox(height: 8),
+                      ],
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      itemCount: sortedDailySessions.length,
-                      itemBuilder: (context, i) => Column(
-                        children: [
-                          MissionSessionCard(
-                              missionSession: sortedDailySessions[i]),
-                          SizedBox(height: 8),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                  ],
-                );
-              }),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+            },
+          ),
         );
       },
     );
@@ -124,8 +123,8 @@ class MissionSessionCard extends StatelessWidget {
               DataCell(_createText(l10n.time)),
               DataCell(
                 _createText(
-                  "${DateFormat.Hm().format(missionSession.startsAt)} -"
-                  " ${DateFormat.Hm().format(missionSession.endsAt)}",
+                  '${DateFormat.Hm().format(missionSession.startsAt)} -'
+                  ' ${DateFormat.Hm().format(missionSession.endsAt)}',
                 ),
               ),
             ],

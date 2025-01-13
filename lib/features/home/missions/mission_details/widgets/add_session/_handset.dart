@@ -1,18 +1,12 @@
-import 'package:app/enums/prf_charge_type.dart';
-import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_member.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
@@ -399,7 +393,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     await DatePicker.showDateTimePicker(
       context,
       minTime: DateTime.now(),
-      maxTime: DateTime.now().add(Duration(days: 30)),
+      maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         backgroundColor: AppTheme.appTheme().kBackgroundColor,
         itemStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
@@ -427,7 +421,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     await DatePicker.showDateTimePicker(
       context,
       minTime: DateTime.now(),
-      maxTime: DateTime.now().add(Duration(days: 30)),
+      maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         backgroundColor: AppTheme.appTheme().kBackgroundColor,
         itemStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
@@ -444,8 +438,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
         setState(() {
           endsAt = date;
         });
-        _endDateController.text =
-            DateFormat.MMMMEEEEd().add_Hm().format(date);
+        _endDateController.text = DateFormat.MMMMEEEEd().add_Hm().format(date);
       },
       currentTime: DateTime.now(),
     );
