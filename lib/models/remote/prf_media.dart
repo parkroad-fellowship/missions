@@ -21,7 +21,6 @@ class PRFMedia with _$PRFMedia {
       _$PRFMediaFromJson(json);
 }
 
-
 @freezed
 class PRFMediaResponse with _$PRFMediaResponse {
   factory PRFMediaResponse({

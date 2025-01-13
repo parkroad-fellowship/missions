@@ -12,8 +12,8 @@ abstract class MediaService {
   });
   Future<List<PRFImageDTO>> getAssetImages(
     BuildContext context, {
-      required String modelUlid,
-      required PRFMediaModel model,
+    required String modelUlid,
+    required PRFMediaModel model,
     int count = 9,
   });
 }
@@ -51,8 +51,8 @@ class MediaServiceImpl implements MediaService {
   @override
   Future<List<PRFImageDTO>> getAssetImages(
     BuildContext context, {
-      required String modelUlid,
-      required PRFMediaModel model,
+    required String modelUlid,
+    required PRFMediaModel model,
     int count = 9,
   }) async {
     try {

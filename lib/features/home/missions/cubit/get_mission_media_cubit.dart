@@ -10,7 +10,7 @@ part 'get_mission_media_cubit.freezed.dart';
 class GetMissionMediaCubit extends Cubit<GetMissionMediaState> {
   GetMissionMediaCubit({
     required MissionService missionService,
-  }) : super(GetMissionMediaState.initial()) {
+  }) : super(const GetMissionMediaState.initial()) {
     _missionService = missionService;
   }
 

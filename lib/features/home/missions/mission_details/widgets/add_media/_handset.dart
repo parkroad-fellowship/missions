@@ -1,16 +1,12 @@
 import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_image_dto.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/secondary_button.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -75,10 +71,10 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                         height: MediaQuery.sizeOf(context).height * 0.6,
                         child: GridView.builder(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            crossAxisSpacing: 4.0,
-                            mainAxisSpacing: 4.0,
+                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 4,
                           ),
                           itemCount: images.length +
                               1, // Add one more item for the picker tile

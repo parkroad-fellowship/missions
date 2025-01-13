@@ -10,7 +10,6 @@ class PRFImageDTO with _$PRFImageDTO {
     required PRFMediaModel model,
     required String modelUlid,
     required String path,
-    
   }) = _PRFImageDTO;
 
   factory PRFImageDTO.fromJson(Map<String, dynamic> json) =>

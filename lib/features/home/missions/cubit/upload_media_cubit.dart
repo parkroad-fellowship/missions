@@ -11,7 +11,7 @@ class UploadMediaCubit extends Cubit<UploadMediaState> {
   UploadMediaCubit({
     required MediaService mediaService,
     required LocalDBService localDBService,
-  }) : super(UploadMediaState.initial()) {
+  }) : super(const UploadMediaState.initial()) {
     _mediaService = mediaService;
     _localDBService = localDBService;
   }
@@ -20,7 +20,7 @@ class UploadMediaCubit extends Cubit<UploadMediaState> {
   late LocalDBService _localDBService;
 
   Future<void> uploadMedia() async {
-    emit(UploadMediaState.loading());
+    emit(const UploadMediaState.loading());
     try {
       final imageDTOs = _localDBService.retrieveMediaUploads();
       for (final imageDTO in imageDTOs) {
@@ -30,7 +30,7 @@ class UploadMediaCubit extends Cubit<UploadMediaState> {
           path: imageDTO.path,
         );
       }
-      emit(UploadMediaState.loaded());
+      emit(const UploadMediaState.loaded());
     } on Failure catch (e) {
       emit(UploadMediaState.error(e.message));
     } catch (e) {

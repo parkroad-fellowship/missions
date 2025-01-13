@@ -1,10 +1,7 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission_question.dart';
-import 'package:app/utils/_index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -104,7 +101,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         (context, index) {
                           final mediaItem = mediaItems[index];
                           return Animate(
-                            effects: [
+                            effects: const [
                               FadeEffect(),
                               ScaleEffect(),
                             ],
