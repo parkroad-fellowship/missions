@@ -56,11 +56,36 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
             shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: missionSessions.length,
-            separatorBuilder: (context, index) => SizedBox(height: 16.h),
+            separatorBuilder: (context, index) => Divider(),
             itemBuilder: (context, index) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MissionSessionCard(missionSession: missionSessions[index]),
-                SizedBox(height: 32.h),
+                Text(
+                  DateFormat.EEEE()
+                      .format(missionSessions.keys.elementAt(index)),
+                  style:
+                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.appTheme().kBlackColor,
+                          ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemCount: missionSessions.values.elementAt(index).length,
+                  itemBuilder: (context, i) {
+                    final missionSession =
+                        missionSessions.values.elementAt(index)[i];
+                    return Column(
+                      children: [
+                        MissionSessionCard(missionSession: missionSession),
+                        SizedBox(height: 8),
+                      ],
+                    );
+                  },
+                ),
+                 SizedBox(height: 16),
               ],
             ),
           ),
@@ -87,7 +112,7 @@ class MissionSessionCard extends StatelessWidget {
       ],
       child: DataTable(
         columns: [
-          _createDataColumn(DateFormat.EEEE().format(missionSession.startsAt)),
+          _createDataColumn(l10n.info),
           _createDataColumn(l10n.info),
         ],
         rows: [
