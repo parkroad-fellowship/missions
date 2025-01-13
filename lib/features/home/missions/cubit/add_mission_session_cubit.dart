@@ -2,6 +2,8 @@ import 'package:app/models/remote/prf_mission_session_dto.dart';
 import 'package:app/services/mission_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:app/models/remote/failure.dart';
+
 
 part 'add_mission_session_state.dart';
 part 'add_mission_session_cubit.freezed.dart';
@@ -37,7 +39,10 @@ class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
         classGroupUlid: classGroupUlid,
       ));
       emit(AddMissionSessionState.loaded());
-    } catch (e) {
+    } on Failure catch (e) {
+      emit(AddMissionSessionState.error(e.message));
+    }
+    catch (e) {
       emit(AddMissionSessionState.error(e.toString()));
     }
   }
