@@ -9,14 +9,14 @@ class PRFWeatherForecast with _$PRFWeatherForecast {
     String ulid,
     @JsonKey(name: 'forecast_date') String forecastDate,
     @JsonKey(name: 'weather_code_description') String weatherCodeDescription,
-    @JsonKey(name: 'dressing_recommendations') String dressingRecommendations,
-    @JsonKey(name: 'activity_recommendations') String activityRecommendations,
     PRFTemperature temperature,
     PRFVisibility visibility,
     @JsonKey(name: 'precipitation_probability')
     PRFPrecipitationProbability precipitationProbability,
-    PRFHumidity humidity,
-  ) = _PRFWeatherForecast;
+    PRFHumidity humidity, {
+    @JsonKey(name: 'dressing_recommendations') String? dressingRecommendations,
+    @JsonKey(name: 'activity_recommendations') String? activityRecommendations,
+  }) = _PRFWeatherForecast;
 
   factory PRFWeatherForecast.fromJson(Map<String, dynamic> json) =>
       _$PRFWeatherForecastFromJson(json);

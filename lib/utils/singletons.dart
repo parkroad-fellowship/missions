@@ -13,8 +13,10 @@ import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
+import 'package:app/features/home/missions/cubit/add_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_token_cubit.dart';
+import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
@@ -22,11 +24,13 @@ import 'package:app/features/home/missions/cubit/get_member_mission_subscription
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
@@ -296,6 +300,26 @@ class Singletons {
       ),
       BlocProvider<GetMissionMediaCubit>(
         create: (context) => GetMissionMediaCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<GetMissionSessionsCubit>(
+        create: (context) => GetMissionSessionsCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<AddMissionSessionCubit>(
+        create: (context) => AddMissionSessionCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<UpdateMissionSessionCubit>(
+        create: (context) => UpdateMissionSessionCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<DeleteMissionSessionCubit>(
+        create: (context) => DeleteMissionSessionCubit(
           missionService: getIt(),
         ),
       ),

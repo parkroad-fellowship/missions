@@ -22,7 +22,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
   @override
   void initState() {
     context.read<GetMissionsCubit>().getMissions();
-    context.read<GetMemberMissionSubscriptionsCubit>().getUpcomingMissions();
+    context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
     super.initState();
   }
 
@@ -172,7 +172,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                         return RefreshIndicator(
                           onRefresh: () => context
                               .read<GetMemberMissionSubscriptionsCubit>()
-                              .getUpcomingMissions(),
+                              .getSubscriptions(),
                           child: Column(
                             children: [
                               const Spacer(),

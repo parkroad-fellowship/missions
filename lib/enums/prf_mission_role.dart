@@ -8,7 +8,11 @@ enum PRFMissionRole {
   @JsonValue(3)
   assistant,
   @JsonValue(4)
-  discipleshipTrainer;
+  discipleshipTrainer,
+  @JsonValue(5)
+  musicInstruments,
+  @JsonValue(6)
+  transportation;
 
   String get name {
     switch (this) {
@@ -20,6 +24,10 @@ enum PRFMissionRole {
         return 'Assistant Mission Leader';
       case PRFMissionRole.discipleshipTrainer:
         return 'Discipleship Trainer';
+      case PRFMissionRole.musicInstruments:
+        return 'Music Instruments';
+      case PRFMissionRole.transportation:
+        return 'Transportation';
     }
   }
 }

@@ -45,6 +45,7 @@ class _AddMissionQuestionViewHandsetState
             InputFormField(
               hintText: l10n.addQuestion,
               controller: _questionController,
+              isTextBox: true,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(
