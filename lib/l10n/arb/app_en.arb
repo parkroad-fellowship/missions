@@ -498,6 +498,18 @@
     "@tapToAdd": {},
     "cancel": "Cancel",
     "@cancel": {},
+    "noSessions": "No sessions",
+    "@noSessions": {},
     "sessions": "Sessions",
-    "@sessions": {}
+    "@sessions": {},
+    "info": "",
+    "@info": {},
+    "time": "Start - End",
+    "@time": {},
+    "facilitator": "Facilitator",
+    "@facilitator": {},
+    "speaker": "Speaker",
+    "@speaker": {},
+    "notes": "Preparation notes",
+    "@notes": {}
 }

@@ -304,7 +304,7 @@ class MissionServiceImpl implements MissionService {
   Future<List<PRFMissionSession>> getMissionSessions({
     required String missionUlid,
   }) async {
-    // try {
+    try {
       final res = await _networkUtil.getReq(
         '/mission-sessions',
         queryParameters: {
@@ -314,8 +314,8 @@ class MissionServiceImpl implements MissionService {
       );
 
       return PRFMissionSessionsResponse.fromJson(res).data;
-    // } catch (e) {
-    //   rethrow;
-    // }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

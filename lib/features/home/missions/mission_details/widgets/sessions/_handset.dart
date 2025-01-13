@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class SessionsViewHandset extends StatefulWidget {
   const SessionsViewHandset({
@@ -40,27 +41,30 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
     return BlocBuilder<GetMissionSessionsCubit, GetMissionSessionsState>(
       builder: (context, state) {
         return state.maybeWhen(
-            orElse: () => const Center(child: CircularProgressIndicator()),
-            empty: () => Center(
-                  child: Text(
-                    l10n.noSubscribers,
-                    style: CustomTextTheme.customTextTheme()
-                        .headlineSmall!
-                        .copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                        ),
+          orElse: () => const Center(child: CircularProgressIndicator()),
+          empty: () => Center(
+            child: Text(
+              l10n.noSessions,
+              style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.appTheme().kPrimaryColorV2,
                   ),
-                ),
-            loaded: (missionSessions) => ListView.separated(
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  itemCount: missionSessions.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
-                  itemBuilder: (context, index) =>
-                      MissionSessionCard(missionSession: missionSessions[index]),
-                ));
+            ),
+          ),
+          loaded: (missionSessions) => ListView.separated(
+            shrinkWrap: true,
+            physics: const ScrollPhysics(),
+            itemCount: missionSessions.length,
+            separatorBuilder: (context, index) => SizedBox(height: 16.h),
+            itemBuilder: (context, index) => Column(
+              children: [
+                MissionSessionCard(missionSession: missionSessions[index]),
+                SizedBox(height: 32.h),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
@@ -76,44 +80,91 @@ class MissionSessionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
+    final l10n = context.l10n;
     return Animate(
       effects: const [
         SaturateEffect(),
       ],
-      child: Stack(
-        children: [
-          Container(
-            width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
-              borderRadius: BorderRadius.circular(48.r),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  missionSession.startsAt.toIso8601String(),
-                  style:
-                      CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+      child: DataTable(
+        columns: [
+          _createDataColumn(DateFormat.EEEE().format(missionSession.startsAt)),
+          _createDataColumn(l10n.info),
+        ],
+        rows: [
+          DataRow(
+            cells: [
+              DataCell(_createText(l10n.time)),
+              DataCell(
+                _createText(
+                  "${DateFormat.Hm().format(missionSession.startsAt)} -"
+                  " ${DateFormat.Hm().format(missionSession.endsAt)}",
                 ),
-                SizedBox(height: 16.h),
-                Text(missionSession.notes),
-                SizedBox(height: 16.h),
+              ),
+            ],
+          ),
+          DataRow(
+            cells: [
+              DataCell(_createText(l10n.facilitator)),
+              DataCell(_createText(missionSession.facilitator!.fullName)),
+            ],
+          ),
+          if (missionSession.speaker != null)
+            DataRow(
+              cells: [
+                DataCell(_createText(l10n.speaker)),
+                DataCell(_createText(missionSession.speaker!.fullName)),
               ],
             ),
+          if (missionSession.classGroup != null)
+            DataRow(
+              cells: [
+                DataCell(_createText(l10n.classGroup)),
+                DataCell(_createText(missionSession.classGroup!.name)),
+              ],
+            ),
+          DataRow(
+            cells: [
+              DataCell(_createText(l10n.notes)),
+              DataCell(
+                Text(
+                  missionSession.notes,
+                  overflow: TextOverflow.visible,
+                  style:
+                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppTheme.appTheme().kBlackColor,
+                          ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+}
+
+DataColumn _createDataColumn(String label) {
+  return DataColumn(
+    label: Text(
+      label,
+      style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: AppTheme.appTheme().kBlackColor,
+          ),
+    ),
+  );
+}
+
+Text _createText(String text) {
+  return Text(
+    text,
+    style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: AppTheme.appTheme().kBlackColor,
+        ),
+  );
 }
