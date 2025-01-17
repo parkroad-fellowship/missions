@@ -30,7 +30,8 @@ class _DecisionPageState extends State<DecisionPage> {
 
     final profile = getIt<HiveService>().retrieveProfile()!;
 
-    if (profile.member == null) {
+
+    if (profile.member == null && profile.student == null) {
       _redirectToPage(
         context,
         PRFSuperAppRouter.signInRoute,
