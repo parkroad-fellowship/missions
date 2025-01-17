@@ -30,7 +30,8 @@ class _DecisionPageState extends State<DecisionPage> {
 
     final profile = getIt<HiveService>().retrieveProfile()!;
 
-
+    /// If both the member and student are null, then the user is lacking a
+    /// profile and should be redirected to the sign-in page.
     if (profile.member == null && profile.student == null) {
       _redirectToPage(
         context,
