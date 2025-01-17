@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.17.00+21700
+version: 2.17.01+21701
 publish_to: none
 
 environment:
@@ -59,7 +59,7 @@ dev_dependencies:
   auto_route_generator: ^8.0.0
   bloc_test: ^10.0.0
   build_runner: ^2.4.13
-  flutter_launcher_icons: ^0.14.2
+  flutter_launcher_icons: ^0.14.3
   flutter_native_splash: ^2.4.4
   flutter_test:
     sdk: flutter
