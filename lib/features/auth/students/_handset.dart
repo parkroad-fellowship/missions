@@ -68,7 +68,7 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                           _isLoading = !_isLoading;
                         });
 
-                        context.router.popUntilRouteWithPath(
+                        context.router.pushNamed(
                           PRFSuperAppRouter.decisionRoute,
                         );
 
