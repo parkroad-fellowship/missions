@@ -41,225 +41,229 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
 
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Start Navigation Bar
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.white,
-              pinned: true,
-              flexibleSpace: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 80.w),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          width: 1.w,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: CustomScrollView(
+            slivers: [
+              // Start Navigation Bar
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                pinned: true,
+                flexibleSpace: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            width: 1.w,
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios),
+                          padding: const EdgeInsets.only(left: 8),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.moduleDetailsRoute,
+                          ),
                         ),
                       ),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        padding: const EdgeInsets.only(left: 8),
-                        onPressed: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.moduleDetailsRoute,
+                      const Spacer(),
+                      SizedBox(
+                        width: 0.5.sw,
+                        child: Text(
+                          l10n.lessonDetails,
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 0.5.sw,
-                      child: Text(
-                        l10n.lessonDetails,
-                        style: CustomTextTheme.customTextTheme()
-                            .displayLarge
-                            ?.copyWith(fontWeight: FontWeight.w600),
-                        overflow: TextOverflow.ellipsis,
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ),
+              // End Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40.w),
+                  child: Text(
+                    lesson.name!,
+                    style: CustomTextTheme.customTextTheme()
+                        .headlineMedium
+                        ?.copyWith(fontSize: 52.sp),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40.w),
+                  child: Text(
+                    lesson.description!,
+                    style: CustomTextTheme.customTextTheme()
+                        .bodyLarge
+                        ?.copyWith(fontSize: 52.sp),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40.w),
+                  child: Text(
+                    l10n.content,
+                    style: CustomTextTheme.customTextTheme()
+                        .headlineMedium
+                        ?.copyWith(fontSize: 52.sp),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    // Lesson content
+                    if (lesson.content != null)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40.w),
+                        child: HtmlWidget(lesson.content!),
                       ),
-                    ),
-                    const Spacer(),
+          
+                    // Lesson video
+                    if (lesson.videoUrl != null)
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l10n.video),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(lesson.videoUrl!),
+                          ],
+                        ),
+                        onTap: () async {
+                          final uri = Uri.parse(lesson.videoUrl!);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(
+                              uri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        },
+                      ),
+          
+                    // Lesson document
+                    if (lesson.documentUrl != null)
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l10n.document),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(lesson.documentUrl!),
+                          ],
+                        ),
+                        onTap: () async {
+                          final uri = Uri.parse(lesson.documentUrl!);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(
+                              uri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        },
+                      ),
+          
+                    // Lesson audio
+                    if (lesson.audioUrl != null)
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l10n.audio),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(lesson.audioUrl!),
+                          ],
+                        ),
+                        onTap: () async {
+                          final uri = Uri.parse(lesson.audioUrl!);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(
+                              uri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        },
+                      ),
+                    SizedBox(height: 32.h),
+                    if (lessonModule.lessonMember == null ||
+                        (lessonModule.lessonMember != null &&
+                            lessonModule.lessonMember!.completionStatus !=
+                                PRFCompletionStatus.complete))
+                      BlocConsumer<FinishLessonCubit, FinishLessonState>(
+                        listener: (context, state) {
+                          state.maybeWhen(
+                            loading: () => setState(() {
+                              _isLoading = !_isLoading;
+                            }),
+                            loaded: () {
+                              setState(() {
+                                _isLoading = !_isLoading;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(l10n.completed),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              Navigator.of(context).pop();
+                            },
+                            error: (message) {
+                              setState(() {
+                                _isLoading = !_isLoading;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            },
+                            orElse: () {},
+                          );
+                        },
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            orElse: () => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 40.w),
+                              child: PrimaryButton(
+                                onPressed: () async => context
+                                    .read<FinishLessonCubit>()
+                                    .finishLesson(
+                                      lessonUlid: lesson.ulid!,
+                                      moduleUlid: moduleUlid,
+                                      courseUlid: courseUlid,
+                                    ),
+                                title:
+                                    _isLoading ? l10n.completing : l10n.complete,
+                                disabled: _isLoading,
+                                isLoading: _isLoading ? true : null,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                   ],
                 ),
               ),
-            ),
-            // End Navigation Bar
-            SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                child: Text(
-                  lesson.name!,
-                  style: CustomTextTheme.customTextTheme()
-                      .headlineMedium
-                      ?.copyWith(fontSize: 52.sp),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                child: Text(
-                  lesson.description!,
-                  style: CustomTextTheme.customTextTheme()
-                      .bodyLarge
-                      ?.copyWith(fontSize: 52.sp),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                child: Text(
-                  l10n.content,
-                  style: CustomTextTheme.customTextTheme()
-                      .headlineMedium
-                      ?.copyWith(fontSize: 52.sp),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  // Lesson content
-                  if (lesson.content != null)
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40.w),
-                      child: HtmlWidget(lesson.content!),
-                    ),
-
-                  // Lesson video
-                  if (lesson.videoUrl != null)
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(l10n.video),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(lesson.videoUrl!),
-                        ],
-                      ),
-                      onTap: () async {
-                        final uri = Uri.parse(lesson.videoUrl!);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(
-                            uri,
-                            mode: LaunchMode.externalApplication,
-                          );
-                        }
-                      },
-                    ),
-
-                  // Lesson document
-                  if (lesson.documentUrl != null)
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(l10n.document),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(lesson.documentUrl!),
-                        ],
-                      ),
-                      onTap: () async {
-                        final uri = Uri.parse(lesson.documentUrl!);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(
-                            uri,
-                            mode: LaunchMode.externalApplication,
-                          );
-                        }
-                      },
-                    ),
-
-                  // Lesson audio
-                  if (lesson.audioUrl != null)
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(l10n.audio),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(lesson.audioUrl!),
-                        ],
-                      ),
-                      onTap: () async {
-                        final uri = Uri.parse(lesson.audioUrl!);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(
-                            uri,
-                            mode: LaunchMode.externalApplication,
-                          );
-                        }
-                      },
-                    ),
-                  SizedBox(height: 32.h),
-                  if (lessonModule.lessonMember == null ||
-                      (lessonModule.lessonMember != null &&
-                          lessonModule.lessonMember!.completionStatus !=
-                              PRFCompletionStatus.complete))
-                    BlocConsumer<FinishLessonCubit, FinishLessonState>(
-                      listener: (context, state) {
-                        state.maybeWhen(
-                          loading: () => setState(() {
-                            _isLoading = !_isLoading;
-                          }),
-                          loaded: () {
-                            setState(() {
-                              _isLoading = !_isLoading;
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.completed),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                            Navigator.of(context).pop();
-                          },
-                          error: (message) {
-                            setState(() {
-                              _isLoading = !_isLoading;
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(message),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          },
-                          orElse: () {},
-                        );
-                      },
-                      builder: (context, state) {
-                        return state.maybeWhen(
-                          orElse: () => Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 40.w),
-                            child: PrimaryButton(
-                              onPressed: () async => context
-                                  .read<FinishLessonCubit>()
-                                  .finishLesson(
-                                    lessonUlid: lesson.ulid!,
-                                    moduleUlid: moduleUlid,
-                                    courseUlid: courseUlid,
-                                  ),
-                              title:
-                                  _isLoading ? l10n.completing : l10n.complete,
-                              disabled: _isLoading,
-                              isLoading: _isLoading ? true : null,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

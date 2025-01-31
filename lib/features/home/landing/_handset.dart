@@ -41,6 +41,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
+             padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,

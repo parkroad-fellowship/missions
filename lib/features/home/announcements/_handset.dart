@@ -5,7 +5,6 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -32,229 +31,218 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
 
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Start Navigation Bar
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 80.w),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          width: 1.w,
-                        ),
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        padding: const EdgeInsets.only(left: 8),
-                        onPressed: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.landingRoute,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      l10n.announcements,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(fontSize: 80.sp),
-                    ),
-                    const Spacer(),
-                    Animate(
-                      effects: [
-                        ShimmerEffect(
-                          duration: 1.seconds,
-                        ),
-                        const ShakeEffect(),
-                      ],
-                      child: Stack(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            size: 88.sp,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: CustomScrollView(
+            slivers: [
+              // Start Navigation Bar
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            width: 1.w,
                           ),
-                          Positioned(
-                            right: 16.w,
-                            bottom: 0,
-                            child: Icon(
-                              Icons.check,
-                              size: 88.sp,
-                            ),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios),
+                          padding: const EdgeInsets.only(left: 8),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                      const Spacer(),
+                      Text(
+                        l10n.announcements,
+                        style: CustomTextTheme.customTextTheme()
+                            .displayLarge
+                            ?.copyWith(fontSize: 80.sp),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // End Navigation Bar
-            SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-            SliverToBoxAdapter(
-              child: BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
-                builder: (context, state) => state.maybeWhen(
-                  orElse: () => const Center(child: LinearProgressIndicator()),
-                  error: (message) => Center(child: Text(message)),
-                  loaded: (isEmpty) => isEmpty
-                      ? Column(
-                          children: [
-                            const Icon(
-                              Icons.timer,
-                            ),
-                            Center(
-                              child: Text(
-                                l10n.noAnnouncements,
-                                style: CustomTextTheme.customTextTheme()
-                                    .headlineMedium!
-                                    .copyWith(
-                                      color: AppTheme.appTheme().kDullGreyColor,
-                                      fontWeight: FontWeight.w600,
+              // End Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
+                child:
+                    BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
+                  builder: (context, state) => state.maybeWhen(
+                    orElse: () =>
+                        const Center(child: LinearProgressIndicator()),
+                    error: (message) => Center(child: Text(message)),
+                    loaded: (isEmpty) => isEmpty
+                        ? Column(
+                            children: [
+                              const Icon(
+                                Icons.timer,
+                              ),
+                              Center(
+                                child: Text(
+                                  l10n.noAnnouncements,
+                                  style: CustomTextTheme.customTextTheme()
+                                      .headlineMedium!
+                                      .copyWith(
+                                        color:
+                                            AppTheme.appTheme().kDullGreyColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.05,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      l10n.pleaseWaitForOS,
+                                      maxLines: 2,
+                                      style: CustomTextTheme.customTextTheme()
+                                          .displayLarge!
+                                          .copyWith(
+                                            color: AppTheme.appTheme()
+                                                .kPrimaryColorV2,
+                                            fontSize: 12,
+                                          ),
                                     ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.05,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    l10n.pleaseWaitForOS,
-                                    maxLines: 2,
-                                    style: CustomTextTheme.customTextTheme()
-                                        .displayLarge!
-                                        .copyWith(
-                                          color: AppTheme.appTheme()
-                                              .kPrimaryColorV2,
-                                          fontSize: 12,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
+                            ],
+                          )
+                        : const SizedBox.shrink(),
+                  ),
                 ),
               ),
-            ),
-            StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
-              stream: getIt<LocalDBService>().getAnnouncements(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-
-                final groupedEntries = snapshot.data;
-
-                if (groupedEntries != null && groupedEntries.isEmpty) {
-                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                }
-
-                return SliverList.separated(
-                  itemCount: groupedEntries!.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 48.h),
-                  itemBuilder: (context, index) {
-                    final mapAsList = groupedEntries.keys.toList();
-                    final entries = groupedEntries[mapAsList[index]];
-
-                    return Builder(
-                      builder: (context) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 80.w),
-                              child: Text(
-                                DateFormat.yMMMMd().format(mapAsList[index]),
-                                style: CustomTextTheme.customTextTheme()
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      color:
-                                          AppTheme.appTheme().kPrimaryColorV2,
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 64.sp,
-                                    ),
-                              ),
-                            ),
-                            SizedBox(height: 16.h),
-                            ListView.separated(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: entries!.length,
-                              separatorBuilder: (context, index) =>
-                                  SizedBox(height: 16.w),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    width: width,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 50.w,
-                                      vertical: 40.h,
-                                    ),
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 16.w),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.appTheme()
-                                          .kSecondaryColorV2
-                                          .withValues(alpha: 1),
-                                      borderRadius: BorderRadius.circular(48.r),
-                                    ),
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.zero,
-                                      title: Text(
-                                        entries[index].title.toUpperCase(),
-                                        style: CustomTextTheme.customTextTheme()
-                                            .headlineMedium
-                                            ?.copyWith(
-                                              color: AppTheme.appTheme()
-                                                  .kPrimaryColorV2,
-                                              fontWeight: FontWeight.w300,
-                                            ),
-                                      ),
-                                      subtitle: Text(
-                                        entries[index].content,
-                                        style: CustomTextTheme.customTextTheme()
-                                            .bodySmall
-                                            ?.copyWith(
-                                              color: AppTheme.appTheme()
-                                                  .kPrimaryColorV2,
-                                            ),
-                                      ),
-                                      trailing: Text(
-                                        Misc.formatTimeFromDateTime(
-                                          entries[index].publishedAt,
-                                        ),
-                                        style: CustomTextTheme.customTextTheme()
-                                            .bodySmall
-                                            ?.copyWith(
-                                              color: AppTheme.appTheme()
-                                                  .kPrimaryColorV2,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      },
+              StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
+                stream: getIt<LocalDBService>().getAnnouncements(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SliverToBoxAdapter(
+                      child: Center(child: CircularProgressIndicator()),
                     );
-                  },
-                );
-              },
-            ),
-          ],
+                  }
+
+                  final groupedEntries = snapshot.data;
+
+                  if (groupedEntries != null && groupedEntries.isEmpty) {
+                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                  }
+
+                  return SliverList.separated(
+                    itemCount: groupedEntries!.length,
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 48.h),
+                    itemBuilder: (context, index) {
+                      final mapAsList = groupedEntries.keys.toList();
+                      final entries = groupedEntries[mapAsList[index]];
+
+                      return Builder(
+                        builder: (context) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 80.w),
+                                child: Text(
+                                  DateFormat.yMMMMd().format(mapAsList[index]),
+                                  style: CustomTextTheme.customTextTheme()
+                                      .bodyLarge
+                                      ?.copyWith(
+                                        color:
+                                            AppTheme.appTheme().kPrimaryColorV2,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 64.sp,
+                                      ),
+                                ),
+                              ),
+                              SizedBox(height: 16.h),
+                              ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: entries!.length,
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(height: 16.w),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: width,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 50.w,
+                                        vertical: 40.h,
+                                      ),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 16.w),
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.appTheme()
+                                            .kSecondaryColorV2
+                                            .withValues(alpha: 1),
+                                        borderRadius:
+                                            BorderRadius.circular(48.r),
+                                      ),
+                                      child: ListTile(
+                                        contentPadding: EdgeInsets.zero,
+                                        title: Text(
+                                          entries[index].title.toUpperCase(),
+                                          style:
+                                              CustomTextTheme.customTextTheme()
+                                                  .headlineMedium
+                                                  ?.copyWith(
+                                                    color: AppTheme.appTheme()
+                                                        .kPrimaryColorV2,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                        ),
+                                        subtitle: Text(
+                                          entries[index].content,
+                                          style:
+                                              CustomTextTheme.customTextTheme()
+                                                  .bodySmall
+                                                  ?.copyWith(
+                                                    color: AppTheme.appTheme()
+                                                        .kPrimaryColorV2,
+                                                  ),
+                                        ),
+                                        trailing: Text(
+                                          Misc.formatTimeFromDateTime(
+                                            entries[index].publishedAt,
+                                          ),
+                                          style:
+                                              CustomTextTheme.customTextTheme()
+                                                  .bodySmall
+                                                  ?.copyWith(
+                                                    color: AppTheme.appTheme()
+                                                        .kPrimaryColorV2,
+                                                  ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

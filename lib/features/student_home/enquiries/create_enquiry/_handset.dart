@@ -4,6 +4,7 @@ import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateEnquiryPageHandset extends StatefulWidget {
   const CreateEnquiryPageHandset({super.key});
@@ -35,7 +36,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
           children: [
             const SizedBox(height: 16),

@@ -66,108 +66,112 @@ class _StudentEnquiryRepliesPageHandsetState
 
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Start Navigation Bar
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.white,
-              pinned: true,
-              flexibleSpace: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 80.w),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          width: 1.w,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: CustomScrollView(
+            slivers: [
+              // Start Navigation Bar
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                pinned: true,
+                flexibleSpace: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            width: 1.w,
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios),
+                          padding: const EdgeInsets.only(left: 8),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.studentEnquiriesRoute,
+                          ),
                         ),
                       ),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        padding: const EdgeInsets.only(left: 8),
-                        onPressed: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.studentEnquiriesRoute,
-                        ),
+                      const Spacer(),
+                      Text(
+                        l10n.studentQuestions,
+                        style: CustomTextTheme.customTextTheme()
+                            .displayLarge
+                            ?.copyWith(fontSize: 80.sp),
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      l10n.studentQuestions,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(fontSize: 80.sp),
-                    ),
-                    const Spacer(),
-                  ],
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // End Navigation Bar
-            SliverToBoxAdapter(child: SizedBox(height: 48.h)),
-            StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
-              stream: getIt<LocalDBService>()
-                  .getStudentEnquiryReplies(studentEnquiryUlid: enquiry.ulid),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-
-                final enquiryReplies = [
-                  // Add the enquiry as the first item
-                  PRFLocalStudentEnquiryReply(
-                    ulid: enquiry.ulid,
-                    studentEnquiryUlid: enquiry.ulid,
-                    content: enquiry.content,
-                    createdAt: enquiry.createdAt,
-                    commentorableType: PRFMorphType.student,
-                    isStudent: true,
-                  ),
-                  if (snapshot.data != null) ...snapshot.data!,
-                ];
-
-                return SliverList.builder(
-                  itemCount: enquiryReplies.length,
-                  itemBuilder: (context, index) {
-                    final enquiryReply = enquiryReplies[index];
-
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32.w),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 16.h) +
-                            EdgeInsets.only(
-                              left: enquiryReply.isStudent ? 0 : 88.w,
-                              right: enquiryReply.isStudent ? 88.w : 0,
-                            ),
-                        width: MediaQuery.sizeOf(context).width * 0.5,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 48.w,
-                          vertical: 32.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: enquiryReply.isStudent
-                              ? AppTheme.appTheme()
-                                  .kSecondaryColorV2
-                                  .withValues(alpha: .2)
-                              : AppTheme.appTheme()
-                                  .kGreyColor
-                                  .withValues(alpha: .2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(enquiryReply.content),
-                      ),
+              // End Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 48.h)),
+              StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
+                stream: getIt<LocalDBService>()
+                    .getStudentEnquiryReplies(studentEnquiryUlid: enquiry.ulid),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SliverToBoxAdapter(
+                      child: Center(child: CircularProgressIndicator()),
                     );
-                  },
-                );
-              },
-            ),
-          ],
+                  }
+
+                  final enquiryReplies = [
+                    // Add the enquiry as the first item
+                    PRFLocalStudentEnquiryReply(
+                      ulid: enquiry.ulid,
+                      studentEnquiryUlid: enquiry.ulid,
+                      content: enquiry.content,
+                      createdAt: enquiry.createdAt,
+                      commentorableType: PRFMorphType.student,
+                      isStudent: true,
+                    ),
+                    if (snapshot.data != null) ...snapshot.data!,
+                  ];
+
+                  return SliverList.builder(
+                    itemCount: enquiryReplies.length,
+                    itemBuilder: (context, index) {
+                      final enquiryReply = enquiryReplies[index];
+
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 32.w),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 16.h) +
+                              EdgeInsets.only(
+                                left: enquiryReply.isStudent ? 0 : 88.w,
+                                right: enquiryReply.isStudent ? 88.w : 0,
+                              ),
+                          width: MediaQuery.sizeOf(context).width * 0.5,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 48.w,
+                            vertical: 32.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: enquiryReply.isStudent
+                                ? AppTheme.appTheme()
+                                    .kSecondaryColorV2
+                                    .withValues(alpha: .2)
+                                : AppTheme.appTheme()
+                                    .kGreyColor
+                                    .withValues(alpha: .2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(enquiryReply.content),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: Animate(

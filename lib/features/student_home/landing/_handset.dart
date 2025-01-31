@@ -26,7 +26,8 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
       canPop: false,
       child: Scaffold(
         body: SafeArea(
-          child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +65,6 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                     ],
                   ),
                 ),
-                SizedBox(height: 200.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w) +
                       EdgeInsets.only(bottom: 80.h),

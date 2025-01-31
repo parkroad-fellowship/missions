@@ -79,93 +79,99 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       body: DefaultTabController(
         length: tabCount,
         child: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              // Start Navigation Bar
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            width: 1.w,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: CustomScrollView(
+              slivers: [
+                // Start Navigation Bar
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              width: 1.w,
+                            ),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_back_ios),
+                            padding: const EdgeInsets.only(left: 8),
+                            onPressed: () =>
+                                context.router.popUntilRouteWithPath(
+                              PRFSuperAppRouter.missionsRoute,
+                            ),
                           ),
                         ),
-                        child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
-                          padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.missionsRoute,
-                          ),
+                        const Spacer(),
+                        Text(
+                          l10n.missionDetails,
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(fontSize: 80.sp),
                         ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        l10n.missionDetails,
-                        style: CustomTextTheme.customTextTheme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
-                      ),
-                      const Spacer(),
-                    ],
+                        const Spacer(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              // End Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              SliverToBoxAdapter(
-                child: TabBar(
-                  controller: _tabController,
-                  onTap: (value) => setState(() {
-                    Logger().d(value);
-                    _currentTab = value;
-                  }),
-                  dividerColor: Colors.white,
-                  isScrollable: true,
-                  tabAlignment: TabAlignment.start,
-                  labelStyle:
-                      CustomTextTheme.customTextTheme().displayMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                          ),
-                  indicatorColor: Colors.white,
-                  overlayColor: WidgetStateProperty.all(Colors.transparent),
-                  tabs: [
-                    Tab(text: l10n.missionGround),
-                    Tab(text: l10n.going),
-                    Tab(text: l10n.sessions),
-                    Tab(text: l10n.souls),
-                    Tab(text: l10n.debriefNotes),
-                    Tab(text: l10n.missionQuestions),
-                    Tab(text: l10n.expenses),
-                    Tab(text: l10n.gallery),
-                  ],
-                ),
-              ),
-              SliverFillRemaining(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: TabBarView(
+                // End Navigation Bar
+                SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+                SliverToBoxAdapter(
+                  child: TabBar(
                     controller: _tabController,
-                    children: [
-                      MissionDetailsView(mission: mission),
-                      SubscribersView(missionUlid: mission.ulid),
-                      SessionsView(missionUlid: mission.ulid),
-                      SoulsView(missionUlid: mission.ulid),
-                      DebriefNotesView(missionUlid: mission.ulid),
-                      MissionQuestionsView(missionUlid: mission.ulid),
-                      ExpensesView(missionUlid: mission.ulid),
-                      GalleryView(missionUlid: mission.ulid),
+                    onTap: (value) => setState(() {
+                      Logger().d(value);
+                      _currentTab = value;
+                    }),
+                    dividerColor: Colors.white,
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    labelStyle: CustomTextTheme.customTextTheme()
+                        .displayMedium!
+                        .copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.appTheme().kPrimaryColorV2,
+                        ),
+                    indicatorColor: Colors.white,
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    tabs: [
+                      Tab(text: l10n.missionGround),
+                      Tab(text: l10n.going),
+                      Tab(text: l10n.sessions),
+                      Tab(text: l10n.souls),
+                      Tab(text: l10n.debriefNotes),
+                      Tab(text: l10n.missionQuestions),
+                      Tab(text: l10n.expenses),
+                      Tab(text: l10n.gallery),
                     ],
                   ),
                 ),
-              ),
-            ],
+                SliverFillRemaining(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        MissionDetailsView(mission: mission),
+                        SubscribersView(missionUlid: mission.ulid),
+                        SessionsView(missionUlid: mission.ulid),
+                        SoulsView(missionUlid: mission.ulid),
+                        DebriefNotesView(missionUlid: mission.ulid),
+                        MissionQuestionsView(missionUlid: mission.ulid),
+                        ExpensesView(missionUlid: mission.ulid),
+                        GalleryView(missionUlid: mission.ulid),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

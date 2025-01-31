@@ -31,6 +31,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
     final l10n = context.l10n;
 
     return DefaultTabController(
+      
       length: 2,
       child: Scaffold(
         appBar: AppBar(
@@ -77,9 +78,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
           ),
         ),
         body: TabBarView(
+          
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: BlocBuilder<GetMissionsCubit, GetMissionsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
