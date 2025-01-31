@@ -165,7 +165,8 @@ class _StudentEnquiriesPageHandsetState
                               ),
                         ),
                         trailing: Text(
-                            Misc.formatTimeFromDateTime(enquiry.createdAt)),
+                          Misc.formatTimeFromDateTime(enquiry.createdAt),
+                        ),
                         onTap: () => context.router.push(
                           StudentEnquiryRepliesRoute(enquiry: enquiry),
                         ),
