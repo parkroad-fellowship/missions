@@ -31,7 +31,6 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
     final l10n = context.l10n;
 
     return DefaultTabController(
-      
       length: 2,
       child: Scaffold(
         appBar: AppBar(
@@ -78,7 +77,6 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
           ),
         ),
         body: TabBarView(
-          
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),

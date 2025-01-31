@@ -135,7 +135,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: HtmlWidget(lesson.content!),
                       ),
-          
+
                     // Lesson video
                     if (lesson.videoUrl != null)
                       ListTile(
@@ -157,7 +157,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                           }
                         },
                       ),
-          
+
                     // Lesson document
                     if (lesson.documentUrl != null)
                       ListTile(
@@ -179,7 +179,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                           }
                         },
                       ),
-          
+
                     // Lesson audio
                     if (lesson.audioUrl != null)
                       ListTile(
@@ -250,8 +250,9 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                       moduleUlid: moduleUlid,
                                       courseUlid: courseUlid,
                                     ),
-                                title:
-                                    _isLoading ? l10n.completing : l10n.complete,
+                                title: _isLoading
+                                    ? l10n.completing
+                                    : l10n.complete,
                                 disabled: _isLoading,
                                 isLoading: _isLoading ? true : null,
                               ),

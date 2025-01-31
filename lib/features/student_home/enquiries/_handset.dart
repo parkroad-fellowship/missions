@@ -81,7 +81,8 @@ class _LearnerEnquiriesPageHandsetState
                 child: BlocBuilder<GetStudentEnquiriesCubit,
                     GetStudentEnquiriesState>(
                   builder: (context, state) => state.maybeWhen(
-                    orElse: () => const Center(child: LinearProgressIndicator()),
+                    orElse: () =>
+                        const Center(child: LinearProgressIndicator()),
                     error: (message) => Center(child: Text(message)),
                     loaded: SizedBox.shrink,
                   ),
@@ -95,9 +96,9 @@ class _LearnerEnquiriesPageHandsetState
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
-          
+
                   final enquiries = snapshot.data;
-          
+
                   if (enquiries != null && enquiries.isEmpty) {
                     return SliverFillRemaining(
                       child: RefreshIndicator(
@@ -137,7 +138,7 @@ class _LearnerEnquiriesPageHandsetState
                       ),
                     );
                   }
-          
+
                   return SliverList.separated(
                     itemCount: enquiries!.length,
                     separatorBuilder: (context, index) => const Divider(),
@@ -160,8 +161,8 @@ class _LearnerEnquiriesPageHandsetState
                                 fontSize: 14,
                               ),
                         ),
-                        trailing:
-                            Text(Misc.formatTimeFromDateTime(enquiry.createdAt)),
+                        trailing: Text(
+                            Misc.formatTimeFromDateTime(enquiry.createdAt)),
                         onTap: () => context.router.push(
                           EnquiryRepliesRoute(enquiry: enquiry),
                         ),

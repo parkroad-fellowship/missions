@@ -41,7 +41,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-             padding: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,13 +99,12 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                   width: 1.w,
                                 ),
                               ),
-                              child: CircleAvatar(
-                                radius: 70.r,
+                              child: const CircleAvatar(
                                 backgroundColor: Colors.transparent,
-                                child: const Badge(
+                                child: Badge(
                                   child: Icon(
                                     Icons.notifications_none,
-                                    size: 30,
+                                    size: 24,
                                   ),
                                 ),
                               ),
@@ -126,7 +125,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                           ?.copyWith(
                             color: AppTheme.appTheme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
-                            fontSize: 88.sp,
+                            fontSize: 94.sp,
                           ),
                     ),
                   ),

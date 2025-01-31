@@ -22,11 +22,9 @@ class AccountPageHandset extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        
         child: Padding(
-         padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: CustomScrollView(
-            
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
@@ -123,7 +121,8 @@ class AccountPageHandset extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 40.w),
                           child: InputFormField(
                             hintText: l10n.enterName,
-                            controller: TextEditingController(text: profile.name),
+                            controller:
+                                TextEditingController(text: profile.name),
                             isUnderLine: true,
                             enabled: false,
                           ),
@@ -162,15 +161,15 @@ class AccountPageHandset extends StatelessWidget {
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
-          
+
                   if (profile.member == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
-          
+
                   if (profile.member!.memberships == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
-          
+
                   return SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.only(top: 64.w),
@@ -198,15 +197,15 @@ class AccountPageHandset extends StatelessWidget {
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
-          
+
                   if (profile.member == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
-          
+
                   if (profile.member!.memberships == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
-          
+
                   return SliverList.builder(
                     itemCount: profile.member!.memberships!.length,
                     itemBuilder: (context, index) => ListTile(
@@ -325,13 +324,14 @@ class AccountPageHandset extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Text(
                     l10n.version(Misc.getAppVersion()),
-                    style:
-                        CustomTextTheme.customTextTheme().displaySmall!.copyWith(
-                              fontSize: 12,
-                              color: const Color(0xFF727272),
-                              height: 1.5,
-                              fontWeight: FontWeight.w500,
-                            ),
+                    style: CustomTextTheme.customTextTheme()
+                        .displaySmall!
+                        .copyWith(
+                          fontSize: 12,
+                          color: const Color(0xFF727272),
+                          height: 1.5,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
               ),

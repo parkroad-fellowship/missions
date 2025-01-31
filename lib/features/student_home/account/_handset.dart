@@ -120,7 +120,8 @@ class StudentAccountPageHandset extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 40.w),
                           child: InputFormField(
                             hintText: l10n.enterName,
-                            controller: TextEditingController(text: profile.name),
+                            controller:
+                                TextEditingController(text: profile.name),
                             isUnderLine: true,
                             enabled: false,
                           ),
@@ -173,8 +174,8 @@ class StudentAccountPageHandset extends StatelessWidget {
                                         .copyWith(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w700,
-                                          color:
-                                              AppTheme.appTheme().kPrimaryColorV2,
+                                          color: AppTheme.appTheme()
+                                              .kPrimaryColorV2,
                                         ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
@@ -186,7 +187,8 @@ class StudentAccountPageHandset extends StatelessWidget {
                                         if (await canLaunchUrl(uri)) {
                                           await launchUrl(
                                             uri,
-                                            mode: LaunchMode.externalApplication,
+                                            mode:
+                                                LaunchMode.externalApplication,
                                           );
                                         }
                                       },
@@ -198,7 +200,8 @@ class StudentAccountPageHandset extends StatelessWidget {
                                         .copyWith(
                                           fontSize: 12,
                                           fontWeight: FontWeight.normal,
-                                          color: AppTheme.appTheme().kBlackColor,
+                                          color:
+                                              AppTheme.appTheme().kBlackColor,
                                         ),
                                   ),
                                   TextSpan(
@@ -208,8 +211,8 @@ class StudentAccountPageHandset extends StatelessWidget {
                                         .copyWith(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w700,
-                                          color:
-                                              AppTheme.appTheme().kPrimaryColorV2,
+                                          color: AppTheme.appTheme()
+                                              .kPrimaryColorV2,
                                         ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
@@ -221,7 +224,8 @@ class StudentAccountPageHandset extends StatelessWidget {
                                         if (await canLaunchUrl(uri)) {
                                           await launchUrl(
                                             uri,
-                                            mode: LaunchMode.externalApplication,
+                                            mode:
+                                                LaunchMode.externalApplication,
                                           );
                                         }
                                       },

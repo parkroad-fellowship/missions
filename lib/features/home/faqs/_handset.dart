@@ -77,7 +77,8 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
               SliverToBoxAdapter(
                 child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
                   builder: (context, state) => state.maybeWhen(
-                    orElse: () => const Center(child: LinearProgressIndicator()),
+                    orElse: () =>
+                        const Center(child: LinearProgressIndicator()),
                     error: (message) => Center(child: Text(message)),
                     loaded: (_) => const SizedBox.shrink(),
                   ),
@@ -110,8 +111,8 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                     style: CustomTextTheme.customTextTheme()
                                         .headlineMedium!
                                         .copyWith(
-                                          color:
-                                              AppTheme.appTheme().kDullGreyColor,
+                                          color: AppTheme.appTheme()
+                                              .kDullGreyColor,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),

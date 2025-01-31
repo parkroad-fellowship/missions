@@ -185,7 +185,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         vertical: 40.h,
                                       ),
                                       margin: EdgeInsets.symmetric(
-                                          horizontal: 16.w),
+                                        horizontal: 16.w,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: AppTheme.appTheme()
                                             .kSecondaryColorV2

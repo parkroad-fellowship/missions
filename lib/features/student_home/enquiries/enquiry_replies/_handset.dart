@@ -65,7 +65,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-         padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
@@ -119,7 +119,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
-          
+
                   final enquiryReplies = [
                     // Add the enquiry as the first item
                     PRFLocalStudentEnquiryReply(
@@ -132,12 +132,12 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                     ),
                     if (snapshot.data != null) ...snapshot.data!,
                   ];
-          
+
                   return SliverList.builder(
                     itemCount: enquiryReplies.length,
                     itemBuilder: (context, index) {
                       final enquiryReply = enquiryReplies[index];
-          
+
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 32.w),
                         child: Container(

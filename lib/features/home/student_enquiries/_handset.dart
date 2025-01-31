@@ -76,13 +76,14 @@ class _StudentEnquiriesPageHandsetState
               SliverToBoxAdapter(
                 child: BlocBuilder<GetEnquiriesCubit, GetEnquiriesState>(
                   builder: (context, state) => state.maybeWhen(
-                    orElse: () => const Center(child: LinearProgressIndicator()),
+                    orElse: () =>
+                        const Center(child: LinearProgressIndicator()),
                     error: (message) => Center(child: Text(message)),
                     loaded: SizedBox.shrink,
                   ),
                 ),
               ),
-          
+
               StreamBuilder<List<PRFLocalStudentEnquiry>>(
                 stream: getIt<LocalDBService>().getStudentEnquiries(),
                 builder: (context, snapshot) {
@@ -91,9 +92,9 @@ class _StudentEnquiriesPageHandsetState
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
-          
+
                   final enquiries = snapshot.data;
-          
+
                   if (enquiries != null && enquiries.isEmpty) {
                     return SliverFillRemaining(
                       child: RefreshIndicator(
@@ -119,15 +120,16 @@ class _StudentEnquiriesPageHandsetState
                             SizedBox(
                               height: MediaQuery.sizeOf(context).height * 0.05,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
                                     l10n.pleaseWait,
                                     style: CustomTextTheme.customTextTheme()
                                         .displayLarge!
                                         .copyWith(
-                                          color:
-                                              AppTheme.appTheme().kPrimaryColorV2,
+                                          color: AppTheme.appTheme()
+                                              .kPrimaryColorV2,
                                           fontSize: 14,
                                         ),
                                   ),
@@ -139,7 +141,7 @@ class _StudentEnquiriesPageHandsetState
                       ),
                     );
                   }
-          
+
                   return SliverList.separated(
                     itemCount: enquiries!.length,
                     separatorBuilder: (context, index) => const Divider(),
@@ -162,8 +164,8 @@ class _StudentEnquiriesPageHandsetState
                                 fontSize: 14,
                               ),
                         ),
-                        trailing:
-                            Text(Misc.formatTimeFromDateTime(enquiry.createdAt)),
+                        trailing: Text(
+                            Misc.formatTimeFromDateTime(enquiry.createdAt)),
                         onTap: () => context.router.push(
                           StudentEnquiryRepliesRoute(enquiry: enquiry),
                         ),
