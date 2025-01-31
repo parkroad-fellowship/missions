@@ -30,74 +30,78 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
 
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Start Navigation Bar
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.white,
-              pinned: true,
-              flexibleSpace: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 80.w),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          width: 1.w,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: CustomScrollView(
+            slivers: [
+              // Start Navigation Bar
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                pinned: true,
+                flexibleSpace: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            width: 1.w,
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios),
+                          padding: const EdgeInsets.only(left: 8),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
+                          ),
                         ),
                       ),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        padding: const EdgeInsets.only(left: 8),
-                        onPressed: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.landingRoute,
-                        ),
+                      const Spacer(),
+                      Text(
+                        l10n.learn,
+                        style: CustomTextTheme.customTextTheme()
+                            .displayLarge
+                            ?.copyWith(fontSize: 80.sp),
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      l10n.learn,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(fontSize: 80.sp),
-                    ),
-                    const Spacer(),
-                  ],
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // End Navigation Bar
-            SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-            StreamBuilder(
-              stream: getIt<LocalDBService>().getCourses(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
+              // End Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+              StreamBuilder(
+                stream: getIt<LocalDBService>().getCourses(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SliverToBoxAdapter(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+
+                  final courses = snapshot.data;
+
+                  if (courses != null && courses.isEmpty) {
+                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                  }
+
+                  return SliverList.separated(
+                    itemCount: courses!.length,
+                    itemBuilder: (context, index) => CourseActionCard(
+                      course: courses[index],
+                    ),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
                   );
-                }
-
-                final courses = snapshot.data;
-
-                if (courses != null && courses.isEmpty) {
-                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                }
-
-                return SliverList.separated(
-                  itemCount: courses!.length,
-                  itemBuilder: (context, index) => CourseActionCard(
-                    course: courses[index],
-                  ),
-                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
-                );
-              },
-            ),
-          ],
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
