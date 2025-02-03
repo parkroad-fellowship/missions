@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app/enums/prf_notification_type.dart';
 import 'package:app/enums/prf_time_of_day.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
@@ -202,7 +200,7 @@ class NotificationServiceImpl implements NotificationService {
       AwesomeNotifications().createNotification(
         content: NotificationContent(
           autoDismissible: false,
-          id: Random().nextInt(356),
+          id: int.parse('${prayerPrompt.dayOfWeek}${prayerPrompt.timeOfDay}'),
           channelKey: 'prayer_prompts',
           title: 'PRF: Prayer watch',
           body: prayerPrompt.description,
