@@ -2,8 +2,12 @@ import 'dart:math';
 
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/services/_index.dart';
+import 'package:app/utils/_index.dart';
 import 'package:app/versioning/build_version.dart';
+import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
 import 'package:slugify/slugify.dart' as slugify;
 
@@ -55,5 +59,25 @@ class Misc {
   static bool canSubscribeToMission(PRFMission mission) {
     return mission.status == PRFMissionStatus.approved &&
         mission.missionSubscriptionsNeeded > 0;
+  }
+
+  static bool userCan(String permission) {
+    final user = getIt<HiveService>().retrieveProfile();
+    if (user == null) return false;
+
+    // Get the permissions from the role key
+    // Flatten the permissions from all the roles
+    // Check if the permission exists for the user across all the roles
+    final permissionFound = user.roles
+        .map((role) => role.permissions)
+        .toList()
+        .flattened
+        .toSet()
+        .firstWhereOrNull(
+          (permissionEntry) => permissionEntry.name == permission,
+        );
+
+    if (permissionFound == null) return false;
+    return true;
   }
 }

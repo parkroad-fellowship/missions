@@ -10,6 +10,7 @@ import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
+import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
@@ -322,6 +323,12 @@ class Singletons {
       BlocProvider<DeleteMissionSessionCubit>(
         create: (context) => DeleteMissionSessionCubit(
           missionService: getIt(),
+        ),
+      ),
+      BlocProvider<GetMissionGroundSuggestionsCubit>(
+        create: (context) => GetMissionGroundSuggestionsCubit(
+          missionGroundsService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];

@@ -5,3 +5,4 @@ export 'misc.dart';
 export 'network.dart';
 export 'router.dart';
 export 'singletons.dart';
+export 'permission_handler.dart';

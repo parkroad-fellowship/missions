@@ -539,5 +539,9 @@
     "noPhotos": "No photos",
     "@noPhotos": {},
     "addPhotos": "Add Photos",
-    "@addPhotos": {}
+    "@addPhotos": {},
+    "suggestAMission": "Suggest a mission",
+    "@suggestAMission": {},
+    "noSuggestedMissionGrounds": "No suggested mission grounds",
+    "@noSuggestedMissionGrounds": {}
 }
