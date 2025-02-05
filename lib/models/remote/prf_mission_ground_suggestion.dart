@@ -8,9 +8,11 @@ part 'prf_mission_ground_suggestion.g.dart';
 @freezed
 class PRFMissionGroundSuggestion with _$PRFMissionGroundSuggestion {
   factory PRFMissionGroundSuggestion(
+    String ulid,
     String name,
     @JsonKey(name: 'contact_person') String contactPerson,
     @JsonKey(name: 'contact_number') String contactNumber, {
+    String? notes,
     @Default(PRFMissionGroundSuggestionStatus.pending)
     PRFMissionGroundSuggestionStatus status,
     PRFMember? suggestor,

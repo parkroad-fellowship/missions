@@ -15,6 +15,7 @@ abstract class MissionGroundsService {
   });
   Future<PRFMissionGroundSuggestion> updateMissionGroundSuggestion({
     required PRFMissionGroundSuggestionDTO missionGroundSuggestionDTO,
+    required String missionGroundSuggestionUlid,
   });
 }
 
@@ -66,10 +67,11 @@ class MissionGroundsServiceImpl implements MissionGroundsService {
   @override
   Future<PRFMissionGroundSuggestion> updateMissionGroundSuggestion({
     required PRFMissionGroundSuggestionDTO missionGroundSuggestionDTO,
+     required String missionGroundSuggestionUlid,
   }) async {
     try {
       final res = await _networkUtil.putReq(
-        '/mission-ground-suggestions',
+        '/mission-ground-suggestions/$missionGroundSuggestionUlid',
         queryParameters: {
           'include': 'suggestor',
         },

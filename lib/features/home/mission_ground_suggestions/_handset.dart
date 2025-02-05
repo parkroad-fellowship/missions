@@ -1,5 +1,6 @@
 import 'package:app/features/home/mission_ground_suggestions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
+import 'package:app/features/home/mission_ground_suggestions/update_mission_ground_suggestion/update_mission_ground_suggestion.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
@@ -126,10 +127,40 @@ class _MissionGroundSuggestionsPageHandsetState
                         itemCount: missionGroundSuggestions.length,
                         separatorBuilder: (context, index) =>
                             SizedBox(height: 8.h),
-                        itemBuilder: (context, index) =>
-                            MissionGroundSuggestionCard(
-                          missionGroundSuggestion:
-                              missionGroundSuggestions[index],
+                        itemBuilder: (context, index) => GestureDetector(
+                          onLongPress: () {
+                            if (!Misc.userCan(
+                                'edit mission ground suggestion')) {
+                              return;
+                            }
+                            WoltModalSheet.show<void>(
+                              context: context,
+                              pageListBuilder: (modalSheetContext) {
+                                return [
+                                  WoltModalSheetPage(
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.sizeOf(context).height *
+                                              0.8,
+                                      child: UpdateMissionGroundSuggestionView(
+                                        missionGroundSuggestion:
+                                            missionGroundSuggestions[index],
+                                      ),
+                                    ),
+                                  ),
+                                ];
+                              },
+                            ).then((_) {
+                              // ignore: use_build_context_synchronously
+                              context
+                                  .read<GetMissionGroundSuggestionsCubit>()
+                                  .getMissionGroundSuggestions();
+                            });
+                          },
+                          child: MissionGroundSuggestionCard(
+                            missionGroundSuggestion:
+                                missionGroundSuggestions[index],
+                          ),
                         ),
                       );
                     },

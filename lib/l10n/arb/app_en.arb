@@ -565,5 +565,9 @@
     "suggest": "Suggest",
     "@suggest": {},
     "suggesting": "Suggesting...",
-    "@suggesting": {}
+    "@suggesting": {},
+    "status": "Status",
+    "@status": {},
+    "comments": "Notes",
+    "@comments": {}
 }

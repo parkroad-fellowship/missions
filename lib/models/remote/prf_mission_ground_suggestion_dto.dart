@@ -11,6 +11,7 @@ class PRFMissionGroundSuggestionDTO with _$PRFMissionGroundSuggestionDTO {
     @JsonKey(name: 'suggestor_ulid') required String suggestorUlid,
     @JsonKey(name: 'contact_person') required String contactPerson,
     @JsonKey(name: 'contact_number') required String contactNumber,
+    String? notes,
     @Default(PRFMissionGroundSuggestionStatus.pending)
     PRFMissionGroundSuggestionStatus status,
   }) = _PRFMissionGroundSuggestionDTO;

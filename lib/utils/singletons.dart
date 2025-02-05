@@ -12,6 +12,7 @@ import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
+import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
@@ -334,6 +335,12 @@ class Singletons {
       ),
       BlocProvider<AddMissionGroundSuggestionCubit>(
         create: (context) => AddMissionGroundSuggestionCubit(
+          missionGroundsService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<UpdateMissionGroundSuggestionCubit>(
+        create: (context) => UpdateMissionGroundSuggestionCubit(
           missionGroundsService: getIt(),
           hiveService: getIt(),
         ),
