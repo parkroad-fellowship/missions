@@ -14,7 +14,7 @@ class AddMissionGroundSuggestionCubit
   AddMissionGroundSuggestionCubit({
     required HiveService hiveService,
     required MissionGroundsService missionGroundsService,
-  }) : super(AddMissionGroundSuggestionState.initial()) {
+  }) : super(const AddMissionGroundSuggestionState.initial()) {
     _missionGroundsService = missionGroundsService;
     _hiveService = hiveService;
   }
@@ -28,8 +28,9 @@ class AddMissionGroundSuggestionCubit
     required PhoneNumber contactNumber,
   }) async {
     try {
-      emit(AddMissionGroundSuggestionState.loading(
-      ));
+      emit(
+        const AddMissionGroundSuggestionState.loading(),
+      );
       final member = _hiveService.retrieveMember()!;
 
       final missionGroundSuggestion =
@@ -41,8 +42,11 @@ class AddMissionGroundSuggestionCubit
           suggestorUlid: member.ulid,
         ),
       );
-      emit(AddMissionGroundSuggestionState.loaded(
-          missionGroundSuggestion: missionGroundSuggestion));
+      emit(
+        AddMissionGroundSuggestionState.loaded(
+          missionGroundSuggestion: missionGroundSuggestion,
+        ),
+      );
     } on Failure catch (e) {
       emit(AddMissionGroundSuggestionState.error(e.message));
     } catch (e) {

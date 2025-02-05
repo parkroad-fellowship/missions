@@ -7,7 +7,6 @@ import 'package:app/models/remote/prf_member.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
-import 'package:collection/collection.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 
@@ -282,5 +281,4 @@ class HiveServiceImpl implements HiveService {
       missionUlid,
     );
   }
-
 }

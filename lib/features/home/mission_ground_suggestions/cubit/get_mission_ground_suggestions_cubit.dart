@@ -13,7 +13,7 @@ class GetMissionGroundSuggestionsCubit
   GetMissionGroundSuggestionsCubit({
     required MissionGroundsService missionGroundsService,
     required HiveService hiveService,
-  }) : super(GetMissionGroundSuggestionsState.initial()) {
+  }) : super(const GetMissionGroundSuggestionsState.initial()) {
     _hiveService = hiveService;
     _missionGroundsService = missionGroundsService;
   }

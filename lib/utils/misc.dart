@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
-import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';

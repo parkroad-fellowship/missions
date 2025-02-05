@@ -1,11 +1,9 @@
 import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
-import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class AddMissionGroundSuggestionViewHandset extends StatefulWidget {
@@ -48,9 +46,8 @@ class _AddMissionGroundSuggestionViewHandsetState
             InputFormField(
               hintText: l10n.missionGround,
               controller: _nameController,
-            
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
@@ -64,7 +61,7 @@ class _AddMissionGroundSuggestionViewHandsetState
               hintText: l10n.contactPerson,
               controller: _contactPersonController,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
@@ -96,7 +93,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                 filled: false,
               ),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             BlocConsumer<AddMissionGroundSuggestionCubit,
                 AddMissionGroundSuggestionState>(
               listener: (context, state) {
@@ -125,7 +122,6 @@ class _AddMissionGroundSuggestionViewHandsetState
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  
                   orElse: () => PrimaryButton(
                     title: _isLoading ? l10n.recording : l10n.record,
                     disabled: _isLoading,

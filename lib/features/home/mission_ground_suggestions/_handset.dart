@@ -1,9 +1,6 @@
 import 'package:app/features/home/mission_ground_suggestions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/primary_button.dart';
@@ -129,7 +126,7 @@ class _MissionGroundSuggestionsPageHandsetState
                                                   .height *
                                               0.8,
                                           child:
-                                              AddMissionGroundSuggestionView(),
+                                              const AddMissionGroundSuggestionView(),
                                         ),
                                       ),
                                     ];
@@ -166,7 +163,7 @@ class _MissionGroundSuggestionsPageHandsetState
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () => WoltModalSheet.show<void>(
           context: context,
           pageListBuilder: (modalSheetContext) {
@@ -174,7 +171,7 @@ class _MissionGroundSuggestionsPageHandsetState
               WoltModalSheetPage(
                 child: SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.8,
-                  child: AddMissionGroundSuggestionView(),
+                  child: const AddMissionGroundSuggestionView(),
                 ),
               ),
             ];

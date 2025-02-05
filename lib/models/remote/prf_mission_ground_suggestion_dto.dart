@@ -1,5 +1,4 @@
 import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_mission_ground_suggestion_dto.freezed.dart';

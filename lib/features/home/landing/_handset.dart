@@ -206,7 +206,8 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       title: l10n.suggestAMission,
                       assetPath: 'assets/svgs/chatting.svg',
                       onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.missionGroundSuggestionsRoute,),
+                        PRFSuperAppRouter.missionGroundSuggestionsRoute,
+                      ),
                     ),
                   ),
                 ],
