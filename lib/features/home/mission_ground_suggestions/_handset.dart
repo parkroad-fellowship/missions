@@ -116,29 +116,7 @@ class _MissionGroundSuggestionsPageHandsetState
                               child: PrimaryButton(
                                 title: l10n.suggestAMission,
                                 disabled: false,
-                                onPressed: () => WoltModalSheet.show<void>(
-                                  context: context,
-                                  pageListBuilder: (modalSheetContext) {
-                                    return [
-                                      WoltModalSheetPage(
-                                        child: SizedBox(
-                                          height: MediaQuery.sizeOf(context)
-                                                  .height *
-                                              0.8,
-                                          child:
-                                              const AddMissionGroundSuggestionView(),
-                                        ),
-                                      ),
-                                    ];
-                                  },
-                                ).then((_) {
-                                  if (context.mounted) {
-                                    context
-                                        .read<
-                                            GetMissionGroundSuggestionsCubit>()
-                                        .getMissionGroundSuggestions();
-                                  }
-                                }),
+                                onPressed: _addMissionGroundSuggestion,
                               ),
                             ),
                           ),
@@ -164,32 +142,33 @@ class _MissionGroundSuggestionsPageHandsetState
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+        onPressed: _addMissionGroundSuggestion,
         child: const Icon(
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () => WoltModalSheet.show<void>(
-          context: context,
-          pageListBuilder: (modalSheetContext) {
-            return [
-              WoltModalSheetPage(
-                child: SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.8,
-                  child: const AddMissionGroundSuggestionView(),
-                ),
-              ),
-            ];
-          },
-        ).then((_) {
-          if (context.mounted) {
-            context
-                .read<GetMissionGroundSuggestionsCubit>()
-                .getMissionGroundSuggestions();
-          }
-        }),
       ),
     );
   }
+
+  void _addMissionGroundSuggestion() => WoltModalSheet.show<void>(
+        context: context,
+        pageListBuilder: (modalSheetContext) {
+          return [
+            WoltModalSheetPage(
+              child: SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.8,
+                child: const AddMissionGroundSuggestionView(),
+              ),
+            ),
+          ];
+        },
+      ).then((_) {
+        // ignore: use_build_context_synchronously
+        context
+            .read<GetMissionGroundSuggestionsCubit>()
+            .getMissionGroundSuggestions();
+      });
 }
 
 class MissionGroundSuggestionCard extends StatelessWidget {
