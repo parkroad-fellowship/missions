@@ -9,6 +9,7 @@ abstract class MissionGroundsService {
   Future<List<PRFMissionGroundSuggestion>> getMissionGroundSuggestions({
     String? suggestorUlid,
     PRFMissionGroundSuggestionStatus? status,
+    List<PRFMissionGroundSuggestionStatus>? statuses,
   });
   Future<PRFMissionGroundSuggestion> createMissionGroundSuggestion({
     required PRFMissionGroundSuggestionDTO missionGroundSuggestionDTO,
@@ -47,6 +48,7 @@ class MissionGroundsServiceImpl implements MissionGroundsService {
   Future<List<PRFMissionGroundSuggestion>> getMissionGroundSuggestions({
     String? suggestorUlid,
     PRFMissionGroundSuggestionStatus? status,
+    List<PRFMissionGroundSuggestionStatus>? statuses,
   }) async {
     try {
       final res = await _networkUtil.getReq(
@@ -55,6 +57,9 @@ class MissionGroundsServiceImpl implements MissionGroundsService {
           'include': 'suggestor',
           if (suggestorUlid != null) 'filter[suggestor_ulid]': suggestorUlid,
           if (status != null) 'filter[status_key]': status.apiKey,
+          if (statuses != null)
+            'filter[status_keys]':
+                statuses.map((status) => status.apiKey).toList().join(','),
         },
       );
 

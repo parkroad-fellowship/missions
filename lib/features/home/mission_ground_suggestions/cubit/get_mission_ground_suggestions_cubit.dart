@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/services/_index.dart';
@@ -31,6 +32,10 @@ class GetMissionGroundSuggestionsCubit
       final missionGroundSuggestions =
           await _missionGroundsService.getMissionGroundSuggestions(
         suggestorUlid: viewAnyMissionGrounds ? null : member.ulid,
+        statuses: [
+          PRFMissionGroundSuggestionStatus.pending,
+          PRFMissionGroundSuggestionStatus.initiatedContact,
+        ],
       );
 
       emit(
