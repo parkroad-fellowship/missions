@@ -8,7 +8,8 @@ enum PrfRole {
   followUp,
   treasurer,
   member,
-  student;
+  student,
+  missionsCommitteeMember;
 
   String get label {
     switch (this) {
@@ -32,6 +33,8 @@ enum PrfRole {
         return 'member';
       case PrfRole.student:
         return 'student';
+      case PrfRole.missionsCommitteeMember:
+        return 'missions committee member';
     }
   }
 
@@ -57,6 +60,8 @@ enum PrfRole {
         return PrfRole.member;
       case 'student':
         return PrfRole.student;
+      case 'missions committee member':
+        return PrfRole.missionsCommitteeMember;
       default:
         return PrfRole.member;
     }
