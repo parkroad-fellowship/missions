@@ -1,5 +1,4 @@
 import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
@@ -8,12 +7,11 @@ import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:intl_phone_number_input/src/utils/phone_number/phone_number_util.dart';
 
 class UpdateMissionGroundSuggestionViewHandset extends StatefulWidget {
   const UpdateMissionGroundSuggestionViewHandset({
-    super.key,
     required this.missionGroundSuggestion,
+    super.key,
   });
 
   final PRFMissionGroundSuggestion missionGroundSuggestion;
@@ -33,7 +31,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
   final _contactNumberController = TextEditingController();
   final _notesController = TextEditingController();
 
-  PhoneNumber? _contactNumber;
+  PhoneNumber? contactNumber;
   PRFMissionGroundSuggestionStatus? _selectedStatus;
 
   bool _isLoading = false;
@@ -101,7 +99,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               textFieldController: _contactNumberController,
               countries: const ['KE'],
               onInputChanged: (phoneNumber) => setState(() {
-                _contactNumber = phoneNumber;
+                contactNumber = phoneNumber;
               }),
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(

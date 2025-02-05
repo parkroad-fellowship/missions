@@ -130,7 +130,8 @@ class _MissionGroundSuggestionsPageHandsetState
                         itemBuilder: (context, index) => GestureDetector(
                           onLongPress: () {
                             if (!Misc.userCan(
-                                'edit mission ground suggestion')) {
+                              'edit mission ground suggestion',
+                            )) {
                               return;
                             }
                             WoltModalSheet.show<void>(
