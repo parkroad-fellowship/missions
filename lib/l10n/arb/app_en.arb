@@ -543,5 +543,27 @@
     "suggestAMission": "Suggest a mission",
     "@suggestAMission": {},
     "noSuggestedMissionGrounds": "No suggested mission grounds",
-    "@noSuggestedMissionGrounds": {}
+    "@noSuggestedMissionGrounds": {},
+    "missionGroundRecorded": "Your suggested mission to {ground} has been recorded",
+    "@missionGroundRecorded": {
+        "placeholders": {
+            "ground": {
+                "type": "String"
+            }
+        }
+    },
+    "enterMissionGround": "Enter mission ground",
+    "@enterMissionGround": {},
+    "contactPerson": "Contact Person",
+    "@contactPerson": {},
+    "enterContactPerson": "Enter contact person's name",
+    "@enterContactPerson": {},
+    "contactNumber": "Contact's Phone Number",
+    "@contactNumber": {},
+    "enterContactNumber": "Enter contact person's number",
+    "@enterContactNumber": {},
+    "suggest": "Suggest",
+    "@suggest": {},
+    "suggesting": "Suggesting...",
+    "@suggesting": {}
 }

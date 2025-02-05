@@ -1,4 +1,5 @@
 import 'package:app/features/home/mission_ground_suggestions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
+import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -132,7 +133,14 @@ class _MissionGroundSuggestionsPageHandsetState
                                       ),
                                     ];
                                   },
-                                ),
+                                ).then((_) {
+                                  if (context.mounted) {
+                                    context
+                                        .read<
+                                            GetMissionGroundSuggestionsCubit>()
+                                        .getMissionGroundSuggestions();
+                                  }
+                                }),
                               ),
                             ),
                           ),
@@ -155,6 +163,28 @@ class _MissionGroundSuggestionsPageHandsetState
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => WoltModalSheet.show<void>(
+          context: context,
+          pageListBuilder: (modalSheetContext) {
+            return [
+              WoltModalSheetPage(
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.8,
+                  child: AddMissionGroundSuggestionView(),
+                ),
+              ),
+            ];
+          },
+        ).then((_) {
+          if (context.mounted) {
+            context
+                .read<GetMissionGroundSuggestionsCubit>()
+                .getMissionGroundSuggestions();
+          }
+        }),
       ),
     );
   }

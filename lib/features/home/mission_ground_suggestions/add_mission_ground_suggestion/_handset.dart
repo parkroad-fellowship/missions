@@ -1,9 +1,12 @@
+import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class AddMissionGroundSuggestionViewHandset extends StatefulWidget {
   const AddMissionGroundSuggestionViewHandset({
@@ -17,7 +20,10 @@ class AddMissionGroundSuggestionViewHandset extends StatefulWidget {
 
 class _AddMissionGroundSuggestionViewHandsetState
     extends State<AddMissionGroundSuggestionViewHandset> {
-  final _noteController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _contactPersonController = TextEditingController();
+  PhoneNumber? _contactNumber;
+
   bool _isLoading = false;
 
   @override
@@ -33,19 +39,66 @@ class _AddMissionGroundSuggestionViewHandsetState
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
-                label: l10n.note,
+                label: l10n.missionGround,
                 isRequired: true,
                 color: AppTheme.appTheme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
             InputFormField(
-              hintText: l10n.note,
-              controller: _noteController,
-              isTextBox: true,
+              hintText: l10n.missionGround,
+              controller: _nameController,
+            
             ),
-            const SizedBox(height: 16),
-            BlocConsumer<AddDebriefNoteCubit, AddDebriefNoteState>(
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.contactPerson,
+                isRequired: true,
+                color: AppTheme.appTheme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 6),
+            InputFormField(
+              hintText: l10n.contactPerson,
+              controller: _contactPersonController,
+            ),
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.contactNumber,
+                isRequired: true,
+                color: AppTheme.appTheme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 6),
+            InternationalPhoneNumberInput(
+              countries: const ['KE'],
+              onInputChanged: (phoneNumber) => setState(() {
+                _contactNumber = phoneNumber;
+              }),
+              inputDecoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppTheme.appTheme().kBlackColor.withAlpha(150),
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppTheme.appTheme().kBlackColor.withAlpha(150),
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                fillColor: AppTheme.appTheme().kBackgroundColor,
+                filled: false,
+              ),
+            ),
+            SizedBox(height: 32),
+            BlocConsumer<AddMissionGroundSuggestionCubit,
+                AddMissionGroundSuggestionState>(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {
@@ -53,14 +106,18 @@ class _AddMissionGroundSuggestionViewHandsetState
                       _isLoading = true;
                     });
                   },
-                  loaded: (_) {
+                  loaded: (result) {
                     setState(() {
                       _isLoading = false;
                     });
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(l10n.noteRecorded),
+                        content: Text(
+                          l10n.missionGroundRecorded(
+                            result.missionGroundSuggestion.name,
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -68,11 +125,47 @@ class _AddMissionGroundSuggestionViewHandsetState
               },
               builder: (context, state) {
                 return state.maybeWhen(
+                  
                   orElse: () => PrimaryButton(
                     title: _isLoading ? l10n.recording : l10n.record,
                     disabled: _isLoading,
                     isLoading: _isLoading ? true : null,
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (_nameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.enterMissionGround),
+                          ),
+                        );
+                        return;
+                      }
+
+                      if (_contactPersonController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.enterContactPerson),
+                          ),
+                        );
+                        return;
+                      }
+
+                      if (_contactNumber == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.enterContactNumber),
+                          ),
+                        );
+                        return;
+                      }
+
+                      await context
+                          .read<AddMissionGroundSuggestionCubit>()
+                          .suggestMissionGround(
+                            name: _nameController.text.trim(),
+                            contactPerson: _contactPersonController.text.trim(),
+                            contactNumber: _contactNumber!,
+                          );
+                    },
                   ),
                 );
               },
