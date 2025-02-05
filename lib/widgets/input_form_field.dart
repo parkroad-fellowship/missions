@@ -49,7 +49,6 @@ class _InputFormFieldState extends State<InputFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      textCapitalization: TextCapitalization.sentences,
       keyboardType: widget.keyboardType,
       enabled: widget.enabled,
       readOnly: widget.readOnly ?? false,
