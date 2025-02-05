@@ -32,10 +32,12 @@ class GetMissionGroundSuggestionsCubit
       final missionGroundSuggestions =
           await _missionGroundsService.getMissionGroundSuggestions(
         suggestorUlid: viewAnyMissionGrounds ? null : member.ulid,
-        statuses: [
-          PRFMissionGroundSuggestionStatus.pending,
-          PRFMissionGroundSuggestionStatus.initiatedContact,
-        ],
+        statuses: viewAnyMissionGrounds
+            ? [
+                PRFMissionGroundSuggestionStatus.pending,
+                PRFMissionGroundSuggestionStatus.initiatedContact,
+              ]
+            : [],
       );
 
       emit(
