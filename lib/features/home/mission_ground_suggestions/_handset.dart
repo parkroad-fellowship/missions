@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class MissionGroundSuggestionsPageHandset extends StatefulWidget {
@@ -202,7 +203,9 @@ class MissionGroundSuggestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     return Animate(
-      effects: const [SaturateEffect()],
+      effects: const [
+        SaturateEffect(),
+      ],
       child: Stack(
         children: [
           Container(
@@ -217,19 +220,74 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                   AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  missionGroundSuggestion.name,
-                  style: CustomTextTheme.customTextTheme().bodySmall,
+                Flexible(
+                  flex: 8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: missionGroundSuggestion.name,
+                          style: CustomTextTheme.customTextTheme()
+                              .displayLarge
+                              ?.copyWith(
+                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                fontWeight: FontWeight.w600,
+                              ),
+                          children: [
+                            TextSpan(
+                              text: ', ${missionGroundSuggestion.status.name}',
+                              style: CustomTextTheme.customTextTheme()
+                                  .displaySmall
+                                  ?.copyWith(
+                                    color: AppTheme.appTheme().kPrimaryColorV2,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        missionGroundSuggestion.contactPerson,
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 8.h),
-                Text(
-                  missionGroundSuggestion.contactPerson,
-                  style: CustomTextTheme.customTextTheme().bodySmall,
+                const Spacer(),
+                Container(
+                  alignment: Alignment.centerRight,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 32.w,
+                    vertical: 4.h,
+                  ),
+                  child: Visibility(
+                    visible: Misc.userCan('viewAny mission ground suggestion'),
+                    child: IconButton(
+                      icon: const Icon(Icons.call),
+                      color: AppTheme.appTheme().kPrimaryColorV2,
+                      onPressed: () async {
+                        final uri = Uri(
+                          scheme: 'tel',
+                          path: missionGroundSuggestion.contactNumber,
+                        );
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 ),
-                SizedBox(height: 8.h),
               ],
             ),
           ),
