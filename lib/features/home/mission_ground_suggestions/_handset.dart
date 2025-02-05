@@ -163,7 +163,11 @@ class _MissionGroundSuggestionsPageHandsetState
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         onPressed: () => WoltModalSheet.show<void>(
           context: context,
           pageListBuilder: (modalSheetContext) {
