@@ -25,6 +25,7 @@ class AddPaymentCubit extends Cubit<AddPaymentState> {
     required String paymentTypeUlid,
   }) async {
     try {
+      emit(const AddPaymentState.loading());
       final member = _hiveService.retrieveMember()!;
 
       final payment = await _paymentService.addPayment(

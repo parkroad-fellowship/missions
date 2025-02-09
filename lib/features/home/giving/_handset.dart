@@ -1,4 +1,3 @@
-import 'package:app/enums/prf_payment_status.dart';
 import 'package:app/features/home/giving/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -76,6 +75,11 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                             ?.copyWith(fontSize: 80.sp),
                       ),
                       const Spacer(),
+                      IconButton(
+                        onPressed: () =>
+                            context.read<GetPaymentsCubit>().getPayments(),
+                        icon: const Icon(Icons.refresh),
+                      ),
                     ],
                   ),
                 ),
@@ -239,7 +243,9 @@ class PaymentCard extends StatelessWidget {
                     vertical: 4.h,
                   ),
                   child: Visibility(
-                    visible: payment.paymentStatus == PRFPaymentStatus.pending,
+                    // visible: payment.paymentStatus
+                    // == PRFPaymentStatus.pending,
+                    visible: false,
                     child: IconButton(
                       icon: const Icon(Icons.refresh_outlined),
                       color: AppTheme.appTheme().kPrimaryColorV2,
