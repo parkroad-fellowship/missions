@@ -21,6 +21,7 @@ abstract class NotificationService {
   void schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   });
+  void scheduleGivingNotification();
   @pragma('vm:entry-point')
   static Future<void> onNotificationCreatedMethod(
     ReceivedNotification receivedNotification,
@@ -218,5 +219,28 @@ class NotificationServiceImpl implements NotificationService {
         ),
       );
     }
+  }
+
+  @override
+  void scheduleGivingNotification() {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        autoDismissible: false,
+        id: 111001,
+        channelKey: 'giving_prompts',
+        title: 'PRF: Support',
+        body: 'Consider supporting the fellowship with your giving',
+        payload: {
+          'type': 'giving_prompt',
+        },
+      ),
+      // Show this notification every Fridy at 1250 Hours
+      schedule: NotificationCalendar(
+        weekday: 5,
+        hour: 12,
+        minute: 50,
+        repeats: true,
+      ),
+    );
   }
 }
