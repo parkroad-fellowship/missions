@@ -9,6 +9,7 @@ import 'package:app/versioning/build_version.dart';
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
 import 'package:slugify/slugify.dart' as slugify;
+import 'package:url_launcher/url_launcher.dart';
 
 class Misc {
   static String formatDateTime(DateTime dateTime) {
@@ -78,5 +79,14 @@ class Misc {
 
     if (permissionFound == null) return false;
     return true;
+  }
+
+  static Future<void> openUrl(Uri uri) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    }
   }
 }

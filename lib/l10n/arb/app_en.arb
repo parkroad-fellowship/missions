@@ -569,5 +569,15 @@
     "status": "Status",
     "@status": {},
     "comments": "Notes",
-    "@comments": {}
+    "@comments": {},
+    "give": "Give",
+    "@give": {},
+    "considerGiving": "Consider giving",
+    "@considerGiving": {},
+    "amount": "Amount",
+    "@amount": {},
+    "reasonForGiving": "Reason for giving",
+    "@reasonForGiving": {},
+    "selectReasonForGiving": "Select reason for giving",
+    "@selectReasonForGiving": {}
 }

@@ -24,21 +24,13 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
     try {
       final localClassGroups = _hiveService.retrieveClassGroups();
       if (localClassGroups.isNotEmpty) {
-        emit(
-          GetClassGroupsState.loaded(
-            classGroups: localClassGroups,
-          ),
-        );
+        emit(GetClassGroupsState.loaded(classGroups: localClassGroups));
         return;
       }
 
       final classGroups = await _soulService.getClassGroups();
       _hiveService.persistClassGroups(PRFClassGroupResponse(classGroups));
-      emit(
-        GetClassGroupsState.loaded(
-          classGroups: classGroups,
-        ),
-      );
+      emit(GetClassGroupsState.loaded(classGroups: classGroups));
     } on Failure catch (e) {
       emit(GetClassGroupsState.error(e.message));
     } catch (e) {

@@ -21,6 +21,7 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
   static const String repliesRoute = '/replies';
   static const String missionGroundSuggestionsRoute =
       '/mission-ground-suggestions';
+  static const String givingRoute = '/giving';
 
   // Student Landing
   static const String studentLandingRoute = '/student-landing';
@@ -58,6 +59,10 @@ class PRFSuperAppRouter extends $PRFSuperAppRouter {
         AutoRoute(
           page: MissionGroundSuggestionsRoute.page,
           path: missionGroundSuggestionsRoute,
+        ),
+        AutoRoute(
+          page: GivingRoute.page,
+          path: givingRoute,
         ),
 
         // Student Landing

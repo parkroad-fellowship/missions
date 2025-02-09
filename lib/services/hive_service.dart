@@ -5,6 +5,7 @@ import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_member.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
+import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -49,6 +50,9 @@ abstract class HiveService {
   List<PRFExpense> retrieveExpenses(String missionUlid);
   void clearExpenses(String missionUlid);
   PRFMissionExpense retrieveMissionExpense(String missionUlid);
+
+  void persistPaymentTypes(PRFPaymentTypeResponse paymentTypes);
+  List<PRFPaymentType> retrievePaymentTypes();
 }
 
 class HiveServiceImpl implements HiveService {
@@ -61,7 +65,8 @@ class HiveServiceImpl implements HiveService {
       ..registerAdapter(PRFClassGroupResponseAdapter())
       ..registerAdapter(PRFSoulsAdapter())
       ..registerAdapter(PRFExpenseCategoryResponseAdapter())
-      ..registerAdapter(PRFMissionExpenseResponseAdapter());
+      ..registerAdapter(PRFMissionExpenseResponseAdapter())
+      ..registerAdapter(PRFPaymentTypeResponseAdapter());
 
     await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
     await Hive.openBox<dynamic>(
@@ -280,5 +285,19 @@ class HiveServiceImpl implements HiveService {
       missionExpense.copyWith(expenses: modified),
       missionUlid,
     );
+  }
+
+  @override
+  void persistPaymentTypes(PRFPaymentTypeResponse paymentTypes) {
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+        .put('paymentTypes', paymentTypes);
+  }
+
+  @override
+  List<PRFPaymentType> retrievePaymentTypes() {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    final paymentTypes = box.get('paymentTypes') as PRFPaymentTypeResponse?;
+    if (paymentTypes == null) return [];
+    return paymentTypes.data;
   }
 }

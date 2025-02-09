@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LessonDetailsHandset extends StatefulWidget {
   const LessonDetailsHandset({
@@ -149,12 +148,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                         ),
                         onTap: () async {
                           final uri = Uri.parse(lesson.videoUrl!);
-                          if (await canLaunchUrl(uri)) {
-                            await launchUrl(
-                              uri,
-                              mode: LaunchMode.externalApplication,
-                            );
-                          }
+                          await Misc.openUrl(uri);
                         },
                       ),
 
@@ -171,12 +165,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                         ),
                         onTap: () async {
                           final uri = Uri.parse(lesson.documentUrl!);
-                          if (await canLaunchUrl(uri)) {
-                            await launchUrl(
-                              uri,
-                              mode: LaunchMode.externalApplication,
-                            );
-                          }
+                          await Misc.openUrl(uri);
                         },
                       ),
 
@@ -193,12 +182,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                         ),
                         onTap: () async {
                           final uri = Uri.parse(lesson.audioUrl!);
-                          if (await canLaunchUrl(uri)) {
-                            await launchUrl(
-                              uri,
-                              mode: LaunchMode.externalApplication,
-                            );
-                          }
+                          await Misc.openUrl(uri);
                         },
                       ),
                     SizedBox(height: 32.h),

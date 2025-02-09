@@ -7,6 +7,7 @@ export 'media_service.dart';
 export 'mission_grounds_service.dart';
 export 'mission_service.dart';
 export 'notification_service.dart';
+export 'payment_service.dart';
 export 'socket_service.dart';
 export 'soul_service.dart';
 export 'student_service.dart';
