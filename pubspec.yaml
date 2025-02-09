@@ -16,10 +16,10 @@ dependencies:
   dart_pusher_channels: ^1.2.3
   dio: ^5.8.0+1
   extended_image: ^9.0.9
-  firebase_analytics: ^11.4.1
-  firebase_auth: ^5.4.1
-  firebase_core: ^3.10.1
-  firebase_crashlytics: ^4.3.1
+  firebase_analytics: ^11.4.2
+  firebase_auth: ^5.4.2
+  firebase_core: ^3.11.0
+  firebase_crashlytics: ^4.3.2
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
