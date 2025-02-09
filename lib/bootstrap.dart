@@ -41,8 +41,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<HiveService>().initBoxes();
 
-    getIt<NotificationService>().scheduleGivingNotification();
-
     final userUlid = getIt<HiveService>().retrieveProfile()?.ulid;
 
     if (userUlid != null) {
@@ -61,6 +59,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     }
 
     getIt<NotificationService>().init();
+    getIt<NotificationService>().scheduleGivingNotification();
 
     runApp(await builder());
   } catch (error, stackTrace) {

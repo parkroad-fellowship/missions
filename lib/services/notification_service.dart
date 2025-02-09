@@ -160,6 +160,11 @@ class NotificationServiceImpl implements NotificationService {
           channelName: 'Prayer Prompts',
           channelDescription: 'Notify members to pray',
         ),
+        NotificationChannel(
+          channelKey: 'giving_prompts',
+          channelName: 'Giving Prompts',
+          channelDescription: 'Notify members to give towards the fellowship',
+        ),
       ],
       // Channel groups are only visual and are not required
       channelGroups: [
