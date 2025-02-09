@@ -1,8 +1,7 @@
-import 'package:app/features/home/mission_ground_suggestions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
-import 'package:app/features/home/mission_ground_suggestions/update_mission_ground_suggestion/update_mission_ground_suggestion.dart';
+import 'package:app/features/home/giving/add_payment/add_payment.dart';
+import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
+import 'package:app/models/remote/prf_payment.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/primary_button.dart';
 import 'package:auto_route/auto_route.dart';
@@ -10,27 +9,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
-class MissionGroundSuggestionsPageHandset extends StatefulWidget {
-  const MissionGroundSuggestionsPageHandset({
+class GivingPageHandset extends StatefulWidget {
+  const GivingPageHandset({
     super.key,
   });
 
   @override
-  State<MissionGroundSuggestionsPageHandset> createState() =>
-      _MissionGroundSuggestionsPageHandsetState();
+  State<GivingPageHandset> createState() => _GivingPageHandsetState();
 }
 
-class _MissionGroundSuggestionsPageHandsetState
-    extends State<MissionGroundSuggestionsPageHandset> {
+class _GivingPageHandsetState extends State<GivingPageHandset> {
   @override
   void initState() {
     super.initState();
 
-    context
-        .read<GetMissionGroundSuggestionsCubit>()
-        .getMissionGroundSuggestions();
+    context.read<GetPaymentsCubit>().getPayments();
   }
 
   @override
@@ -73,12 +69,17 @@ class _MissionGroundSuggestionsPageHandsetState
                       ),
                       const Spacer(),
                       Text(
-                        l10n.suggestAMission,
+                        l10n.give,
                         style: CustomTextTheme.customTextTheme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
                       const Spacer(),
+                      IconButton(
+                        onPressed: () =>
+                            context.read<GetPaymentsCubit>().getPayments(),
+                        icon: const Icon(Icons.refresh),
+                      ),
                     ],
                   ),
                 ),
@@ -86,8 +87,7 @@ class _MissionGroundSuggestionsPageHandsetState
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
-                child: BlocBuilder<GetMissionGroundSuggestionsCubit,
-                    GetMissionGroundSuggestionsState>(
+                child: BlocBuilder<GetPaymentsCubit, GetPaymentsState>(
                   builder: (context, state) => state.maybeWhen(
                     orElse: () =>
                         const Center(child: LinearProgressIndicator()),
@@ -96,74 +96,36 @@ class _MissionGroundSuggestionsPageHandsetState
                   ),
                 ),
               ),
-              BlocBuilder<GetMissionGroundSuggestionsCubit,
-                  GetMissionGroundSuggestionsState>(
+              BlocBuilder<GetPaymentsCubit, GetPaymentsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse: () => const SliverToBoxAdapter(
                       child: Center(child: CircularProgressIndicator()),
                     ),
-                    error: (message) =>
-                        SliverToBoxAdapter(child: Center(child: Text(message))),
-                    loaded: (missionGroundSuggestions) {
-                      if (missionGroundSuggestions.isEmpty) {
-                        return SliverFillRemaining(
-                          child: RefreshIndicator(
-                            onRefresh: () => context
-                                .read<GetMissionGroundSuggestionsCubit>()
-                                .getMissionGroundSuggestions(),
-                            child: Center(
-                              child: PrimaryButton(
-                                title: l10n.suggestAMission,
-                                disabled: false,
-                                onPressed: _addMissionGroundSuggestion,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      return SliverList.separated(
-                        itemCount: missionGroundSuggestions.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 8.h),
-                        itemBuilder: (context, index) => GestureDetector(
-                          onLongPress: () {
-                            if (!Misc.userCan(
-                              'edit mission ground suggestion',
-                            )) {
-                              return;
-                            }
-                            WoltModalSheet.show<void>(
-                              context: context,
-                              pageListBuilder: (modalSheetContext) {
-                                return [
-                                  WoltModalSheetPage(
-                                    child: SizedBox(
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                              0.8,
-                                      child: UpdateMissionGroundSuggestionView(
-                                        missionGroundSuggestion:
-                                            missionGroundSuggestions[index],
-                                      ),
-                                    ),
-                                  ),
-                                ];
-                              },
-                            ).then((_) {
-                              // ignore: use_build_context_synchronously
-                              context
-                                  .read<GetMissionGroundSuggestionsCubit>()
-                                  .getMissionGroundSuggestions();
-                            });
-                          },
-                          child: MissionGroundSuggestionCard(
-                            missionGroundSuggestion:
-                                missionGroundSuggestions[index],
+                    error: (message) => SliverToBoxAdapter(
+                      child: Center(child: Text(message)),
+                    ),
+                    empty: () => SliverFillRemaining(
+                      child: RefreshIndicator(
+                        onRefresh: () =>
+                            context.read<GetPaymentsCubit>().getPayments(),
+                        child: Center(
+                          child: PrimaryButton(
+                            title: l10n.considerGiving,
+                            disabled: false,
+                            onPressed: _addPayment,
                           ),
                         ),
-                      );
-                    },
+                      ),
+                    ),
+                    loaded: (payments) => SliverList.separated(
+                      itemCount: payments.length,
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 8.h),
+                      itemBuilder: (context, index) => PaymentCard(
+                        payment: payments[index],
+                      ),
+                    ),
                   );
                 },
               ),
@@ -173,7 +135,7 @@ class _MissionGroundSuggestionsPageHandsetState
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
-        onPressed: _addMissionGroundSuggestion,
+        onPressed: _addPayment,
         child: const Icon(
           Icons.add,
           color: Colors.white,
@@ -182,33 +144,31 @@ class _MissionGroundSuggestionsPageHandsetState
     );
   }
 
-  void _addMissionGroundSuggestion() => WoltModalSheet.show<void>(
+  void _addPayment() => WoltModalSheet.show<void>(
         context: context,
         pageListBuilder: (modalSheetContext) {
           return [
             WoltModalSheetPage(
               child: SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.8,
-                child: const AddMissionGroundSuggestionView(),
+                child: const AddPaymentView(),
               ),
             ),
           ];
         },
       ).then((_) {
         // ignore: use_build_context_synchronously
-        context
-            .read<GetMissionGroundSuggestionsCubit>()
-            .getMissionGroundSuggestions();
+        context.read<GetPaymentsCubit>().getPayments();
       });
 }
 
-class MissionGroundSuggestionCard extends StatelessWidget {
-  const MissionGroundSuggestionCard({
-    required this.missionGroundSuggestion,
+class PaymentCard extends StatelessWidget {
+  const PaymentCard({
+    required this.payment,
     super.key,
   });
 
-  final PRFMissionGroundSuggestion missionGroundSuggestion;
+  final PRFPayment payment;
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +201,10 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                     children: [
                       Text.rich(
                         TextSpan(
-                          text: missionGroundSuggestion.name,
+                          text: NumberFormat.currency(
+                            locale: 'en_KE',
+                            symbol: 'KES ',
+                          ).format(payment.amount),
                           style: CustomTextTheme.customTextTheme()
                               .displayLarge
                               ?.copyWith(
@@ -250,7 +213,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                               ),
                           children: [
                             TextSpan(
-                              text: ', ${missionGroundSuggestion.status.name}',
+                              text: ', ${payment.paymentStatus.name}',
                               style: CustomTextTheme.customTextTheme()
                                   .displaySmall
                                   ?.copyWith(
@@ -262,7 +225,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        missionGroundSuggestion.contactPerson,
+                        Misc.formatDateTime(payment.createdAt),
                       ),
                       SizedBox(height: 16.h),
                     ],
@@ -280,16 +243,17 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                     vertical: 4.h,
                   ),
                   child: Visibility(
-                    visible: Misc.userCan('viewAny mission ground suggestion'),
+                    // visible: payment.paymentStatus
+                    // == PRFPaymentStatus.pending,
+                    visible: false,
                     child: IconButton(
-                      icon: const Icon(Icons.call),
+                      icon: const Icon(Icons.refresh_outlined),
                       color: AppTheme.appTheme().kPrimaryColorV2,
                       onPressed: () async {
-                        final uri = Uri(
-                          scheme: 'tel',
-                          path: missionGroundSuggestion.contactNumber,
-                        );
-                        await Misc.openUrl(uri);
+                        if (payment.redirectUrl != null) {
+                          final uri = Uri.parse(payment.redirectUrl!);
+                          await Misc.openUrl(uri);
+                        }
                       },
                     ),
                   ),

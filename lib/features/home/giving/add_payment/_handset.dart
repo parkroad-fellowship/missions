@@ -1,0 +1,182 @@
+import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
+import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
+import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prf_payment_type.dart';
+import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class AppPaymentHandset extends StatefulWidget {
+  const AppPaymentHandset({
+    super.key,
+  });
+
+  @override
+  State<AppPaymentHandset> createState() => _AppPaymentHandsetState();
+}
+
+class _AppPaymentHandsetState extends State<AppPaymentHandset> {
+  final _amountController = TextEditingController();
+  PRFPaymentType? selectedPaymentType;
+
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<GetPaymentTypesCubit>().getPaymentTypes();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.reasonForGiving,
+                isRequired: true,
+                color: AppTheme.appTheme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 6),
+            BlocBuilder<GetPaymentTypesCubit, GetPaymentTypesState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => const SizedBox.shrink(),
+                  loading: () => const Center(
+                    child: LinearProgressIndicator(),
+                  ),
+                  loaded: (classes) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<PRFPaymentType>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedPaymentType,
+                        hintText: l10n.reasonForGiving,
+                        dropdownMenuEntries: classes
+                            .map(
+                              (paymentType) =>
+                                  DropdownMenuEntry<PRFPaymentType>(
+                                value: paymentType,
+                                label: paymentType.name,
+                              ),
+                            )
+                            .toList(),
+                        onSelected: (paymentType) => setState(() {
+                          selectedPaymentType = paymentType;
+                        }),
+                        inputDecorationTheme: InputDecorationTheme(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 20,
+                          ),
+                          fillColor: AppTheme.appTheme().kBackgroundColor,
+                          hintStyle: CustomTextTheme.customTextTheme()
+                              .headlineSmall!
+                              .copyWith(
+                                color: AppTheme.appTheme().kDullGreyColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.amount,
+                isRequired: true,
+                color: AppTheme.appTheme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 6),
+            InputFormField(
+              hintText: l10n.enterAmount,
+              controller: _amountController,
+            ),
+            const SizedBox(height: 32),
+            BlocConsumer<AddPaymentCubit, AddPaymentState>(
+              listener: (context, state) {
+                state.mapOrNull(
+                  loading: (_) {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                  },
+                  loaded: (result) async {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Navigator.of(context).pop();
+                    if (result.payment.redirectUrl != null) {
+                      await Misc.openUrl(
+                        Uri.parse(result.payment.redirectUrl!),
+                      );
+                    }
+                  },
+                );
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => PrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (_amountController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.enterAmount),
+                          ),
+                        );
+                        return;
+                      }
+
+                      if (selectedPaymentType == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.selectReasonForGiving),
+                          ),
+                        );
+                        return;
+                      }
+
+                      await context.read<AddPaymentCubit>().addPayment(
+                            amount: _amountController.text.trim(),
+                            paymentTypeUlid: selectedPaymentType!.ulid,
+                          );
+                    },
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+}

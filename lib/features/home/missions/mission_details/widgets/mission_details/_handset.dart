@@ -4,7 +4,6 @@ import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
   const MissionDetailsViewHandset({
@@ -130,12 +129,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       scheme: 'tel',
                       path: contact.phone,
                     );
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(
-                        uri,
-                        mode: LaunchMode.externalApplication,
-                      );
-                    }
+                    await Misc.openUrl(uri);
                   },
                   icon: const Icon(Icons.phone),
                 ),

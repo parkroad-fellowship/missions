@@ -7,6 +7,9 @@ import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
+import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
+import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
+import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
@@ -70,7 +73,8 @@ class Singletons {
       )
       ..registerSingleton<StudentService>(StudentServiceImpl())
       ..registerSingleton<MediaService>(MediaServiceImpl())
-      ..registerSingleton<MissionGroundsService>(MissionGroundsServiceImpl());
+      ..registerSingleton<MissionGroundsService>(MissionGroundsServiceImpl())
+      ..registerSingleton<PaymentService>(PaymentServiceImpl());
   }
 
   static Future<void> setupDatabase() async {
@@ -342,6 +346,24 @@ class Singletons {
       BlocProvider<UpdateMissionGroundSuggestionCubit>(
         create: (context) => UpdateMissionGroundSuggestionCubit(
           missionGroundsService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetPaymentsCubit>(
+        create: (context) => GetPaymentsCubit(
+          paymentService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<GetPaymentTypesCubit>(
+        create: (context) => GetPaymentTypesCubit(
+          paymentService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<AddPaymentCubit>(
+        create: (context) => AddPaymentCubit(
+          paymentService: getIt(),
           hiveService: getIt(),
         ),
       ),

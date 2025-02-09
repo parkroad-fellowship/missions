@@ -59,6 +59,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     }
 
     getIt<NotificationService>().init();
+    getIt<NotificationService>().scheduleGivingNotification();
 
     runApp(await builder());
   } catch (error, stackTrace) {

@@ -11,7 +11,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AccountPageHandset extends StatelessWidget {
   const AccountPageHandset({super.key});
@@ -270,12 +269,7 @@ class AccountPageHandset extends StatelessWidget {
                                   host: 'parkroadfellowship.org',
                                   path: '/privacy-policy',
                                 );
-                                if (await canLaunchUrl(uri)) {
-                                  await launchUrl(
-                                    uri,
-                                    mode: LaunchMode.externalApplication,
-                                  );
-                                }
+                                await Misc.openUrl(uri);
                               },
                           ),
                           TextSpan(
@@ -304,12 +298,7 @@ class AccountPageHandset extends StatelessWidget {
                                   host: 'parkroadfellowship.org',
                                   path: 'privacy-policy',
                                 );
-                                if (await canLaunchUrl(uri)) {
-                                  await launchUrl(
-                                    uri,
-                                    mode: LaunchMode.externalApplication,
-                                  );
-                                }
+                                await Misc.openUrl(uri);
                               },
                           ),
                         ],
