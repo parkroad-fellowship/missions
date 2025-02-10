@@ -75,7 +75,7 @@ abstract class LocalDBService {
   });
 
   Future<void> persistMediaUploads({
-    required List<PRFMediaDTO> imageDTOs,
+    required List<PRFMediaDTO> mediaDTOs,
   });
   List<PRFMediaDTO> retrieveMediaUploads();
   void deleteMediaUpload({
@@ -518,15 +518,15 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<void> persistMediaUploads({
-    required List<PRFMediaDTO> imageDTOs,
+    required List<PRFMediaDTO> mediaDTOs,
   }) async {
     await prfDBInstance.writeTxn(() async {
-      for (final imageDTO in imageDTOs) {
+      for (final mediaDTO in mediaDTOs) {
         await prfDBInstance.pRFLocalMediaUploads.put(
           PRFLocalMediaUpload(
-            modelUlid: imageDTO.modelUlid,
-            model: imageDTO.model,
-            path: imageDTO.path,
+            modelUlid: mediaDTO.modelUlid,
+            model: mediaDTO.model,
+            path: mediaDTO.path,
           ),
         );
       }

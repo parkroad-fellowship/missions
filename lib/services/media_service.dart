@@ -10,11 +10,12 @@ abstract class MediaService {
   Future<PRFMedia> uploadFile({
     required PRFMediaDTO imageDTO,
   });
-  Future<List<PRFMediaDTO>> getAssetImages(
+  Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
     int count = 9,
+    required RequestType mediaType,
   });
 }
 
@@ -30,7 +31,7 @@ class MediaServiceImpl implements MediaService {
       case PRFMediaModel.missionPhotos:
       case PRFMediaModel.missionFitChecks:
         url.write('missions/${imageDTO.modelUlid}/media');
-        case PRFMediaModel.missionSessionAudios:
+      case PRFMediaModel.missionSessionAudios:
         url.write('mission-sessions/${imageDTO.modelUlid}/media');
     }
 
@@ -51,11 +52,12 @@ class MediaServiceImpl implements MediaService {
   }
 
   @override
-  Future<List<PRFMediaDTO>> getAssetImages(
+  Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
     int count = 9,
+    required RequestType mediaType,
   }) async {
     try {
       final assets = await AssetPicker.pickAssets(
@@ -63,7 +65,7 @@ class MediaServiceImpl implements MediaService {
         pickerConfig: AssetPickerConfig(
           themeColor: AppTheme.appTheme().kPrimaryColorV2,
           textDelegate: const EnglishAssetPickerTextDelegate(),
-          requestType: RequestType.image,
+          requestType: mediaType,
           maxAssets: count,
         ),
       );

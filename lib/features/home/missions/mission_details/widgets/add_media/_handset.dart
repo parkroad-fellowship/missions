@@ -10,6 +10,7 @@ import 'package:app/widgets/secondary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AddMediaViewHandset extends StatefulWidget {
   const AddMediaViewHandset({
@@ -47,6 +48,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                           context: context,
                           model: PRFMediaModel.missionPhotos,
                           modelUlid: widget.missionUlid,
+                          mediaType: RequestType.image,
                         ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -88,6 +90,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                                         model: PRFMediaModel.missionPhotos,
                                         modelUlid: widget.missionUlid,
                                         previousMedia: images,
+                                        mediaType: RequestType.image,
                                       );
                                 },
                                 child: Container(
@@ -124,6 +127,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                             context: context,
                             model: PRFMediaModel.missionPhotos,
                             modelUlid: widget.missionUlid,
+                            mediaType: RequestType.image,
                           ),
                     );
                   },

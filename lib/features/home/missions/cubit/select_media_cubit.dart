@@ -4,6 +4,7 @@ import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 part 'select_media_state.dart';
 part 'select_media_cubit.freezed.dart';
@@ -24,15 +25,17 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     required BuildContext context,
     required String modelUlid,
     required PRFMediaModel model,
+    required RequestType mediaType,
     List<PRFMediaDTO> previousMedia = const [],
   }) async {
-    final media = await _mediaService.getAssetImages(
+    final media = await _mediaService.getAssets(
       context,
       modelUlid: modelUlid,
       model: model,
+      mediaType: mediaType,
     );
 
-    await _localDBService.persistMediaUploads(imageDTOs: media);
+    await _localDBService.persistMediaUploads(mediaDTOs: media);
 
     emit(SelectMediaState.loaded(media: [...previousMedia, ...media]));
   }
