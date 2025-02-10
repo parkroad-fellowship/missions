@@ -9,7 +9,7 @@ enum PRFMediaModel {
         return 'mission-photos';
       case PRFMediaModel.missionFitChecks:
         return 'mission-fit-checks';
-        case PRFMediaModel.missionSessionAudios:
+      case PRFMediaModel.missionSessionAudios:
         return 'session-audios';
     }
   }

@@ -1,6 +1,6 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/models/remote/prf_media.dart';
+import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/utils/color_pallete.dart';
 import 'package:app/utils/network.dart';
 import 'package:flutter/widgets.dart';
@@ -14,8 +14,8 @@ abstract class MediaService {
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
-    int count = 9,
     required RequestType mediaType,
+    int count = 9,
   });
 }
 
@@ -56,8 +56,8 @@ class MediaServiceImpl implements MediaService {
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
-    int count = 9,
     required RequestType mediaType,
+    int count = 9,
   }) async {
     try {
       final assets = await AssetPicker.pickAssets(
