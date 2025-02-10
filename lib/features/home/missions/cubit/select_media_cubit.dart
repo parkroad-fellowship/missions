@@ -1,5 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/models/remote/prf_image_dto.dart';
+import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     required BuildContext context,
     required String modelUlid,
     required PRFMediaModel model,
-    List<PRFImageDTO> previousMedia = const [],
+    List<PRFMediaDTO> previousMedia = const [],
   }) async {
     final media = await _mediaService.getAssetImages(
       context,

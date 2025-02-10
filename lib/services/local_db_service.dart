@@ -10,7 +10,7 @@ import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
-import 'package:app/models/remote/prf_image_dto.dart';
+import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
@@ -75,9 +75,9 @@ abstract class LocalDBService {
   });
 
   Future<void> persistMediaUploads({
-    required List<PRFImageDTO> imageDTOs,
+    required List<PRFMediaDTO> imageDTOs,
   });
-  List<PRFImageDTO> retrieveMediaUploads();
+  List<PRFMediaDTO> retrieveMediaUploads();
   void deleteMediaUpload({
     required String modelUlid,
     required String path,
@@ -518,7 +518,7 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<void> persistMediaUploads({
-    required List<PRFImageDTO> imageDTOs,
+    required List<PRFMediaDTO> imageDTOs,
   }) async {
     await prfDBInstance.writeTxn(() async {
       for (final imageDTO in imageDTOs) {
@@ -534,15 +534,15 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  List<PRFImageDTO> retrieveMediaUploads() {
+  List<PRFMediaDTO> retrieveMediaUploads() {
     final responses = prfDBInstance.pRFLocalMediaUploads
         .filter()
         .idGreaterThan(0)
         .build()
         .findAllSync();
     return responses
-        .map<PRFImageDTO>(
-          (response) => PRFImageDTO(
+        .map<PRFMediaDTO>(
+          (response) => PRFMediaDTO(
             modelUlid: response.modelUlid,
             model: response.model,
             path: response.path,

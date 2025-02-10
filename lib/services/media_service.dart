@@ -1,5 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/models/remote/prf_image_dto.dart';
+import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/utils/color_pallete.dart';
 import 'package:app/utils/network.dart';
@@ -8,9 +8,9 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
   Future<PRFMedia> uploadFile({
-    required PRFImageDTO imageDTO,
+    required PRFMediaDTO imageDTO,
   });
-  Future<List<PRFImageDTO>> getAssetImages(
+  Future<List<PRFMediaDTO>> getAssetImages(
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
@@ -23,13 +23,15 @@ class MediaServiceImpl implements MediaService {
 
   @override
   Future<PRFMedia> uploadFile({
-    required PRFImageDTO imageDTO,
+    required PRFMediaDTO imageDTO,
   }) async {
     final url = StringBuffer('/');
     switch (imageDTO.model) {
       case PRFMediaModel.missionPhotos:
       case PRFMediaModel.missionFitChecks:
         url.write('missions/${imageDTO.modelUlid}/media');
+        case PRFMediaModel.missionSessionAudios:
+        url.write('mission-sessions/${imageDTO.modelUlid}/media');
     }
 
     try {
@@ -49,7 +51,7 @@ class MediaServiceImpl implements MediaService {
   }
 
   @override
-  Future<List<PRFImageDTO>> getAssetImages(
+  Future<List<PRFMediaDTO>> getAssetImages(
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
@@ -66,13 +68,13 @@ class MediaServiceImpl implements MediaService {
         ),
       );
 
-      final uploadAssets = <PRFImageDTO>[];
+      final uploadAssets = <PRFMediaDTO>[];
 
       if (assets != null) {
         for (final asset in assets) {
           final filePath = (await asset.file)!.path;
           uploadAssets.add(
-            PRFImageDTO(
+            PRFMediaDTO(
               path: filePath,
               model: model,
               modelUlid: modelUlid,

@@ -1,0 +1,17 @@
+import 'package:app/enums/prf_media_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'prf_media_dto.freezed.dart';
+part 'prf_media_dto.g.dart';
+
+@freezed
+class PRFMediaDTO with _$PRFMediaDTO {
+  const factory PRFMediaDTO({
+    required PRFMediaModel model,
+    required String modelUlid,
+    required String path,
+  }) = _PRFMediaDTO;
+
+  factory PRFMediaDTO.fromJson(Map<String, dynamic> json) =>
+      _$PRFMediaDTOFromJson(json);
+}
