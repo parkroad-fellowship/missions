@@ -221,6 +221,7 @@ class _StudentEnquiryRepliesPageHandsetState
                             hintText: l10n.reply,
                             controller: _enquiryReplyController,
                             isTextBox: true,
+                            maxLines: 5,
                           ),
                           const SizedBox(height: 16),
                           BlocConsumer<CreateEnquiryReplyCubit,

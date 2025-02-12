@@ -1,21 +1,38 @@
+import 'dart:io';
+
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/models/remote/prf_image_dto.dart';
+import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_media.dart';
-import 'package:app/utils/color_pallete.dart';
-import 'package:app/utils/network.dart';
+import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/utils/_index.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
   Future<PRFMedia> uploadFile({
-    required PRFImageDTO imageDTO,
+    required PRFMediaDTO imageDTO,
   });
-  Future<List<PRFImageDTO>> getAssetImages(
+  Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
+    required RequestType mediaType,
     int count = 9,
   });
+  Future<List<PRFMediaDTO>> getAudioFiles({
+    required String modelUlid,
+    required PRFMediaModel model,
+  });
+
+  Future<void> initDownloader();
+  Future<void> downloadFile(String downloadURL);
 }
 
 class MediaServiceImpl implements MediaService {
@@ -23,13 +40,16 @@ class MediaServiceImpl implements MediaService {
 
   @override
   Future<PRFMedia> uploadFile({
-    required PRFImageDTO imageDTO,
+    required PRFMediaDTO imageDTO,
   }) async {
     final url = StringBuffer('/');
+    Logger().d(imageDTO);
     switch (imageDTO.model) {
       case PRFMediaModel.missionPhotos:
       case PRFMediaModel.missionFitChecks:
         url.write('missions/${imageDTO.modelUlid}/media');
+      case PRFMediaModel.missionSessionAudios:
+        url.write('mission-sessions/${imageDTO.modelUlid}/media');
     }
 
     try {
@@ -49,10 +69,11 @@ class MediaServiceImpl implements MediaService {
   }
 
   @override
-  Future<List<PRFImageDTO>> getAssetImages(
+  Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
+    required RequestType mediaType,
     int count = 9,
   }) async {
     try {
@@ -61,21 +82,22 @@ class MediaServiceImpl implements MediaService {
         pickerConfig: AssetPickerConfig(
           themeColor: AppTheme.appTheme().kPrimaryColorV2,
           textDelegate: const EnglishAssetPickerTextDelegate(),
-          requestType: RequestType.image,
+          requestType: mediaType,
           maxAssets: count,
         ),
       );
 
-      final uploadAssets = <PRFImageDTO>[];
+      final uploadAssets = <PRFMediaDTO>[];
 
       if (assets != null) {
         for (final asset in assets) {
           final filePath = (await asset.file)!.path;
           uploadAssets.add(
-            PRFImageDTO(
+            PRFMediaDTO(
               path: filePath,
               model: model,
               modelUlid: modelUlid,
+              name: Misc.getFileName(filePath),
             ),
           );
         }
@@ -83,6 +105,103 @@ class MediaServiceImpl implements MediaService {
 
       return uploadAssets;
     } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<PRFMediaDTO>> getAudioFiles({
+    required String modelUlid,
+    required PRFMediaModel model,
+  }) async {
+    try {
+      final result = await FilePicker.platform
+          .pickFiles(
+        allowMultiple: true,
+        type: FileType.audio,
+      )
+          .catchError((dynamic error) {
+        if (error is PlatformException && error.code == 'multiple_request') {
+          throw Failure(message: 'Another file selection is in progress');
+        }
+        throw Failure(message: error.toString());
+      });
+
+      if (result != null) {
+        final filePaths = result.paths;
+        final uploadAssets = <PRFMediaDTO>[];
+        final appDir = await path_provider.getApplicationDocumentsDirectory();
+
+        try {
+          for (final filePath in filePaths) {
+            if (filePath != null) {
+              final file = File(filePath);
+              final fileName = Misc.getFileName(filePath);
+              final mediaUploadsDir = '${appDir.path}/media_uploads';
+              await Directory(mediaUploadsDir).create(recursive: true);
+              final newPath = '$mediaUploadsDir/$fileName';
+
+              await file.copy(newPath);
+
+              uploadAssets.add(
+                PRFMediaDTO(
+                  path: newPath,
+                  model: model,
+                  modelUlid: modelUlid,
+                  name: fileName,
+                ),
+              );
+            }
+          }
+          return uploadAssets;
+        } catch (e) {
+          rethrow;
+        }
+      }
+
+      return [];
+    } catch (e) {
+      rethrow;
+    } finally {
+      await FilePicker.platform.clearTemporaryFiles();
+    }
+  }
+
+  @override
+  Future<void> initDownloader() async {
+    await FlutterDownloader.initialize(
+      debug: kDebugMode,
+    );
+    await FlutterDownloader.registerCallback(callback);
+  }
+
+  static void callback(String id, int status, int progress) {
+    Logger().d('$id: $status ($progress)');
+  }
+
+  @override
+  Future<void> downloadFile(String downloadURL) async {
+    try {
+      await Permission.storage.request();
+      late String appDocDir;
+      if (Platform.isAndroid) {
+        appDocDir = (await path_provider.getExternalStorageDirectory())!.path;
+      } else {
+        appDocDir = (await path_provider.getApplicationDocumentsDirectory())
+            .absolute
+            .path;
+      }
+
+      await FlutterDownloader.enqueue(
+        url: downloadURL,
+        fileName: Misc.getFileName(downloadURL),
+        savedDir: appDocDir,
+        saveInPublicStorage: true,
+      );
+    } on SocketException {
+      throw Failure(message: 'Check network connection!');
+    } catch (e) {
+      Logger().e(e.toString());
       rethrow;
     }
   }

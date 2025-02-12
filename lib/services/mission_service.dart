@@ -68,6 +68,9 @@ abstract class MissionService {
     required PRFMissionSessionDTO sessionDTO,
   });
   Future<void> deleteSession({required String missionSessionUlid});
+  Future<PRFMissionSession> getMissionSession({
+    required String missionSessionUlid,
+  });
 }
 
 class MissionServiceImpl implements MissionService {
@@ -318,7 +321,8 @@ class MissionServiceImpl implements MissionService {
         '/mission-sessions',
         queryParameters: {
           'filter[mission_ulid]': missionUlid,
-          'include': 'facilitator,speaker,classGroup',
+          'include':
+              'facilitator,speaker,classGroup,missionSessionTranscripts.media',
         },
       );
 
@@ -365,6 +369,25 @@ class MissionServiceImpl implements MissionService {
   Future<void> deleteSession({required String missionSessionUlid}) async {
     try {
       await _networkUtil.deleteReq('/mission-sessions/$missionSessionUlid');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PRFMissionSession> getMissionSession({
+    required String missionSessionUlid,
+  }) async {
+    try {
+      final res = await _networkUtil.getReq(
+        '/mission-sessions/$missionSessionUlid',
+        queryParameters: {
+          'include':
+              'facilitator,speaker,classGroup,missionSessionTranscripts.media',
+        },
+      );
+
+      return PRFMissionSession.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }

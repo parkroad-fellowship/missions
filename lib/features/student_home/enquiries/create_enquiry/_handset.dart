@@ -62,6 +62,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               hintText: l10n.enquiry,
               controller: _enquiryController,
               isTextBox: true,
+              maxLines: 5,
             ),
             const SizedBox(height: 16),
             BlocConsumer<CreateEnquiryCubit, CreateEnquiryState>(

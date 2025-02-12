@@ -14,8 +14,8 @@ import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
 import 'package:app/models/remote/prf_faq.dart';
 import 'package:app/models/remote/prf_faq_category.dart';
-import 'package:app/models/remote/prf_image_dto.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
+import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
@@ -79,9 +79,9 @@ abstract class LocalDBService {
   });
 
   Future<void> persistMediaUploads({
-    required List<PRFImageDTO> imageDTOs,
+    required List<PRFMediaDTO> mediaDTOs,
   });
-  List<PRFImageDTO> retrieveMediaUploads();
+  List<PRFMediaDTO> retrieveMediaUploads();
   void deleteMediaUpload({
     required String modelUlid,
     required String path,
@@ -537,15 +537,15 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<void> persistMediaUploads({
-    required List<PRFImageDTO> imageDTOs,
+    required List<PRFMediaDTO> mediaDTOs,
   }) async {
     await prfDBInstance.writeTxn(() async {
-      for (final imageDTO in imageDTOs) {
+      for (final mediaDTO in mediaDTOs) {
         await prfDBInstance.pRFLocalMediaUploads.put(
           PRFLocalMediaUpload(
-            modelUlid: imageDTO.modelUlid,
-            model: imageDTO.model,
-            path: imageDTO.path,
+            modelUlid: mediaDTO.modelUlid,
+            model: mediaDTO.model,
+            path: mediaDTO.path,
           ),
         );
       }
@@ -553,18 +553,19 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  List<PRFImageDTO> retrieveMediaUploads() {
+  List<PRFMediaDTO> retrieveMediaUploads() {
     final responses = prfDBInstance.pRFLocalMediaUploads
         .filter()
         .idGreaterThan(0)
         .build()
         .findAllSync();
     return responses
-        .map<PRFImageDTO>(
-          (response) => PRFImageDTO(
+        .map<PRFMediaDTO>(
+          (response) => PRFMediaDTO(
             modelUlid: response.modelUlid,
             model: response.model,
             path: response.path,
+            name: Misc.getFileName(response.path),
           ),
         )
         .toList();

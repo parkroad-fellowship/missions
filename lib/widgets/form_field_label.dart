@@ -8,11 +8,13 @@ class FormFieldLabel extends StatelessWidget {
     this.isOptional,
     this.isRequired,
     this.color,
+    this.isBold,
   });
   final String label;
   final bool? isOptional;
   final bool? isRequired;
   final Color? color;
+  final bool? isBold;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class FormFieldLabel extends StatelessWidget {
             style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
                   fontSize: 15,
                   color: color,
+                  fontWeight: isBold ?? false ? FontWeight.bold : null,
                 ),
             children: [
               if (isRequired ?? false)

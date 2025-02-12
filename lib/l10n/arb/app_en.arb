@@ -504,7 +504,7 @@
     "@sessions": {},
     "info": "Tap any session to edit \nLong press to delete",
     "@info": {},
-    "time": "Start - End",
+    "time": "Start Time - End Time",
     "@time": {},
     "facilitator": "Facilitator",
     "@facilitator": {},
@@ -583,5 +583,38 @@
     "categories": "Categories",
     "@categories": {},
     "whatWouldYouLikeToKnow": "What would you like to know?",
-    "@whatWouldYouLikeToKnow": {}
+    "@whatWouldYouLikeToKnow": {},
+    "sessionDetails": "Session Details",
+    "@sessionDetails": {},
+    "edit": "Edit",
+    "@edit": {},
+    "recordings": "Recordings",
+    "@recordings": {},
+    "noRecordings": "No recordings",
+    "@noRecordings": {},
+    "uploadRecording": "Upload recording",
+    "@uploadRecording": {},
+    "addMore": "Add more",
+    "@addMore": {},
+    "recordingItem": "Recording {index}",
+    "@recordingItem": {
+        "placeholders": {
+            "index": {
+                "type": "int"
+                
+            }
+        }
+    },
+    "transcript": "Transcript", 
+    "@transcript": {},
+    "viewTranscript": "View transcript",
+    "@viewTranscript": {},
+    "transcriptProcessing": "Transcript processing. Please wait.",
+    "@transcriptProcessing": {},
+    "inTesting": "In testing",
+    "@inTesting": {},
+    "downloadTeaching": "Download teaching",
+    "@downloadTeaching": {},
+    "downloaded": "Your download has started. Check your download folder once it's complete.",
+    "@downloaded": {}
 }

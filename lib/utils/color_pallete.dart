@@ -20,7 +20,7 @@ class AppTheme {
         kYellowColor = const Color.fromARGB(255, 255, 191, 0),
         kRedColor = const Color(0xffF03738),
         kAccent5GreyColor = const Color(0xff727272),
-        kErrorColor = const Color(0xFFF03738);
+        kErrorColor = const Color.fromARGB(255, 107, 17, 17);
 
   // v2
   late Color kPrimaryColorV2;
