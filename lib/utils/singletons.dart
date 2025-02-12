@@ -46,6 +46,7 @@ import 'package:app/features/student_home/enquiries/cubit/create_enquiry_cubit.d
 import 'package:app/features/student_home/enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/student_home/enquiries/cubit/get_student_enquiries_cubit.dart';
 import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
 import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/router.dart';
@@ -190,6 +191,13 @@ class Singletons {
       BlocProvider<GetFaqsCubit>(
         create: (context) => GetFaqsCubit(
           studentService: getIt(),
+          localDBService: getIt(),
+        ),
+      ),
+      BlocProvider<GetFaqCategoriesCubit>(
+        create: (context) => GetFaqCategoriesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
         ),
       ),
       BlocProvider<GetStudentEnquiriesCubit>(

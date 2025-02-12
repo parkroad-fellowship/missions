@@ -20,10 +20,10 @@ class SignInHandset extends StatefulWidget {
 
 class _SignInHandsetState extends State<SignInHandset> {
   final _emailController = TextEditingController(
-    text: kDebugMode? 'approvals@parkroadfellowship.org': '',
+    text: kDebugMode ? 'approvals@parkroadfellowship.org' : '',
   );
   final _passwordController = TextEditingController(
-    text: kDebugMode? 'password': '',
+    text: kDebugMode ? 'password' : '',
   );
   final _hidePasswordNotifier = ValueNotifier<bool>(true);
 

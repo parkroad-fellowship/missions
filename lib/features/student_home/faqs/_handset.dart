@@ -1,6 +1,6 @@
 import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_faq.dart';
+import 'package:app/models/local/prf_faq.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -169,7 +169,7 @@ class FaqCard extends StatelessWidget {
     super.key,
   });
 
-  final PRFFaq faq;
+  final PRFLocalFaq faq;
 
   @override
   Widget build(BuildContext context) {

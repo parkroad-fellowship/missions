@@ -4,6 +4,7 @@ import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
+import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -30,6 +31,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
     context.read<GetAnnouncementsCubit>().getAnnouncements();
     context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
     context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();
+    context.read<GetFaqCategoriesCubit>().getFaqCategories();
     super.initState();
   }
 
