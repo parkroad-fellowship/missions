@@ -581,5 +581,7 @@
     "selectReasonForGiving": "Select reason for giving",
     "@selectReasonForGiving": {},
     "categories": "Categories",
-    "@categories": {}
+    "@categories": {},
+    "whatWouldYouLikeToKnow": "What would you like to know?",
+    "@whatWouldYouLikeToKnow": {}
 }
