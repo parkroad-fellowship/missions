@@ -23,7 +23,7 @@ class InputFormField extends StatefulWidget {
     this.onChanged,
     this.maxLength,
     this.inputFormatters = const [],
-    this.maxLines,
+    this.maxLines = 1,
   });
   final String hintText;
   final TextEditingController controller;
