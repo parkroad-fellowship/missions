@@ -58,6 +58,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       }
     }
 
+    await getIt<MediaService>().initDownloader();
+
     getIt<NotificationService>().init();
     getIt<NotificationService>().scheduleGivingNotification();
 

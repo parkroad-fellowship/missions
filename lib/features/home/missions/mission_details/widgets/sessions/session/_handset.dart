@@ -3,6 +3,7 @@ import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
 import 'package:app/l10n/l10n.dart';
@@ -224,12 +225,29 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                       expandedCrossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ListTile(
-                          title: Text('Press Play'),
+                          title: Text(
+                            l10n.downloadTeaching,
+                            style: CustomTextTheme.customTextTheme().bodySmall,
+                          ),
                           trailing: IconButton(
-                            icon: const Icon(Icons.play_arrow),
-                            onPressed: () {
-                              // TODO: Implement play recording
-                            },
+                            icon: BlocConsumer<DownloadFileCubit, DownloadFileState>(
+                              listener: (context, state) {
+                                state.mapOrNull(loaded: (_) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(l10n.downloaded),
+                                    ),
+                                  );
+                                });
+                              },
+                              builder: (context, state) => state.maybeWhen(
+                                orElse: () => Icon(Icons.download),
+                                loading: () => (PRFCircularProgressIndicator())
+                              ),
+                            ),
+                            onPressed: () => context
+                                .read<DownloadFileCubit>()
+                                .downloadFile(transcript.media!.temporaryURL),
                           ),
                         ),
                         if (transcript.content.isNotEmpty)

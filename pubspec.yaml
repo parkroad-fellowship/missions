@@ -27,6 +27,7 @@ dependencies:
   flutter_animate: ^4.5.2
   flutter_bloc: ^9.0.0
   flutter_datetime_picker_plus: ^2.2.0
+  flutter_downloader: ^1.12.0
   flutter_localizations:
     sdk: flutter
   flutter_screenutil: ^5.9.3
@@ -52,6 +53,7 @@ dependencies:
   logger: ^2.5.0
   map_launcher: ^3.5.0
   path_provider: ^2.1.5
+  permission_handler: ^11.3.1
   pretty_dio_logger: ^1.4.0
   slugify: ^2.0.0
   upgrader: ^11.3.1

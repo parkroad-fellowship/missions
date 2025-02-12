@@ -610,5 +610,9 @@
     "viewTranscript": "View transcript",
     "@viewTranscript": {},
     "inTesting": "In testing",
-    "@inTesting": {}
+    "@inTesting": {},
+    "downloadTeaching": "Download teaching",
+    "@downloadTeaching": {},
+    "downloaded": "Your download has started. Check your download folder once it's complete.",
+    "@downloaded": {}
 }
