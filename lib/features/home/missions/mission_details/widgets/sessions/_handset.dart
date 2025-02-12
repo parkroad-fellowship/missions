@@ -68,7 +68,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                   Row(
                     children: [
                       Text(
-                        DateFormat.EEEE()
+                        DateFormat.MMMMEEEEd()
                             .format(missionSessions.keys.elementAt(index)),
                         style: CustomTextTheme.customTextTheme()
                             .headlineSmall!
@@ -80,6 +80,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 8),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
