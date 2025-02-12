@@ -609,6 +609,8 @@
     "@transcript": {},
     "viewTranscript": "View transcript",
     "@viewTranscript": {},
+    "transcriptProcessing": "Transcript processing. Please wait.",
+    "@transcriptProcessing": {},
     "inTesting": "In testing",
     "@inTesting": {},
     "downloadTeaching": "Download teaching",

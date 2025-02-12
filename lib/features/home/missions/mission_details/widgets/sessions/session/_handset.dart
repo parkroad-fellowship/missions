@@ -253,6 +253,21 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                                 .downloadFile(transcript.media!.temporaryURL),
                           ),
                         ),
+                        if (transcript.content.isEmpty)
+                          Badge(
+                            label: Text(l10n.inTesting),
+                            backgroundColor:
+                                AppTheme.appTheme().kPrimaryColorV2,
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Chip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                l10n.transcriptProcessing,
+                                style:
+                                    CustomTextTheme.customTextTheme().bodySmall,
+                              ),
+                            ),
+                          ),
                         if (transcript.content.isNotEmpty)
                           Badge(
                             label: Text(l10n.inTesting),
