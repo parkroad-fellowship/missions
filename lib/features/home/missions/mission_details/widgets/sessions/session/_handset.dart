@@ -152,7 +152,11 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                   missionUlid: widget.missionUlid,
                 ),
               if (_missionSession != null)
-                const SliverToBoxAdapter(child: SizedBox(height: 32)),
+                const SliverToBoxAdapter(child: SizedBox(height: 16)),
+              if (_missionSession != null)
+                const SliverToBoxAdapter(child: Divider(thickness: 2)),
+              if (_missionSession != null)
+                const SliverToBoxAdapter(child: SizedBox(height: 16)),
               if (_missionSession != null)
                 SliverToBoxAdapter(
                   child: Padding(
@@ -212,15 +216,65 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 SliverList.builder(
                   itemCount: _missionSession!.transcripts.length,
                   itemBuilder: (context, index) {
-                    final recording = _missionSession!.transcripts[index];
-                    return ListTile(
-                      title: const Text('title'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.play_arrow),
-                        onPressed: () {
-                          // TODO: Implement play recording
-                        },
-                      ),
+                    final transcript = _missionSession!.transcripts[index];
+                    return ExpansionTile(
+                      initiallyExpanded: true,
+                      title: Text(l10n.recordingItem(++index)),
+                      expandedAlignment: Alignment.centerLeft,
+                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          title: Text('Press Play'),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.play_arrow),
+                            onPressed: () {
+                              // TODO: Implement play recording
+                            },
+                          ),
+                        ),
+                        if (transcript.content.isNotEmpty)
+                          Badge(
+                            label: Text(l10n.inTesting),
+                            backgroundColor:
+                                AppTheme.appTheme().kPrimaryColorV2,
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: GestureDetector(
+                              onTap: () => WoltModalSheet.show<void>(
+                                context: context,
+                                pageListBuilder: (modalSheetContext) {
+                                  return [
+                                    WoltModalSheetPage(
+                                      child: SizedBox(
+                                        height:
+                                            MediaQuery.sizeOf(context).height *
+                                                0.8,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: Text(
+                                            transcript.content,
+                                            style: CustomTextTheme
+                                                    .customTextTheme()
+                                                .bodySmall,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              ),
+                              child: Chip(
+                                backgroundColor: Colors.white,
+                                label: Text(
+                                  l10n.viewTranscript,
+                                  style: CustomTextTheme.customTextTheme()
+                                      .bodySmall,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
                     );
                   },
                 ),

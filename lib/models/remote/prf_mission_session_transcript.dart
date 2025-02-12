@@ -8,8 +8,8 @@ part 'prf_mission_session_transcript.g.dart';
 class PRFMissionSessionTranscript with _$PRFMissionSessionTranscript {
   factory PRFMissionSessionTranscript(
     String ulid, {
-    @Default('') @JsonKey(name: 'transcription_content') transcript,
-    @Default([]) List<PRFMedia> media,
+    @Default('') @JsonKey(name: 'transcription_content') String content,
+    PRFMedia? media,
   }) = _PRFMissionSessionTranscript;
 
   factory PRFMissionSessionTranscript.fromJson(Map<String, dynamic> json) =>

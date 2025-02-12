@@ -91,7 +91,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                                 ),
                             title: l10n.addMore,
                             disabled: false,
-                          )
+                          ),
                         ],
                       );
                     }

@@ -595,5 +595,20 @@
     "uploadRecording": "Upload recording",
     "@uploadRecording": {},
     "addMore": "Add more",
-    "@addMore": {}
+    "@addMore": {},
+    "recordingItem": "Recording {index}",
+    "@recordingItem": {
+        "placeholders": {
+            "index": {
+                "type": "int"
+                
+            }
+        }
+    },
+    "transcript": "Transcript", 
+    "@transcript": {},
+    "viewTranscript": "View transcript",
+    "@viewTranscript": {},
+    "inTesting": "In testing",
+    "@inTesting": {}
 }
