@@ -40,6 +40,22 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     emit(SelectMediaState.loaded(media: [...previousMedia, ...media]));
   }
 
+  Future<void> selectAudioFiles({
+    required String modelUlid,
+    required PRFMediaModel model,
+    List<PRFMediaDTO> previousMedia = const [],
+  }) async {
+    try {
+      final media = await _mediaService.getAudioFiles(
+        modelUlid: modelUlid,
+        model: model,
+      );
+      emit(SelectMediaState.loaded(media: [...previousMedia, ...media]));
+    } catch (e) {
+      // emit(SelectMediaState.error(e.toString()));
+    }
+  }
+
   void clearMedia() {
     emit(const SelectMediaState.loaded(media: []));
   }

@@ -1,5 +1,7 @@
 import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
 import 'package:app/l10n/l10n.dart';
@@ -41,6 +43,11 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
+    ScreenUtil.init(
+      context,
+      designSize: const Size(1290, 2796),
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -50,7 +57,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
               // Start Navigation Bar
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -126,12 +133,27 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                           isBold: true,
                         ),
                         SizedBox(
-                          width: 150,
+                          width: 500.w,
                           child: PrimaryButton(
                             title: l10n.uploadRecording,
-                            onPressed: () {
-                              // TODO: Implement recording upload
-                            },
+                            onPressed: () => WoltModalSheet.show<void>(
+                              context: context,
+                              pageListBuilder: (modalSheetContext) {
+                                return [
+                                  WoltModalSheetPage(
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.sizeOf(context).height *
+                                              0.8,
+                                      child: AddAudioView(
+                                        missionSessionUlid:
+                                            _missionSession!.ulid,
+                                      ),
+                                    ),
+                                  ),
+                                ];
+                              },
+                            ),
                             disabled: false,
                           ),
                         ),

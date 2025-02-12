@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/utils/color_pallete.dart';
 import 'package:app/utils/network.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
@@ -16,6 +22,10 @@ abstract class MediaService {
     required PRFMediaModel model,
     required RequestType mediaType,
     int count = 9,
+  });
+  Future<List<PRFMediaDTO>> getAudioFiles({
+    required String modelUlid,
+    required PRFMediaModel model,
   });
 }
 
@@ -88,6 +98,54 @@ class MediaServiceImpl implements MediaService {
       return uploadAssets;
     } catch (_) {
       rethrow;
+    }
+  }
+
+  @override
+  Future<List<PRFMediaDTO>> getAudioFiles({
+    required String modelUlid,
+    required PRFMediaModel model,
+  }) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.audio,
+        onFileLoading: (FilePickerStatus status) {
+          if (status == FilePickerStatus.done) {
+            FilePicker.platform.clearTemporaryFiles();
+          }
+        },
+      ).catchError((error) {
+        if (error is PlatformException && error.code == 'multiple_request') {
+          throw Failure(message: 'Another file selection is in progress');
+        }
+        throw Failure(message: error.toString());
+      });
+
+      if (result != null) {
+        final filePaths = result.paths;
+        final uploadAssets = <PRFMediaDTO>[];
+
+        for (final filePath in filePaths) {
+          if (filePath != null) {
+            uploadAssets.add(
+              PRFMediaDTO(
+                path: filePath,
+                model: model,
+                modelUlid: modelUlid,
+              ),
+            );
+          }
+        }
+
+        return uploadAssets;
+      }
+      
+      return [];
+    } catch (e) {
+      rethrow;
+    } finally {
+      await FilePicker.platform.clearTemporaryFiles();
     }
   }
 }

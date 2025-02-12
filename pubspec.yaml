@@ -16,6 +16,7 @@ dependencies:
   dart_pusher_channels: ^1.2.3
   dio: ^5.8.0+1
   extended_image: ^9.0.9
+  file_picker: ^8.3.5
   firebase_analytics: ^11.4.2
   firebase_auth: ^5.4.2
   firebase_core: ^3.11.0

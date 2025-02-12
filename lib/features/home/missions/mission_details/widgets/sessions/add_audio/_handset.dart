@@ -44,12 +44,11 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
               BlocBuilder<SelectMediaCubit, SelectMediaState>(
                 builder: (context, state) => state.when(
                   initial: () => GestureDetector(
-                    onTap: () => context.read<SelectMediaCubit>().selectMedia(
-                          context: context,
-                          model: PRFMediaModel.missionPhotos,
-                          modelUlid: widget.missionSessionUlid,
-                          mediaType: RequestType.audio,
-                        ),
+                    onTap: () =>
+                        context.read<SelectMediaCubit>().selectAudioFiles(
+                              model: PRFMediaModel.missionSessionAudios,
+                              modelUlid: widget.missionSessionUlid,
+                            ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -85,11 +84,12 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                               return GestureDetector(
                                 onTap: () {
                                   // Open the image picker
-                                  context.read<SelectMediaCubit>().selectMedia(
-                                        context: context,
-                                        model: PRFMediaModel.missionPhotos,
+                                  context
+                                      .read<SelectMediaCubit>()
+                                      .selectAudioFiles(
+                                        model:
+                                            PRFMediaModel.missionSessionAudios,
                                         modelUlid: widget.missionSessionUlid,
-                                        mediaType: RequestType.audio,
                                         previousMedia: images,
                                       );
                                 },
@@ -123,12 +123,11 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                         size: 32,
                         color: Color(0xffc4c4c4),
                       ),
-                      onTap: () => context.read<SelectMediaCubit>().selectMedia(
-                            context: context,
-                            model: PRFMediaModel.missionPhotos,
-                            modelUlid: widget.missionSessionUlid,
-                            mediaType: RequestType.audio,
-                          ),
+                      onTap: () =>
+                          context.read<SelectMediaCubit>().selectAudioFiles(
+                                model: PRFMediaModel.missionSessionAudios,
+                                modelUlid: widget.missionSessionUlid,
+                              ),
                     );
                   },
                 ),
