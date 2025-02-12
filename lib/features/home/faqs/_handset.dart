@@ -114,19 +114,22 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                           .bodyMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.appTheme().kGreyColor,
+                            color: AppTheme.appTheme()
+                                .kPrimaryColorV2
+                                .withAlpha(200),
                             fontSize: 12,
                           ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: AppTheme.appTheme().kAccent2BackgroundColor),
-                        borderRadius: BorderRadius.circular(12.r),
+                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: AppTheme.appTheme().kAccent2BackgroundColor,
                         ),
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       fillColor: Colors.white,
                       filled: true,
