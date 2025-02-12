@@ -8,18 +8,25 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 class SessionPage extends StatelessWidget {
   const SessionPage({
     required this.missionSession,
+    required this.missionUlid,
     super.key,
   });
 
   final PRFMissionSession missionSession;
+  final String missionUlid;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          SessionPageHandset(missionSession: missionSession),
+      defaultBuilder: (_, __) => SessionPageHandset(
+        missionSession: missionSession,
+        missionUlid: missionUlid,
+      ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => SessionPageHandset(missionSession: missionSession),
+        handset: (_, __) => SessionPageHandset(
+          missionSession: missionSession,
+          missionUlid: missionUlid,
+        ),
       ),
     );
   }

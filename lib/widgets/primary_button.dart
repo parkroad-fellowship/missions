@@ -10,6 +10,7 @@ class PrimaryButton extends StatelessWidget {
     this.isLoading,
     this.isAlert,
     this.height,
+    
   });
 
   final VoidCallback onPressed;
@@ -18,6 +19,7 @@ class PrimaryButton extends StatelessWidget {
   final bool? isLoading;
   final bool? isAlert;
   final double? height;
+  
 
   @override
   Widget build(BuildContext context) {

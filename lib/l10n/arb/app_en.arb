@@ -504,7 +504,7 @@
     "@sessions": {},
     "info": "Tap any session to edit \nLong press to delete",
     "@info": {},
-    "time": "Start - End",
+    "time": "Start Time - End Time",
     "@time": {},
     "facilitator": "Facilitator",
     "@facilitator": {},
@@ -583,5 +583,9 @@
     "categories": "Categories",
     "@categories": {},
     "whatWouldYouLikeToKnow": "What would you like to know?",
-    "@whatWouldYouLikeToKnow": {}
+    "@whatWouldYouLikeToKnow": {},
+    "sessionDetails": "Session Details",
+    "@sessionDetails": {},
+    "edit": "Edit",
+    "@edit": {}
 }

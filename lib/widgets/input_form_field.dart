@@ -23,6 +23,7 @@ class InputFormField extends StatefulWidget {
     this.onChanged,
     this.maxLength,
     this.inputFormatters = const [],
+    this.maxLines,
   });
   final String hintText;
   final TextEditingController controller;
@@ -40,6 +41,7 @@ class InputFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final int? maxLength;
   final List<TextInputFormatter> inputFormatters;
+  final int? maxLines;
 
   @override
   State<InputFormField> createState() => _InputFormFieldState();
@@ -60,7 +62,7 @@ class _InputFormFieldState extends State<InputFormField> {
           : widget.isTextBox != null
               ? 3
               : 1,
-      maxLines: widget.toggleHidePassword != null ? 1 : 5,
+      maxLines: widget.maxLines,
       onTap: widget.onTap,
       onChanged: widget.onChanged == null ? (_) {} : (_) => widget.onChanged!(),
       inputFormatters: [

@@ -1,21 +1,297 @@
+import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_session.dart';
+import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/secondary_button.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class SessionPageHandset extends StatefulWidget {
   const SessionPageHandset({
     required this.missionSession,
+    required this.missionUlid,
     super.key,
   });
 
   final PRFMissionSession missionSession;
+  final String missionUlid;
 
   @override
   State<SessionPageHandset> createState() => _SessionPageHandsetState();
 }
 
 class _SessionPageHandsetState extends State<SessionPageHandset> {
+  PRFMissionSession? _missionSession;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _missionSession = widget.missionSession;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final l10n = context.l10n;
+
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: CustomScrollView(
+            slivers: [
+              // Start Navigation Bar
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            width: 1.w,
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios),
+                          padding: const EdgeInsets.only(left: 8),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.missionDetailsRoute,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        l10n.sessionDetails,
+                        style: CustomTextTheme.customTextTheme()
+                            .displayLarge
+                            ?.copyWith(fontSize: 80.sp),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ),
+              // End Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 48.h)),
+              SliverToBoxAdapter(
+                child: BlocConsumer<GetMissionSessionCubit,
+                    GetMissionSessionState>(
+                  listener: (context, state) {
+                    state.mapOrNull(loaded: (result) {
+                      // Update the mission session entry when a refetch happens
+                      setState(() {
+                        _missionSession = result.missionSession;
+                      });
+                    });
+                  },
+                  builder: (context, state) => state.maybeWhen(
+                    loading: () =>
+                        const Center(child: LinearProgressIndicator()),
+                    error: (message) => Center(child: Text(message)),
+                    orElse: () => const SizedBox(),
+                  ),
+                ),
+              ),
+              if (_missionSession != null)
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      DataCard(
+                        label: l10n.time,
+                        value:
+                            '${DateFormat.jm().format(_missionSession!.startsAt)} -'
+                            ' ${DateFormat.jm().format(_missionSession!.endsAt)}',
+                      ),
+                      DataCard(
+                        label: l10n.facilitator,
+                        value: _missionSession!.facilitator!.fullName,
+                      ),
+                      if (_missionSession!.speaker != null)
+                        DataCard(
+                          label: l10n.speaker,
+                          value: _missionSession!.speaker!.fullName,
+                        ),
+                      if (_missionSession!.classGroup != null)
+                        DataCard(
+                          label: l10n.classGroup,
+                          value: _missionSession!.classGroup!.name,
+                        ),
+                      DataCard(
+                        label: l10n.notes,
+                        value: _missionSession!.notes,
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: PrimaryButton(
+                              title: l10n.edit,
+                              onPressed: () => WoltModalSheet.show<void>(
+                                context: context,
+                                pageListBuilder: (modalSheetContext) {
+                                  return [
+                                    WoltModalSheetPage(
+                                      child: SizedBox(
+                                        height:
+                                            MediaQuery.sizeOf(context).height *
+                                                0.8,
+                                        child: UpdateSessionView(
+                                          missionUlid: widget.missionUlid,
+                                          missionSession: _missionSession!,
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
+                              ).then(
+                                (_) {
+                                  if (context.mounted) {
+                                    context
+                                        .read<GetMissionSessionCubit>()
+                                        .getMissionSession(
+                                          missionSessionUlid:
+                                              _missionSession!.ulid,
+                                        );
+                                  }
+                                },
+                              ),
+                              disabled: false,
+                            ),
+                          ),
+                          SizedBox(width: 16.w),
+                          Expanded(
+                            child: PrimaryButton(
+                              isAlert: true,
+                              title: l10n.delete,
+                              disabled: false,
+                              onPressed: () async => showDialog<void>(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(l10n.deleteSession),
+                                    content: Text(l10n.confirmDelete),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: Text(l10n.cancel),
+                                      ),
+                                      BlocConsumer<DeleteMissionSessionCubit,
+                                          DeleteMissionSessionState>(
+                                        listener: (context, state) {
+                                          state.mapOrNull(
+                                            loaded: (_) {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
+                                              context
+                                                  .read<
+                                                      GetMissionSessionsCubit>()
+                                                  .getMissionSessions(
+                                                      missionUlid:
+                                                          widget.missionUlid);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content:
+                                                      Text(l10n.sessionDeleted),
+                                                ),
+                                              );
+                                            },
+                                            error: (e) {
+                                              Navigator.of(context).pop();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(e.message),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        builder: (context, state) {
+                                          return TextButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<
+                                                      DeleteMissionSessionCubit>()
+                                                  .deleteMissionSession(
+                                                    missionSessionUlid:
+                                                        _missionSession!.ulid,
+                                                  );
+                                            },
+                                            child: state.maybeWhen(
+                                              orElse: () => Text(l10n.delete),
+                                              loading: () =>
+                                                  const CircularProgressIndicator(),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DataCard extends StatelessWidget {
+  const DataCard({super.key, required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
+          child: FormFieldLabel(
+            label: label,
+            color: AppTheme.appTheme().kBlackColor,
+            isBold: true,
+          ),
+        ),
+        SizedBox(height: 6),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
+          child: InputFormField(
+            hintText: '',
+            controller: TextEditingController(text: value),
+            isUnderLine: true,
+            enabled: false,
+            maxLines: 15,
+          ),
+        ),
+        SizedBox(height: 15.h),
+      ],
+    );
   }
 }
