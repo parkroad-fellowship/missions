@@ -1,4 +1,5 @@
 import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
+import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -24,6 +25,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
   void initState() {
     super.initState();
     context.read<GetFaqCategoriesCubit>().getFaqCategories();
+    context.read<GetFaqsCubit>().getFaqs();
   }
 
   @override
