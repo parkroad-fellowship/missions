@@ -110,6 +110,65 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                   missionSession: _missionSession!,
                   missionUlid: widget.missionUlid,
                 ),
+              if (_missionSession != null)
+                const SliverToBoxAdapter(child: SizedBox(height: 32)),
+              if (_missionSession != null)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.w),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FormFieldLabel(
+                          label: l10n.recordings,
+                          color: AppTheme.appTheme().kBlackColor,
+                          isBold: true,
+                        ),
+                        SizedBox(
+                          width: 150,
+                          child: PrimaryButton(
+                            title: l10n.uploadRecording,
+                            onPressed: () {
+                              // TODO: Implement recording upload
+                            },
+                            disabled: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (_missionSession != null)
+                const SliverToBoxAdapter(child: SizedBox(height: 16)),
+              if (_missionSession != null)
+                if (_missionSession!.transcripts.isEmpty)
+                  SliverFillRemaining(
+                    child: Center(
+                      child: Text(
+                        l10n.noRecordings,
+                        style: CustomTextTheme.customTextTheme().bodySmall,
+                      ),
+                    ),
+                  ),
+
+              if (_missionSession != null)
+                SliverList.builder(
+                  itemCount: _missionSession!.transcripts.length,
+                  itemBuilder: (context, index) {
+                    final recording = _missionSession!.transcripts[index];
+                    return ListTile(
+                      title: const Text('title'),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.play_arrow),
+                        onPressed: () {
+                          // TODO: Implement play recording
+                        },
+                      ),
+                    );
+                  },
+                ),
+              const SliverToBoxAdapter(child: SizedBox(height: 16)),
             ],
           ),
         ),
