@@ -218,6 +218,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                             hintText: l10n.reply,
                             controller: _enquiryReplyController,
                             isTextBox: true,
+                            maxLines: 5,
                           ),
                           const SizedBox(height: 16),
                           BlocConsumer<CreateStudentEnquiryReplyCubit,

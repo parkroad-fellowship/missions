@@ -188,6 +188,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               hintText: l10n.comments,
               controller: _notesController,
               isTextBox: true,
+              maxLines: 5,
             ),
             const SizedBox(height: 32),
             BlocConsumer<UpdateMissionGroundSuggestionCubit,

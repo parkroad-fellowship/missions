@@ -302,6 +302,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               controller: _notesController,
               keyboardType: TextInputType.text,
               isTextBox: true,
+              maxLines: 5,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddMissionSessionCubit, AddMissionSessionState>(

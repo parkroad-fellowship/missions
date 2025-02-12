@@ -213,6 +213,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               hintText: l10n.confirmationMessage,
               controller: _confirmationMessageController,
               isTextBox: true,
+              maxLines: 5,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddExpenseCubit, AddExpenseState>(
