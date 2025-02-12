@@ -18,7 +18,7 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
   Future<void> getFaqs() async {
     emit(const GetFaqsState.loading());
     try {
-      final faqs = await _studentService.getFaqs();
+      final faqs = await _studentService.getFaqs(include: 'missionFaqCategory');
       emit(GetFaqsState.loaded(faqs: faqs));
     } catch (e) {
       emit(GetFaqsState.error(e.toString()));

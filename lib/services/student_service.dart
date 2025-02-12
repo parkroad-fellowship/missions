@@ -8,7 +8,9 @@ import 'package:app/models/remote/prf_student_enquiry_reply_dto.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class StudentService {
-  Future<List<PRFFaq>> getFaqs();
+  Future<List<PRFFaq>> getFaqs({
+    String? include,
+  });
   Future<List<PRFStudentEnquiry>> getStudentEnquiries({
     String? studentUlid,
   });
@@ -26,10 +28,15 @@ abstract class StudentService {
 class StudentServiceImpl implements StudentService {
   final _networkUtil = NetworkUtil();
   @override
-  Future<List<PRFFaq>> getFaqs() async {
+  Future<List<PRFFaq>> getFaqs({
+    String? include,
+  }) async {
     try {
       final res = await _networkUtil.getReq(
         '/mission-faqs',
+        queryParameters: {
+          if (include != null) 'include': include,
+        },
       );
 
       return PRFFaqResponse.fromJson(res).data;

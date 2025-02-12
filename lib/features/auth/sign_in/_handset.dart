@@ -7,6 +7,7 @@ import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/secondary_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,8 +19,12 @@ class SignInHandset extends StatefulWidget {
 }
 
 class _SignInHandsetState extends State<SignInHandset> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(
+    text: kDebugMode? 'approvals@parkroadfellowship.org': '',
+  );
+  final _passwordController = TextEditingController(
+    text: kDebugMode? 'password': '',
+  );
   final _hidePasswordNotifier = ValueNotifier<bool>(true);
 
   bool _isLoading = false;
