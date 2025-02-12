@@ -26,7 +26,7 @@ class FormFieldLabel extends StatelessWidget {
             style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
                   fontSize: 15,
                   color: color,
-                  fontWeight: isBold ?? false ? FontWeight.bold : null
+                  fontWeight: isBold ?? false ? FontWeight.bold : null,
                 ),
             children: [
               if (isRequired ?? false)

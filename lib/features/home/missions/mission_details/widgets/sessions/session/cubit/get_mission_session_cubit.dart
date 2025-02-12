@@ -10,7 +10,7 @@ part 'get_mission_session_cubit.freezed.dart';
 class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
   GetMissionSessionCubit({
     required MissionService missionService,
-  }) : super(GetMissionSessionState.initial()) {
+  }) : super(const GetMissionSessionState.initial()) {
     _missionService = missionService;
   }
 
@@ -20,7 +20,7 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
     required String missionSessionUlid,
   }) async {
     try {
-      emit(GetMissionSessionState.loading());
+      emit(const GetMissionSessionState.loading());
 
       final missionSession = await _missionService.getMissionSession(
         missionSessionUlid: missionSessionUlid,

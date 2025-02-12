@@ -1,6 +1,4 @@
-import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/utils/_index.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class SessionsViewHandset extends StatefulWidget {
   const SessionsViewHandset({
@@ -161,11 +158,13 @@ class MissionSessionCard extends StatelessWidget {
                               fontSize: 18,
                             ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
-                        "${l10n.facilitator}: ${missionSession.facilitator!.fullName}\n"
-                        "${l10n.speaker}: ${missionSession.speaker?.fullName}\n\n"
-                        "${missionSession.notes}",
+                        '${l10n.facilitator}: '
+                        '${missionSession.facilitator!.fullName}\n'
+                        '${l10n.speaker}: '
+                        '${missionSession.speaker?.fullName}\n\n'
+                        '${missionSession.notes}',
                         style: CustomTextTheme.customTextTheme()
                             .bodySmall!
                             .copyWith(
@@ -176,7 +175,7 @@ class MissionSessionCard extends StatelessWidget {
                       SizedBox(height: 8.h),
                     ],
                   ),
-                  Icon(Icons.arrow_forward_ios),
+                  const Icon(Icons.arrow_forward_ios),
                 ],
               ),
             ),

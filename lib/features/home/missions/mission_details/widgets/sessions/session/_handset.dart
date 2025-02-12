@@ -6,7 +6,6 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/secondary_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,12 +89,13 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 child: BlocConsumer<GetMissionSessionCubit,
                     GetMissionSessionState>(
                   listener: (context, state) {
-                    state.mapOrNull(loaded: (result) {
-                      // Update the mission session entry when a refetch happens
-                      setState(() {
-                        _missionSession = result.missionSession;
-                      });
-                    });
+                    state.mapOrNull(
+                      loaded: (result) {
+                        setState(() {
+                          _missionSession = result.missionSession;
+                        });
+                      },
+                    );
                   },
                   builder: (context, state) => state.maybeWhen(
                     loading: () =>
@@ -106,152 +106,10 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 ),
               ),
               if (_missionSession != null)
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      DataCard(
-                        label: l10n.time,
-                        value:
-                            '${DateFormat.jm().format(_missionSession!.startsAt)} -'
-                            ' ${DateFormat.jm().format(_missionSession!.endsAt)}',
-                      ),
-                      DataCard(
-                        label: l10n.facilitator,
-                        value: _missionSession!.facilitator!.fullName,
-                      ),
-                      if (_missionSession!.speaker != null)
-                        DataCard(
-                          label: l10n.speaker,
-                          value: _missionSession!.speaker!.fullName,
-                        ),
-                      if (_missionSession!.classGroup != null)
-                        DataCard(
-                          label: l10n.classGroup,
-                          value: _missionSession!.classGroup!.name,
-                        ),
-                      DataCard(
-                        label: l10n.notes,
-                        value: _missionSession!.notes,
-                      ),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child: PrimaryButton(
-                              title: l10n.edit,
-                              onPressed: () => WoltModalSheet.show<void>(
-                                context: context,
-                                pageListBuilder: (modalSheetContext) {
-                                  return [
-                                    WoltModalSheetPage(
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.8,
-                                        child: UpdateSessionView(
-                                          missionUlid: widget.missionUlid,
-                                          missionSession: _missionSession!,
-                                        ),
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              ).then(
-                                (_) {
-                                  if (context.mounted) {
-                                    context
-                                        .read<GetMissionSessionCubit>()
-                                        .getMissionSession(
-                                          missionSessionUlid:
-                                              _missionSession!.ulid,
-                                        );
-                                  }
-                                },
-                              ),
-                              disabled: false,
-                            ),
-                          ),
-                          SizedBox(width: 16.w),
-                          Expanded(
-                            child: PrimaryButton(
-                              isAlert: true,
-                              title: l10n.delete,
-                              disabled: false,
-                              onPressed: () async => showDialog<void>(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text(l10n.deleteSession),
-                                    content: Text(l10n.confirmDelete),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(),
-                                        child: Text(l10n.cancel),
-                                      ),
-                                      BlocConsumer<DeleteMissionSessionCubit,
-                                          DeleteMissionSessionState>(
-                                        listener: (context, state) {
-                                          state.mapOrNull(
-                                            loaded: (_) {
-                                              Navigator.of(context).pop();
-                                              Navigator.of(context).pop();
-                                              context
-                                                  .read<
-                                                      GetMissionSessionsCubit>()
-                                                  .getMissionSessions(
-                                                      missionUlid:
-                                                          widget.missionUlid);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content:
-                                                      Text(l10n.sessionDeleted),
-                                                ),
-                                              );
-                                            },
-                                            error: (e) {
-                                              Navigator.of(context).pop();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(e.message),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        builder: (context, state) {
-                                          return TextButton(
-                                            onPressed: () {
-                                              context
-                                                  .read<
-                                                      DeleteMissionSessionCubit>()
-                                                  .deleteMissionSession(
-                                                    missionSessionUlid:
-                                                        _missionSession!.ulid,
-                                                  );
-                                            },
-                                            child: state.maybeWhen(
-                                              orElse: () => Text(l10n.delete),
-                                              loading: () =>
-                                                  const CircularProgressIndicator(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
+                MissionSessionDataView(
+                  missionSession: _missionSession!,
+                  missionUlid: widget.missionUlid,
+                ),
             ],
           ),
         ),
@@ -260,8 +118,160 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
   }
 }
 
+class MissionSessionDataView extends StatelessWidget {
+  const MissionSessionDataView({
+    required this.missionSession,
+    required this.missionUlid,
+    super.key,
+  });
+
+  final PRFMissionSession missionSession;
+  final String missionUlid;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          DataCard(
+            label: l10n.time,
+            value: '${DateFormat.jm().format(missionSession.startsAt)} -'
+                ' ${DateFormat.jm().format(missionSession.endsAt)}',
+          ),
+          DataCard(
+            label: l10n.facilitator,
+            value: missionSession.facilitator!.fullName,
+          ),
+          if (missionSession.speaker != null)
+            DataCard(
+              label: l10n.speaker,
+              value: missionSession.speaker!.fullName,
+            ),
+          if (missionSession.classGroup != null)
+            DataCard(
+              label: l10n.classGroup,
+              value: missionSession.classGroup!.name,
+            ),
+          DataCard(
+            label: l10n.notes,
+            value: missionSession.notes,
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: PrimaryButton(
+                  title: l10n.edit,
+                  onPressed: () => WoltModalSheet.show<void>(
+                    context: context,
+                    pageListBuilder: (modalSheetContext) {
+                      return [
+                        WoltModalSheetPage(
+                          child: SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.8,
+                            child: UpdateSessionView(
+                              missionUlid: missionUlid,
+                              missionSession: missionSession,
+                            ),
+                          ),
+                        ),
+                      ];
+                    },
+                  ).then(
+                    (_) {
+                      if (context.mounted) {
+                        context
+                            .read<GetMissionSessionCubit>()
+                            .getMissionSession(
+                              missionSessionUlid: missionSession.ulid,
+                            );
+                      }
+                    },
+                  ),
+                  disabled: false,
+                ),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: PrimaryButton(
+                  isAlert: true,
+                  title: l10n.delete,
+                  disabled: false,
+                  onPressed: () async => showDialog<void>(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text(l10n.deleteSession),
+                        content: Text(l10n.confirmDelete),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(l10n.cancel),
+                          ),
+                          BlocConsumer<DeleteMissionSessionCubit,
+                              DeleteMissionSessionState>(
+                            listener: (context, state) {
+                              state.mapOrNull(
+                                loaded: (_) {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  context
+                                      .read<GetMissionSessionsCubit>()
+                                      .getMissionSessions(
+                                        missionUlid: missionUlid,
+                                      );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(l10n.sessionDeleted),
+                                    ),
+                                  );
+                                },
+                                error: (e) {
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.message),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            builder: (context, state) {
+                              return TextButton(
+                                onPressed: () {
+                                  context
+                                      .read<DeleteMissionSessionCubit>()
+                                      .deleteMissionSession(
+                                        missionSessionUlid: missionSession.ulid,
+                                      );
+                                },
+                                child: state.maybeWhen(
+                                  orElse: () => Text(l10n.delete),
+                                  loading: () =>
+                                      const CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class DataCard extends StatelessWidget {
-  const DataCard({super.key, required this.label, required this.value});
+  const DataCard({required this.label, required this.value, super.key});
 
   final String label;
   final String value;
@@ -279,7 +289,7 @@ class DataCard extends StatelessWidget {
             isBold: true,
           ),
         ),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 40.w),
           child: InputFormField(
