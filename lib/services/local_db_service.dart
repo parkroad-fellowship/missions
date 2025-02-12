@@ -2,6 +2,8 @@ import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
+import 'package:app/models/local/prf_faq.dart';
+import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/models/local/prf_media_upload.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
@@ -10,6 +12,8 @@ import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
+import 'package:app/models/remote/prf_faq.dart';
+import 'package:app/models/remote/prf_faq_category.dart';
 import 'package:app/models/remote/prf_image_dto.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
@@ -82,6 +86,19 @@ abstract class LocalDBService {
     required String modelUlid,
     required String path,
   });
+
+  Future<void> persistFaqs({
+    required List<PRFFaq> faqs,
+  });
+  Future<List<PRFLocalFaq>> retreiveFaqs({
+    String? categoryUlid,
+    String? query,
+  });
+
+  Future<void> persistFaqCategories({
+    required List<PRFFaqCategory> faqCategories,
+  });
+  Future<List<PRFLocalFaqCategory>> retreiveFaqCategories();
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -98,6 +115,8 @@ class LocalDBServiceImpl implements LocalDBService {
         PRFLocalAnnouncementSchema,
         PRFLocalPrayerResponseSchema,
         PRFLocalMediaUploadSchema,
+        PRFLocalFaqSchema,
+        PRFLocalFaqCategorySchema,
       ],
       directory: dir.path,
     );
@@ -563,5 +582,65 @@ class LocalDBServiceImpl implements LocalDBService {
           .pathEqualTo(path)
           .deleteFirstSync();
     });
+  }
+
+  @override
+  Future<void> persistFaqCategories({
+    required List<PRFFaqCategory> faqCategories,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final faqCategory in faqCategories) {
+        await prfDBInstance.pRFLocalFaqCategorys.put(
+          PRFLocalFaqCategory(
+            ulid: faqCategory.ulid,
+            name: faqCategory.name,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Future<void> persistFaqs({
+    required List<PRFFaq> faqs,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final faq in faqs) {
+        await prfDBInstance.pRFLocalFaqs.put(
+          PRFLocalFaq(
+            ulid: faq.ulid,
+            question: faq.question,
+            answer: faq.answer,
+            categoryUlid: faq.category!.ulid,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Future<List<PRFLocalFaqCategory>> retreiveFaqCategories() async {
+    return prfDBInstance.pRFLocalFaqCategorys.where().findAll();
+  }
+
+  @override
+  Future<List<PRFLocalFaq>> retreiveFaqs({
+    String? categoryUlid,
+    String? query,
+  }) async {
+    return prfDBInstance.pRFLocalFaqs
+        .where()
+        .filter()
+        .optional(
+          categoryUlid != null,
+          (q) => q.categoryUlidEqualTo(categoryUlid!),
+        )
+        .optional(
+          query != null,
+          (q) => q
+              .questionWordsElementContains(query!)
+              .answerWordsElementContains(query),
+        )
+        .findAll();
   }
 }

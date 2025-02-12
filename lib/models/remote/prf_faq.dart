@@ -1,3 +1,4 @@
+import 'package:app/models/remote/prf_faq_category.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_faq.freezed.dart';
@@ -10,8 +11,9 @@ class PRFFaq with _$PRFFaq {
     String question,
     String answer,
     @JsonKey(name: 'created_at') DateTime createdAt,
-    @JsonKey(name: 'updated_at') DateTime updatedAt,
-  ) = _PRFFaq;
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @JsonKey(name: 'mission_faq_category') PRFFaqCategory? category,
+  }) = _PRFFaq;
 
   factory PRFFaq.fromJson(Map<String, dynamic> json) => _$PRFFaqFromJson(json);
 }

@@ -1,12 +1,15 @@
 import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_faq.dart';
+import 'package:app/models/local/prf_faq.dart';
+import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 
 class FAQPageHandset extends StatefulWidget {
   const FAQPageHandset({super.key});
@@ -16,6 +19,11 @@ class FAQPageHandset extends StatefulWidget {
 }
 
 class _FAQPageHandsetState extends State<FAQPageHandset> {
+  PRFLocalFaqCategory? _selectedCategory;
+  String? _searchQuery;
+
+  final _searchDeboucer = Debouncer(milliseconds: 1 * 1000);
+
   @override
   void initState() {
     context.read<GetFaqsCubit>().getFaqs();
@@ -56,7 +64,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.studentLandingRoute,
+                            PRFSuperAppRouter.landingRoute,
                           ),
                         ),
                       ),
@@ -75,6 +83,62 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                      Logger().i('Search Query: $_searchQuery');
+
+                      _searchDeboucer.run(() {
+                        context.read<GetFaqsCubit>().getFaqs(
+                              categoryUlid: _selectedCategory?.ulid ??
+                                  _selectedCategory?.ulid,
+                              query: _searchQuery != null ||
+                                      (_searchQuery?.isNotEmpty ?? false)
+                                  ? _searchQuery
+                                  : null,
+                            );
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: l10n.whatWouldYouLikeToKnow,
+                      suffixIconColor: AppTheme.appTheme().kPrimaryColorV2,
+                      suffixIcon: Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        child: const Icon(Icons.search),
+                      ),
+                      hintStyle: CustomTextTheme.customTextTheme()
+                          .bodyMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.appTheme()
+                                .kPrimaryColorV2
+                                .withAlpha(200),
+                            fontSize: 12,
+                          ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
                 child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
                   builder: (context, state) => state.maybeWhen(
                     orElse: () =>
@@ -84,6 +148,25 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
+                child: FaqCategoriesPreview(
+                  onCategorySelected: (newValue) {
+                    setState(() {
+                      _selectedCategory = newValue;
+                    });
+                    Logger().i('Selected Category: $_selectedCategory');
+                    context.read<GetFaqsCubit>().getFaqs(
+                          categoryUlid: _selectedCategory?.ulid,
+                          query: _searchQuery != null ||
+                                  (_searchQuery?.isNotEmpty ?? false)
+                              ? _searchQuery
+                              : null,
+                        );
+                  },
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
@@ -169,7 +252,7 @@ class FaqCard extends StatelessWidget {
     super.key,
   });
 
-  final PRFFaq faq;
+  final PRFLocalFaq faq;
 
   @override
   Widget build(BuildContext context) {
@@ -197,6 +280,7 @@ class FaqCard extends StatelessWidget {
                   faq.question,
                   style: CustomTextTheme.customTextTheme().titleLarge!.copyWith(
                         fontWeight: FontWeight.w600,
+                        fontSize: 18,
                       ),
                 ),
                 SizedBox(height: 8.h),
@@ -204,6 +288,7 @@ class FaqCard extends StatelessWidget {
                   faq.answer,
                   style: CustomTextTheme.customTextTheme().bodySmall!.copyWith(
                         color: AppTheme.appTheme().kBlackColor,
+                        fontSize: 14,
                       ),
                 ),
                 SizedBox(height: 8.h),
