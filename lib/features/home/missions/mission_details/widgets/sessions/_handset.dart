@@ -164,8 +164,7 @@ class MissionSessionCard extends StatelessWidget {
                         '${l10n.facilitator}: '
                         '${missionSession.facilitator!.fullName}\n'
                         '${l10n.speaker}: '
-                        '${missionSession.speaker?.fullName}\n\n'
-                        '${missionSession.notes}',
+                        '${missionSession.speaker?.fullName}',
                         style: CustomTextTheme.customTextTheme()
                             .bodySmall!
                             .copyWith(
