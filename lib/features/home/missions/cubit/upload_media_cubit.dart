@@ -3,6 +3,7 @@ import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'upload_media_state.dart';
 part 'upload_media_cubit.freezed.dart';
@@ -23,6 +24,7 @@ class UploadMediaCubit extends Cubit<UploadMediaState> {
     emit(const UploadMediaState.loading());
     try {
       final imageDTOs = _localDBService.retrieveMediaUploads();
+      Logger().d(imageDTOs);
       for (final imageDTO in imageDTOs) {
         await _mediaService.uploadFile(imageDTO: imageDTO);
         _localDBService.deleteMediaUpload(

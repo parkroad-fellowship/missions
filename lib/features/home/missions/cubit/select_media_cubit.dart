@@ -50,6 +50,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
         modelUlid: modelUlid,
         model: model,
       );
+      await _localDBService.persistMediaUploads(mediaDTOs: media);
       emit(SelectMediaState.loaded(media: [...previousMedia, ...media]));
     } catch (e) {
       // emit(SelectMediaState.error(e.toString()));

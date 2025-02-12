@@ -4,12 +4,12 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
-import 'package:app/utils/color_pallete.dart';
-import 'package:app/utils/network.dart';
+import 'package:app/utils/_index.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
@@ -37,6 +37,7 @@ class MediaServiceImpl implements MediaService {
     required PRFMediaDTO imageDTO,
   }) async {
     final url = StringBuffer('/');
+    Logger().d(imageDTO);
     switch (imageDTO.model) {
       case PRFMediaModel.missionPhotos:
       case PRFMediaModel.missionFitChecks:
@@ -90,6 +91,7 @@ class MediaServiceImpl implements MediaService {
               path: filePath,
               model: model,
               modelUlid: modelUlid,
+              name: Misc.getFileName(filePath),
             ),
           );
         }
@@ -107,15 +109,12 @@ class MediaServiceImpl implements MediaService {
     required PRFMediaModel model,
   }) async {
     try {
-      final result = await FilePicker.platform.pickFiles(
+      final result = await FilePicker.platform
+          .pickFiles(
         allowMultiple: true,
         type: FileType.audio,
-        onFileLoading: (FilePickerStatus status) {
-          if (status == FilePickerStatus.done) {
-            FilePicker.platform.clearTemporaryFiles();
-          }
-        },
-      ).catchError((error) {
+      )
+          .catchError((dynamic error) {
         if (error is PlatformException && error.code == 'multiple_request') {
           throw Failure(message: 'Another file selection is in progress');
         }
@@ -125,22 +124,35 @@ class MediaServiceImpl implements MediaService {
       if (result != null) {
         final filePaths = result.paths;
         final uploadAssets = <PRFMediaDTO>[];
+        final appDir = await path_provider.getApplicationDocumentsDirectory();
 
-        for (final filePath in filePaths) {
-          if (filePath != null) {
-            uploadAssets.add(
-              PRFMediaDTO(
-                path: filePath,
-                model: model,
-                modelUlid: modelUlid,
-              ),
-            );
+        try {
+          for (final filePath in filePaths) {
+            if (filePath != null) {
+              final file = File(filePath);
+              final fileName = Misc.getFileName(filePath);
+              final mediaUploadsDir = '${appDir.path}/media_uploads';
+              await Directory(mediaUploadsDir).create(recursive: true);
+              final newPath = '$mediaUploadsDir/$fileName';
+
+              await file.copy(newPath);
+
+              uploadAssets.add(
+                PRFMediaDTO(
+                  path: newPath,
+                  model: model,
+                  modelUlid: modelUlid,
+                  name: fileName,
+                ),
+              );
+            }
           }
+          return uploadAssets;
+        } catch (e) {
+          rethrow;
         }
-
-        return uploadAssets;
       }
-      
+
       return [];
     } catch (e) {
       rethrow;

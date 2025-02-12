@@ -321,7 +321,8 @@ class MissionServiceImpl implements MissionService {
         '/mission-sessions',
         queryParameters: {
           'filter[mission_ulid]': missionUlid,
-          'include': 'facilitator,speaker,classGroup',
+          'include':
+              'facilitator,speaker,classGroup,missionSessionTranscripts.media',
         },
       );
 

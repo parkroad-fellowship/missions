@@ -1,5 +1,6 @@
 import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
+import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
@@ -92,6 +93,39 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
               ),
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
+              SliverToBoxAdapter(
+                child: BlocConsumer<UploadMediaCubit, UploadMediaState>(
+                  listener: (context, state) {
+                    state.mapOrNull(
+                      loaded: (_) {
+                        context
+                            .read<GetMissionSessionCubit>()
+                            .getMissionSession(
+                              missionSessionUlid: _missionSession!.ulid,
+                            );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.doneUploading),
+                          ),
+                        );
+                      },
+                      error: (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(error.message),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  builder: (context, state) => state.maybeWhen(
+                    loading: () =>
+                        const Center(child: LinearProgressIndicator()),
+                    error: (message) => Center(child: Text(message)),
+                    orElse: () => const SizedBox(),
+                  ),
+                ),
+              ),
               SliverToBoxAdapter(
                 child: BlocConsumer<GetMissionSessionCubit,
                     GetMissionSessionState>(

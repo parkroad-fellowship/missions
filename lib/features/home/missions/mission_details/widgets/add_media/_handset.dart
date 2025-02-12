@@ -43,29 +43,22 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
             children: [
               BlocBuilder<SelectMediaCubit, SelectMediaState>(
                 builder: (context, state) => state.when(
-                  initial: () => GestureDetector(
+                  initial: () => ListTile(
+                    title: Text(
+                      l10n.tapToAdd,
+                      style: CustomTextTheme.customTextTheme().displayLarge,
+                    ),
+                    leading: const Icon(
+                      Icons.insert_photo_outlined,
+                      size: 32,
+                      color: Color(0xffc4c4c4),
+                    ),
                     onTap: () => context.read<SelectMediaCubit>().selectMedia(
                           context: context,
                           model: PRFMediaModel.missionPhotos,
                           modelUlid: widget.missionUlid,
                           mediaType: RequestType.image,
                         ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          l10n.tapToAdd,
-                          textAlign: TextAlign.center,
-                          style:
-                              CustomTextTheme.customTextTheme().headlineSmall,
-                        ),
-                        Icon(
-                          Icons.insert_photo_outlined,
-                          size: 24.sp,
-                          color: const Color(0xffc4c4c4),
-                        ),
-                      ],
-                    ),
                   ),
                   loaded: (images) {
                     if (images.isNotEmpty) {

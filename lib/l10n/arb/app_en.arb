@@ -593,5 +593,7 @@
     "noRecordings": "No recordings",
     "@noRecordings": {},
     "uploadRecording": "Upload recording",
-    "@uploadRecording": {}
+    "@uploadRecording": {},
+    "addMore": "Add more",
+    "@addMore": {}
 }

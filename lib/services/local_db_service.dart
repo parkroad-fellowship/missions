@@ -565,6 +565,7 @@ class LocalDBServiceImpl implements LocalDBService {
             modelUlid: response.modelUlid,
             model: response.model,
             path: response.path,
+            name: Misc.getFileName(response.path)
           ),
         )
         .toList();

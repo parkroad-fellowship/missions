@@ -43,83 +43,65 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
             children: [
               BlocBuilder<SelectMediaCubit, SelectMediaState>(
                 builder: (context, state) => state.when(
-                  initial: () => GestureDetector(
+                  initial: () => ListTile(
+                    title: Text(
+                      l10n.tapToAdd,
+                      style: CustomTextTheme.customTextTheme().displayLarge,
+                    ),
+                    leading: const Icon(
+                      Icons.speaker,
+                      size: 32,
+                      color: Color(0xffc4c4c4),
+                    ),
                     onTap: () =>
                         context.read<SelectMediaCubit>().selectAudioFiles(
                               model: PRFMediaModel.missionSessionAudios,
                               modelUlid: widget.missionSessionUlid,
                             ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          l10n.tapToAdd,
-                          textAlign: TextAlign.center,
-                          style:
-                              CustomTextTheme.customTextTheme().headlineSmall,
-                        ),
-                        Icon(
-                          Icons.insert_photo_outlined,
-                          size: 24.sp,
-                          color: const Color(0xffc4c4c4),
-                        ),
-                      ],
-                    ),
                   ),
-                  loaded: (images) {
-                    if (images.isNotEmpty) {
-                      return SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.6,
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4,
-                          ),
-                          itemCount: images.length +
-                              1, // Add one more item for the picker tile
-                          itemBuilder: (context, index) {
-                            if (index == images.length) {
-                              return GestureDetector(
-                                onTap: () {
-                                  // Open the image picker
-                                  context
-                                      .read<SelectMediaCubit>()
-                                      .selectAudioFiles(
-                                        model:
-                                            PRFMediaModel.missionSessionAudios,
-                                        modelUlid: widget.missionSessionUlid,
-                                        previousMedia: images,
-                                      );
-                                },
-                                child: Container(
-                                  color: Colors.grey[300],
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 50,
-                                    color: Colors.grey[700],
-                                  ),
+                  loaded: (files) {
+                    if (files.isNotEmpty) {
+                      return Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: files.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: const Icon(
+                                  Icons.audio_file,
+                                  color: Color(0xffc4c4c4),
+                                ),
+                                title: Text(
+                                  files[index].name,
+                                  style: CustomTextTheme.customTextTheme()
+                                      .bodyLarge,
                                 ),
                               );
-                            }
-
-                            return Image.file(
-                              File(images[index].path),
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ),
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          SecondaryButton(
+                            onPressed: () => context
+                                .read<SelectMediaCubit>()
+                                .selectAudioFiles(
+                                  model: PRFMediaModel.missionSessionAudios,
+                                  modelUlid: widget.missionSessionUlid,
+                                  previousMedia: files,
+                                ),
+                            title: l10n.addMore,
+                            disabled: false,
+                          )
+                        ],
                       );
                     }
-
                     return ListTile(
                       title: Text(
                         l10n.tapToAdd,
                         style: CustomTextTheme.customTextTheme().displayLarge,
                       ),
                       leading: const Icon(
-                        Icons.insert_photo_outlined,
+                        Icons.speaker,
                         size: 32,
                         color: Color(0xffc4c4c4),
                       ),
