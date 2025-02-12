@@ -9,7 +9,6 @@ import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/secondary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AddMediaViewHandset extends StatefulWidget {

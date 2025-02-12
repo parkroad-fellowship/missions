@@ -1,7 +1,6 @@
 import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
@@ -230,19 +229,23 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                             style: CustomTextTheme.customTextTheme().bodySmall,
                           ),
                           trailing: IconButton(
-                            icon: BlocConsumer<DownloadFileCubit, DownloadFileState>(
+                            icon: BlocConsumer<DownloadFileCubit,
+                                DownloadFileState>(
                               listener: (context, state) {
-                                state.mapOrNull(loaded: (_) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(l10n.downloaded),
-                                    ),
-                                  );
-                                });
+                                state.mapOrNull(
+                                  loaded: (_) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(l10n.downloaded),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
                               builder: (context, state) => state.maybeWhen(
-                                orElse: () => Icon(Icons.download),
-                                loading: () => (PRFCircularProgressIndicator())
+                                orElse: () => const Icon(Icons.download),
+                                loading: () =>
+                                    const PRFCircularProgressIndicator(),
                               ),
                             ),
                             onPressed: () => context
