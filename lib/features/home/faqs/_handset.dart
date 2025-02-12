@@ -83,57 +83,58 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                  });
-                  Logger().i('Search Query: $_searchQuery');
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                      Logger().i('Search Query: $_searchQuery');
 
-                  _searchDeboucer.run(() {
-                    context.read<GetFaqsCubit>().getFaqs(
-                          categoryUlid: _selectedCategory?.ulid ??
-                              _selectedCategory?.ulid,
-                          query: _searchQuery != null ||
-                                  (_searchQuery?.isNotEmpty ?? false)
-                              ? _searchQuery
-                              : null,
-                        );
-                  });
-                },
-                decoration: InputDecoration(
-                  hintText: l10n.whatWouldYouLikeToKnow,
-                  
-                  suffixIconColor: AppTheme.appTheme().kPrimaryColorV2,
-                  suffixIcon: Container(
-                    margin: EdgeInsets.only(right: 8),
-                    child: Icon(Icons.search),
-                  ),
-                  hintStyle: CustomTextTheme.customTextTheme().bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.appTheme().kGreyColor,
-                        fontSize: 12,
+                      _searchDeboucer.run(() {
+                        context.read<GetFaqsCubit>().getFaqs(
+                              categoryUlid: _selectedCategory?.ulid ??
+                                  _selectedCategory?.ulid,
+                              query: _searchQuery != null ||
+                                      (_searchQuery?.isNotEmpty ?? false)
+                                  ? _searchQuery
+                                  : null,
+                            );
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: l10n.whatWouldYouLikeToKnow,
+                      suffixIconColor: AppTheme.appTheme().kPrimaryColorV2,
+                      suffixIcon: Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        child: const Icon(Icons.search),
                       ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: AppTheme.appTheme().kAccent2BackgroundColor),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppTheme.appTheme().kAccent2BackgroundColor,
+                      hintStyle: CustomTextTheme.customTextTheme()
+                          .bodyMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.appTheme().kGreyColor,
+                            fontSize: 12,
+                          ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppTheme.appTheme().kAccent2BackgroundColor),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                        ),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
                     ),
-                    borderRadius: BorderRadius.circular(12.r),
                   ),
-                  fillColor: Colors.white,
-                  filled: true,
                 ),
               ),
-            ),
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
                 child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
                   builder: (context, state) => state.maybeWhen(

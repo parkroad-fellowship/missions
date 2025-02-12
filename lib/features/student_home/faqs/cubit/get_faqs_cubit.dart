@@ -38,8 +38,8 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
         await _networkFetch();
 
         final localFaqs = await _localDBService.retreiveFaqs(
-            categoryUlid: categoryUlid,
-            query: query,
+          categoryUlid: categoryUlid,
+          query: query,
         );
         emit(GetFaqsState.loaded(faqs: localFaqs));
         return;

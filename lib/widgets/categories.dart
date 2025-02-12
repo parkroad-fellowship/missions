@@ -7,10 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 class FaqCategoriesPreview extends StatefulWidget {
   const FaqCategoriesPreview({
     required this.onCategorySelected,
@@ -20,14 +16,12 @@ class FaqCategoriesPreview extends StatefulWidget {
   final void Function(PRFLocalFaqCategory?) onCategorySelected;
 
   @override
-  State<FaqCategoriesPreview> createState() =>
-      _FaqCategoriesPreviewState(
+  State<FaqCategoriesPreview> createState() => _FaqCategoriesPreviewState(
         onCategorySelected: onCategorySelected,
       );
 }
 
-class _FaqCategoriesPreviewState
-    extends State<FaqCategoriesPreview> {
+class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
   _FaqCategoriesPreviewState({
     required this.onCategorySelected,
   });
@@ -63,7 +57,7 @@ class _FaqCategoriesPreviewState
                       scrollDirection: Axis.horizontal,
                       itemCount: faqCategories.length + 1,
                       separatorBuilder: (context, index) =>
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                       itemBuilder: (context, index) {
                         if (index == 0) {
                           return GestureDetector(
@@ -77,7 +71,6 @@ class _FaqCategoriesPreviewState
                               label: Text(l10n.all.toUpperCase()),
                               side: BorderSide(
                                 color: AppTheme.appTheme().kAccent12GreyColor,
-                                width: 1,
                               ),
                               backgroundColor: _selectedCategory == null
                                   ? AppTheme.appTheme().kPrimaryColorV2
@@ -109,10 +102,9 @@ class _FaqCategoriesPreviewState
                               color: AppTheme.appTheme().kAccent12GreyColor,
                               width: 1.w,
                             ),
-                            backgroundColor:
-                                _selectedCategory == faqCategory
-                                    ? AppTheme.appTheme().kPrimaryColorV2
-                                    : Colors.white,
+                            backgroundColor: _selectedCategory == faqCategory
+                                ? AppTheme.appTheme().kPrimaryColorV2
+                                : Colors.white,
                             labelStyle: CustomTextTheme.customTextTheme()
                                 .bodyMedium
                                 ?.copyWith(
