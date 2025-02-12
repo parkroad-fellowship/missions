@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/models/remote/prf_faq.dart';
+import 'package:app/models/remote/prf_faq_category.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_dto.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
@@ -8,7 +9,10 @@ import 'package:app/models/remote/prf_student_enquiry_reply_dto.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class StudentService {
-  Future<List<PRFFaq>> getFaqs();
+  Future<List<PRFFaq>> getFaqs({
+    String? include,
+  });
+  Future<List<PRFFaqCategory>> getFaqCategories();
   Future<List<PRFStudentEnquiry>> getStudentEnquiries({
     String? studentUlid,
   });
@@ -26,13 +30,32 @@ abstract class StudentService {
 class StudentServiceImpl implements StudentService {
   final _networkUtil = NetworkUtil();
   @override
-  Future<List<PRFFaq>> getFaqs() async {
+  Future<List<PRFFaq>> getFaqs({
+    String? include,
+  }) async {
     try {
       final res = await _networkUtil.getReq(
         '/mission-faqs',
+        queryParameters: {
+          if (include != null) 'include': include,
+          'limit': 500,
+        },
       );
 
       return PRFFaqResponse.fromJson(res).data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<PRFFaqCategory>> getFaqCategories() async {
+    try {
+      final res = await _networkUtil.getReq(
+        '/mission-faq-categories',
+      );
+
+      return PRFFaqCategoryResponse.fromJson(res).data;
     } catch (e) {
       rethrow;
     }
