@@ -20,20 +20,27 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
 
   Future<void> getFaqs({
     bool forceRefresh = false,
+    String? categoryUlid,
+    String? query,
   }) async {
     emit(const GetFaqsState.loading());
     try {
-      final localFaqs = await _localDBService.retreiveFaqs();
+      final localFaqs = await _localDBService.retreiveFaqs(
+        categoryUlid: categoryUlid,
+        query: query,
+      );
       if (localFaqs.isNotEmpty && !forceRefresh) {
         emit(GetFaqsState.loaded(faqs: localFaqs));
-        await _networkFetch();
         return;
       }
 
       if (localFaqs.isEmpty || forceRefresh) {
         await _networkFetch();
 
-        final localFaqs = await _localDBService.retreiveFaqs();
+        final localFaqs = await _localDBService.retreiveFaqs(
+            categoryUlid: categoryUlid,
+            query: query,
+        );
         emit(GetFaqsState.loaded(faqs: localFaqs));
         return;
       }

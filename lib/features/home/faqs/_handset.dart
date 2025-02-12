@@ -1,12 +1,15 @@
 import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_faq.dart';
+import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 
 class MemberFAQPageHandset extends StatefulWidget {
   const MemberFAQPageHandset({super.key});
@@ -16,6 +19,11 @@ class MemberFAQPageHandset extends StatefulWidget {
 }
 
 class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
+  PRFLocalFaqCategory? _selectedCategory;
+  String? _searchQuery;
+
+  final _searchDeboucer = Debouncer(milliseconds: 1 * 1000);
+
   @override
   void initState() {
     context.read<GetFaqsCubit>().getFaqs();
@@ -84,6 +92,25 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
+                child: FaqCategoriesPreview(
+                  onCategorySelected: (newValue) {
+                    setState(() {
+                      _selectedCategory = newValue;
+                    });
+                    Logger().i('Selected Category: $_selectedCategory');
+                    context.read<GetFaqsCubit>().getFaqs(
+                          categoryUlid: _selectedCategory?.ulid,
+                          query: _searchQuery != null ||
+                                  (_searchQuery?.isNotEmpty ?? false)
+                              ? _searchQuery
+                              : null,
+                        );
+                  },
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
@@ -197,6 +224,7 @@ class FaqCard extends StatelessWidget {
                   faq.question,
                   style: CustomTextTheme.customTextTheme().titleLarge!.copyWith(
                         fontWeight: FontWeight.w600,
+                        fontSize: 18,
                       ),
                 ),
                 SizedBox(height: 8.h),
@@ -204,6 +232,7 @@ class FaqCard extends StatelessWidget {
                   faq.answer,
                   style: CustomTextTheme.customTextTheme().bodySmall!.copyWith(
                         color: AppTheme.appTheme().kBlackColor,
+                        fontSize: 14,
                       ),
                 ),
                 SizedBox(height: 8.h),

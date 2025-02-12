@@ -579,5 +579,7 @@
     "reasonForGiving": "Reason for giving",
     "@reasonForGiving": {},
     "selectReasonForGiving": "Select reason for giving",
-    "@selectReasonForGiving": {}
+    "@selectReasonForGiving": {},
+    "categories": "Categories",
+    "@categories": {}
 }
