@@ -25,12 +25,13 @@ class Misc {
       DateFormat.jm().format(dateTime);
 
   static String getUserNameInitials(String userName) {
+    final trimmedName = userName.trim();
     var initials = 'U';
-    if (userName.isNotEmpty) {
-      final index = userName.indexOf(' ');
-      initials = userName[0].toUpperCase();
+    if (trimmedName.isNotEmpty) {
+      final index = trimmedName.indexOf(' ');
+      initials = trimmedName[0].toUpperCase();
       if (index != -1) {
-        initials = initials + userName[index + 1].toUpperCase();
+        initials = initials + trimmedName[index + 1].toUpperCase();
       }
     }
     return initials;

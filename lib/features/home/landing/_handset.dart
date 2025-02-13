@@ -66,7 +66,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                             child: CircleAvatar(
                               child: Text(
                                 Misc.getUserNameInitials(
-                                  getIt<HiveService>().retrieveProfile()!.name,
+                                  getIt<HiveService>()
+                                      .retrieveMember()!
+                                      .fullName,
                                 ),
                               ),
                             ),
