@@ -77,7 +77,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       SizedBox(
                         child: Text(
                           l10n.lessonDetails,
-                          style: CustomTextTheme.customTextTheme()
+                          style: PRFText.theme()
                               .displayLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                           overflow: TextOverflow.ellipsis,
@@ -104,7 +104,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     lesson.name!.toUpperCase(),
-                    style: CustomTextTheme.customTextTheme()
+                    style: PRFText.theme()
                         .headlineMedium
                         ?.copyWith(fontSize: 52.sp),
                   ),
@@ -120,9 +120,8 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: HtmlWidget(
                           lesson.content!,
-                          textStyle: CustomTextTheme.customTextTheme()
-                              .bodySmall
-                              ?.copyWith(fontSize: 16),
+                          textStyle:
+                              PRFText.theme().bodySmall?.copyWith(fontSize: 16),
                         ),
                       ),
 

@@ -93,9 +93,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             vertical: 20,
                           ),
                           fillColor: AppTheme.appTheme().kBackgroundColor,
-                          hintStyle: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
                                 color: AppTheme.appTheme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -151,9 +149,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       vertical: 20,
                     ),
                     fillColor: AppTheme.appTheme().kBackgroundColor,
-                    hintStyle: CustomTextTheme.customTextTheme()
-                        .headlineSmall!
-                        .copyWith(
+                    hintStyle: PRFText.theme().headlineSmall!.copyWith(
                           color: AppTheme.appTheme().kDullGreyColor,
                           fontWeight: FontWeight.w500,
                         ),

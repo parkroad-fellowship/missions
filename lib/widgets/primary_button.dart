@@ -59,11 +59,10 @@ class PrimaryButton extends StatelessWidget {
                 const SizedBox.shrink(),
               Text(
                 title,
-                style:
-                    CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                          color: AppTheme.appTheme().kBackgroundColor,
-                          fontWeight: FontWeight.w700,
-                        ),
+                style: PRFText.theme().headlineSmall!.copyWith(
+                      color: AppTheme.appTheme().kBackgroundColor,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
             ],
           ),

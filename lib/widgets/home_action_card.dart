@@ -43,11 +43,10 @@ class HomeActionCard extends StatelessWidget {
                 SizedBox(height: 100.h),
                 Text(
                   title,
-                  style:
-                      CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  style: PRFText.theme().displayLarge?.copyWith(
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
               ],
             ),

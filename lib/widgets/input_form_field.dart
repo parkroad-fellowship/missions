@@ -71,7 +71,7 @@ class _InputFormFieldState extends State<InputFormField> {
                 const TextInputType.numberWithOptions(decimal: true))
           FilteringTextInputFormatter.digitsOnly,
       ],
-      style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+      style: PRFText.theme().headlineSmall!.copyWith(
             color: widget.isEmail != null
                 ? AppTheme.appTheme().kPrimaryColorV2
                 : AppTheme.appTheme().kBlackColor,
@@ -151,7 +151,7 @@ class _InputFormFieldState extends State<InputFormField> {
             : AppTheme.appTheme().kBackgroundColor,
         filled: widget.enabled == false,
         hintText: widget.hintText,
-        hintStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        hintStyle: PRFText.theme().headlineSmall!.copyWith(
               color: widget.isUnderLine != null
                   ? AppTheme.appTheme().kAccent12GreyColor
                   : AppTheme.appTheme().kDullGreyColor,

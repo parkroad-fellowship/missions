@@ -83,7 +83,7 @@ abstract class NotificationService {
                                 ),
                                 title: Text(
                                   l10n.prayerAlert,
-                                  style: CustomTextTheme.customTextTheme()
+                                  style: PRFText.theme()
                                       .displayMedium
                                       ?.copyWith(
                                         color:
@@ -96,9 +96,7 @@ abstract class NotificationService {
                               ListTile(
                                 title: Text(
                                   payload['prayer_prompt_description']!,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .bodySmall
-                                      ?.copyWith(
+                                  style: PRFText.theme().bodySmall?.copyWith(
                                         color:
                                             AppTheme.appTheme().kPrimaryColorV2,
                                         fontSize: 18,

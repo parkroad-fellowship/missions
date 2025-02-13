@@ -27,7 +27,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
         automaticallyImplyLeading: false,
         title: Text(
           l10n.ask,
-          style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
+          style: PRFText.theme().displayLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
         ),

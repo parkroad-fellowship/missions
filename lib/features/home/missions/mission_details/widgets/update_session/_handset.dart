@@ -125,9 +125,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             vertical: 20,
                           ),
                           fillColor: AppTheme.appTheme().kBackgroundColor,
-                          hintStyle: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
                                 color: AppTheme.appTheme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -189,9 +187,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             vertical: 20,
                           ),
                           fillColor: AppTheme.appTheme().kBackgroundColor,
-                          hintStyle: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
                                 color: AppTheme.appTheme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -253,9 +249,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             vertical: 20,
                           ),
                           fillColor: AppTheme.appTheme().kBackgroundColor,
-                          hintStyle: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
                                 color: AppTheme.appTheme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -417,13 +411,13 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         backgroundColor: AppTheme.appTheme().kBackgroundColor,
-        itemStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        itemStyle: PRFText.theme().headlineSmall!.copyWith(
               color: AppTheme.appTheme().kBlackColor,
             ),
-        doneStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        doneStyle: PRFText.theme().headlineSmall!.copyWith(
               color: AppTheme.appTheme().kPrimaryColorV2,
             ),
-        cancelStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        cancelStyle: PRFText.theme().headlineSmall!.copyWith(
               color: AppTheme.appTheme().kPrimaryColorV2,
             ),
       ),
@@ -445,13 +439,13 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         backgroundColor: AppTheme.appTheme().kBackgroundColor,
-        itemStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        itemStyle: PRFText.theme().headlineSmall!.copyWith(
               color: AppTheme.appTheme().kBlackColor,
             ),
-        doneStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        doneStyle: PRFText.theme().headlineSmall!.copyWith(
               color: AppTheme.appTheme().kPrimaryColorV2,
             ),
-        cancelStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        cancelStyle: PRFText.theme().headlineSmall!.copyWith(
               color: AppTheme.appTheme().kPrimaryColorV2,
             ),
       ),

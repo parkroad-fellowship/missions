@@ -40,12 +40,11 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
               return Center(
                 child: Text(
                   l10n.noSubscribers,
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                          ),
+                  style: PRFText.theme().headlineSmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                      ),
                 ),
               );
             }
@@ -105,9 +104,7 @@ class SubscriberActionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: subscription.member!.fullName,
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
+                          style: PRFText.theme().displayLarge?.copyWith(
                                 color: AppTheme.appTheme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -116,9 +113,7 @@ class SubscriberActionCard extends StatelessWidget {
                                 PRFMissionRole.member)
                               TextSpan(
                                 text: ' ${subscription.missionRole.name}',
-                                style: CustomTextTheme.customTextTheme()
-                                    .displaySmall
-                                    ?.copyWith(
+                                style: PRFText.theme().displaySmall?.copyWith(
                                       color:
                                           AppTheme.appTheme().kPrimaryColorV2,
                                     ),

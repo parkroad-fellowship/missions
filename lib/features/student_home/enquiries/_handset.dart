@@ -66,7 +66,7 @@ class _LearnerEnquiriesPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.myQuestions,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -112,9 +112,7 @@ class _LearnerEnquiriesPageHandsetState
                             Center(
                               child: Text(
                                 l10n.noQuestions,
-                                style: CustomTextTheme.customTextTheme()
-                                    .headlineMedium!
-                                    .copyWith(
+                                style: PRFText.theme().headlineMedium!.copyWith(
                                       color: AppTheme.appTheme().kDullGreyColor,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -154,9 +152,7 @@ class _LearnerEnquiriesPageHandsetState
                         ),
                         title: Text(
                           enquiry.content,
-                          style: CustomTextTheme.customTextTheme()
-                              .bodySmall!
-                              .copyWith(
+                          style: PRFText.theme().bodySmall!.copyWith(
                                 color: Colors.black,
                                 fontSize: 14,
                               ),

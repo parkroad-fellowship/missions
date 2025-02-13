@@ -42,12 +42,11 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
               return Center(
                 child: Text(
                   l10n.noSubscribers,
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                          ),
+                  style: PRFText.theme().headlineSmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                      ),
                 ),
               );
             }
@@ -100,11 +99,10 @@ class SoulCard extends StatelessWidget {
               children: [
                 Text(
                   soul.fullName,
-                  style:
-                      CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  style: PRFText.theme().displayLarge?.copyWith(
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 SizedBox(height: 16.h),
                 Text(soul.classGroup!.name),

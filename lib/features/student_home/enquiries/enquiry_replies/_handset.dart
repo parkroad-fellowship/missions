@@ -99,7 +99,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.replies,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),

@@ -44,12 +44,11 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
               return Center(
                 child: Text(
                   l10n.noNotes,
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                          ),
+                  style: PRFText.theme().headlineSmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                      ),
                 ),
               );
             }
@@ -101,12 +100,12 @@ class DebriefNoteCard extends StatelessWidget {
               children: [
                 Text(
                   debriefNote.note,
-                  style: CustomTextTheme.customTextTheme().bodySmall,
+                  style: PRFText.theme().bodySmall,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   Misc.formatDateTime(debriefNote.createdAt),
-                  style: CustomTextTheme.customTextTheme().bodySmall,
+                  style: PRFText.theme().bodySmall,
                 ),
                 SizedBox(height: 8.h),
               ],

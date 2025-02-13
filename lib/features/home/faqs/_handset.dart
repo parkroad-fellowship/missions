@@ -71,7 +71,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.questions,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -119,9 +119,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
                       ),
-                      hintStyle: CustomTextTheme.customTextTheme()
-                          .bodyMedium
-                          ?.copyWith(
+                      hintStyle: PRFText.theme().bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppTheme.appTheme()
                                 .kPrimaryColorV2
@@ -200,7 +198,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                 Center(
                                   child: Text(
                                     l10n.noFaqs,
-                                    style: CustomTextTheme.customTextTheme()
+                                    style: PRFText.theme()
                                         .headlineMedium!
                                         .copyWith(
                                           color: AppTheme.appTheme()
@@ -219,7 +217,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                     children: [
                                       Text(
                                         l10n.pleaseWait,
-                                        style: CustomTextTheme.customTextTheme()
+                                        style: PRFText.theme()
                                             .displayLarge!
                                             .copyWith(
                                               color: AppTheme.appTheme()
@@ -287,7 +285,7 @@ class FaqCard extends StatelessWidget {
               children: [
                 Text(
                   faq.question,
-                  style: CustomTextTheme.customTextTheme().titleLarge!.copyWith(
+                  style: PRFText.theme().titleLarge!.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
@@ -295,7 +293,7 @@ class FaqCard extends StatelessWidget {
                 SizedBox(height: 8.h),
                 Text(
                   faq.answer,
-                  style: CustomTextTheme.customTextTheme().bodySmall!.copyWith(
+                  style: PRFText.theme().bodySmall!.copyWith(
                         color: AppTheme.appTheme().kBlackColor,
                         fontSize: 14,
                       ),

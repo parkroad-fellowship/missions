@@ -32,7 +32,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 mission.school!.name.toUpperCase(),
-                style: CustomTextTheme.customTextTheme().bodySmall,
+                style: PRFText.theme().bodySmall,
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,14 +42,14 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       Misc.formatDate(mission.startDate),
                       Misc.formatTime(mission.startTime),
                     ),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.missionEnd(
                       Misc.formatDate(mission.endDate),
                       Misc.formatTime(mission.endTime),
                     ),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                 ],
               ),
@@ -58,26 +58,26 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.theme,
-                style: CustomTextTheme.customTextTheme().headlineMedium,
+                style: PRFText.theme().headlineMedium,
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     mission.theme!,
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.population(mission.school!.totalStudents),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.missionariesRequested(mission.capacity),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.missionariesNeeded(mission.missionSubscriptionsNeeded),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                 ],
               ),
@@ -87,14 +87,14 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.missionPrepNotes,
-                style: CustomTextTheme.customTextTheme().headlineMedium,
+                style: PRFText.theme().headlineMedium,
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     mission.missionPrepNotes.toString(),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                 ],
               ),
@@ -104,7 +104,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.contactPersons,
-                style: CustomTextTheme.customTextTheme().headlineMedium,
+                style: PRFText.theme().headlineMedium,
               ),
             ),
             ...mission.school!.contacts!.map(
@@ -117,7 +117,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     Text(
                       contact.contactType!.name,
                       overflow: TextOverflow.clip,
-                      style: CustomTextTheme.customTextTheme().bodySmall,
+                      style: PRFText.theme().bodySmall,
                     ),
                   ],
                 ),
@@ -145,7 +145,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: [
                   Text(
                     l10n.address,
-                    style: CustomTextTheme.customTextTheme().headlineMedium,
+                    style: PRFText.theme().headlineMedium,
                   ),
                   const Spacer(),
                   Animate(
@@ -205,11 +205,11 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: <Widget>[
                   Text(
                     mission.school!.address,
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     mission.school!.directions.toString(),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                 ],
               ),
@@ -221,7 +221,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: [
                   Text(
                     l10n.depaturePlanning,
-                    style: CustomTextTheme.customTextTheme().headlineMedium,
+                    style: PRFText.theme().headlineMedium,
                   ),
                   const Spacer(),
                 ],
@@ -231,17 +231,17 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: <Widget>[
                   Text(
                     l10n.estimatedDistance(mission.school!.distance.toString()),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.estimatedTravelTime(
                       mission.school!.staticDuration.toString(),
                     ),
-                    style: CustomTextTheme.customTextTheme().bodySmall,
+                    style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.estimationDisclaimer,
-                    style: CustomTextTheme.customTextTheme()
+                    style: PRFText.theme()
                         .bodySmall
                         ?.copyWith(fontStyle: FontStyle.italic),
                   ),
@@ -253,7 +253,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.weather,
-                style: CustomTextTheme.customTextTheme().headlineMedium,
+                style: PRFText.theme().headlineMedium,
               ),
             ),
             ...mission.weatherForecasts.map(
@@ -264,7 +264,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     mission.weatherForecasts.indexOf(forecast) + 1,
                     forecast.weatherCodeDescription,
                   ),
-                  style: CustomTextTheme.customTextTheme().headlineMedium,
+                  style: PRFText.theme().headlineMedium,
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,7 +276,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         forecast.temperature.apparentMax,
                         forecast.temperature.apparentAvg,
                       ),
-                      style: CustomTextTheme.customTextTheme().bodySmall,
+                      style: PRFText.theme().bodySmall,
                     ),
                     Text(
                       l10n.humidity(
@@ -284,7 +284,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         forecast.humidity.max,
                         forecast.humidity.avg,
                       ),
-                      style: CustomTextTheme.customTextTheme().bodySmall,
+                      style: PRFText.theme().bodySmall,
                     ),
                     Text(
                       l10n.visibility(
@@ -292,7 +292,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         forecast.visibility.max,
                         forecast.visibility.avg,
                       ),
-                      style: CustomTextTheme.customTextTheme().bodySmall,
+                      style: PRFText.theme().bodySmall,
                     ),
                     Text(
                       l10n.precipitationProbability(
@@ -300,15 +300,15 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         forecast.precipitationProbability.max,
                         forecast.precipitationProbability.avg,
                       ),
-                      style: CustomTextTheme.customTextTheme().bodySmall,
+                      style: PRFText.theme().bodySmall,
                     ),
                     Text(
                       l10n.dressingRecommendations,
-                      style: CustomTextTheme.customTextTheme().headlineMedium,
+                      style: PRFText.theme().headlineMedium,
                     ),
                     Text(
                       forecast.dressingRecommendations.toString(),
-                      style: CustomTextTheme.customTextTheme().bodySmall,
+                      style: PRFText.theme().bodySmall,
                     ),
                   ],
                 ),

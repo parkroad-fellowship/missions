@@ -67,7 +67,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                         l10n.hello(
                           getIt<HiveService>().retrieveProfile()!.student!.name,
                         ),
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 60.sp),
                       ),
@@ -80,9 +80,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                       EdgeInsets.only(bottom: 80.h),
                   child: Text(
                     l10n.lookingFor,
-                    style: CustomTextTheme.customTextTheme()
-                        .displayLarge
-                        ?.copyWith(
+                    style: PRFText.theme().displayLarge?.copyWith(
                           color: AppTheme.appTheme().kPrimaryColorV2,
                           fontWeight: FontWeight.w600,
                           fontSize: 88.sp,
@@ -165,9 +163,8 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                                                 email,
                                                 password,
                                               ),
-                                              style: CustomTextTheme
-                                                      .customTextTheme()
-                                                  .headlineLarge,
+                                              style:
+                                                  PRFText.theme().headlineLarge,
                                             ),
                                           ),
                                         ],

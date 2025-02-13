@@ -74,7 +74,7 @@ class _MissionGroundSuggestionsPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.suggestAMission,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -259,18 +259,14 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: missionGroundSuggestion.name,
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
+                          style: PRFText.theme().displayLarge?.copyWith(
                                 color: AppTheme.appTheme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                           children: [
                             TextSpan(
                               text: ', ${missionGroundSuggestion.status.name}',
-                              style: CustomTextTheme.customTextTheme()
-                                  .displaySmall
-                                  ?.copyWith(
+                              style: PRFText.theme().displaySmall?.copyWith(
                                     color: AppTheme.appTheme().kPrimaryColorV2,
                                   ),
                             ),

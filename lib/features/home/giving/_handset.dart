@@ -70,7 +70,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.give,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -205,18 +205,14 @@ class PaymentCard extends StatelessWidget {
                             locale: 'en_KE',
                             symbol: 'KES ',
                           ).format(payment.amount),
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
+                          style: PRFText.theme().displayLarge?.copyWith(
                                 color: AppTheme.appTheme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                           children: [
                             TextSpan(
                               text: ', ${payment.paymentStatus.name}',
-                              style: CustomTextTheme.customTextTheme()
-                                  .displaySmall
-                                  ?.copyWith(
+                              style: PRFText.theme().displaySmall?.copyWith(
                                     color: AppTheme.appTheme().kPrimaryColorV2,
                                   ),
                             ),

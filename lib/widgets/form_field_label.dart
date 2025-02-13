@@ -23,7 +23,7 @@ class FormFieldLabel extends StatelessWidget {
         return RichText(
           text: TextSpan(
             text: label,
-            style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+            style: PRFText.theme().headlineSmall!.copyWith(
                   fontSize: 15,
                   color: color,
                   fontWeight: isBold ?? false ? FontWeight.bold : null,
@@ -32,19 +32,17 @@ class FormFieldLabel extends StatelessWidget {
               if (isRequired ?? false)
                 TextSpan(
                   text: ' *',
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                            fontSize: 14,
-                          ),
+                  style: PRFText.theme().headlineSmall!.copyWith(
+                        fontSize: 14,
+                      ),
                 ),
               if (isOptional ?? false)
                 TextSpan(
                   text: ' (optional)',
-                  style:
-                      CustomTextTheme.customTextTheme().titleMedium!.copyWith(
-                            color: const Color(0xff939393),
-                            fontSize: 14,
-                          ),
+                  style: PRFText.theme().titleMedium!.copyWith(
+                        color: const Color(0xff939393),
+                        fontSize: 14,
+                      ),
                 ),
             ],
           ),

@@ -45,12 +45,11 @@ class _MissionQuestionsViewHandsetState
               return Center(
                 child: Text(
                   l10n.noSubscribers,
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                          ),
+                  style: PRFText.theme().headlineSmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                      ),
                 ),
               );
             }
@@ -102,12 +101,12 @@ class MissionQuestionCard extends StatelessWidget {
               children: [
                 Text(
                   missionQuestion.question,
-                  style: CustomTextTheme.customTextTheme().bodySmall,
+                  style: PRFText.theme().bodySmall,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   Misc.formatDateTime(missionQuestion.createdAt),
-                  style: CustomTextTheme.customTextTheme().bodySmall,
+                  style: PRFText.theme().bodySmall,
                 ),
                 SizedBox(height: 8.h),
               ],

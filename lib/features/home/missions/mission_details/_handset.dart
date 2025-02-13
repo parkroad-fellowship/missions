@@ -111,7 +111,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                         const Spacer(),
                         Text(
                           l10n.missionDetails,
-                          style: CustomTextTheme.customTextTheme()
+                          style: PRFText.theme()
                               .displayLarge
                               ?.copyWith(fontSize: 80.sp),
                         ),
@@ -132,9 +132,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     dividerColor: Colors.white,
                     isScrollable: true,
                     tabAlignment: TabAlignment.start,
-                    labelStyle: CustomTextTheme.customTextTheme()
-                        .displayMedium!
-                        .copyWith(
+                    labelStyle: PRFText.theme().displayMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppTheme.appTheme().kPrimaryColorV2,
                         ),
@@ -210,9 +208,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
                 label: Text(
                   l10n.sendMe,
-                  style: CustomTextTheme.customTextTheme()
-                      .bodySmall
-                      ?.copyWith(color: Colors.white),
+                  style:
+                      PRFText.theme().bodySmall?.copyWith(color: Colors.white),
                 ),
                 icon: const Icon(
                   Icons.hail_rounded,

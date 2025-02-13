@@ -62,7 +62,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.announcements,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -89,7 +89,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                               Center(
                                 child: Text(
                                   l10n.noAnnouncements,
-                                  style: CustomTextTheme.customTextTheme()
+                                  style: PRFText.theme()
                                       .headlineMedium!
                                       .copyWith(
                                         color:
@@ -109,7 +109,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                     Text(
                                       l10n.pleaseWaitForOS,
                                       maxLines: 2,
-                                      style: CustomTextTheme.customTextTheme()
+                                      style: PRFText.theme()
                                           .displayLarge!
                                           .copyWith(
                                             color: AppTheme.appTheme()
@@ -158,9 +158,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                 padding: EdgeInsets.symmetric(horizontal: 80.w),
                                 child: Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
-                                  style: CustomTextTheme.customTextTheme()
-                                      .bodyLarge
-                                      ?.copyWith(
+                                  style: PRFText.theme().bodyLarge?.copyWith(
                                         color:
                                             AppTheme.appTheme().kPrimaryColorV2,
                                         fontWeight: FontWeight.w300,
@@ -198,36 +196,33 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         contentPadding: EdgeInsets.zero,
                                         title: Text(
                                           entries[index].title.toUpperCase(),
-                                          style:
-                                              CustomTextTheme.customTextTheme()
-                                                  .headlineMedium
-                                                  ?.copyWith(
-                                                    color: AppTheme.appTheme()
-                                                        .kPrimaryColorV2,
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
+                                          style: PRFText.theme()
+                                              .headlineMedium
+                                              ?.copyWith(
+                                                color: AppTheme.appTheme()
+                                                    .kPrimaryColorV2,
+                                                fontWeight: FontWeight.w300,
+                                              ),
                                         ),
                                         subtitle: Text(
                                           entries[index].content,
-                                          style:
-                                              CustomTextTheme.customTextTheme()
-                                                  .bodySmall
-                                                  ?.copyWith(
-                                                    color: AppTheme.appTheme()
-                                                        .kPrimaryColorV2,
-                                                  ),
+                                          style: PRFText.theme()
+                                              .bodySmall
+                                              ?.copyWith(
+                                                color: AppTheme.appTheme()
+                                                    .kPrimaryColorV2,
+                                              ),
                                         ),
                                         trailing: Text(
                                           Misc.formatTimeFromDateTime(
                                             entries[index].publishedAt,
                                           ),
-                                          style:
-                                              CustomTextTheme.customTextTheme()
-                                                  .bodySmall
-                                                  ?.copyWith(
-                                                    color: AppTheme.appTheme()
-                                                        .kPrimaryColorV2,
-                                                  ),
+                                          style: PRFText.theme()
+                                              .bodySmall
+                                              ?.copyWith(
+                                                color: AppTheme.appTheme()
+                                                    .kPrimaryColorV2,
+                                              ),
                                         ),
                                       ),
                                     ),

@@ -79,7 +79,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.sessionDetails,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -204,7 +204,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                     child: Center(
                       child: Text(
                         l10n.noRecordings,
-                        style: CustomTextTheme.customTextTheme().bodySmall,
+                        style: PRFText.theme().bodySmall,
                       ),
                     ),
                   ),
@@ -223,7 +223,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         ListTile(
                           title: Text(
                             l10n.downloadTeaching,
-                            style: CustomTextTheme.customTextTheme().bodySmall,
+                            style: PRFText.theme().bodySmall,
                           ),
                           trailing: IconButton(
                             icon: BlocConsumer<DownloadFileCubit,
@@ -260,8 +260,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                               backgroundColor: Colors.white,
                               label: Text(
                                 l10n.transcriptProcessing,
-                                style:
-                                    CustomTextTheme.customTextTheme().bodySmall,
+                                style: PRFText.theme().bodySmall,
                               ),
                             ),
                           ),
@@ -287,9 +286,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                                           ),
                                           child: Text(
                                             transcript.content,
-                                            style: CustomTextTheme
-                                                    .customTextTheme()
-                                                .bodySmall,
+                                            style: PRFText.theme().bodySmall,
                                           ),
                                         ),
                                       ),
@@ -301,8 +298,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                                 backgroundColor: Colors.white,
                                 label: Text(
                                   l10n.viewTranscript,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .bodySmall,
+                                  style: PRFText.theme().bodySmall,
                                 ),
                               ),
                             ),

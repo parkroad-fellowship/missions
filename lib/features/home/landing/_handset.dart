@@ -82,7 +82,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                 .member!
                                 .lastName,
                           ),
-                          style: CustomTextTheme.customTextTheme()
+                          style: PRFText.theme()
                               .displayLarge
                               ?.copyWith(fontSize: 60.sp),
                         ),
@@ -128,9 +128,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                         EdgeInsets.only(bottom: 80.h),
                     child: Text(
                       l10n.iWantTo,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(
+                      style: PRFText.theme().displayLarge?.copyWith(
                             color: AppTheme.appTheme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
                             fontSize: 94.sp,
