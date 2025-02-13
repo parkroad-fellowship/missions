@@ -5,12 +5,11 @@ import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppPaymentHandset extends StatefulWidget {
-  const AppPaymentHandset({
-    super.key,
-  });
+  const AppPaymentHandset({super.key});
 
   @override
   State<AppPaymentHandset> createState() => _AppPaymentHandsetState();
@@ -51,55 +50,58 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(
-                    child: LinearProgressIndicator(),
-                  ),
-                  loaded: (classes) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFPaymentType>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedPaymentType,
-                        hintText: l10n.reasonForGiving,
-                        dropdownMenuEntries: classes
-                            .map(
-                              (paymentType) =>
-                                  DropdownMenuEntry<PRFPaymentType>(
-                                value: paymentType,
-                                label: paymentType.name,
+                  loading: () => const Center(child: LinearProgressIndicator()),
+                  loaded:
+                      (classes) => LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DropdownMenu<PRFPaymentType>(
+                            width: constraints.maxWidth,
+                            initialSelection: selectedPaymentType,
+                            hintText: l10n.reasonForGiving,
+                            dropdownMenuEntries:
+                                classes
+                                    .map(
+                                      (paymentType) =>
+                                          DropdownMenuEntry<PRFPaymentType>(
+                                            value: paymentType,
+                                            label: paymentType.name,
+                                          ),
+                                    )
+                                    .toList(),
+                            onSelected:
+                                (paymentType) => setState(() {
+                                  selectedPaymentType = paymentType;
+                                }),
+                            inputDecorationTheme: InputDecorationTheme(
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color:
+                                      AppTheme.appTheme().kSecondaryGreyColor,
+                                ),
                               ),
-                            )
-                            .toList(),
-                        onSelected: (paymentType) => setState(() {
-                          selectedPaymentType = paymentType;
-                        }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: AppTheme.appTheme().kBackgroundColor,
-                          hintStyle: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
-                                color: AppTheme.appTheme().kDullGreyColor,
-                                fontWeight: FontWeight.w500,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color:
+                                      AppTheme.appTheme().kSecondaryGreyColor,
+                                ),
                               ),
-                        ),
-                      );
-                    },
-                  ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              fillColor: AppTheme.appTheme().kBackgroundColor,
+                              hintStyle: CustomTextTheme.customTextTheme()
+                                  .headlineSmall!
+                                  .copyWith(
+                                    color: AppTheme.appTheme().kDullGreyColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          );
+                        },
+                      ),
                 );
               },
             ),
@@ -116,6 +118,8 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
             InputFormField(
               hintText: l10n.enterAmount,
               controller: _amountController,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 32),
             BlocConsumer<AddPaymentCubit, AddPaymentState>(
@@ -141,35 +145,34 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (_amountController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterAmount),
-                          ),
-                        );
-                        return;
-                      }
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (_amountController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterAmount)),
+                            );
+                            return;
+                          }
 
-                      if (selectedPaymentType == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.selectReasonForGiving),
-                          ),
-                        );
-                        return;
-                      }
+                          if (selectedPaymentType == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(l10n.selectReasonForGiving),
+                              ),
+                            );
+                            return;
+                          }
 
-                      await context.read<AddPaymentCubit>().addPayment(
+                          await context.read<AddPaymentCubit>().addPayment(
                             amount: _amountController.text.trim(),
                             paymentTypeUlid: selectedPaymentType!.ulid,
                           );
-                    },
-                  ),
+                        },
+                      ),
                 );
               },
             ),
