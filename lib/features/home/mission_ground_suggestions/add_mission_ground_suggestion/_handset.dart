@@ -39,7 +39,7 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.missionGround,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -53,7 +53,7 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactPerson,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -67,7 +67,7 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactNumber,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -79,17 +79,17 @@ class _AddMissionGroundSuggestionViewHandsetState
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: AppTheme.appTheme().kBlackColor.withAlpha(150),
+                    color: PRFApp.theme().kBlackColor.withAlpha(150),
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: AppTheme.appTheme().kBlackColor.withAlpha(150),
+                    color: PRFApp.theme().kBlackColor.withAlpha(150),
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                fillColor: AppTheme.appTheme().kBackgroundColor,
+                fillColor: PRFApp.theme().kBackgroundColor,
                 filled: false,
               ),
             ),

@@ -82,7 +82,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                 .member!
                                 .lastName,
                           ),
-                          style: CustomTextTheme.customTextTheme()
+                          style: PRFText.theme()
                               .displayLarge
                               ?.copyWith(fontSize: 60.sp),
                         ),
@@ -103,7 +103,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: AppTheme.appTheme().kPrimaryColorV2,
+                                  color: PRFApp.theme().kPrimaryColorV2,
                                   width: 1.w,
                                 ),
                               ),
@@ -128,10 +128,8 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                         EdgeInsets.only(bottom: 80.h),
                     child: Text(
                       l10n.iWantTo,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                      style: PRFText.theme().displayLarge?.copyWith(
+                            color: PRFApp.theme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
                             fontSize: 94.sp,
                           ),

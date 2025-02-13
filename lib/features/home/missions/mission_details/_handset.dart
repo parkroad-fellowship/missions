@@ -95,7 +95,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              color: PRFApp.theme().kPrimaryColorV2,
                               width: 1.w,
                             ),
                           ),
@@ -111,7 +111,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                         const Spacer(),
                         Text(
                           l10n.missionDetails,
-                          style: CustomTextTheme.customTextTheme()
+                          style: PRFText.theme()
                               .displayLarge
                               ?.copyWith(fontSize: 80.sp),
                         ),
@@ -132,11 +132,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     dividerColor: Colors.white,
                     isScrollable: true,
                     tabAlignment: TabAlignment.start,
-                    labelStyle: CustomTextTheme.customTextTheme()
-                        .displayMedium!
-                        .copyWith(
+                    labelStyle: PRFText.theme().displayMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          color: PRFApp.theme().kPrimaryColorV2,
                         ),
                     indicatorColor: Colors.white,
                     overlayColor: WidgetStateProperty.all(Colors.transparent),
@@ -207,12 +205,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     }
                   },
                 ),
-                backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+                backgroundColor: PRFApp.theme().kPrimaryColorV2,
                 label: Text(
                   l10n.sendMe,
-                  style: CustomTextTheme.customTextTheme()
-                      .bodySmall
-                      ?.copyWith(color: Colors.white),
+                  style:
+                      PRFText.theme().bodySmall?.copyWith(color: Colors.white),
                 ),
                 icon: const Icon(
                   Icons.hail_rounded,
@@ -358,7 +355,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 );
               }
             },
-            backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+            backgroundColor: PRFApp.theme().kPrimaryColorV2,
             child: const Icon(
               Icons.add,
               color: Colors.white,

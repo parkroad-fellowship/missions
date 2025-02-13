@@ -56,7 +56,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -71,7 +71,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.questions,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -114,29 +114,26 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                     },
                     decoration: InputDecoration(
                       hintText: l10n.whatWouldYouLikeToKnow,
-                      suffixIconColor: AppTheme.appTheme().kPrimaryColorV2,
+                      suffixIconColor: PRFApp.theme().kPrimaryColorV2,
                       suffixIcon: Container(
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
                       ),
-                      hintStyle: CustomTextTheme.customTextTheme()
-                          .bodyMedium
-                          ?.copyWith(
+                      hintStyle: PRFText.theme().bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.appTheme()
-                                .kPrimaryColorV2
-                                .withAlpha(200),
+                            color:
+                                PRFApp.theme().kPrimaryColorV2.withAlpha(200),
                             fontSize: 12,
                           ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                          color: PRFApp.theme().kAccent2BackgroundColor,
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                          color: PRFApp.theme().kAccent2BackgroundColor,
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -200,11 +197,10 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                 Center(
                                   child: Text(
                                     l10n.noFaqs,
-                                    style: CustomTextTheme.customTextTheme()
+                                    style: PRFText.theme()
                                         .headlineMedium!
                                         .copyWith(
-                                          color: AppTheme.appTheme()
-                                              .kDullGreyColor,
+                                          color: PRFApp.theme().kDullGreyColor,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
@@ -219,10 +215,10 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                     children: [
                                       Text(
                                         l10n.pleaseWait,
-                                        style: CustomTextTheme.customTextTheme()
+                                        style: PRFText.theme()
                                             .displayLarge!
                                             .copyWith(
-                                              color: AppTheme.appTheme()
+                                              color: PRFApp.theme()
                                                   .kPrimaryColorV2,
                                               fontSize: 14,
                                             ),
@@ -278,8 +274,7 @@ class FaqCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -287,7 +282,7 @@ class FaqCard extends StatelessWidget {
               children: [
                 Text(
                   faq.question,
-                  style: CustomTextTheme.customTextTheme().titleLarge!.copyWith(
+                  style: PRFText.theme().titleLarge!.copyWith(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
@@ -295,8 +290,8 @@ class FaqCard extends StatelessWidget {
                 SizedBox(height: 8.h),
                 Text(
                   faq.answer,
-                  style: CustomTextTheme.customTextTheme().bodySmall!.copyWith(
-                        color: AppTheme.appTheme().kBlackColor,
+                  style: PRFText.theme().bodySmall!.copyWith(
+                        color: PRFApp.theme().kBlackColor,
                         fontSize: 14,
                       ),
                 ),

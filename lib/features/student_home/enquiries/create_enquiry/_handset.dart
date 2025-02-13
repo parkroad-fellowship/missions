@@ -27,7 +27,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
         automaticallyImplyLeading: false,
         title: Text(
           l10n.ask,
-          style: CustomTextTheme.customTextTheme().displayLarge?.copyWith(
+          style: PRFText.theme().displayLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
         ),
@@ -45,7 +45,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               child: FormFieldLabel(
                 label: l10n.enquiry,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -54,7 +54,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               child: FormFieldLabel(
                 label: l10n.rules,
                 isRequired: true,
-                color: AppTheme.appTheme().kErrorColor,
+                color: PRFApp.theme().kErrorColor,
               ),
             ),
             const SizedBox(height: 8),

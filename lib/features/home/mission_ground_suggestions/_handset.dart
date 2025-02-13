@@ -59,7 +59,7 @@ class _MissionGroundSuggestionsPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -74,7 +74,7 @@ class _MissionGroundSuggestionsPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.suggestAMission,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -180,12 +180,20 @@ class _MissionGroundSuggestionsPageHandsetState
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
-        onPressed: _addMissionGroundSuggestion,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+      floatingActionButton: Animate(
+        effects: const [
+          ShimmerEffect(
+            duration: Duration(seconds: 2),
+            delay: Duration(milliseconds: 500),
+          ),
+        ],
+        child: FloatingActionButton(
+          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          onPressed: _addMissionGroundSuggestion,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -236,8 +244,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -251,19 +258,15 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: missionGroundSuggestion.name,
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
+                          style: PRFText.theme().displayLarge?.copyWith(
+                                color: PRFApp.theme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                           children: [
                             TextSpan(
                               text: ', ${missionGroundSuggestion.status.name}',
-                              style: CustomTextTheme.customTextTheme()
-                                  .displaySmall
-                                  ?.copyWith(
-                                    color: AppTheme.appTheme().kPrimaryColorV2,
+                              style: PRFText.theme().displaySmall?.copyWith(
+                                    color: PRFApp.theme().kPrimaryColorV2,
                                   ),
                             ),
                           ],
@@ -290,16 +293,24 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                   ),
                   child: Visibility(
                     visible: Misc.userCan('viewAny mission ground suggestion'),
-                    child: IconButton(
-                      icon: const Icon(Icons.call),
-                      color: AppTheme.appTheme().kPrimaryColorV2,
-                      onPressed: () async {
-                        final uri = Uri(
-                          scheme: 'tel',
-                          path: missionGroundSuggestion.contactNumber,
-                        );
-                        await Misc.openUrl(uri);
-                      },
+                    child: Animate(
+                      effects: const [
+                        ShakeEffect(
+                          duration: Duration(seconds: 2),
+                          delay: Duration(milliseconds: 500),
+                        ),
+                      ],
+                      child: IconButton(
+                        icon: const Icon(Icons.call),
+                        color: PRFApp.theme().kPrimaryColorV2,
+                        onPressed: () async {
+                          final uri = Uri(
+                            scheme: 'tel',
+                            path: missionGroundSuggestion.contactNumber,
+                          );
+                          await Misc.openUrl(uri);
+                        },
+                      ),
                     ),
                   ),
                 ),

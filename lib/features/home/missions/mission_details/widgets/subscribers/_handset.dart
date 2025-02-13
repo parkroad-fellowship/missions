@@ -40,12 +40,11 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
               return Center(
                 child: Text(
                   l10n.noSubscribers,
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                          ),
+                  style: PRFText.theme().headlineSmall!.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: PRFApp.theme().kPrimaryColorV2,
+                      ),
                 ),
               );
             }
@@ -90,8 +89,7 @@ class SubscriberActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -105,10 +103,8 @@ class SubscriberActionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: subscription.member!.fullName,
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
+                          style: PRFText.theme().displayLarge?.copyWith(
+                                color: PRFApp.theme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                           children: [
@@ -116,11 +112,8 @@ class SubscriberActionCard extends StatelessWidget {
                                 PRFMissionRole.member)
                               TextSpan(
                                 text: ' ${subscription.missionRole.name}',
-                                style: CustomTextTheme.customTextTheme()
-                                    .displaySmall
-                                    ?.copyWith(
-                                      color:
-                                          AppTheme.appTheme().kPrimaryColorV2,
+                                style: PRFText.theme().displaySmall?.copyWith(
+                                      color: PRFApp.theme().kPrimaryColorV2,
                                     ),
                               ),
                           ],
@@ -145,16 +138,24 @@ class SubscriberActionCard extends StatelessWidget {
                     horizontal: 32.w,
                     vertical: 4.h,
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.call),
-                    color: AppTheme.appTheme().kPrimaryColorV2,
-                    onPressed: () async {
-                      final uri = Uri(
-                        scheme: 'tel',
-                        path: subscription.member!.phoneNumber,
-                      );
-                      await Misc.openUrl(uri);
-                    },
+                  child: Animate(
+                    effects: const [
+                      ShakeEffect(
+                        duration: Duration(seconds: 2),
+                        delay: Duration(milliseconds: 500),
+                      ),
+                    ],
+                    child: IconButton(
+                      icon: const Icon(Icons.call),
+                      color: PRFApp.theme().kPrimaryColorV2,
+                      onPressed: () async {
+                        final uri = Uri(
+                          scheme: 'tel',
+                          path: subscription.member!.phoneNumber,
+                        );
+                        await Misc.openUrl(uri);
+                      },
+                    ),
                   ),
                 ),
               ],

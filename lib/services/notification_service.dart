@@ -79,15 +79,14 @@ abstract class NotificationService {
                               ListTile(
                                 leading: Icon(
                                   Icons.warning_amber_rounded,
-                                  color: AppTheme.appTheme().kPrimaryColorV2,
+                                  color: PRFApp.theme().kPrimaryColorV2,
                                 ),
                                 title: Text(
                                   l10n.prayerAlert,
-                                  style: CustomTextTheme.customTextTheme()
+                                  style: PRFText.theme()
                                       .displayMedium
                                       ?.copyWith(
-                                        color:
-                                            AppTheme.appTheme().kPrimaryColorV2,
+                                        color: PRFApp.theme().kPrimaryColorV2,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       ),
@@ -96,11 +95,8 @@ abstract class NotificationService {
                               ListTile(
                                 title: Text(
                                   payload['prayer_prompt_description']!,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color:
-                                            AppTheme.appTheme().kPrimaryColorV2,
+                                  style: PRFText.theme().bodySmall?.copyWith(
+                                        color: PRFApp.theme().kPrimaryColorV2,
                                         fontSize: 18,
                                       ),
                                 ),

@@ -40,7 +40,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               child: FormFieldLabel(
                 label: l10n.classGroup,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 5),
@@ -72,24 +72,22 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          fillColor: AppTheme.appTheme().kBackgroundColor,
-                          hintStyle: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
-                                color: AppTheme.appTheme().kDullGreyColor,
+                          fillColor: PRFApp.theme().kBackgroundColor,
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
+                                color: PRFApp.theme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
@@ -105,7 +103,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               child: FormFieldLabel(
                 label: l10n.fullName,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),

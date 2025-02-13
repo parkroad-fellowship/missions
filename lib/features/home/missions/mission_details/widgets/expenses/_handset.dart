@@ -46,10 +46,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
           empty: () => Center(
             child: Text(
               l10n.askMissionDeskToDisburseFunds,
-              style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+              style: PRFText.theme().headlineSmall!.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.appTheme().kPrimaryColorV2,
+                    color: PRFApp.theme().kPrimaryColorV2,
                   ),
             ),
           ),
@@ -67,10 +67,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                       children: [
                         Text(
                           l10n.summary,
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
+                          style: PRFText.theme().displayLarge?.copyWith(
+                                color: PRFApp.theme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -245,10 +243,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   SliverToBoxAdapter(
                     child: Text(
                       l10n.breakdown,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                      style: PRFText.theme().displayLarge?.copyWith(
+                            color: PRFApp.theme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
@@ -337,8 +333,7 @@ class ExpenseCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -349,11 +344,10 @@ class ExpenseCard extends StatelessWidget {
                     locale: 'en_KE',
                     symbol: 'KES ',
                   ).format(expense.unitCost),
-                  style:
-                      CustomTextTheme.customTextTheme().displayLarge?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  style: PRFText.theme().displayLarge?.copyWith(
+                        color: PRFApp.theme().kPrimaryColorV2,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 SizedBox(height: 16.h),
                 Text(expense.confirmationMessage.toString()),

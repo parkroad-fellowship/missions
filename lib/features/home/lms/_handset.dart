@@ -51,7 +51,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -66,7 +66,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.learn,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -150,8 +150,7 @@ class CourseActionCard extends StatelessWidget {
               ),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color:
-                    AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+                color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Column(
@@ -161,10 +160,8 @@ class CourseActionCard extends StatelessWidget {
                     children: [
                       Text(
                         course.name,
-                        style: CustomTextTheme.customTextTheme()
-                            .displayLarge
-                            ?.copyWith(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
+                        style: PRFText.theme().displayLarge?.copyWith(
+                              color: PRFApp.theme().kPrimaryColorV2,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -182,7 +179,7 @@ class CourseActionCard extends StatelessWidget {
                           l10n.percentage(
                             course.courseMember?.percentComplete?.toInt() ?? 0,
                           ),
-                          style: CustomTextTheme.customTextTheme().bodySmall,
+                          style: PRFText.theme().bodySmall,
                         ),
                       ),
                     ],
@@ -190,9 +187,9 @@ class CourseActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     course.description,
-                    style: CustomTextTheme.customTextTheme()
+                    style: PRFText.theme()
                         .bodySmall
-                        ?.copyWith(color: AppTheme.appTheme().kPrimaryColorV2),
+                        ?.copyWith(color: PRFApp.theme().kPrimaryColorV2),
                   ),
                 ],
               ),

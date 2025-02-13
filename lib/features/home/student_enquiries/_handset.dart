@@ -47,7 +47,7 @@ class _StudentEnquiriesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -62,7 +62,7 @@ class _StudentEnquiriesPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.studentQuestions,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -117,10 +117,8 @@ class _StudentEnquiriesPageHandsetState
                             Center(
                               child: Text(
                                 l10n.noQuestions,
-                                style: CustomTextTheme.customTextTheme()
-                                    .headlineMedium!
-                                    .copyWith(
-                                      color: AppTheme.appTheme().kDullGreyColor,
+                                style: PRFText.theme().headlineMedium!.copyWith(
+                                      color: PRFApp.theme().kDullGreyColor,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
@@ -134,11 +132,10 @@ class _StudentEnquiriesPageHandsetState
                                 children: [
                                   Text(
                                     l10n.pleaseWait,
-                                    style: CustomTextTheme.customTextTheme()
+                                    style: PRFText.theme()
                                         .displayLarge!
                                         .copyWith(
-                                          color: AppTheme.appTheme()
-                                              .kPrimaryColorV2,
+                                          color: PRFApp.theme().kPrimaryColorV2,
                                           fontSize: 14,
                                         ),
                                   ),
@@ -166,9 +163,7 @@ class _StudentEnquiriesPageHandsetState
                         ),
                         title: Text(
                           enquiry.content,
-                          style: CustomTextTheme.customTextTheme()
-                              .bodySmall!
-                              .copyWith(
+                          style: PRFText.theme().bodySmall!.copyWith(
                                 color: Colors.black,
                                 fontSize: 14,
                               ),

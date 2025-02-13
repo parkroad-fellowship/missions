@@ -1,10 +1,10 @@
 name: app
 description: The PRF Super App
-version: 2.21.02+22102
+version: 2.21.03+22103
 publish_to: none
 
 environment:
-  sdk: "^3.3.0"
+  sdk: ^3.6.0
 
 dependencies:
   auto_route: ^9.3.0+1

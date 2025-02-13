@@ -70,19 +70,17 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                             child: Chip(
                               label: Text(l10n.all.toUpperCase()),
                               side: BorderSide(
-                                color: AppTheme.appTheme().kAccent12GreyColor,
+                                color: PRFApp.theme().kAccent12GreyColor,
                               ),
                               backgroundColor: _selectedCategory == null
-                                  ? AppTheme.appTheme().kPrimaryColorV2
+                                  ? PRFApp.theme().kPrimaryColorV2
                                   : Colors.white,
-                              labelStyle: CustomTextTheme.customTextTheme()
-                                  .bodyMedium
-                                  ?.copyWith(
+                              labelStyle: PRFText.theme().bodyMedium?.copyWith(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: _selectedCategory == null
                                         ? Colors.white
-                                        : AppTheme.appTheme().kPrimaryColorV2,
+                                        : PRFApp.theme().kPrimaryColorV2,
                                   ),
                             ),
                           );
@@ -99,20 +97,18 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                           child: Chip(
                             label: Text(faqCategory.name.toUpperCase()),
                             side: BorderSide(
-                              color: AppTheme.appTheme().kAccent12GreyColor,
+                              color: PRFApp.theme().kAccent12GreyColor,
                               width: 1.w,
                             ),
                             backgroundColor: _selectedCategory == faqCategory
-                                ? AppTheme.appTheme().kPrimaryColorV2
+                                ? PRFApp.theme().kPrimaryColorV2
                                 : Colors.white,
-                            labelStyle: CustomTextTheme.customTextTheme()
-                                .bodyMedium
-                                ?.copyWith(
+                            labelStyle: PRFText.theme().bodyMedium?.copyWith(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: _selectedCategory == faqCategory
                                       ? Colors.white
-                                      : AppTheme.appTheme().kPrimaryColorV2,
+                                      : PRFApp.theme().kPrimaryColorV2,
                                 ),
                           ),
                         );

@@ -80,7 +80,7 @@ class MediaServiceImpl implements MediaService {
       final assets = await AssetPicker.pickAssets(
         context,
         pickerConfig: AssetPickerConfig(
-          themeColor: AppTheme.appTheme().kPrimaryColorV2,
+          themeColor: PRFApp.theme().kPrimaryColorV2,
           textDelegate: const EnglishAssetPickerTextDelegate(),
           requestType: mediaType,
           maxAssets: count,

@@ -5,12 +5,11 @@ import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppPaymentHandset extends StatefulWidget {
-  const AppPaymentHandset({
-    super.key,
-  });
+  const AppPaymentHandset({super.key});
 
   @override
   State<AppPaymentHandset> createState() => _AppPaymentHandsetState();
@@ -43,7 +42,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(
                 label: l10n.reasonForGiving,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -51,9 +50,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(
-                    child: LinearProgressIndicator(),
-                  ),
+                  loading: () => const Center(child: LinearProgressIndicator()),
                   loaded: (classes) => LayoutBuilder(
                     builder: (context, constraints) {
                       return DropdownMenu<PRFPaymentType>(
@@ -76,24 +73,22 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          fillColor: AppTheme.appTheme().kBackgroundColor,
-                          hintStyle: CustomTextTheme.customTextTheme()
-                              .headlineSmall!
-                              .copyWith(
-                                color: AppTheme.appTheme().kDullGreyColor,
+                          fillColor: PRFApp.theme().kBackgroundColor,
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
+                                color: PRFApp.theme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
@@ -109,13 +104,15 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(
                 label: l10n.amount,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
             InputFormField(
               hintText: l10n.enterAmount,
               controller: _amountController,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 32),
             BlocConsumer<AddPaymentCubit, AddPaymentState>(
@@ -148,9 +145,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     onPressed: () async {
                       if (_amountController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterAmount),
-                          ),
+                          SnackBar(content: Text(l10n.enterAmount)),
                         );
                         return;
                       }

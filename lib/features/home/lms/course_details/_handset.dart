@@ -61,7 +61,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -87,7 +87,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           return SizedBox(
                             child: Text(
                               course!.name,
-                              style: CustomTextTheme.customTextTheme()
+                              style: PRFText.theme()
                                   .displayLarge
                                   ?.copyWith(fontWeight: FontWeight.w600),
                               overflow: TextOverflow.ellipsis,
@@ -114,7 +114,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                                         .toInt() ??
                                     0,
                               ),
-                              style: CustomTextTheme.customTextTheme()
+                              style: PRFText.theme()
                                   .displaySmall
                                   ?.copyWith(fontWeight: FontWeight.w600),
                             );
@@ -140,9 +140,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: Text(
                         course!.description,
-                        style: CustomTextTheme.customTextTheme()
-                            .bodySmall
-                            ?.copyWith(fontSize: 16),
+                        style:
+                            PRFText.theme().bodySmall?.copyWith(fontSize: 16),
                       ),
                     );
                   },
@@ -154,9 +153,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     l10n.modules,
-                    style: CustomTextTheme.customTextTheme()
-                        .displayLarge
-                        ?.copyWith(fontSize: 64.sp),
+                    style:
+                        PRFText.theme().displayLarge?.copyWith(fontSize: 64.sp),
                   ),
                 ),
               ),
@@ -222,7 +220,7 @@ class CourseDetailsActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: .1),
+              color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -235,10 +233,8 @@ class CourseDetailsActionCard extends StatelessWidget {
                       flex: 8,
                       child: Text(
                         courseModule.module.name!,
-                        style: CustomTextTheme.customTextTheme()
-                            .displayMedium
-                            ?.copyWith(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
+                        style: PRFText.theme().displayMedium?.copyWith(
+                              color: PRFApp.theme().kPrimaryColorV2,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -260,7 +256,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                                     ?.toInt() ??
                                 0,
                           ),
-                          style: CustomTextTheme.customTextTheme().bodySmall,
+                          style: PRFText.theme().bodySmall,
                         ),
                       ),
                     ),
@@ -269,10 +265,9 @@ class CourseDetailsActionCard extends StatelessWidget {
                 SizedBox(height: 16.h),
                 Text(
                   courseModule.module.description!,
-                  style:
-                      CustomTextTheme.customTextTheme().headlineSmall?.copyWith(
-                            color: AppTheme.appTheme().kBlackColor,
-                          ),
+                  style: PRFText.theme().headlineSmall?.copyWith(
+                        color: PRFApp.theme().kBlackColor,
+                      ),
                 ),
               ],
             ),

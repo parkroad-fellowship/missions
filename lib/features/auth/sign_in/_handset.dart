@@ -83,7 +83,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         l10n.signIn,
-                        style: CustomTextTheme.customTextTheme().displayLarge,
+                        style: PRFText.theme().displayLarge,
                       ),
                     ),
                     const SizedBox(height: 20),

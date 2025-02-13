@@ -55,7 +55,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -70,7 +70,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.give,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -134,7 +134,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+        backgroundColor: PRFApp.theme().kPrimaryColorV2,
         onPressed: _addPayment,
         child: const Icon(
           Icons.add,
@@ -187,8 +187,7 @@ class PaymentCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -205,19 +204,15 @@ class PaymentCard extends StatelessWidget {
                             locale: 'en_KE',
                             symbol: 'KES ',
                           ).format(payment.amount),
-                          style: CustomTextTheme.customTextTheme()
-                              .displayLarge
-                              ?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
+                          style: PRFText.theme().displayLarge?.copyWith(
+                                color: PRFApp.theme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                           children: [
                             TextSpan(
                               text: ', ${payment.paymentStatus.name}',
-                              style: CustomTextTheme.customTextTheme()
-                                  .displaySmall
-                                  ?.copyWith(
-                                    color: AppTheme.appTheme().kPrimaryColorV2,
+                              style: PRFText.theme().displaySmall?.copyWith(
+                                    color: PRFApp.theme().kPrimaryColorV2,
                                   ),
                             ),
                           ],
@@ -248,7 +243,7 @@ class PaymentCard extends StatelessWidget {
                     visible: false,
                     child: IconButton(
                       icon: const Icon(Icons.refresh_outlined),
-                      color: AppTheme.appTheme().kPrimaryColorV2,
+                      color: PRFApp.theme().kPrimaryColorV2,
                       onPressed: () async {
                         if (payment.redirectUrl != null) {
                           final uri = Uri.parse(payment.redirectUrl!);

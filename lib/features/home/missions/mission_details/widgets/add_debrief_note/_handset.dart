@@ -37,7 +37,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
               child: FormFieldLabel(
                 label: l10n.note,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),

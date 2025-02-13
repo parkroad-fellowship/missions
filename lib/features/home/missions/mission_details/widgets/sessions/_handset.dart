@@ -45,10 +45,10 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
           empty: () => Center(
             child: Text(
               l10n.noSessions,
-              style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+              style: PRFText.theme().headlineSmall!.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.appTheme().kPrimaryColorV2,
+                    color: PRFApp.theme().kPrimaryColorV2,
                   ),
             ),
           ),
@@ -70,12 +70,10 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                       Text(
                         DateFormat.MMMMEEEEd()
                             .format(missionSessions.keys.elementAt(index)),
-                        style: CustomTextTheme.customTextTheme()
-                            .headlineSmall!
-                            .copyWith(
+                        style: PRFText.theme().headlineSmall!.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: AppTheme.appTheme().kBlackColor,
+                              color: PRFApp.theme().kBlackColor,
                             ),
                       ),
                     ],
@@ -139,8 +137,7 @@ class MissionSessionCard extends StatelessWidget {
               ),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color:
-                    AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+                color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Row(
@@ -152,9 +149,7 @@ class MissionSessionCard extends StatelessWidget {
                       Text(
                         '${DateFormat.jm().format(missionSession.startsAt)} -'
                         ' ${DateFormat.jm().format(missionSession.endsAt)}',
-                        style: CustomTextTheme.customTextTheme()
-                            .titleLarge!
-                            .copyWith(
+                        style: PRFText.theme().titleLarge!.copyWith(
                               fontWeight: FontWeight.w600,
                               fontSize: 18,
                             ),
@@ -165,10 +160,8 @@ class MissionSessionCard extends StatelessWidget {
                         '${missionSession.facilitator!.fullName}\n'
                         '${l10n.speaker}: '
                         '${missionSession.speaker?.fullName}',
-                        style: CustomTextTheme.customTextTheme()
-                            .bodySmall!
-                            .copyWith(
-                              color: AppTheme.appTheme().kBlackColor,
+                        style: PRFText.theme().bodySmall!.copyWith(
+                              color: PRFApp.theme().kBlackColor,
                               fontSize: 14,
                             ),
                       ),

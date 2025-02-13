@@ -71,10 +71,10 @@ class _InputFormFieldState extends State<InputFormField> {
                 const TextInputType.numberWithOptions(decimal: true))
           FilteringTextInputFormatter.digitsOnly,
       ],
-      style: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+      style: PRFText.theme().headlineSmall!.copyWith(
             color: widget.isEmail != null
-                ? AppTheme.appTheme().kPrimaryColorV2
-                : AppTheme.appTheme().kBlackColor,
+                ? PRFApp.theme().kPrimaryColorV2
+                : PRFApp.theme().kBlackColor,
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
@@ -82,29 +82,29 @@ class _InputFormFieldState extends State<InputFormField> {
         disabledBorder: widget.isUnderLine != null
             ? UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: AppTheme.appTheme().kAccent4GreyColor,
+                  color: PRFApp.theme().kAccent4GreyColor,
                 ),
               )
             : OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
                   color: widget.enabled == false
-                      ? AppTheme.appTheme().kGreyColor
-                      : AppTheme.appTheme().kSecondaryGreyColor,
+                      ? PRFApp.theme().kGreyColor
+                      : PRFApp.theme().kSecondaryGreyColor,
                 ),
               ),
         border: widget.isUnderLine != null
             ? UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: AppTheme.appTheme().kAccent4GreyColor,
+                  color: PRFApp.theme().kAccent4GreyColor,
                 ),
               )
             : OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
                 borderSide: BorderSide(
                   color: widget.enabled == false
-                      ? AppTheme.appTheme().kGreyColor
-                      : AppTheme.appTheme().kSecondaryGreyColor,
+                      ? PRFApp.theme().kGreyColor
+                      : PRFApp.theme().kSecondaryGreyColor,
                 ),
               ),
         suffixIcon: (widget.showSuffix == null)
@@ -116,7 +116,7 @@ class _InputFormFieldState extends State<InputFormField> {
                   !(widget.hidePassword == null || widget.hidePassword == false)
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
-                  color: AppTheme.appTheme().kBlackColor,
+                  color: PRFApp.theme().kBlackColor,
                   size: 24,
                 ),
               ),
@@ -137,7 +137,7 @@ class _InputFormFieldState extends State<InputFormField> {
                 : null
             : Icon(
                 CupertinoIcons.search,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
                 size: 18,
               ),
         contentPadding: widget.isUnderLine != null
@@ -148,13 +148,13 @@ class _InputFormFieldState extends State<InputFormField> {
               ),
         fillColor: widget.enabled == false && widget.isUnderLine == null
             ? const Color(0xffF7F7F7)
-            : AppTheme.appTheme().kBackgroundColor,
+            : PRFApp.theme().kBackgroundColor,
         filled: widget.enabled == false,
         hintText: widget.hintText,
-        hintStyle: CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
+        hintStyle: PRFText.theme().headlineSmall!.copyWith(
               color: widget.isUnderLine != null
-                  ? AppTheme.appTheme().kAccent12GreyColor
-                  : AppTheme.appTheme().kDullGreyColor,
+                  ? PRFApp.theme().kAccent12GreyColor
+                  : PRFApp.theme().kDullGreyColor,
               fontWeight: FontWeight.w500,
             ),
       ),

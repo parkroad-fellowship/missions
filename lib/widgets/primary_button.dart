@@ -26,11 +26,11 @@ class PrimaryButton extends StatelessWidget {
         return MaterialButton(
           color: isAlert ?? false
               ? (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kErrorColor.withValues(alpha: .4)
-                  : AppTheme.appTheme().kErrorColor
+                  ? PRFApp.theme().kErrorColor.withValues(alpha: .4)
+                  : PRFApp.theme().kErrorColor
               : (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: .4)
-                  : AppTheme.appTheme().kPrimaryColorV2,
+                  ? PRFApp.theme().kPrimaryColorV2.withValues(alpha: .4)
+                  : PRFApp.theme().kPrimaryColorV2,
           minWidth: double.infinity,
           height: height ?? 55,
           elevation: 0,
@@ -49,7 +49,7 @@ class PrimaryButton extends StatelessWidget {
                   height: 14,
                   width: 14,
                   child: CircularProgressIndicator(
-                    color: AppTheme.appTheme().kBackgroundColor,
+                    color: PRFApp.theme().kBackgroundColor,
                     backgroundColor: Colors.transparent,
                     strokeWidth: 2,
                   ),
@@ -59,11 +59,10 @@ class PrimaryButton extends StatelessWidget {
                 const SizedBox.shrink(),
               Text(
                 title,
-                style:
-                    CustomTextTheme.customTextTheme().headlineSmall!.copyWith(
-                          color: AppTheme.appTheme().kBackgroundColor,
-                          fontWeight: FontWeight.w700,
-                        ),
+                style: PRFText.theme().headlineSmall!.copyWith(
+                      color: PRFApp.theme().kBackgroundColor,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
             ],
           ),

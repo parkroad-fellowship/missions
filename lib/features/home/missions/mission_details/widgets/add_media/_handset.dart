@@ -45,7 +45,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   initial: () => ListTile(
                     title: Text(
                       l10n.tapToAdd,
-                      style: CustomTextTheme.customTextTheme().displayLarge,
+                      style: PRFText.theme().displayLarge,
                     ),
                     leading: const Icon(
                       Icons.insert_photo_outlined,
@@ -108,7 +108,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                     return ListTile(
                       title: Text(
                         l10n.tapToAdd,
-                        style: CustomTextTheme.customTextTheme().displayLarge,
+                        style: PRFText.theme().displayLarge,
                       ),
                       leading: const Icon(
                         Icons.insert_photo_outlined,

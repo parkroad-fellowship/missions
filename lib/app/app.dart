@@ -50,7 +50,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              colorSchemeSeed: AppTheme.appTheme().kPrimaryColorV2,
+              colorSchemeSeed: PRFApp.theme().kPrimaryColorV2,
               appBarTheme: AppBarTheme(
                 backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               ),

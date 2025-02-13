@@ -64,7 +64,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -79,7 +79,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.sessionDetails,
-                        style: CustomTextTheme.customTextTheme()
+                        style: PRFText.theme()
                             .displayLarge
                             ?.copyWith(fontSize: 80.sp),
                       ),
@@ -164,7 +164,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                       children: [
                         FormFieldLabel(
                           label: l10n.recordings,
-                          color: AppTheme.appTheme().kBlackColor,
+                          color: PRFApp.theme().kBlackColor,
                           isBold: true,
                         ),
                         SizedBox(
@@ -204,7 +204,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                     child: Center(
                       child: Text(
                         l10n.noRecordings,
-                        style: CustomTextTheme.customTextTheme().bodySmall,
+                        style: PRFText.theme().bodySmall,
                       ),
                     ),
                   ),
@@ -223,7 +223,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         ListTile(
                           title: Text(
                             l10n.downloadTeaching,
-                            style: CustomTextTheme.customTextTheme().bodySmall,
+                            style: PRFText.theme().bodySmall,
                           ),
                           trailing: IconButton(
                             icon: BlocConsumer<DownloadFileCubit,
@@ -253,23 +253,20 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         if (transcript.content.isEmpty)
                           Badge(
                             label: Text(l10n.inTesting),
-                            backgroundColor:
-                                AppTheme.appTheme().kPrimaryColorV2,
+                            backgroundColor: PRFApp.theme().kPrimaryColorV2,
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: Chip(
                               backgroundColor: Colors.white,
                               label: Text(
                                 l10n.transcriptProcessing,
-                                style:
-                                    CustomTextTheme.customTextTheme().bodySmall,
+                                style: PRFText.theme().bodySmall,
                               ),
                             ),
                           ),
                         if (transcript.content.isNotEmpty)
                           Badge(
                             label: Text(l10n.inTesting),
-                            backgroundColor:
-                                AppTheme.appTheme().kPrimaryColorV2,
+                            backgroundColor: PRFApp.theme().kPrimaryColorV2,
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: GestureDetector(
                               onTap: () => WoltModalSheet.show<void>(
@@ -287,9 +284,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                                           ),
                                           child: Text(
                                             transcript.content,
-                                            style: CustomTextTheme
-                                                    .customTextTheme()
-                                                .bodySmall,
+                                            style: PRFText.theme().bodySmall,
                                           ),
                                         ),
                                       ),
@@ -301,8 +296,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                                 backgroundColor: Colors.white,
                                 label: Text(
                                   l10n.viewTranscript,
-                                  style: CustomTextTheme.customTextTheme()
-                                      .bodySmall,
+                                  style: PRFText.theme().bodySmall,
                                 ),
                               ),
                             ),
@@ -487,7 +481,7 @@ class DataCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 40.w),
           child: FormFieldLabel(
             label: label,
-            color: AppTheme.appTheme().kBlackColor,
+            color: PRFApp.theme().kBlackColor,
             isBold: true,
           ),
         ),
