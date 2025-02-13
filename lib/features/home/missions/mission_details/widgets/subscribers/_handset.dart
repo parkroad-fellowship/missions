@@ -147,11 +147,11 @@ class SubscriberActionCard extends StatelessWidget {
                   ),
                   child: Animate(
                     effects: const [
-                    ShakeEffect(
-                     duration: Duration(seconds: 2),
-                      delay: Duration(milliseconds: 500),
-                    ),
-                  ],
+                      ShakeEffect(
+                        duration: Duration(seconds: 2),
+                        delay: Duration(milliseconds: 500),
+                      ),
+                    ],
                     child: IconButton(
                       icon: const Icon(Icons.call),
                       color: AppTheme.appTheme().kPrimaryColorV2,

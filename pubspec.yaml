@@ -4,7 +4,7 @@ version: 2.21.03+22103
 publish_to: none
 
 environment:
-  sdk: "^3.7.0"
+  sdk: ^3.6.0
 
 dependencies:
   auto_route: ^9.3.0+1

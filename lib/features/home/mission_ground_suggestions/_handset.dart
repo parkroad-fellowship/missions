@@ -182,11 +182,11 @@ class _MissionGroundSuggestionsPageHandsetState
       ),
       floatingActionButton: Animate(
         effects: const [
-                    ShimmerEffect(
-                     duration: Duration(seconds: 2),
-                      delay: Duration(milliseconds: 500),
-                    ),
-                  ],
+          ShimmerEffect(
+            duration: Duration(seconds: 2),
+            delay: Duration(milliseconds: 500),
+          ),
+        ],
         child: FloatingActionButton(
           backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
           onPressed: _addMissionGroundSuggestion,
@@ -300,11 +300,11 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                     visible: Misc.userCan('viewAny mission ground suggestion'),
                     child: Animate(
                       effects: const [
-                    ShakeEffect(
-                     duration: Duration(seconds: 2),
-                      delay: Duration(milliseconds: 500),
-                    ),
-                  ],
+                        ShakeEffect(
+                          duration: Duration(seconds: 2),
+                          delay: Duration(milliseconds: 500),
+                        ),
+                      ],
                       child: IconButton(
                         icon: const Icon(Icons.call),
                         color: AppTheme.appTheme().kPrimaryColorV2,

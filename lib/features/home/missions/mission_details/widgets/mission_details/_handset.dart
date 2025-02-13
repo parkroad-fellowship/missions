@@ -124,7 +124,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 trailing: Animate(
                   effects: const [
                     ShakeEffect(
-                     duration: Duration(seconds: 2),
+                      duration: Duration(seconds: 2),
                       delay: Duration(milliseconds: 500),
                     ),
                   ],
@@ -241,7 +241,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   ),
                   Text(
                     l10n.estimationDisclaimer,
-                    style: CustomTextTheme.customTextTheme().bodySmall
+                    style: CustomTextTheme.customTextTheme()
+                        .bodySmall
                         ?.copyWith(fontStyle: FontStyle.italic),
                   ),
                 ],
