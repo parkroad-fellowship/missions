@@ -86,6 +86,16 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
               ),
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+              SliverToBoxAdapter(
+                child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
+                  builder: (context, state) => state.maybeWhen(
+                    loading: () => Center(
+                      child: LinearProgressIndicator(),
+                    ),
+                    orElse: () => SizedBox.shrink(),
+                  ),
+                ),
+              ),
               StreamBuilder(
                 stream: getIt<LocalDBService>().getCourses(),
                 builder: (context, snapshot) {
