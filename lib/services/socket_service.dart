@@ -267,7 +267,6 @@ class SocketServiceImpl implements SocketService {
       channels: configuredPresenceChannels,
     );
 
-    Logger().f('Hello there my dear?');
     await _connectClient(client: client);
   }
 
