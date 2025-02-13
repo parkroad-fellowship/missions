@@ -7,6 +7,8 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/versioning/build_version.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart' show BuildContext, Size;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:slugify/slugify.dart' as slugify;
 import 'package:url_launcher/url_launcher.dart';
@@ -60,6 +62,10 @@ class Misc {
   static bool canSubscribeToMission(PRFMission mission) {
     return mission.status == PRFMissionStatus.approved &&
         mission.missionSubscriptionsNeeded > 0;
+  }
+
+  static void initDimensions(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(1290, 2796));
   }
 
   static bool userCan(String permission) {

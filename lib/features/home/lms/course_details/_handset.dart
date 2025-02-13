@@ -37,6 +37,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(
@@ -68,7 +69,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
+                            PRFSuperAppRouter.lmsRoute,
                           ),
                         ),
                       ),
@@ -141,8 +142,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                       child: Text(
                         course!.description,
                         style: CustomTextTheme.customTextTheme()
-                            .bodyLarge
-                            ?.copyWith(fontSize: 52.sp),
+                            .bodySmall
+                            ?.copyWith(fontSize: 16)
                       ),
                     );
                   },
@@ -155,8 +156,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   child: Text(
                     l10n.modules,
                     style: CustomTextTheme.customTextTheme()
-                        .headlineMedium
-                        ?.copyWith(fontSize: 52.sp),
+                        .displayLarge
+                        ?.copyWith(fontSize: 64.sp),
                   ),
                 ),
               ),
@@ -229,32 +230,39 @@ class CourseDetailsActionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      courseModule.module.name!,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    const Spacer(),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 32.w,
-                        vertical: 4.h,
-                      ),
+                    Flexible(
+                      flex: 8,
                       child: Text(
-                        l10n.percentage(
-                          courseModule.memberModule?.percentComplete?.toInt() ??
-                              0,
+                        courseModule.module.name!,
+                        style: CustomTextTheme.customTextTheme()
+                            .displayMedium
+                            ?.copyWith(
+                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        style: CustomTextTheme.customTextTheme().bodySmall,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 32.w,
+                          vertical: 4.h,
+                        ),
+                        child: Text(
+                          l10n.percentage(
+                            courseModule.memberModule?.percentComplete
+                                    ?.toInt() ??
+                                0,
+                          ),
+                          style: CustomTextTheme.customTextTheme().bodySmall,
+                        ),
                       ),
                     ),
                   ],

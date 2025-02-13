@@ -27,6 +27,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(
@@ -180,11 +181,8 @@ class CourseActionCard extends StatelessWidget {
                   Text(
                     course.description,
                     style: CustomTextTheme.customTextTheme()
-                        .headlineMedium
-                        ?.copyWith(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        .bodySmall
+                        ?.copyWith(color: AppTheme.appTheme().kPrimaryColorV2),
                   ),
                 ],
               ),

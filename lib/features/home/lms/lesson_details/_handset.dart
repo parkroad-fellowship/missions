@@ -37,6 +37,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final lesson = lessonModule.lesson;
+    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(
@@ -94,30 +95,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
-                    lesson.name!,
-                    style: CustomTextTheme.customTextTheme()
-                        .headlineMedium
-                        ?.copyWith(fontSize: 52.sp),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.w),
-                  child: Text(
-                    lesson.description!,
-                    style: CustomTextTheme.customTextTheme()
-                        .bodyLarge
-                        ?.copyWith(fontSize: 52.sp),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.w),
-                  child: Text(
-                    l10n.content,
+                    lesson.name!.toUpperCase(),
                     style: CustomTextTheme.customTextTheme()
                         .headlineMedium
                         ?.copyWith(fontSize: 52.sp),
@@ -132,7 +110,12 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                     if (lesson.content != null)
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: HtmlWidget(lesson.content!),
+                        child: HtmlWidget(
+                          lesson.content!,
+                          textStyle: CustomTextTheme.customTextTheme()
+                              .bodySmall
+                              ?.copyWith(fontSize: 16),
+                        ),
                       ),
 
                     // Lesson video
