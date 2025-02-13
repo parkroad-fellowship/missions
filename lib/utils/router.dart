@@ -2,7 +2,7 @@ import 'package:app/utils/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 
 @AutoRouterConfig()
-class PRFSuperAppRouter extends $PRFSuperAppRouter {
+class PRFSuperAppRouter extends RootStackRouter {
   // Auth
   static const String decisionRoute = '/';
   static const String signInRoute = '/sign-in';
