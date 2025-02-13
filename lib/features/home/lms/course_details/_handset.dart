@@ -85,7 +85,6 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           }
                           final course = snapshot.data;
                           return SizedBox(
-                            width: 0.5.sw,
                             child: Text(
                               course!.name,
                               style: CustomTextTheme.customTextTheme()
@@ -139,12 +138,10 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                     final course = snapshot.data;
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
-                      child: Text(
-                        course!.description,
-                        style: CustomTextTheme.customTextTheme()
-                            .bodySmall
-                            ?.copyWith(fontSize: 16)
-                      ),
+                      child: Text(course!.description,
+                          style: CustomTextTheme.customTextTheme()
+                              .bodySmall
+                              ?.copyWith(fontSize: 16)),
                     );
                   },
                 ),

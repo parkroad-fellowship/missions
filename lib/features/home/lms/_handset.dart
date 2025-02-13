@@ -44,6 +44,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                 flexibleSpace: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 80.w),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -70,6 +71,13 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                             ?.copyWith(fontSize: 80.sp),
                       ),
                       const Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(right: 16.w),
+                        child: Visibility(
+                          visible: true,
+                          child: Icon(Icons.abc, color: Colors.white,),
+                        ),
+                      ),
                     ],
                   ),
                 ),

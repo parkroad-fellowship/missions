@@ -75,7 +75,6 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       ),
                       const Spacer(),
                       SizedBox(
-                        width: 0.5.sw,
                         child: Text(
                           l10n.lessonDetails,
                           style: CustomTextTheme.customTextTheme()
@@ -85,6 +84,13 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                         ),
                       ),
                       const Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(right: 16.w),
+                        child: Visibility(
+                          visible: true,
+                          child: Icon(Icons.abc, color: Colors.white,),
+                        ),
+                      ),
                     ],
                   ),
                 ),

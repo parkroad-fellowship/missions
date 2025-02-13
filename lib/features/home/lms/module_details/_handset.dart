@@ -69,7 +69,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       ),
                       const Spacer(),
                       SizedBox(
-                        width: 0.5.sw,
+                       
                         child: Text(
                           l10n.moduleDetails,
                           style: CustomTextTheme.customTextTheme()
