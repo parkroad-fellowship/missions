@@ -89,10 +89,10 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
               SliverToBoxAdapter(
                 child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
                   builder: (context, state) => state.maybeWhen(
-                    loading: () => Center(
+                    loading: () => const Center(
                       child: LinearProgressIndicator(),
                     ),
-                    orElse: () => SizedBox.shrink(),
+                    orElse: SizedBox.shrink,
                   ),
                 ),
               ),
