@@ -79,6 +79,13 @@ class _MissionGroundSuggestionsPageHandsetState
                             ?.copyWith(fontSize: 80.sp),
                       ),
                       const Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(right: 16.w),
+                        child: Visibility(
+                          visible: true,
+                          child: Icon(Icons.abc, color: Colors.white,),
+                        ),
+                      ),
                     ],
                   ),
                 ),

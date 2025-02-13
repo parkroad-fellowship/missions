@@ -34,6 +34,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             l10n.missions,
             style: CustomTextTheme.customTextTheme()
