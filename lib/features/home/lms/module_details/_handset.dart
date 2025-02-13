@@ -31,6 +31,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(
@@ -68,7 +69,6 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       ),
                       const Spacer(),
                       SizedBox(
-                        width: 0.5.sw,
                         child: Text(
                           l10n.moduleDetails,
                           style: CustomTextTheme.customTextTheme()
@@ -133,6 +133,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
                 child: StreamBuilder<PRFLocalCourseModule>(
                   stream: getIt<LocalDBService>().getCourseModule(
@@ -148,8 +149,8 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       child: Text(
                         course!.module.description!,
                         style: CustomTextTheme.customTextTheme()
-                            .bodyLarge
-                            ?.copyWith(fontSize: 52.sp),
+                            .bodySmall
+                            ?.copyWith(fontSize: 16),
                       ),
                     );
                   },
@@ -162,11 +163,12 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   child: Text(
                     l10n.lessons,
                     style: CustomTextTheme.customTextTheme()
-                        .headlineMedium
-                        ?.copyWith(fontSize: 52.sp),
+                        .displayLarge
+                        ?.copyWith(fontSize: 64.sp),
                   ),
                 ),
               ),
+
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               StreamBuilder<List<PRFLocalLessonModule>>(
                 stream: getIt<LocalDBService>().getLessonModules(
@@ -238,8 +240,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: width),
+              color: AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -248,28 +249,24 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      lessonModule.lesson.name!,
-                      style: CustomTextTheme.customTextTheme()
-                          .displayLarge
-                          ?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                    Flexible(
+                      flex: 8,
+                      child: Text(
+                        lessonModule.lesson.name!,
+                        style: CustomTextTheme.customTextTheme()
+                            .displayMedium
+                            ?.copyWith(
+                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
                     ),
-                    const Spacer(),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 32.w,
-                        vertical: 4.h,
-                      ),
+                    Flexible(
+                      flex: 2,
                       child: Icon(
-                        lessonModule.lessonMember?.completionStatus?.icon,
+                        lessonModule.lessonMember?.completionStatus?.icon ??
+                            Icons.watch_later_outlined,
+                        color: AppTheme.appTheme().kPrimaryColorV2,
                       ),
                     ),
                   ],

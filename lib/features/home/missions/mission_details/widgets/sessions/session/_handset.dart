@@ -44,10 +44,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    ScreenUtil.init(
-      context,
-      designSize: const Size(1290, 2796),
-    );
+    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(

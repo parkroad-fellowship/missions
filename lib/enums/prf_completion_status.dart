@@ -19,9 +19,9 @@ enum PRFCompletionStatus {
   IconData get icon {
     switch (this) {
       case PRFCompletionStatus.incomplete:
-        return Icons.check;
-      case PRFCompletionStatus.complete:
         return Icons.watch_later_outlined;
+      case PRFCompletionStatus.complete:
+        return Icons.check;
     }
   }
 }

@@ -27,6 +27,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(
@@ -43,6 +44,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                 flexibleSpace: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 80.w),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -69,6 +71,15 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                             ?.copyWith(fontSize: 80.sp),
                       ),
                       const Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(right: 16.w),
+                        child: const Visibility(
+                          child: Icon(
+                            Icons.abc,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -180,11 +191,8 @@ class CourseActionCard extends StatelessWidget {
                   Text(
                     course.description,
                     style: CustomTextTheme.customTextTheme()
-                        .headlineMedium
-                        ?.copyWith(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        .bodySmall
+                        ?.copyWith(color: AppTheme.appTheme().kPrimaryColorV2),
                   ),
                 ],
               ),
