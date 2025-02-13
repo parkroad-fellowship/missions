@@ -78,9 +78,11 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
-                        child: Visibility(
-                          visible: true,
-                          child: Icon(Icons.abc, color: Colors.white,),
+                        child: const Visibility(
+                          child: Icon(
+                            Icons.abc,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],

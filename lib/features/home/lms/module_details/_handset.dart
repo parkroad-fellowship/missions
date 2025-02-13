@@ -69,7 +69,6 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       ),
                       const Spacer(),
                       SizedBox(
-                       
                         child: Text(
                           l10n.moduleDetails,
                           style: CustomTextTheme.customTextTheme()
@@ -222,8 +221,6 @@ class ModuleDetailsActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     final width = MediaQuery.sizeOf(context).width;
     return GestureDetector(
       onTap: () => context.router.push(
