@@ -30,7 +30,7 @@ class HomeActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: 1),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: 1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -44,7 +44,7 @@ class HomeActionCard extends StatelessWidget {
                 Text(
                   title,
                   style: PRFText.theme().displayLarge?.copyWith(
-                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        color: PRFApp.theme().kPrimaryColorV2,
                         fontWeight: FontWeight.w600,
                       ),
                 ),
@@ -70,7 +70,7 @@ class HomeActionCard extends StatelessWidget {
               radius: 140.r,
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppTheme.appTheme().kPrimaryColorV2,
+                  color: PRFApp.theme().kPrimaryColorV2,
                   shape: BoxShape.circle,
                 ),
                 child: SizedBox(

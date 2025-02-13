@@ -86,7 +86,7 @@ class _StudentEnquiryRepliesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -155,10 +155,10 @@ class _StudentEnquiryRepliesPageHandsetState
                           ),
                           decoration: BoxDecoration(
                             color: enquiryReply.isStudent
-                                ? AppTheme.appTheme()
+                                ? PRFApp.theme()
                                     .kSecondaryColorV2
                                     .withValues(alpha: .2)
-                                : AppTheme.appTheme()
+                                : PRFApp.theme()
                                     .kGreyColor
                                     .withValues(alpha: .2),
                             borderRadius: BorderRadius.circular(10),
@@ -204,7 +204,7 @@ class _StudentEnquiryRepliesPageHandsetState
                             child: FormFieldLabel(
                               label: l10n.reply,
                               isRequired: true,
-                              color: AppTheme.appTheme().kBlackColor,
+                              color: PRFApp.theme().kBlackColor,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -213,7 +213,7 @@ class _StudentEnquiryRepliesPageHandsetState
                             child: FormFieldLabel(
                               label: l10n.rules,
                               isRequired: true,
-                              color: AppTheme.appTheme().kErrorColor,
+                              color: PRFApp.theme().kErrorColor,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -272,7 +272,7 @@ class _StudentEnquiryRepliesPageHandsetState
               ];
             },
           ),
-          backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+          backgroundColor: PRFApp.theme().kPrimaryColorV2,
           child: const Icon(Icons.add, color: Colors.white),
         ),
       ),

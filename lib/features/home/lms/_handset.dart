@@ -51,7 +51,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -150,8 +150,7 @@ class CourseActionCard extends StatelessWidget {
               ),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color:
-                    AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+                color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Column(
@@ -162,7 +161,7 @@ class CourseActionCard extends StatelessWidget {
                       Text(
                         course.name,
                         style: PRFText.theme().displayLarge?.copyWith(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              color: PRFApp.theme().kPrimaryColorV2,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -190,7 +189,7 @@ class CourseActionCard extends StatelessWidget {
                     course.description,
                     style: PRFText.theme()
                         .bodySmall
-                        ?.copyWith(color: AppTheme.appTheme().kPrimaryColorV2),
+                        ?.copyWith(color: PRFApp.theme().kPrimaryColorV2),
                   ),
                 ],
               ),

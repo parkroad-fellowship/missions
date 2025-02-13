@@ -59,7 +59,7 @@ class _MissionGroundSuggestionsPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -188,7 +188,7 @@ class _MissionGroundSuggestionsPageHandsetState
           ),
         ],
         child: FloatingActionButton(
-          backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+          backgroundColor: PRFApp.theme().kPrimaryColorV2,
           onPressed: _addMissionGroundSuggestion,
           child: const Icon(
             Icons.add,
@@ -244,8 +244,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -260,14 +259,14 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                         TextSpan(
                           text: missionGroundSuggestion.name,
                           style: PRFText.theme().displayLarge?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                color: PRFApp.theme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                           children: [
                             TextSpan(
                               text: ', ${missionGroundSuggestion.status.name}',
                               style: PRFText.theme().displaySmall?.copyWith(
-                                    color: AppTheme.appTheme().kPrimaryColorV2,
+                                    color: PRFApp.theme().kPrimaryColorV2,
                                   ),
                             ),
                           ],
@@ -303,7 +302,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       ],
                       child: IconButton(
                         icon: const Icon(Icons.call),
-                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        color: PRFApp.theme().kPrimaryColorV2,
                         onPressed: () async {
                           final uri = Uri(
                             scheme: 'tel',

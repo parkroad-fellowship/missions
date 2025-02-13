@@ -103,7 +103,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: AppTheme.appTheme().kPrimaryColorV2,
+                                  color: PRFApp.theme().kPrimaryColorV2,
                                   width: 1.w,
                                 ),
                               ),
@@ -129,7 +129,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: Text(
                       l10n.iWantTo,
                       style: PRFText.theme().displayLarge?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
                             fontSize: 94.sp,
                           ),

@@ -51,7 +51,7 @@ class _LearnerEnquiriesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -113,7 +113,7 @@ class _LearnerEnquiriesPageHandsetState
                               child: Text(
                                 l10n.noQuestions,
                                 style: PRFText.theme().headlineMedium!.copyWith(
-                                      color: AppTheme.appTheme().kDullGreyColor,
+                                      color: PRFApp.theme().kDullGreyColor,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
@@ -175,7 +175,7 @@ class _LearnerEnquiriesPageHandsetState
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.router
             .pushNamed(PRFSuperAppRouter.createStudentEnquiryRoute),
-        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+        backgroundColor: PRFApp.theme().kPrimaryColorV2,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );

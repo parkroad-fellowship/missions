@@ -49,7 +49,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
               style: PRFText.theme().headlineSmall!.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.appTheme().kPrimaryColorV2,
+                    color: PRFApp.theme().kPrimaryColorV2,
                   ),
             ),
           ),
@@ -68,7 +68,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                         Text(
                           l10n.summary,
                           style: PRFText.theme().displayLarge?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                color: PRFApp.theme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),
@@ -244,7 +244,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                     child: Text(
                       l10n.breakdown,
                       style: PRFText.theme().displayLarge?.copyWith(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
@@ -333,8 +333,7 @@ class ExpenseCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -346,7 +345,7 @@ class ExpenseCard extends StatelessWidget {
                     symbol: 'KES ',
                   ).format(expense.unitCost),
                   style: PRFText.theme().displayLarge?.copyWith(
-                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        color: PRFApp.theme().kPrimaryColorV2,
                         fontWeight: FontWeight.w600,
                       ),
                 ),

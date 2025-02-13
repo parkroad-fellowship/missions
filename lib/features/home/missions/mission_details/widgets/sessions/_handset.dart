@@ -48,7 +48,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
               style: PRFText.theme().headlineSmall!.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppTheme.appTheme().kPrimaryColorV2,
+                    color: PRFApp.theme().kPrimaryColorV2,
                   ),
             ),
           ),
@@ -73,7 +73,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                         style: PRFText.theme().headlineSmall!.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: AppTheme.appTheme().kBlackColor,
+                              color: PRFApp.theme().kBlackColor,
                             ),
                       ),
                     ],
@@ -137,8 +137,7 @@ class MissionSessionCard extends StatelessWidget {
               ),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color:
-                    AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+                color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Row(
@@ -162,7 +161,7 @@ class MissionSessionCard extends StatelessWidget {
                         '${l10n.speaker}: '
                         '${missionSession.speaker?.fullName}',
                         style: PRFText.theme().bodySmall!.copyWith(
-                              color: AppTheme.appTheme().kBlackColor,
+                              color: PRFApp.theme().kBlackColor,
                               fontSize: 14,
                             ),
                       ),

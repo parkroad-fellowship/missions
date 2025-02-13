@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppTheme {
-  AppTheme.appTheme()
+class PRFApp {
+  PRFApp.theme()
       : kPrimaryColorV2 = const Color(0xff17154c),
         kSecondaryColorV2 = const Color(0xff93d500),
         kPrimaryColorV2Accent = const Color(0xFFFCE7D8),

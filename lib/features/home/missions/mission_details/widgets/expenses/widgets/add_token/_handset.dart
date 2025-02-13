@@ -37,7 +37,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
             child: FormFieldLabel(
               label: l10n.tokenAmount,
               isRequired: true,
-              color: AppTheme.appTheme().kBlackColor,
+              color: PRFApp.theme().kBlackColor,
             ),
           ),
           const SizedBox(height: 5),

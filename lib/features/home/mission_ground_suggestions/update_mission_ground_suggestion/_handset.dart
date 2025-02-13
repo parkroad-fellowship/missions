@@ -63,7 +63,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.missionGround,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -77,7 +77,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactPerson,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -91,7 +91,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactNumber,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -104,17 +104,17 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: AppTheme.appTheme().kBlackColor.withAlpha(150),
+                    color: PRFApp.theme().kBlackColor.withAlpha(150),
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: AppTheme.appTheme().kBlackColor.withAlpha(150),
+                    color: PRFApp.theme().kBlackColor.withAlpha(150),
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                fillColor: AppTheme.appTheme().kBackgroundColor,
+                fillColor: PRFApp.theme().kBackgroundColor,
                 filled: false,
               ),
             ),
@@ -124,7 +124,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.status,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -150,22 +150,22 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
                       borderSide: BorderSide(
-                        color: AppTheme.appTheme().kSecondaryGreyColor,
+                        color: PRFApp.theme().kSecondaryGreyColor,
                       ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
                       borderSide: BorderSide(
-                        color: AppTheme.appTheme().kSecondaryGreyColor,
+                        color: PRFApp.theme().kSecondaryGreyColor,
                       ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 20,
                     ),
-                    fillColor: AppTheme.appTheme().kBackgroundColor,
+                    fillColor: PRFApp.theme().kBackgroundColor,
                     hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                          color: AppTheme.appTheme().kDullGreyColor,
+                          color: PRFApp.theme().kDullGreyColor,
                           fontWeight: FontWeight.w500,
                         ),
                   ),
@@ -178,7 +178,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.comments,
                 isRequired: false,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),

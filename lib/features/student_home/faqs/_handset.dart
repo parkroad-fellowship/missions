@@ -56,7 +56,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -105,27 +105,26 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                     },
                     decoration: InputDecoration(
                       hintText: l10n.whatWouldYouLikeToKnow,
-                      suffixIconColor: AppTheme.appTheme().kPrimaryColorV2,
+                      suffixIconColor: PRFApp.theme().kPrimaryColorV2,
                       suffixIcon: Container(
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
                       ),
                       hintStyle: PRFText.theme().bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.appTheme()
-                                .kPrimaryColorV2
-                                .withAlpha(200),
+                            color:
+                                PRFApp.theme().kPrimaryColorV2.withAlpha(200),
                             fontSize: 12,
                           ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                          color: PRFApp.theme().kAccent2BackgroundColor,
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: AppTheme.appTheme().kAccent2BackgroundColor,
+                          color: PRFApp.theme().kAccent2BackgroundColor,
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -192,8 +191,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                                     style: PRFText.theme()
                                         .headlineMedium!
                                         .copyWith(
-                                          color: AppTheme.appTheme()
-                                              .kDullGreyColor,
+                                          color: PRFApp.theme().kDullGreyColor,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
@@ -211,7 +209,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                                         style: PRFText.theme()
                                             .displayLarge!
                                             .copyWith(
-                                              color: AppTheme.appTheme()
+                                              color: PRFApp.theme()
                                                   .kPrimaryColorV2,
                                               fontSize: 14,
                                             ),
@@ -267,8 +265,7 @@ class FaqCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -285,7 +282,7 @@ class FaqCard extends StatelessWidget {
                 Text(
                   faq.answer,
                   style: PRFText.theme().bodySmall!.copyWith(
-                        color: AppTheme.appTheme().kBlackColor,
+                        color: PRFApp.theme().kBlackColor,
                         fontSize: 14,
                       ),
                 ),

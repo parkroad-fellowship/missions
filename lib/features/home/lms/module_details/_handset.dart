@@ -55,7 +55,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -238,7 +238,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: .1),
+              color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -252,7 +252,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                       child: Text(
                         lessonModule.lesson.name!,
                         style: PRFText.theme().displayMedium?.copyWith(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              color: PRFApp.theme().kPrimaryColorV2,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -262,7 +262,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                       child: Icon(
                         lessonModule.lessonMember?.completionStatus?.icon ??
                             Icons.watch_later_outlined,
-                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        color: PRFApp.theme().kPrimaryColorV2,
                       ),
                     ),
                   ],
@@ -271,7 +271,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 Text(
                   lessonModule.lesson.description!,
                   style: PRFText.theme().headlineSmall?.copyWith(
-                        color: AppTheme.appTheme().kBlackColor,
+                        color: PRFApp.theme().kBlackColor,
                       ),
                 ),
               ],

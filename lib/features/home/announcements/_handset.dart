@@ -47,7 +47,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -92,8 +92,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                   style: PRFText.theme()
                                       .headlineMedium!
                                       .copyWith(
-                                        color:
-                                            AppTheme.appTheme().kDullGreyColor,
+                                        color: PRFApp.theme().kDullGreyColor,
                                         fontWeight: FontWeight.w600,
                                       ),
                                 ),
@@ -112,8 +111,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                       style: PRFText.theme()
                                           .displayLarge!
                                           .copyWith(
-                                            color: AppTheme.appTheme()
-                                                .kPrimaryColorV2,
+                                            color:
+                                                PRFApp.theme().kPrimaryColorV2,
                                             fontSize: 12,
                                           ),
                                     ),
@@ -159,8 +158,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                 child: Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
                                   style: PRFText.theme().bodyLarge?.copyWith(
-                                        color:
-                                            AppTheme.appTheme().kPrimaryColorV2,
+                                        color: PRFApp.theme().kPrimaryColorV2,
                                         fontWeight: FontWeight.w300,
                                         fontSize: 64.sp,
                                       ),
@@ -186,7 +184,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         horizontal: 16.w,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: AppTheme.appTheme()
+                                        color: PRFApp.theme()
                                             .kSecondaryColorV2
                                             .withValues(alpha: 1),
                                         borderRadius:
@@ -199,7 +197,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                           style: PRFText.theme()
                                               .headlineMedium
                                               ?.copyWith(
-                                                color: AppTheme.appTheme()
+                                                color: PRFApp.theme()
                                                     .kPrimaryColorV2,
                                                 fontWeight: FontWeight.w300,
                                               ),
@@ -209,7 +207,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                           style: PRFText.theme()
                                               .bodySmall
                                               ?.copyWith(
-                                                color: AppTheme.appTheme()
+                                                color: PRFApp.theme()
                                                     .kPrimaryColorV2,
                                               ),
                                         ),
@@ -220,7 +218,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                           style: PRFText.theme()
                                               .bodySmall
                                               ?.copyWith(
-                                                color: AppTheme.appTheme()
+                                                color: PRFApp.theme()
                                                     .kPrimaryColorV2,
                                               ),
                                         ),

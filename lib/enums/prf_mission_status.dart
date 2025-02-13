@@ -32,14 +32,14 @@ enum PRFMissionStatus {
   static Color switchColor(PRFMissionStatus status) {
     switch (status) {
       case PRFMissionStatus.approved:
-        return AppTheme.appTheme().kPrimaryColorV2;
+        return PRFApp.theme().kPrimaryColorV2;
       case PRFMissionStatus.serviced:
-        return AppTheme.appTheme().kGreenColor;
+        return PRFApp.theme().kGreenColor;
       case PRFMissionStatus.pending:
-        return AppTheme.appTheme().kYellowColor;
+        return PRFApp.theme().kYellowColor;
       case PRFMissionStatus.rejected:
       case PRFMissionStatus.cancelled:
-        return AppTheme.appTheme().kRedColor;
+        return PRFApp.theme().kRedColor;
     }
   }
 

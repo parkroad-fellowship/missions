@@ -43,7 +43,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                   style: PRFText.theme().headlineSmall!.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        color: PRFApp.theme().kPrimaryColorV2,
                       ),
                 ),
               );
@@ -89,8 +89,7 @@ class SubscriberActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -105,7 +104,7 @@ class SubscriberActionCard extends StatelessWidget {
                         TextSpan(
                           text: subscription.member!.fullName,
                           style: PRFText.theme().displayLarge?.copyWith(
-                                color: AppTheme.appTheme().kPrimaryColorV2,
+                                color: PRFApp.theme().kPrimaryColorV2,
                                 fontWeight: FontWeight.w600,
                               ),
                           children: [
@@ -114,8 +113,7 @@ class SubscriberActionCard extends StatelessWidget {
                               TextSpan(
                                 text: ' ${subscription.missionRole.name}',
                                 style: PRFText.theme().displaySmall?.copyWith(
-                                      color:
-                                          AppTheme.appTheme().kPrimaryColorV2,
+                                      color: PRFApp.theme().kPrimaryColorV2,
                                     ),
                               ),
                           ],
@@ -149,7 +147,7 @@ class SubscriberActionCard extends StatelessWidget {
                     ],
                     child: IconButton(
                       icon: const Icon(Icons.call),
-                      color: AppTheme.appTheme().kPrimaryColorV2,
+                      color: PRFApp.theme().kPrimaryColorV2,
                       onPressed: () async {
                         final uri = Uri(
                           scheme: 'tel',

@@ -47,7 +47,7 @@ class _StudentEnquiriesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -118,7 +118,7 @@ class _StudentEnquiriesPageHandsetState
                               child: Text(
                                 l10n.noQuestions,
                                 style: PRFText.theme().headlineMedium!.copyWith(
-                                      color: AppTheme.appTheme().kDullGreyColor,
+                                      color: PRFApp.theme().kDullGreyColor,
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
@@ -132,12 +132,12 @@ class _StudentEnquiriesPageHandsetState
                                 children: [
                                   Text(
                                     l10n.pleaseWait,
-                                    style:
-                                        PRFText.theme().displayLarge!.copyWith(
-                                              color: AppTheme.appTheme()
-                                                  .kPrimaryColorV2,
-                                              fontSize: 14,
-                                            ),
+                                    style: PRFText.theme()
+                                        .displayLarge!
+                                        .copyWith(
+                                          color: PRFApp.theme().kPrimaryColorV2,
+                                          fontSize: 14,
+                                        ),
                                   ),
                                 ],
                               ),

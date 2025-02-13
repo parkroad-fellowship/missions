@@ -48,7 +48,7 @@ class _MissionQuestionsViewHandsetState
                   style: PRFText.theme().headlineSmall!.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        color: PRFApp.theme().kPrimaryColorV2,
                       ),
                 ),
               );
@@ -92,8 +92,7 @@ class MissionQuestionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color:
-                  AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(

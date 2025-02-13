@@ -61,7 +61,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -220,7 +220,7 @@ class CourseDetailsActionCard extends StatelessWidget {
             ),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: AppTheme.appTheme().kPrimaryColorV2.withValues(alpha: .1),
+              color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -234,7 +234,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                       child: Text(
                         courseModule.module.name!,
                         style: PRFText.theme().displayMedium?.copyWith(
-                              color: AppTheme.appTheme().kPrimaryColorV2,
+                              color: PRFApp.theme().kPrimaryColorV2,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -266,7 +266,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                 Text(
                   courseModule.module.description!,
                   style: PRFText.theme().headlineSmall?.copyWith(
-                        color: AppTheme.appTheme().kBlackColor,
+                        color: PRFApp.theme().kBlackColor,
                       ),
                 ),
               ],

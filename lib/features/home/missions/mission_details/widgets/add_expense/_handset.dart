@@ -46,7 +46,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.expenseCategory,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 5),
@@ -79,22 +79,22 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          fillColor: AppTheme.appTheme().kBackgroundColor,
+                          fillColor: PRFApp.theme().kBackgroundColor,
                           hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                                color: AppTheme.appTheme().kDullGreyColor,
+                                color: PRFApp.theme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
@@ -110,7 +110,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.transactionType,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 5),
@@ -135,22 +135,22 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
                       borderSide: BorderSide(
-                        color: AppTheme.appTheme().kSecondaryGreyColor,
+                        color: PRFApp.theme().kSecondaryGreyColor,
                       ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
                       borderSide: BorderSide(
-                        color: AppTheme.appTheme().kSecondaryGreyColor,
+                        color: PRFApp.theme().kSecondaryGreyColor,
                       ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 20,
                     ),
-                    fillColor: AppTheme.appTheme().kBackgroundColor,
+                    fillColor: PRFApp.theme().kBackgroundColor,
                     hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                          color: AppTheme.appTheme().kDullGreyColor,
+                          color: PRFApp.theme().kDullGreyColor,
                           fontWeight: FontWeight.w500,
                         ),
                   ),
@@ -163,7 +163,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.unitCost,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -182,7 +182,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.quantity,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -201,7 +201,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.confirmationMessage,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),

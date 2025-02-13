@@ -38,7 +38,7 @@ class _AddMissionQuestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.addQuestion,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),

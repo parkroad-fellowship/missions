@@ -26,11 +26,11 @@ class SecondaryButton extends StatelessWidget {
         return MaterialButton(
           color: isAlert ?? false
               ? (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kErrorColor.withValues(alpha: .4)
-                  : AppTheme.appTheme().kErrorColor
+                  ? PRFApp.theme().kErrorColor.withValues(alpha: .4)
+                  : PRFApp.theme().kErrorColor
               : (disabled || (isLoading ?? false))
-                  ? AppTheme.appTheme().kBackgroundColor.withValues(alpha: .4)
-                  : AppTheme.appTheme().kBackgroundColor,
+                  ? PRFApp.theme().kBackgroundColor.withValues(alpha: .4)
+                  : PRFApp.theme().kBackgroundColor,
           minWidth: double.infinity,
           height: height ?? 55,
           elevation: 0,
@@ -49,7 +49,7 @@ class SecondaryButton extends StatelessWidget {
                   height: 14,
                   width: 14,
                   child: CircularProgressIndicator(
-                    color: AppTheme.appTheme().kPrimaryColorV2,
+                    color: PRFApp.theme().kPrimaryColorV2,
                     backgroundColor: Colors.transparent,
                     strokeWidth: 2,
                   ),
@@ -60,7 +60,7 @@ class SecondaryButton extends StatelessWidget {
               Text(
                 title,
                 style: PRFText.theme().headlineSmall!.copyWith(
-                      color: AppTheme.appTheme().kPrimaryColorV2,
+                      color: PRFApp.theme().kPrimaryColorV2,
                       fontWeight: FontWeight.w700,
                     ),
               ),

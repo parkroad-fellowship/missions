@@ -64,7 +64,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: AppTheme.appTheme().kPrimaryColorV2,
+                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -164,7 +164,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                       children: [
                         FormFieldLabel(
                           label: l10n.recordings,
-                          color: AppTheme.appTheme().kBlackColor,
+                          color: PRFApp.theme().kBlackColor,
                           isBold: true,
                         ),
                         SizedBox(
@@ -253,8 +253,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         if (transcript.content.isEmpty)
                           Badge(
                             label: Text(l10n.inTesting),
-                            backgroundColor:
-                                AppTheme.appTheme().kPrimaryColorV2,
+                            backgroundColor: PRFApp.theme().kPrimaryColorV2,
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: Chip(
                               backgroundColor: Colors.white,
@@ -267,8 +266,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         if (transcript.content.isNotEmpty)
                           Badge(
                             label: Text(l10n.inTesting),
-                            backgroundColor:
-                                AppTheme.appTheme().kPrimaryColorV2,
+                            backgroundColor: PRFApp.theme().kPrimaryColorV2,
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: GestureDetector(
                               onTap: () => WoltModalSheet.show<void>(
@@ -483,7 +481,7 @@ class DataCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 40.w),
           child: FormFieldLabel(
             label: label,
-            color: AppTheme.appTheme().kBlackColor,
+            color: PRFApp.theme().kBlackColor,
             isBold: true,
           ),
         ),

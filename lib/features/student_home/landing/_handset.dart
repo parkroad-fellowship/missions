@@ -81,7 +81,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   child: Text(
                     l10n.lookingFor,
                     style: PRFText.theme().displayLarge?.copyWith(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          color: PRFApp.theme().kPrimaryColorV2,
                           fontWeight: FontWeight.w600,
                           fontSize: 88.sp,
                         ),

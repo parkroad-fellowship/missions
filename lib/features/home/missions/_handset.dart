@@ -45,7 +45,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: AppTheme.appTheme().kPrimaryColorV2,
+                color: PRFApp.theme().kPrimaryColorV2,
                 width: 1.w,
               ),
             ),
@@ -64,7 +64,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
             tabAlignment: TabAlignment.start,
             labelStyle: PRFText.theme().displayMedium!.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.appTheme().kPrimaryColorV2,
+                  color: PRFApp.theme().kPrimaryColorV2,
                 ),
             indicatorColor: Colors.white,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
@@ -101,8 +101,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                                   style: PRFText.theme()
                                       .headlineMedium!
                                       .copyWith(
-                                        color:
-                                            AppTheme.appTheme().kDullGreyColor,
+                                        color: PRFApp.theme().kDullGreyColor,
                                         fontWeight: FontWeight.w600,
                                       ),
                                 ),
@@ -120,8 +119,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                                       style: PRFText.theme()
                                           .displayLarge!
                                           .copyWith(
-                                            color: AppTheme.appTheme()
-                                                .kPrimaryColorV2,
+                                            color:
+                                                PRFApp.theme().kPrimaryColorV2,
                                             fontSize: 14,
                                           ),
                                     ),
@@ -181,8 +180,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                                   style: PRFText.theme()
                                       .headlineMedium!
                                       .copyWith(
-                                        color:
-                                            AppTheme.appTheme().kDullGreyColor,
+                                        color: PRFApp.theme().kDullGreyColor,
                                         fontWeight: FontWeight.w600,
                                       ),
                                 ),
@@ -200,8 +198,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                                       style: PRFText.theme()
                                           .displayLarge!
                                           .copyWith(
-                                            color: AppTheme.appTheme()
-                                                .kPrimaryColorV2,
+                                            color:
+                                                PRFApp.theme().kPrimaryColorV2,
                                             fontSize: 14,
                                           ),
                                     ),
@@ -281,8 +279,7 @@ class MissionActionCard extends StatelessWidget {
               ),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color:
-                    AppTheme.appTheme().kSecondaryColorV2.withValues(alpha: .3),
+                color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Column(
@@ -296,7 +293,7 @@ class MissionActionCard extends StatelessWidget {
                   Text(
                     mission.school!.name,
                     style: PRFText.theme().displayLarge?.copyWith(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          color: PRFApp.theme().kPrimaryColorV2,
                           fontWeight: FontWeight.w600,
                         ),
                   ),
@@ -311,7 +308,7 @@ class MissionActionCard extends StatelessWidget {
                   Text(
                     mission.missionType!.name,
                     style: PRFText.theme().headlineMedium?.copyWith(
-                          color: AppTheme.appTheme().kPrimaryColorV2,
+                          color: PRFApp.theme().kPrimaryColorV2,
                           fontWeight: FontWeight.w600,
                         ),
                   ),

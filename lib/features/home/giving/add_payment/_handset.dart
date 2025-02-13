@@ -42,7 +42,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(
                 label: l10n.reasonForGiving,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -73,22 +73,22 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: AppTheme.appTheme().kSecondaryGreyColor,
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          fillColor: AppTheme.appTheme().kBackgroundColor,
+                          fillColor: PRFApp.theme().kBackgroundColor,
                           hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                                color: AppTheme.appTheme().kDullGreyColor,
+                                color: PRFApp.theme().kDullGreyColor,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
@@ -104,7 +104,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(
                 label: l10n.amount,
                 isRequired: true,
-                color: AppTheme.appTheme().kBlackColor,
+                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
