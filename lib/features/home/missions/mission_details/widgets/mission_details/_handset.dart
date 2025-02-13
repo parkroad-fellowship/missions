@@ -2,14 +2,12 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:map_launcher/map_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
-  const MissionDetailsViewHandset({
-    required this.mission,
-    super.key,
-  });
+  const MissionDetailsViewHandset({required this.mission, super.key});
 
   final PRFMission mission;
 
@@ -123,15 +121,20 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     ),
                   ],
                 ),
-                trailing: IconButton(
-                  onPressed: () async {
-                    final uri = Uri(
-                      scheme: 'tel',
-                      path: contact.phone,
-                    );
-                    await Misc.openUrl(uri);
-                  },
-                  icon: const Icon(Icons.phone),
+                trailing: Animate(
+                  effects: const [
+                    ShakeEffect(
+                     duration: Duration(seconds: 2),
+                      delay: Duration(milliseconds: 500),
+                    ),
+                  ],
+                  child: IconButton(
+                    onPressed: () async {
+                      final uri = Uri(scheme: 'tel', path: contact.phone);
+                      await Misc.openUrl(uri);
+                    },
+                    icon: const Icon(Icons.phone),
+                  ),
                 ),
               ),
             ),
@@ -145,56 +148,55 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     style: CustomTextTheme.customTextTheme().headlineMedium,
                   ),
                   const Spacer(),
-                  IconButton(
-                    onPressed: () async {
-                      final school = mission.school!;
+                  Animate(
+                    effects: const [
+                      ShakeEffect(
+                        duration: Duration(seconds: 2),
+                        delay: Duration(milliseconds: 500),
+                      ),
+                    ],
+                    child: IconButton(
+                      onPressed: () async {
+                        final school = mission.school!;
 
-                      final isGoogleMapAvaialable =
-                          await MapLauncher.isMapAvailable(MapType.google);
+                        final isGoogleMapAvaialable =
+                            await MapLauncher.isMapAvailable(MapType.google);
 
-                      if (isGoogleMapAvaialable ?? false) {
-                        await MapLauncher.showMarker(
-                          mapType: MapType.google,
-                          coords: Coords(
-                            school.latitude,
-                            school.longitude,
-                          ),
-                          title: school.name,
-                        );
-                        return;
-                      }
+                        if (isGoogleMapAvaialable ?? false) {
+                          await MapLauncher.showMarker(
+                            mapType: MapType.google,
+                            coords: Coords(school.latitude, school.longitude),
+                            title: school.name,
+                          );
+                          return;
+                        }
 
-                      final isGoogleGoMapAvailable =
-                          await MapLauncher.isMapAvailable(MapType.googleGo);
+                        final isGoogleGoMapAvailable =
+                            await MapLauncher.isMapAvailable(MapType.googleGo);
 
-                      if (isGoogleGoMapAvailable ?? false) {
-                        await MapLauncher.showMarker(
-                          mapType: MapType.googleGo,
-                          coords: Coords(
-                            school.latitude,
-                            school.longitude,
-                          ),
-                          title: school.name,
-                        );
-                        return;
-                      }
+                        if (isGoogleGoMapAvailable ?? false) {
+                          await MapLauncher.showMarker(
+                            mapType: MapType.googleGo,
+                            coords: Coords(school.latitude, school.longitude),
+                            title: school.name,
+                          );
+                          return;
+                        }
 
-                      final isAppleMapAvailable =
-                          await MapLauncher.isMapAvailable(MapType.apple);
+                        final isAppleMapAvailable =
+                            await MapLauncher.isMapAvailable(MapType.apple);
 
-                      if (isAppleMapAvailable ?? false) {
-                        await MapLauncher.showMarker(
-                          mapType: MapType.apple,
-                          coords: Coords(
-                            school.latitude,
-                            school.longitude,
-                          ),
-                          title: school.name,
-                        );
-                        return;
-                      }
-                    },
-                    icon: const Icon(Icons.map_rounded),
+                        if (isAppleMapAvailable ?? false) {
+                          await MapLauncher.showMarker(
+                            mapType: MapType.apple,
+                            coords: Coords(school.latitude, school.longitude),
+                            title: school.name,
+                          );
+                          return;
+                        }
+                      },
+                      icon: const Icon(Icons.map_rounded),
+                    ),
                   ),
                 ],
               ),
@@ -239,8 +241,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   ),
                   Text(
                     l10n.estimationDisclaimer,
-                    style: CustomTextTheme.customTextTheme()
-                        .bodySmall
+                    style: CustomTextTheme.customTextTheme().bodySmall
                         ?.copyWith(fontStyle: FontStyle.italic),
                   ),
                 ],

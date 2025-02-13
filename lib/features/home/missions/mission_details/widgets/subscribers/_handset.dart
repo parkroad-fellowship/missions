@@ -145,16 +145,24 @@ class SubscriberActionCard extends StatelessWidget {
                     horizontal: 32.w,
                     vertical: 4.h,
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.call),
-                    color: AppTheme.appTheme().kPrimaryColorV2,
-                    onPressed: () async {
-                      final uri = Uri(
-                        scheme: 'tel',
-                        path: subscription.member!.phoneNumber,
-                      );
-                      await Misc.openUrl(uri);
-                    },
+                  child: Animate(
+                    effects: const [
+                    ShakeEffect(
+                     duration: Duration(seconds: 2),
+                      delay: Duration(milliseconds: 500),
+                    ),
+                  ],
+                    child: IconButton(
+                      icon: const Icon(Icons.call),
+                      color: AppTheme.appTheme().kPrimaryColorV2,
+                      onPressed: () async {
+                        final uri = Uri(
+                          scheme: 'tel',
+                          path: subscription.member!.phoneNumber,
+                        );
+                        await Misc.openUrl(uri);
+                      },
+                    ),
                   ),
                 ),
               ],

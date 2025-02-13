@@ -180,12 +180,20 @@ class _MissionGroundSuggestionsPageHandsetState
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
-        onPressed: _addMissionGroundSuggestion,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+      floatingActionButton: Animate(
+        effects: const [
+                    ShimmerEffect(
+                     duration: Duration(seconds: 2),
+                      delay: Duration(milliseconds: 500),
+                    ),
+                  ],
+        child: FloatingActionButton(
+          backgroundColor: AppTheme.appTheme().kPrimaryColorV2,
+          onPressed: _addMissionGroundSuggestion,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -290,16 +298,24 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                   ),
                   child: Visibility(
                     visible: Misc.userCan('viewAny mission ground suggestion'),
-                    child: IconButton(
-                      icon: const Icon(Icons.call),
-                      color: AppTheme.appTheme().kPrimaryColorV2,
-                      onPressed: () async {
-                        final uri = Uri(
-                          scheme: 'tel',
-                          path: missionGroundSuggestion.contactNumber,
-                        );
-                        await Misc.openUrl(uri);
-                      },
+                    child: Animate(
+                      effects: const [
+                    ShakeEffect(
+                     duration: Duration(seconds: 2),
+                      delay: Duration(milliseconds: 500),
+                    ),
+                  ],
+                      child: IconButton(
+                        icon: const Icon(Icons.call),
+                        color: AppTheme.appTheme().kPrimaryColorV2,
+                        onPressed: () async {
+                          final uri = Uri(
+                            scheme: 'tel',
+                            path: missionGroundSuggestion.contactNumber,
+                          );
+                          await Misc.openUrl(uri);
+                        },
+                      ),
                     ),
                   ),
                 ),
