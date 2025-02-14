@@ -147,8 +147,8 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                             pageListBuilder: (modalSheetContext) {
                               return [
                                 WoltModalSheetPage(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                  surfaceTintColor: Colors.white,
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 16.w,
