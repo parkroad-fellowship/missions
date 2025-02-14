@@ -38,6 +38,9 @@ class SocketServiceImpl implements SocketService {
     return PusherChannelsClient.websocket(
       options: hostOptions,
       connectionErrorHandler: (exception, trace, refresh) {
+        Logger().f(exception);
+        Logger().f(trace);
+
         refresh();
       },
       activityDurationOverride: const Duration(
@@ -62,7 +65,7 @@ class SocketServiceImpl implements SocketService {
     required PusherChannelsClient client,
     required String channelName,
   }) {
-    final token = HiveServiceImpl().retrieveToken()!;
+    final token = getIt<HiveService>().retrieveToken();
 
     return client.privateChannel(
       'private-$channelName',
@@ -74,7 +77,7 @@ class SocketServiceImpl implements SocketService {
         ),
         onAuthFailed: (exception, trace) {
           Logger().e(exception);
-          Logger().e(trace);
+          Logger().f(trace);
         },
         headers: {
           'Authorization': 'Bearer $token',
@@ -88,7 +91,7 @@ class SocketServiceImpl implements SocketService {
     required PusherChannelsClient client,
     required String channelName,
   }) {
-    final token = HiveServiceImpl().retrieveToken()!;
+    final token = getIt<HiveService>().retrieveToken()!;
 
     return client.presenceChannel(
       'presence-$channelName',
