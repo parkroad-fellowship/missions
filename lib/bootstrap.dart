@@ -63,19 +63,15 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     getIt<NotificationService>().init();
     getIt<NotificationService>().scheduleGivingNotification();
 
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+
     runApp(await builder());
   } catch (error, stackTrace) {
-    if (kDebugMode) {
-      log(error.toString(), stackTrace: stackTrace);
-    } else {
-      FlutterError.onError = (errorDetails) {
-        FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-      };
-
-      PlatformDispatcher.instance.onError = (error, stack) {
-        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-        return true;
-      };
-    }
+    log(error.toString(), stackTrace: stackTrace);
   }
 }
