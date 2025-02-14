@@ -99,7 +99,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
               BlocBuilder<GetPaymentsCubit, GetPaymentsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: () => const SliverToBoxAdapter(
+                    orElse: () => const SliverFillRemaining(
                       child: Center(child: CircularProgressIndicator()),
                     ),
                     error: (message) => SliverToBoxAdapter(
