@@ -16,8 +16,8 @@ localize:
 apk:
 		flutter build apk  --flavor production --target lib/main_production.dart -vv
 
-sort:
-		dart run import_sorter:main
+clean:
+		flutter clean && flutter pub get -v && make pods
 
 aab:
 		flutter build appbundle  --flavor production --target lib/main_production.dart --release
