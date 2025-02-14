@@ -109,7 +109,7 @@ class _MissionGroundSuggestionsPageHandsetState
                   GetMissionGroundSuggestionsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: () => const SliverToBoxAdapter(
+                    orElse: () => const SliverFillRemaining(
                       child: Center(child: CircularProgressIndicator()),
                     ),
                     error: (message) =>
