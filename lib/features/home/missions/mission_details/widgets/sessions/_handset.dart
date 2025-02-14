@@ -52,11 +52,10 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                   ),
             ),
           ),
-          loaded: (missionSessions) => ListView.separated(
+          loaded: (missionSessions) => ListView.builder(
             shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: missionSessions.length,
-            separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) {
               final sortedDailySessions = List<PRFMissionSession>.from(
                 missionSessions.values.elementAt(index),
