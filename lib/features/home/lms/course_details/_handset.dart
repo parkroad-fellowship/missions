@@ -171,6 +171,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               StreamBuilder<List<PRFLocalCourseModule>>(
                 stream: getIt<LocalDBService>()
                     .getCourseModules(courseUlid: courseUlid),
