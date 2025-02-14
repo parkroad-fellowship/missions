@@ -96,6 +96,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               StreamBuilder(
                 stream: getIt<LocalDBService>().getCourses(),
                 builder: (context, snapshot) {
