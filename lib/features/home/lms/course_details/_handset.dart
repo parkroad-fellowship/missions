@@ -127,6 +127,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
               ),
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+
               SliverToBoxAdapter(
                 child: StreamBuilder<PRFLocalCourse>(
                   stream:
@@ -159,6 +160,17 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
+              SliverToBoxAdapter(
+                child:
+                    BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
+                  builder: (context, state) => state.maybeWhen(
+                    loading: () => const Center(
+                      child: LinearProgressIndicator(),
+                    ),
+                    orElse: SizedBox.shrink,
+                  ),
+                ),
+              ),
               StreamBuilder<List<PRFLocalCourseModule>>(
                 stream: getIt<LocalDBService>()
                     .getCourseModules(courseUlid: courseUlid),
