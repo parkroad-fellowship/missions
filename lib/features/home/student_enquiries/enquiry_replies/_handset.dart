@@ -192,6 +192,7 @@ class _StudentEnquiryRepliesPageHandsetState
               return [
                 WoltModalSheetPage(
                   backgroundColor: Colors.white,
+                  surfaceTintColor: Colors.white,
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.3,
                     child: Padding(

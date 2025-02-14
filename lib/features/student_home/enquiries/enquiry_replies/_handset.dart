@@ -189,6 +189,8 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
             pageListBuilder: (modalSheetContext) {
               return [
                 WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.3,
                     child: Padding(
