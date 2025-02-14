@@ -18,6 +18,9 @@ class Misc {
     return DateFormat.yMMMd().add_jm().format(dateTime.toLocal());
   }
 
+  static String formatMissionDate(DateTime dateTime) =>
+      DateFormat.EEEE().add_yMMMd().format(dateTime.toLocal());
+
   static String formatDate(DateTime dateTime) =>
       DateFormat.yMMMMd().format(dateTime.toLocal());
 
