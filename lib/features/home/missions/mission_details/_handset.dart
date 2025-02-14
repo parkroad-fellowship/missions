@@ -226,6 +226,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   pageListBuilder: (modalSheetContext) {
                     return [
                       WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
                           child: AddSessionView(missionUlid: mission.ulid),
@@ -249,6 +251,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   pageListBuilder: (modalSheetContext) {
                     return [
                       WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
                           child: AddSoulView(missionUlid: mission.ulid),
@@ -272,6 +276,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   pageListBuilder: (modalSheetContext) {
                     return [
                       WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
                           child: AddDebriefNoteViewHandset(
@@ -297,6 +303,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   pageListBuilder: (modalSheetContext) {
                     return [
                       WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
                           child:
@@ -321,6 +329,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   pageListBuilder: (modalSheetContext) {
                     return [
                       WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
                           child: AddExpenseView(missionUlid: mission.ulid),
@@ -345,6 +355,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   pageListBuilder: (modalSheetContext) {
                     return [
                       WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.8,
                           child: AddMediaView(missionUlid: mission.ulid),

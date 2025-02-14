@@ -176,6 +176,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                               pageListBuilder: (modalSheetContext) {
                                 return [
                                   WoltModalSheetPage(
+                                    backgroundColor: Colors.white,
+                                    surfaceTintColor: Colors.white,
                                     child: SizedBox(
                                       height:
                                           MediaQuery.sizeOf(context).height *
@@ -274,6 +276,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                                 pageListBuilder: (modalSheetContext) {
                                   return [
                                     WoltModalSheetPage(
+                                      backgroundColor: Colors.white,
+                                      surfaceTintColor: Colors.white,
                                       child: SizedBox(
                                         height:
                                             MediaQuery.sizeOf(context).height *
@@ -366,6 +370,8 @@ class MissionSessionDataView extends StatelessWidget {
                     pageListBuilder: (modalSheetContext) {
                       return [
                         WoltModalSheetPage(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
                           child: SizedBox(
                             height: MediaQuery.sizeOf(context).height * 0.8,
                             child: UpdateSessionView(

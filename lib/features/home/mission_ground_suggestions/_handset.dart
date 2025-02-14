@@ -147,6 +147,8 @@ class _MissionGroundSuggestionsPageHandsetState
                               pageListBuilder: (modalSheetContext) {
                                 return [
                                   WoltModalSheetPage(
+                                    backgroundColor: Colors.white,
+                                    surfaceTintColor: Colors.white,
                                     child: SizedBox(
                                       height:
                                           MediaQuery.sizeOf(context).height *
@@ -204,6 +206,8 @@ class _MissionGroundSuggestionsPageHandsetState
         pageListBuilder: (modalSheetContext) {
           return [
             WoltModalSheetPage(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
               child: SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.8,
                 child: const AddMissionGroundSuggestionView(),

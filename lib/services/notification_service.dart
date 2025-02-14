@@ -53,6 +53,9 @@ abstract class NotificationService {
 
     if (payload != null) {
       switch (PRFNotificationType.fromType(payload['type']!)) {
+        case PRFNotificationType.defaultPrompt:
+          return;
+
         case PRFNotificationType.prayerPrompt:
           await showDialog<dynamic>(
             context: getIt<PRFSuperAppRouter>().navigatorKey.currentContext!,
@@ -135,6 +138,9 @@ abstract class NotificationService {
               );
             },
           );
+        case PRFNotificationType.givingPrompt:
+          await getIt<PRFSuperAppRouter>()
+              .pushNamed(PRFSuperAppRouter.givingRoute);
       }
     }
   }

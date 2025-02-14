@@ -22,6 +22,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    Misc.initDimensions(context);
 
     return SingleChildScrollView(
       child: Padding(
@@ -32,21 +33,26 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 mission.school!.name.toUpperCase(),
-                style: PRFText.theme().bodySmall,
+                style: PRFText.theme()
+                    .headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Text(
                     l10n.missionStart(
-                      Misc.formatDate(mission.startDate),
+                      Misc.formatMissionDate(mission.startDate),
                       Misc.formatTime(mission.startTime),
                     ),
                     style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.missionEnd(
-                      Misc.formatDate(mission.endDate),
+                      Misc.formatMissionDate(mission.endDate),
                       Misc.formatTime(mission.endTime),
                     ),
                     style: PRFText.theme().bodySmall,
@@ -58,10 +64,13 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.theme,
-                style: PRFText.theme().headlineMedium,
+                style: PRFText.theme()
+                    .headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 8,
                 children: <Widget>[
                   Text(
                     mission.theme!,
@@ -87,7 +96,9 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.missionPrepNotes,
-                style: PRFText.theme().headlineMedium,
+                style: PRFText.theme()
+                    .headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +115,9 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.contactPersons,
-                style: PRFText.theme().headlineMedium,
+                style: PRFText.theme()
+                    .headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
             ...mission.school!.contacts!.map(
@@ -145,7 +158,9 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: [
                   Text(
                     l10n.address,
-                    style: PRFText.theme().headlineMedium,
+                    style: PRFText.theme()
+                        .headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   const Spacer(),
                   Animate(
@@ -221,7 +236,9 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: [
                   Text(
                     l10n.depaturePlanning,
-                    style: PRFText.theme().headlineMedium,
+                    style: PRFText.theme()
+                        .headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   const Spacer(),
                 ],
@@ -253,7 +270,9 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.weather,
-                style: PRFText.theme().headlineMedium,
+                style: PRFText.theme()
+                    .headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
             ...mission.weatherForecasts.map(
@@ -264,11 +283,13 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     mission.weatherForecasts.indexOf(forecast) + 1,
                     forecast.weatherCodeDescription,
                   ),
-                  style: PRFText.theme().headlineMedium,
+                  style: PRFText.theme()
+                      .headlineMedium
+                      ?.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 4.h,
+                  spacing: 4,
                   children: <Widget>[
                     Text(
                       l10n.temperature(
@@ -302,9 +323,12 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       ),
                       style: PRFText.theme().bodySmall,
                     ),
+                    SizedBox(height: 8.h),
                     Text(
                       l10n.dressingRecommendations,
-                      style: PRFText.theme().headlineMedium,
+                      style: PRFText.theme()
+                          .headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     Text(
                       forecast.dressingRecommendations.toString(),
