@@ -57,7 +57,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         missionUlid: missionUlid,
                         model: PRFMediaModel.missionPhotos,
                       );
-                      Gaimon.success();
+                  Gaimon.success();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(l10n.doneUploading),

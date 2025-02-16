@@ -89,7 +89,6 @@ class _AddMissionQuestionViewHandsetState
                     disabled: _isLoading,
                     isLoading: _isLoading ? true : null,
                     onPressed: () async {
-
                       if (_questionController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -99,7 +98,7 @@ class _AddMissionQuestionViewHandsetState
                         Gaimon.warning();
                         return;
                       }
-                      
+
                       await context
                           .read<AddMissionQuestionCubit>()
                           .addMissionQuestion(
