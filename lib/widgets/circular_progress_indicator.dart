@@ -2,14 +2,19 @@ import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class PRFCircularProgressIndicator extends StatelessWidget {
-  const PRFCircularProgressIndicator({super.key});
+  const PRFCircularProgressIndicator({
+    super.key,
+    this.color,
+  });
+
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(
-          PRFApp.theme().kPrimaryColorV2,
+          color ?? PRFApp.theme().kPrimaryColorV2,
         ),
       ),
     );

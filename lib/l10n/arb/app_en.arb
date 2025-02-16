@@ -616,5 +616,9 @@
     "downloadTeaching": "Download teaching",
     "@downloadTeaching": {},
     "downloaded": "Your download has started. Check your download folder once it's complete.",
-    "@downloaded": {}
+    "@downloaded": {},
+    "enterDebriefNote": "Enter debrief notes",
+    "@enterDebriefNote": {},
+    "enterQuestion": "Enter question",
+    "@enterQuestion": {}
 }

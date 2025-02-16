@@ -10,6 +10,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:full_screen_image/full_screen_image.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class GalleryViewHandset extends StatefulWidget {
@@ -56,6 +57,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         missionUlid: missionUlid,
                         model: PRFMediaModel.missionPhotos,
                       );
+                  Gaimon.success();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(l10n.doneUploading),
@@ -63,6 +65,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                   );
                 },
                 error: (error) {
+                  Gaimon.error();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(error.message),

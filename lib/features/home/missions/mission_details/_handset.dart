@@ -22,10 +22,12 @@ import 'package:app/features/home/missions/mission_details/widgets/subscribers/s
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/circular_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:logger/logger.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -178,6 +180,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             listener: (context, state) {
               state.mapOrNull(
                 loaded: (_) {
+                  Gaimon.success();
                   ScaffoldMessenger.maybeOf(context)?.showSnackBar(
                     SnackBar(
                       content: Text(l10n.successfullySubscribed),
@@ -185,6 +188,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   );
                 },
                 error: (error) {
+                  Gaimon.error();
                   ScaffoldMessenger.maybeOf(context)?.showSnackBar(
                     SnackBar(content: Text(error.message)),
                   );
@@ -211,9 +215,19 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   style:
                       PRFText.theme().bodySmall?.copyWith(color: Colors.white),
                 ),
-                icon: const Icon(
-                  Icons.hail_rounded,
-                  color: Colors.white,
+                icon: BlocBuilder<SubscribeCubit, SubscribeState>(
+                  builder: (context, state) => state.maybeWhen(
+                    orElse: () => const Icon(
+                      Icons.hail_rounded,
+                      color: Colors.white,
+                    ),
+                    loading: () => const SizedBox.square(
+                      dimension: 16,
+                      child: PRFCircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               );
             },

@@ -8,6 +8,7 @@ import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gaimon/gaimon.dart';
 
 class AddExpenseViewHandset extends StatefulWidget {
   const AddExpenseViewHandset({
@@ -40,7 +41,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
@@ -108,6 +108,59 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
+                label: l10n.unitCost,
+                isRequired: true,
+                color: PRFApp.theme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 12),
+            InputFormField(
+              hintText: l10n.unitCost,
+              controller: _unitCostController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.quantity,
+                isRequired: true,
+                color: PRFApp.theme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 12),
+            InputFormField(
+              hintText: l10n.quantity,
+              controller: _quantityController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.confirmationMessage,
+                isRequired: true,
+                color: PRFApp.theme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 6),
+            InputFormField(
+              hintText: l10n.confirmationMessage,
+              controller: _confirmationMessageController,
+              isTextBox: true,
+              maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
                 label: l10n.transactionType,
                 isRequired: true,
                 color: PRFApp.theme().kBlackColor,
@@ -158,60 +211,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               },
             ),
             const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.unitCost,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
-            ),
-            const SizedBox(height: 6),
-            const SizedBox(height: 6),
-            InputFormField(
-              hintText: l10n.unitCost,
-              controller: _unitCostController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.quantity,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
-            ),
-            const SizedBox(height: 6),
-            const SizedBox(height: 6),
-            InputFormField(
-              hintText: l10n.quantity,
-              controller: _quantityController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.confirmationMessage,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
-            ),
-            const SizedBox(height: 6),
-            InputFormField(
-              hintText: l10n.confirmationMessage,
-              controller: _confirmationMessageController,
-              isTextBox: true,
-              maxLines: 5,
-            ),
-            const SizedBox(height: 16),
             BlocConsumer<AddExpenseCubit, AddExpenseState>(
               listener: (context, state) {
                 state.mapOrNull(
@@ -224,10 +223,21 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     setState(() {
                       _isLoading = false;
                     });
+                    Gaimon.success();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(l10n.expenseRecorded),
+                      ),
+                    );
+                  },
+                  error: (error) {
+                    Gaimon.error();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          error.message,
+                        ),
                       ),
                     );
                   },
@@ -246,6 +256,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.selectExpenseCategory),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -255,6 +266,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.selectTransactionType),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -264,6 +276,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.enterAmount),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -273,6 +286,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.enterConfirmationMessage),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -290,7 +304,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                 );
               },
             ),
-            const SizedBox(height: 32),
           ],
         ),
       ),

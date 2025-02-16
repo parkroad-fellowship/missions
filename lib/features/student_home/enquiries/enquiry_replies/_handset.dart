@@ -221,6 +221,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                             controller: _enquiryReplyController,
                             isTextBox: true,
                             maxLines: 5,
+                            textCapitalization: TextCapitalization.sentences,
                           ),
                           const SizedBox(height: 16),
                           BlocConsumer<CreateStudentEnquiryReplyCubit,

@@ -24,6 +24,7 @@ class InputFormField extends StatefulWidget {
     this.maxLength,
     this.inputFormatters = const [],
     this.maxLines = 1,
+    this.textCapitalization = TextCapitalization.none,
   });
   final String hintText;
   final TextEditingController controller;
@@ -42,6 +43,7 @@ class InputFormField extends StatefulWidget {
   final int? maxLength;
   final List<TextInputFormatter> inputFormatters;
   final int? maxLines;
+  final TextCapitalization textCapitalization;
 
   @override
   State<InputFormField> createState() => _InputFormFieldState();
@@ -51,6 +53,7 @@ class _InputFormFieldState extends State<InputFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: widget.textCapitalization,
       keyboardType: widget.keyboardType,
       enabled: widget.enabled,
       readOnly: widget.readOnly ?? false,

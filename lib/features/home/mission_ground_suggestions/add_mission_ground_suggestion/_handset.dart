@@ -4,6 +4,7 @@ import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class AddMissionGroundSuggestionViewHandset extends StatefulWidget {
@@ -46,6 +47,7 @@ class _AddMissionGroundSuggestionViewHandsetState
             InputFormField(
               hintText: l10n.missionGround,
               controller: _nameController,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -60,6 +62,7 @@ class _AddMissionGroundSuggestionViewHandsetState
             InputFormField(
               hintText: l10n.contactPerson,
               controller: _contactPersonController,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -107,6 +110,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                     setState(() {
                       _isLoading = false;
                     });
+                    Gaimon.success();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -114,6 +118,16 @@ class _AddMissionGroundSuggestionViewHandsetState
                           l10n.missionGroundRecorded(
                             result.missionGroundSuggestion.name,
                           ),
+                        ),
+                      ),
+                    );
+                  },
+                  error: (error) {
+                    Gaimon.error();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          error.message,
                         ),
                       ),
                     );
@@ -133,6 +147,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                             content: Text(l10n.enterMissionGround),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -142,6 +157,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                             content: Text(l10n.enterContactPerson),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -151,6 +167,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                             content: Text(l10n.enterContactNumber),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
