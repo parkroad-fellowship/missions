@@ -7,6 +7,7 @@ import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gaimon/gaimon.dart';
 
 class AppPaymentHandset extends StatefulWidget {
   const AppPaymentHandset({super.key});
@@ -127,12 +128,21 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     setState(() {
                       _isLoading = false;
                     });
+                    Gaimon.success();
                     Navigator.of(context).pop();
                     if (result.payment.redirectUrl != null) {
                       await Misc.openUrl(
                         Uri.parse(result.payment.redirectUrl!),
                       );
                     }
+                  },
+                  error: (error) {
+                    Gaimon.error();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(error.error),
+                      ),
+                    );
                   },
                 );
               },

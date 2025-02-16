@@ -221,9 +221,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       Icons.hail_rounded,
                       color: Colors.white,
                     ),
-                    loading: () => SizedBox.square(
+                    loading: () => const SizedBox.square(
                       dimension: 16,
-                      child: const PRFCircularProgressIndicator(
+                      child: PRFCircularProgressIndicator(
                         color: Colors.white,
                       ),
                     ),

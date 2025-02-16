@@ -4,6 +4,7 @@ import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gaimon/gaimon.dart';
 
 class AddMissionQuestionViewHandset extends StatefulWidget {
   const AddMissionQuestionViewHandset({
@@ -61,10 +62,21 @@ class _AddMissionQuestionViewHandsetState
                     setState(() {
                       _isLoading = false;
                     });
+                    Gaimon.success();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(l10n.questionRecorded),
+                      ),
+                    );
+                  },
+                  error: (error) {
+                    Gaimon.error();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          error.message,
+                        ),
                       ),
                     );
                   },

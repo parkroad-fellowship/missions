@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:gaimon/gaimon.dart';
 
 class LessonDetailsHandset extends StatefulWidget {
   const LessonDetailsHandset({
@@ -190,6 +191,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                               setState(() {
                                 _isLoading = !_isLoading;
                               });
+                              Gaimon.success();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(l10n.completed),
@@ -202,6 +204,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                               setState(() {
                                 _isLoading = !_isLoading;
                               });
+                              Gaimon.error();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(message),

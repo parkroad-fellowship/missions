@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
+import 'package:gaimon/gaimon.dart';
 import 'package:intl/intl.dart';
 
 class AddSessionViewHandset extends StatefulWidget {
@@ -311,10 +312,21 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                     setState(() {
                       _isLoading = false;
                     });
+                    Gaimon.success();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(l10n.sessionRecorded),
+                      ),
+                    );
+                  },
+                  error: (error) {
+                    Gaimon.error();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          error.error,
+                        ),
                       ),
                     );
                   },
