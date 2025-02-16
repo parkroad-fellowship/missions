@@ -41,7 +41,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
@@ -109,6 +108,59 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
+                label: l10n.unitCost,
+                isRequired: true,
+                color: PRFApp.theme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 12),
+            InputFormField(
+              hintText: l10n.unitCost,
+              controller: _unitCostController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.quantity,
+                isRequired: true,
+                color: PRFApp.theme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 12),
+            InputFormField(
+              hintText: l10n.quantity,
+              controller: _quantityController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.confirmationMessage,
+                isRequired: true,
+                color: PRFApp.theme().kBlackColor,
+              ),
+            ),
+            const SizedBox(height: 6),
+            InputFormField(
+              hintText: l10n.confirmationMessage,
+              controller: _confirmationMessageController,
+              isTextBox: true,
+              maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
                 label: l10n.transactionType,
                 isRequired: true,
                 color: PRFApp.theme().kBlackColor,
@@ -157,61 +209,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                   ),
                 );
               },
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.unitCost,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
-            ),
-            const SizedBox(height: 6),
-            const SizedBox(height: 6),
-            InputFormField(
-              hintText: l10n.unitCost,
-              controller: _unitCostController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.quantity,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
-            ),
-            const SizedBox(height: 6),
-            const SizedBox(height: 6),
-            InputFormField(
-              hintText: l10n.quantity,
-              controller: _quantityController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.confirmationMessage,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
-            ),
-            const SizedBox(height: 6),
-            InputFormField(
-              hintText: l10n.confirmationMessage,
-              controller: _confirmationMessageController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddExpenseCubit, AddExpenseState>(
@@ -307,7 +304,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                 );
               },
             ),
-            const SizedBox(height: 32),
           ],
         ),
       ),
