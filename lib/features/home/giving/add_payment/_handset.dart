@@ -157,6 +157,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(l10n.enterAmount)),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -166,6 +167,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                             content: Text(l10n.selectReasonForGiving),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 

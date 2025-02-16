@@ -158,8 +158,20 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                             content: Text(l10n.selectClass),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
+
+                      if (_fullNameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.enterName),
+                          ),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
+
                       await context.read<AddSoulCubit>().addSoul(
                             missionUlid: widget.missionUlid,
                             classGroup: selectedClassGroup!,

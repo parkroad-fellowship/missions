@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
+import 'package:gaimon/gaimon.dart';
 import 'package:intl/intl.dart';
 
 class UpdateSessionViewHandset extends StatefulWidget {
@@ -350,6 +351,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             content: Text(l10n.selectFacilitator),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -359,6 +361,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             content: Text(l10n.enterNotes),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -368,6 +371,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             content: Text(l10n.addStartEnd),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -377,6 +381,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             content: Text(l10n.addStartEnd),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 

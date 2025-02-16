@@ -240,6 +240,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             content: Text(l10n.enterMissionGround),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -249,6 +250,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             content: Text(l10n.enterContactPerson),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -258,6 +260,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             content: Text(l10n.enterContactNumber),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 

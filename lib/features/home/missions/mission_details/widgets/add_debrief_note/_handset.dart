@@ -88,6 +88,16 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                     disabled: _isLoading,
                     isLoading: _isLoading ? true : null,
                     onPressed: () async {
+                      if (_noteController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.enterDebriefNote),
+                          ),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
+
                       await context.read<AddDebriefNoteCubit>().addDebriefNote(
                             missionUlid: widget.missionUlid,
                             note: _noteController.text,

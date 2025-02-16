@@ -258,6 +258,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.selectExpenseCategory),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -267,6 +268,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.selectTransactionType),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -276,6 +278,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.enterAmount),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -285,6 +288,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             content: Text(l10n.enterConfirmationMessage),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 

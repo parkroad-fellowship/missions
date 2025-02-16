@@ -345,6 +345,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             content: Text(l10n.selectFacilitator),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -354,6 +355,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             content: Text(l10n.enterNotes),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -363,6 +365,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             content: Text(l10n.addStartEnd),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
@@ -372,6 +375,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             content: Text(l10n.addStartEnd),
                           ),
                         );
+                        Gaimon.warning();
                         return;
                       }
 
