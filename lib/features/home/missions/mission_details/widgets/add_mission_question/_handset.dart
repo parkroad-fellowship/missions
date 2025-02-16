@@ -48,6 +48,7 @@ class _AddMissionQuestionViewHandsetState
               controller: _questionController,
               isTextBox: true,
               maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(

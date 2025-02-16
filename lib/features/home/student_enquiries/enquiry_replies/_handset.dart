@@ -223,6 +223,7 @@ class _StudentEnquiryRepliesPageHandsetState
                             controller: _enquiryReplyController,
                             isTextBox: true,
                             maxLines: 5,
+                            textCapitalization: TextCapitalization.sentences,
                           ),
                           const SizedBox(height: 16),
                           BlocConsumer<CreateEnquiryReplyCubit,

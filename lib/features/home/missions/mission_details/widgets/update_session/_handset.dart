@@ -315,6 +315,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               keyboardType: TextInputType.text,
               isTextBox: true,
               maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 16),
             BlocConsumer<UpdateMissionSessionCubit, UpdateMissionSessionState>(

@@ -211,6 +211,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               controller: _confirmationMessageController,
               isTextBox: true,
               maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddExpenseCubit, AddExpenseState>(

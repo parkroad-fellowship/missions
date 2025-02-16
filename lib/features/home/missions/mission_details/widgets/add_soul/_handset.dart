@@ -111,6 +111,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
             InputFormField(
               hintText: l10n.fullName,
               controller: _fullNameController,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddSoulCubit, AddSoulState>(

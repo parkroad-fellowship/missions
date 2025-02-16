@@ -71,6 +71,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
             InputFormField(
               hintText: l10n.missionGround,
               controller: _nameController,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -85,6 +86,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
             InputFormField(
               hintText: l10n.contactPerson,
               controller: _contactPersonController,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -188,6 +190,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               controller: _notesController,
               isTextBox: true,
               maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 32),
             BlocConsumer<UpdateMissionGroundSuggestionCubit,

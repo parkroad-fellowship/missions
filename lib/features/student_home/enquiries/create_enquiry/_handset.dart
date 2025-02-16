@@ -63,6 +63,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               controller: _enquiryController,
               isTextBox: true,
               maxLines: 5,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 16),
             BlocConsumer<CreateEnquiryCubit, CreateEnquiryState>(
