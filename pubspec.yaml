@@ -8,7 +8,10 @@ environment:
 
 dependencies:
   auto_route: ^9.3.0+1
-  awesome_notifications: ^0.10.0
+  awesome_notifications:
+    git:
+      url: https://github.com/rwrz/awesome_notifications
+      ref: 579708759bb5d51cfb1ea562379c73681d58c23b
   awesome_notifications_core: ^0.10.0
   bloc: ^9.0.0
   build_version: ^2.1.1

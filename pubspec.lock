@@ -89,10 +89,11 @@ packages:
   awesome_notifications:
     dependency: "direct main"
     description:
-      name: awesome_notifications
-      sha256: d051ffb694a53da216ff13d02c8ec645d75320048262f7e6b3c1d95a4f54c902
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "579708759bb5d51cfb1ea562379c73681d58c23b"
+      resolved-ref: "579708759bb5d51cfb1ea562379c73681d58c23b"
+      url: "https://github.com/rwrz/awesome_notifications"
+    source: git
     version: "0.10.0"
   awesome_notifications_core:
     dependency: "direct main"
