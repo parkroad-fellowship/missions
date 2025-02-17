@@ -58,26 +58,24 @@ class _LearnerEnquiriesPageHandsetState
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.studentLandingRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.studentLandingRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       Text(
                         l10n.myQuestions,
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 80.sp,
+                        ),
                       ),
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
                         child: const Visibility(
-                          child: Icon(
-                            Icons.abc,
-                            color: Colors.white,
-                          ),
+                          child: Icon(Icons.abc, color: Colors.white),
                         ),
                       ),
                     ],
@@ -87,14 +85,18 @@ class _LearnerEnquiriesPageHandsetState
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
-                child: BlocBuilder<GetStudentEnquiriesCubit,
-                    GetStudentEnquiriesState>(
-                  builder: (context, state) => state.maybeWhen(
-                    orElse: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    loaded: SizedBox.shrink,
-                  ),
+                child: BlocBuilder<
+                  GetStudentEnquiriesCubit,
+                  GetStudentEnquiriesState
+                >(
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        orElse:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        error: (message) => Center(child: Text(message)),
+                        loaded: SizedBox.shrink,
+                      ),
                 ),
               ),
               StreamBuilder<List<PRFLocalStudentEnquiry>>(
@@ -111,9 +113,11 @@ class _LearnerEnquiriesPageHandsetState
                   if (enquiries != null && enquiries.isEmpty) {
                     return SliverFillRemaining(
                       child: RefreshIndicator(
-                        onRefresh: () => context
-                            .read<GetStudentEnquiriesCubit>()
-                            .getStudentEnquiries(),
+                        onRefresh:
+                            () =>
+                                context
+                                    .read<GetStudentEnquiriesCubit>()
+                                    .getStudentEnquiries(),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -122,9 +126,9 @@ class _LearnerEnquiriesPageHandsetState
                               child: Text(
                                 l10n.noQuestions,
                                 style: PRFText.theme().headlineMedium!.copyWith(
-                                      color: PRFApp.theme().kDullGreyColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                  color: PRFApp.theme().kDullGreyColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -132,9 +136,11 @@ class _LearnerEnquiriesPageHandsetState
                               padding: EdgeInsets.symmetric(horizontal: 32.w),
                               child: SizedBox(
                                 child: PrimaryButton(
-                                  onPressed: () => context.router.pushNamed(
-                                    PRFSuperAppRouter.createStudentEnquiryRoute,
-                                  ),
+                                  onPressed:
+                                      () => context.router.pushNamed(
+                                        PRFSuperAppRouter
+                                            .createStudentEnquiryRoute,
+                                      ),
                                   title: l10n.askAQuestion,
                                   disabled: false,
                                 ),
@@ -162,16 +168,17 @@ class _LearnerEnquiriesPageHandsetState
                         title: Text(
                           enquiry.content,
                           style: PRFText.theme().bodySmall!.copyWith(
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
                         ),
                         trailing: Text(
                           Misc.formatTimeFromDateTime(enquiry.createdAt),
                         ),
-                        onTap: () => context.router.push(
-                          EnquiryRepliesRoute(enquiry: enquiry),
-                        ),
+                        onTap:
+                            () => context.router.push(
+                              EnquiryRepliesRoute(enquiry: enquiry),
+                            ),
                       );
                     },
                   );
@@ -182,8 +189,10 @@ class _LearnerEnquiriesPageHandsetState
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router
-            .pushNamed(PRFSuperAppRouter.createStudentEnquiryRoute),
+        onPressed:
+            () => context.router.pushNamed(
+              PRFSuperAppRouter.createStudentEnquiryRoute,
+            ),
         backgroundColor: PRFApp.theme().kPrimaryColorV2,
         child: const Icon(Icons.add, color: Colors.white),
       ),

@@ -28,8 +28,8 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
         title: Text(
           l10n.ask,
           style: PRFText.theme().displayLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+            fontWeight: FontWeight.w600,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -81,25 +81,24 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
                     _enquiryController.clear();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.enquiryRecorded),
-                      ),
+                      SnackBar(content: Text(l10n.enquiryRecorded)),
                     );
                   },
                 );
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.ask,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      await context
-                          .read<CreateEnquiryCubit>()
-                          .createEnquiry(content: _enquiryController.text);
-                    },
-                  ),
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.ask,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          await context
+                              .read<CreateEnquiryCubit>()
+                              .createEnquiry(content: _enquiryController.text);
+                        },
+                      ),
                 );
               },
             ),

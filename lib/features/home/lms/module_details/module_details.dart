@@ -6,27 +6,26 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 @RoutePage()
 class ModuleDetailsPage extends StatelessWidget {
-  const ModuleDetailsPage({
-    required this.courseModule,
-    super.key,
-  });
+  const ModuleDetailsPage({required this.courseModule, super.key});
 
   final PRFLocalCourseModule courseModule;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => ModuleDetailsPageHandset(
-        courseModuleUlid: courseModule.ulid,
-        moduleUlid: courseModule.module.ulid!,
-        courseUlid: courseModule.courseUlid,
-      ),
+      defaultBuilder:
+          (_, __) => ModuleDetailsPageHandset(
+            courseModuleUlid: courseModule.ulid,
+            moduleUlid: courseModule.module.ulid!,
+            courseUlid: courseModule.courseUlid,
+          ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => ModuleDetailsPageHandset(
-          courseModuleUlid: courseModule.ulid,
-          moduleUlid: courseModule.module.ulid!,
-          courseUlid: courseModule.courseUlid,
-        ),
+        handset:
+            (_, __) => ModuleDetailsPageHandset(
+              courseModuleUlid: courseModule.ulid,
+              moduleUlid: courseModule.module.ulid!,
+              courseUlid: courseModule.courseUlid,
+            ),
       ),
     );
   }

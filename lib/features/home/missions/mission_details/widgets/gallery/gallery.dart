@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class GalleryView extends StatelessWidget {
-  const GalleryView({
-    required this.missionUlid,
-    super.key,
-  });
+  const GalleryView({required this.missionUlid, super.key});
 
   final String missionUlid;
 

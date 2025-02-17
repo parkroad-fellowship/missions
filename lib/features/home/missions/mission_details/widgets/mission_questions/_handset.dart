@@ -8,10 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MissionQuestionsViewHandset extends StatefulWidget {
-  const MissionQuestionsViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const MissionQuestionsViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -26,9 +23,9 @@ class _MissionQuestionsViewHandsetState
 
   @override
   void initState() {
-    context
-        .read<GetMissionQuestionsCubit>()
-        .getMissionQuestions(missionUlid: missionUlid);
+    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+      missionUlid: missionUlid,
+    );
     super.initState();
   }
 
@@ -46,10 +43,10 @@ class _MissionQuestionsViewHandsetState
                 child: Text(
                   l10n.noSubscribers,
                   style: PRFText.theme().headlineSmall!.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: PRFApp.theme().kPrimaryColorV2,
-                      ),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: PRFApp.theme().kPrimaryColorV2,
+                  ),
                 ),
               );
             }
@@ -59,8 +56,10 @@ class _MissionQuestionsViewHandsetState
               physics: const ScrollPhysics(),
               itemCount: missionQuestions.length,
               separatorBuilder: (context, index) => SizedBox(height: 8.h),
-              itemBuilder: (context, index) =>
-                  MissionQuestionCard(missionQuestion: missionQuestions[index]),
+              itemBuilder:
+                  (context, index) => MissionQuestionCard(
+                    missionQuestion: missionQuestions[index],
+                  ),
             );
           },
         );
@@ -70,10 +69,7 @@ class _MissionQuestionsViewHandsetState
 }
 
 class MissionQuestionCard extends StatelessWidget {
-  const MissionQuestionCard({
-    required this.missionQuestion,
-    super.key,
-  });
+  const MissionQuestionCard({required this.missionQuestion, super.key});
 
   final PRFMissionQuestion missionQuestion;
 
@@ -86,10 +82,7 @@ class MissionQuestionCard extends StatelessWidget {
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),

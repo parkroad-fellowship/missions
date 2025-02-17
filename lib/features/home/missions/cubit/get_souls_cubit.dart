@@ -8,17 +8,14 @@ part 'get_souls_state.dart';
 part 'get_souls_cubit.freezed.dart';
 
 class GetSoulsCubit extends Cubit<GetSoulsState> {
-  GetSoulsCubit({
-    required SoulService soulService,
-  }) : super(const GetSoulsState.initial()) {
+  GetSoulsCubit({required SoulService soulService})
+    : super(const GetSoulsState.initial()) {
     _soulService = soulService;
   }
 
   late SoulService _soulService;
 
-  Future<void> getSouls({
-    required String missionUlid,
-  }) async {
+  Future<void> getSouls({required String missionUlid}) async {
     emit(const GetSoulsState.loading());
     try {
       final souls = await _soulService.getSouls(missionUlid: missionUlid);

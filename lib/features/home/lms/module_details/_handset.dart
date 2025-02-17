@@ -62,18 +62,19 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.courseDetailsRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.courseDetailsRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       SizedBox(
                         child: Text(
                           l10n.moduleDetails,
-                          style: PRFText.theme()
-                              .displayLarge
-                              ?.copyWith(fontWeight: FontWeight.w600),
+                          style: PRFText.theme().displayLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -97,9 +98,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                                         ?.toInt() ??
                                     0,
                               ),
-                              style: PRFText.theme()
-                                  .displaySmall
-                                  ?.copyWith(fontWeight: FontWeight.w600),
+                              style: PRFText.theme().displaySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                             );
                           },
                         ),
@@ -114,20 +115,19 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: StreamBuilder<PRFLocalCourseModule>(
-                    stream: getIt<LocalDBService>()
-                        .getCourseModule(courseModuleUlid: courseModuleUlid),
+                    stream: getIt<LocalDBService>().getCourseModule(
+                      courseModuleUlid: courseModuleUlid,
+                    ),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       }
                       final courseModule = snapshot.data!;
                       return Text(
                         courseModule.module.name!,
-                        style: PRFText.theme()
-                            .headlineMedium
-                            ?.copyWith(fontSize: 52.sp),
+                        style: PRFText.theme().headlineMedium?.copyWith(
+                          fontSize: 52.sp,
+                        ),
                       );
                     },
                   ),
@@ -148,8 +148,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: Text(
                         course!.module.description!,
-                        style:
-                            PRFText.theme().bodySmall?.copyWith(fontSize: 16),
+                        style: PRFText.theme().bodySmall?.copyWith(
+                          fontSize: 16,
+                        ),
                       ),
                     );
                   },
@@ -161,8 +162,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     l10n.lessons,
-                    style:
-                        PRFText.theme().displayLarge?.copyWith(fontSize: 64.sp),
+                    style: PRFText.theme().displayLarge?.copyWith(
+                      fontSize: 64.sp,
+                    ),
                   ),
                 ),
               ),
@@ -187,13 +189,14 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
 
                   return SliverList.separated(
                     itemCount: courseModules!.length,
-                    itemBuilder: (context, index) => ModuleDetailsActionCard(
-                      lessonModule: courseModules[index],
-                      courseUlid: widget.courseUlid,
-                      moduleUlid: widget.moduleUlid,
-                    ),
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 16.h),
+                    itemBuilder:
+                        (context, index) => ModuleDetailsActionCard(
+                          lessonModule: courseModules[index],
+                          courseUlid: widget.courseUlid,
+                          moduleUlid: widget.moduleUlid,
+                        ),
+                    separatorBuilder:
+                        (context, index) => SizedBox(height: 16.h),
                   );
                 },
               ),
@@ -221,21 +224,19 @@ class ModuleDetailsActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     return GestureDetector(
-      onTap: () => context.router.push(
-        LessonDetailsRoute(
-          lessonModule: lessonModule,
-          courseUlid: courseUlid,
-          moduleUlid: moduleUlid,
-        ),
-      ),
+      onTap:
+          () => context.router.push(
+            LessonDetailsRoute(
+              lessonModule: lessonModule,
+              courseUlid: courseUlid,
+              moduleUlid: moduleUlid,
+            ),
+          ),
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 80.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 80.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
@@ -252,9 +253,9 @@ class ModuleDetailsActionCard extends StatelessWidget {
                       child: Text(
                         lessonModule.lesson.name!,
                         style: PRFText.theme().displayMedium?.copyWith(
-                              color: PRFApp.theme().kPrimaryColorV2,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: PRFApp.theme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     Flexible(
@@ -271,8 +272,8 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 Text(
                   lessonModule.lesson.description!,
                   style: PRFText.theme().headlineSmall?.copyWith(
-                        color: PRFApp.theme().kBlackColor,
-                      ),
+                    color: PRFApp.theme().kBlackColor,
+                  ),
                 ),
               ],
             ),

@@ -24,25 +24,23 @@ class FormFieldLabel extends StatelessWidget {
           text: TextSpan(
             text: label,
             style: PRFText.theme().headlineSmall!.copyWith(
-                  fontSize: 15,
-                  color: color,
-                  fontWeight: isBold ?? false ? FontWeight.bold : null,
-                ),
+              fontSize: 15,
+              color: color,
+              fontWeight: isBold ?? false ? FontWeight.bold : null,
+            ),
             children: [
               if (isRequired ?? false)
                 TextSpan(
                   text: ' *',
-                  style: PRFText.theme().headlineSmall!.copyWith(
-                        fontSize: 14,
-                      ),
+                  style: PRFText.theme().headlineSmall!.copyWith(fontSize: 14),
                 ),
               if (isOptional ?? false)
                 TextSpan(
                   text: ' (optional)',
                   style: PRFText.theme().titleMedium!.copyWith(
-                        color: const Color(0xff939393),
-                        fontSize: 14,
-                      ),
+                    color: const Color(0xff939393),
+                    fontSize: 14,
+                  ),
                 ),
             ],
           ),

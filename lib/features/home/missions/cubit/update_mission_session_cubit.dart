@@ -8,9 +8,8 @@ part 'update_mission_session_state.dart';
 part 'update_mission_session_cubit.freezed.dart';
 
 class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
-  UpdateMissionSessionCubit({
-    required MissionService missionService,
-  }) : super(const UpdateMissionSessionState.initial()) {
+  UpdateMissionSessionCubit({required MissionService missionService})
+    : super(const UpdateMissionSessionState.initial()) {
     _missionService = missionService;
   }
 
@@ -41,9 +40,7 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
         ),
       );
       emit(
-        UpdateMissionSessionState.loaded(
-          missionSession: updatedMissionSession,
-        ),
+        UpdateMissionSessionState.loaded(missionSession: updatedMissionSession),
       );
     } catch (e) {
       emit(UpdateMissionSessionState.error(e.toString()));

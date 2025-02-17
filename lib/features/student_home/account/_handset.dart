@@ -42,31 +42,29 @@ class StudentAccountPageHandset extends StatelessWidget {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.studentLandingRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.studentLandingRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       Text(
                         l10n.myAccount,
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 80.sp,
+                        ),
                       ),
                       const Spacer(),
                       Animate(
-                        effects: [
-                          ShimmerEffect(
-                            duration: 1.seconds,
-                          ),
-                        ],
+                        effects: [ShimmerEffect(duration: 1.seconds)],
                         child: BlocListener<SignOutCubit, SignOutState>(
                           listener: (context, state) {
                             state.maybeWhen(
-                              orElse: () => context.router.pushNamed(
-                                PRFSuperAppRouter.decisionRoute,
-                              ),
+                              orElse:
+                                  () => context.router.pushNamed(
+                                    PRFSuperAppRouter.decisionRoute,
+                                  ),
                             );
                           },
                           child: GestureDetector(
@@ -76,12 +74,12 @@ class StudentAccountPageHandset extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   l10n.signOut,
-                                  style:
-                                      PRFText.theme().headlineMedium!.copyWith(
-                                            color: PRFApp.theme().kRedColor,
-                                            fontSize: 54.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                  style: PRFText.theme().headlineMedium!
+                                      .copyWith(
+                                        color: PRFApp.theme().kRedColor,
+                                        fontSize: 54.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -94,142 +92,138 @@ class StudentAccountPageHandset extends StatelessWidget {
                 ),
               ),
               ValueListenableBuilder(
-                valueListenable: Hive.box<dynamic>(
-                  PRFSuperAppConfig.instance!.values.hiveBox,
-                ).listenable(),
+                valueListenable:
+                    Hive.box<dynamic>(
+                      PRFSuperAppConfig.instance!.values.hiveBox,
+                    ).listenable(),
                 builder: (context, box, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        SizedBox(height: 64.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: FormFieldLabel(
-                            label: l10n.name,
-                            color: PRFApp.theme().kBlackColor,
-                          ),
+                    delegate: SliverChildListDelegate([
+                      SizedBox(height: 64.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40.w),
+                        child: FormFieldLabel(
+                          label: l10n.name,
+                          color: PRFApp.theme().kBlackColor,
                         ),
-                        SizedBox(height: 10.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: InputFormField(
-                            hintText: l10n.enterName,
-                            controller:
-                                TextEditingController(text: profile.name),
-                            isUnderLine: true,
-                            enabled: false,
-                          ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40.w),
+                        child: InputFormField(
+                          hintText: l10n.enterName,
+                          controller: TextEditingController(text: profile.name),
+                          isUnderLine: true,
+                          enabled: false,
                         ),
-                        SizedBox(height: 15.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: FormFieldLabel(
-                            label: l10n.email,
-                            color: PRFApp.theme().kBlackColor,
-                          ),
+                      ),
+                      SizedBox(height: 15.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40.w),
+                        child: FormFieldLabel(
+                          label: l10n.email,
+                          color: PRFApp.theme().kBlackColor,
                         ),
-                        SizedBox(height: 10.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: InputFormField(
-                            hintText: l10n.enterEmail,
-                            controller:
-                                TextEditingController(text: profile.email),
-                            isUnderLine: true,
-                            isEmail: true,
-                            enabled: false,
+                      ),
+                      SizedBox(height: 10.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40.w),
+                        child: InputFormField(
+                          hintText: l10n.enterEmail,
+                          controller: TextEditingController(
+                            text: profile.email,
                           ),
+                          isUnderLine: true,
+                          isEmail: true,
+                          enabled: false,
                         ),
-                        SizedBox(height: 40.h),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 10,
-                              bottom: 20,
-                              top: 30,
-                            ),
-                            child: Text.rich(
-                              TextSpan(
-                                text: l10n.byUsing,
-                                style: PRFText.theme().displaySmall!.copyWith(
-                                      fontSize: 12,
-                                      color: const Color(0xFF727272),
-                                      height: 1.5,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                children: [
-                                  TextSpan(
-                                    text: l10n.terms,
-                                    style: PRFText.theme()
-                                        .displaySmall!
-                                        .copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: PRFApp.theme().kPrimaryColorV2,
-                                        ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final uri = Uri(
-                                          scheme: 'https',
-                                          host: 'parkroadfellowship.org',
-                                          path: '/privacy-policy',
-                                        );
-                                        await Misc.openUrl(uri);
-                                      },
-                                  ),
-                                  TextSpan(
-                                    text: l10n.and,
-                                    style:
-                                        PRFText.theme().displaySmall!.copyWith(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.normal,
-                                              color: PRFApp.theme().kBlackColor,
-                                            ),
-                                  ),
-                                  TextSpan(
-                                    text: l10n.privacyPolicy,
-                                    style: PRFText.theme()
-                                        .displaySmall!
-                                        .copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: PRFApp.theme().kPrimaryColorV2,
-                                        ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final uri = Uri(
-                                          scheme: 'https',
-                                          host: 'parkroadfellowship.org',
-                                          path: 'privacy-policy',
-                                        );
-                                        await Misc.openUrl(uri);
-                                      },
-                                  ),
-                                ],
+                      ),
+                      SizedBox(height: 40.h),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                            bottom: 20,
+                            top: 30,
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              text: l10n.byUsing,
+                              style: PRFText.theme().displaySmall!.copyWith(
+                                fontSize: 12,
+                                color: const Color(0xFF727272),
+                                height: 1.5,
+                                fontWeight: FontWeight.w500,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                            l10n.version(Misc.getAppVersion()),
-                            style: PRFText.theme().displaySmall!.copyWith(
-                                  fontSize: 12,
-                                  color: const Color(0xFF727272),
-                                  height: 1.5,
-                                  fontWeight: FontWeight.w500,
+                              children: [
+                                TextSpan(
+                                  text: l10n.terms,
+                                  style: PRFText.theme().displaySmall!.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: PRFApp.theme().kPrimaryColorV2,
+                                  ),
+                                  recognizer:
+                                      TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          final uri = Uri(
+                                            scheme: 'https',
+                                            host: 'parkroadfellowship.org',
+                                            path: '/privacy-policy',
+                                          );
+                                          await Misc.openUrl(uri);
+                                        },
                                 ),
+                                TextSpan(
+                                  text: l10n.and,
+                                  style: PRFText.theme().displaySmall!.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                    color: PRFApp.theme().kBlackColor,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: l10n.privacyPolicy,
+                                  style: PRFText.theme().displaySmall!.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: PRFApp.theme().kPrimaryColorV2,
+                                  ),
+                                  recognizer:
+                                      TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          final uri = Uri(
+                                            scheme: 'https',
+                                            host: 'parkroadfellowship.org',
+                                            path: 'privacy-policy',
+                                          );
+                                          await Misc.openUrl(uri);
+                                        },
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          l10n.version(Misc.getAppVersion()),
+                          style: PRFText.theme().displaySmall!.copyWith(
+                            fontSize: 12,
+                            color: const Color(0xFF727272),
+                            height: 1.5,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
                   );
                 },
               ),

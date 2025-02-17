@@ -37,15 +37,14 @@ class _SignInHandsetState extends State<SignInHandset> {
       listener: (context, state) {
         state.maybeWhen(
           orElse: () {},
-          loaded: (socialLoginDTO) => context
-              .read<SocialLoginCubit>()
-              .login(socialAuthDTO: socialLoginDTO),
-          error: (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
+          loaded:
+              (socialLoginDTO) => context.read<SocialLoginCubit>().login(
+                socialAuthDTO: socialLoginDTO,
               ),
-            );
+          error: (message) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(message)));
           },
         );
       },
@@ -53,12 +52,12 @@ class _SignInHandsetState extends State<SignInHandset> {
         listener: (context, state) {
           state.maybeWhen(
             orElse: () {},
-            loaded: () =>
-                context.router.pushNamed(PRFSuperAppRouter.decisionRoute),
+            loaded:
+                () => context.router.pushNamed(PRFSuperAppRouter.decisionRoute),
             error: (message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(message)));
             },
           );
         },
@@ -112,12 +111,14 @@ class _SignInHandsetState extends State<SignInHandset> {
                     BlocConsumer<SigninCubit, SignInState>(
                       listener: (context, state) {
                         state.maybeWhen(
-                          loading: () => setState(() {
-                            _isLoading = !_isLoading;
-                          }),
-                          loaded: () => context.router.pushNamed(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
+                          loading:
+                              () => setState(() {
+                                _isLoading = !_isLoading;
+                              }),
+                          loaded:
+                              () => context.router.pushNamed(
+                                PRFSuperAppRouter.landingRoute,
+                              ),
                           error: (message) {
                             setState(() {
                               _isLoading = !_isLoading;
@@ -134,24 +135,28 @@ class _SignInHandsetState extends State<SignInHandset> {
                       },
                       builder: (context, state) {
                         return state.maybeWhen(
-                          orElse: () => PrimaryButton(
-                            onPressed: () {
-                              context.read<SigninCubit>().signIn(
+                          orElse:
+                              () => PrimaryButton(
+                                onPressed: () {
+                                  context.read<SigninCubit>().signIn(
                                     email: _emailController.text.trim(),
                                     password: _passwordController.text.trim(),
                                   );
-                            },
-                            title: _isLoading ? l10n.signingIn : l10n.signIn,
-                            disabled: _isLoading,
-                            isLoading: _isLoading ? true : null,
-                          ),
+                                },
+                                title:
+                                    _isLoading ? l10n.signingIn : l10n.signIn,
+                                disabled: _isLoading,
+                                isLoading: _isLoading ? true : null,
+                              ),
                         );
                       },
                     ),
                     const SizedBox(height: 8),
                     SecondaryButton(
-                      onPressed: () => context.router
-                          .pushNamed(PRFSuperAppRouter.registerStudentRoute),
+                      onPressed:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.registerStudentRoute,
+                          ),
                       title: l10n.registerStudent,
                       disabled: false,
                     ),
@@ -161,23 +166,38 @@ class _SignInHandsetState extends State<SignInHandset> {
                       builder: (context, signInWithGoogleState) {
                         return BlocBuilder<SocialLoginCubit, SocialLoginState>(
                           builder: (context, socialSignUpState) {
-                            return BlocBuilder<SocialLoginCubit,
-                                SocialLoginState>(
+                            return BlocBuilder<
+                              SocialLoginCubit,
+                              SocialLoginState
+                            >(
                               builder: (context, socialSignInState) {
-                                final (isLoading, title) =
-                                    signInWithGoogleState.maybeWhen(
-                                  loading: () =>
-                                      (true, 'Continue with Google...'),
-                                  orElse: () => socialSignUpState.maybeWhen(
-                                    loading: () =>
-                                        (true, 'Continue with Google...'),
-                                    orElse: () => socialSignInState.maybeWhen(
-                                      loading: () =>
-                                          (true, 'Continue with Google...'),
-                                      orElse: () =>
-                                          (false, 'Continue with Google'),
-                                    ),
-                                  ),
+                                final (
+                                  isLoading,
+                                  title,
+                                ) = signInWithGoogleState.maybeWhen(
+                                  loading:
+                                      () => (true, 'Continue with Google...'),
+                                  orElse:
+                                      () => socialSignUpState.maybeWhen(
+                                        loading:
+                                            () => (
+                                              true,
+                                              'Continue with Google...',
+                                            ),
+                                        orElse:
+                                            () => socialSignInState.maybeWhen(
+                                              loading:
+                                                  () => (
+                                                    true,
+                                                    'Continue with Google...',
+                                                  ),
+                                              orElse:
+                                                  () => (
+                                                    false,
+                                                    'Continue with Google',
+                                                  ),
+                                            ),
+                                      ),
                                 );
 
                                 return GoogleAuthButton(

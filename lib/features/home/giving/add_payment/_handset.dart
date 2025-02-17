@@ -52,50 +52,54 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
                   loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded: (classes) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFPaymentType>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedPaymentType,
-                        hintText: l10n.reasonForGiving,
-                        dropdownMenuEntries: classes
-                            .map(
-                              (paymentType) =>
-                                  DropdownMenuEntry<PRFPaymentType>(
-                                value: paymentType,
-                                label: paymentType.name,
+                  loaded:
+                      (classes) => LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DropdownMenu<PRFPaymentType>(
+                            width: constraints.maxWidth,
+                            initialSelection: selectedPaymentType,
+                            hintText: l10n.reasonForGiving,
+                            dropdownMenuEntries:
+                                classes
+                                    .map(
+                                      (paymentType) =>
+                                          DropdownMenuEntry<PRFPaymentType>(
+                                            value: paymentType,
+                                            label: paymentType.name,
+                                          ),
+                                    )
+                                    .toList(),
+                            onSelected:
+                                (paymentType) => setState(() {
+                                  selectedPaymentType = paymentType;
+                                }),
+                            inputDecorationTheme: InputDecorationTheme(
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                            )
-                            .toList(),
-                        onSelected: (paymentType) => setState(() {
-                          selectedPaymentType = paymentType;
-                        }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                                color: PRFApp.theme().kDullGreyColor,
-                                fontWeight: FontWeight.w500,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                        ),
-                      );
-                    },
-                  ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              fillColor: PRFApp.theme().kBackgroundColor,
+                              hintStyle: PRFText.theme().headlineSmall!
+                                  .copyWith(
+                                    color: PRFApp.theme().kDullGreyColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          );
+                        },
+                      ),
                 );
               },
             ),
@@ -138,45 +142,44 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                   },
                   error: (error) {
                     Gaimon.error();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(error.error),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(error.error)));
                   },
                 );
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (_amountController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.enterAmount)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (_amountController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterAmount)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      if (selectedPaymentType == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.selectReasonForGiving),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                          if (selectedPaymentType == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(l10n.selectReasonForGiving),
+                              ),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      await context.read<AddPaymentCubit>().addPayment(
+                          await context.read<AddPaymentCubit>().addPayment(
                             amount: _amountController.text.trim(),
                             paymentTypeUlid: selectedPaymentType!.ulid,
                           );
-                    },
-                  ),
+                        },
+                      ),
                 );
               },
             ),

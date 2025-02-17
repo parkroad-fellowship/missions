@@ -58,26 +58,24 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.landingRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       Text(
                         l10n.learn,
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 80.sp,
+                        ),
                       ),
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
                         child: const Visibility(
-                          child: Icon(
-                            Icons.abc,
-                            color: Colors.white,
-                          ),
+                          child: Icon(Icons.abc, color: Colors.white),
                         ),
                       ),
                     ],
@@ -88,12 +86,13 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               SliverToBoxAdapter(
                 child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
-                  builder: (context, state) => state.maybeWhen(
-                    loading: () => const Center(
-                      child: LinearProgressIndicator(),
-                    ),
-                    orElse: SizedBox.shrink,
-                  ),
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        loading:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        orElse: SizedBox.shrink,
+                      ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
@@ -114,11 +113,11 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
 
                   return SliverList.separated(
                     itemCount: courses!.length,
-                    itemBuilder: (context, index) => CourseActionCard(
-                      course: courses[index],
-                    ),
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 16.h),
+                    itemBuilder:
+                        (context, index) =>
+                            CourseActionCard(course: courses[index]),
+                    separatorBuilder:
+                        (context, index) => SizedBox(height: 16.h),
                   );
                 },
               ),
@@ -131,10 +130,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
 }
 
 class CourseActionCard extends StatelessWidget {
-  const CourseActionCard({
-    required this.course,
-    super.key,
-  });
+  const CourseActionCard({required this.course, super.key});
 
   final PRFLocalCourse course;
 
@@ -144,21 +140,17 @@ class CourseActionCard extends StatelessWidget {
 
     final width = MediaQuery.sizeOf(context).width;
     return Animate(
-      effects: const [
-        ScaleEffect(),
-      ],
+      effects: const [ScaleEffect()],
       child: GestureDetector(
-        onTap: () => context.router.push(
-          CourseDetailsRoute(courseUlid: course.ulid),
-        ),
+        onTap:
+            () => context.router.push(
+              CourseDetailsRoute(courseUlid: course.ulid),
+            ),
         child: Stack(
           children: [
             Container(
               width: width,
-              padding: EdgeInsets.symmetric(
-                horizontal: 50.w,
-                vertical: 80.h,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 80.h),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
                 color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
@@ -172,9 +164,9 @@ class CourseActionCard extends StatelessWidget {
                       Text(
                         course.name,
                         style: PRFText.theme().displayLarge?.copyWith(
-                              color: PRFApp.theme().kPrimaryColorV2,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: PRFApp.theme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       const Spacer(),
                       Container(
@@ -198,9 +190,9 @@ class CourseActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     course.description,
-                    style: PRFText.theme()
-                        .bodySmall
-                        ?.copyWith(color: PRFApp.theme().kPrimaryColorV2),
+                    style: PRFText.theme().bodySmall?.copyWith(
+                      color: PRFApp.theme().kPrimaryColorV2,
+                    ),
                   ),
                 ],
               ),

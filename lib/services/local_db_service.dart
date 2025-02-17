@@ -29,13 +29,9 @@ abstract class LocalDBService {
   Future<Isar> initDatabase();
   Future<void> clearAllTables();
 
-  Future<void> persistCourses({
-    required List<PRFCourse> courses,
-  });
+  Future<void> persistCourses({required List<PRFCourse> courses});
   Stream<List<PRFLocalCourse>> getCourses();
-  Stream<PRFLocalCourse> getCourse({
-    required String courseUlid,
-  });
+  Stream<PRFLocalCourse> getCourse({required String courseUlid});
 
   Future<void> persistCourseModules({
     required List<PRFCourseModule> courseModules,
@@ -74,26 +70,14 @@ abstract class LocalDBService {
     required List<PRFPrayerResponseDTO> prayerResponses,
   });
   List<PRFPrayerResponseDTO> retrievePrayerResponses();
-  void deletePrayerResponse({
-    required String prayerPromptUlid,
-  });
+  void deletePrayerResponse({required String prayerPromptUlid});
 
-  Future<void> persistMediaUploads({
-    required List<PRFMediaDTO> mediaDTOs,
-  });
+  Future<void> persistMediaUploads({required List<PRFMediaDTO> mediaDTOs});
   List<PRFMediaDTO> retrieveMediaUploads();
-  void deleteMediaUpload({
-    required String modelUlid,
-    required String path,
-  });
+  void deleteMediaUpload({required String modelUlid, required String path});
 
-  Future<void> persistFaqs({
-    required List<PRFFaq> faqs,
-  });
-  Future<List<PRFLocalFaq>> retreiveFaqs({
-    String? categoryUlid,
-    String? query,
-  });
+  Future<void> persistFaqs({required List<PRFFaq> faqs});
+  Future<List<PRFLocalFaq>> retreiveFaqs({String? categoryUlid, String? query});
 
   Future<void> persistFaqCategories({
     required List<PRFFaqCategory> faqCategories,
@@ -105,21 +89,20 @@ class LocalDBServiceImpl implements LocalDBService {
   @override
   Future<Isar> initDatabase() async {
     final dir = await path_provider.getApplicationDocumentsDirectory();
-    return Isar.open(
-      [
-        PRFLocalCourseSchema,
-        PRFLocalCourseModuleSchema,
-        PRFLocalLessonModuleSchema,
-        PRFLocalStudentEnquirySchema,
-        PRFLocalStudentEnquiryReplySchema,
-        PRFLocalAnnouncementSchema,
-        PRFLocalPrayerResponseSchema,
-        PRFLocalMediaUploadSchema,
-        PRFLocalFaqSchema,
-        PRFLocalFaqCategorySchema,
-      ],
-      directory: dir.path,
-    );
+    final schemas = [
+      PRFLocalCourseSchema,
+      PRFLocalCourseModuleSchema,
+      PRFLocalLessonModuleSchema,
+      PRFLocalStudentEnquirySchema,
+      PRFLocalStudentEnquiryReplySchema,
+      PRFLocalAnnouncementSchema,
+      PRFLocalPrayerResponseSchema,
+      PRFLocalMediaUploadSchema,
+      PRFLocalFaqSchema,
+      PRFLocalFaqCategorySchema,
+    ];
+
+    return Isar.open(schemas, directory: dir.path);
   }
 
   @override
@@ -130,9 +113,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Future<void> persistCourses({
-    required List<PRFCourse> courses,
-  }) async {
+  Future<void> persistCourses({required List<PRFCourse> courses}) async {
     await prfDBInstance.writeTxn(() async {
       for (final course in courses) {
         await prfDBInstance.pRFLocalCourses.put(
@@ -141,29 +122,31 @@ class LocalDBServiceImpl implements LocalDBService {
             name: course.name,
             description: course.description,
             createdAt: course.createdAt,
-            thumbnail: course.thumbnail != null
-                ? PRFLocalMedia(
-                    collectionName: course.thumbnail!.collectionName,
-                    fileName: course.thumbnail!.fileName,
-                    temporaryURL: course.thumbnail!.temporaryURL,
-                    size: course.thumbnail!.size,
-                    humanReadableSize: course.thumbnail!.humanReadableSize,
-                    mimeType: course.thumbnail!.mimeType,
-                    name: course.thumbnail!.name,
-                    createdAt: course.thumbnail!.createdAt,
-                    updatedAt: course.thumbnail!.updatedAt,
-                  )
-                : null,
-            courseMember: course.courseMember != null
-                ? PRFLocalCourseMember(
-                    ulid: course.courseMember!.ulid,
-                    percentComplete: course.courseMember!.percentComplete,
-                    completionStatus: course.courseMember!.completionStatus,
-                    createdAt: course.courseMember!.createdAt,
-                    updatedAt: course.courseMember!.updatedAt,
-                    completedAt: course.courseMember!.completedAt,
-                  )
-                : null,
+            thumbnail:
+                course.thumbnail != null
+                    ? PRFLocalMedia(
+                      collectionName: course.thumbnail!.collectionName,
+                      fileName: course.thumbnail!.fileName,
+                      temporaryURL: course.thumbnail!.temporaryURL,
+                      size: course.thumbnail!.size,
+                      humanReadableSize: course.thumbnail!.humanReadableSize,
+                      mimeType: course.thumbnail!.mimeType,
+                      name: course.thumbnail!.name,
+                      createdAt: course.thumbnail!.createdAt,
+                      updatedAt: course.thumbnail!.updatedAt,
+                    )
+                    : null,
+            courseMember:
+                course.courseMember != null
+                    ? PRFLocalCourseMember(
+                      ulid: course.courseMember!.ulid,
+                      percentComplete: course.courseMember!.percentComplete,
+                      completionStatus: course.courseMember!.completionStatus,
+                      createdAt: course.courseMember!.createdAt,
+                      updatedAt: course.courseMember!.updatedAt,
+                      completedAt: course.courseMember!.completedAt,
+                    )
+                    : null,
           ),
         );
       }
@@ -172,27 +155,27 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Stream<List<PRFLocalCourse>> getCourses() async* {
-    await for (final localCourse in prfDBInstance.pRFLocalCourses
-        .filter()
-        .idGreaterThan(0)
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+    await for (final localCourse
+        in prfDBInstance.pRFLocalCourses
+            .filter()
+            .idGreaterThan(0)
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       yield localCourse;
     }
   }
 
   @override
-  Stream<PRFLocalCourse> getCourse({
-    required String courseUlid,
-  }) async* {
-    await for (final localCourse in prfDBInstance.pRFLocalCourses
-        .filter()
-        .ulidEqualTo(courseUlid)
-        .sortByCreatedAt()
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+  Stream<PRFLocalCourse> getCourse({required String courseUlid}) async* {
+    await for (final localCourse
+        in prfDBInstance.pRFLocalCourses
+            .filter()
+            .ulidEqualTo(courseUlid)
+            .sortByCreatedAt()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       yield localCourse.first;
     }
   }
@@ -212,38 +195,41 @@ class LocalDBServiceImpl implements LocalDBService {
             order: courseModule.order,
             createdAt: courseModule.createdAt,
             updatedAt: courseModule.updatedAt,
-            memberModule: courseModule.memberModule != null
-                ? PRFLocalMemberModule(
-                    ulid: courseModule.memberModule!.ulid,
-                    percentComplete: courseModule.memberModule!.percentComplete,
-                    completionStatus:
-                        courseModule.memberModule!.completionStatus,
-                    createdAt: courseModule.memberModule!.createdAt,
-                    updatedAt: courseModule.memberModule!.updatedAt,
-                    completedAt: courseModule.memberModule!.completedAt,
-                  )
-                : null,
+            memberModule:
+                courseModule.memberModule != null
+                    ? PRFLocalMemberModule(
+                      ulid: courseModule.memberModule!.ulid,
+                      percentComplete:
+                          courseModule.memberModule!.percentComplete,
+                      completionStatus:
+                          courseModule.memberModule!.completionStatus,
+                      createdAt: courseModule.memberModule!.createdAt,
+                      updatedAt: courseModule.memberModule!.updatedAt,
+                      completedAt: courseModule.memberModule!.completedAt,
+                    )
+                    : null,
             module: PRFLocalModule(
               ulid: courseModule.module!.ulid,
               name: courseModule.module!.name,
               description: courseModule.module!.description,
               createdAt: courseModule.module!.createdAt,
-              thumbnail: courseModule.module!.thumbnail != null
-                  ? PRFLocalMedia(
-                      collectionName:
-                          courseModule.module!.thumbnail!.collectionName,
-                      fileName: courseModule.module!.thumbnail!.fileName,
-                      temporaryURL:
-                          courseModule.module!.thumbnail!.temporaryURL,
-                      size: courseModule.module!.thumbnail!.size,
-                      humanReadableSize:
-                          courseModule.module!.thumbnail!.humanReadableSize,
-                      mimeType: courseModule.module!.thumbnail!.mimeType,
-                      name: courseModule.module!.thumbnail!.name,
-                      createdAt: courseModule.module!.thumbnail!.createdAt,
-                      updatedAt: courseModule.module!.thumbnail!.updatedAt,
-                    )
-                  : null,
+              thumbnail:
+                  courseModule.module!.thumbnail != null
+                      ? PRFLocalMedia(
+                        collectionName:
+                            courseModule.module!.thumbnail!.collectionName,
+                        fileName: courseModule.module!.thumbnail!.fileName,
+                        temporaryURL:
+                            courseModule.module!.thumbnail!.temporaryURL,
+                        size: courseModule.module!.thumbnail!.size,
+                        humanReadableSize:
+                            courseModule.module!.thumbnail!.humanReadableSize,
+                        mimeType: courseModule.module!.thumbnail!.mimeType,
+                        name: courseModule.module!.thumbnail!.name,
+                        createdAt: courseModule.module!.thumbnail!.createdAt,
+                        updatedAt: courseModule.module!.thumbnail!.updatedAt,
+                      )
+                      : null,
             ),
           ),
         );
@@ -263,13 +249,14 @@ class LocalDBServiceImpl implements LocalDBService {
   Stream<List<PRFLocalCourseModule>> getCourseModules({
     required String courseUlid,
   }) async* {
-    await for (final localCourseModule in prfDBInstance.pRFLocalCourseModules
-        .filter()
-        .courseUlidEqualTo(courseUlid)
-        .sortByOrder()
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+    await for (final localCourseModule
+        in prfDBInstance.pRFLocalCourseModules
+            .filter()
+            .courseUlidEqualTo(courseUlid)
+            .sortByOrder()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       yield localCourseModule;
     }
   }
@@ -278,12 +265,13 @@ class LocalDBServiceImpl implements LocalDBService {
   Stream<PRFLocalCourseModule> getCourseModule({
     required String courseModuleUlid,
   }) async* {
-    await for (final localCourseModule in prfDBInstance.pRFLocalCourseModules
-        .filter()
-        .ulidEqualTo(courseModuleUlid)
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+    await for (final localCourseModule
+        in prfDBInstance.pRFLocalCourseModules
+            .filter()
+            .ulidEqualTo(courseModuleUlid)
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       yield localCourseModule.first;
     }
   }
@@ -302,15 +290,16 @@ class LocalDBServiceImpl implements LocalDBService {
             lessonUlid: lessonModule.lesson!.ulid,
             moduleUlid: lessonModule.module!.ulid,
             createdAt: lessonModule.createdAt,
-            lessonMember: lessonModule.lessonMember != null
-                ? PRFLocalLessonMember(
-                    ulid: lessonModule.lessonMember!.ulid,
-                    completionStatus:
-                        lessonModule.lessonMember!.completionStatus,
-                    createdAt: lessonModule.lessonMember!.createdAt,
-                    completedAt: lessonModule.lessonMember!.completedAt,
-                  )
-                : null,
+            lessonMember:
+                lessonModule.lessonMember != null
+                    ? PRFLocalLessonMember(
+                      ulid: lessonModule.lessonMember!.ulid,
+                      completionStatus:
+                          lessonModule.lessonMember!.completionStatus,
+                      createdAt: lessonModule.lessonMember!.createdAt,
+                      completedAt: lessonModule.lessonMember!.completedAt,
+                    )
+                    : null,
             lesson: PRFLocalLesson(
               ulid: lessonModule.lesson!.ulid,
               name: lessonModule.lesson!.name,
@@ -321,51 +310,54 @@ class LocalDBServiceImpl implements LocalDBService {
               videoUrl: lessonModule.lesson!.videoUrl,
               audioUrl: lessonModule.lesson!.audioUrl,
               documentUrl: lessonModule.lesson!.documentUrl,
-              audios: lessonModule.lesson!.audios
-                  ?.map(
-                    (audio) => PRFLocalMedia(
-                      collectionName: audio.collectionName,
-                      fileName: audio.fileName,
-                      temporaryURL: audio.temporaryURL,
-                      size: audio.size,
-                      humanReadableSize: audio.humanReadableSize,
-                      mimeType: audio.mimeType,
-                      name: audio.name,
-                      createdAt: audio.createdAt,
-                      updatedAt: audio.updatedAt,
-                    ),
-                  )
-                  .toList(),
-              documents: lessonModule.lesson!.documents
-                  ?.map(
-                    (document) => PRFLocalMedia(
-                      collectionName: document.collectionName,
-                      fileName: document.fileName,
-                      temporaryURL: document.temporaryURL,
-                      size: document.size,
-                      humanReadableSize: document.humanReadableSize,
-                      mimeType: document.mimeType,
-                      name: document.name,
-                      createdAt: document.createdAt,
-                      updatedAt: document.updatedAt,
-                    ),
-                  )
-                  .toList(),
-              videos: lessonModule.lesson!.videos
-                  ?.map(
-                    (video) => PRFLocalMedia(
-                      collectionName: video.collectionName,
-                      fileName: video.fileName,
-                      temporaryURL: video.temporaryURL,
-                      size: video.size,
-                      humanReadableSize: video.humanReadableSize,
-                      mimeType: video.mimeType,
-                      name: video.name,
-                      createdAt: video.createdAt,
-                      updatedAt: video.updatedAt,
-                    ),
-                  )
-                  .toList(),
+              audios:
+                  lessonModule.lesson!.audios
+                      ?.map(
+                        (audio) => PRFLocalMedia(
+                          collectionName: audio.collectionName,
+                          fileName: audio.fileName,
+                          temporaryURL: audio.temporaryURL,
+                          size: audio.size,
+                          humanReadableSize: audio.humanReadableSize,
+                          mimeType: audio.mimeType,
+                          name: audio.name,
+                          createdAt: audio.createdAt,
+                          updatedAt: audio.updatedAt,
+                        ),
+                      )
+                      .toList(),
+              documents:
+                  lessonModule.lesson!.documents
+                      ?.map(
+                        (document) => PRFLocalMedia(
+                          collectionName: document.collectionName,
+                          fileName: document.fileName,
+                          temporaryURL: document.temporaryURL,
+                          size: document.size,
+                          humanReadableSize: document.humanReadableSize,
+                          mimeType: document.mimeType,
+                          name: document.name,
+                          createdAt: document.createdAt,
+                          updatedAt: document.updatedAt,
+                        ),
+                      )
+                      .toList(),
+              videos:
+                  lessonModule.lesson!.videos
+                      ?.map(
+                        (video) => PRFLocalMedia(
+                          collectionName: video.collectionName,
+                          fileName: video.fileName,
+                          temporaryURL: video.temporaryURL,
+                          size: video.size,
+                          humanReadableSize: video.humanReadableSize,
+                          mimeType: video.mimeType,
+                          name: video.name,
+                          createdAt: video.createdAt,
+                          updatedAt: video.updatedAt,
+                        ),
+                      )
+                      .toList(),
             ),
           ),
         );
@@ -377,13 +369,14 @@ class LocalDBServiceImpl implements LocalDBService {
   Stream<List<PRFLocalLessonModule>> getLessonModules({
     required String moduleUlid,
   }) async* {
-    await for (final localLessonModule in prfDBInstance.pRFLocalLessonModules
-        .filter()
-        .moduleUlidEqualTo(moduleUlid)
-        .sortByOrder()
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+    await for (final localLessonModule
+        in prfDBInstance.pRFLocalLessonModules
+            .filter()
+            .moduleUlidEqualTo(moduleUlid)
+            .sortByOrder()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       yield localLessonModule;
     }
   }
@@ -407,13 +400,14 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Stream<List<PRFLocalStudentEnquiry>> getStudentEnquiries() async* {
-    await for (final localEnquiry in prfDBInstance.pRFLocalStudentEnquirys
-        .filter()
-        .idGreaterThan(0)
-        .sortByCreatedAtDesc()
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+    await for (final localEnquiry
+        in prfDBInstance.pRFLocalStudentEnquirys
+            .filter()
+            .idGreaterThan(0)
+            .sortByCreatedAtDesc()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       yield localEnquiry;
     }
   }
@@ -443,13 +437,14 @@ class LocalDBServiceImpl implements LocalDBService {
   Stream<List<PRFLocalStudentEnquiryReply>> getStudentEnquiryReplies({
     required String studentEnquiryUlid,
   }) async* {
-    await for (final localReply in prfDBInstance.pRFLocalStudentEnquiryReplys
-        .filter()
-        .studentEnquiryUlidEqualTo(studentEnquiryUlid)
-        .sortByCreatedAt()
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+    await for (final localReply
+        in prfDBInstance.pRFLocalStudentEnquiryReplys
+            .filter()
+            .studentEnquiryUlidEqualTo(studentEnquiryUlid)
+            .sortByCreatedAt()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       yield localReply;
     }
   }
@@ -476,13 +471,14 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Stream<Map<DateTime, List<PRFLocalAnnouncement>>> getAnnouncements() async* {
-    await for (final localAnnouncement in prfDBInstance.pRFLocalAnnouncements
-        .filter()
-        .idGreaterThan(0)
-        .sortByPublishedAtDesc()
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream()) {
+    await for (final localAnnouncement
+        in prfDBInstance.pRFLocalAnnouncements
+            .filter()
+            .idGreaterThan(0)
+            .sortByPublishedAtDesc()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
       final groupedEntries = collection.groupBy<PRFLocalAnnouncement, DateTime>(
         localAnnouncement.toList(),
         (PRFLocalAnnouncement entry) => entry.publishedAt,
@@ -510,11 +506,12 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   List<PRFPrayerResponseDTO> retrievePrayerResponses() {
-    final responses = prfDBInstance.pRFLocalPrayerResponses
-        .filter()
-        .idGreaterThan(0)
-        .build()
-        .findAllSync();
+    final responses =
+        prfDBInstance.pRFLocalPrayerResponses
+            .filter()
+            .idGreaterThan(0)
+            .build()
+            .findAllSync();
     return responses
         .map<PRFPrayerResponseDTO>(
           (response) => PRFPrayerResponseDTO(
@@ -554,11 +551,12 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   List<PRFMediaDTO> retrieveMediaUploads() {
-    final responses = prfDBInstance.pRFLocalMediaUploads
-        .filter()
-        .idGreaterThan(0)
-        .build()
-        .findAllSync();
+    final responses =
+        prfDBInstance.pRFLocalMediaUploads
+            .filter()
+            .idGreaterThan(0)
+            .build()
+            .findAllSync();
     return responses
         .map<PRFMediaDTO>(
           (response) => PRFMediaDTO(
@@ -572,10 +570,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  void deleteMediaUpload({
-    required String modelUlid,
-    required String path,
-  }) {
+  void deleteMediaUpload({required String modelUlid, required String path}) {
     prfDBInstance.writeTxnSync(() async {
       prfDBInstance.pRFLocalMediaUploads
           .filter()
@@ -592,19 +587,14 @@ class LocalDBServiceImpl implements LocalDBService {
     await prfDBInstance.writeTxn(() async {
       for (final faqCategory in faqCategories) {
         await prfDBInstance.pRFLocalFaqCategorys.put(
-          PRFLocalFaqCategory(
-            ulid: faqCategory.ulid,
-            name: faqCategory.name,
-          ),
+          PRFLocalFaqCategory(ulid: faqCategory.ulid, name: faqCategory.name),
         );
       }
     });
   }
 
   @override
-  Future<void> persistFaqs({
-    required List<PRFFaq> faqs,
-  }) async {
+  Future<void> persistFaqs({required List<PRFFaq> faqs}) async {
     await prfDBInstance.writeTxn(() async {
       for (final faq in faqs) {
         await prfDBInstance.pRFLocalFaqs.put(

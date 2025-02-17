@@ -31,23 +31,21 @@ class UpdateMissionGroundSuggestionCubit
     required String notes,
   }) async {
     try {
-      emit(
-        const UpdateMissionGroundSuggestionState.loading(),
-      );
+      emit(const UpdateMissionGroundSuggestionState.loading());
       final member = _hiveService.retrieveMember()!;
 
-      final missionGroundSuggestion =
-          await _missionGroundsService.updateMissionGroundSuggestion(
-        missionGroundSuggestionUlid: missionGroundSuggestionUlid,
-        missionGroundSuggestionDTO: PRFMissionGroundSuggestionDTO(
-          name: name,
-          contactPerson: contactPerson,
-          contactNumber: contactNumber,
-          suggestorUlid: member.ulid,
-          status: status,
-          notes: notes,
-        ),
-      );
+      final missionGroundSuggestion = await _missionGroundsService
+          .updateMissionGroundSuggestion(
+            missionGroundSuggestionUlid: missionGroundSuggestionUlid,
+            missionGroundSuggestionDTO: PRFMissionGroundSuggestionDTO(
+              name: name,
+              contactPerson: contactPerson,
+              contactNumber: contactNumber,
+              suggestorUlid: member.ulid,
+              status: status,
+              notes: notes,
+            ),
+          );
       emit(
         UpdateMissionGroundSuggestionState.loaded(
           missionGroundSuggestion: missionGroundSuggestion,

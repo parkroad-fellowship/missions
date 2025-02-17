@@ -7,9 +7,8 @@ part 'delete_mission_session_cubit.freezed.dart';
 part 'delete_mission_session_state.dart';
 
 class DeleteMissionSessionCubit extends Cubit<DeleteMissionSessionState> {
-  DeleteMissionSessionCubit({
-    required MissionService missionService,
-  }) : super(const DeleteMissionSessionState.initial()) {
+  DeleteMissionSessionCubit({required MissionService missionService})
+    : super(const DeleteMissionSessionState.initial()) {
     _missionService = missionService;
   }
 

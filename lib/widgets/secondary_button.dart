@@ -24,11 +24,12 @@ class SecondaryButton extends StatelessWidget {
     return Builder(
       builder: (context) {
         return MaterialButton(
-          color: isAlert ?? false
-              ? (disabled || (isLoading ?? false))
-                  ? PRFApp.theme().kErrorColor.withValues(alpha: .4)
-                  : PRFApp.theme().kErrorColor
-              : (disabled || (isLoading ?? false))
+          color:
+              isAlert ?? false
+                  ? (disabled || (isLoading ?? false))
+                      ? PRFApp.theme().kErrorColor.withValues(alpha: .4)
+                      : PRFApp.theme().kErrorColor
+                  : (disabled || (isLoading ?? false))
                   ? PRFApp.theme().kBackgroundColor.withValues(alpha: .4)
                   : PRFApp.theme().kBackgroundColor,
           minWidth: double.infinity,
@@ -39,9 +40,7 @@ class SecondaryButton extends StatelessWidget {
           hoverElevation: 0,
           disabledElevation: 0,
           onPressed: disabled ? () {} : onPressed,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           child: Wrap(
             children: [
               if (isLoading ?? false) ...[
@@ -60,9 +59,9 @@ class SecondaryButton extends StatelessWidget {
               Text(
                 title,
                 style: PRFText.theme().headlineSmall!.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: PRFApp.theme().kPrimaryColorV2,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ],
           ),

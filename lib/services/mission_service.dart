@@ -82,7 +82,8 @@ class MissionServiceImpl implements MissionService {
       final res = await _networkUtil.getReq(
         '/missions',
         queryParameters: {
-          'include': 'school,missionType,school.schoolContacts.contactType,'
+          'include':
+              'school,missionType,school.schoolContacts.contactType,'
               'loggedInMemberMissionSubscription,weatherForecasts,media',
           'filter[status_key]': PRFMissionStatus.approved.apiKey,
           'order_by': 'start_date',
@@ -195,10 +196,7 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.getReq(
         '/prayer-prompts',
-        queryParameters: {
-          'limit': 100,
-          'filter[is_active]': 2,
-        },
+        queryParameters: {'limit': 100, 'filter[is_active]': 2},
       );
 
       return PRFPrayerPromptResponse.fromJson(res).data;
@@ -214,15 +212,11 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.postReq(
         '/prayer-responses',
-        queryParameters: {
-          'include': 'prayerPrompt',
-        },
+        queryParameters: {'include': 'prayerPrompt'},
         body: json.encode(prayerResponse.toJson()),
       );
 
-      return PRFPrayerResponse.fromJson(
-        res['data'] as Map<String, dynamic>,
-      );
+      return PRFPrayerResponse.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
@@ -233,9 +227,7 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.getReq(
         '/expense-categories',
-        queryParameters: {
-          'limit': 100,
-        },
+        queryParameters: {'limit': 100},
       );
 
       return PRFExpenseCategoryResponse.fromJson(res).data;
@@ -251,9 +243,7 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.getReq(
         '/mission-expenses/$missionUlid',
-        queryParameters: {
-          'include': 'expenses.expenseCategory',
-        },
+        queryParameters: {'include': 'expenses.expenseCategory'},
       );
 
       return PRFMissionExpense.fromJson(res['data'] as Map<String, dynamic>);
@@ -301,9 +291,7 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.getReq(
         '/missions/$missionUlid/media',
-        queryParameters: {
-          'collection': model.collection,
-        },
+        queryParameters: {'collection': model.collection},
       );
 
       return PRFMediaResponse.fromJson(res).data;

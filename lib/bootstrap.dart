@@ -35,7 +35,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    {
+    // Report errors to Crashlytics in release mode only
+    if (kReleaseMode) {
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
 
@@ -44,6 +45,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         return true;
       };
     }
+
     Singletons.setup();
     await Singletons.setupDatabase();
 

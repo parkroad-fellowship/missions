@@ -25,9 +25,8 @@ class PRFMissionSubscription with _$PRFMissionSubscription {
 
 @freezed
 class PRFMissionSubscriptionsResponse with _$PRFMissionSubscriptionsResponse {
-  factory PRFMissionSubscriptionsResponse(
-    List<PRFMissionSubscription> data,
-  ) = _PRFMissionSubscriptionsResponse;
+  factory PRFMissionSubscriptionsResponse(List<PRFMissionSubscription> data) =
+      _PRFMissionSubscriptionsResponse;
 
   factory PRFMissionSubscriptionsResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFMissionSubscriptionsResponseFromJson(json);

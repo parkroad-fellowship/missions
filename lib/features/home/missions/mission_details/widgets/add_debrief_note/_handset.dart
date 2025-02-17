@@ -7,10 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
 class AddDebriefNoteViewHandset extends StatefulWidget {
-  const AddDebriefNoteViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const AddDebriefNoteViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -64,47 +61,42 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                     });
                     Gaimon.success();
                     Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.noteRecorded),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(l10n.noteRecorded)));
                   },
                   error: (error) {
                     Gaimon.error();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          error.message,
-                        ),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(error.message)));
                   },
                 );
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (_noteController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterDebriefNote),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (_noteController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterDebriefNote)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      await context.read<AddDebriefNoteCubit>().addDebriefNote(
-                            missionUlid: widget.missionUlid,
-                            note: _noteController.text,
-                          );
-                    },
-                  ),
+                          await context
+                              .read<AddDebriefNoteCubit>()
+                              .addDebriefNote(
+                                missionUlid: widget.missionUlid,
+                                note: _noteController.text,
+                              );
+                        },
+                      ),
                 );
               },
             ),

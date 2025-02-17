@@ -15,9 +15,7 @@ abstract class NotificationService {
 
   void requestPermissions();
 
-  void createNotification({
-    required NotificationContent content,
-  });
+  void createNotification({required NotificationContent content});
   void schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   });
@@ -86,8 +84,7 @@ abstract class NotificationService {
                                 ),
                                 title: Text(
                                   l10n.prayerAlert,
-                                  style: PRFText.theme()
-                                      .displayMedium
+                                  style: PRFText.theme().displayMedium
                                       ?.copyWith(
                                         color: PRFApp.theme().kPrimaryColorV2,
                                         fontWeight: FontWeight.bold,
@@ -99,9 +96,9 @@ abstract class NotificationService {
                                 title: Text(
                                   payload['prayer_prompt_description']!,
                                   style: PRFText.theme().bodySmall?.copyWith(
-                                        color: PRFApp.theme().kPrimaryColorV2,
-                                        fontSize: 18,
-                                      ),
+                                    color: PRFApp.theme().kPrimaryColorV2,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
                               OverflowBar(
@@ -117,13 +114,11 @@ abstract class NotificationService {
                                             prayerPromptUlid:
                                                 payload['prayer_prompt_ulid']!,
                                           )
-                                          .then(
-                                        (_) {
-                                          if (context.mounted) {
-                                            Navigator.of(context).pop();
-                                          }
-                                        },
-                                      );
+                                          .then((_) {
+                                            if (context.mounted) {
+                                              Navigator.of(context).pop();
+                                            }
+                                          });
                                     },
                                   ),
                                 ],
@@ -139,8 +134,9 @@ abstract class NotificationService {
             },
           );
         case PRFNotificationType.givingPrompt:
-          await getIt<PRFSuperAppRouter>()
-              .pushNamed(PRFSuperAppRouter.givingRoute);
+          await getIt<PRFSuperAppRouter>().pushNamed(
+            PRFSuperAppRouter.givingRoute,
+          );
       }
     }
   }
@@ -192,12 +188,8 @@ class NotificationServiceImpl implements NotificationService {
   }
 
   @override
-  void createNotification({
-    required NotificationContent content,
-  }) {
-    AwesomeNotifications().createNotification(
-      content: content,
-    );
+  void createNotification({required NotificationContent content}) {
+    AwesomeNotifications().createNotification(content: content);
   }
 
   @override
@@ -237,9 +229,7 @@ class NotificationServiceImpl implements NotificationService {
         channelKey: 'giving_prompts',
         title: 'PRF: Support',
         body: 'Consider supporting the fellowship with your giving',
-        payload: {
-          'type': 'giving_prompt',
-        },
+        payload: {'type': 'giving_prompt'},
       ),
       // Show this notification every Fridy at 1250 Hours
       schedule: NotificationCalendar(

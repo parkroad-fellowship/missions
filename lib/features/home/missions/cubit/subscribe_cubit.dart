@@ -20,9 +20,7 @@ class SubscribeCubit extends Cubit<SubscribeState> {
   late MissionService _missionService;
   late HiveService _hiveService;
 
-  Future<void> subscribe({
-    required String missionUlid,
-  }) async {
+  Future<void> subscribe({required String missionUlid}) async {
     emit(const SubscribeState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
@@ -32,11 +30,7 @@ class SubscribeCubit extends Cubit<SubscribeState> {
           memberUlid: member.ulid,
         ),
       );
-      emit(
-        SubscribeState.loaded(
-          subscription: missionSubscription,
-        ),
-      );
+      emit(SubscribeState.loaded(subscription: missionSubscription));
     } on Failure catch (e) {
       emit(SubscribeState.error(e.message));
     } catch (e) {

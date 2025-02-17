@@ -7,7 +7,6 @@ class GetExpenseCategoriesState with _$GetExpenseCategoriesState {
   const factory GetExpenseCategoriesState.loaded({
     required List<PRFExpenseCategory> expenseCategories,
   }) = _Loaded;
-  const factory GetExpenseCategoriesState.error({
-    required String message,
-  }) = _Error;
+  const factory GetExpenseCategoriesState.error({required String message}) =
+      _Error;
 }

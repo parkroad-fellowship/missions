@@ -58,9 +58,10 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                 BlocConsumer<RegisterStudentCubit, RegisterStudentState>(
                   listener: (context, state) {
                     state.maybeWhen(
-                      loading: () => setState(() {
-                        _isLoading = !_isLoading;
-                      }),
+                      loading:
+                          () => setState(() {
+                            _isLoading = !_isLoading;
+                          }),
                       loaded: (user) {
                         credentials = user;
 
@@ -95,14 +96,18 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                   },
                   builder: (context, state) {
                     return state.maybeWhen(
-                      orElse: () => PrimaryButton(
-                        onPressed: () => context
-                            .read<RegisterStudentCubit>()
-                            .registerStudent(),
-                        title: _isLoading ? l10n.registering : l10n.iAmReady,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                      ),
+                      orElse:
+                          () => PrimaryButton(
+                            onPressed:
+                                () =>
+                                    context
+                                        .read<RegisterStudentCubit>()
+                                        .registerStudent(),
+                            title:
+                                _isLoading ? l10n.registering : l10n.iAmReady,
+                            disabled: _isLoading,
+                            isLoading: _isLoading ? true : null,
+                          ),
                     );
                   },
                 ),

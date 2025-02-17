@@ -17,15 +17,14 @@ class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
   late LMSService _lmsService;
   late LocalDBService _localDBService;
 
-  Future<void> getCourseModules({
-    required String courseUlid,
-  }) async {
+  Future<void> getCourseModules({required String courseUlid}) async {
     emit(const GetCourseModulesState.loading());
 
     try {
       final courseModules = await _lmsService.getCourseModules(
         courseUlid: courseUlid,
-        includes: 'course.thumbnail,course.courseMember,module.thumbnail,'
+        includes:
+            'course.thumbnail,course.courseMember,module.thumbnail,'
             'memberModule,module.lessonModules.lesson,'
             'module.lessonModules.lessonMember,module.lessonModules.module',
       );

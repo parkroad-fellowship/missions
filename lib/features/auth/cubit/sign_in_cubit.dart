@@ -22,17 +22,11 @@ class SigninCubit extends Cubit<SignInState> {
   late AuthService _authService;
   late SocketService _socketService;
 
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signIn({required String email, required String password}) async {
     emit(const SignInState.loading());
     try {
       final token = await _authService.signIn(
-        signInDTO: SignInDTO(
-          email: email,
-          password: password,
-        ),
+        signInDTO: SignInDTO(email: email, password: password),
       );
 
       _hiveService.persistToken(token);

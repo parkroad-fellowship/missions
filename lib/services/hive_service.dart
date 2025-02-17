@@ -25,10 +25,7 @@ abstract class HiveService {
   PRFMember? retrieveMember();
   List<String>? retrieveMemberGroupUlids();
   String retrieveStudentUlid();
-  void persistStudentCredentials({
-    required String email,
-    int? password,
-  });
+  void persistStudentCredentials({required String email, int? password});
   (String email, int? password) retrieveStudentCredentials();
 
   void persistClassGroups(PRFClassGroupResponse classGroups);
@@ -76,13 +73,9 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void clearPrefs() {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .deleteAll(<String>[
-      'accessToken',
-      'profile',
-      'classGroups',
-      'studentCredentials',
-    ]);
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox).deleteAll(
+      <String>['accessToken', 'profile', 'classGroups', 'studentCredentials'],
+    );
   }
 
   @override
@@ -97,11 +90,13 @@ class HiveServiceImpl implements HiveService {
       DateTime.now().add(const Duration(days: 3)).toString(),
     );
 
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('accessToken', token);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('accessToken', token);
 
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.globalHiveAuthBox)
-        .put('isLoggedOut', false);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+    ).put('isLoggedOut', false);
   }
 
   @override
@@ -116,8 +111,9 @@ class HiveServiceImpl implements HiveService {
     final expiry = DateTime.parse(expiryTime);
     if (DateTime.now().isAfter(expiry)) {
       clearPrefs();
-      Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.globalHiveAuthBox)
-          .put('isLoggedOut', true);
+      Hive.box<dynamic>(
+        PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+      ).put('isLoggedOut', true);
       return null;
     }
 
@@ -127,16 +123,18 @@ class HiveServiceImpl implements HiveService {
   @override
   bool isLoggedOut() {
     return Hive.box<dynamic>(
-          PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
-        ).get('isLoggedOut') as bool? ??
+              PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+            ).get('isLoggedOut')
+            as bool? ??
         false;
   }
 
   @override
   void persistProfile(PRFUser profile) {
     Logger().i('Persisting profile: $profile');
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('profile', profile);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('profile', profile);
   }
 
   @override
@@ -152,8 +150,7 @@ class HiveServiceImpl implements HiveService {
 
   @override
   List<String>? retrieveMemberGroupUlids() {
-    return retrieveMember()!
-            .groupMembers
+    return retrieveMember()!.groupMembers
             ?.map((groupMember) => groupMember.group!.ulid)
             .toList() ??
         [];
@@ -161,8 +158,9 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistClassGroups(PRFClassGroupResponse classGroups) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('classGroups', classGroups);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('classGroups', classGroups);
   }
 
   @override
@@ -175,8 +173,9 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistSouls(PRFSoulResponse souls, String missionUlid) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('souls-$missionUlid', souls);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('souls-$missionUlid', souls);
   }
 
   @override
@@ -199,8 +198,9 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void clearSouls(String missionUlid) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .delete('souls-$missionUlid');
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).delete('souls-$missionUlid');
   }
 
   @override
@@ -211,12 +211,10 @@ class HiveServiceImpl implements HiveService {
   }
 
   @override
-  void persistStudentCredentials({
-    required String email,
-    int? password,
-  }) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('studentCredentials', [email, password]);
+  void persistStudentCredentials({required String email, int? password}) {
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('studentCredentials', [email, password]);
   }
 
   @override
@@ -229,8 +227,9 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistExpenseCategories(PRFExpenseCategoryResponse expenseCategories) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('expenseCategories', expenseCategories);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('expenseCategories', expenseCategories);
   }
 
   @override
@@ -256,8 +255,9 @@ class HiveServiceImpl implements HiveService {
     PRFMissionExpense missionExpense,
     String missionUlid,
   ) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('mission-expenses-$missionUlid', missionExpense);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('mission-expenses-$missionUlid', missionExpense);
   }
 
   @override
@@ -289,8 +289,9 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistPaymentTypes(PRFPaymentTypeResponse paymentTypes) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
-        .put('paymentTypes', paymentTypes);
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('paymentTypes', paymentTypes);
   }
 
   @override

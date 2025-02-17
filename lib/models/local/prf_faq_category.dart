@@ -4,10 +4,7 @@ part 'prf_faq_category.g.dart';
 
 @collection
 class PRFLocalFaqCategory {
-  PRFLocalFaqCategory({
-    required this.ulid,
-    required this.name,
-  });
+  PRFLocalFaqCategory({required this.ulid, required this.name});
 
   Id id = Isar.autoIncrement;
   @Index(unique: true, replace: true)

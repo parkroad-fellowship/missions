@@ -18,15 +18,17 @@ class SessionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => SessionPageHandset(
-        missionSession: missionSession,
-        missionUlid: missionUlid,
-      ),
+      defaultBuilder:
+          (_, __) => SessionPageHandset(
+            missionSession: missionSession,
+            missionUlid: missionUlid,
+          ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => SessionPageHandset(
-          missionSession: missionSession,
-          missionUlid: missionUlid,
-        ),
+        handset:
+            (_, __) => SessionPageHandset(
+              missionSession: missionSession,
+              missionUlid: missionUlid,
+            ),
       ),
     );
   }

@@ -47,9 +47,10 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   child: Row(
                     children: [
                       GestureDetector(
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.studentAccountRoute,
-                        ),
+                        onTap:
+                            () => context.router.pushNamed(
+                              PRFSuperAppRouter.studentAccountRoute,
+                            ),
                         child: CircleAvatar(
                           radius: 70.r,
                           backgroundColor: Colors.white,
@@ -67,24 +68,25 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                         l10n.hello(
                           getIt<HiveService>().retrieveProfile()!.student!.name,
                         ),
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 60.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 60.sp,
+                        ),
                       ),
                       const Spacer(),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w) +
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w) +
                       EdgeInsets.only(bottom: 80.h),
                   child: Text(
                     l10n.lookingFor,
                     style: PRFText.theme().displayLarge?.copyWith(
-                          color: PRFApp.theme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 88.sp,
-                        ),
+                      color: PRFApp.theme().kPrimaryColorV2,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 88.sp,
+                    ),
                   ),
                 ),
                 SizedBox(height: 16.h),
@@ -99,8 +101,10 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   child: HomeActionCard(
                     title: l10n.faqs,
                     assetPath: 'assets/svgs/explore.svg',
-                    onTap: () =>
-                        context.router.pushNamed(PRFSuperAppRouter.learnerFaqs),
+                    onTap:
+                        () => context.router.pushNamed(
+                          PRFSuperAppRouter.learnerFaqs,
+                        ),
                   ),
                 ),
                 SizedBox(height: 32.h),
@@ -115,15 +119,18 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                   child: HomeActionCard(
                     title: l10n.askQuestion,
                     assetPath: 'assets/svgs/ask.svg',
-                    onTap: () => context.router
-                        .pushNamed(PRFSuperAppRouter.learnerEnquiriesRoute),
+                    onTap:
+                        () => context.router.pushNamed(
+                          PRFSuperAppRouter.learnerEnquiriesRoute,
+                        ),
                   ),
                 ),
                 SizedBox(height: 32.h),
                 ValueListenableBuilder(
-                  valueListenable: Hive.box<dynamic>(
-                    PRFSuperAppConfig.instance!.values.hiveBox,
-                  ).listenable(),
+                  valueListenable:
+                      Hive.box<dynamic>(
+                        PRFSuperAppConfig.instance!.values.hiveBox,
+                      ).listenable(),
                   builder: (context, _, __) {
                     final (email, password) =
                         getIt<HiveService>().retrieveStudentCredentials();
@@ -156,15 +163,12 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                                     child: SizedBox(
                                       height:
                                           MediaQuery.sizeOf(context).height *
-                                              0.4,
+                                          0.4,
                                       child: Column(
                                         children: [
                                           Align(
                                             child: Text(
-                                              l10n.credentials(
-                                                email,
-                                                password,
-                                              ),
+                                              l10n.credentials(email, password),
                                               style:
                                                   PRFText.theme().headlineLarge,
                                             ),

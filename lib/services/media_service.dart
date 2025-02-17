@@ -16,9 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
-  Future<PRFMedia> uploadFile({
-    required PRFMediaDTO imageDTO,
-  });
+  Future<PRFMedia> uploadFile({required PRFMediaDTO imageDTO});
   Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
@@ -39,9 +37,7 @@ class MediaServiceImpl implements MediaService {
   final _networkUtil = NetworkUtil();
 
   @override
-  Future<PRFMedia> uploadFile({
-    required PRFMediaDTO imageDTO,
-  }) async {
+  Future<PRFMedia> uploadFile({required PRFMediaDTO imageDTO}) async {
     final url = StringBuffer('/');
     Logger().d(imageDTO);
     switch (imageDTO.model) {
@@ -57,9 +53,7 @@ class MediaServiceImpl implements MediaService {
         url.toString(),
         field: 'media_file',
         filePath: imageDTO.path,
-        body: <String, dynamic>{
-          'collection': imageDTO.model.collection,
-        },
+        body: <String, dynamic>{'collection': imageDTO.model.collection},
       );
 
       return PRFMedia.fromJson(res['data'] as Map<String, dynamic>);
@@ -116,16 +110,14 @@ class MediaServiceImpl implements MediaService {
   }) async {
     try {
       final result = await FilePicker.platform
-          .pickFiles(
-        allowMultiple: true,
-        type: FileType.audio,
-      )
+          .pickFiles(allowMultiple: true, type: FileType.audio)
           .catchError((dynamic error) {
-        if (error is PlatformException && error.code == 'multiple_request') {
-          throw Failure(message: 'Another file selection is in progress');
-        }
-        throw Failure(message: error.toString());
-      });
+            if (error is PlatformException &&
+                error.code == 'multiple_request') {
+              throw Failure(message: 'Another file selection is in progress');
+            }
+            throw Failure(message: error.toString());
+          });
 
       if (result != null) {
         final filePaths = result.paths;
@@ -169,9 +161,7 @@ class MediaServiceImpl implements MediaService {
 
   @override
   Future<void> initDownloader() async {
-    await FlutterDownloader.initialize(
-      debug: kDebugMode,
-    );
+    await FlutterDownloader.initialize(debug: kDebugMode);
     await FlutterDownloader.registerCallback(callback);
   }
 
@@ -187,9 +177,10 @@ class MediaServiceImpl implements MediaService {
       if (Platform.isAndroid) {
         appDocDir = (await path_provider.getExternalStorageDirectory())!.path;
       } else {
-        appDocDir = (await path_provider.getApplicationDocumentsDirectory())
-            .absolute
-            .path;
+        appDocDir =
+            (await path_provider.getApplicationDocumentsDirectory())
+                .absolute
+                .path;
       }
 
       await FlutterDownloader.enqueue(

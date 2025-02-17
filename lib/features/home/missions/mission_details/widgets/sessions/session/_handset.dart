@@ -71,17 +71,18 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.missionDetailsRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.missionDetailsRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       Text(
                         l10n.sessionDetails,
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 80.sp,
+                        ),
                       ),
                       const Spacer(),
                     ],
@@ -101,31 +102,31 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                               missionSessionUlid: _missionSession!.ulid,
                             );
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.doneUploading),
-                          ),
+                          SnackBar(content: Text(l10n.doneUploading)),
                         );
                       },
                       error: (error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(error.message),
-                          ),
-                        );
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(error.message)));
                       },
                     );
                   },
-                  builder: (context, state) => state.maybeWhen(
-                    loading: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    orElse: () => const SizedBox(),
-                  ),
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        loading:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        error: (message) => Center(child: Text(message)),
+                        orElse: () => const SizedBox(),
+                      ),
                 ),
               ),
               SliverToBoxAdapter(
-                child: BlocConsumer<GetMissionSessionCubit,
-                    GetMissionSessionState>(
+                child: BlocConsumer<
+                  GetMissionSessionCubit,
+                  GetMissionSessionState
+                >(
                   listener: (context, state) {
                     state.mapOrNull(
                       loaded: (result) {
@@ -135,12 +136,14 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                       },
                     );
                   },
-                  builder: (context, state) => state.maybeWhen(
-                    loading: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    orElse: () => const SizedBox(),
-                  ),
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        loading:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        error: (message) => Center(child: Text(message)),
+                        orElse: () => const SizedBox(),
+                      ),
                 ),
               ),
               if (_missionSession != null)
@@ -171,26 +174,29 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                           width: 500.w,
                           child: PrimaryButton(
                             title: l10n.uploadRecording,
-                            onPressed: () => WoltModalSheet.show<void>(
-                              context: context,
-                              pageListBuilder: (modalSheetContext) {
-                                return [
-                                  WoltModalSheetPage(
-                                    backgroundColor: Colors.white,
-                                    surfaceTintColor: Colors.white,
-                                    child: SizedBox(
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
+                            onPressed:
+                                () => WoltModalSheet.show<void>(
+                                  context: context,
+                                  pageListBuilder: (modalSheetContext) {
+                                    return [
+                                      WoltModalSheetPage(
+                                        backgroundColor: Colors.white,
+                                        surfaceTintColor: Colors.white,
+                                        child: SizedBox(
+                                          height:
+                                              MediaQuery.sizeOf(
+                                                context,
+                                              ).height *
                                               0.8,
-                                      child: AddAudioView(
-                                        missionSessionUlid:
-                                            _missionSession!.ulid,
+                                          child: AddAudioView(
+                                            missionSessionUlid:
+                                                _missionSession!.ulid,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ];
-                              },
-                            ),
+                                    ];
+                                  },
+                                ),
                             disabled: false,
                           ),
                         ),
@@ -228,28 +234,31 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                             style: PRFText.theme().bodySmall,
                           ),
                           trailing: IconButton(
-                            icon: BlocConsumer<DownloadFileCubit,
-                                DownloadFileState>(
+                            icon: BlocConsumer<
+                              DownloadFileCubit,
+                              DownloadFileState
+                            >(
                               listener: (context, state) {
                                 state.mapOrNull(
                                   loaded: (_) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(l10n.downloaded),
-                                      ),
+                                      SnackBar(content: Text(l10n.downloaded)),
                                     );
                                   },
                                 );
                               },
-                              builder: (context, state) => state.maybeWhen(
-                                orElse: () => const Icon(Icons.download),
-                                loading: () =>
-                                    const PRFCircularProgressIndicator(),
-                              ),
+                              builder:
+                                  (context, state) => state.maybeWhen(
+                                    orElse: () => const Icon(Icons.download),
+                                    loading: PRFCircularProgressIndicator.new,
+                                  ),
                             ),
-                            onPressed: () => context
-                                .read<DownloadFileCubit>()
-                                .downloadFile(transcript.media!.temporaryURL),
+                            onPressed:
+                                () => context
+                                    .read<DownloadFileCubit>()
+                                    .downloadFile(
+                                      transcript.media!.temporaryURL,
+                                    ),
                           ),
                         ),
                         if (transcript.content.isEmpty)
@@ -271,31 +280,36 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                             backgroundColor: PRFApp.theme().kPrimaryColorV2,
                             padding: const EdgeInsets.symmetric(horizontal: 2),
                             child: GestureDetector(
-                              onTap: () => WoltModalSheet.show<void>(
-                                context: context,
-                                pageListBuilder: (modalSheetContext) {
-                                  return [
-                                    WoltModalSheetPage(
-                                      backgroundColor: Colors.white,
-                                      surfaceTintColor: Colors.white,
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
+                              onTap:
+                                  () => WoltModalSheet.show<void>(
+                                    context: context,
+                                    pageListBuilder: (modalSheetContext) {
+                                      return [
+                                        WoltModalSheetPage(
+                                          backgroundColor: Colors.white,
+                                          surfaceTintColor: Colors.white,
+                                          child: SizedBox(
+                                            height:
+                                                MediaQuery.sizeOf(
+                                                  context,
+                                                ).height *
                                                 0.8,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                          ),
-                                          child: Text(
-                                            transcript.content,
-                                            style: PRFText.theme().bodySmall,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                  ),
+                                              child: Text(
+                                                transcript.content,
+                                                style:
+                                                    PRFText.theme().bodySmall,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              ),
+                                      ];
+                                    },
+                                  ),
                               child: Chip(
                                 backgroundColor: Colors.white,
                                 label: Text(
@@ -333,57 +347,54 @@ class MissionSessionDataView extends StatelessWidget {
     final l10n = context.l10n;
 
     return SliverList(
-      delegate: SliverChildListDelegate(
-        [
+      delegate: SliverChildListDelegate([
+        DataCard(
+          label: l10n.time,
+          value:
+              '${DateFormat.jm().format(missionSession.startsAt)} -'
+              ' ${DateFormat.jm().format(missionSession.endsAt)}',
+        ),
+        DataCard(
+          label: l10n.facilitator,
+          value: missionSession.facilitator!.fullName,
+        ),
+        if (missionSession.speaker != null)
           DataCard(
-            label: l10n.time,
-            value: '${DateFormat.jm().format(missionSession.startsAt)} -'
-                ' ${DateFormat.jm().format(missionSession.endsAt)}',
+            label: l10n.speaker,
+            value: missionSession.speaker!.fullName,
           ),
+        if (missionSession.classGroup != null)
           DataCard(
-            label: l10n.facilitator,
-            value: missionSession.facilitator!.fullName,
+            label: l10n.classGroup,
+            value: missionSession.classGroup!.name,
           ),
-          if (missionSession.speaker != null)
-            DataCard(
-              label: l10n.speaker,
-              value: missionSession.speaker!.fullName,
-            ),
-          if (missionSession.classGroup != null)
-            DataCard(
-              label: l10n.classGroup,
-              value: missionSession.classGroup!.name,
-            ),
-          DataCard(
-            label: l10n.notes,
-            value: missionSession.notes,
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: PrimaryButton(
-                  title: l10n.edit,
-                  onPressed: () => WoltModalSheet.show<void>(
-                    context: context,
-                    pageListBuilder: (modalSheetContext) {
-                      return [
-                        WoltModalSheetPage(
-                          backgroundColor: Colors.white,
-                          surfaceTintColor: Colors.white,
-                          child: SizedBox(
-                            height: MediaQuery.sizeOf(context).height * 0.8,
-                            child: UpdateSessionView(
-                              missionUlid: missionUlid,
-                              missionSession: missionSession,
+        DataCard(label: l10n.notes, value: missionSession.notes),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: PrimaryButton(
+                title: l10n.edit,
+                onPressed:
+                    () => WoltModalSheet.show<void>(
+                      context: context,
+                      pageListBuilder: (modalSheetContext) {
+                        return [
+                          WoltModalSheetPage(
+                            backgroundColor: Colors.white,
+                            surfaceTintColor: Colors.white,
+                            child: SizedBox(
+                              height: MediaQuery.sizeOf(context).height * 0.8,
+                              child: UpdateSessionView(
+                                missionUlid: missionUlid,
+                                missionSession: missionSession,
+                              ),
                             ),
                           ),
-                        ),
-                      ];
-                    },
-                  ).then(
-                    (_) {
+                        ];
+                      },
+                    ).then((_) {
                       if (context.mounted) {
                         context
                             .read<GetMissionSessionCubit>()
@@ -391,83 +402,83 @@ class MissionSessionDataView extends StatelessWidget {
                               missionSessionUlid: missionSession.ulid,
                             );
                       }
-                    },
-                  ),
-                  disabled: false,
-                ),
+                    }),
+                disabled: false,
               ),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: PrimaryButton(
-                  isAlert: true,
-                  title: l10n.delete,
-                  disabled: false,
-                  onPressed: () async => showDialog<void>(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(l10n.deleteSession),
-                        content: Text(l10n.confirmDelete),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: Text(l10n.cancel),
-                          ),
-                          BlocConsumer<DeleteMissionSessionCubit,
-                              DeleteMissionSessionState>(
-                            listener: (context, state) {
-                              state.mapOrNull(
-                                loaded: (_) {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  context
-                                      .read<GetMissionSessionsCubit>()
-                                      .getMissionSessions(
-                                        missionUlid: missionUlid,
-                                      );
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(l10n.sessionDeleted),
-                                    ),
-                                  );
-                                },
-                                error: (e) {
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.message),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            builder: (context, state) {
-                              return TextButton(
-                                onPressed: () {
-                                  context
-                                      .read<DeleteMissionSessionCubit>()
-                                      .deleteMissionSession(
-                                        missionSessionUlid: missionSession.ulid,
-                                      );
-                                },
-                                child: state.maybeWhen(
-                                  orElse: () => Text(l10n.delete),
-                                  loading: () =>
-                                      const CircularProgressIndicator(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              child: PrimaryButton(
+                isAlert: true,
+                title: l10n.delete,
+                disabled: false,
+                onPressed:
+                    () async => showDialog<void>(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(l10n.deleteSession),
+                          content: Text(l10n.confirmDelete),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(l10n.cancel),
+                            ),
+                            BlocConsumer<
+                              DeleteMissionSessionCubit,
+                              DeleteMissionSessionState
+                            >(
+                              listener: (context, state) {
+                                state.mapOrNull(
+                                  loaded: (_) {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                    context
+                                        .read<GetMissionSessionsCubit>()
+                                        .getMissionSessions(
+                                          missionUlid: missionUlid,
+                                        );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(l10n.sessionDeleted),
+                                      ),
+                                    );
+                                  },
+                                  error: (e) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(e.message)),
+                                    );
+                                  },
+                                );
+                              },
+                              builder: (context, state) {
+                                return TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<DeleteMissionSessionCubit>()
+                                        .deleteMissionSession(
+                                          missionSessionUlid:
+                                              missionSession.ulid,
+                                        );
+                                  },
+                                  child: state.maybeWhen(
+                                    orElse: () => Text(l10n.delete),
+                                    loading:
+                                        () => const CircularProgressIndicator(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ]),
     );
   }
 }

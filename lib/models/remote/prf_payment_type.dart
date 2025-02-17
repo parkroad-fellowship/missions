@@ -5,11 +5,8 @@ part 'prf_payment_type.g.dart';
 
 @freezed
 class PRFPaymentType with _$PRFPaymentType {
-  factory PRFPaymentType(
-    String ulid,
-    String name,
-    String description,
-  ) = _PRFPaymentType;
+  factory PRFPaymentType(String ulid, String name, String description) =
+      _PRFPaymentType;
 
   factory PRFPaymentType.fromJson(Map<String, dynamic> json) =>
       _$PRFPaymentTypeFromJson(json);
@@ -17,9 +14,8 @@ class PRFPaymentType with _$PRFPaymentType {
 
 @freezed
 class PRFPaymentTypeResponse with _$PRFPaymentTypeResponse {
-  factory PRFPaymentTypeResponse(
-    List<PRFPaymentType> data,
-  ) = _PRFPaymentTypeResponse;
+  factory PRFPaymentTypeResponse(List<PRFPaymentType> data) =
+      _PRFPaymentTypeResponse;
 
   factory PRFPaymentTypeResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFPaymentTypeResponseFromJson(json);

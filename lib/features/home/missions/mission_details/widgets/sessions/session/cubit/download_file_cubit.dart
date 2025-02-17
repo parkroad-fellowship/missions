@@ -7,7 +7,7 @@ part 'download_file_cubit.freezed.dart';
 
 class DownloadFileCubit extends Cubit<DownloadFileState> {
   DownloadFileCubit({required MediaService mediaService})
-      : super(const DownloadFileState.initial()) {
+    : super(const DownloadFileState.initial()) {
     _mediaService = mediaService;
   }
 

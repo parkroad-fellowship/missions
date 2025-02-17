@@ -7,9 +7,7 @@ import 'package:app/models/remote/prf_mission_question_dto.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class DebriefService {
-  Future<List<PRFDebriefNote>> getDebriefNotes({
-    required String missionUlid,
-  });
+  Future<List<PRFDebriefNote>> getDebriefNotes({required String missionUlid});
   Future<PRFDebriefNote> addDebriefNote({
     required PRFDebriefNoteDTO debriefNoteDTO,
   });
@@ -31,9 +29,7 @@ class DebriefServiceImpl implements DebriefService {
     try {
       final res = await _networkUtil.getReq(
         '/debrief-notes',
-        queryParameters: {
-          'filter[mission_ulid]': missionUlid,
-        },
+        queryParameters: {'filter[mission_ulid]': missionUlid},
       );
 
       return PRFDebriefNoteResponse.fromJson(res).data;
@@ -65,9 +61,7 @@ class DebriefServiceImpl implements DebriefService {
     try {
       final res = await _networkUtil.getReq(
         '/mission-questions',
-        queryParameters: {
-          'filter[mission_ulid]': missionUlid,
-        },
+        queryParameters: {'filter[mission_ulid]': missionUlid},
       );
 
       return PRFMissionQuestionResponse.fromJson(res).data;

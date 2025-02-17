@@ -24,10 +24,7 @@ class HomeActionCard extends StatelessWidget {
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 100.w,
-              vertical: 80.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 80.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: 1),
@@ -36,17 +33,14 @@ class HomeActionCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(
-                  assetPath,
-                  height: 250.h,
-                ),
+                SvgPicture.asset(assetPath, height: 250.h),
                 SizedBox(height: 100.h),
                 Text(
                   title,
                   style: PRFText.theme().displayLarge?.copyWith(
-                        color: PRFApp.theme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: PRFApp.theme().kPrimaryColorV2,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -56,10 +50,7 @@ class HomeActionCard extends StatelessWidget {
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
-              child: SizedBox(
-                height: 225.h,
-                width: 210.w,
-              ),
+              child: SizedBox(height: 225.h, width: 210.w),
             ),
           ),
           Positioned(

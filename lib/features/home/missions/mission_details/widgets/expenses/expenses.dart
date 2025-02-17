@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class ExpensesView extends StatelessWidget {
-  const ExpensesView({
-    required this.missionUlid,
-    super.key,
-  });
+  const ExpensesView({required this.missionUlid, super.key});
 
   final String missionUlid;
 

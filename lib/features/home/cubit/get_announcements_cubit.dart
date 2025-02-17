@@ -30,9 +30,7 @@ class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
         groups: memberGroupUlids ?? [],
       );
 
-      await _localDBService.persistAnnouncements(
-        announcements: announcements,
-      );
+      await _localDBService.persistAnnouncements(announcements: announcements);
 
       emit(GetAnnouncementsState.loaded(isEmpty: announcements.isEmpty));
     } catch (e) {

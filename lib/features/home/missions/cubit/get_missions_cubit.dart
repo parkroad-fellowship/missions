@@ -9,9 +9,8 @@ part 'get_missions_state.dart';
 part 'get_missions_cubit.freezed.dart';
 
 class GetMissionsCubit extends Cubit<GetMissionsState> {
-  GetMissionsCubit({
-    required MissionService missionService,
-  }) : super(const GetMissionsState.initial()) {
+  GetMissionsCubit({required MissionService missionService})
+    : super(const GetMissionsState.initial()) {
     _missionService = missionService;
   }
 

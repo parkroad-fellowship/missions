@@ -19,9 +19,8 @@ class PRFClassGroup with _$PRFClassGroup {
 
 @freezed
 class PRFClassGroupResponse with _$PRFClassGroupResponse {
-  factory PRFClassGroupResponse(
-    List<PRFClassGroup> data,
-  ) = _PRFClassGroupResponse;
+  factory PRFClassGroupResponse(List<PRFClassGroup> data) =
+      _PRFClassGroupResponse;
 
   factory PRFClassGroupResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFClassGroupResponseFromJson(json);

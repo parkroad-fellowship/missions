@@ -3,18 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class DebriefNotesView extends StatelessWidget {
-  const DebriefNotesView({
-    required this.missionUlid,
-    super.key,
-  });
+  const DebriefNotesView({required this.missionUlid, super.key});
 
   final String missionUlid;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          DebriefNotesViewHandset(missionUlid: missionUlid),
+      defaultBuilder:
+          (_, __) => DebriefNotesViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => DebriefNotesViewHandset(missionUlid: missionUlid),
       ),

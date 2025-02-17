@@ -25,9 +25,7 @@ class PRFCourse with _$PRFCourse {
 
 @freezed
 class PRFCourseResponse with _$PRFCourseResponse {
-  factory PRFCourseResponse(
-    List<PRFCourse> data,
-  ) = _PRFCourseResponse;
+  factory PRFCourseResponse(List<PRFCourse> data) = _PRFCourseResponse;
 
   factory PRFCourseResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFCourseResponseFromJson(json);

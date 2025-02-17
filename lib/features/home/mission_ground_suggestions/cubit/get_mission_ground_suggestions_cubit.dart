@@ -26,19 +26,21 @@ class GetMissionGroundSuggestionsCubit
     try {
       final member = _hiveService.retrieveMember()!;
 
-      final viewAnyMissionGrounds =
-          Misc.userCan('viewAny mission ground suggestion');
-
-      final missionGroundSuggestions =
-          await _missionGroundsService.getMissionGroundSuggestions(
-        suggestorUlid: viewAnyMissionGrounds ? null : member.ulid,
-        statuses: viewAnyMissionGrounds
-            ? [
-                PRFMissionGroundSuggestionStatus.pending,
-                PRFMissionGroundSuggestionStatus.initiatedContact,
-              ]
-            : [],
+      final viewAnyMissionGrounds = Misc.userCan(
+        'viewAny mission ground suggestion',
       );
+
+      final missionGroundSuggestions = await _missionGroundsService
+          .getMissionGroundSuggestions(
+            suggestorUlid: viewAnyMissionGrounds ? null : member.ulid,
+            statuses:
+                viewAnyMissionGrounds
+                    ? [
+                      PRFMissionGroundSuggestionStatus.pending,
+                      PRFMissionGroundSuggestionStatus.initiatedContact,
+                    ]
+                    : [],
+          );
 
       emit(
         GetMissionGroundSuggestionsState.loaded(

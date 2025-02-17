@@ -60,9 +60,11 @@ class DefaultFirebaseOptions {
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
     storageBucket: 'parkroad-fellowship.firebasestorage.app',
-    androidClientId: '899177334428-f5s6jicejvusrm5clppm2lkt81fmo41b'
+    androidClientId:
+        '899177334428-f5s6jicejvusrm5clppm2lkt81fmo41b'
         '.apps.googleusercontent.com',
-    iosClientId: '899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g'
+    iosClientId:
+        '899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g'
         '.apps.googleusercontent.com',
     iosBundleId: 'org.parkroadfellowship.app',
   );

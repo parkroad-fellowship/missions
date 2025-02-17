@@ -54,17 +54,18 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.landingRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       Text(
                         l10n.announcements,
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 80.sp,
+                        ),
                       ),
                       const Spacer(),
                     ],
@@ -74,55 +75,65 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
-                child:
-                    BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
-                  builder: (context, state) => state.maybeWhen(
-                    orElse: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    loaded: (isEmpty) => isEmpty
-                        ? Column(
-                            children: [
-                              const Icon(
-                                Icons.timer,
-                              ),
-                              Center(
-                                child: Text(
-                                  l10n.noAnnouncements,
-                                  style: PRFText.theme()
-                                      .headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kDullGreyColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      l10n.pleaseWaitForOS,
-                                      maxLines: 2,
-                                      style: PRFText.theme()
-                                          .displayLarge!
-                                          .copyWith(
-                                            color:
-                                                PRFApp.theme().kPrimaryColorV2,
-                                            fontSize: 12,
+                child: BlocBuilder<
+                  GetAnnouncementsCubit,
+                  GetAnnouncementsState
+                >(
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        orElse:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        error: (message) => Center(child: Text(message)),
+                        loaded:
+                            (isEmpty) =>
+                                isEmpty
+                                    ? Column(
+                                      children: [
+                                        const Icon(Icons.timer),
+                                        Center(
+                                          child: Text(
+                                            l10n.noAnnouncements,
+                                            style: PRFText.theme()
+                                                .headlineMedium!
+                                                .copyWith(
+                                                  color:
+                                                      PRFApp.theme()
+                                                          .kDullGreyColor,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                           ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        : const SizedBox.shrink(),
-                  ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        SizedBox(
+                                          height:
+                                              MediaQuery.sizeOf(
+                                                context,
+                                              ).height *
+                                              0.05,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                l10n.pleaseWaitForOS,
+                                                maxLines: 2,
+                                                style: PRFText.theme()
+                                                    .displayLarge!
+                                                    .copyWith(
+                                                      color:
+                                                          PRFApp.theme()
+                                                              .kPrimaryColorV2,
+                                                      fontSize: 12,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                    : const SizedBox.shrink(),
+                      ),
                 ),
               ),
               StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
@@ -142,8 +153,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
 
                   return SliverList.separated(
                     itemCount: groupedEntries!.length,
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 48.h),
+                    separatorBuilder:
+                        (context, index) => SizedBox(height: 48.h),
                     itemBuilder: (context, index) {
                       final mapAsList = groupedEntries.keys.toList();
                       final entries = groupedEntries[mapAsList[index]];
@@ -158,10 +169,10 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                 child: Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
                                   style: PRFText.theme().bodyLarge?.copyWith(
-                                        color: PRFApp.theme().kPrimaryColorV2,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 64.sp,
-                                      ),
+                                    color: PRFApp.theme().kPrimaryColorV2,
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 64.sp,
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 16.h),
@@ -169,8 +180,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: entries!.length,
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 16.w),
+                                separatorBuilder:
+                                    (context, index) => SizedBox(height: 16.w),
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {},
@@ -184,42 +195,42 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         horizontal: 16.w,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: PRFApp.theme()
-                                            .kSecondaryColorV2
+                                        color: PRFApp.theme().kSecondaryColorV2
                                             .withValues(alpha: 1),
-                                        borderRadius:
-                                            BorderRadius.circular(48.r),
+                                        borderRadius: BorderRadius.circular(
+                                          48.r,
+                                        ),
                                       ),
                                       child: ListTile(
                                         contentPadding: EdgeInsets.zero,
                                         title: Text(
                                           entries[index].title.toUpperCase(),
-                                          style: PRFText.theme()
-                                              .headlineMedium
+                                          style: PRFText.theme().headlineMedium
                                               ?.copyWith(
-                                                color: PRFApp.theme()
-                                                    .kPrimaryColorV2,
+                                                color:
+                                                    PRFApp.theme()
+                                                        .kPrimaryColorV2,
                                                 fontWeight: FontWeight.w300,
                                               ),
                                         ),
                                         subtitle: Text(
                                           entries[index].content,
-                                          style: PRFText.theme()
-                                              .bodySmall
+                                          style: PRFText.theme().bodySmall
                                               ?.copyWith(
-                                                color: PRFApp.theme()
-                                                    .kPrimaryColorV2,
+                                                color:
+                                                    PRFApp.theme()
+                                                        .kPrimaryColorV2,
                                               ),
                                         ),
                                         trailing: Text(
                                           Misc.formatTimeFromDateTime(
                                             entries[index].publishedAt,
                                           ),
-                                          style: PRFText.theme()
-                                              .bodySmall
+                                          style: PRFText.theme().bodySmall
                                               ?.copyWith(
-                                                color: PRFApp.theme()
-                                                    .kPrimaryColorV2,
+                                                color:
+                                                    PRFApp.theme()
+                                                        .kPrimaryColorV2,
                                               ),
                                         ),
                                       ),

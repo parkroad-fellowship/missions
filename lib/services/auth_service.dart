@@ -19,12 +19,7 @@ class AuthServiceImpl implements AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'profile',
-      'email',
-    ],
-  );
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
 
   @override
   Future<String> signIn({required SignInDTO signInDTO}) async {
@@ -46,7 +41,8 @@ class AuthServiceImpl implements AuthService {
       final response = await _networkUtil.getReq(
         '/auth/me',
         queryParameters: <String, dynamic>{
-          'include': 'roles.permissions,member.groupMembers.group,student,'
+          'include':
+              'roles.permissions,member.groupMembers.group,student,'
               'member.memberships.spiritualYear',
         },
       );
@@ -60,9 +56,7 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<PRFUser> registerStudent() async {
     try {
-      final response = await _networkUtil.postReq(
-        '/auth/register-student',
-      );
+      final response = await _networkUtil.postReq('/auth/register-student');
 
       return PRFUser.fromJson(response['data'] as Map<String, dynamic>);
     } catch (e) {

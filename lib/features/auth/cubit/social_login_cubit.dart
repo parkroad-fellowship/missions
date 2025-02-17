@@ -22,8 +22,9 @@ class SocialLoginCubit extends Cubit<SocialLoginState> {
   Future<void> login({required SocialAuthDTO socialAuthDTO}) async {
     emit(const SocialLoginState.loading());
     try {
-      final token =
-          await _authService.socialLogin(socialAuthDTO: socialAuthDTO);
+      final token = await _authService.socialLogin(
+        socialAuthDTO: socialAuthDTO,
+      );
 
       _hiveService.persistToken(token);
 
@@ -36,9 +37,7 @@ class SocialLoginCubit extends Cubit<SocialLoginState> {
       emit(SocialLoginState.error(e.message));
     } catch (e) {
       emit(
-        SocialLoginState.error(
-          'Login with ${socialAuthDTO.provider}  failed',
-        ),
+        SocialLoginState.error('Login with ${socialAuthDTO.provider}  failed'),
       );
     }
   }

@@ -20,9 +20,9 @@ class SubscribersViewHandset extends StatefulWidget {
 class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
   @override
   void initState() {
-    context
-        .read<GetSubscribersCubit>()
-        .getSubscriptions(missionUlid: widget.missionUlid);
+    context.read<GetSubscribersCubit>().getSubscriptions(
+      missionUlid: widget.missionUlid,
+    );
 
     super.initState();
   }
@@ -41,10 +41,10 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                 child: Text(
                   l10n.noSubscribers,
                   style: PRFText.theme().headlineSmall!.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: PRFApp.theme().kPrimaryColorV2,
-                      ),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: PRFApp.theme().kPrimaryColorV2,
+                  ),
                 ),
               );
             }
@@ -54,8 +54,9 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
               physics: const ScrollPhysics(),
               itemCount: subscriptions.length,
               separatorBuilder: (context, index) => SizedBox(height: 16.h),
-              itemBuilder: (context, index) =>
-                  SubscriberActionCard(subscription: subscriptions[index]),
+              itemBuilder:
+                  (context, index) =>
+                      SubscriberActionCard(subscription: subscriptions[index]),
             );
           },
         );
@@ -65,10 +66,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
 }
 
 class SubscriberActionCard extends StatelessWidget {
-  const SubscriberActionCard({
-    required this.subscription,
-    super.key,
-  });
+  const SubscriberActionCard({required this.subscription, super.key});
 
   final PRFMissionSubscription subscription;
 
@@ -76,17 +74,12 @@ class SubscriberActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     return Animate(
-      effects: const [
-        SaturateEffect(),
-      ],
+      effects: const [SaturateEffect()],
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
@@ -104,25 +97,23 @@ class SubscriberActionCard extends StatelessWidget {
                         TextSpan(
                           text: subscription.member!.fullName,
                           style: PRFText.theme().displayLarge?.copyWith(
-                                color: PRFApp.theme().kPrimaryColorV2,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            color: PRFApp.theme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
                           children: [
                             if (subscription.missionRole !=
                                 PRFMissionRole.member)
                               TextSpan(
                                 text: ' ${subscription.missionRole.name}',
                                 style: PRFText.theme().displaySmall?.copyWith(
-                                      color: PRFApp.theme().kPrimaryColorV2,
-                                    ),
+                                  color: PRFApp.theme().kPrimaryColorV2,
+                                ),
                               ),
                           ],
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      Text(
-                        subscription.status.name,
-                      ),
+                      Text(subscription.status.name),
                       SizedBox(height: 16.h),
                     ],
                   ),

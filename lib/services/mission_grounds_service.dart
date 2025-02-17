@@ -30,9 +30,7 @@ class MissionGroundsServiceImpl implements MissionGroundsService {
     try {
       final res = await _networkUtil.postReq(
         '/mission-ground-suggestions',
-        queryParameters: {
-          'include': 'suggestor',
-        },
+        queryParameters: {'include': 'suggestor'},
         body: json.encode(missionGroundSuggestionDTO.toJson()),
       );
 
@@ -58,8 +56,10 @@ class MissionGroundsServiceImpl implements MissionGroundsService {
           if (suggestorUlid != null) 'filter[suggestor_ulid]': suggestorUlid,
           if (status != null) 'filter[status_key]': status.apiKey,
           if (statuses != null)
-            'filter[status_keys]':
-                statuses.map((status) => status.apiKey).toList().join(','),
+            'filter[status_keys]': statuses
+                .map((status) => status.apiKey)
+                .toList()
+                .join(','),
         },
       );
 
@@ -77,9 +77,7 @@ class MissionGroundsServiceImpl implements MissionGroundsService {
     try {
       final res = await _networkUtil.putReq(
         '/mission-ground-suggestions/$missionGroundSuggestionUlid',
-        queryParameters: {
-          'include': 'suggestor',
-        },
+        queryParameters: {'include': 'suggestor'},
         body: json.encode(missionGroundSuggestionDTO.toJson()),
       );
 

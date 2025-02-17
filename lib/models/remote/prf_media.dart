@@ -23,9 +23,7 @@ class PRFMedia with _$PRFMedia {
 
 @freezed
 class PRFMediaResponse with _$PRFMediaResponse {
-  factory PRFMediaResponse({
-    required List<PRFMedia> data,
-  }) = _PRFMediaResponse;
+  factory PRFMediaResponse({required List<PRFMedia> data}) = _PRFMediaResponse;
 
   factory PRFMediaResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFMediaResponseFromJson(json);

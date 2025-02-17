@@ -37,7 +37,13 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
 
     await _localDBService.persistMediaUploads(mediaDTOs: media);
 
-    emit(SelectMediaState.loaded(media: [...previousMedia, ...media]));
+    final items = [...previousMedia, ...media];
+
+    if (items.isEmpty) {
+      emit(const SelectMediaState.empty());
+    }
+
+    emit(SelectMediaState.loaded(media: items));
   }
 
   Future<void> selectAudioFiles({
@@ -45,16 +51,19 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     required PRFMediaModel model,
     List<PRFMediaDTO> previousMedia = const [],
   }) async {
-    try {
-      final media = await _mediaService.getAudioFiles(
-        modelUlid: modelUlid,
-        model: model,
-      );
-      await _localDBService.persistMediaUploads(mediaDTOs: media);
-      emit(SelectMediaState.loaded(media: [...previousMedia, ...media]));
-    } catch (e) {
-      // emit(SelectMediaState.error(e.toString()));
+    final media = await _mediaService.getAudioFiles(
+      modelUlid: modelUlid,
+      model: model,
+    );
+    await _localDBService.persistMediaUploads(mediaDTOs: media);
+
+    final items = [...previousMedia, ...media];
+
+    if (items.isEmpty) {
+      emit(const SelectMediaState.empty());
     }
+
+    emit(SelectMediaState.loaded(media: items));
   }
 
   void clearMedia() {

@@ -63,26 +63,24 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.landingRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       Text(
                         l10n.questions,
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 80.sp,
+                        ),
                       ),
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
                         child: const Visibility(
-                          child: Icon(
-                            Icons.abc,
-                            color: Colors.white,
-                          ),
+                          child: Icon(Icons.abc, color: Colors.white),
                         ),
                       ),
                     ],
@@ -103,13 +101,15 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
 
                       _searchDeboucer.run(() {
                         context.read<GetFaqsCubit>().getFaqs(
-                              categoryUlid: _selectedCategory?.ulid ??
-                                  _selectedCategory?.ulid,
-                              query: _searchQuery != null ||
+                          categoryUlid:
+                              _selectedCategory?.ulid ??
+                              _selectedCategory?.ulid,
+                          query:
+                              _searchQuery != null ||
                                       (_searchQuery?.isNotEmpty ?? false)
                                   ? _searchQuery
                                   : null,
-                            );
+                        );
                       });
                     },
                     decoration: InputDecoration(
@@ -120,11 +120,10 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                         child: const Icon(Icons.search),
                       ),
                       hintStyle: PRFText.theme().bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color:
-                                PRFApp.theme().kPrimaryColorV2.withAlpha(200),
-                            fontSize: 12,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: PRFApp.theme().kPrimaryColorV2.withAlpha(200),
+                        fontSize: 12,
+                      ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: PRFApp.theme().kAccent2BackgroundColor,
@@ -146,12 +145,14 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
                 child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
-                  builder: (context, state) => state.maybeWhen(
-                    orElse: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    loaded: (_) => const SizedBox.shrink(),
-                  ),
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        orElse:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        error: (message) => Center(child: Text(message)),
+                        loaded: (_) => const SizedBox.shrink(),
+                      ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
@@ -163,12 +164,13 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                     });
                     Logger().i('Selected Category: $_selectedCategory');
                     context.read<GetFaqsCubit>().getFaqs(
-                          categoryUlid: _selectedCategory?.ulid,
-                          query: _searchQuery != null ||
+                      categoryUlid: _selectedCategory?.ulid,
+                      query:
+                          _searchQuery != null ||
                                   (_searchQuery?.isNotEmpty ?? false)
                               ? _searchQuery
                               : null,
-                        );
+                    );
                   },
                 ),
               ),
@@ -176,29 +178,29 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: () => const SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                    error: (message) =>
-                        SliverToBoxAdapter(child: Center(child: Text(message))),
+                    orElse:
+                        () => const SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                    error:
+                        (message) => SliverToBoxAdapter(
+                          child: Center(child: Text(message)),
+                        ),
                     loaded: (faqs) {
                       if (faqs.isEmpty) {
                         return SliverFillRemaining(
                           child: RefreshIndicator(
-                            onRefresh: () =>
-                                context.read<GetFaqsCubit>().getFaqs(),
+                            onRefresh:
+                                () => context.read<GetFaqsCubit>().getFaqs(),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Spacer(),
-                                const Icon(
-                                  Icons.directions_walk,
-                                ),
+                                const Icon(Icons.directions_walk),
                                 Center(
                                   child: Text(
                                     l10n.noFaqs,
-                                    style: PRFText.theme()
-                                        .headlineMedium!
+                                    style: PRFText.theme().headlineMedium!
                                         .copyWith(
                                           color: PRFApp.theme().kDullGreyColor,
                                           fontWeight: FontWeight.w600,
@@ -215,11 +217,11 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                     children: [
                                       Text(
                                         l10n.pleaseWait,
-                                        style: PRFText.theme()
-                                            .displayLarge!
+                                        style: PRFText.theme().displayLarge!
                                             .copyWith(
-                                              color: PRFApp.theme()
-                                                  .kPrimaryColorV2,
+                                              color:
+                                                  PRFApp.theme()
+                                                      .kPrimaryColorV2,
                                               fontSize: 14,
                                             ),
                                       ),
@@ -234,10 +236,10 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                       }
                       return SliverList.separated(
                         itemCount: faqs.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 8.h),
-                        itemBuilder: (context, index) =>
-                            FaqCard(faq: faqs[index]),
+                        separatorBuilder:
+                            (context, index) => SizedBox(height: 8.h),
+                        itemBuilder:
+                            (context, index) => FaqCard(faq: faqs[index]),
                       );
                     },
                   );
@@ -252,10 +254,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
 }
 
 class FaqCard extends StatelessWidget {
-  const FaqCard({
-    required this.faq,
-    super.key,
-  });
+  const FaqCard({required this.faq, super.key});
 
   final PRFLocalFaq faq;
 
@@ -268,10 +267,7 @@ class FaqCard extends StatelessWidget {
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
@@ -283,17 +279,17 @@ class FaqCard extends StatelessWidget {
                 Text(
                   faq.question,
                   style: PRFText.theme().titleLarge!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                      ),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   faq.answer,
                   style: PRFText.theme().bodySmall!.copyWith(
-                        color: PRFApp.theme().kBlackColor,
-                        fontSize: 14,
-                      ),
+                    color: PRFApp.theme().kBlackColor,
+                    fontSize: 14,
+                  ),
                 ),
                 SizedBox(height: 8.h),
               ],

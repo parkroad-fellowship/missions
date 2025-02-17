@@ -20,9 +20,7 @@ class PRFFaq with _$PRFFaq {
 
 @freezed
 class PRFFaqResponse with _$PRFFaqResponse {
-  const factory PRFFaqResponse({
-    required List<PRFFaq> data,
-  }) = _PRFFaqResponse;
+  const factory PRFFaqResponse({required List<PRFFaq> data}) = _PRFFaqResponse;
 
   factory PRFFaqResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFFaqResponseFromJson(json);
