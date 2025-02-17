@@ -13,15 +13,11 @@ import 'package:logger/logger.dart';
 
 abstract class SocketService {
   SocketConfig defaultConfig();
-  Future<void> init({
-    required SocketConfig socketConfig,
-  });
+  Future<void> init({required SocketConfig socketConfig});
 }
 
 class SocketServiceImpl implements SocketService {
-  SocketServiceImpl({
-    required LocalDBService localDBService,
-  }) {
+  SocketServiceImpl({required LocalDBService localDBService}) {
     _localDBService = localDBService;
   }
 
@@ -43,22 +39,23 @@ class SocketServiceImpl implements SocketService {
 
         refresh();
       },
-      activityDurationOverride: const Duration(
-        seconds: 120,
-      ),
+      activityDurationOverride: const Duration(seconds: 120),
     );
   }
 
   Future<void> _connectClient({required PusherChannelsClient client}) async {
-    await client.connect().then((onValue) {
-      Logger().i('Successfully connected to the socket server');
-    }).onError((error, stackTrace) {
-      Logger().e(
-        'An error occured connecting to the socket server',
-        error: error,
-        stackTrace: stackTrace,
-      );
-    });
+    await client
+        .connect()
+        .then((onValue) {
+          Logger().i('Successfully connected to the socket server');
+        })
+        .onError((error, stackTrace) {
+          Logger().e(
+            'An error occured connecting to the socket server',
+            error: error,
+            stackTrace: stackTrace,
+          );
+        });
   }
 
   PrivateChannel _registerToPrivateChannel({
@@ -70,8 +67,8 @@ class SocketServiceImpl implements SocketService {
     return client.privateChannel(
       'private-$channelName',
       authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate
-              .forPrivateChannel(
+      // ignore: lines_longer_than_80_chars
+      EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
         authorizationEndpoint: Uri.parse(
           '${PRFSuperAppConfig.instance!.values.baseUrl}/broadcasting/auth',
         ),
@@ -96,8 +93,8 @@ class SocketServiceImpl implements SocketService {
     return client.presenceChannel(
       'presence-$channelName',
       authorizationDelegate:
-          EndpointAuthorizableChannelTokenAuthorizationDelegate
-              .forPresenceChannel(
+      // ignore: lines_longer_than_80_chars
+      EndpointAuthorizableChannelTokenAuthorizationDelegate.forPresenceChannel(
         authorizationEndpoint: Uri.parse(
           '${PRFSuperAppConfig.instance!.values.baseUrl}/broadcasting/auth',
         ),
@@ -152,8 +149,9 @@ class SocketServiceImpl implements SocketService {
         Logger().e(event.data);
       })
       ..bind(eventName).listen((event) {
-        Logger()
-            .i('$eventName from the presence channel ${channel.name} fired!');
+        Logger().i(
+          '$eventName from the presence channel ${channel.name} fired!',
+        );
         Logger().e(event.data);
 
         final data = json.decode(event.data as String) as Map<String, dynamic>;
@@ -221,9 +219,7 @@ class SocketServiceImpl implements SocketService {
   }
 
   @override
-  Future<void> init({
-    required SocketConfig socketConfig,
-  }) async {
+  Future<void> init({required SocketConfig socketConfig}) async {
     final client = _initClient();
 
     final configuredChannels = <PrivateChannel>[];
@@ -236,10 +232,7 @@ class SocketServiceImpl implements SocketService {
       );
 
       for (final eventName in events) {
-        _bindEventToChannel(
-          channel: privateChannel,
-          eventName: eventName,
-        );
+        _bindEventToChannel(channel: privateChannel, eventName: eventName);
       }
 
       configuredChannels.add(privateChannel);
@@ -288,9 +281,10 @@ class SocketServiceImpl implements SocketService {
       ],
     };
 
-    final groups = user.member?.groupMembers
-        ?.map((groupMember) => groupMember.group?.ulid)
-        .toList();
+    final groups =
+        user.member?.groupMembers
+            ?.map((groupMember) => groupMember.group?.ulid)
+            .toList();
 
     final presenceChannels = <String, List<String>>{};
 

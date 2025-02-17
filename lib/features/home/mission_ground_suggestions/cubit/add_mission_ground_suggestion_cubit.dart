@@ -28,20 +28,18 @@ class AddMissionGroundSuggestionCubit
     required PhoneNumber contactNumber,
   }) async {
     try {
-      emit(
-        const AddMissionGroundSuggestionState.loading(),
-      );
+      emit(const AddMissionGroundSuggestionState.loading());
       final member = _hiveService.retrieveMember()!;
 
-      final missionGroundSuggestion =
-          await _missionGroundsService.createMissionGroundSuggestion(
-        missionGroundSuggestionDTO: PRFMissionGroundSuggestionDTO(
-          name: name,
-          contactPerson: contactPerson,
-          contactNumber: contactNumber.parseNumber(),
-          suggestorUlid: member.ulid,
-        ),
-      );
+      final missionGroundSuggestion = await _missionGroundsService
+          .createMissionGroundSuggestion(
+            missionGroundSuggestionDTO: PRFMissionGroundSuggestionDTO(
+              name: name,
+              contactPerson: contactPerson,
+              contactNumber: contactNumber.parseNumber(),
+              suggestorUlid: member.ulid,
+            ),
+          );
       emit(
         AddMissionGroundSuggestionState.loaded(
           missionGroundSuggestion: missionGroundSuggestion,

@@ -8,10 +8,8 @@ part 'auth.freezed.dart';
 
 @freezed
 class SignInDTO with _$SignInDTO {
-  factory SignInDTO({
-    required String email,
-    required String password,
-  }) = _SignInDTO;
+  factory SignInDTO({required String email, required String password}) =
+      _SignInDTO;
 
   factory SignInDTO.fromJson(Map<String, dynamic> json) =>
       _$SignInDTOFromJson(json);
@@ -49,9 +47,7 @@ class PRFRole with _$PRFRole {
 
 @freezed
 class PRFPermission with _$PRFPermission {
-  factory PRFPermission({
-    required String name,
-  }) = _PRFPermission;
+  factory PRFPermission({required String name}) = _PRFPermission;
 
   factory PRFPermission.fromJson(Map<String, dynamic> json) =>
       _$PRFPermissionFromJson(json);

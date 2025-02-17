@@ -57,9 +57,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: () => context.router.pushNamed(
-                            PRFSuperAppRouter.accountRoute,
-                          ),
+                          onTap:
+                              () => context.router.pushNamed(
+                                PRFSuperAppRouter.accountRoute,
+                              ),
                           child: CircleAvatar(
                             radius: 70.r,
                             backgroundColor: Colors.white,
@@ -82,22 +83,21 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                 .member!
                                 .lastName,
                           ),
-                          style: PRFText.theme()
-                              .displayLarge
-                              ?.copyWith(fontSize: 60.sp),
+                          style: PRFText.theme().displayLarge?.copyWith(
+                            fontSize: 60.sp,
+                          ),
                         ),
                         const Spacer(),
                         Animate(
                           effects: [
-                            ShimmerEffect(
-                              duration: 1.seconds,
-                            ),
+                            ShimmerEffect(duration: 1.seconds),
                             const ShakeEffect(),
                           ],
                           child: GestureDetector(
-                            onTap: () => context.router.pushNamed(
-                              PRFSuperAppRouter.announcementsRoute,
-                            ),
+                            onTap:
+                                () => context.router.pushNamed(
+                                  PRFSuperAppRouter.announcementsRoute,
+                                ),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -124,15 +124,16 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                   ),
                   SizedBox(height: 48.h),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w) +
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w) +
                         EdgeInsets.only(bottom: 80.h),
                     child: Text(
                       l10n.iWantTo,
                       style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 94.sp,
-                          ),
+                        color: PRFApp.theme().kPrimaryColorV2,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 94.sp,
+                      ),
                     ),
                   ),
                   SizedBox(height: 16.h),
@@ -147,8 +148,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.goToAMission,
                       assetPath: 'assets/svgs/missions.svg',
-                      onTap: () => context.router
-                          .pushNamed(PRFSuperAppRouter.missionsRoute),
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.missionsRoute,
+                          ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -163,8 +166,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.learnSomething,
                       assetPath: 'assets/svgs/lms.svg',
-                      onTap: () =>
-                          context.router.pushNamed(PRFSuperAppRouter.lmsRoute),
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.lmsRoute,
+                          ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -179,8 +184,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.studentFaqs,
                       assetPath: 'assets/svgs/explore.svg',
-                      onTap: () => context.router
-                          .pushNamed(PRFSuperAppRouter.memberLearnerFaqs),
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.memberLearnerFaqs,
+                          ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -195,8 +202,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.ministerToAStudent,
                       assetPath: 'assets/svgs/student_ministry.svg',
-                      onTap: () => context.router
-                          .pushNamed(PRFSuperAppRouter.studentEnquiriesRoute),
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.studentEnquiriesRoute,
+                          ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -211,9 +220,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.suggestAMission,
                       assetPath: 'assets/svgs/chatting.svg',
-                      onTap: () => context.router.pushNamed(
-                        PRFSuperAppRouter.missionGroundSuggestionsRoute,
-                      ),
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.missionGroundSuggestionsRoute,
+                          ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -228,9 +238,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.give,
                       assetPath: 'assets/svgs/giving.svg',
-                      onTap: () => context.router.pushNamed(
-                        PRFSuperAppRouter.givingRoute,
-                      ),
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.givingRoute,
+                          ),
                     ),
                   ),
                 ],

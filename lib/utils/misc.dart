@@ -93,14 +93,17 @@ class Misc {
 
   static Future<void> openUrl(Uri uri) async {
     if (await canLaunchUrl(uri)) {
-      await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
   static String getFileName(String path) {
     return path.substring(path.lastIndexOf('/') + 1);
   }
+
+  static String formatCash(int amount) => NumberFormat.currency(
+    locale: 'en_KE',
+    symbol: '',
+    decimalDigits: 0,
+  ).format(amount);
 }

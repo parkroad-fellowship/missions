@@ -3,21 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class MissionQuestionsView extends StatelessWidget {
-  const MissionQuestionsView({
-    required this.missionUlid,
-    super.key,
-  });
+  const MissionQuestionsView({required this.missionUlid, super.key});
 
   final String missionUlid;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          MissionQuestionsViewHandset(missionUlid: missionUlid),
+      defaultBuilder:
+          (_, __) => MissionQuestionsViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) =>
-            MissionQuestionsViewHandset(missionUlid: missionUlid),
+        handset:
+            (_, __) => MissionQuestionsViewHandset(missionUlid: missionUlid),
       ),
     );
   }

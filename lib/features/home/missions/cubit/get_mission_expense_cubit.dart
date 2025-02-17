@@ -19,9 +19,7 @@ class GetMissionExpenseCubit extends Cubit<GetMissionExpenseState> {
   late MissionService _missionService;
   late HiveService _hiveService;
 
-  Future<void> getMissionExpense({
-    required String missionUlid,
-  }) async {
+  Future<void> getMissionExpense({required String missionUlid}) async {
     emit(const GetMissionExpenseState.loading());
     try {
       final missionExpense = await _missionService.getMissionExpense(

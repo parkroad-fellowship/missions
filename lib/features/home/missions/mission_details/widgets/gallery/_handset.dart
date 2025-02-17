@@ -14,10 +14,7 @@ import 'package:gaimon/gaimon.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class GalleryViewHandset extends StatefulWidget {
-  const GalleryViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const GalleryViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -31,9 +28,9 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   @override
   void initState() {
     context.read<GetMissionMediaCubit>().getMissionMedia(
-          missionUlid: missionUlid,
-          model: PRFMediaModel.missionPhotos,
-        );
+      missionUlid: missionUlid,
+      model: PRFMediaModel.missionPhotos,
+    );
     super.initState();
   }
 
@@ -42,7 +39,8 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     final l10n = context.l10n;
 
     return RefreshIndicator(
-      onRefresh: () => context.read<GetMissionMediaCubit>().getMissionMedia(
+      onRefresh:
+          () => context.read<GetMissionMediaCubit>().getMissionMedia(
             missionUlid: missionUlid,
             model: PRFMediaModel.missionPhotos,
           ),
@@ -54,23 +52,19 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
               state.mapOrNull(
                 loaded: (_) {
                   context.read<GetMissionMediaCubit>().getMissionMedia(
-                        missionUlid: missionUlid,
-                        model: PRFMediaModel.missionPhotos,
-                      );
-                  Gaimon.success();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l10n.doneUploading),
-                    ),
+                    missionUlid: missionUlid,
+                    model: PRFMediaModel.missionPhotos,
                   );
+                  Gaimon.success();
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(l10n.doneUploading)));
                 },
                 error: (error) {
                   Gaimon.error();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(error.message),
-                    ),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(error.message)));
                 },
               );
             },
@@ -83,37 +77,44 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
               );
             },
           ),
-          // Gallery
 
+          // Gallery
           BlocBuilder<GetMissionMediaCubit, GetMissionMediaState>(
             builder: (context, state) {
               return state.maybeWhen(
-                orElse: () => const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-                empty: () => SliverFillRemaining(
-                  child: Center(
-                    child: PrimaryButton(
-                      title: l10n.addPhotos,
-                      disabled: false,
-                      onPressed: () => WoltModalSheet.show<void>(
-                        context: context,
-                        pageListBuilder: (modalSheetContext) {
-                          return [
-                            WoltModalSheetPage(
-                              backgroundColor: Colors.white,
-                              surfaceTintColor: Colors.white,
-                              child: SizedBox(
-                                height: MediaQuery.sizeOf(context).height * 0.8,
-                                child: AddMediaView(missionUlid: missionUlid),
+                orElse:
+                    () => const SliverFillRemaining(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                empty:
+                    () => SliverFillRemaining(
+                      child: Center(
+                        child: PrimaryButton(
+                          title: l10n.addPhotos,
+                          disabled: false,
+                          onPressed:
+                              () => WoltModalSheet.show<void>(
+                                context: context,
+                                pageListBuilder: (modalSheetContext) {
+                                  return [
+                                    WoltModalSheetPage(
+                                      backgroundColor: Colors.white,
+                                      surfaceTintColor: Colors.white,
+                                      child: SizedBox(
+                                        height:
+                                            MediaQuery.sizeOf(context).height *
+                                            0.8,
+                                        child: AddMediaView(
+                                          missionUlid: missionUlid,
+                                        ),
+                                      ),
+                                    ),
+                                  ];
+                                },
                               ),
-                            ),
-                          ];
-                        },
+                        ),
                       ),
                     ),
-                  ),
-                ),
                 loaded: (mediaItems) {
                   return SliverPadding(
                     padding: EdgeInsets.symmetric(
@@ -127,36 +128,24 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         mainAxisSpacing: 16.h,
                       ),
                       delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final mediaItem = mediaItems[index];
-                          return Animate(
-                            effects: const [
-                              FadeEffect(),
-                              ScaleEffect(),
-                            ],
-                            // duration: Duration(milliseconds: 500),
-                            // animate: true,
-                            // endOffset: Offset(0, 0),
-                            // startOffset: Offset(0, 0.5),
-                            child: FullScreenWidget(
-                              disposeLevel: DisposeLevel.High,
-                              child: ExtendedImage.network(
-                                mediaItem.temporaryURL,
-                                fit: BoxFit.cover,
-                              ),
+                        (context, index) => Animate(
+                          effects: const [FadeEffect(), ScaleEffect()],
+                          child: FullScreenWidget(
+                            disposeLevel: DisposeLevel.High,
+                            child: ExtendedImage.network(
+                              mediaItems[index].temporaryURL,
+                              fit: BoxFit.cover,
                             ),
-                          );
-                        },
+                          ),
+                        ),
                         childCount: mediaItems.length,
                       ),
                     ),
                   );
                 },
-                error: (error) => SliverToBoxAdapter(
-                  child: Center(
-                    child: Text(error),
-                  ),
-                ),
+                error:
+                    (error) =>
+                        SliverToBoxAdapter(child: Center(child: Text(error))),
               );
             },
           ),

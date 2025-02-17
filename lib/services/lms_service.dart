@@ -14,9 +14,7 @@ abstract class LMSService {
     String? courseUlid,
     String? includes,
   });
-  Future<void> finishLesson({
-    required PRFLessonMemberDTO lessonMemberDTO,
-  });
+  Future<void> finishLesson({required PRFLessonMemberDTO lessonMemberDTO});
 }
 
 class LMSServiceImpl implements LMSService {

@@ -21,9 +21,7 @@ class CreateEnquiryCubit extends Cubit<CreateEnquiryState> {
   late StudentService _studentService;
   late LocalDBService _localDBService;
 
-  Future<void> createEnquiry({
-    required String content,
-  }) async {
+  Future<void> createEnquiry({required String content}) async {
     emit(const CreateEnquiryState.loading());
     try {
       final studentUlid = _hiveService.retrieveStudentUlid();

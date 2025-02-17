@@ -12,10 +12,7 @@ import 'package:logger/logger.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
-  const ExpensesViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const ExpensesViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -28,9 +25,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
 
   @override
   void initState() {
-    context
-        .read<GetMissionExpenseCubit>()
-        .getMissionExpense(missionUlid: missionUlid);
+    context.read<GetMissionExpenseCubit>().getMissionExpense(
+      missionUlid: missionUlid,
+    );
 
     super.initState();
   }
@@ -43,22 +40,24 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => const Center(child: CircularProgressIndicator()),
-          empty: () => Center(
-            child: Text(
-              l10n.askMissionDeskToDisburseFunds,
-              style: PRFText.theme().headlineSmall!.copyWith(
+          empty:
+              () => Center(
+                child: Text(
+                  l10n.askMissionDeskToDisburseFunds,
+                  style: PRFText.theme().headlineSmall!.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: PRFApp.theme().kPrimaryColorV2,
                   ),
-            ),
-          ),
+                ),
+              ),
           loaded: (missionExpense) {
             Logger().f(missionExpense.expenses);
             return RefreshIndicator(
-              onRefresh: () => context
-                  .read<GetMissionExpenseCubit>()
-                  .getMissionExpense(missionUlid: missionUlid),
+              onRefresh:
+                  () => context
+                      .read<GetMissionExpenseCubit>()
+                      .getMissionExpense(missionUlid: missionUlid),
               child: CustomScrollView(
                 slivers: [
                   // Start Navigation Bar
@@ -68,57 +67,63 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                         Text(
                           l10n.summary,
                           style: PRFText.theme().displayLarge?.copyWith(
-                                color: PRFApp.theme().kPrimaryColorV2,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            color: PRFApp.theme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         const Spacer(),
-                        BlocBuilder<GetMissionExpenseCubit,
-                            GetMissionExpenseState>(
+                        BlocBuilder<
+                          GetMissionExpenseCubit,
+                          GetMissionExpenseState
+                        >(
                           builder: (context, state) {
                             return IconButton(
                               icon: state.maybeWhen(
                                 orElse: () => const Icon(Icons.refresh),
-                                loading: () =>
-                                    const CircularProgressIndicator(),
+                                loading:
+                                    () => const CircularProgressIndicator(),
                                 loaded: (_) => const Icon(Icons.refresh),
                               ),
-                              onPressed: () => context
-                                  .read<GetMissionExpenseCubit>()
-                                  .getMissionExpense(missionUlid: missionUlid),
+                              onPressed:
+                                  () => context
+                                      .read<GetMissionExpenseCubit>()
+                                      .getMissionExpense(
+                                        missionUlid: missionUlid,
+                                      ),
                             );
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.mail),
-                          onPressed: () => WoltModalSheet.show<void>(
-                            context: context,
-                            pageListBuilder: (modalSheetContext) {
-                              return [
-                                WoltModalSheetPage(
-                                  backgroundColor: Colors.white,
-                                  surfaceTintColor: Colors.white,
-                                  child: SizedBox(
-                                    height:
-                                        MediaQuery.sizeOf(context).height * 0.8,
-                                    child: AddTokenView(
-                                      missionExpenseUlid: missionExpense.ulid,
+                          onPressed:
+                              () => WoltModalSheet.show<void>(
+                                context: context,
+                                pageListBuilder: (modalSheetContext) {
+                                  return [
+                                    WoltModalSheetPage(
+                                      backgroundColor: Colors.white,
+                                      surfaceTintColor: Colors.white,
+                                      child: SizedBox(
+                                        height:
+                                            MediaQuery.sizeOf(context).height *
+                                            0.8,
+                                        child: AddTokenView(
+                                          missionExpenseUlid:
+                                              missionExpense.ulid,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ];
-                            },
-                          ).then(
-                            (_) {
-                              if (context.mounted) {
-                                context
-                                    .read<GetMissionExpenseCubit>()
-                                    .getMissionExpense(
-                                      missionUlid: missionUlid,
-                                    );
-                              }
-                            },
-                          ),
+                                  ];
+                                },
+                              ).then((_) {
+                                if (context.mounted) {
+                                  context
+                                      .read<GetMissionExpenseCubit>()
+                                      .getMissionExpense(
+                                        missionUlid: missionUlid,
+                                      );
+                                }
+                              }),
                         ),
                       ],
                     ),
@@ -246,52 +251,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                     child: Text(
                       l10n.breakdown,
                       style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: PRFApp.theme().kPrimaryColorV2,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: DataTable(
-                      columns: [
-                        DataColumn(label: _text(l10n.item)),
-                        DataColumn(label: _text(l10n.unitCostAndQty)),
-                        DataColumn(label: _text(l10n.totalCost)),
-                      ],
-                      rows: missionExpense.expenses
-                          .map(
-                            (expense) => DataRow(
-                              cells: [
-                                DataCell(Text(expense.expenseCategory!.name)),
-                                DataCell(
-                                  _text(
-                                    '${NumberFormat.currency(
-                                      locale: 'en_KE',
-                                      symbol: '',
-                                      decimalDigits: 0,
-                                    ).format(expense.unitCost)} x'
-                                    ' ${expense.quantity}',
-                                  ),
-                                ),
-                                DataCell(
-                                  _text(
-                                    '${NumberFormat.currency(
-                                      locale: 'en_KE',
-                                      symbol: '',
-                                      decimalDigits: 0,
-                                    ).format(expense.lineTotal)} \n'
-                                    '(${NumberFormat.currency(
-                                      decimalDigits: 0,
-                                      locale: 'en_KE',
-                                      symbol: '',
-                                    ).format(expense.charge)})',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList(),
-                    ),
+                    child: ExpensesDataTable(expenses: missionExpense.expenses),
                   ),
                 ],
               ),
@@ -303,18 +269,52 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
   }
 }
 
+class ExpensesDataTable extends StatelessWidget {
+  const ExpensesDataTable({required this.expenses, super.key});
+  final List<PRFExpense> expenses;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return DataTable(
+      columns: [
+        DataColumn(label: _text(l10n.item)),
+        DataColumn(label: _text(l10n.unitCostAndQty)),
+        DataColumn(label: _text(l10n.totalCost)),
+      ],
+      rows:
+          expenses
+              .map(
+                (expense) => DataRow(
+                  cells: [
+                    DataCell(Text(expense.expenseCategory!.name)),
+                    DataCell(
+                      _text(
+                        '${Misc.formatCash(expense.unitCost)} x'
+                        ' ${expense.quantity}',
+                      ),
+                    ),
+                    DataCell(
+                      _text(
+                        '${Misc.formatCash(expense.lineTotal)} \n'
+                        '(${Misc.formatCash(expense.charge)})',
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+    );
+  }
+}
+
 Widget _text(String text) {
-  return Text(
-    text,
-    overflow: TextOverflow.ellipsis,
-  );
+  return Text(text, overflow: TextOverflow.ellipsis);
 }
 
 class ExpenseCard extends StatelessWidget {
-  const ExpenseCard({
-    required this.expense,
-    super.key,
-  });
+  const ExpenseCard({required this.expense, super.key});
 
   final PRFExpense expense;
 
@@ -322,17 +322,12 @@ class ExpenseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     return Animate(
-      effects: const [
-        SaturateEffect(),
-      ],
+      effects: const [SaturateEffect()],
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
@@ -347,9 +342,9 @@ class ExpenseCard extends StatelessWidget {
                     symbol: 'KES ',
                   ).format(expense.unitCost),
                   style: PRFText.theme().displayLarge?.copyWith(
-                        color: PRFApp.theme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: PRFApp.theme().kPrimaryColorV2,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 SizedBox(height: 16.h),
                 Text(expense.confirmationMessage.toString()),

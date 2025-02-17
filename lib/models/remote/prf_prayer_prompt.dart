@@ -22,9 +22,8 @@ class PRFPrayerPrompt with _$PRFPrayerPrompt {
 
 @freezed
 class PRFPrayerPromptResponse with _$PRFPrayerPromptResponse {
-  factory PRFPrayerPromptResponse(
-    List<PRFPrayerPrompt> data,
-  ) = _PRFPrayerPromptResponse;
+  factory PRFPrayerPromptResponse(List<PRFPrayerPrompt> data) =
+      _PRFPrayerPromptResponse;
 
   factory PRFPrayerPromptResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFPrayerPromptResponseFromJson(json);

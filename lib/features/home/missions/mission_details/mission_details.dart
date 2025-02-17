@@ -6,10 +6,7 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 @RoutePage()
 class MissionsDetailsPage extends StatelessWidget {
-  const MissionsDetailsPage({
-    required this.mission,
-    super.key,
-  });
+  const MissionsDetailsPage({required this.mission, super.key});
 
   final PRFMission mission;
 

@@ -39,48 +39,39 @@ class PRFSuperAppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
-        // Auth
-        AutoRoute(page: DecisionRoute.page, path: decisionRoute),
-        AutoRoute(page: SignInRoute.page, path: signInRoute),
-        AutoRoute(page: StudentIntroRoute.page, path: registerStudentRoute),
+    // Auth
+    AutoRoute(page: DecisionRoute.page, path: decisionRoute),
+    AutoRoute(page: SignInRoute.page, path: signInRoute),
+    AutoRoute(page: StudentIntroRoute.page, path: registerStudentRoute),
 
-        // Landing
-        AutoRoute(page: MissionsRoute.page, path: missionsRoute),
-        AutoRoute(page: LMSRoute.page, path: lmsRoute),
-        AutoRoute(
-          page: StudentEnquiriesRoute.page,
-          path: studentEnquiriesRoute,
-        ),
-        AutoRoute(page: AccountRoute.page, path: accountRoute),
-        AutoRoute(page: AnnouncementsRoute.page, path: announcementsRoute),
-        AutoRoute(page: LandingRoute.page, path: landingRoute),
-        AutoRoute(page: MissionsDetailsRoute.page, path: missionDetailsRoute),
-        AutoRoute(page: StudentEnquiryRepliesRoute.page, path: repliesRoute),
-        AutoRoute(page: MemberFAQRoute.page, path: memberLearnerFaqs),
-        AutoRoute(
-          page: MissionGroundSuggestionsRoute.page,
-          path: missionGroundSuggestionsRoute,
-        ),
-        AutoRoute(page: GivingRoute.page, path: givingRoute),
-        AutoRoute(page: SessionRoute.page, path: missionSessionRoute),
+    // Landing
+    AutoRoute(page: MissionsRoute.page, path: missionsRoute),
+    AutoRoute(page: LMSRoute.page, path: lmsRoute),
+    AutoRoute(page: StudentEnquiriesRoute.page, path: studentEnquiriesRoute),
+    AutoRoute(page: AccountRoute.page, path: accountRoute),
+    AutoRoute(page: AnnouncementsRoute.page, path: announcementsRoute),
+    AutoRoute(page: LandingRoute.page, path: landingRoute),
+    AutoRoute(page: MissionsDetailsRoute.page, path: missionDetailsRoute),
+    AutoRoute(page: StudentEnquiryRepliesRoute.page, path: repliesRoute),
+    AutoRoute(page: MemberFAQRoute.page, path: memberLearnerFaqs),
+    AutoRoute(
+      page: MissionGroundSuggestionsRoute.page,
+      path: missionGroundSuggestionsRoute,
+    ),
+    AutoRoute(page: GivingRoute.page, path: givingRoute),
+    AutoRoute(page: SessionRoute.page, path: missionSessionRoute),
 
-        // Student Landing
-        AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),
-        AutoRoute(
-          page: LearnerEnquiriesRoute.page,
-          path: learnerEnquiriesRoute,
-        ),
-        AutoRoute(page: FAQRoute.page, path: learnerFaqs),
-        AutoRoute(page: StudentAccountRoute.page, path: studentAccountRoute),
-        AutoRoute(page: EnquiryRepliesRoute.page, path: studentRepliesRoute),
-        AutoRoute(
-          page: CreateEnquiryRoute.page,
-          path: createStudentEnquiryRoute,
-        ),
+    // Student Landing
+    AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),
+    AutoRoute(page: LearnerEnquiriesRoute.page, path: learnerEnquiriesRoute),
+    AutoRoute(page: FAQRoute.page, path: learnerFaqs),
+    AutoRoute(page: StudentAccountRoute.page, path: studentAccountRoute),
+    AutoRoute(page: EnquiryRepliesRoute.page, path: studentRepliesRoute),
+    AutoRoute(page: CreateEnquiryRoute.page, path: createStudentEnquiryRoute),
 
-        // Course Work
-        AutoRoute(page: CourseDetailsRoute.page, path: courseDetailsRoute),
-        AutoRoute(page: ModuleDetailsRoute.page, path: moduleDetailsRoute),
-        AutoRoute(page: LessonDetailsRoute.page, path: lessonDetailsRoute),
-      ];
+    // Course Work
+    AutoRoute(page: CourseDetailsRoute.page, path: courseDetailsRoute),
+    AutoRoute(page: ModuleDetailsRoute.page, path: moduleDetailsRoute),
+    AutoRoute(page: LessonDetailsRoute.page, path: lessonDetailsRoute),
+  ];
 }

@@ -18,9 +18,8 @@ class PRFMissionQuestion with _$PRFMissionQuestion {
 
 @freezed
 class PRFMissionQuestionResponse with _$PRFMissionQuestionResponse {
-  factory PRFMissionQuestionResponse({
-    required List<PRFMissionQuestion> data,
-  }) = _PRFMissionQuestionResponse;
+  factory PRFMissionQuestionResponse({required List<PRFMissionQuestion> data}) =
+      _PRFMissionQuestionResponse;
 
   factory PRFMissionQuestionResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFMissionQuestionResponseFromJson(json);

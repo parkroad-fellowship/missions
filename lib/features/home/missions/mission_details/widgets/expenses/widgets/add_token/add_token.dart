@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class AddTokenView extends StatelessWidget {
-  const AddTokenView({
-    required this.missionExpenseUlid,
-    super.key,
-  });
+  const AddTokenView({required this.missionExpenseUlid, super.key});
 
   final String missionExpenseUlid;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
+      defaultBuilder:
+          (_, __) =>
+              AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) =>
-            AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
+        handset:
+            (_, __) =>
+                AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
       ),
     );
   }

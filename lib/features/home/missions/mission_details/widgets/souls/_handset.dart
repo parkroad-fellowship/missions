@@ -8,10 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SoulsViewHandset extends StatefulWidget {
-  const SoulsViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const SoulsViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -43,10 +40,10 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
                 child: Text(
                   l10n.noSubscribers,
                   style: PRFText.theme().headlineSmall!.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: PRFApp.theme().kPrimaryColorV2,
-                      ),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: PRFApp.theme().kPrimaryColorV2,
+                  ),
                 ),
               );
             }
@@ -66,10 +63,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
 }
 
 class SoulCard extends StatelessWidget {
-  const SoulCard({
-    required this.soul,
-    super.key,
-  });
+  const SoulCard({required this.soul, super.key});
 
   final PRFSoul soul;
 
@@ -77,17 +71,12 @@ class SoulCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     return Animate(
-      effects: const [
-        SaturateEffect(),
-      ],
+      effects: const [SaturateEffect()],
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
@@ -99,9 +88,9 @@ class SoulCard extends StatelessWidget {
                 Text(
                   soul.fullName,
                   style: PRFText.theme().displayLarge?.copyWith(
-                        color: PRFApp.theme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: PRFApp.theme().kPrimaryColorV2,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 SizedBox(height: 16.h),
                 Text(soul.classGroup!.name),

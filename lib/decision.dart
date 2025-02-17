@@ -21,10 +21,7 @@ class _DecisionPageState extends State<DecisionPage> {
     final accessToken = getIt<HiveService>().retrieveToken();
 
     if (accessToken == null) {
-      _redirectToPage(
-        context,
-        PRFSuperAppRouter.signInRoute,
-      );
+      _redirectToPage(context, PRFSuperAppRouter.signInRoute);
       return;
     }
 
@@ -33,10 +30,7 @@ class _DecisionPageState extends State<DecisionPage> {
     /// If both the member and student are null, then the user is lacking a
     /// profile and should be redirected to the sign-in page.
     if (profile.member == null && profile.student == null) {
-      _redirectToPage(
-        context,
-        PRFSuperAppRouter.signInRoute,
-      );
+      _redirectToPage(context, PRFSuperAppRouter.signInRoute);
       return;
     }
 
@@ -45,10 +39,7 @@ class _DecisionPageState extends State<DecisionPage> {
     );
 
     if (result.isEmpty) {
-      _redirectToPage(
-        context,
-        PRFSuperAppRouter.landingRoute,
-      );
+      _redirectToPage(context, PRFSuperAppRouter.landingRoute);
       return;
     } else {
       _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
@@ -56,10 +47,7 @@ class _DecisionPageState extends State<DecisionPage> {
     }
   }
 
-  void _redirectToPage(
-    BuildContext context,
-    String routeName,
-  ) {
+  void _redirectToPage(BuildContext context, String routeName) {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => context.router.pushNamed(routeName),
     );

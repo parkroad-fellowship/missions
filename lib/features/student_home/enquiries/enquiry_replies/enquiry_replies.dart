@@ -6,23 +6,16 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 @RoutePage()
 class EnquiryRepliesPage extends StatelessWidget {
-  const EnquiryRepliesPage({
-    required this.enquiry,
-    super.key,
-  });
+  const EnquiryRepliesPage({required this.enquiry, super.key});
 
   final PRFLocalStudentEnquiry enquiry;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => EnquiryRepliesPageHandset(
-        enquiry: enquiry,
-      ),
+      defaultBuilder: (_, __) => EnquiryRepliesPageHandset(enquiry: enquiry),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => EnquiryRepliesPageHandset(
-          enquiry: enquiry,
-        ),
+        handset: (_, __) => EnquiryRepliesPageHandset(enquiry: enquiry),
       ),
     );
   }

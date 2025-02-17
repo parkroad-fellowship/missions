@@ -9,10 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
 class AddSoulViewHandset extends StatefulWidget {
-  const AddSoulViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const AddSoulViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -49,52 +46,55 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(
-                    child: LinearProgressIndicator(),
-                  ),
-                  loaded: (classes) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFClassGroup>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedClassGroup,
-                        hintText: l10n.classGroup,
-                        dropdownMenuEntries: classes
-                            .map(
-                              (classGroup) => DropdownMenuEntry<PRFClassGroup>(
-                                value: classGroup,
-                                label: classGroup.name,
+                  loading: () => const Center(child: LinearProgressIndicator()),
+                  loaded:
+                      (classes) => LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DropdownMenu<PRFClassGroup>(
+                            width: constraints.maxWidth,
+                            initialSelection: selectedClassGroup,
+                            hintText: l10n.classGroup,
+                            dropdownMenuEntries:
+                                classes
+                                    .map(
+                                      (classGroup) =>
+                                          DropdownMenuEntry<PRFClassGroup>(
+                                            value: classGroup,
+                                            label: classGroup.name,
+                                          ),
+                                    )
+                                    .toList(),
+                            onSelected:
+                                (classGroup) => setState(() {
+                                  selectedClassGroup = classGroup;
+                                }),
+                            inputDecorationTheme: InputDecorationTheme(
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                            )
-                            .toList(),
-                        onSelected: (classGroup) => setState(() {
-                          selectedClassGroup = classGroup;
-                        }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                                color: PRFApp.theme().kDullGreyColor,
-                                fontWeight: FontWeight.w500,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                        ),
-                      );
-                    },
-                  ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              fillColor: PRFApp.theme().kBackgroundColor,
+                              hintStyle: PRFText.theme().headlineSmall!
+                                  .copyWith(
+                                    color: PRFApp.theme().kDullGreyColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          );
+                        },
+                      ),
                 );
               },
             ),
@@ -128,58 +128,49 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                     });
                     Gaimon.success();
                     Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.soulRecorded),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(l10n.soulRecorded)));
                   },
                   error: (error) {
                     Gaimon.error();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          error.message,
-                        ),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(error.message)));
                   },
                 );
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (selectedClassGroup == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.selectClass),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (selectedClassGroup == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.selectClass)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      if (_fullNameController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterName),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                          if (_fullNameController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterName)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      await context.read<AddSoulCubit>().addSoul(
+                          await context.read<AddSoulCubit>().addSoul(
                             missionUlid: widget.missionUlid,
                             classGroup: selectedClassGroup!,
                             fullName: _fullNameController.text,
                           );
-                    },
-                  ),
+                        },
+                      ),
                 );
               },
             ),

@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class SoulsView extends StatelessWidget {
-  const SoulsView({
-    required this.missionUlid,
-    super.key,
-  });
+  const SoulsView({required this.missionUlid, super.key});
 
   final String missionUlid;
 

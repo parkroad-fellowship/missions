@@ -9,13 +9,9 @@ import 'package:app/models/remote/prf_student_enquiry_reply_dto.dart';
 import 'package:app/utils/_index.dart';
 
 abstract class StudentService {
-  Future<List<PRFFaq>> getFaqs({
-    String? include,
-  });
+  Future<List<PRFFaq>> getFaqs({String? include});
   Future<List<PRFFaqCategory>> getFaqCategories();
-  Future<List<PRFStudentEnquiry>> getStudentEnquiries({
-    String? studentUlid,
-  });
+  Future<List<PRFStudentEnquiry>> getStudentEnquiries({String? studentUlid});
   Future<PRFStudentEnquiry> createStudentEnquiry({
     required PRFStudentEnquiryDTO studentEnquiryDTO,
   });
@@ -30,9 +26,7 @@ abstract class StudentService {
 class StudentServiceImpl implements StudentService {
   final _networkUtil = NetworkUtil();
   @override
-  Future<List<PRFFaq>> getFaqs({
-    String? include,
-  }) async {
+  Future<List<PRFFaq>> getFaqs({String? include}) async {
     try {
       final res = await _networkUtil.getReq(
         '/mission-faqs',
@@ -51,9 +45,7 @@ class StudentServiceImpl implements StudentService {
   @override
   Future<List<PRFFaqCategory>> getFaqCategories() async {
     try {
-      final res = await _networkUtil.getReq(
-        '/mission-faq-categories',
-      );
+      final res = await _networkUtil.getReq('/mission-faq-categories');
 
       return PRFFaqCategoryResponse.fromJson(res).data;
     } catch (e) {
@@ -86,9 +78,7 @@ class StudentServiceImpl implements StudentService {
     try {
       final res = await _networkUtil.getReq(
         '/student-enquiry-replies',
-        queryParameters: {
-          'filter[student_enquiry_ulid]': studentEnquiryUlid,
-        },
+        queryParameters: {'filter[student_enquiry_ulid]': studentEnquiryUlid},
       );
 
       return PRFStudentEnquiryReplyResponse.fromJson(res).data;

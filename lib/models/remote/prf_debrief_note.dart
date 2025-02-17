@@ -20,9 +20,8 @@ class PRFDebriefNote with _$PRFDebriefNote {
 
 @freezed
 class PRFDebriefNoteResponse with _$PRFDebriefNoteResponse {
-  const factory PRFDebriefNoteResponse({
-    required List<PRFDebriefNote> data,
-  }) = _PRFDebriefNoteResponse;
+  const factory PRFDebriefNoteResponse({required List<PRFDebriefNote> data}) =
+      _PRFDebriefNoteResponse;
 
   factory PRFDebriefNoteResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFDebriefNoteResponseFromJson(json);

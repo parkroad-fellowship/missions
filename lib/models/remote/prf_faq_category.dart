@@ -18,9 +18,8 @@ class PRFFaqCategory with _$PRFFaqCategory {
 
 @freezed
 class PRFFaqCategoryResponse with _$PRFFaqCategoryResponse {
-  const factory PRFFaqCategoryResponse({
-    required List<PRFFaqCategory> data,
-  }) = _PRFFaqCategoryResponse;
+  const factory PRFFaqCategoryResponse({required List<PRFFaqCategory> data}) =
+      _PRFFaqCategoryResponse;
 
   factory PRFFaqCategoryResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFFaqCategoryResponseFromJson(json);

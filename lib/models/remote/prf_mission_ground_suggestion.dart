@@ -31,6 +31,5 @@ class PRFMissionGroundSuggestionResponse
 
   factory PRFMissionGroundSuggestionResponse.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$PRFMissionGroundSuggestionResponseFromJson(json);
+  ) => _$PRFMissionGroundSuggestionResponseFromJson(json);
 }

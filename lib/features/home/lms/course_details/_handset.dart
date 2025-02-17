@@ -11,10 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CourseDetailsPageHandset extends StatefulWidget {
-  const CourseDetailsPageHandset({
-    required this.courseUlid,
-    super.key,
-  });
+  const CourseDetailsPageHandset({required this.courseUlid, super.key});
 
   final String courseUlid;
 
@@ -28,9 +25,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 
   @override
   void initState() {
-    context
-        .read<GetCourseModulesCubit>()
-        .getCourseModules(courseUlid: courseUlid);
+    context.read<GetCourseModulesCubit>().getCourseModules(
+      courseUlid: courseUlid,
+    );
     super.initState();
   }
 
@@ -68,28 +65,28 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.lmsRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.lmsRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       StreamBuilder<PRFLocalCourse>(
-                        stream: getIt<LocalDBService>()
-                            .getCourse(courseUlid: courseUlid),
+                        stream: getIt<LocalDBService>().getCourse(
+                          courseUlid: courseUlid,
+                        ),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Center(
-                              child: Container(),
-                            );
+                            return Center(child: Container());
                           }
                           final course = snapshot.data;
                           return SizedBox(
                             child: Text(
                               course!.name,
-                              style: PRFText.theme()
-                                  .displayLarge
-                                  ?.copyWith(fontWeight: FontWeight.w600),
+                              style: PRFText.theme().displayLarge?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           );
@@ -99,8 +96,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
                         child: StreamBuilder<PRFLocalCourse>(
-                          stream: getIt<LocalDBService>()
-                              .getCourse(courseUlid: courseUlid),
+                          stream: getIt<LocalDBService>().getCourse(
+                            courseUlid: courseUlid,
+                          ),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const Center(
@@ -114,9 +112,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                                         .toInt() ??
                                     0,
                               ),
-                              style: PRFText.theme()
-                                  .displaySmall
-                                  ?.copyWith(fontWeight: FontWeight.w600),
+                              style: PRFText.theme().displaySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                             );
                           },
                         ),
@@ -130,8 +128,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 
               SliverToBoxAdapter(
                 child: StreamBuilder<PRFLocalCourse>(
-                  stream:
-                      getIt<LocalDBService>().getCourse(courseUlid: courseUlid),
+                  stream: getIt<LocalDBService>().getCourse(
+                    courseUlid: courseUlid,
+                  ),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
@@ -141,8 +140,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: Text(
                         course!.description,
-                        style:
-                            PRFText.theme().bodySmall?.copyWith(fontSize: 16),
+                        style: PRFText.theme().bodySmall?.copyWith(
+                          fontSize: 16,
+                        ),
                       ),
                     );
                   },
@@ -154,8 +154,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     l10n.modules,
-                    style:
-                        PRFText.theme().displayLarge?.copyWith(fontSize: 64.sp),
+                    style: PRFText.theme().displayLarge?.copyWith(
+                      fontSize: 64.sp,
+                    ),
                   ),
                 ),
               ),
@@ -163,18 +164,21 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
               SliverToBoxAdapter(
                 child:
                     BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
-                  builder: (context, state) => state.maybeWhen(
-                    loading: () => const Center(
-                      child: LinearProgressIndicator(),
+                      builder:
+                          (context, state) => state.maybeWhen(
+                            loading:
+                                () => const Center(
+                                  child: LinearProgressIndicator(),
+                                ),
+                            orElse: SizedBox.shrink,
+                          ),
                     ),
-                    orElse: SizedBox.shrink,
-                  ),
-                ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               StreamBuilder<List<PRFLocalCourseModule>>(
-                stream: getIt<LocalDBService>()
-                    .getCourseModules(courseUlid: courseUlid),
+                stream: getIt<LocalDBService>().getCourseModules(
+                  courseUlid: courseUlid,
+                ),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SliverToBoxAdapter(
@@ -190,11 +194,12 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 
                   return SliverList.separated(
                     itemCount: courseModules!.length,
-                    itemBuilder: (context, index) => CourseDetailsActionCard(
-                      courseModule: courseModules[index],
-                    ),
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 16.h),
+                    itemBuilder:
+                        (context, index) => CourseDetailsActionCard(
+                          courseModule: courseModules[index],
+                        ),
+                    separatorBuilder:
+                        (context, index) => SizedBox(height: 16.h),
                   );
                 },
               ),
@@ -207,10 +212,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 }
 
 class CourseDetailsActionCard extends StatelessWidget {
-  const CourseDetailsActionCard({
-    required this.courseModule,
-    super.key,
-  });
+  const CourseDetailsActionCard({required this.courseModule, super.key});
 
   final PRFLocalCourseModule courseModule;
 
@@ -220,17 +222,15 @@ class CourseDetailsActionCard extends StatelessWidget {
 
     final width = MediaQuery.sizeOf(context).width;
     return GestureDetector(
-      onTap: () => context.router.push(
-        ModuleDetailsRoute(courseModule: courseModule),
-      ),
+      onTap:
+          () => context.router.push(
+            ModuleDetailsRoute(courseModule: courseModule),
+          ),
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 80.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 80.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
@@ -247,9 +247,9 @@ class CourseDetailsActionCard extends StatelessWidget {
                       child: Text(
                         courseModule.module.name!,
                         style: PRFText.theme().displayMedium?.copyWith(
-                              color: PRFApp.theme().kPrimaryColorV2,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: PRFApp.theme().kPrimaryColorV2,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     Flexible(
@@ -279,8 +279,8 @@ class CourseDetailsActionCard extends StatelessWidget {
                 Text(
                   courseModule.module.description!,
                   style: PRFText.theme().headlineSmall?.copyWith(
-                        color: PRFApp.theme().kBlackColor,
-                      ),
+                    color: PRFApp.theme().kBlackColor,
+                  ),
                 ),
               ],
             ),

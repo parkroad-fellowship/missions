@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class AddAudioView extends StatelessWidget {
-  const AddAudioView({
-    required this.missionSessionUlid,
-    super.key,
-  });
+  const AddAudioView({required this.missionSessionUlid, super.key});
 
   final String missionSessionUlid;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          AddAudioViewHandset(missionSessionUlid: missionSessionUlid),
+      defaultBuilder:
+          (_, __) =>
+              AddAudioViewHandset(missionSessionUlid: missionSessionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) =>
-            AddAudioViewHandset(missionSessionUlid: missionSessionUlid),
+        handset:
+            (_, __) =>
+                AddAudioViewHandset(missionSessionUlid: missionSessionUlid),
       ),
     );
   }

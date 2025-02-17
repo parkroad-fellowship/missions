@@ -5,18 +5,15 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 @RoutePage()
 class CourseDetailsPage extends StatelessWidget {
-  const CourseDetailsPage({
-    required this.courseUlid,
-    super.key,
-  });
+  const CourseDetailsPage({required this.courseUlid, super.key});
 
   final String courseUlid;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) =>
-          CourseDetailsPageHandset(courseUlid: courseUlid),
+      defaultBuilder:
+          (_, __) => CourseDetailsPageHandset(courseUlid: courseUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => CourseDetailsPageHandset(courseUlid: courseUlid),
       ),

@@ -42,10 +42,7 @@ class NetworkUtil {
 
     if (kDebugMode) {
       dio.interceptors.add(
-        PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-        ),
+        PrettyDioLogger(requestHeader: true, requestBody: true),
       );
     }
 
@@ -82,9 +79,7 @@ class NetworkUtil {
         ..i('Error: ${err.response?.data}');
 
       if (err.response?.statusCode == 401) {
-        throw Failure(
-          message: 'Session timeout',
-        );
+        throw Failure(message: 'Session timeout');
       }
 
       if (err.response?.statusCode == 404) {
@@ -271,9 +266,7 @@ class NetworkUtil {
 
   Future<void> deleteReq(String url) async {
     try {
-      await _getHttpClient().delete<dynamic>(
-        url,
-      );
+      await _getHttpClient().delete<dynamic>(url);
     } on SocketException catch (_) {
       throw Failure(message: 'No internet connection');
     } on TimeoutException catch (_) {

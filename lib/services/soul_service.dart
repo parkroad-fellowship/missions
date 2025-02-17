@@ -7,12 +7,8 @@ import 'package:app/utils/_index.dart';
 
 abstract class SoulService {
   Future<List<PRFClassGroup>> getClassGroups();
-  Future<List<PRFSoul>> getSouls({
-    required String missionUlid,
-  });
-  Future<PRFSoul> addSoul({
-    required PRFSoulDTO soulDTO,
-  });
+  Future<List<PRFSoul>> getSouls({required String missionUlid});
+  Future<PRFSoul> addSoul({required PRFSoulDTO soulDTO});
 }
 
 class SoulServiceImpl implements SoulService {
@@ -20,9 +16,7 @@ class SoulServiceImpl implements SoulService {
   @override
   Future<List<PRFClassGroup>> getClassGroups() async {
     try {
-      final res = await _networkUtil.getReq(
-        '/class-groups',
-      );
+      final res = await _networkUtil.getReq('/class-groups');
 
       return PRFClassGroupResponse.fromJson(res).data;
     } catch (e) {
@@ -31,9 +25,7 @@ class SoulServiceImpl implements SoulService {
   }
 
   @override
-  Future<List<PRFSoul>> getSouls({
-    required String missionUlid,
-  }) async {
+  Future<List<PRFSoul>> getSouls({required String missionUlid}) async {
     try {
       final res = await _networkUtil.getReq(
         '/souls',
@@ -55,9 +47,7 @@ class SoulServiceImpl implements SoulService {
       final res = await _networkUtil.postReq(
         '/souls',
         body: json.encode(soulDTO.toJson()),
-        queryParameters: {
-          'include': 'classGroup',
-        },
+        queryParameters: {'include': 'classGroup'},
       );
 
       return PRFSoul.fromJson(res['data'] as Map<String, dynamic>);

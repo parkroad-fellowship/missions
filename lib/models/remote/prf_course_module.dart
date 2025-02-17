@@ -24,9 +24,8 @@ class PRFCourseModule with _$PRFCourseModule {
 
 @freezed
 class PRFCourseModuleResponse with _$PRFCourseModuleResponse {
-  factory PRFCourseModuleResponse(
-    List<PRFCourseModule> data,
-  ) = _PRFCourseModuleResponse;
+  factory PRFCourseModuleResponse(List<PRFCourseModule> data) =
+      _PRFCourseModuleResponse;
 
   factory PRFCourseModuleResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFCourseModuleResponseFromJson(json);

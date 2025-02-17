@@ -13,9 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class MissionGroundSuggestionsPageHandset extends StatefulWidget {
-  const MissionGroundSuggestionsPageHandset({
-    super.key,
-  });
+  const MissionGroundSuggestionsPageHandset({super.key});
 
   @override
   State<MissionGroundSuggestionsPageHandset> createState() =>
@@ -66,26 +64,24 @@ class _MissionGroundSuggestionsPageHandsetState
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.landingRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       Text(
                         l10n.suggestAMission,
-                        style: PRFText.theme()
-                            .displayLarge
-                            ?.copyWith(fontSize: 80.sp),
+                        style: PRFText.theme().displayLarge?.copyWith(
+                          fontSize: 80.sp,
+                        ),
                       ),
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
                         child: const Visibility(
-                          child: Icon(
-                            Icons.abc,
-                            color: Colors.white,
-                          ),
+                          child: Icon(Icons.abc, color: Colors.white),
                         ),
                       ),
                     ],
@@ -95,32 +91,45 @@ class _MissionGroundSuggestionsPageHandsetState
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
-                child: BlocBuilder<GetMissionGroundSuggestionsCubit,
-                    GetMissionGroundSuggestionsState>(
-                  builder: (context, state) => state.maybeWhen(
-                    orElse: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    loaded: (_) => const SizedBox.shrink(),
-                  ),
+                child: BlocBuilder<
+                  GetMissionGroundSuggestionsCubit,
+                  GetMissionGroundSuggestionsState
+                >(
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        orElse:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        error: (message) => Center(child: Text(message)),
+                        loaded: (_) => const SizedBox.shrink(),
+                      ),
                 ),
               ),
-              BlocBuilder<GetMissionGroundSuggestionsCubit,
-                  GetMissionGroundSuggestionsState>(
+              BlocBuilder<
+                GetMissionGroundSuggestionsCubit,
+                GetMissionGroundSuggestionsState
+              >(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: () => const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                    error: (message) =>
-                        SliverToBoxAdapter(child: Center(child: Text(message))),
+                    orElse:
+                        () => const SliverFillRemaining(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                    error:
+                        (message) => SliverToBoxAdapter(
+                          child: Center(child: Text(message)),
+                        ),
                     loaded: (missionGroundSuggestions) {
                       if (missionGroundSuggestions.isEmpty) {
                         return SliverFillRemaining(
                           child: RefreshIndicator(
-                            onRefresh: () => context
-                                .read<GetMissionGroundSuggestionsCubit>()
-                                .getMissionGroundSuggestions(),
+                            onRefresh:
+                                () =>
+                                    context
+                                        .read<
+                                          GetMissionGroundSuggestionsCubit
+                                        >()
+                                        .getMissionGroundSuggestions(),
                             child: Center(
                               child: PrimaryButton(
                                 title: l10n.suggestAMission,
@@ -133,46 +142,19 @@ class _MissionGroundSuggestionsPageHandsetState
                       }
                       return SliverList.separated(
                         itemCount: missionGroundSuggestions.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 8.h),
-                        itemBuilder: (context, index) => GestureDetector(
-                          onLongPress: () {
-                            if (!Misc.userCan(
-                              'edit mission ground suggestion',
-                            )) {
-                              return;
-                            }
-                            WoltModalSheet.show<void>(
-                              context: context,
-                              pageListBuilder: (modalSheetContext) {
-                                return [
-                                  WoltModalSheetPage(
-                                    backgroundColor: Colors.white,
-                                    surfaceTintColor: Colors.white,
-                                    child: SizedBox(
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                              0.8,
-                                      child: UpdateMissionGroundSuggestionView(
-                                        missionGroundSuggestion:
-                                            missionGroundSuggestions[index],
-                                      ),
-                                    ),
+                        separatorBuilder:
+                            (context, index) => SizedBox(height: 8.h),
+                        itemBuilder:
+                            (context, index) => GestureDetector(
+                              onLongPress:
+                                  () async => _updateMissionGroundSuggestion(
+                                    missionGroundSuggestions[index],
                                   ),
-                                ];
-                              },
-                            ).then((_) {
-                              // ignore: use_build_context_synchronously
-                              context
-                                  .read<GetMissionGroundSuggestionsCubit>()
-                                  .getMissionGroundSuggestions();
-                            });
-                          },
-                          child: MissionGroundSuggestionCard(
-                            missionGroundSuggestion:
-                                missionGroundSuggestions[index],
-                          ),
-                        ),
+                              child: MissionGroundSuggestionCard(
+                                missionGroundSuggestion:
+                                    missionGroundSuggestions[index],
+                              ),
+                            ),
                       );
                     },
                   );
@@ -192,35 +174,62 @@ class _MissionGroundSuggestionsPageHandsetState
         child: FloatingActionButton(
           backgroundColor: PRFApp.theme().kPrimaryColorV2,
           onPressed: _addMissionGroundSuggestion,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );
   }
 
-  void _addMissionGroundSuggestion() => WoltModalSheet.show<void>(
-        context: context,
-        pageListBuilder: (modalSheetContext) {
-          return [
-            WoltModalSheetPage(
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.white,
-              child: SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.8,
-                child: const AddMissionGroundSuggestionView(),
+  Future<void> _updateMissionGroundSuggestion(
+    PRFMissionGroundSuggestion missionGroundSuggestion,
+  ) async {
+    if (!Misc.userCan('edit mission ground suggestion')) {
+      return;
+    }
+    await WoltModalSheet.show<void>(
+      context: context,
+      pageListBuilder: (modalSheetContext) {
+        return [
+          WoltModalSheetPage(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.8,
+              child: UpdateMissionGroundSuggestionView(
+                missionGroundSuggestion: missionGroundSuggestion,
               ),
             ),
-          ];
-        },
-      ).then((_) {
-        // ignore: use_build_context_synchronously
-        context
-            .read<GetMissionGroundSuggestionsCubit>()
-            .getMissionGroundSuggestions();
-      });
+          ),
+        ];
+      },
+    ).then((_) {
+      // ignore: use_build_context_synchronously
+      context
+          .read<GetMissionGroundSuggestionsCubit>()
+          .getMissionGroundSuggestions();
+    });
+  }
+
+  void _addMissionGroundSuggestion() => WoltModalSheet.show<void>(
+    context: context,
+    pageListBuilder: (modalSheetContext) {
+      return [
+        WoltModalSheetPage(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.8,
+            child: const AddMissionGroundSuggestionView(),
+          ),
+        ),
+      ];
+    },
+  ).then((_) {
+    // ignore: use_build_context_synchronously
+    context
+        .read<GetMissionGroundSuggestionsCubit>()
+        .getMissionGroundSuggestions();
+  });
 }
 
 class MissionGroundSuggestionCard extends StatelessWidget {
@@ -235,17 +244,12 @@ class MissionGroundSuggestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     return Animate(
-      effects: const [
-        SaturateEffect(),
-      ],
+      effects: const [SaturateEffect()],
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
@@ -263,23 +267,21 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                         TextSpan(
                           text: missionGroundSuggestion.name,
                           style: PRFText.theme().displayLarge?.copyWith(
-                                color: PRFApp.theme().kPrimaryColorV2,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            color: PRFApp.theme().kPrimaryColorV2,
+                            fontWeight: FontWeight.w600,
+                          ),
                           children: [
                             TextSpan(
                               text: ', ${missionGroundSuggestion.status.name}',
                               style: PRFText.theme().displaySmall?.copyWith(
-                                    color: PRFApp.theme().kPrimaryColorV2,
-                                  ),
+                                color: PRFApp.theme().kPrimaryColorV2,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      Text(
-                        missionGroundSuggestion.contactPerson,
-                      ),
+                      Text(missionGroundSuggestion.contactPerson),
                       SizedBox(height: 16.h),
                     ],
                   ),

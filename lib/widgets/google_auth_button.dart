@@ -31,9 +31,7 @@ class GoogleAuthButton extends StatelessWidget {
           onPressed: onPressed,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
-            side: const BorderSide(
-              color: Colors.grey,
-            ),
+            side: const BorderSide(color: Colors.grey),
           ),
           child: SizedBox(
             width: double.infinity,
@@ -71,19 +69,17 @@ class GoogleAuthButton extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontStyle: FontStyle.normal,
-                    color: (isLoading ?? false)
-                        ? Colors.black.withValues(alpha: .4)
-                        : Colors.black,
+                    color:
+                        (isLoading ?? false)
+                            ? Colors.black.withValues(alpha: .4)
+                            : Colors.black,
                     fontFamily: 'Helvetica Neue',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const Spacer(),
                 if (isLoading ?? false) ...[
-                  const SizedBox(
-                    height: 14,
-                    width: 38,
-                  ),
+                  const SizedBox(height: 14, width: 38),
                 ] else
                   const SizedBox.shrink(),
                 const Spacer(),

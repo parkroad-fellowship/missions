@@ -69,18 +69,19 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.moduleDetailsRoute,
-                          ),
+                          onPressed:
+                              () => context.router.popUntilRouteWithPath(
+                                PRFSuperAppRouter.moduleDetailsRoute,
+                              ),
                         ),
                       ),
                       const Spacer(),
                       SizedBox(
                         child: Text(
                           l10n.lessonDetails,
-                          style: PRFText.theme()
-                              .displayLarge
-                              ?.copyWith(fontWeight: FontWeight.w600),
+                          style: PRFText.theme().displayLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -88,10 +89,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
                         child: const Visibility(
-                          child: Icon(
-                            Icons.abc,
-                            color: Colors.white,
-                          ),
+                          child: Icon(Icons.abc, color: Colors.white),
                         ),
                       ),
                     ],
@@ -105,140 +103,137 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     lesson.name!.toUpperCase(),
-                    style: PRFText.theme()
-                        .headlineMedium
-                        ?.copyWith(fontSize: 52.sp),
+                    style: PRFText.theme().headlineMedium?.copyWith(
+                      fontSize: 52.sp,
+                    ),
                   ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    // Lesson content
-                    if (lesson.content != null)
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: HtmlWidget(
-                          lesson.content!,
-                          textStyle:
-                              PRFText.theme().bodySmall?.copyWith(fontSize: 16),
+                delegate: SliverChildListDelegate([
+                  // Lesson content
+                  if (lesson.content != null)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.w),
+                      child: HtmlWidget(
+                        lesson.content!,
+                        textStyle: PRFText.theme().bodySmall?.copyWith(
+                          fontSize: 16,
                         ),
                       ),
+                    ),
 
-                    // Lesson video
-                    if (lesson.videoUrl != null)
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(l10n.video),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(lesson.videoUrl!),
-                          ],
-                        ),
-                        onTap: () async {
-                          final uri = Uri.parse(lesson.videoUrl!);
-                          await Misc.openUrl(uri);
-                        },
+                  // Lesson video
+                  if (lesson.videoUrl != null)
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l10n.video),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[Text(lesson.videoUrl!)],
                       ),
+                      onTap: () async {
+                        final uri = Uri.parse(lesson.videoUrl!);
+                        await Misc.openUrl(uri);
+                      },
+                    ),
 
-                    // Lesson document
-                    if (lesson.documentUrl != null)
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(l10n.document),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(lesson.documentUrl!),
-                          ],
-                        ),
-                        onTap: () async {
-                          final uri = Uri.parse(lesson.documentUrl!);
-                          await Misc.openUrl(uri);
-                        },
+                  // Lesson document
+                  if (lesson.documentUrl != null)
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l10n.document),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[Text(lesson.documentUrl!)],
                       ),
+                      onTap: () async {
+                        final uri = Uri.parse(lesson.documentUrl!);
+                        await Misc.openUrl(uri);
+                      },
+                    ),
 
-                    // Lesson audio
-                    if (lesson.audioUrl != null)
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(l10n.audio),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(lesson.audioUrl!),
-                          ],
-                        ),
-                        onTap: () async {
-                          final uri = Uri.parse(lesson.audioUrl!);
-                          await Misc.openUrl(uri);
-                        },
+                  // Lesson audio
+                  if (lesson.audioUrl != null)
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l10n.audio),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[Text(lesson.audioUrl!)],
                       ),
-                    SizedBox(height: 32.h),
-                    if (lessonModule.lessonMember == null ||
-                        (lessonModule.lessonMember != null &&
-                            lessonModule.lessonMember!.completionStatus !=
-                                PRFCompletionStatus.complete))
-                      BlocConsumer<FinishLessonCubit, FinishLessonState>(
-                        listener: (context, state) {
-                          state.maybeWhen(
-                            loading: () => setState(() {
+                      onTap: () async {
+                        final uri = Uri.parse(lesson.audioUrl!);
+                        await Misc.openUrl(uri);
+                      },
+                    ),
+                  SizedBox(height: 32.h),
+                  if (lessonModule.lessonMember == null ||
+                      (lessonModule.lessonMember != null &&
+                          lessonModule.lessonMember!.completionStatus !=
+                              PRFCompletionStatus.complete))
+                    BlocConsumer<FinishLessonCubit, FinishLessonState>(
+                      listener: (context, state) {
+                        state.maybeWhen(
+                          loading:
+                              () => setState(() {
+                                _isLoading = !_isLoading;
+                              }),
+                          loaded: () {
+                            setState(() {
                               _isLoading = !_isLoading;
-                            }),
-                            loaded: () {
-                              setState(() {
-                                _isLoading = !_isLoading;
-                              });
-                              Gaimon.success();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.completed),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                              Navigator.of(context).pop();
-                            },
-                            error: (message) {
-                              setState(() {
-                                _isLoading = !_isLoading;
-                              });
-                              Gaimon.error();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            },
-                            orElse: () {},
-                          );
-                        },
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            orElse: () => Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 40.w),
-                              child: PrimaryButton(
-                                onPressed: () async => context
-                                    .read<FinishLessonCubit>()
-                                    .finishLesson(
-                                      lessonUlid: lesson.ulid!,
-                                      moduleUlid: moduleUlid,
-                                      courseUlid: courseUlid,
-                                    ),
-                                title: _isLoading
-                                    ? l10n.completing
-                                    : l10n.complete,
-                                disabled: _isLoading,
-                                isLoading: _isLoading ? true : null,
+                            });
+                            Gaimon.success();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(l10n.completed),
+                                backgroundColor: Colors.green,
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                  ],
-                ),
+                            );
+                            Navigator.of(context).pop();
+                          },
+                          error: (message) {
+                            setState(() {
+                              _isLoading = !_isLoading;
+                            });
+                            Gaimon.error();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(message),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          },
+                          orElse: () {},
+                        );
+                      },
+                      builder: (context, state) {
+                        return state.maybeWhen(
+                          orElse:
+                              () => Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                                child: PrimaryButton(
+                                  onPressed:
+                                      () async => context
+                                          .read<FinishLessonCubit>()
+                                          .finishLesson(
+                                            lessonUlid: lesson.ulid!,
+                                            moduleUlid: moduleUlid,
+                                            courseUlid: courseUlid,
+                                          ),
+                                  title:
+                                      _isLoading
+                                          ? l10n.completing
+                                          : l10n.complete,
+                                  disabled: _isLoading,
+                                  isLoading: _isLoading ? true : null,
+                                ),
+                              ),
+                        );
+                      },
+                    ),
+                ]),
               ),
             ],
           ),

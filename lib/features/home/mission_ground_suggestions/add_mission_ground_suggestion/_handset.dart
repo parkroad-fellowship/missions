@@ -8,9 +8,7 @@ import 'package:gaimon/gaimon.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class AddMissionGroundSuggestionViewHandset extends StatefulWidget {
-  const AddMissionGroundSuggestionViewHandset({
-    super.key,
-  });
+  const AddMissionGroundSuggestionViewHandset({super.key});
 
   @override
   State<AddMissionGroundSuggestionViewHandset> createState() =>
@@ -76,9 +74,10 @@ class _AddMissionGroundSuggestionViewHandsetState
             const SizedBox(height: 6),
             InternationalPhoneNumberInput(
               countries: const ['KE'],
-              onInputChanged: (phoneNumber) => setState(() {
-                _contactNumber = phoneNumber;
-              }),
+              onInputChanged:
+                  (phoneNumber) => setState(() {
+                    _contactNumber = phoneNumber;
+                  }),
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -97,8 +96,10 @@ class _AddMissionGroundSuggestionViewHandsetState
               ),
             ),
             const SizedBox(height: 32),
-            BlocConsumer<AddMissionGroundSuggestionCubit,
-                AddMissionGroundSuggestionState>(
+            BlocConsumer<
+              AddMissionGroundSuggestionCubit,
+              AddMissionGroundSuggestionState
+            >(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {
@@ -124,62 +125,54 @@ class _AddMissionGroundSuggestionViewHandsetState
                   },
                   error: (error) {
                     Gaimon.error();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          error.message,
-                        ),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(error.message)));
                   },
                 );
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (_nameController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterMissionGround),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (_nameController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterMissionGround)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      if (_contactPersonController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterContactPerson),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                          if (_contactPersonController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterContactPerson)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      if (_contactNumber == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterContactNumber),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                          if (_contactNumber == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterContactNumber)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      await context
-                          .read<AddMissionGroundSuggestionCubit>()
-                          .suggestMissionGround(
-                            name: _nameController.text.trim(),
-                            contactPerson: _contactPersonController.text.trim(),
-                            contactNumber: _contactNumber!,
-                          );
-                    },
-                  ),
+                          await context
+                              .read<AddMissionGroundSuggestionCubit>()
+                              .suggestMissionGround(
+                                name: _nameController.text.trim(),
+                                contactPerson:
+                                    _contactPersonController.text.trim(),
+                                contactNumber: _contactNumber!,
+                              );
+                        },
+                      ),
                 );
               },
             ),

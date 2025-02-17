@@ -8,9 +8,8 @@ part 'add_mission_session_cubit.freezed.dart';
 part 'add_mission_session_state.dart';
 
 class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
-  AddMissionSessionCubit({
-    required MissionService missionService,
-  }) : super(const AddMissionSessionState.initial()) {
+  AddMissionSessionCubit({required MissionService missionService})
+    : super(const AddMissionSessionState.initial()) {
     _missionService = missionService;
   }
 

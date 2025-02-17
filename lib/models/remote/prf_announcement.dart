@@ -20,9 +20,8 @@ class PRFAnnouncement with _$PRFAnnouncement {
 
 @freezed
 class PRFAnnouncementResponse with _$PRFAnnouncementResponse {
-  factory PRFAnnouncementResponse(
-    List<PRFAnnouncement> data,
-  ) = _PRFAnnouncementResponse;
+  factory PRFAnnouncementResponse(List<PRFAnnouncement> data) =
+      _PRFAnnouncementResponse;
 
   factory PRFAnnouncementResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFAnnouncementResponseFromJson(json);

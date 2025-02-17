@@ -7,9 +7,8 @@ part 'add_token_state.dart';
 part 'add_token_cubit.freezed.dart';
 
 class AddTokenCubit extends Cubit<AddTokenState> {
-  AddTokenCubit({
-    required MissionService missionService,
-  }) : super(const AddTokenState.initial()) {
+  AddTokenCubit({required MissionService missionService})
+    : super(const AddTokenState.initial()) {
     _missionService = missionService;
   }
 

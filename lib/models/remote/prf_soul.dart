@@ -22,9 +22,8 @@ class PRFSoul with _$PRFSoul {
 
 @freezed
 class PRFSoulResponse with _$PRFSoulResponse {
-  const factory PRFSoulResponse({
-    required List<PRFSoul> data,
-  }) = _PRFSoulResponse;
+  const factory PRFSoulResponse({required List<PRFSoul> data}) =
+      _PRFSoulResponse;
 
   factory PRFSoulResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFSoulResponseFromJson(json);

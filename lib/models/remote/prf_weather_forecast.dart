@@ -39,11 +39,7 @@ class PRFTemperature with _$PRFTemperature {
 
 @freezed
 class PRFVisibility with _$PRFVisibility {
-  factory PRFVisibility(
-    String avg,
-    String max,
-    String min,
-  ) = _PRFVisibility;
+  factory PRFVisibility(String avg, String max, String min) = _PRFVisibility;
 
   factory PRFVisibility.fromJson(Map<String, dynamic> json) =>
       _$PRFVisibilityFromJson(json);
@@ -51,11 +47,8 @@ class PRFVisibility with _$PRFVisibility {
 
 @freezed
 class PRFPrecipitationProbability with _$PRFPrecipitationProbability {
-  factory PRFPrecipitationProbability(
-    String avg,
-    String max,
-    String min,
-  ) = _PRFPrecipitationProbability;
+  factory PRFPrecipitationProbability(String avg, String max, String min) =
+      _PRFPrecipitationProbability;
 
   factory PRFPrecipitationProbability.fromJson(Map<String, dynamic> json) =>
       _$PRFPrecipitationProbabilityFromJson(json);
@@ -63,11 +56,7 @@ class PRFPrecipitationProbability with _$PRFPrecipitationProbability {
 
 @freezed
 class PRFHumidity with _$PRFHumidity {
-  factory PRFHumidity(
-    String avg,
-    String max,
-    String min,
-  ) = _PRFHumidity;
+  factory PRFHumidity(String avg, String max, String min) = _PRFHumidity;
 
   factory PRFHumidity.fromJson(Map<String, dynamic> json) =>
       _$PRFHumidityFromJson(json);

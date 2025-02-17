@@ -8,10 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DebriefNotesViewHandset extends StatefulWidget {
-  const DebriefNotesViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const DebriefNotesViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -25,9 +22,9 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
 
   @override
   void initState() {
-    context
-        .read<GetDebriefNotesCubit>()
-        .getDebriefNotes(missionUlid: missionUlid);
+    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+      missionUlid: missionUlid,
+    );
     super.initState();
   }
 
@@ -45,10 +42,10 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
                 child: Text(
                   l10n.noNotes,
                   style: PRFText.theme().headlineSmall!.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: PRFApp.theme().kPrimaryColorV2,
-                      ),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: PRFApp.theme().kPrimaryColorV2,
+                  ),
                 ),
               );
             }
@@ -58,8 +55,9 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
               physics: const ScrollPhysics(),
               itemCount: debriefNotes.length,
               separatorBuilder: (context, index) => SizedBox(height: 8.h),
-              itemBuilder: (context, index) =>
-                  DebriefNoteCard(debriefNote: debriefNotes[index]),
+              itemBuilder:
+                  (context, index) =>
+                      DebriefNoteCard(debriefNote: debriefNotes[index]),
             );
           },
         );
@@ -69,10 +67,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
 }
 
 class DebriefNoteCard extends StatelessWidget {
-  const DebriefNoteCard({
-    required this.debriefNote,
-    super.key,
-  });
+  const DebriefNoteCard({required this.debriefNote, super.key});
 
   final PRFDebriefNote debriefNote;
 
@@ -85,10 +80,7 @@ class DebriefNoteCard extends StatelessWidget {
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 50.w,
-              vertical: 60.h,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
               color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
@@ -97,10 +89,7 @@ class DebriefNoteCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  debriefNote.note,
-                  style: PRFText.theme().bodySmall,
-                ),
+                Text(debriefNote.note, style: PRFText.theme().bodySmall),
                 SizedBox(height: 8.h),
                 Text(
                   Misc.formatDateTime(debriefNote.createdAt),

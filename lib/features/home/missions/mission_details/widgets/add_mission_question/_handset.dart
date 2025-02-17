@@ -7,10 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
 class AddMissionQuestionViewHandset extends StatefulWidget {
-  const AddMissionQuestionViewHandset({
-    required this.missionUlid,
-    super.key,
-  });
+  const AddMissionQuestionViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
@@ -66,48 +63,41 @@ class _AddMissionQuestionViewHandsetState
                     Gaimon.success();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.questionRecorded),
-                      ),
+                      SnackBar(content: Text(l10n.questionRecorded)),
                     );
                   },
                   error: (error) {
                     Gaimon.error();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          error.message,
-                        ),
-                      ),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(error.message)));
                   },
                 );
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (_questionController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterQuestion),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (_questionController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterQuestion)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      await context
-                          .read<AddMissionQuestionCubit>()
-                          .addMissionQuestion(
-                            missionUlid: widget.missionUlid,
-                            question: _questionController.text,
-                          );
-                    },
-                  ),
+                          await context
+                              .read<AddMissionQuestionCubit>()
+                              .addMissionQuestion(
+                                missionUlid: widget.missionUlid,
+                                question: _questionController.text,
+                              );
+                        },
+                      ),
                 );
               },
             ),

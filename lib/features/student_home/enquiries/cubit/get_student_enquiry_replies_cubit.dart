@@ -18,9 +18,7 @@ class GetStudentEnquiryRepliesCubit
   late StudentService _studentService;
   late LocalDBService _localDBService;
 
-  Future<void> getStudentEnquiryReplies({
-    required String enquiryUlid,
-  }) async {
+  Future<void> getStudentEnquiryReplies({required String enquiryUlid}) async {
     emit(const GetStudentEnquiryRepliesState.loading());
     try {
       final replies = await _studentService.getStudentEnquiryReplies(

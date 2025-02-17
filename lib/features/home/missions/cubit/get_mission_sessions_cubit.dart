@@ -8,21 +8,19 @@ part 'get_mission_sessions_cubit.freezed.dart';
 part 'get_mission_sessions_state.dart';
 
 class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
-  GetMissionSessionsCubit({
-    required MissionService missionService,
-  }) : super(const GetMissionSessionsState.initial()) {
+  GetMissionSessionsCubit({required MissionService missionService})
+    : super(const GetMissionSessionsState.initial()) {
     _missionService = missionService;
   }
 
   late MissionService _missionService;
 
-  Future<void> getMissionSessions({
-    required String missionUlid,
-  }) async {
+  Future<void> getMissionSessions({required String missionUlid}) async {
     emit(const GetMissionSessionsState.loading());
     try {
-      final missionSessions =
-          await _missionService.getMissionSessions(missionUlid: missionUlid);
+      final missionSessions = await _missionService.getMissionSessions(
+        missionUlid: missionUlid,
+      );
 
       final groupedSessions = collection.groupBy<PRFMissionSession, DateTime>(
         missionSessions,

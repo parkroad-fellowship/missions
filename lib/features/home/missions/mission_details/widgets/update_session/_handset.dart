@@ -48,9 +48,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<GetSubscribersCubit>()
-        .getSubscriptions(missionUlid: widget.missionUlid);
+    context.read<GetSubscribersCubit>().getSubscriptions(
+      missionUlid: widget.missionUlid,
+    );
     context.read<GetClassGroupsCubit>().getClassGroups();
 
     // Initialize the fields with the current values
@@ -60,8 +60,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     startsAt = missionSession.startsAt;
     endsAt = missionSession.endsAt;
     _notesController.text = missionSession.notes;
-    _startDateController.text =
-        DateFormat.MMMMEEEEd().add_Hm().format(startsAt!);
+    _startDateController.text = DateFormat.MMMMEEEEd().add_Hm().format(
+      startsAt!,
+    );
     _endDateController.text = DateFormat.MMMMEEEEd().add_Hm().format(endsAt!);
   }
 
@@ -88,52 +89,55 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(
-                    child: LinearProgressIndicator(),
-                  ),
-                  loaded: (subscribers) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFMember>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedFacilitator,
-                        hintText: l10n.facilitator,
-                        dropdownMenuEntries: subscribers
-                            .map(
-                              (subscriber) => DropdownMenuEntry<PRFMember>(
-                                value: subscriber.member!,
-                                label: subscriber.member!.fullName,
+                  loading: () => const Center(child: LinearProgressIndicator()),
+                  loaded:
+                      (subscribers) => LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DropdownMenu<PRFMember>(
+                            width: constraints.maxWidth,
+                            initialSelection: selectedFacilitator,
+                            hintText: l10n.facilitator,
+                            dropdownMenuEntries:
+                                subscribers
+                                    .map(
+                                      (subscriber) =>
+                                          DropdownMenuEntry<PRFMember>(
+                                            value: subscriber.member!,
+                                            label: subscriber.member!.fullName,
+                                          ),
+                                    )
+                                    .toList(),
+                            onSelected:
+                                (member) => setState(() {
+                                  selectedFacilitator = member;
+                                }),
+                            inputDecorationTheme: InputDecorationTheme(
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                            )
-                            .toList(),
-                        onSelected: (member) => setState(() {
-                          selectedFacilitator = member;
-                        }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                                color: PRFApp.theme().kDullGreyColor,
-                                fontWeight: FontWeight.w500,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                        ),
-                      );
-                    },
-                  ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              fillColor: PRFApp.theme().kBackgroundColor,
+                              hintStyle: PRFText.theme().headlineSmall!
+                                  .copyWith(
+                                    color: PRFApp.theme().kDullGreyColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          );
+                        },
+                      ),
                 );
               },
             ),
@@ -150,52 +154,55 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(
-                    child: LinearProgressIndicator(),
-                  ),
-                  loaded: (subscribers) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFMember>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedSpeaker,
-                        hintText: l10n.speaker,
-                        dropdownMenuEntries: subscribers
-                            .map(
-                              (subscriber) => DropdownMenuEntry<PRFMember>(
-                                value: subscriber.member!,
-                                label: subscriber.member!.fullName,
+                  loading: () => const Center(child: LinearProgressIndicator()),
+                  loaded:
+                      (subscribers) => LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DropdownMenu<PRFMember>(
+                            width: constraints.maxWidth,
+                            initialSelection: selectedSpeaker,
+                            hintText: l10n.speaker,
+                            dropdownMenuEntries:
+                                subscribers
+                                    .map(
+                                      (subscriber) =>
+                                          DropdownMenuEntry<PRFMember>(
+                                            value: subscriber.member!,
+                                            label: subscriber.member!.fullName,
+                                          ),
+                                    )
+                                    .toList(),
+                            onSelected:
+                                (member) => setState(() {
+                                  selectedSpeaker = member;
+                                }),
+                            inputDecorationTheme: InputDecorationTheme(
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                            )
-                            .toList(),
-                        onSelected: (member) => setState(() {
-                          selectedSpeaker = member;
-                        }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                                color: PRFApp.theme().kDullGreyColor,
-                                fontWeight: FontWeight.w500,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                        ),
-                      );
-                    },
-                  ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              fillColor: PRFApp.theme().kBackgroundColor,
+                              hintStyle: PRFText.theme().headlineSmall!
+                                  .copyWith(
+                                    color: PRFApp.theme().kDullGreyColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          );
+                        },
+                      ),
                 );
               },
             ),
@@ -212,52 +219,55 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(
-                    child: LinearProgressIndicator(),
-                  ),
-                  loaded: (classes) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFClassGroup>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedClassGroup,
-                        hintText: l10n.classGroup,
-                        dropdownMenuEntries: classes
-                            .map(
-                              (classGroup) => DropdownMenuEntry<PRFClassGroup>(
-                                value: classGroup,
-                                label: classGroup.name,
+                  loading: () => const Center(child: LinearProgressIndicator()),
+                  loaded:
+                      (classes) => LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DropdownMenu<PRFClassGroup>(
+                            width: constraints.maxWidth,
+                            initialSelection: selectedClassGroup,
+                            hintText: l10n.classGroup,
+                            dropdownMenuEntries:
+                                classes
+                                    .map(
+                                      (classGroup) =>
+                                          DropdownMenuEntry<PRFClassGroup>(
+                                            value: classGroup,
+                                            label: classGroup.name,
+                                          ),
+                                    )
+                                    .toList(),
+                            onSelected:
+                                (classGroup) => setState(() {
+                                  selectedClassGroup = classGroup;
+                                }),
+                            inputDecorationTheme: InputDecorationTheme(
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                            )
-                            .toList(),
-                        onSelected: (classGroup) => setState(() {
-                          selectedClassGroup = classGroup;
-                        }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                                color: PRFApp.theme().kDullGreyColor,
-                                fontWeight: FontWeight.w500,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide: BorderSide(
+                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                ),
                               ),
-                        ),
-                      );
-                    },
-                  ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              fillColor: PRFApp.theme().kBackgroundColor,
+                              hintStyle: PRFText.theme().headlineSmall!
+                                  .copyWith(
+                                    color: PRFApp.theme().kDullGreyColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          );
+                        },
+                      ),
                 );
               },
             ),
@@ -332,74 +342,65 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                     });
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.sessionRecorded),
-                      ),
+                      SnackBar(content: Text(l10n.sessionRecorded)),
                     );
                   },
                 );
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (selectedFacilitator == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.selectFacilitator),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                  orElse:
+                      () => PrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (selectedFacilitator == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.selectFacilitator)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      if (_notesController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.enterNotes),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                          if (_notesController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterNotes)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      if (startsAt == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.addStartEnd),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                          if (startsAt == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.addStartEnd)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      if (endsAt == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.addStartEnd),
-                          ),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
+                          if (endsAt == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.addStartEnd)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
 
-                      await context
-                          .read<UpdateMissionSessionCubit>()
-                          .updateMissionSession(
-                            missionUlid: widget.missionUlid,
-                            missionSessionUlid: missionSession.ulid,
-                            facilitatorUlid: selectedFacilitator!.ulid,
-                            startsAt: startsAt!,
-                            endsAt: endsAt!,
-                            notes: _notesController.text,
-                            speakerUlid: selectedSpeaker?.ulid,
-                            classGroupUlid: selectedClassGroup?.ulid,
-                          );
-                    },
-                  ),
+                          await context
+                              .read<UpdateMissionSessionCubit>()
+                              .updateMissionSession(
+                                missionUlid: widget.missionUlid,
+                                missionSessionUlid: missionSession.ulid,
+                                facilitatorUlid: selectedFacilitator!.ulid,
+                                startsAt: startsAt!,
+                                endsAt: endsAt!,
+                                notes: _notesController.text,
+                                speakerUlid: selectedSpeaker?.ulid,
+                                classGroupUlid: selectedClassGroup?.ulid,
+                              );
+                        },
+                      ),
                 );
               },
             ),
@@ -418,21 +419,22 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       theme: picker.DatePickerTheme(
         backgroundColor: PRFApp.theme().kBackgroundColor,
         itemStyle: PRFText.theme().headlineSmall!.copyWith(
-              color: PRFApp.theme().kBlackColor,
-            ),
+          color: PRFApp.theme().kBlackColor,
+        ),
         doneStyle: PRFText.theme().headlineSmall!.copyWith(
-              color: PRFApp.theme().kPrimaryColorV2,
-            ),
+          color: PRFApp.theme().kPrimaryColorV2,
+        ),
         cancelStyle: PRFText.theme().headlineSmall!.copyWith(
-              color: PRFApp.theme().kPrimaryColorV2,
-            ),
+          color: PRFApp.theme().kPrimaryColorV2,
+        ),
       ),
       onConfirm: (date) {
         setState(() {
           startsAt = date;
         });
-        _startDateController.text =
-            DateFormat.MMMMEEEEd().add_Hm().format(date);
+        _startDateController.text = DateFormat.MMMMEEEEd().add_Hm().format(
+          date,
+        );
       },
       currentTime: DateTime.now(),
     );
@@ -446,14 +448,14 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       theme: picker.DatePickerTheme(
         backgroundColor: PRFApp.theme().kBackgroundColor,
         itemStyle: PRFText.theme().headlineSmall!.copyWith(
-              color: PRFApp.theme().kBlackColor,
-            ),
+          color: PRFApp.theme().kBlackColor,
+        ),
         doneStyle: PRFText.theme().headlineSmall!.copyWith(
-              color: PRFApp.theme().kPrimaryColorV2,
-            ),
+          color: PRFApp.theme().kPrimaryColorV2,
+        ),
         cancelStyle: PRFText.theme().headlineSmall!.copyWith(
-              color: PRFApp.theme().kPrimaryColorV2,
-            ),
+          color: PRFApp.theme().kPrimaryColorV2,
+        ),
       ),
       onConfirm: (date) {
         setState(() {

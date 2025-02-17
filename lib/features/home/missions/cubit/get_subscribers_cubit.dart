@@ -10,17 +10,14 @@ part 'get_subscribers_state.dart';
 part 'get_subscribers_cubit.freezed.dart';
 
 class GetSubscribersCubit extends Cubit<GetSubscribersState> {
-  GetSubscribersCubit({
-    required MissionService missionService,
-  }) : super(const GetSubscribersState.initial()) {
+  GetSubscribersCubit({required MissionService missionService})
+    : super(const GetSubscribersState.initial()) {
     _missionService = missionService;
   }
 
   late MissionService _missionService;
 
-  Future<void> getSubscriptions({
-    required String missionUlid,
-  }) async {
+  Future<void> getSubscriptions({required String missionUlid}) async {
     emit(const GetSubscribersState.loading());
     try {
       final missionSubscriptions = await _missionService.getSubscriptions(
@@ -28,11 +25,7 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
         subscriptionStatus: PRFMissionSubscriptionStatus.approved,
         includes: 'member',
       );
-      emit(
-        GetSubscribersState.loaded(
-          subscriptions: missionSubscriptions,
-        ),
-      );
+      emit(GetSubscribersState.loaded(subscriptions: missionSubscriptions));
     } on Failure catch (e) {
       emit(GetSubscribersState.error(e.message));
     } catch (e) {

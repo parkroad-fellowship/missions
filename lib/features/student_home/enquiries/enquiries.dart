@@ -5,9 +5,7 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 @RoutePage()
 class LearnerEnquiriesPage extends StatelessWidget {
-  const LearnerEnquiriesPage({
-    super.key,
-  });
+  const LearnerEnquiriesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -18,9 +18,7 @@ class SavePrayerResponseCubit extends Cubit<SavePrayerResponseState> {
   late LocalDBService _localDBService;
   late HiveService _hiveService;
 
-  Future<void> savePrayerResponse({
-    required String prayerPromptUlid,
-  }) async {
+  Future<void> savePrayerResponse({required String prayerPromptUlid}) async {
     final member = _hiveService.retrieveMember()!;
 
     await _localDBService.persistPrayerResponses(

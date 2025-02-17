@@ -7,10 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddTokenViewHandset extends StatefulWidget {
-  const AddTokenViewHandset({
-    required this.missionExpenseUlid,
-    super.key,
-  });
+  const AddTokenViewHandset({required this.missionExpenseUlid, super.key});
 
   final String missionExpenseUlid;
 
@@ -45,9 +42,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
             hintText: l10n.tokenAmount,
             controller: _amountController,
             keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
           const SizedBox(height: 16),
           BlocConsumer<AddTokenCubit, AddTokenState>(
@@ -63,36 +58,33 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                     _isLoading = false;
                   });
                   Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l10n.tokenRecorded),
-                    ),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(l10n.tokenRecorded)));
                 },
               );
             },
             builder: (context, state) {
               return state.maybeWhen(
-                orElse: () => PrimaryButton(
-                  title: _isLoading ? l10n.recording : l10n.record,
-                  disabled: _isLoading,
-                  isLoading: _isLoading ? true : null,
-                  onPressed: () async {
-                    if (_amountController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(l10n.enterAmount),
-                        ),
-                      );
-                      return;
-                    }
+                orElse:
+                    () => PrimaryButton(
+                      title: _isLoading ? l10n.recording : l10n.record,
+                      disabled: _isLoading,
+                      isLoading: _isLoading ? true : null,
+                      onPressed: () async {
+                        if (_amountController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(l10n.enterAmount)),
+                          );
+                          return;
+                        }
 
-                    await context.read<AddTokenCubit>().addToken(
+                        await context.read<AddTokenCubit>().addToken(
                           missionExpenseUlid: widget.missionExpenseUlid,
                           tokenAmount: _amountController.text,
                         );
-                  },
-                ),
+                      },
+                    ),
               );
             },
           ),

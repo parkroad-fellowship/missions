@@ -37,9 +37,7 @@ class GetExpenseCategoriesCubit extends Cubit<GetExpenseCategoriesState> {
         PRFExpenseCategoryResponse(expenseCategories),
       );
       emit(
-        GetExpenseCategoriesState.loaded(
-          expenseCategories: expenseCategories,
-        ),
+        GetExpenseCategoriesState.loaded(expenseCategories: expenseCategories),
       );
     } on Failure catch (e) {
       emit(GetExpenseCategoriesState.error(message: e.message));

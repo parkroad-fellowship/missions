@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 class Debouncer {
-  Debouncer({
-    required this.milliseconds,
-  });
+  Debouncer({required this.milliseconds});
 
   final int milliseconds;
   Timer? _timer;

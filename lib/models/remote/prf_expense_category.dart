@@ -5,11 +5,8 @@ part 'prf_expense_category.g.dart';
 
 @freezed
 class PRFExpenseCategory with _$PRFExpenseCategory {
-  factory PRFExpenseCategory(
-    String ulid,
-    String name,
-    String description,
-  ) = _PRFExpenseCategory;
+  factory PRFExpenseCategory(String ulid, String name, String description) =
+      _PRFExpenseCategory;
 
   factory PRFExpenseCategory.fromJson(Map<String, dynamic> json) =>
       _$PRFExpenseCategoryFromJson(json);
@@ -17,9 +14,8 @@ class PRFExpenseCategory with _$PRFExpenseCategory {
 
 @freezed
 class PRFExpenseCategoryResponse with _$PRFExpenseCategoryResponse {
-  factory PRFExpenseCategoryResponse(
-    List<PRFExpenseCategory> data,
-  ) = _PRFExpenseCategoryResponse;
+  factory PRFExpenseCategoryResponse(List<PRFExpenseCategory> data) =
+      _PRFExpenseCategoryResponse;
 
   factory PRFExpenseCategoryResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFExpenseCategoryResponseFromJson(json);

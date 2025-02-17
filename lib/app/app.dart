@@ -35,34 +35,37 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(1290, 2796),
-      builder: (context, child) => ValueListenableBuilder<dynamic>(
-        valueListenable: Hive.box<dynamic>(
-          PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
-        ).listenable(),
-        builder: (context, _, __) {
-          final isLoggedOut = getIt<HiveService>().isLoggedOut();
-          Logger().e('isLoggedOut: $isLoggedOut');
-          if (isLoggedOut) {
-            getIt<PRFSuperAppRouter>().pushNamed(
-              PRFSuperAppRouter.decisionRoute,
-            );
-          }
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              colorSchemeSeed: PRFApp.theme().kPrimaryColorV2,
-              appBarTheme: AppBarTheme(
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              ),
-              scaffoldBackgroundColor: Colors.white,
-              useMaterial3: true,
-            ),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            routerConfig: getIt<PRFSuperAppRouter>().config(),
-          );
-        },
-      ),
+      builder:
+          (context, child) => ValueListenableBuilder<dynamic>(
+            valueListenable:
+                Hive.box<dynamic>(
+                  PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+                ).listenable(),
+            builder: (context, _, __) {
+              final isLoggedOut = getIt<HiveService>().isLoggedOut();
+              Logger().e('isLoggedOut: $isLoggedOut');
+              if (isLoggedOut) {
+                getIt<PRFSuperAppRouter>().pushNamed(
+                  PRFSuperAppRouter.decisionRoute,
+                );
+              }
+              return MaterialApp.router(
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  colorSchemeSeed: PRFApp.theme().kPrimaryColorV2,
+                  appBarTheme: AppBarTheme(
+                    backgroundColor:
+                        Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                  scaffoldBackgroundColor: Colors.white,
+                  useMaterial3: true,
+                ),
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                routerConfig: getIt<PRFSuperAppRouter>().config(),
+              );
+            },
+          ),
     );
   }
 }

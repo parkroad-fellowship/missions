@@ -11,9 +11,7 @@ abstract class PaymentService {
     required String include,
   });
   Future<List<PRFPaymentType>> getPaymentTypes();
-  Future<PRFPayment> addPayment({
-    required PRFPaymentDTO paymentDTO,
-  });
+  Future<PRFPayment> addPayment({required PRFPaymentDTO paymentDTO});
 }
 
 class PaymentServiceImpl implements PaymentService {
@@ -56,9 +54,7 @@ class PaymentServiceImpl implements PaymentService {
   @override
   Future<List<PRFPaymentType>> getPaymentTypes() async {
     try {
-      final res = await _networkUtil.getReq(
-        '/payment-types',
-      );
+      final res = await _networkUtil.getReq('/payment-types');
 
       return PRFPaymentTypeResponse.fromJson(res).data;
     } catch (e) {

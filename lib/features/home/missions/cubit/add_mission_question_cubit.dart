@@ -8,9 +8,8 @@ part 'add_mission_question_state.dart';
 part 'add_mission_question_cubit.freezed.dart';
 
 class AddMissionQuestionCubit extends Cubit<AddMissionQuestionState> {
-  AddMissionQuestionCubit({
-    required DebriefService debriefService,
-  }) : super(const AddMissionQuestionState.initial()) {
+  AddMissionQuestionCubit({required DebriefService debriefService})
+    : super(const AddMissionQuestionState.initial()) {
     _debriefService = debriefService;
   }
 

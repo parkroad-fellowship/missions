@@ -9,10 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddAudioViewHandset extends StatefulWidget {
-  const AddAudioViewHandset({
-    required this.missionSessionUlid,
-    super.key,
-  });
+  const AddAudioViewHandset({required this.missionSessionUlid, super.key});
 
   final String missionSessionUlid;
 
@@ -38,76 +35,83 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
           child: Column(
             children: [
               BlocBuilder<SelectMediaCubit, SelectMediaState>(
-                builder: (context, state) => state.when(
-                  initial: () => ListTile(
-                    title: Text(
-                      l10n.tapToAdd,
-                      style: PRFText.theme().displayLarge,
-                    ),
-                    leading: const Icon(
-                      Icons.speaker,
-                      size: 32,
-                      color: Color(0xffc4c4c4),
-                    ),
-                    onTap: () =>
-                        context.read<SelectMediaCubit>().selectAudioFiles(
-                              model: PRFMediaModel.missionSessionAudios,
-                              modelUlid: widget.missionSessionUlid,
+                builder:
+                    (context, state) => state.when(
+                      initial:
+                          () => ListTile(
+                            title: Text(
+                              l10n.tapToAdd,
+                              style: PRFText.theme().displayLarge,
                             ),
-                  ),
-                  loaded: (files) {
-                    if (files.isNotEmpty) {
-                      return Column(
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: files.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: const Icon(
-                                  Icons.audio_file,
-                                  color: Color(0xffc4c4c4),
-                                ),
-                                title: Text(
-                                  files[index].name,
-                                  style: PRFText.theme().bodyLarge,
-                                ),
-                              );
-                            },
+                            leading: const Icon(
+                              Icons.speaker,
+                              size: 32,
+                              color: Color(0xffc4c4c4),
+                            ),
+                            onTap:
+                                () => context
+                                    .read<SelectMediaCubit>()
+                                    .selectAudioFiles(
+                                      model: PRFMediaModel.missionSessionAudios,
+                                      modelUlid: widget.missionSessionUlid,
+                                    ),
                           ),
-                          const SizedBox(height: 16),
-                          SecondaryButton(
-                            onPressed: () => context
-                                .read<SelectMediaCubit>()
-                                .selectAudioFiles(
-                                  model: PRFMediaModel.missionSessionAudios,
-                                  modelUlid: widget.missionSessionUlid,
-                                  previousMedia: files,
-                                ),
-                            title: l10n.addMore,
-                            disabled: false,
+                      empty:
+                          () => ListTile(
+                            title: Text(
+                              l10n.tapToAdd,
+                              style: PRFText.theme().displayLarge,
+                            ),
+                            leading: const Icon(
+                              Icons.speaker,
+                              size: 32,
+                              color: Color(0xffc4c4c4),
+                            ),
+                            onTap:
+                                () => context
+                                    .read<SelectMediaCubit>()
+                                    .selectAudioFiles(
+                                      model: PRFMediaModel.missionSessionAudios,
+                                      modelUlid: widget.missionSessionUlid,
+                                    ),
                           ),
-                        ],
-                      );
-                    }
-                    return ListTile(
-                      title: Text(
-                        l10n.tapToAdd,
-                        style: PRFText.theme().displayLarge,
-                      ),
-                      leading: const Icon(
-                        Icons.speaker,
-                        size: 32,
-                        color: Color(0xffc4c4c4),
-                      ),
-                      onTap: () =>
-                          context.read<SelectMediaCubit>().selectAudioFiles(
-                                model: PRFMediaModel.missionSessionAudios,
-                                modelUlid: widget.missionSessionUlid,
-                              ),
-                    );
-                  },
-                ),
+                      loaded: (files) {
+                        return Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: files.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  leading: const Icon(
+                                    Icons.audio_file,
+                                    color: Color(0xffc4c4c4),
+                                  ),
+                                  title: Text(
+                                    files[index].name,
+                                    style: PRFText.theme().bodyLarge,
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            SecondaryButton(
+                              onPressed:
+                                  () => context
+                                      .read<SelectMediaCubit>()
+                                      .selectAudioFiles(
+                                        model:
+                                            PRFMediaModel.missionSessionAudios,
+                                        modelUlid: widget.missionSessionUlid,
+                                        previousMedia: files,
+                                      ),
+                              title: l10n.addMore,
+                              disabled: false,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
               ),
               const SizedBox(height: 32),
               BlocBuilder<SelectMediaCubit, SelectMediaState>(
@@ -120,19 +124,18 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                   return PrimaryButton(
                     title: l10n.upload,
                     disabled: isDisabled,
-                    onPressed: isDisabled
-                        ? () {}
-                        : () async {
-                            Navigator.of(context).pop(); // Close the dialog
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.willUpload),
-                              ),
-                            );
-                            await context
-                                .read<UploadMediaCubit>()
-                                .uploadMedia();
-                          },
+                    onPressed:
+                        isDisabled
+                            ? () {}
+                            : () async {
+                              Navigator.of(context).pop(); // Close the dialog
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(l10n.willUpload)),
+                              );
+                              await context
+                                  .read<UploadMediaCubit>()
+                                  .uploadMedia();
+                            },
                   );
                 },
               ),

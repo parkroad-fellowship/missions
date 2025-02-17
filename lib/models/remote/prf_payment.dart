@@ -22,9 +22,7 @@ class PRFPayment with _$PRFPayment {
 
 @freezed
 class PRFPaymentResponse with _$PRFPaymentResponse {
-  factory PRFPaymentResponse(
-    List<PRFPayment> data,
-  ) = _PRFPaymentResponse;
+  factory PRFPaymentResponse(List<PRFPayment> data) = _PRFPaymentResponse;
 
   factory PRFPaymentResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFPaymentResponseFromJson(json);

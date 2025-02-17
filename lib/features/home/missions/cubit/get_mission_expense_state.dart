@@ -8,7 +8,6 @@ class GetMissionExpenseState with _$GetMissionExpenseState {
   const factory GetMissionExpenseState.loaded({
     required PRFMissionExpense missionExpense,
   }) = _Loaded;
-  const factory GetMissionExpenseState.error({
-    required String message,
-  }) = _Error;
+  const factory GetMissionExpenseState.error({required String message}) =
+      _Error;
 }

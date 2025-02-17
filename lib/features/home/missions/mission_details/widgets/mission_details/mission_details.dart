@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class MissionDetailsView extends StatelessWidget {
-  const MissionDetailsView({
-    required this.mission,
-    super.key,
-  });
+  const MissionDetailsView({required this.mission, super.key});
 
   final PRFMission mission;
 

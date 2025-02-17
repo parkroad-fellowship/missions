@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class AddPaymentView extends StatelessWidget {
-  const AddPaymentView({
-    super.key,
-  });
+  const AddPaymentView({super.key});
 
   @override
   Widget build(BuildContext context) {
