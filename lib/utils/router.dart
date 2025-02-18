@@ -23,6 +23,7 @@ class PRFSuperAppRouter extends RootStackRouter {
       '/mission-ground-suggestions';
   static const String givingRoute = '/giving';
   static const String missionSessionRoute = '/mission-session';
+  static const String eventsRoute = '/events';
 
   // Student Landing
   static const String studentLandingRoute = '/student-landing';
@@ -60,6 +61,7 @@ class PRFSuperAppRouter extends RootStackRouter {
     ),
     AutoRoute(page: GivingRoute.page, path: givingRoute),
     AutoRoute(page: SessionRoute.page, path: missionSessionRoute),
+    AutoRoute(page: EventsRoute.page, path: eventsRoute),
 
     // Student Landing
     AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),

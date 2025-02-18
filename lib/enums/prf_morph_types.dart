@@ -6,7 +6,11 @@ enum PRFMorphType {
   @JsonValue(2)
   student,
   @JsonValue(3)
-  missionExpense;
+  missionExpense,
+  @JsonValue(4)
+  event,
+  @JsonValue(5)
+  mission;
 
   int get apiKey {
     switch (this) {
@@ -16,6 +20,10 @@ enum PRFMorphType {
         return 2;
       case PRFMorphType.missionExpense:
         return 3;
+      case PRFMorphType.event:
+        return 4;
+      case PRFMorphType.mission:
+        return 5;
     }
   }
 }

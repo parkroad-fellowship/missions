@@ -620,5 +620,15 @@
     "enterDebriefNote": "Enter debrief notes",
     "@enterDebriefNote": {},
     "enterQuestion": "Enter question",
-    "@enterQuestion": {}
+    "@enterQuestion": {},
+    "registerForEvent": "Register for an event",
+    "@registerForEvent": {},
+    "events": "Events",
+    "@events": {},
+    "pleaseWaitOS": "Please wait for an update from the organising secretary's desk",
+    "@pleaseWaitOS": {},
+    "noEvents": "No events",
+    "@noEvents": {},
+    "registeredEvent": "Registered",
+    "@registeredEvent": {}
 }

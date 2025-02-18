@@ -1,5 +1,6 @@
 export 'auth_service.dart';
 export 'debrief_service.dart';
+export 'event_service.dart';
 export 'hive_service.dart';
 export 'lms_service.dart';
 export 'local_db_service.dart';
