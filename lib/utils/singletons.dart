@@ -7,6 +7,7 @@ import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
+import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
 import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
@@ -382,6 +383,13 @@ class Singletons {
               hiveService: getIt(),
             ),
       ),
+BlocProvider<GetEventMediaCubit>(
+        create:
+            (context) => GetEventMediaCubit(
+              eventService: getIt(),
+            ),
+      ),
+      
     ];
   }
 }

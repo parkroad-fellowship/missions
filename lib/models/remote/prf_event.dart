@@ -20,6 +20,7 @@ class PRFEvent with _$PRFEvent {
     double? latitude,
     double? longitude,
     @JsonKey(name: 'dressing_recommendations') String? dressingRecommendations,
+    @JsonKey(name: 'event_subscriptions_needed') int? subscriptionsNeeded,
     @JsonKey(name: 'weather_forecasts')
     @Default([])
     List<PRFWeatherForecast> weatherForecasts,

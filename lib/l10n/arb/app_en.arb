@@ -502,8 +502,6 @@
     "@noSessions": {},
     "sessions": "Sessions",
     "@sessions": {},
-    "info": "Tap any session to edit \nLong press to delete",
-    "@info": {},
     "time": "Start Time - End Time",
     "@time": {},
     "facilitator": "Facilitator",
@@ -601,11 +599,10 @@
         "placeholders": {
             "index": {
                 "type": "int"
-                
             }
         }
     },
-    "transcript": "Transcript", 
+    "transcript": "Transcript",
     "@transcript": {},
     "viewTranscript": "View transcript",
     "@viewTranscript": {},
@@ -630,5 +627,25 @@
     "noEvents": "No events",
     "@noEvents": {},
     "registeredEvent": "Registered",
-    "@registeredEvent": {}
+    "@registeredEvent": {},
+    "eventDetails": "Event Details",
+    "@eventDetails": {},
+    "info": "Information",
+    "@info": {},
+    "capacity": "Maximum Persons: {count}",
+    "@capacity": {
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "subscriptionsNeeded": "Open registrations: {count}",
+    "@subscriptionsNeeded": {
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    }
 }

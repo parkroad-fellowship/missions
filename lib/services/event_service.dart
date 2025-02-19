@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
 import 'package:app/models/remote/prf_event_subscription_dto.dart';
+import 'package:app/models/remote/prf_media.dart';
 import 'package:app/utils/network.dart';
 
 abstract class EventService {
@@ -22,6 +24,10 @@ abstract class EventService {
     required PRFEventSubscriptionDTO subscriptionDTO,
   });
   Future<bool> unsubscribe({required String eventSubscriptionUlid});
+   Future<List<PRFMedia>> getEventMedia({
+    required String eventUlid,
+    required PRFMediaModel model,
+  });
 }
 
 class EventServiceImpl implements EventService {
@@ -113,6 +119,23 @@ class EventServiceImpl implements EventService {
       );
 
       return PRFEventSubscription.fromJson(res['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<PRFMedia>> getEventMedia({
+    required String eventUlid,
+    required PRFMediaModel model,
+  }) async {
+    try {
+      final res = await _networkUtil.getReq(
+        '/events/$eventUlid/media',
+        queryParameters: {'collection': model.collection},
+      );
+
+      return PRFMediaResponse.fromJson(res).data;
     } catch (e) {
       rethrow;
     }

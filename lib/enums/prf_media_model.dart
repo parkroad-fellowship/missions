@@ -1,7 +1,8 @@
 enum PRFMediaModel {
   missionPhotos,
   missionFitChecks,
-  missionSessionAudios;
+  missionSessionAudios,
+  eventPhotos;
 
   String get collection {
     switch (this) {
@@ -11,6 +12,8 @@ enum PRFMediaModel {
         return 'mission-fit-checks';
       case PRFMediaModel.missionSessionAudios:
         return 'session-audios';
+      case PRFMediaModel.eventPhotos:
+        return 'event-photos';
     }
   }
 }

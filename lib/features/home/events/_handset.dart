@@ -4,6 +4,7 @@ import 'package:app/features/home/missions/cubit/get_member_mission_subscription
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -137,12 +138,10 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                             itemBuilder:
                                 (context, index) => EventActionCard(
                                   event: events[index],
-                                  // onTap:
-                                  //     () => context.router.push(
-                                  //       MissionsDetailsRoute(
-                                  //         mission: missions[index],
-                                  //       ),
-                                  //     ),
+                                  onTap:
+                                      () => context.router.push(
+                                        EventDetailsRoute(event: events[index]),
+                                      ),
                                 ),
                           ),
                         ),
@@ -221,12 +220,10 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                             final event = events[index].event;
                             return EventActionCard(
                               event: event!,
-                              // onTap:
-                              //     () => context.router.push(
-                              //       MissionsDetailsRoute(
-                              //         mission: ,
-                              //       ),
-                              //     ),
+                              onTap:
+                                  () => context.router.push(
+                                    EventDetailsRoute(event: event),
+                                  ),
                             );
                           },
                         ),
