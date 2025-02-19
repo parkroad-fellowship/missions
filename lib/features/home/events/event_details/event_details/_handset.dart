@@ -30,6 +30,30 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
+            if (event.posters.isNotEmpty)
+              SizedBox(
+                height: 300,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.w),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Image.network(
+                      event.posters.last.temporaryURL,
+                      height: 300,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 200.w,
+                          height: 200.h,
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(

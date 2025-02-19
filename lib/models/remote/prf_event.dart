@@ -1,4 +1,5 @@
 import 'package:app/models/remote/prf_event_subscription.dart';
+import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_weather_forecast.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -29,6 +30,8 @@ class PRFEvent with _$PRFEvent {
     @JsonKey(name: 'event_subscriptions')
     @Default([])
     List<PRFEventSubscription> eventSubscriptions,
+    @Default([])
+    List<PRFMedia> posters,
   }) = _PRFEvent;
 
   factory PRFEvent.fromJson(Map<String, dynamic> json) =>
