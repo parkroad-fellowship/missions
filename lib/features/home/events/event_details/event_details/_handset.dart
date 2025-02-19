@@ -1,23 +1,23 @@
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:map_launcher/map_launcher.dart';
 
-class MissionDetailsViewHandset extends StatefulWidget {
-  const MissionDetailsViewHandset({required this.mission, super.key});
+class EventDetailsViewHandset extends StatefulWidget {
+  const EventDetailsViewHandset({required this.event, super.key});
 
-  final PRFMission mission;
+  final PRFEvent event;
 
   @override
-  State<MissionDetailsViewHandset> createState() =>
-      _MissionDetailsViewHandsetState();
+  State<EventDetailsViewHandset> createState() =>
+      _EventDetailsViewHandsetState();
 }
 
-class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
-  PRFMission get mission => widget.mission;
+class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
+  PRFEvent get event => widget.event;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,34 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
+            if (event.posters.isNotEmpty)
+              SizedBox(
+                height: 300,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.w),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Image.network(
+                      event.posters.last.temporaryURL,
+                      height: 300,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 200.w,
+                          height: 200.h,
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.error),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(
-                mission.school!.name.toUpperCase(),
+                event.name.toUpperCase(),
                 style: PRFText.theme().headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -44,55 +68,41 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.missionStart(
-                      Misc.formatMissionDate(mission.startDate),
-                      Misc.formatTime(mission.startTime),
+                      Misc.formatMissionDate(event.startDate),
+                      Misc.formatTime(event.startTime),
                     ),
                     style: PRFText.theme().bodySmall,
                   ),
                   Text(
                     l10n.missionEnd(
-                      Misc.formatMissionDate(mission.endDate),
-                      Misc.formatTime(mission.endTime),
+                      Misc.formatMissionDate(event.endDate),
+                      Misc.formatTime(event.endTime),
                     ),
                     style: PRFText.theme().bodySmall,
                   ),
-                ],
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.theme,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 8,
-                children: <Widget>[
-                  Text(mission.theme!, style: PRFText.theme().bodySmall),
                   Text(
-                    l10n.population(mission.school!.totalStudents),
+                    event.capacity != 0
+                        ? l10n.capacity(event.capacity.toString())
+                        : l10n.capacity('N/A'),
                     style: PRFText.theme().bodySmall,
                   ),
                   Text(
-                    l10n.missionariesRequested(mission.capacity),
-                    style: PRFText.theme().bodySmall,
-                  ),
-                  Text(
-                    l10n.missionariesNeeded(mission.missionSubscriptionsNeeded),
+                    event.subscriptionsNeeded != null
+                        ? l10n.subscriptionsNeeded(
+                          event.subscriptionsNeeded.toString(),
+                        )
+                        : l10n.subscriptionsNeeded('N/A'),
                     style: PRFText.theme().bodySmall,
                   ),
                 ],
               ),
             ),
+
             SizedBox(height: 8.h),
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(
-                l10n.missionPrepNotes,
+                l10n.description,
                 style: PRFText.theme().headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -101,53 +111,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    mission.missionPrepNotes.toString(),
-                    style: PRFText.theme().bodySmall,
-                  ),
+                  Text(event.description, style: PRFText.theme().bodySmall),
                 ],
-              ),
-            ),
-            SizedBox(height: 8.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.contactPersons,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            ...mission.school!.contacts!.map(
-              (contact) => ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(contact.name),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      contact.contactType!.name,
-                      overflow: TextOverflow.clip,
-                      style: PRFText.theme().bodySmall,
-                    ),
-                  ],
-                ),
-                trailing: Animate(
-                  effects: const [
-                    ShakeEffect(
-                      duration: Duration(seconds: 2),
-                      delay: Duration(milliseconds: 500),
-                    ),
-                  ],
-                  child: IconButton(
-                    onPressed: () async {
-                      final uri = Uri(scheme: 'tel', path: contact.phone);
-                      await Misc.openUrl(uri);
-                    },
-                    icon: const Icon(Icons.phone),
-                  ),
-                ),
               ),
             ),
             SizedBox(height: 8.h),
@@ -172,7 +137,12 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     ],
                     child: IconButton(
                       onPressed: () async {
-                        final school = mission.school!;
+                        if (event.latitude != null && event.longitude != null) {
+                          return;
+                        }
+
+                        final latitude = event.latitude!;
+                        final longitude = event.longitude!;
 
                         final isGoogleMapAvaialable =
                             await MapLauncher.isMapAvailable(MapType.google);
@@ -180,8 +150,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         if (isGoogleMapAvaialable ?? false) {
                           await MapLauncher.showMarker(
                             mapType: MapType.google,
-                            coords: Coords(school.latitude, school.longitude),
-                            title: school.name,
+                            coords: Coords(latitude, longitude),
+                            title: event.venue ?? '',
                           );
                           return;
                         }
@@ -192,8 +162,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         if (isGoogleGoMapAvailable ?? false) {
                           await MapLauncher.showMarker(
                             mapType: MapType.googleGo,
-                            coords: Coords(school.latitude, school.longitude),
-                            title: school.name,
+                            coords: Coords(latitude, longitude),
+                            title: event.venue ?? '',
                           );
                           return;
                         }
@@ -204,8 +174,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         if (isAppleMapAvailable ?? false) {
                           await MapLauncher.showMarker(
                             mapType: MapType.apple,
-                            coords: Coords(school.latitude, school.longitude),
-                            title: school.name,
+                            coords: Coords(latitude, longitude),
+                            title: event.venue ?? '',
                           );
                           return;
                         }
@@ -218,56 +188,12 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    mission.school!.address,
-                    style: PRFText.theme().bodySmall,
-                  ),
-                  Text(
-                    mission.school!.directions.toString(),
-                    style: PRFText.theme().bodySmall,
-                  ),
+                  Text(event.venue ?? '', style: PRFText.theme().bodySmall),
                 ],
               ),
             ),
             SizedBox(height: 8.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Row(
-                children: [
-                  Text(
-                    l10n.depaturePlanning,
-                    style: PRFText.theme().headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    l10n.estimatedDistance(mission.school!.distance.toString()),
-                    style: PRFText.theme().bodySmall,
-                  ),
-                  Text(
-                    l10n.estimatedTravelTime(
-                      mission.school!.staticDuration.toString(),
-                    ),
-                    style: PRFText.theme().bodySmall,
-                  ),
-                  Text(
-                    l10n.estimationDisclaimer,
-                    style: PRFText.theme().bodySmall?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 8.h),
-            if (mission.weatherForecasts.isNotEmpty)
+            if (event.weatherForecasts.isNotEmpty)
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
@@ -278,12 +204,12 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   ),
                 ),
               ),
-            ...mission.weatherForecasts.map(
+            ...event.weatherForecasts.map(
               (forecast) => ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
                   l10n.day(
-                    mission.weatherForecasts.indexOf(forecast) + 1,
+                    event.weatherForecasts.indexOf(forecast) + 1,
                     forecast.weatherCodeDescription,
                   ),
                   style: PRFText.theme().headlineMedium?.copyWith(

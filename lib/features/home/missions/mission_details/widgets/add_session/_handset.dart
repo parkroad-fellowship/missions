@@ -326,6 +326,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                     );
                   },
                   error: (error) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     Gaimon.error();
                     ScaffoldMessenger.of(
                       context,

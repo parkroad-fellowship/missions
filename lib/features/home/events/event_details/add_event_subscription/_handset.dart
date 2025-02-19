@@ -1,24 +1,29 @@
-import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
+import 'package:app/features/home/events/cubit/add_event_subscription_cubit.dart';
+import 'package:app/features/home/events/cubit/get_events_cubit.dart';
+import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
-class AddMissionQuestionViewHandset extends StatefulWidget {
-  const AddMissionQuestionViewHandset({required this.missionUlid, super.key});
+class AddEventSubscriptionViewHandset extends StatefulWidget {
+  const AddEventSubscriptionViewHandset({required this.event, super.key});
 
-  final String missionUlid;
+  final PRFEvent event;
 
   @override
-  State<AddMissionQuestionViewHandset> createState() =>
-      _AddMissionQuestionViewHandsetState();
+  State<AddEventSubscriptionViewHandset> createState() =>
+      _AddEventSubscriptionViewHandsetState();
 }
 
-class _AddMissionQuestionViewHandsetState
-    extends State<AddMissionQuestionViewHandset> {
-  final _questionController = TextEditingController();
+class _AddEventSubscriptionViewHandsetState
+    extends State<AddEventSubscriptionViewHandset> {
+  final _ticketController = TextEditingController();
+
   bool _isLoading = false;
 
   @override
@@ -34,21 +39,21 @@ class _AddMissionQuestionViewHandsetState
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
-                label: l10n.addQuestion,
+                label: l10n.tickets,
                 isRequired: true,
                 color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
             InputFormField(
-              hintText: l10n.addQuestion,
-              controller: _questionController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
+              hintText: l10n.tickets,
+              controller: _ticketController,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
             ),
-            const SizedBox(height: 16),
-            BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(
+
+            const SizedBox(height: 32),
+            BlocConsumer<AddEventSubscriptionCubit, AddEventSubscriptionState>(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {
@@ -56,14 +61,19 @@ class _AddMissionQuestionViewHandsetState
                       _isLoading = true;
                     });
                   },
-                  loaded: (_) {
+                  loaded: (result) {
                     setState(() {
                       _isLoading = false;
                     });
                     Gaimon.success();
                     Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    context.read<GetEventsCubit>().getEvents();
+                    context
+                        .read<GetMemberEventSubscriptionsCubit>()
+                        .getMemberEventSubscriptions();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(l10n.questionRecorded)),
+                      SnackBar(content: Text(l10n.eventRegistrationRecorded)),
                     );
                   },
                   error: (error) {
@@ -85,19 +95,19 @@ class _AddMissionQuestionViewHandsetState
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,
                         onPressed: () async {
-                          if (_questionController.text.isEmpty) {
+                          if (_ticketController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterQuestion)),
+                              SnackBar(content: Text(l10n.enterTickets)),
                             );
                             Gaimon.warning();
                             return;
                           }
 
                           await context
-                              .read<AddMissionQuestionCubit>()
-                              .addMissionQuestion(
-                                missionUlid: widget.missionUlid,
-                                question: _questionController.text,
+                              .read<AddEventSubscriptionCubit>()
+                              .addEventSubscription(
+                                event: widget.event,
+                                tickets: _ticketController.text.trim(),
                               );
                         },
                       ),

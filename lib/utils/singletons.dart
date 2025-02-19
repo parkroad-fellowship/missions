@@ -7,6 +7,12 @@ import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
+import 'package:app/features/home/events/cubit/add_event_subscription_cubit.dart';
+import 'package:app/features/home/events/cubit/delete_event_subscription_cubit.dart';
+import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
+import 'package:app/features/home/events/cubit/get_events_cubit.dart';
+import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
+import 'package:app/features/home/events/cubit/update_event_subscription_cubit.dart';
 import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
@@ -77,7 +83,8 @@ class Singletons {
       ..registerSingleton<StudentService>(StudentServiceImpl())
       ..registerSingleton<MediaService>(MediaServiceImpl())
       ..registerSingleton<MissionGroundsService>(MissionGroundsServiceImpl())
-      ..registerSingleton<PaymentService>(PaymentServiceImpl());
+      ..registerSingleton<PaymentService>(PaymentServiceImpl())
+      ..registerSingleton<EventService>(EventServiceImpl());
   }
 
   static Future<void> setupDatabase() async {
@@ -368,6 +375,37 @@ class Singletons {
       ),
       BlocProvider<DownloadFileCubit>(
         create: (context) => DownloadFileCubit(mediaService: getIt()),
+      ),
+      BlocProvider<GetEventsCubit>(
+        create: (context) => GetEventsCubit(eventService: getIt()),
+      ),
+      BlocProvider<GetMemberEventSubscriptionsCubit>(
+        create:
+            (context) => GetMemberEventSubscriptionsCubit(
+              eventService: getIt(),
+              hiveService: getIt(),
+            ),
+      ),
+      BlocProvider<GetEventMediaCubit>(
+        create: (context) => GetEventMediaCubit(eventService: getIt()),
+      ),
+      BlocProvider<AddEventSubscriptionCubit>(
+        create:
+            (context) => AddEventSubscriptionCubit(
+              eventService: getIt(),
+              hiveService: getIt(),
+            ),
+      ),
+      BlocProvider<UpdateEventSubscriptionCubit>(
+        create:
+            (context) => UpdateEventSubscriptionCubit(
+              eventService: getIt(),
+              hiveService: getIt(),
+            ),
+      ),
+      BlocProvider<DeleteEventSubscriptionCubit>(
+        create:
+            (context) => DeleteEventSubscriptionCubit(eventService: getIt()),
       ),
     ];
   }

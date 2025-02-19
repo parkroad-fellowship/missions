@@ -244,6 +244,24 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                           ),
                     ),
                   ),
+                  SizedBox(height: 32.h),
+                  Animate(
+                    effects: [
+                      MoveEffect(
+                        duration: .5.seconds,
+                        curve: Curves.easeOutQuad,
+                        begin: const Offset(-160, 0),
+                      ),
+                    ],
+                    child: HomeActionCard(
+                      title: l10n.registerForEvent,
+                      assetPath: 'assets/svgs/events.svg',
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.eventsRoute,
+                          ),
+                    ),
+                  ),
                 ],
               ),
             ),

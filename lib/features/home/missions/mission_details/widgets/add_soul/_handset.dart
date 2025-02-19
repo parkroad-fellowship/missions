@@ -133,6 +133,9 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                     ).showSnackBar(SnackBar(content: Text(l10n.soulRecorded)));
                   },
                   error: (error) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     Gaimon.error();
                     ScaffoldMessenger.of(
                       context,

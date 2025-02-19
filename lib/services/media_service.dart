@@ -40,13 +40,18 @@ class MediaServiceImpl implements MediaService {
   Future<PRFMedia> uploadFile({required PRFMediaDTO imageDTO}) async {
     final url = StringBuffer('/');
     Logger().d(imageDTO);
+
     switch (imageDTO.model) {
       case PRFMediaModel.missionPhotos:
       case PRFMediaModel.missionFitChecks:
-        url.write('missions/${imageDTO.modelUlid}/media');
+        url.write('missions');
       case PRFMediaModel.missionSessionAudios:
-        url.write('mission-sessions/${imageDTO.modelUlid}/media');
+        url.write('mission-sessions');
+      case PRFMediaModel.eventPhotos:
+        url.write('events');
     }
+
+    url.write('/${imageDTO.modelUlid}/media');
 
     try {
       final res = await _networkUtil.postWithUpload(

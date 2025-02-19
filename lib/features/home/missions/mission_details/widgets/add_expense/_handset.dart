@@ -227,6 +227,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     );
                   },
                   error: (error) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     Gaimon.error();
                     ScaffoldMessenger.of(
                       context,
