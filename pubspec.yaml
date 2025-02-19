@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.22.00+22200
+version: 2.22.01+22201
 publish_to: none
 
 environment:
@@ -20,10 +20,10 @@ dependencies:
   dio: ^5.8.0+1
   extended_image: ^9.0.9
   file_picker: ^8.3.5
-  firebase_analytics: ^11.4.2
+  firebase_analytics: ^11.4.3
   firebase_auth: ^5.4.2
-  firebase_core: ^3.11.0
-  firebase_crashlytics: ^4.3.2
+  firebase_core: ^3.12.0
+  firebase_crashlytics: ^4.3.3
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
