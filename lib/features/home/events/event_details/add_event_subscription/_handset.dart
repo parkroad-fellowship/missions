@@ -1,7 +1,6 @@
 import 'package:app/features/home/events/cubit/add_event_subscription_cubit.dart';
 import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class AddEventSubscriptionViewHandset extends StatefulWidget {
   const AddEventSubscriptionViewHandset({required this.event, super.key});
@@ -68,18 +66,14 @@ class _AddEventSubscriptionViewHandsetState
                       _isLoading = false;
                     });
                     Gaimon.success();
-                     Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     context.read<GetEventsCubit>().getEvents();
                     context
                         .read<GetMemberEventSubscriptionsCubit>()
                         .getMemberEventSubscriptions();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          l10n.eventRegistrationRecorded,
-                        ),
-                      ),
+                      SnackBar(content: Text(l10n.eventRegistrationRecorded)),
                     );
                   },
                   error: (error) {

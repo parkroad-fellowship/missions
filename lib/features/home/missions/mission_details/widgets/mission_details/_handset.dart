@@ -268,16 +268,16 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
             ),
             SizedBox(height: 8.h),
             if (mission.weatherForecasts.isNotEmpty)
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.weather,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  l10n.weather,
+                  style: PRFText.theme().headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-            ),
             ...mission.weatherForecasts.map(
               (forecast) => ListTile(
                 contentPadding: EdgeInsets.zero,

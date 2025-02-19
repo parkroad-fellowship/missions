@@ -26,7 +26,8 @@ class GetMemberEventSubscriptionsCubit
       final member = _hiveService.retrieveMember()!;
       final subscriptions = await _eventService.getSubscriptions(
         memberUlid: member.ulid,
-        includes: 'member,prfEvent.posters,prfEvent.loggedInMemberEventSubscription',
+        includes:
+            'member,prfEvent.posters,prfEvent.loggedInMemberEventSubscription',
       );
       if (subscriptions.isEmpty) {
         emit(const GetMemberEventSubscriptionsState.empty());

@@ -30,8 +30,7 @@ class PRFEvent with _$PRFEvent {
     @JsonKey(name: 'event_subscriptions')
     @Default([])
     List<PRFEventSubscription> eventSubscriptions,
-    @Default([])
-    List<PRFMedia> posters,
+    @Default([]) List<PRFMedia> posters,
   }) = _PRFEvent;
 
   factory PRFEvent.fromJson(Map<String, dynamic> json) =>

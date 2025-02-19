@@ -184,7 +184,6 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 );
               },
               error: (error) {
-                
                 Gaimon.error();
                 ScaffoldMessenger.maybeOf(
                   context,

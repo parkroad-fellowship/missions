@@ -1,9 +1,7 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
 import 'package:app/features/home/events/event_details/add_media/add_media.dart';
-import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:extended_image/extended_image.dart';
@@ -21,7 +19,8 @@ class EventGalleryViewHandset extends StatefulWidget {
   final String eventUlid;
 
   @override
-  State<EventGalleryViewHandset> createState() => _EventGalleryViewHandsetState();
+  State<EventGalleryViewHandset> createState() =>
+      _EventGalleryViewHandsetState();
 }
 
 class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
@@ -30,9 +29,9 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
   @override
   void initState() {
     context.read<GetEventMediaCubit>().getEventMedia(
-            eventUlid: eventUlid,
-            model: PRFMediaModel.eventPhotos,
-          );
+      eventUlid: eventUlid,
+      model: PRFMediaModel.eventPhotos,
+    );
     super.initState();
   }
 
@@ -54,9 +53,9 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
               state.mapOrNull(
                 loaded: (_) {
                   context.read<GetEventMediaCubit>().getEventMedia(
-            eventUlid: eventUlid,
-            model: PRFMediaModel.eventPhotos,
-          );
+                    eventUlid: eventUlid,
+                    model: PRFMediaModel.eventPhotos,
+                  );
                   Gaimon.success();
                   ScaffoldMessenger.of(
                     context,

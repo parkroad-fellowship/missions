@@ -8,9 +8,8 @@ part 'get_event_media_state.dart';
 part 'get_event_media_cubit.freezed.dart';
 
 class GetEventMediaCubit extends Cubit<GetEventMediaState> {
-  GetEventMediaCubit({
-    required EventService eventService,
-  }) : super(GetEventMediaState.initial()) {
+  GetEventMediaCubit({required EventService eventService})
+    : super(const GetEventMediaState.initial()) {
     _eventService = eventService;
   }
 

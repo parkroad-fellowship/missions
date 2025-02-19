@@ -24,7 +24,7 @@ abstract class EventService {
     required PRFEventSubscriptionDTO subscriptionDTO,
   });
   Future<bool> unsubscribe({required String eventSubscriptionUlid});
-   Future<List<PRFMedia>> getEventMedia({
+  Future<List<PRFMedia>> getEventMedia({
     required String eventUlid,
     required PRFMediaModel model,
   });
@@ -39,7 +39,9 @@ class EventServiceImpl implements EventService {
       final res = await _networkUtil.getReq(
         '/events',
         queryParameters: {
-          'include': 'weatherForecasts,eventSubscriptions,loggedInMemberEventSubscription,posters',
+          'include':
+              'weatherForecasts,eventSubscriptions,'
+              'loggedInMemberEventSubscription,posters',
           'order_by': 'start_date',
           'order_direction': 'asc',
         },

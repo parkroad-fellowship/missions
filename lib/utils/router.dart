@@ -65,7 +65,6 @@ class PRFSuperAppRouter extends RootStackRouter {
     AutoRoute(page: EventsRoute.page, path: eventsRoute),
     AutoRoute(page: EventDetailsRoute.page, path: eventDetailsRoute),
 
-
     // Student Landing
     AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),
     AutoRoute(page: LearnerEnquiriesRoute.page, path: learnerEnquiriesRoute),

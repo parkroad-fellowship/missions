@@ -13,7 +13,7 @@ class AddEventSubscriptionCubit extends Cubit<AddEventSubscriptionState> {
   AddEventSubscriptionCubit({
     required HiveService hiveService,
     required EventService eventService,
-  }) : super(AddEventSubscriptionState.initial()) {
+  }) : super(const AddEventSubscriptionState.initial()) {
     _hiveService = hiveService;
     _eventService = eventService;
   }
@@ -26,7 +26,7 @@ class AddEventSubscriptionCubit extends Cubit<AddEventSubscriptionState> {
     required String tickets,
   }) async {
     try {
-      emit(AddEventSubscriptionState.loading());
+      emit(const AddEventSubscriptionState.loading());
       final member = _hiveService.retrieveMember()!;
       final subscription = await _eventService.subscribe(
         subscriptionDTO: PRFEventSubscriptionDTO(

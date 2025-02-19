@@ -8,7 +8,7 @@ part 'delete_event_subscription_cubit.freezed.dart';
 
 class DeleteEventSubscriptionCubit extends Cubit<DeleteEventSubscriptionState> {
   DeleteEventSubscriptionCubit({required EventService eventService})
-    : super(DeleteEventSubscriptionState.initial()) {
+    : super(const DeleteEventSubscriptionState.initial()) {
     _eventService = eventService;
   }
 
@@ -18,11 +18,11 @@ class DeleteEventSubscriptionCubit extends Cubit<DeleteEventSubscriptionState> {
     required String eventSubscriptionUlid,
   }) async {
     try {
-      emit(DeleteEventSubscriptionState.loading());
+      emit(const DeleteEventSubscriptionState.loading());
       await _eventService.unsubscribe(
         eventSubscriptionUlid: eventSubscriptionUlid,
       );
-      emit(DeleteEventSubscriptionState.loaded());
+      emit(const DeleteEventSubscriptionState.loaded());
     } on Failure catch (e) {
       emit(DeleteEventSubscriptionState.error(e.message));
     } catch (e) {

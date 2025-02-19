@@ -17,7 +17,8 @@ class AddEventMediaViewHandset extends StatefulWidget {
   final String eventUlid;
 
   @override
-  State<AddEventMediaViewHandset> createState() => _AddEventMediaViewHandsetState();
+  State<AddEventMediaViewHandset> createState() =>
+      _AddEventMediaViewHandsetState();
 }
 
 class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
@@ -104,9 +105,9 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                                         .read<SelectMediaCubit>()
                                         .selectMedia(
                                           context: context,
-                                      model: PRFMediaModel.eventPhotos,
-                                      modelUlid: widget.eventUlid,
-                                      mediaType: RequestType.image,
+                                          model: PRFMediaModel.eventPhotos,
+                                          modelUlid: widget.eventUlid,
+                                          mediaType: RequestType.image,
                                         );
                                   },
                                   child: Container(
