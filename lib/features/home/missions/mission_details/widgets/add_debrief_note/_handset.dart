@@ -66,6 +66,9 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                     ).showSnackBar(SnackBar(content: Text(l10n.noteRecorded)));
                   },
                   error: (error) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     Gaimon.error();
                     ScaffoldMessenger.of(
                       context,

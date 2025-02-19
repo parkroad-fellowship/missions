@@ -141,6 +141,9 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     }
                   },
                   error: (error) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     Gaimon.error();
                     ScaffoldMessenger.of(
                       context,

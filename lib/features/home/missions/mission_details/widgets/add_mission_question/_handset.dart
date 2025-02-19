@@ -67,6 +67,9 @@ class _AddMissionQuestionViewHandsetState
                     );
                   },
                   error: (error) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     Gaimon.error();
                     ScaffoldMessenger.of(
                       context,

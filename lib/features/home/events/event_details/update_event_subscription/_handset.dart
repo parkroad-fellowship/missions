@@ -90,7 +90,6 @@ class _UpdateEventSubscriptionViewHandsetState
                     );
                   },
                   error: (error) {
-                    // TODO: Check if state was reset on all the error states
                     setState(() {
                       _isLoading = false;
                     });

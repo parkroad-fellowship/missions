@@ -222,6 +222,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                     );
                   },
                   error: (error) {
+                    setState(() {
+                      _isLoading = false;
+                    });
                     Gaimon.error();
                     ScaffoldMessenger.of(
                       context,
