@@ -65,7 +65,9 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                   ),
                   Text(
                     event.subscriptionsNeeded != null
-                        ? l10n.subscriptionsNeeded(event.subscriptionsNeeded.toString())
+                        ? l10n.subscriptionsNeeded(
+                          event.subscriptionsNeeded.toString(),
+                        )
                         : l10n.subscriptionsNeeded('N/A'),
                     style: PRFText.theme().bodySmall,
                   ),
@@ -168,16 +170,17 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
               ),
             ),
             SizedBox(height: 8.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.weather,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+            if (event.weatherForecasts.isNotEmpty)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  l10n.weather,
+                  style: PRFText.theme().headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-            ),
             ...event.weatherForecasts.map(
               (forecast) => ListTile(
                 contentPadding: EdgeInsets.zero,

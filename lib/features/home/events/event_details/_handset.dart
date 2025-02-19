@@ -1,5 +1,10 @@
+import 'package:app/features/home/events/cubit/get_events_cubit.dart';
+import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
+import 'package:app/features/home/events/event_details/add_event_subscription/add_event_subscription.dart';
+import 'package:app/features/home/events/event_details/add_media/add_media.dart';
 import 'package:app/features/home/events/event_details/event_details/event_details.dart';
 import 'package:app/features/home/events/event_details/gallery/gallery.dart';
+import 'package:app/features/home/events/event_details/update_event_subscription/update_event_subscription.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
@@ -141,10 +146,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                     ),
                     indicatorColor: Colors.white,
                     overlayColor: WidgetStateProperty.all(Colors.transparent),
-                    tabs: [
-                      Tab(text: l10n.info),
-                      Tab(text: l10n.gallery),
-                    ],
+                    tabs: [Tab(text: l10n.info), Tab(text: l10n.gallery)],
                   ),
                 ),
                 SliverFillRemaining(
@@ -165,25 +167,79 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
         ),
       ),
       floatingActionButton: switch (_currentTab) {
+        0 => FloatingActionButton(
+          onPressed: () {
+            if (event.loggedInMemberEventSubscription == null) {
+              WoltModalSheet.show<void>(
+                context: context,
+                pageListBuilder: (modalSheetContext) {
+                  return [
+                    WoltModalSheetPage(
+                      backgroundColor: Colors.white,
+                      surfaceTintColor: Colors.white,
+                      child: SizedBox(
+                        height: MediaQuery.sizeOf(context).height * 0.8,
+                        child: AddEventSubscriptionView(event: event),
+                      ),
+                    ),
+                  ];
+                },
+              ).then((_) {
+                // ignore: use_build_context_synchronously
+                context.read<GetEventsCubit>().getEvents();
+              });
+            }
+
+            if (event.loggedInMemberEventSubscription != null) {
+              WoltModalSheet.show<void>(
+                context: context,
+                pageListBuilder: (modalSheetContext) {
+                  return [
+                    WoltModalSheetPage(
+                      backgroundColor: Colors.white,
+                      surfaceTintColor: Colors.white,
+                      child: SizedBox(
+                        height: MediaQuery.sizeOf(context).height * 0.8,
+                        child: UpdateEventSubscriptionView(event: event),
+                      ),
+                    ),
+                  ];
+                },
+              ).then((_) {
+                // ignore: use_build_context_synchronously
+                context
+                    .read<GetMemberEventSubscriptionsCubit>()
+                    .getMemberEventSubscriptions();
+              });
+            }
+          },
+          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          child: Icon(
+            event.loggedInMemberEventSubscription == null
+                ? Icons.add
+                : Icons.edit,
+            color: Colors.white,
+          ),
+        ),
         1 => FloatingActionButton(
           onPressed: () {
-            // if (_currentTab == 7) {
-            //   WoltModalSheet.show<void>(
-            //     context: context,
-            //     pageListBuilder: (modalSheetContext) {
-            //       return [
-            //         WoltModalSheetPage(
-            //           backgroundColor: Colors.white,
-            //           surfaceTintColor: Colors.white,
-            //           child: SizedBox(
-            //             height: MediaQuery.sizeOf(context).height * 0.8,
-            //             child: AddMediaView(missionUlid: mission.ulid),
-            //           ),
-            //         ),
-            //       ];
-            //     },
-            //   );
-            // }
+            if (_currentTab == 1) {
+              WoltModalSheet.show<void>(
+                context: context,
+                pageListBuilder: (modalSheetContext) {
+                  return [
+                    WoltModalSheetPage(
+                      backgroundColor: Colors.white,
+                      surfaceTintColor: Colors.white,
+                      child: SizedBox(
+                        height: MediaQuery.sizeOf(context).height * 0.8,
+                        child: AddEventMediaView(eventUlid: event.ulid),
+                      ),
+                    ),
+                  ];
+                },
+              );
+            }
           },
           backgroundColor: PRFApp.theme().kPrimaryColorV2,
           child: const Icon(Icons.add, color: Colors.white),

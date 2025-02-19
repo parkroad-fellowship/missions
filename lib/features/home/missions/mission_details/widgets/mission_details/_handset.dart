@@ -267,6 +267,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               ),
             ),
             SizedBox(height: 8.h),
+            if (mission.weatherForecasts.isNotEmpty)
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(

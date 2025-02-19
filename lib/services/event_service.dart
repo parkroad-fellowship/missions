@@ -39,7 +39,7 @@ class EventServiceImpl implements EventService {
       final res = await _networkUtil.getReq(
         '/events',
         queryParameters: {
-          'include': 'weatherForecasts,eventSubscriptions',
+          'include': 'weatherForecasts,eventSubscriptions,loggedInMemberEventSubscription',
           'order_by': 'start_date',
           'order_direction': 'asc',
         },

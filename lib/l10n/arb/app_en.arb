@@ -647,5 +647,13 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "tickets": "Tickets",
+    "@tickets": {},
+    "enterTickets": "Enter number of tickets",
+    "@enterTickets": {},
+    "register": "Register",
+    "@register": {},
+    "eventRegistrationRecorded": "Your event subscription has been recorded",
+    "@eventRegistrationRecorded": {}
 }
