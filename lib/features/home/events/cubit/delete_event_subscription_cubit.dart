@@ -1,3 +1,4 @@
+import 'package:app/models/remote/failure.dart';
 import 'package:app/services/event_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,4 +13,20 @@ class DeleteEventSubscriptionCubit extends Cubit<DeleteEventSubscriptionState> {
   }
 
   late EventService _eventService;
+
+  Future<void> deleteSubscription({
+    required String eventSubscriptionUlid,
+  }) async {
+    try {
+      emit(DeleteEventSubscriptionState.loading());
+      await _eventService.unsubscribe(
+        eventSubscriptionUlid: eventSubscriptionUlid,
+      );
+      emit(DeleteEventSubscriptionState.loaded());
+    } on Failure catch (e) {
+      emit(DeleteEventSubscriptionState.error(e.message));
+    } catch (e) {
+      emit(DeleteEventSubscriptionState.error(e.toString()));
+    }
+  }
 }

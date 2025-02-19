@@ -1,4 +1,6 @@
 import 'package:app/features/home/events/cubit/add_event_subscription_cubit.dart';
+import 'package:app/features/home/events/cubit/get_events_cubit.dart';
+import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
@@ -66,7 +68,12 @@ class _AddEventSubscriptionViewHandsetState
                       _isLoading = false;
                     });
                     Gaimon.success();
+                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
+                    context.read<GetEventsCubit>().getEvents();
+                    context
+                        .read<GetMemberEventSubscriptionsCubit>()
+                        .getMemberEventSubscriptions();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(

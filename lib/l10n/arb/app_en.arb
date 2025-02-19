@@ -655,5 +655,13 @@
     "register": "Register",
     "@register": {},
     "eventRegistrationRecorded": "Your event subscription has been recorded",
-    "@eventRegistrationRecorded": {}
+    "@eventRegistrationRecorded": {},
+    "cancelRegistration": "Cancel subscription",
+    "@cancelRegistration": {},
+    "confirmCancellation": "Confirm cancellation",
+    "@confirmCancellation": {},
+    "subscriptionCancelled": "Subscription cancelled",
+    "@subscriptionCancelled": {},
+    "next": "Confirm",
+    "@next": {}
 }
