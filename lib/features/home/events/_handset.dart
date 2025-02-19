@@ -71,7 +71,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
             ),
             indicatorColor: Colors.white,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
-            tabs: [Tab(text: l10n.all), Tab(text: l10n.registeredEvent)],
+            tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
           ),
         ),
         body: TabBarView(

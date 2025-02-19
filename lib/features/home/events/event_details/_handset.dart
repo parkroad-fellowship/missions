@@ -123,6 +123,24 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                           ),
                         ),
                         const Spacer(),
+                        // Show an icon with the number of tickets
+                        if (event.loggedInMemberEventSubscription != null)
+                          Row(
+                            spacing: 4,
+                            children: [
+                              Text(
+                                event
+                                    .loggedInMemberEventSubscription!
+                                    .numberOfAttendees
+                                    .toString(),
+                                style: PRFText.theme().displayMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: PRFApp.theme().kPrimaryColorV2,
+                                ),
+                              ),
+                              Icon(Icons.group)
+                            ],
+                          ),
                       ],
                     ),
                   ),
