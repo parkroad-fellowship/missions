@@ -21,7 +21,7 @@ class LearnerEnquiriesPageHandset extends StatefulWidget {
 
 class _LearnerEnquiriesPageHandsetState
     extends State<LearnerEnquiriesPageHandset> {
-  bool _selectedReplyStatus = false;
+  bool _selectedReplyStatus = true;
   @override
   void initState() {
     context.read<GetStudentEnquiriesCubit>().getStudentEnquiries();
@@ -88,9 +88,11 @@ class _LearnerEnquiriesPageHandsetState
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
                 child: ReplyStatusView(
+                  defaultReplyStatus: true,
+                  reversed: true,
                   onReplyStatusSelected: ({bool? replyStatus}) {
                     setState(() {
-                      _selectedReplyStatus = replyStatus ?? false;
+                      _selectedReplyStatus = replyStatus ?? true;
                     });
                     Logger().i('Selected Status: $_selectedReplyStatus');
                   },
@@ -113,7 +115,9 @@ class _LearnerEnquiriesPageHandsetState
                 ),
               ),
               StreamBuilder<List<PRFLocalStudentEnquiry>>(
-                stream: getIt<LocalDBService>().getStudentEnquiries(),
+                stream: getIt<LocalDBService>().getStudentEnquiries(
+                  replyStatus: _selectedReplyStatus,
+                ),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SliverToBoxAdapter(
