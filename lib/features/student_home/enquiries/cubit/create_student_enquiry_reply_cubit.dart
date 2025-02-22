@@ -39,7 +39,7 @@ class CreateStudentEnquiryReplyCubit
         ),
       );
 
-     await _localDBService.persistStudentEnquiryReplies(
+      await _localDBService.persistStudentEnquiryReplies(
         studentEnquiryUlid: studentEnquiryUlid,
         replies: [reply],
       );

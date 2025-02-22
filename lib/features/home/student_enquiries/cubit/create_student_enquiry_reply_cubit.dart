@@ -29,7 +29,7 @@ class CreateEnquiryReplyCubit extends Cubit<CreateEnquiryReplyState> {
     emit(const CreateEnquiryReplyState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
-     final reply = await _studentService.createStudentEnquiryReply(
+      final reply = await _studentService.createStudentEnquiryReply(
         studentEnquiryReplyDTO: PRFStudentEnquiryReplyDTO(
           content: content,
           studentEnquiryUlid: studentEnquiryUlid,
