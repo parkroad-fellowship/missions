@@ -223,6 +223,7 @@ class Singletons {
             (context) => CreateStudentEnquiryReplyCubit(
               studentService: getIt(),
               hiveService: getIt(),
+              localDBService: getIt(),
             ),
       ),
       BlocProvider<GetEnquiriesCubit>(
@@ -237,6 +238,7 @@ class Singletons {
             (context) => CreateEnquiryReplyCubit(
               studentService: getIt(),
               hiveService: getIt(),
+              localDBService: getIt(),
             ),
       ),
       BlocProvider<GetEnquiryRepliesCubit>(

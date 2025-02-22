@@ -12,13 +12,16 @@ class CreateStudentEnquiryReplyCubit
   CreateStudentEnquiryReplyCubit({
     required HiveService hiveService,
     required StudentService studentService,
+    required LocalDBService localDBService,
   }) : super(const CreateStudentEnquiryReplyState.initial()) {
     _hiveService = hiveService;
     _studentService = studentService;
+    _localDBService = localDBService;
   }
 
   late HiveService _hiveService;
   late StudentService _studentService;
+  late LocalDBService _localDBService;
 
   Future<void> createStudentEnquiryReply({
     required String content,
@@ -27,13 +30,18 @@ class CreateStudentEnquiryReplyCubit
     emit(const CreateStudentEnquiryReplyState.loading());
     try {
       final studentUlid = _hiveService.retrieveStudentUlid();
-      await _studentService.createStudentEnquiryReply(
+      final reply = await _studentService.createStudentEnquiryReply(
         studentEnquiryReplyDTO: PRFStudentEnquiryReplyDTO(
           content: content,
           studentEnquiryUlid: studentEnquiryUlid,
           commentorableType: PRFMorphType.student,
           commentorableUlid: studentUlid,
         ),
+      );
+
+     await _localDBService.persistStudentEnquiryReplies(
+        studentEnquiryUlid: studentEnquiryUlid,
+        replies: [reply],
       );
 
       emit(const CreateStudentEnquiryReplyState.loaded());
