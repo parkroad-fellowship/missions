@@ -179,8 +179,10 @@ class _StudentEnquiriesPageHandsetState
                           ),
                         ),
                         title: Text(
-                          enquiry.content.substring(0, 35).trim() +
-                              (enquiry.content.length > 35 ? ' ...' : ''),
+                          enquiry.content.length > 34
+                              ? enquiry.content.substring(0, 35).trim()
+                              : enquiry.content +
+                                  (enquiry.content.length > 35 ? ' ...' : ''),
                           style: PRFText.theme().bodySmall!.copyWith(
                             color: Colors.black,
                             fontSize: 14,
