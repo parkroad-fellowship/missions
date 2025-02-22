@@ -9,6 +9,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 
 class LearnerEnquiriesPageHandset extends StatefulWidget {
   const LearnerEnquiriesPageHandset({super.key});
@@ -20,6 +21,7 @@ class LearnerEnquiriesPageHandset extends StatefulWidget {
 
 class _LearnerEnquiriesPageHandsetState
     extends State<LearnerEnquiriesPageHandset> {
+  bool _selectedReplyStatus = true;
   @override
   void initState() {
     context.read<GetStudentEnquiriesCubit>().getStudentEnquiries();
@@ -85,6 +87,19 @@ class _LearnerEnquiriesPageHandsetState
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
+                child: ReplyStatusView(
+                  defaultReplyStatus: true,
+                  reversed: true,
+                  onReplyStatusSelected: ({bool? replyStatus}) {
+                    setState(() {
+                      _selectedReplyStatus = replyStatus ?? true;
+                    });
+                    Logger().i('Selected Status: $_selectedReplyStatus');
+                  },
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
                 child: BlocBuilder<
                   GetStudentEnquiriesCubit,
                   GetStudentEnquiriesState
@@ -100,7 +115,9 @@ class _LearnerEnquiriesPageHandsetState
                 ),
               ),
               StreamBuilder<List<PRFLocalStudentEnquiry>>(
-                stream: getIt<LocalDBService>().getStudentEnquiries(),
+                stream: getIt<LocalDBService>().getStudentEnquiries(
+                  replyStatus: _selectedReplyStatus,
+                ),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SliverToBoxAdapter(
@@ -166,7 +183,10 @@ class _LearnerEnquiriesPageHandsetState
                           ),
                         ),
                         title: Text(
-                          enquiry.content,
+                          enquiry.content.length > 34
+                              ? enquiry.content.substring(0, 35).trim()
+                              : enquiry.content +
+                                  (enquiry.content.length > 35 ? ' ...' : ''),
                           style: PRFText.theme().bodySmall!.copyWith(
                             color: Colors.black,
                             fontSize: 14,

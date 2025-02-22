@@ -161,7 +161,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       disabled: false,
                     ),
                     const Divider(),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 40),
                     BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
                       builder: (context, signInWithGoogleState) {
                         return BlocBuilder<SocialLoginCubit, SocialLoginState>(
@@ -217,6 +217,19 @@ class _SignInHandsetState extends State<SignInHandset> {
                           },
                         );
                       },
+                    ),
+                    const Spacer(),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        l10n.version(Misc.getAppVersion()),
+                        style: PRFText.theme().displaySmall!.copyWith(
+                          fontSize: 12,
+                          color: const Color(0xFF727272),
+                          height: 1.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                     const Spacer(),
                   ],

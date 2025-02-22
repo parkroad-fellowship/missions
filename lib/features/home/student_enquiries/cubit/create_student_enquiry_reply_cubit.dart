@@ -11,13 +11,16 @@ class CreateEnquiryReplyCubit extends Cubit<CreateEnquiryReplyState> {
   CreateEnquiryReplyCubit({
     required HiveService hiveService,
     required StudentService studentService,
+    required LocalDBService localDBService,
   }) : super(const CreateEnquiryReplyState.initial()) {
     _hiveService = hiveService;
     _studentService = studentService;
+    _localDBService = localDBService;
   }
 
   late HiveService _hiveService;
   late StudentService _studentService;
+  late LocalDBService _localDBService;
 
   Future<void> createStudentEnquiryReply({
     required String content,
@@ -26,13 +29,18 @@ class CreateEnquiryReplyCubit extends Cubit<CreateEnquiryReplyState> {
     emit(const CreateEnquiryReplyState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
-      await _studentService.createStudentEnquiryReply(
+      final reply = await _studentService.createStudentEnquiryReply(
         studentEnquiryReplyDTO: PRFStudentEnquiryReplyDTO(
           content: content,
           studentEnquiryUlid: studentEnquiryUlid,
           commentorableType: PRFMorphType.member,
           commentorableUlid: member.ulid,
         ),
+      );
+
+      await _localDBService.persistStudentEnquiryReplies(
+        studentEnquiryUlid: studentEnquiryUlid,
+        replies: [reply],
       );
 
       emit(const CreateEnquiryReplyState.loaded());

@@ -9,7 +9,7 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      hiveBox: 'prf-super-app-${Misc.getSluggedAppVersion()}',
+      hiveBox: 'prf-super-app',
       baseDomain: 'api.parkroadfellowship.org',
       urlScheme: 'https',
       socketDomain: 'ws.parkroadfellowship.org',
