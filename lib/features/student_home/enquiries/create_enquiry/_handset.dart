@@ -24,7 +24,6 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text(
           l10n.ask,
           style: PRFText.theme().displayLarge?.copyWith(

@@ -81,6 +81,7 @@ class _StudentEnquiriesPageHandsetState
                   ),
                 ),
               ),
+              
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
