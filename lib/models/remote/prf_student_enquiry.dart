@@ -8,9 +8,11 @@ class PRFStudentEnquiry with _$PRFStudentEnquiry {
   factory PRFStudentEnquiry(
     String ulid,
     String content,
+
     @JsonKey(name: 'created_at') DateTime createdAt,
-    @JsonKey(name: 'updated_at') DateTime updatedAt,
-  ) = _PRFStudentEnquiry;
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @Default(false) @JsonKey(name: 'has_replies') bool hasReplies,
+  }) = _PRFStudentEnquiry;
 
   factory PRFStudentEnquiry.fromJson(Map<String, dynamic> json) =>
       _$PRFStudentEnquiryFromJson(json);

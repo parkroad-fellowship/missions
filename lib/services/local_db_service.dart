@@ -390,6 +390,7 @@ class LocalDBServiceImpl implements LocalDBService {
         await prfDBInstance.pRFLocalStudentEnquirys.put(
           PRFLocalStudentEnquiry(
             ulid: enquiry.ulid,
+            hasReplies: enquiry.hasReplies,
             content: enquiry.content,
             createdAt: enquiry.createdAt,
           ),

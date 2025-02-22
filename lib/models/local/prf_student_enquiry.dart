@@ -7,6 +7,7 @@ class PRFLocalStudentEnquiry {
   PRFLocalStudentEnquiry({
     required this.ulid,
     required this.content,
+    required this.hasReplies,
     required this.createdAt,
   });
 
@@ -15,5 +16,6 @@ class PRFLocalStudentEnquiry {
   @Index(unique: true, replace: true)
   final String ulid;
   final String content;
+  final bool hasReplies;
   final DateTime createdAt;
 }
