@@ -1,0 +1,85 @@
+import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
+import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_faq_category.dart';
+import 'package:app/utils/_index.dart';
+import 'package:app/widgets/circular_progress_indicator.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class ReplyStatusView extends StatefulWidget {
+  const ReplyStatusView({required this.onReplyStatusSelected, super.key});
+
+  final void Function({bool replyStatus}) onReplyStatusSelected;
+
+  @override
+  State<ReplyStatusView> createState() => _ReplyStatusViewState();
+}
+
+class _ReplyStatusViewState extends State<ReplyStatusView> {
+  _ReplyStatusViewState();
+
+  bool _selectedReplyStatus = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 8,
+        children: [
+          GestureDetector(
+            onTap: () {
+              widget.onReplyStatusSelected(replyStatus: false);
+              setState(() {
+                _selectedReplyStatus = false;
+              });
+            },
+            child: Chip(
+              label: Text(l10n.unread.toUpperCase()),
+              side: BorderSide(color: PRFApp.theme().kAccent12GreyColor),
+              backgroundColor:
+                  _selectedReplyStatus == false
+                      ? PRFApp.theme().kPrimaryColorV2
+                      : Colors.white,
+              labelStyle: PRFText.theme().bodyMedium?.copyWith(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color:
+                    _selectedReplyStatus == false
+                        ? Colors.white
+                        : PRFApp.theme().kPrimaryColorV2,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              widget.onReplyStatusSelected(replyStatus: true);
+              setState(() {
+                _selectedReplyStatus = true;
+              });
+            },
+            child: Chip(
+              label: Text(l10n.replied.toUpperCase()),
+              side: BorderSide(color: PRFApp.theme().kAccent12GreyColor),
+              backgroundColor:
+                  _selectedReplyStatus ?? true
+                      ? PRFApp.theme().kPrimaryColorV2
+                      : Colors.white,
+              labelStyle: PRFText.theme().bodyMedium?.copyWith(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color:
+                    _selectedReplyStatus ?? true
+                        ? Colors.white
+                        : PRFApp.theme().kPrimaryColorV2,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

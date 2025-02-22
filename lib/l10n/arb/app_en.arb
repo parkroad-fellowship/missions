@@ -663,5 +663,9 @@
     "subscriptionCancelled": "Subscription cancelled",
     "@subscriptionCancelled": {},
     "next": "Confirm",
-    "@next": {}
+    "@next": {},
+    "unread": "Unread",
+    "@unread": {},
+    "replied": "Replied",
+    "@replied": {}
 }

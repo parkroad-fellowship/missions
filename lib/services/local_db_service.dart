@@ -53,7 +53,9 @@ abstract class LocalDBService {
   Future<void> persistStudentEnquiries({
     required List<PRFStudentEnquiry> enquiries,
   });
-  Stream<List<PRFLocalStudentEnquiry>> getStudentEnquiries();
+  Stream<List<PRFLocalStudentEnquiry>> getStudentEnquiries({
+    bool replyStatus = false,
+  });
 
   Future<void> persistStudentEnquiryReplies({
     required String studentEnquiryUlid,
@@ -400,10 +402,13 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Stream<List<PRFLocalStudentEnquiry>> getStudentEnquiries() async* {
+  Stream<List<PRFLocalStudentEnquiry>> getStudentEnquiries({
+    bool replyStatus = false,
+  }) async* {
     await for (final localEnquiry
         in prfDBInstance.pRFLocalStudentEnquirys
             .filter()
+            .hasRepliesEqualTo(replyStatus)
             .idGreaterThan(0)
             .sortByCreatedAtDesc()
             .build()
