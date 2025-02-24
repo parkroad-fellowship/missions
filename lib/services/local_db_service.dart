@@ -687,7 +687,7 @@ class LocalDBServiceImpl implements LocalDBService {
             .loggedInMemberMissionSubscriptionIsNull()
             .sortByStartDate()
             .build()
-            .findAll(); // Get latest data
+            .findAll();
 
     _missionsController.add(missions); // Push new data into the stream
   }
@@ -698,14 +698,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Stream<List<PRFLocalMission>> get missions {
-    return prfDBInstance.pRFLocalMissions
-        .filter()
-        .loggedInMemberMissionSubscriptionIsNull()
-        .build()
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
-  }
+  Stream<List<PRFLocalMission>> get missions => _missionsController.stream;
 
   @override
   Future<void> persistMissions({required List<PRFMission> missions}) async {
