@@ -21,13 +21,34 @@ class MissionsPageHandset extends StatefulWidget {
   State<MissionsPageHandset> createState() => _MissionsPageHandsetState();
 }
 
-class _MissionsPageHandsetState extends State<MissionsPageHandset> {
+class _MissionsPageHandsetState extends State<MissionsPageHandset>
+    with SingleTickerProviderStateMixin {
+  Stream<List<PRFLocalMission>> get _missionsStream =>
+      getIt<LocalDBService>().missions;
+
+  Stream<List<PRFLocalMission>> get _memberMissionsStream =>
+      getIt<LocalDBService>().memberMissions;
+
   @override
   void initState() {
-    context.read<GetMissionsCubit>().getMissions();
-    context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
     super.initState();
+
+    context.read<GetMissionsCubit>().getMissions(refresh: true);
+    context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions(
+      refresh: true,
+    );
+
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.index == 0) {
+        context.read<GetMissionsCubit>().getMissions();
+      } else {
+        context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
+      }
+    });
   }
+
+  late TabController _tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +94,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                     orElse: SizedBox.shrink,
                   ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
 
             BlocBuilder<
               GetMemberMissionSubscriptionsCubit,
@@ -89,10 +110,11 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                     orElse: SizedBox.shrink,
                   ),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
           ],
           backgroundColor: Colors.transparent,
           bottom: TabBar(
+            controller: _tabController,
             dividerColor: Colors.white,
             isScrollable: true,
             tabAlignment: TabAlignment.start,
@@ -106,12 +128,16 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
+
           children: [
-            StreamBuilder(
-              stream: getIt<LocalDBService>().getMissions(),
+            StreamBuilder<List<PRFLocalMission>>(
+              key: PageStorageKey('missions_stream_${_tabController.index}'),
+              initialData: const [],
+              stream: _missionsStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return PRFCircularProgressIndicator();
+                  return const PRFCircularProgressIndicator();
                 }
 
                 final missions = snapshot.data;
@@ -180,11 +206,13 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
               },
             ),
 
-            StreamBuilder(
-              stream: getIt<LocalDBService>().getMemberMissions(),
+            StreamBuilder<List<PRFLocalMission>>(
+              key: PageStorageKey('missions_stream_${_tabController.index}'),
+              initialData: const [],
+              stream: _memberMissionsStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return PRFCircularProgressIndicator();
+                  return const PRFCircularProgressIndicator();
                 }
 
                 final missions = snapshot.data;
@@ -245,7 +273,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                     separatorBuilder:
                         (context, index) => SizedBox(height: 16.h),
                     itemBuilder: (context, index) {
-                      final mission = missions[index]!;
+                      final mission = missions[index];
                       return MissionActionCard(
                         mission: mission,
                         status:
@@ -253,7 +281,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                         onTap:
                             () => context.router.push(
                               MissionsDetailsRoute(
-                                missionUlid: missions[index].ulid!,
+                                missionUlid: missions[index].ulid,
                               ),
                             ),
                       );

@@ -1,7 +1,5 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/mission_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -20,14 +18,19 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
   late MissionService _missionService;
   late LocalDBService _localDbService;
 
-  Future<void> getMissions() async {
+  Future<void> getMissions({bool refresh = false}) async {
     emit(const GetMissionsState.loading());
     try {
+      if (!refresh) {
+        await _localDbService.refreshMissions();
+        emit(const GetMissionsState.loaded());
+        return;
+      }
       final missions = await _missionService.getMissions();
 
       await _localDbService.persistMissions(missions: missions);
 
-      emit(GetMissionsState.loaded(missions: missions));
+      emit(const GetMissionsState.loaded());
     } on Failure catch (e) {
       emit(GetMissionsState.error(e.message));
     } catch (e) {

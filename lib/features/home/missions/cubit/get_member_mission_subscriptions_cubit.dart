@@ -1,5 +1,4 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -23,9 +22,15 @@ class GetMemberMissionSubscriptionsCubit
   late HiveService _hiveService;
   late LocalDBService _localDBService;
 
-  Future<void> getSubscriptions() async {
+  Future<void> getSubscriptions({bool refresh = false}) async {
     emit(const GetMemberMissionSubscriptionsState.loading());
     try {
+      if (!refresh) {
+        await _localDBService.refreshMemberMissions();
+        emit(const GetMemberMissionSubscriptionsState.loaded());
+        return;
+      }
+
       final member = _hiveService.retrieveMember()!;
       final missionSubscriptions = await _missionService.getSubscriptions(
         includes:
@@ -38,11 +43,7 @@ class GetMemberMissionSubscriptionsCubit
       await _localDBService.persistMemberMissions(
         missionSubscriptions: missionSubscriptions,
       );
-      emit(
-        GetMemberMissionSubscriptionsState.loaded(
-          missionSubscriptions: missionSubscriptions,
-        ),
-      );
+      emit(const GetMemberMissionSubscriptionsState.loaded());
     } on Failure catch (e) {
       emit(GetMemberMissionSubscriptionsState.error(e.message));
     } catch (e) {

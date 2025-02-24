@@ -262,7 +262,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                       ),
                     ),
                     Text(
-                      forecast.dressingRecommendations.toString(),
+                      forecast.dressingRecommendations,
                       style: PRFText.theme().bodySmall,
                     ),
                   ],

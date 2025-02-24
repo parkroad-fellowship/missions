@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
@@ -91,13 +93,17 @@ abstract class LocalDBService {
   Future<List<PRFLocalFaqCategory>> retreiveFaqCategories();
 
   Future<void> persistMissions({required List<PRFMission> missions});
-  Stream<List<PRFLocalMission>> getMissions();
+  Stream<List<PRFLocalMission>> get missions;
+  Future<void> refreshMissions();
+  void disposeMissions();
   Stream<PRFLocalMission> getMission({required String missionUlid});
 
   Future<void> persistMemberMissions({
     required List<PRFMissionSubscription> missionSubscriptions,
   });
-  Stream<List<PRFLocalMission>> getMemberMissions();
+  Stream<List<PRFLocalMission>> get memberMissions;
+  Future<void> refreshMemberMissions();
+  void disposeMemberMissions();
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -670,131 +676,141 @@ class LocalDBServiceImpl implements LocalDBService {
     }
   }
 
+  final _missionsController =
+      StreamController<List<PRFLocalMission>>.broadcast();
+
   @override
-  Stream<List<PRFLocalMission>> getMissions() async* {
-    await for (final localMission
-        in prfDBInstance.pRFLocalMissions
+  Future<void> refreshMissions() async {
+    final missions =
+        await prfDBInstance.pRFLocalMissions
             .filter()
             .loggedInMemberMissionSubscriptionIsNull()
+            .sortByStartDate()
             .build()
-            .watch(fireImmediately: true)
-            .asBroadcastStream()) {
-      yield localMission;
-    }
+            .findAll(); // Get latest data
+
+    _missionsController.add(missions); // Push new data into the stream
+  }
+
+  @override
+  void disposeMissions() {
+    _missionsController.close(); // Close stream when no longer needed
+  }
+
+  @override
+  Stream<List<PRFLocalMission>> get missions {
+    return prfDBInstance.pRFLocalMissions
+        .filter()
+        .loggedInMemberMissionSubscriptionIsNull()
+        .build()
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 
   @override
   Future<void> persistMissions({required List<PRFMission> missions}) async {
-    
     await prfDBInstance.writeTxn(() async {
       for (final mission in missions) {
-
         await prfDBInstance.pRFLocalMissions.put(
-         _transformMission(mission),
+          _transformRemoteMissionToLocalMission(mission),
         );
       }
     });
   }
 
-  PRFLocalMission _transformMission(PRFMission mission) {
-
+  PRFLocalMission _transformRemoteMissionToLocalMission(PRFMission mission) {
     final missionType = mission.missionType!;
-        Logger().f(missionType);
-        final school = mission.school!;
-        Logger().f(school);
-        final contacts = mission.school!.contacts!;
-        Logger().f(contacts);
-        final weatherForecasts = mission.weatherForecasts;
-Logger().f(weatherForecasts);
+    final school = mission.school!;
+    final contacts = mission.school!.contacts!;
+    final weatherForecasts = mission.weatherForecasts;
 
-    return  PRFLocalMission(
-            ulid: mission.ulid,
-            startDate: mission.startDate,
-            startTime: mission.startTime,
-            endDate: mission.endDate,
-            endTime: mission.endTime,
-            missionPrepNotes: mission.missionPrepNotes,
-            theme: mission.theme,
-            capacity: mission.capacity,
-            status: mission.status,
-            missionSubscriptionsNeeded: mission.missionSubscriptionsNeeded,
-            createdAt: mission.createdAt,
-            updatedAt: mission.updatedAt,
-            missionType: PRFLocalMissionType(
-              ulid: missionType.ulid,
-              name: missionType.name,
-              isActive: missionType.isActive,
-              createdAt: missionType.createdAt,
-              updatedAt: missionType.updatedAt,
-            ),
-            school: PRFLocalSchool(
-              ulid: school.ulid,
-              name: school.name,
-              address: school.address,
-              staticDuration: school.staticDuration,
-              totalStudents: school.totalStudents,
-              createdAt: school.createdAt,
-              updatedAt: school.updatedAt,
-              description: school.description,
-              directions: school.directions,
-              distance: school.distance,
-              latitude: school.latitude,
-              longitude: school.longitude,
-              contacts:
-                  contacts
-                      .map(
-                        (contact) => PRFLocalContact(
-                          ulid: contact.ulid,
-                          name: contact.name,
-                          phone: contact.phone,
-                          contactType: PRFLocalContactType(
-                            ulid: contact.contactType!.ulid,
-                            name: contact.contactType!.name,
-                          ),
-                        ),
-                      )
-                      .toList(),
-            ),
-            weatherForecasts:
-                weatherForecasts
-                    .map(
-                      (weatherForecast) => PRFLocalWeatherForecast(
-                        ulid: weatherForecast.ulid,
-                        forecastDate: weatherForecast.forecastDate,
-                        weatherCodeDescription:
-                            weatherForecast.weatherCodeDescription,
-                        temperature: PRFLocalTemperature(
-                          apparentAvg: weatherForecast.temperature.apparentAvg,
-                          apparentMin: weatherForecast.temperature.apparentMin,
-                          apparentMax: weatherForecast.temperature.apparentMax,
-                          avg: weatherForecast.temperature.avg,
-                          min: weatherForecast.temperature.min,
-                          max: weatherForecast.temperature.max,
-                        ),
-                        visibility: PRFLocalVisibility(
-                          avg: weatherForecast.visibility.avg,
-                          min: weatherForecast.visibility.min,
-                          max: weatherForecast.visibility.max,
-                        ),
-                        precipitationProbability:
-                            PRFLocalPrecipitationProbability(
-                              avg: weatherForecast.precipitationProbability.avg,
-                              min: weatherForecast.precipitationProbability.min,
-                              max: weatherForecast.precipitationProbability.max,
-                            ),
-                        humidity: PRFLocalHumidity(
-                          avg: weatherForecast.humidity.avg,
-                          min: weatherForecast.humidity.min,
-                          max: weatherForecast.humidity.max,
-                        ),
-                        dressingRecommendations:
-                            weatherForecast.dressingRecommendations,
-                        activityRecommendations:
-                            weatherForecast.activityRecommendations,
-                      ),
-                    )
-                    .toList(),
-          );
+    return PRFLocalMission(
+      ulid: mission.ulid,
+      startDate: mission.startDate,
+      startTime: mission.startTime,
+      endDate: mission.endDate,
+      endTime: mission.endTime,
+      missionPrepNotes: mission.missionPrepNotes,
+      theme: mission.theme,
+      capacity: mission.capacity,
+      status: mission.status,
+      missionSubscriptionsNeeded: mission.missionSubscriptionsNeeded,
+      createdAt: mission.createdAt,
+      updatedAt: mission.updatedAt,
+      missionType: PRFLocalMissionType(
+        ulid: missionType.ulid,
+        name: missionType.name,
+        isActive: missionType.isActive,
+        createdAt: missionType.createdAt,
+        updatedAt: missionType.updatedAt,
+      ),
+      school: PRFLocalSchool(
+        ulid: school.ulid,
+        name: school.name,
+        address: school.address,
+        staticDuration: school.staticDuration,
+        totalStudents: school.totalStudents,
+        createdAt: school.createdAt,
+        updatedAt: school.updatedAt,
+        description: school.description,
+        directions: school.directions,
+        distance: school.distance,
+        latitude: school.latitude,
+        longitude: school.longitude,
+        contacts:
+            contacts
+                .map(
+                  (contact) => PRFLocalContact(
+                    ulid: contact.ulid,
+                    name: contact.name,
+                    phone: contact.phone,
+                    contactType: PRFLocalContactType(
+                      ulid: contact.contactType!.ulid,
+                      name: contact.contactType!.name,
+                    ),
+                  ),
+                )
+                .toList(),
+      ),
+      weatherForecasts:
+          weatherForecasts
+              .map(
+                (weatherForecast) => PRFLocalWeatherForecast(
+                  ulid: weatherForecast.ulid,
+                  forecastDate: weatherForecast.forecastDate,
+                  weatherCodeDescription:
+                      weatherForecast.weatherCodeDescription,
+                  temperature: PRFLocalTemperature(
+                    apparentAvg: weatherForecast.temperature.apparentAvg,
+                    apparentMin: weatherForecast.temperature.apparentMin,
+                    apparentMax: weatherForecast.temperature.apparentMax,
+                    avg: weatherForecast.temperature.avg,
+                    min: weatherForecast.temperature.min,
+                    max: weatherForecast.temperature.max,
+                  ),
+                  visibility: PRFLocalVisibility(
+                    avg: weatherForecast.visibility.avg,
+                    min: weatherForecast.visibility.min,
+                    max: weatherForecast.visibility.max,
+                  ),
+                  precipitationProbability: PRFLocalPrecipitationProbability(
+                    avg: weatherForecast.precipitationProbability.avg,
+                    min: weatherForecast.precipitationProbability.min,
+                    max: weatherForecast.precipitationProbability.max,
+                  ),
+                  humidity: PRFLocalHumidity(
+                    avg: weatherForecast.humidity.avg,
+                    min: weatherForecast.humidity.min,
+                    max: weatherForecast.humidity.max,
+                  ),
+                  dressingRecommendations:
+                      weatherForecast.dressingRecommendations,
+                  activityRecommendations:
+                      weatherForecast.activityRecommendations,
+                ),
+              )
+              .toList(),
+    );
   }
 
   Future<PRFLocalMission?> _getMission(String missionUlid) {
@@ -805,23 +821,35 @@ Logger().f(weatherForecasts);
   }
 
   @override
-  Stream<List<PRFLocalMission>> getMemberMissions() async* {
-    await for (final localMission
-        in prfDBInstance.pRFLocalMissions
+  Stream<List<PRFLocalMission>> get memberMissions =>
+      _memberMissionsController.stream;
+
+  final _memberMissionsController =
+      StreamController<List<PRFLocalMission>>.broadcast();
+
+  @override
+  Future<void> refreshMemberMissions() async {
+    final missions =
+        await prfDBInstance.pRFLocalMissions
             .filter()
             .loggedInMemberMissionSubscriptionIsNotNull()
+            .sortByStartDate()
             .build()
-            .watch(fireImmediately: true)
-            .asBroadcastStream()) {
-      yield localMission;
-    }
+            .findAll(); // Get latest data
+
+    _memberMissionsController.add(missions); // Push new data into the stream
+  }
+
+  @override
+  void disposeMemberMissions() {
+    _memberMissionsController.close(); // Close stream when no longer needed
   }
 
   @override
   Future<void> persistMemberMissions({
     required List<PRFMissionSubscription> missionSubscriptions,
   }) async {
-    Logger().i("persistMemberMissions :: Start");
+    Logger().i('persistMemberMissions :: Start');
     await prfDBInstance.writeTxn(() async {
       for (final missionSubscription in missionSubscriptions) {
         await prfDBInstance.pRFLocalMemberMissionSubscriptions.put(
@@ -833,17 +861,17 @@ Logger().f(weatherForecasts);
           ),
         );
 
-        Logger().i("persistMemberMissions :: Persisted");
+        Logger().i('persistMemberMissions :: Persisted');
 
         var mission = await _getMission(missionSubscription.mission!.ulid);
-        Logger().i("persistMemberMissions :: Result ${mission?.ulid}");
+        Logger().i('persistMemberMissions :: Result ${mission?.ulid}');
 
         if (mission == null) {
-          Logger().i("persistMemberMissions :: Persisiting mission");
+          Logger().i('persistMemberMissions :: Persisiting mission');
           // Persist that mission if it doesn't exist
           await prfDBInstance.pRFLocalMissions.put(
-         _transformMission(missionSubscription.mission!),
-        );
+            _transformRemoteMissionToLocalMission(missionSubscription.mission!),
+          );
 
           mission = await _getMission(missionSubscription.mission!.ulid);
         }
@@ -857,13 +885,13 @@ Logger().f(weatherForecasts);
           updatedAt: missionSubscription.updatedAt,
         );
 
-        Logger().i("persistMemberMissions :: Updated ${mission?.ulid}");
+        Logger().i('persistMemberMissions :: Updated ${mission.ulid}');
 
         await prfDBInstance.pRFLocalMissions.put(mission);
 
-        Logger().i("persistMemberMissions :: End ${mission?.ulid}");
+        Logger().i('persistMemberMissions :: End ${mission.ulid}');
       }
     });
-    Logger().i("persistMemberMissions :: End");
+    Logger().i('persistMemberMissions :: End');
   }
 }

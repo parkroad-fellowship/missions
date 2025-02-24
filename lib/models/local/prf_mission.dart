@@ -45,7 +45,7 @@ class PRFLocalMission {
 
   final String? missionPrepNotes;
   final String? theme;
-   PRFLocalMissionSubscription? loggedInMemberMissionSubscription;
+  PRFLocalMissionSubscription? loggedInMemberMissionSubscription;
   final PRFLocalSchool? school;
   final PRFLocalMissionType? missionType;
   final List<PRFLocalWeatherForecast>? weatherForecasts;
@@ -108,12 +108,7 @@ class PRFLocalSchool {
 
 @embedded
 class PRFLocalContact {
-  PRFLocalContact({
-    this.ulid,
-    this.name,
-    this.phone,
-    this.contactType,
-  });
+  PRFLocalContact({this.ulid, this.name, this.phone, this.contactType});
 
   final String? ulid;
   final String? name;

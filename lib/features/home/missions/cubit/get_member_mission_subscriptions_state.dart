@@ -5,9 +5,7 @@ class GetMemberMissionSubscriptionsState
     with _$GetMemberMissionSubscriptionsState {
   const factory GetMemberMissionSubscriptionsState.initial() = _Initial;
   const factory GetMemberMissionSubscriptionsState.loading() = _Loading;
-  const factory GetMemberMissionSubscriptionsState.loaded({
-    required List<PRFMissionSubscription> missionSubscriptions,
-  }) = _Loaded;
+  const factory GetMemberMissionSubscriptionsState.loaded() = _Loaded;
   const factory GetMemberMissionSubscriptionsState.error(String message) =
       _Error;
 }
