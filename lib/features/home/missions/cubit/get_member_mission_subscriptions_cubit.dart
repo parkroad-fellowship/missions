@@ -43,6 +43,7 @@ class GetMemberMissionSubscriptionsCubit
       await _localDBService.persistMemberMissions(
         missionSubscriptions: missionSubscriptions,
       );
+      await _localDBService.refreshMemberMissions();
       emit(const GetMemberMissionSubscriptionsState.loaded());
     } on Failure catch (e) {
       emit(GetMemberMissionSubscriptionsState.error(e.message));

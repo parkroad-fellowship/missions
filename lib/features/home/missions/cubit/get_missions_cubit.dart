@@ -29,7 +29,7 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
       final missions = await _missionService.getMissions();
 
       await _localDbService.persistMissions(missions: missions);
-
+      await _localDbService.refreshMissions();
       emit(const GetMissionsState.loaded());
     } on Failure catch (e) {
       emit(GetMissionsState.error(e.message));
