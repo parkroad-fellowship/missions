@@ -1,7 +1,6 @@
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_soul.dart';
-import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +86,7 @@ class SoulCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                Text(soul.classGroup!.name.toString()),
+                Text(soul.classGroup.name.toString()),
                 SizedBox(height: 16.h),
               ],
             ),

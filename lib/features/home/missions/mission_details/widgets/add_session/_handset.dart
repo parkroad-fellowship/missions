@@ -4,7 +4,6 @@ import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/models/remote/prf_member.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
@@ -71,7 +70,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               stream: getIt<LocalDBService>().getMissionSubscriptions(
                 missionUlid: widget.missionUlid,
               ),
-              loading: PRFLinearProgressIndicator(),
+              loading: const PRFLinearProgressIndicator(),
               widget:
                   (context, subscribers) => LayoutBuilder(
                     builder: (context, constraints) {
@@ -84,8 +83,8 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                 .map(
                                   (subscriber) =>
                                       DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member!,
-                                        label: subscriber.member!.fullName!,
+                                        value: subscriber.member,
+                                        label: subscriber.member.fullName!,
                                       ),
                                 )
                                 .toList(),
@@ -134,7 +133,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               stream: getIt<LocalDBService>().getMissionSubscriptions(
                 missionUlid: widget.missionUlid,
               ),
-              loading: PRFLinearProgressIndicator(),
+              loading: const PRFLinearProgressIndicator(),
               widget:
                   (context, subscribers) => LayoutBuilder(
                     builder: (context, constraints) {
@@ -147,8 +146,8 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                 .map(
                                   (subscriber) =>
                                       DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member!,
-                                        label: subscriber.member!.fullName!,
+                                        value: subscriber.member,
+                                        label: subscriber.member.fullName!,
                                       ),
                                 )
                                 .toList(),

@@ -2,7 +2,6 @@ import 'package:app/enums/prf_mission_role.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
-import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/circular_progress_indicator.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:logger/logger.dart';
 
 class SubscribersViewHandset extends StatefulWidget {
   const SubscribersViewHandset({required this.missionUlid, super.key});
@@ -137,7 +135,7 @@ class SubscriberActionCard extends StatelessWidget {
                     children: [
                       Text.rich(
                         TextSpan(
-                          text: subscription.member!.fullName,
+                          text: subscription.member.fullName,
                           style: PRFText.theme().displayLarge?.copyWith(
                             color: PRFApp.theme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
@@ -184,7 +182,7 @@ class SubscriberActionCard extends StatelessWidget {
                       onPressed: () async {
                         final uri = Uri(
                           scheme: 'tel',
-                          path: subscription.member!.phoneNumber,
+                          path: subscription.member.phoneNumber,
                         );
                         await Misc.openUrl(uri);
                       },

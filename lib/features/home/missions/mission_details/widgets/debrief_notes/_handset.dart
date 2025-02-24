@@ -1,7 +1,6 @@
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_debrief_note.dart';
-import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';

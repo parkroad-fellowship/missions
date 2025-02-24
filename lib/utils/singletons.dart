@@ -157,7 +157,9 @@ class Singletons {
             ),
       ),
       BlocProvider<GetSoulsCubit>(
-        create: (context) => GetSoulsCubit(soulService: getIt(), localDBService: getIt()),
+        create:
+            (context) =>
+                GetSoulsCubit(soulService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetClassGroupsCubit>(
         create:
@@ -170,10 +172,18 @@ class Singletons {
                 AddSoulCubit(soulService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetDebriefNotesCubit>(
-        create: (context) => GetDebriefNotesCubit(debriefService: getIt(), localDBService: getIt(),),
+        create:
+            (context) => GetDebriefNotesCubit(
+              debriefService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<AddDebriefNoteCubit>(
-        create: (context) => AddDebriefNoteCubit(debriefService: getIt(), localDBService: getIt(),),
+        create:
+            (context) => AddDebriefNoteCubit(
+              debriefService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<GetCoursesCubit>(
         create:
@@ -269,10 +279,18 @@ class Singletons {
             ),
       ),
       BlocProvider<GetMissionQuestionsCubit>(
-        create: (context) => GetMissionQuestionsCubit(debriefService: getIt(), localDBService: getIt(),),
+        create:
+            (context) => GetMissionQuestionsCubit(
+              debriefService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<AddMissionQuestionCubit>(
-        create: (context) => AddMissionQuestionCubit(debriefService: getIt(), localDBService: getIt(),),
+        create:
+            (context) => AddMissionQuestionCubit(
+              debriefService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<GetPrayerPromptsCubit>(
         create:

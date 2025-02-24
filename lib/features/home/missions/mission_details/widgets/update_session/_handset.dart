@@ -4,7 +4,6 @@ import 'package:app/features/home/missions/cubit/update_mission_session_cubit.da
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/models/remote/prf_member.dart';
 import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
@@ -100,7 +99,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               stream: getIt<LocalDBService>().getMissionSubscriptions(
                 missionUlid: widget.missionUlid,
               ),
-              loading: PRFLinearProgressIndicator(),
+              loading: const PRFLinearProgressIndicator(),
               widget:
                   (context, subscribers) => LayoutBuilder(
                     builder: (context, constraints) {
@@ -113,8 +112,8 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                 .map(
                                   (subscriber) =>
                                       DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member!,
-                                        label: subscriber.member!.fullName!,
+                                        value: subscriber.member,
+                                        label: subscriber.member.fullName!,
                                       ),
                                 )
                                 .toList(),
@@ -163,7 +162,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               stream: getIt<LocalDBService>().getMissionSubscriptions(
                 missionUlid: widget.missionUlid,
               ),
-              loading: PRFLinearProgressIndicator(),
+              loading: const PRFLinearProgressIndicator(),
               widget:
                   (context, subscribers) => LayoutBuilder(
                     builder: (context, constraints) {
@@ -176,8 +175,8 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                 .map(
                                   (subscriber) =>
                                       DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member!,
-                                        label: subscriber.member!.fullName!,
+                                        value: subscriber.member,
+                                        label: subscriber.member.fullName!,
                                       ),
                                 )
                                 .toList(),

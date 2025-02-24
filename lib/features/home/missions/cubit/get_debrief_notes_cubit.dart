@@ -1,5 +1,4 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -26,7 +25,7 @@ class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
     emit(const GetDebriefNotesState.loading());
     try {
       if (!refresh) {
-        emit(GetDebriefNotesState.loaded());
+        emit(const GetDebriefNotesState.loaded());
         return;
       }
       final debriefNotes = await _debriefService.getDebriefNotes(
@@ -36,7 +35,7 @@ class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
         debriefNotes: debriefNotes,
         missionUlid: missionUlid,
       );
-      emit(GetDebriefNotesState.loaded());
+      emit(const GetDebriefNotesState.loaded());
     } on Failure catch (e) {
       emit(GetDebriefNotesState.error(e.message));
     } catch (e) {

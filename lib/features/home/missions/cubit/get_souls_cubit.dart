@@ -1,5 +1,4 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -26,13 +25,16 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
     emit(const GetSoulsState.loading());
     try {
       if (!refresh) {
-        emit(GetSoulsState.loaded());
+        emit(const GetSoulsState.loaded());
         return;
       }
 
       final souls = await _soulService.getSouls(missionUlid: missionUlid);
-      await _localDBService.persistSouls(souls: souls, missionUlid: missionUlid);
-      emit(GetSoulsState.loaded());
+      await _localDBService.persistSouls(
+        souls: souls,
+        missionUlid: missionUlid,
+      );
+      emit(const GetSoulsState.loaded());
     } on Failure catch (e) {
       emit(GetSoulsState.error(e.message));
     } catch (e) {

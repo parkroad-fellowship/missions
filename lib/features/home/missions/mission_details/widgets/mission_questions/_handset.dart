@@ -1,7 +1,6 @@
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_question.dart';
-import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,6 @@ class _MissionQuestionsViewHandsetState
                 ),
           ),
     );
-    ;
   }
 }
 
