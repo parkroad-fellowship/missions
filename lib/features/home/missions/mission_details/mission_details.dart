@@ -5,7 +5,10 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 @RoutePage()
 class MissionsDetailsPage extends StatelessWidget {
-  const MissionsDetailsPage({required this.missionUlid, super.key});
+  const MissionsDetailsPage({
+    @PathParam('missionUlid') required this.missionUlid,
+    super.key,
+  });
 
   final String missionUlid;
 
