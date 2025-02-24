@@ -108,7 +108,46 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                   final courses = snapshot.data;
 
                   if (courses != null && courses.isEmpty) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    return SliverFillRemaining(
+                      child: RefreshIndicator(
+                        onRefresh:
+                            () => context.read<GetCoursesCubit>().getCourses(),
+                        child: Column(
+                          children: [
+                            const Spacer(),
+                            const Icon(Icons.directions_walk),
+                            Center(
+                              child: Text(
+                                l10n.noCourses,
+                                style: PRFText.theme().headlineMedium!.copyWith(
+                                  color: PRFApp.theme().kDullGreyColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: MediaQuery.sizeOf(context).height * 0.05,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    l10n.pleaseWait,
+                                    style: PRFText.theme().displayLarge!
+                                        .copyWith(
+                                          color: PRFApp.theme().kPrimaryColorV2,
+                                          fontSize: 14,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
+                        ),
+                      ),
+                    );
                   }
 
                   return SliverList.separated(
