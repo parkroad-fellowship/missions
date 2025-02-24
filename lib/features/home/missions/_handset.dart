@@ -24,7 +24,7 @@ class MissionsPageHandset extends StatefulWidget {
 class _MissionsPageHandsetState extends State<MissionsPageHandset> {
   @override
   void initState() {
-    context.read<GetMissionsCubit>().getMissions();
+    // context.read<GetMissionsCubit>().getMissions();
     context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
     super.initState();
   }
@@ -73,6 +73,22 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                     orElse: SizedBox.shrink,
                   ),
             ),
+            SizedBox(width: 8),
+
+            BlocBuilder<
+              GetMemberMissionSubscriptionsCubit,
+              GetMemberMissionSubscriptionsState
+            >(
+              builder:
+                  (context, state) => state.maybeWhen(
+                    loading:
+                        () => const SizedBox.square(
+                          dimension: 24,
+                          child: PRFCircularProgressIndicator(),
+                        ),
+                    orElse: SizedBox.shrink,
+                  ),
+            ),
             SizedBox(width: 16),
           ],
           backgroundColor: Colors.transparent,
@@ -95,9 +111,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
               stream: getIt<LocalDBService>().getMissions(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const SliverToBoxAdapter(
-                    child: PRFCircularProgressIndicator(),
-                  );
+                  return PRFCircularProgressIndicator();
                 }
 
                 final missions = snapshot.data;
@@ -166,96 +180,87 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
               },
             ),
 
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: BlocBuilder<
-                GetMemberMissionSubscriptionsCubit,
-                GetMemberMissionSubscriptionsState
-              >(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse:
-                        () => const Center(child: CircularProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    loaded: (missions) {
-                      if (missions.isEmpty) {
-                        return RefreshIndicator(
-                          onRefresh:
-                              () =>
-                                  context
-                                      .read<
-                                        GetMemberMissionSubscriptionsCubit
-                                      >()
-                                      .getSubscriptions(),
-                          child: Column(
+            StreamBuilder(
+              stream: getIt<LocalDBService>().getMemberMissions(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return PRFCircularProgressIndicator();
+                }
+
+                final missions = snapshot.data;
+
+                Logger().e(missions);
+
+                if (missions != null && missions.isEmpty) {
+                  return RefreshIndicator(
+                    onRefresh:
+                        () =>
+                            context
+                                .read<GetMemberMissionSubscriptionsCubit>()
+                                .getSubscriptions(),
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        const Icon(Icons.directions_walk),
+                        Center(
+                          child: Text(
+                            l10n.noMissions,
+                            style: PRFText.theme().headlineMedium!.copyWith(
+                              color: PRFApp.theme().kDullGreyColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.05,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Spacer(),
-                              const Icon(Icons.directions_walk),
-                              Center(
-                                child: Text(
-                                  l10n.noMissions,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kDullGreyColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                              Text(
+                                l10n.pleaseWait,
+                                style: PRFText.theme().displayLarge!.copyWith(
+                                  color: PRFApp.theme().kPrimaryColorV2,
+                                  fontSize: 14,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      l10n.pleaseWait,
-                                      style: PRFText.theme().displayLarge!
-                                          .copyWith(
-                                            color:
-                                                PRFApp.theme().kPrimaryColorV2,
-                                            fontSize: 14,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
                             ],
                           ),
-                        );
-                      }
-                      return RefreshIndicator(
-                        onRefresh:
-                            () =>
-                                context.read<GetMissionsCubit>().getMissions(),
-                        child: ListView.separated(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: missions.length,
-                          separatorBuilder:
-                              (context, index) => SizedBox(height: 16.h),
-                          itemBuilder: (context, index) {
-                            final mission = missions[index].mission;
-                            return const SizedBox.shrink();
-                            // TODO: Undo this
-                            // return MissionActionCard(
-                            //   mission: mission!,
-                            //   status: missions[index].status,
-                            //   onTap:
-                            //       () => context.router.push(
-                            //         MissionsDetailsRoute(
-                            //           mission: missions[index].mission!,
-                            //         ),
-                            //       ),
-                            // );
-                          },
                         ),
+                        const Spacer(),
+                      ],
+                    ),
+                  );
+                }
+
+                return RefreshIndicator(
+                  onRefresh:
+                      () =>
+                          context
+                              .read<GetMemberMissionSubscriptionsCubit>()
+                              .getSubscriptions(),
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: missions!.length,
+                    separatorBuilder:
+                        (context, index) => SizedBox(height: 16.h),
+                    itemBuilder: (context, index) {
+                      final mission = missions[index]!;
+                      return MissionActionCard(
+                        mission: mission,
+                        status:
+                            mission.loggedInMemberMissionSubscription!.status,
+                        onTap:
+                            () => context.router.push(
+                              MissionsDetailsRoute(
+                                missionUlid: missions[index].ulid!,
+                              ),
+                            ),
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ],
         ),

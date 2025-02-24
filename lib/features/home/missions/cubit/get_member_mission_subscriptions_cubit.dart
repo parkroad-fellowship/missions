@@ -12,13 +12,16 @@ class GetMemberMissionSubscriptionsCubit
   GetMemberMissionSubscriptionsCubit({
     required MissionService missionService,
     required HiveService hiveService,
+    required LocalDBService localDBService,
   }) : super(const GetMemberMissionSubscriptionsState.initial()) {
     _missionService = missionService;
     _hiveService = hiveService;
+    _localDBService = localDBService;
   }
 
   late MissionService _missionService;
   late HiveService _hiveService;
+  late LocalDBService _localDBService;
 
   Future<void> getSubscriptions() async {
     emit(const GetMemberMissionSubscriptionsState.loading());
@@ -27,8 +30,13 @@ class GetMemberMissionSubscriptionsCubit
       final missionSubscriptions = await _missionService.getSubscriptions(
         includes:
             'mission.missionType,mission.school,'
-            'mission.school.schoolContacts.contactType',
+            'mission.school.schoolContacts.contactType,'
+            'mission.weatherForecasts',
         memberUlid: member.ulid,
+      );
+
+      await _localDBService.persistMemberMissions(
+        missionSubscriptions: missionSubscriptions,
       );
       emit(
         GetMemberMissionSubscriptionsState.loaded(

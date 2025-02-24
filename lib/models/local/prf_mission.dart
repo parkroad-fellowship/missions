@@ -45,7 +45,7 @@ class PRFLocalMission {
 
   final String? missionPrepNotes;
   final String? theme;
-  final PRFLocalMissionSubscription? loggedInMemberMissionSubscription;
+   PRFLocalMissionSubscription? loggedInMemberMissionSubscription;
   final PRFLocalSchool? school;
   final PRFLocalMissionType? missionType;
   final List<PRFLocalWeatherForecast>? weatherForecasts;
