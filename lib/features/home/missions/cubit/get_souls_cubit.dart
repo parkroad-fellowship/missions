@@ -8,18 +8,31 @@ part 'get_souls_state.dart';
 part 'get_souls_cubit.freezed.dart';
 
 class GetSoulsCubit extends Cubit<GetSoulsState> {
-  GetSoulsCubit({required SoulService soulService})
-    : super(const GetSoulsState.initial()) {
+  GetSoulsCubit({
+    required SoulService soulService,
+    required LocalDBService localDBService,
+  }) : super(const GetSoulsState.initial()) {
     _soulService = soulService;
+    _localDBService = localDBService;
   }
 
   late SoulService _soulService;
+  late LocalDBService _localDBService;
 
-  Future<void> getSouls({required String missionUlid}) async {
+  Future<void> getSouls({
+    required String missionUlid,
+    bool refresh = false,
+  }) async {
     emit(const GetSoulsState.loading());
     try {
+      if (!refresh) {
+        emit(GetSoulsState.loaded());
+        return;
+      }
+
       final souls = await _soulService.getSouls(missionUlid: missionUlid);
-      emit(GetSoulsState.loaded(souls: souls));
+      await _localDBService.persistSouls(souls: souls, missionUlid: missionUlid);
+      emit(GetSoulsState.loaded());
     } on Failure catch (e) {
       emit(GetSoulsState.error(e.message));
     } catch (e) {

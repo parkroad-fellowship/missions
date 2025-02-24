@@ -157,7 +157,7 @@ class Singletons {
             ),
       ),
       BlocProvider<GetSoulsCubit>(
-        create: (context) => GetSoulsCubit(soulService: getIt()),
+        create: (context) => GetSoulsCubit(soulService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetClassGroupsCubit>(
         create:
@@ -167,7 +167,7 @@ class Singletons {
       BlocProvider<AddSoulCubit>(
         create:
             (context) =>
-                AddSoulCubit(soulService: getIt(), hiveService: getIt()),
+                AddSoulCubit(soulService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetDebriefNotesCubit>(
         create: (context) => GetDebriefNotesCubit(debriefService: getIt(), localDBService: getIt(),),

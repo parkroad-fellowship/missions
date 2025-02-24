@@ -12,14 +12,14 @@ part 'add_soul_cubit.freezed.dart';
 class AddSoulCubit extends Cubit<AddSoulState> {
   AddSoulCubit({
     required SoulService soulService,
-    required HiveService hiveService,
+    required LocalDBService localDBService,
   }) : super(const AddSoulState.initial()) {
     _soulService = soulService;
-    _hiveService = hiveService;
+    _localDBService = localDBService;
   }
 
   late SoulService _soulService;
-  late HiveService _hiveService;
+  late LocalDBService _localDBService;
 
   Future<void> addSoul({
     required String missionUlid,
@@ -35,7 +35,11 @@ class AddSoulCubit extends Cubit<AddSoulState> {
           fullName: fullName,
         ),
       );
-      _hiveService.persistSoul(soul, missionUlid);
+
+      await _localDBService.persistSouls(
+        souls: [soul],
+        missionUlid: missionUlid,
+      );
       emit(AddSoulState.loaded(soul: soul));
     } on Failure catch (e) {
       emit(AddSoulState.error(e.message));

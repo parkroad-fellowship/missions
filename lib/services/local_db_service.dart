@@ -14,6 +14,7 @@ import 'package:app/models/local/prf_media_upload.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/prf_mission_question.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
+import 'package:app/models/local/prf_soul.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_announcement.dart';
@@ -28,6 +29,7 @@ import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
+import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/utils/_index.dart';
@@ -133,6 +135,12 @@ abstract class LocalDBService {
   Stream<List<PRFLocalDebriefNote>> getDebriefNotes({
     required String missionUlid,
   });
+
+  Future<void> persistSouls({
+    required List<PRFSoul> souls,
+    required String missionUlid,
+  });
+  Stream<List<PRFLocalSoul>> getSouls({required String missionUlid});
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -155,6 +163,7 @@ class LocalDBServiceImpl implements LocalDBService {
       PRFLocalMissionSubscriptionSchema,
       PRFLocalDebriefNoteSchema,
       PRFLocalMissionQuestionSchema,
+      PRFLocalSoulSchema,
     ];
 
     return Isar.open(schemas, directory: dir.path);
@@ -1034,6 +1043,46 @@ class LocalDBServiceImpl implements LocalDBService {
         );
 
         Logger().i('persistMissionQuestions :: Persisted');
+      }
+    });
+  }
+
+  @override
+  Stream<List<PRFLocalSoul>> getSouls({required String missionUlid}) async* {
+    await for (final localMissionQuestions
+        in prfDBInstance.pRFLocalSouls
+            .filter()
+            .missionUlidEqualTo(missionUlid)
+            .sortByCreatedAtDesc()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
+      yield localMissionQuestions;
+    }
+  }
+
+  @override
+  Future<void> persistSouls({
+    required List<PRFSoul> souls,
+    required String missionUlid,
+  }) async {
+    Logger().i('persistSouls :: Start');
+    await prfDBInstance.writeTxn(() async {
+      for (final soul in souls) {
+        await prfDBInstance.pRFLocalSouls.put(
+          PRFLocalSoul(
+            ulid: soul.ulid,
+            createdAt: soul.createdAt,
+            missionUlid: missionUlid,
+            fullName: soul.fullName,
+            classGroup: PRFLocalClassGroup(
+              ulid: soul.classGroup?.ulid,
+              name: soul.classGroup?.name,
+            ),
+          ),
+        );
+
+        Logger().i('persistSouls :: Persisted');
       }
     });
   }

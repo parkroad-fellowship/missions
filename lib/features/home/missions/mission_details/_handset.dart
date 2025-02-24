@@ -73,6 +73,10 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       missionUlid: missionUlid,
       refresh: true,
     );
+    context.read<GetSoulsCubit>().getSouls(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
   }
 
   @override
