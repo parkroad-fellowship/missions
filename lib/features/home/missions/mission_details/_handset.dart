@@ -20,7 +20,6 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/circular_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
@@ -32,9 +31,9 @@ import 'package:logger/logger.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class MissionsDetailsPageHandset extends StatefulWidget {
-  const MissionsDetailsPageHandset({required this.mission, super.key});
+  const MissionsDetailsPageHandset({required this.missionUlid, super.key});
 
-  final PRFMission mission;
+  final String missionUlid;
 
   @override
   State<MissionsDetailsPageHandset> createState() =>
@@ -43,7 +42,7 @@ class MissionsDetailsPageHandset extends StatefulWidget {
 
 class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     with SingleTickerProviderStateMixin {
-  PRFMission get mission => widget.mission;
+  String get missionUlid => widget.missionUlid;
 
   int tabCount = 8;
 
@@ -156,14 +155,14 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        MissionDetailsView(mission: mission),
-                        SubscribersView(missionUlid: mission.ulid),
-                        SessionsView(missionUlid: mission.ulid),
-                        SoulsView(missionUlid: mission.ulid),
-                        DebriefNotesView(missionUlid: mission.ulid),
-                        MissionQuestionsView(missionUlid: mission.ulid),
-                        ExpensesView(missionUlid: mission.ulid),
-                        GalleryView(missionUlid: mission.ulid),
+                        MissionDetailsView(missionUlid: missionUlid),
+                        SubscribersView(missionUlid: missionUlid),
+                        SessionsView(missionUlid: missionUlid),
+                        SoulsView(missionUlid: missionUlid),
+                        DebriefNotesView(missionUlid: missionUlid),
+                        MissionQuestionsView(missionUlid: missionUlid),
+                        ExpensesView(missionUlid: missionUlid),
+                        GalleryView(missionUlid: missionUlid),
                       ],
                     ),
                   ),
@@ -196,11 +195,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               onPressed:
                   () async => context
                       .read<SubscribeCubit>()
-                      .subscribe(missionUlid: mission.ulid)
+                      .subscribe(missionUlid: missionUlid)
                       .then((_) {
                         if (context.mounted) {
                           context.read<GetSubscribersCubit>().getSubscriptions(
-                            missionUlid: mission.ulid,
+                            missionUlid: missionUlid,
                           );
                         }
                       }),
@@ -241,7 +240,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddSessionView(missionUlid: mission.ulid),
+                        child: AddSessionView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -249,7 +248,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetMissionSessionsCubit>().getMissionSessions(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -264,7 +263,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddSoulView(missionUlid: mission.ulid),
+                        child: AddSoulView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -272,7 +271,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetSoulsCubit>().getSouls(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -288,7 +287,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
                         child: AddDebriefNoteViewHandset(
-                          missionUlid: mission.ulid,
+                          missionUlid: missionUlid,
                         ),
                       ),
                     ),
@@ -297,7 +296,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetDebriefNotesCubit>().getDebriefNotes(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -312,9 +311,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddMissionQuestionView(
-                          missionUlid: mission.ulid,
-                        ),
+                        child: AddMissionQuestionView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -322,7 +319,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetMissionQuestionsCubit>().getMissionQuestions(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -337,7 +334,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddExpenseView(missionUlid: mission.ulid),
+                        child: AddExpenseView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -345,7 +342,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetMissionExpenseCubit>().getMissionExpense(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -361,7 +358,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddMediaView(missionUlid: mission.ulid),
+                        child: AddMediaView(missionUlid: missionUlid),
                       ),
                     ),
                   ];

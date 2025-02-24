@@ -14,8 +14,8 @@ class PRFWeatherForecast with _$PRFWeatherForecast {
     @JsonKey(name: 'precipitation_probability')
     PRFPrecipitationProbability precipitationProbability,
     PRFHumidity humidity, {
-    @JsonKey(name: 'dressing_recommendations') String? dressingRecommendations,
-    @JsonKey(name: 'activity_recommendations') String? activityRecommendations,
+   @Default('N/A') @JsonKey(name: 'dressing_recommendations') String dressingRecommendations,
+    @Default('N/A') @JsonKey(name: 'activity_recommendations') String activityRecommendations,
   }) = _PRFWeatherForecast;
 
   factory PRFWeatherForecast.fromJson(Map<String, dynamic> json) =>

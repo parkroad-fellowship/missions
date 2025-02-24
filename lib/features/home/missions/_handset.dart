@@ -2,14 +2,17 @@ import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/models/local/prf_mission.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 
 class MissionsPageHandset extends StatefulWidget {
   const MissionsPageHandset({super.key});
@@ -58,6 +61,20 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                   ),
             ),
           ),
+          actions: [
+            BlocBuilder<GetMissionsCubit, GetMissionsState>(
+              builder:
+                  (context, state) => state.maybeWhen(
+                    loading:
+                        () => const SizedBox.square(
+                          dimension: 24,
+                          child: PRFCircularProgressIndicator(),
+                        ),
+                    orElse: SizedBox.shrink,
+                  ),
+            ),
+            SizedBox(width: 16),
+          ],
           backgroundColor: Colors.transparent,
           bottom: TabBar(
             dividerColor: Colors.white,
@@ -74,87 +91,81 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
         ),
         body: TabBarView(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: BlocBuilder<GetMissionsCubit, GetMissionsState>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse:
-                        () => const Center(child: CircularProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    loaded: (missions) {
-                      if (missions.isEmpty) {
-                        return RefreshIndicator(
-                          onRefresh:
-                              () =>
-                                  context
-                                      .read<GetMissionsCubit>()
-                                      .getMissions(),
-                          child: Column(
+            StreamBuilder(
+              stream: getIt<LocalDBService>().getMissions(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SliverToBoxAdapter(
+                    child: PRFCircularProgressIndicator(),
+                  );
+                }
+
+                final missions = snapshot.data;
+
+                Logger().e(missions);
+
+                if (missions != null && missions.isEmpty) {
+                  return RefreshIndicator(
+                    onRefresh:
+                        () => context.read<GetMissionsCubit>().getMissions(),
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        const Icon(Icons.directions_walk),
+                        Center(
+                          child: Text(
+                            l10n.noMissions,
+                            style: PRFText.theme().headlineMedium!.copyWith(
+                              color: PRFApp.theme().kDullGreyColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.05,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Spacer(),
-                              const Icon(Icons.directions_walk),
-                              Center(
-                                child: Text(
-                                  l10n.noMissions,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kDullGreyColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                              Text(
+                                l10n.pleaseWait,
+                                style: PRFText.theme().displayLarge!.copyWith(
+                                  color: PRFApp.theme().kPrimaryColorV2,
+                                  fontSize: 14,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      l10n.pleaseWait,
-                                      style: PRFText.theme().displayLarge!
-                                          .copyWith(
-                                            color:
-                                                PRFApp.theme().kPrimaryColorV2,
-                                            fontSize: 14,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
                             ],
                           ),
-                        );
-                      }
-                      return RefreshIndicator(
-                        onRefresh:
-                            () =>
-                                context.read<GetMissionsCubit>().getMissions(),
-                        child: ListView.separated(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: missions.length,
-                          separatorBuilder:
-                              (context, index) => SizedBox(height: 16.h),
-                          itemBuilder:
-                              (context, index) => MissionActionCard(
-                                mission: missions[index],
-                                onTap:
-                                    () => context.router.push(
-                                      MissionsDetailsRoute(
-                                        mission: missions[index],
-                                      ),
-                                    ),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  );
+                }
+
+                return RefreshIndicator(
+                  onRefresh:
+                      () => context.read<GetMissionsCubit>().getMissions(),
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: missions!.length,
+                    separatorBuilder:
+                        (context, index) => SizedBox(height: 16.h),
+                    itemBuilder:
+                        (context, index) => MissionActionCard(
+                          mission: missions[index],
+                          onTap:
+                              () => context.router.push(
+                                MissionsDetailsRoute(
+                                  missionUlid: missions[index].ulid,
+                                ),
                               ),
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: BlocBuilder<
@@ -226,16 +237,18 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset> {
                               (context, index) => SizedBox(height: 16.h),
                           itemBuilder: (context, index) {
                             final mission = missions[index].mission;
-                            return MissionActionCard(
-                              mission: mission!,
-                              status: missions[index].status,
-                              onTap:
-                                  () => context.router.push(
-                                    MissionsDetailsRoute(
-                                      mission: missions[index].mission!,
-                                    ),
-                                  ),
-                            );
+                            return const SizedBox.shrink();
+                            // TODO: Undo this
+                            // return MissionActionCard(
+                            //   mission: mission!,
+                            //   status: missions[index].status,
+                            //   onTap:
+                            //       () => context.router.push(
+                            //         MissionsDetailsRoute(
+                            //           mission: missions[index].mission!,
+                            //         ),
+                            //       ),
+                            // );
                           },
                         ),
                       );
@@ -259,7 +272,7 @@ class MissionActionCard extends StatelessWidget {
     super.key,
   });
 
-  final PRFMission mission;
+  final PRFLocalMission mission;
 
   final PRFMissionSubscriptionStatus? status;
   final void Function()? onTap;
@@ -289,7 +302,7 @@ class MissionActionCard extends StatelessWidget {
                   if (status != null)
                     Text(status!.name, style: PRFText.theme().bodySmall),
                   Text(
-                    mission.school!.name,
+                    mission.school!.name!,
                     style: PRFText.theme().displayLarge?.copyWith(
                       color: PRFApp.theme().kPrimaryColorV2,
                       fontWeight: FontWeight.w600,
@@ -304,7 +317,7 @@ class MissionActionCard extends StatelessWidget {
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    mission.missionType!.name,
+                    mission.missionType!.name!,
                     style: PRFText.theme().headlineMedium?.copyWith(
                       color: PRFApp.theme().kPrimaryColorV2,
                       fontWeight: FontWeight.w600,

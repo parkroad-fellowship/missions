@@ -122,7 +122,11 @@ class Singletons {
                 SignOutCubit(hiveService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetMissionsCubit>(
-        create: (context) => GetMissionsCubit(missionService: getIt()),
+        create:
+            (context) => GetMissionsCubit(
+              missionService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<GetSubscribersCubit>(
         create: (context) => GetSubscribersCubit(missionService: getIt()),

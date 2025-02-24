@@ -72,51 +72,40 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                         ),
                       ),
                       const Spacer(),
-                      StreamBuilder<PRFLocalCourse>(
+                      SingleStreamWrapper<PRFLocalCourse>(
                         stream: getIt<LocalDBService>().getCourse(
                           courseUlid: courseUlid,
                         ),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(child: Container());
-                          }
-                          final course = snapshot.data;
-                          return SizedBox(
-                            child: Text(
-                              course!.name,
-                              style: PRFText.theme().displayLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
+                        widget:
+                            (context, course) => SizedBox(
+                              child: Text(
+                                course.name,
+                                style: PRFText.theme().displayLarge?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              overflow: TextOverflow.ellipsis,
                             ),
-                          );
-                        },
                       ),
+
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
-                        child: StreamBuilder<PRFLocalCourse>(
+                        child: SingleStreamWrapper<PRFLocalCourse>(
                           stream: getIt<LocalDBService>().getCourse(
                             courseUlid: courseUlid,
                           ),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            final course = snapshot.data;
-                            return Text(
-                              l10n.percentage(
-                                course!.courseMember?.percentComplete!
-                                        .toInt() ??
-                                    0,
+                          widget:
+                              (context, course) => Text(
+                                l10n.percentage(
+                                  course.courseMember?.percentComplete!
+                                          .toInt() ??
+                                      0,
+                                ),
+                                style: PRFText.theme().displaySmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              style: PRFText.theme().displaySmall?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            );
-                          },
                         ),
                       ),
                     ],
@@ -127,25 +116,20 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
 
               SliverToBoxAdapter(
-                child: StreamBuilder<PRFLocalCourse>(
+                child: SingleStreamWrapper<PRFLocalCourse>(
                   stream: getIt<LocalDBService>().getCourse(
                     courseUlid: courseUlid,
                   ),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final course = snapshot.data;
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40.w),
-                      child: Text(
-                        course!.description,
-                        style: PRFText.theme().bodySmall?.copyWith(
-                          fontSize: 16,
+                  widget:
+                      (context, course) => Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40.w),
+                        child: Text(
+                          course.description,
+                          style: PRFText.theme().bodySmall?.copyWith(
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    );
-                  },
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),

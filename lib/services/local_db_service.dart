@@ -6,6 +6,7 @@ import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/models/local/prf_media_upload.dart';
+import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
@@ -16,6 +17,7 @@ import 'package:app/models/remote/prf_faq.dart';
 import 'package:app/models/remote/prf_faq_category.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
@@ -85,6 +87,10 @@ abstract class LocalDBService {
     required List<PRFFaqCategory> faqCategories,
   });
   Future<List<PRFLocalFaqCategory>> retreiveFaqCategories();
+
+  Future<void> persistMissions({required List<PRFMission> missions});
+  Stream<List<PRFLocalMission>> getMissions();
+  Stream<PRFLocalMission> getMission({required String missionUlid});
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -102,6 +108,7 @@ class LocalDBServiceImpl implements LocalDBService {
       PRFLocalMediaUploadSchema,
       PRFLocalFaqSchema,
       PRFLocalFaqCategorySchema,
+      PRFLocalMissionSchema,
     ];
 
     return Isar.open(schemas, directory: dir.path);
@@ -639,5 +646,135 @@ class LocalDBServiceImpl implements LocalDBService {
               .answerWordsElementContains(query),
         )
         .findAll();
+  }
+
+  @override
+  Stream<PRFLocalMission> getMission({required String missionUlid}) async* {
+    await for (final localMission
+        in prfDBInstance.pRFLocalMissions
+            .filter()
+            .ulidEqualTo(missionUlid)
+            .sortByCreatedAt()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
+      yield localMission.first;
+    }
+  }
+
+  @override
+  Stream<List<PRFLocalMission>> getMissions() async* {
+    await for (final localMission
+        in prfDBInstance.pRFLocalMissions
+            .filter()
+            .idGreaterThan(0)
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
+      yield localMission;
+    }
+  }
+
+  @override
+  Future<void> persistMissions({required List<PRFMission> missions}) async {
+    await prfDBInstance.writeTxn(() async {
+      for (final mission in missions) {
+        final missionType = mission.missionType!;
+        final school = mission.school!;
+        final contacts = mission.school!.contacts!;
+        final weatherForecasts = mission.weatherForecasts;
+
+        await prfDBInstance.pRFLocalMissions.put(
+          PRFLocalMission(
+            ulid: mission.ulid,
+            startDate: mission.startDate,
+            startTime: mission.startTime,
+            endDate: mission.endDate,
+            endTime: mission.endTime,
+            missionPrepNotes: mission.missionPrepNotes,
+            theme: mission.theme,
+            capacity: mission.capacity,
+            status: mission.status,
+            missionSubscriptionsNeeded: mission.missionSubscriptionsNeeded,
+            createdAt: mission.createdAt,
+            updatedAt: mission.updatedAt,
+            missionType: PRFLocalMissionType(
+              ulid: missionType.ulid,
+              name: missionType.name,
+              isActive: missionType.isActive,
+              createdAt: missionType.createdAt,
+              updatedAt: missionType.updatedAt,
+            ),
+            school: PRFLocalSchool(
+              ulid: school.ulid,
+              name: school.name,
+              address: school.address,
+              staticDuration: school.staticDuration,
+              totalStudents: school.totalStudents,
+              createdAt: school.createdAt,
+              updatedAt: school.updatedAt,
+              description: school.description,
+              directions: school.directions,
+              distance: school.distance,
+              latitude: school.latitude,
+              longitude: school.longitude,
+              contacts:
+                  contacts
+                      .map(
+                        (contact) => PRFLocalContact(
+                          ulid: contact.ulid,
+                          name: contact.name,
+                          phone: contact.phone,
+                          contactType: PRFLocalContactType(
+                            ulid: contact.contactType!.ulid,
+                            name: contact.contactType!.name,
+                          ),
+                        ),
+                      )
+                      .toList(),
+            ),
+            weatherForecasts:
+                weatherForecasts
+                    .map(
+                      (weatherForecast) => PRFLocalWeatherForecast(
+                        ulid: weatherForecast.ulid,
+                        forecastDate: weatherForecast.forecastDate,
+                        weatherCodeDescription:
+                            weatherForecast.weatherCodeDescription,
+                        temperature: PRFLocalTemperature(
+                          apparentAvg: weatherForecast.temperature.apparentAvg,
+                          apparentMin: weatherForecast.temperature.apparentMin,
+                          apparentMax: weatherForecast.temperature.apparentMax,
+                          avg: weatherForecast.temperature.avg,
+                          min: weatherForecast.temperature.min,
+                          max: weatherForecast.temperature.max,
+                        ),
+                        visibility: PRFLocalVisibility(
+                          avg: weatherForecast.visibility.avg,
+                          min: weatherForecast.visibility.min,
+                          max: weatherForecast.visibility.max,
+                        ),
+                        precipitationProbability:
+                            PRFLocalPrecipitationProbability(
+                              avg: weatherForecast.precipitationProbability.avg,
+                              min: weatherForecast.precipitationProbability.min,
+                              max: weatherForecast.precipitationProbability.max,
+                            ),
+                        humidity: PRFLocalHumidity(
+                          avg: weatherForecast.humidity.avg,
+                          min: weatherForecast.humidity.min,
+                          max: weatherForecast.humidity.max,
+                        ),
+                        dressingRecommendations:
+                            weatherForecast.dressingRecommendations,
+                        activityRecommendations:
+                            weatherForecast.activityRecommendations,
+                      ),
+                    )
+                    .toList(),
+          ),
+        );
+      }
+    });
   }
 }
