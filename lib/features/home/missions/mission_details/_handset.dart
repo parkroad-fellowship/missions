@@ -57,10 +57,14 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(length: tabCount, vsync: this);
     _tabController.addListener(_changeTab);
 
-    super.initState();
+    context.read<GetSubscribersCubit>().getSubscriptions(
+      missionUlid: widget.missionUlid,
+      refresh: true,
+    );
   }
 
   @override

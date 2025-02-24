@@ -129,12 +129,19 @@ class Singletons {
             ),
       ),
       BlocProvider<GetSubscribersCubit>(
-        create: (context) => GetSubscribersCubit(missionService: getIt()),
+        create:
+            (context) => GetSubscribersCubit(
+              missionService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<SubscribeCubit>(
         create:
-            (context) =>
-                SubscribeCubit(missionService: getIt(), hiveService: getIt()),
+            (context) => SubscribeCubit(
+              missionService: getIt(),
+              hiveService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<WithdrawCubit>(
         create:

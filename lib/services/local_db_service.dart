@@ -8,6 +8,7 @@ import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/models/local/prf_local_member_mission_subscription.dart';
+import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/local/prf_media_upload.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
@@ -104,6 +105,17 @@ abstract class LocalDBService {
   Stream<List<PRFLocalMission>> get memberMissions;
   Future<void> refreshMemberMissions();
   void disposeMemberMissions();
+
+  Future<void> persistMissionSubscriptions({
+    required List<PRFMissionSubscription> missionSubscriptions,
+    required String missionUlid,
+  });
+  Stream<List<PRFLocalMissionSubscription>> getMissionSubscriptions({
+    required String missionUlid,
+  });
+  Future<List<PRFLocalMissionSubscription>> getMissionSubscriptionsLazy({
+    required String missionUlid,
+  });
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -123,6 +135,7 @@ class LocalDBServiceImpl implements LocalDBService {
       PRFLocalFaqCategorySchema,
       PRFLocalMissionSchema,
       PRFLocalMemberMissionSubscriptionSchema,
+      PRFLocalMissionSubscriptionSchema,
     ];
 
     return Isar.open(schemas, directory: dir.path);
@@ -869,14 +882,14 @@ class LocalDBServiceImpl implements LocalDBService {
           mission = await _getMission(missionSubscription.mission!.ulid);
         }
 
-        mission!
-            .loggedInMemberMissionSubscription = PRFLocalMissionSubscription(
-          ulid: missionSubscription.ulid,
-          status: missionSubscription.status,
-          missionRole: missionSubscription.missionRole,
-          createdAt: missionSubscription.createdAt,
-          updatedAt: missionSubscription.updatedAt,
-        );
+        mission!.loggedInMemberMissionSubscription =
+            PRFLocalMissionMemberSubscription(
+              ulid: missionSubscription.ulid,
+              status: missionSubscription.status,
+              missionRole: missionSubscription.missionRole,
+              createdAt: missionSubscription.createdAt,
+              updatedAt: missionSubscription.updatedAt,
+            );
 
         Logger().i('persistMemberMissions :: Updated ${mission.ulid}');
 
@@ -886,5 +899,57 @@ class LocalDBServiceImpl implements LocalDBService {
       }
     });
     Logger().i('persistMemberMissions :: End');
+  }
+
+  @override
+  Stream<List<PRFLocalMissionSubscription>> getMissionSubscriptions({
+    required String missionUlid,
+  }) async* {
+    await for (final localMissionSubscription
+        in prfDBInstance.pRFLocalMissionSubscriptions
+            .filter()
+            .missionUlidEqualTo(missionUlid)
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
+      yield localMissionSubscription;
+    }
+  }
+
+  @override
+  Future<List<PRFLocalMissionSubscription>> getMissionSubscriptionsLazy({
+    required String missionUlid,
+  }) async {
+    return prfDBInstance.pRFLocalMissionSubscriptions
+        .filter()
+        .missionUlidEqualTo(missionUlid)
+        .findAll();
+  }
+
+  @override
+  Future<void> persistMissionSubscriptions({
+    required List<PRFMissionSubscription> missionSubscriptions,
+    required String missionUlid,
+  }) async {
+    Logger().i('persistMissionSubscriptions :: Start');
+    await prfDBInstance.writeTxn(() async {
+      for (final missionSubscription in missionSubscriptions) {
+        await prfDBInstance.pRFLocalMissionSubscriptions.put(
+          PRFLocalMissionSubscription(
+            ulid: missionSubscription.ulid,
+            missionRole: missionSubscription.missionRole,
+            status: missionSubscription.status,
+            member: PRFLocalMember(
+              ulid: missionSubscription.member!.ulid,
+              fullName: missionSubscription.member!.fullName,
+              phoneNumber: missionSubscription.member!.phoneNumber,
+            ),
+            missionUlid: missionUlid,
+          ),
+        );
+
+        Logger().i('persistMissionSubscriptions :: Persisted');
+      }
+    });
   }
 }

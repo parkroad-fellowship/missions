@@ -45,15 +45,15 @@ class PRFLocalMission {
 
   final String? missionPrepNotes;
   final String? theme;
-  PRFLocalMissionSubscription? loggedInMemberMissionSubscription;
+  PRFLocalMissionMemberSubscription? loggedInMemberMissionSubscription;
   final PRFLocalSchool? school;
   final PRFLocalMissionType? missionType;
   final List<PRFLocalWeatherForecast>? weatherForecasts;
 }
 
 @embedded
-class PRFLocalMissionSubscription {
-  PRFLocalMissionSubscription({
+class PRFLocalMissionMemberSubscription {
+  PRFLocalMissionMemberSubscription({
     this.ulid,
     this.status,
     this.missionRole,

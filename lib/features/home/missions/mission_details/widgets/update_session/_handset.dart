@@ -2,11 +2,14 @@ import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_member.dart';
 import 'package:app/models/remote/prf_mission_session.dart';
+import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -39,8 +42,8 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
 
   bool _isLoading = false;
 
-  PRFMember? selectedFacilitator;
-  PRFMember? selectedSpeaker;
+  PRFLocalMember? selectedFacilitator;
+  PRFLocalMember? selectedSpeaker;
   PRFClassGroup? selectedClassGroup;
   DateTime? startsAt;
   DateTime? endsAt;
@@ -54,8 +57,16 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     context.read<GetClassGroupsCubit>().getClassGroups();
 
     // Initialize the fields with the current values
-    selectedFacilitator = missionSession.facilitator;
-    selectedSpeaker = missionSession.speaker;
+    selectedFacilitator = PRFLocalMember(
+      ulid: missionSession.facilitator?.ulid,
+      fullName: missionSession.facilitator?.fullName,
+      phoneNumber: missionSession.facilitator?.phoneNumber,
+    );
+    selectedSpeaker = PRFLocalMember(
+      ulid: missionSession.speaker?.ulid,
+      fullName: missionSession.speaker?.fullName,
+      phoneNumber: missionSession.speaker?.phoneNumber,
+    );
     selectedClassGroup = missionSession.classGroup;
     startsAt = missionSession.startsAt;
     endsAt = missionSession.endsAt;
@@ -85,62 +96,60 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               ),
             ),
             const SizedBox(height: 5),
-            BlocBuilder<GetSubscribersCubit, GetSubscribersState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded:
-                      (subscribers) => LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFMember>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedFacilitator,
-                            hintText: l10n.facilitator,
-                            dropdownMenuEntries:
-                                subscribers
-                                    .map(
-                                      (subscriber) =>
-                                          DropdownMenuEntry<PRFMember>(
-                                            value: subscriber.member!,
-                                            label: subscriber.member!.fullName,
-                                          ),
-                                    )
-                                    .toList(),
-                            onSelected:
-                                (member) => setState(() {
-                                  selectedFacilitator = member;
-                                }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
-                              hintStyle: PRFText.theme().headlineSmall!
-                                  .copyWith(
-                                    color: PRFApp.theme().kDullGreyColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+            SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
+              stream: getIt<LocalDBService>().getMissionSubscriptions(
+                missionUlid: widget.missionUlid,
+              ),
+              loading: PRFLinearProgressIndicator(),
+              widget:
+                  (context, subscribers) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<PRFLocalMember>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedFacilitator,
+                        hintText: l10n.facilitator,
+                        dropdownMenuEntries:
+                            subscribers
+                                .map(
+                                  (subscriber) =>
+                                      DropdownMenuEntry<PRFLocalMember>(
+                                        value: subscriber.member!,
+                                        label: subscriber.member!.fullName!,
+                                      ),
+                                )
+                                .toList(),
+                        onSelected:
+                            (member) => setState(() {
+                              selectedFacilitator = member;
+                            }),
+                        inputDecorationTheme: InputDecorationTheme(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
-                          );
-                        },
-                      ),
-                );
-              },
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: PRFApp.theme().kSecondaryGreyColor,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 20,
+                          ),
+                          fillColor: PRFApp.theme().kBackgroundColor,
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
+                            color: PRFApp.theme().kDullGreyColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
             ),
+
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
@@ -150,61 +159,58 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               ),
             ),
             const SizedBox(height: 5),
-            BlocBuilder<GetSubscribersCubit, GetSubscribersState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded:
-                      (subscribers) => LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFMember>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedSpeaker,
-                            hintText: l10n.speaker,
-                            dropdownMenuEntries:
-                                subscribers
-                                    .map(
-                                      (subscriber) =>
-                                          DropdownMenuEntry<PRFMember>(
-                                            value: subscriber.member!,
-                                            label: subscriber.member!.fullName,
-                                          ),
-                                    )
-                                    .toList(),
-                            onSelected:
-                                (member) => setState(() {
-                                  selectedSpeaker = member;
-                                }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
-                              hintStyle: PRFText.theme().headlineSmall!
-                                  .copyWith(
-                                    color: PRFApp.theme().kDullGreyColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+            SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
+              stream: getIt<LocalDBService>().getMissionSubscriptions(
+                missionUlid: widget.missionUlid,
+              ),
+              loading: PRFLinearProgressIndicator(),
+              widget:
+                  (context, subscribers) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<PRFLocalMember>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedSpeaker,
+                        hintText: l10n.speaker,
+                        dropdownMenuEntries:
+                            subscribers
+                                .map(
+                                  (subscriber) =>
+                                      DropdownMenuEntry<PRFLocalMember>(
+                                        value: subscriber.member!,
+                                        label: subscriber.member!.fullName!,
+                                      ),
+                                )
+                                .toList(),
+                        onSelected:
+                            (member) => setState(() {
+                              selectedSpeaker = member;
+                            }),
+                        inputDecorationTheme: InputDecorationTheme(
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
-                          );
-                        },
-                      ),
-                );
-              },
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: BorderSide(
+                              color: PRFApp.theme().kSecondaryGreyColor,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 20,
+                          ),
+                          fillColor: PRFApp.theme().kBackgroundColor,
+                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
+                            color: PRFApp.theme().kDullGreyColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
             ),
             const SizedBox(height: 16),
             Align(
@@ -392,7 +398,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                               .updateMissionSession(
                                 missionUlid: widget.missionUlid,
                                 missionSessionUlid: missionSession.ulid,
-                                facilitatorUlid: selectedFacilitator!.ulid,
+                                facilitatorUlid: selectedFacilitator!.ulid!,
                                 startsAt: startsAt!,
                                 endsAt: endsAt!,
                                 notes: _notesController.text,

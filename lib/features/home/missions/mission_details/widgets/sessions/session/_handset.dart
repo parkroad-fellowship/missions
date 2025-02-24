@@ -72,9 +72,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                           icon: const Icon(Icons.arrow_back_ios),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.missionDetailsRoute,
-                              ),
+                              () => context.router.popForced(),
                         ),
                       ),
                       const Spacer(),
