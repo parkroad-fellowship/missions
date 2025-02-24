@@ -65,6 +65,14 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       missionUlid: widget.missionUlid,
       refresh: true,
     );
+    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
+    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
   }
 
   @override

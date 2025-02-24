@@ -1,6 +1,8 @@
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_debrief_note.dart';
 import 'package:app/models/remote/prf_debrief_note.dart';
+import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -32,36 +34,28 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<GetDebriefNotesCubit, GetDebriefNotesState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          orElse: () => const Center(child: CircularProgressIndicator()),
-          loaded: (debriefNotes) {
-            if (debriefNotes.isEmpty) {
-              return Center(
-                child: Text(
-                  l10n.noNotes,
-                  style: PRFText.theme().headlineSmall!.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: PRFApp.theme().kPrimaryColorV2,
-                  ),
-                ),
-              );
-            }
-
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              itemCount: debriefNotes.length,
-              separatorBuilder: (context, index) => SizedBox(height: 8.h),
-              itemBuilder:
-                  (context, index) =>
-                      DebriefNoteCard(debriefNote: debriefNotes[index]),
-            );
-          },
-        );
-      },
+    return SingleStreamWrapper(
+      stream: getIt<LocalDBService>().getDebriefNotes(missionUlid: missionUlid),
+      nullWidget: Center(
+        child: Text(
+          l10n.noNotes,
+          style: PRFText.theme().headlineSmall!.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: PRFApp.theme().kPrimaryColorV2,
+          ),
+        ),
+      ),
+      widget:
+          (context, debriefNotes) => ListView.separated(
+            shrinkWrap: true,
+            physics: const ScrollPhysics(),
+            itemCount: debriefNotes.length,
+            separatorBuilder: (context, index) => SizedBox(height: 8.h),
+            itemBuilder:
+                (context, index) =>
+                    DebriefNoteCard(debriefNote: debriefNotes[index]),
+          ),
     );
   }
 }
@@ -69,7 +63,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
 class DebriefNoteCard extends StatelessWidget {
   const DebriefNoteCard({required this.debriefNote, super.key});
 
-  final PRFDebriefNote debriefNote;
+  final PRFLocalDebriefNote debriefNote;
 
   @override
   Widget build(BuildContext context) {

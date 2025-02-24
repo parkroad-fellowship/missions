@@ -4,6 +4,7 @@ import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
+import 'package:app/models/local/prf_debrief_note.dart';
 import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
@@ -11,17 +12,20 @@ import 'package:app/models/local/prf_local_member_mission_subscription.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/local/prf_media_upload.dart';
 import 'package:app/models/local/prf_mission.dart';
+import 'package:app/models/local/prf_mission_question.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
+import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/models/remote/prf_faq.dart';
 import 'package:app/models/remote/prf_faq_category.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
@@ -113,7 +117,20 @@ abstract class LocalDBService {
   Stream<List<PRFLocalMissionSubscription>> getMissionSubscriptions({
     required String missionUlid,
   });
-  Future<List<PRFLocalMissionSubscription>> getMissionSubscriptionsLazy({
+
+  Future<void> persistMissionQuestions({
+    required List<PRFMissionQuestion> missionQuestions,
+    required String missionUlid,
+  });
+  Stream<List<PRFLocalMissionQuestion>> getMissionQuestions({
+    required String missionUlid,
+  });
+
+  Future<void> persistDebriefNotes({
+    required List<PRFDebriefNote> debriefNotes,
+    required String missionUlid,
+  });
+  Stream<List<PRFLocalDebriefNote>> getDebriefNotes({
     required String missionUlid,
   });
 }
@@ -136,6 +153,8 @@ class LocalDBServiceImpl implements LocalDBService {
       PRFLocalMissionSchema,
       PRFLocalMemberMissionSubscriptionSchema,
       PRFLocalMissionSubscriptionSchema,
+      PRFLocalDebriefNoteSchema,
+      PRFLocalMissionQuestionSchema,
     ];
 
     return Isar.open(schemas, directory: dir.path);
@@ -917,16 +936,6 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Future<List<PRFLocalMissionSubscription>> getMissionSubscriptionsLazy({
-    required String missionUlid,
-  }) async {
-    return prfDBInstance.pRFLocalMissionSubscriptions
-        .filter()
-        .missionUlidEqualTo(missionUlid)
-        .findAll();
-  }
-
-  @override
   Future<void> persistMissionSubscriptions({
     required List<PRFMissionSubscription> missionSubscriptions,
     required String missionUlid,
@@ -949,6 +958,82 @@ class LocalDBServiceImpl implements LocalDBService {
         );
 
         Logger().i('persistMissionSubscriptions :: Persisted');
+      }
+    });
+  }
+
+  @override
+  Stream<List<PRFLocalDebriefNote>> getDebriefNotes({
+    required String missionUlid,
+  }) async* {
+    await for (final localDebriefNotes
+        in prfDBInstance.pRFLocalDebriefNotes
+            .filter()
+            .missionUlidEqualTo(missionUlid)
+            .sortByCreatedAtDesc()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
+      yield localDebriefNotes;
+    }
+  }
+
+  @override
+  Stream<List<PRFLocalMissionQuestion>> getMissionQuestions({
+    required String missionUlid,
+  }) async* {
+    await for (final localMissionQuestions
+        in prfDBInstance.pRFLocalMissionQuestions
+            .filter()
+            .missionUlidEqualTo(missionUlid)
+            .sortByCreatedAtDesc()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
+      yield localMissionQuestions;
+    }
+  }
+
+  @override
+  Future<void> persistDebriefNotes({
+    required List<PRFDebriefNote> debriefNotes,
+    required String missionUlid,
+  }) async {
+    Logger().i('persistDebriefNotes :: Start');
+    await prfDBInstance.writeTxn(() async {
+      for (final debriefNote in debriefNotes) {
+        await prfDBInstance.pRFLocalDebriefNotes.put(
+          PRFLocalDebriefNote(
+            ulid: debriefNote.ulid,
+            note: debriefNote.note,
+            createdAt: debriefNote.createdAt,
+            missionUlid: missionUlid,
+          ),
+        );
+
+        Logger().i('persistDebriefNotes :: Persisted');
+      }
+    });
+  }
+
+  @override
+  Future<void> persistMissionQuestions({
+    required List<PRFMissionQuestion> missionQuestions,
+    required String missionUlid,
+  }) async {
+    Logger().i('persistMissionQuestions :: Start');
+    await prfDBInstance.writeTxn(() async {
+      for (final missionQuestion in missionQuestions) {
+        await prfDBInstance.pRFLocalMissionQuestions.put(
+          PRFLocalMissionQuestion(
+            ulid: missionQuestion.ulid,
+            question: missionQuestion.question,
+            createdAt: missionQuestion.createdAt,
+            missionUlid: missionUlid,
+          ),
+        );
+
+        Logger().i('persistMissionQuestions :: Persisted');
       }
     });
   }

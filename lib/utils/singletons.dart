@@ -170,10 +170,10 @@ class Singletons {
                 AddSoulCubit(soulService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<GetDebriefNotesCubit>(
-        create: (context) => GetDebriefNotesCubit(debriefService: getIt()),
+        create: (context) => GetDebriefNotesCubit(debriefService: getIt(), localDBService: getIt(),),
       ),
       BlocProvider<AddDebriefNoteCubit>(
-        create: (context) => AddDebriefNoteCubit(debriefService: getIt()),
+        create: (context) => AddDebriefNoteCubit(debriefService: getIt(), localDBService: getIt(),),
       ),
       BlocProvider<GetCoursesCubit>(
         create:
@@ -269,10 +269,10 @@ class Singletons {
             ),
       ),
       BlocProvider<GetMissionQuestionsCubit>(
-        create: (context) => GetMissionQuestionsCubit(debriefService: getIt()),
+        create: (context) => GetMissionQuestionsCubit(debriefService: getIt(), localDBService: getIt(),),
       ),
       BlocProvider<AddMissionQuestionCubit>(
-        create: (context) => AddMissionQuestionCubit(debriefService: getIt()),
+        create: (context) => AddMissionQuestionCubit(debriefService: getIt(), localDBService: getIt(),),
       ),
       BlocProvider<GetPrayerPromptsCubit>(
         create:

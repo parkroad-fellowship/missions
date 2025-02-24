@@ -33,6 +33,10 @@ class SingleStreamWrapper<T> extends StatelessWidget {
           return nullWidget;
         }
 
+        if (entity is List && entity.isEmpty) {
+          return nullWidget;
+        }
+
         return widget(context, entity);
       },
     );
