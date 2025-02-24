@@ -24,7 +24,7 @@ class MissionsPageHandset extends StatefulWidget {
 class _MissionsPageHandsetState extends State<MissionsPageHandset> {
   @override
   void initState() {
-    // context.read<GetMissionsCubit>().getMissions();
+    context.read<GetMissionsCubit>().getMissions();
     context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
     super.initState();
   }
