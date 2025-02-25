@@ -1,4 +1,5 @@
 import 'package:app/features/auth/students/_handset.dart';
+import 'package:app/features/auth/students/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -10,7 +11,7 @@ class StudentIntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const StudentIntroPageHandset(),
+      defaultBuilder: (_, __) => const StudentIntroPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => const StudentIntroPageHandset(),
       ),

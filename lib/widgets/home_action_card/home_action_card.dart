@@ -1,0 +1,37 @@
+import 'package:app/widgets/home_action_card/_handset.dart';
+import 'package:app/widgets/home_action_card/_tablet.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+
+class HomeActionCard extends StatelessWidget {
+  const HomeActionCard({
+    required this.title,
+    required this.assetPath,
+    super.key,
+    this.onTap,
+  });
+
+  final String title;
+  final String assetPath;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveBuilder(
+      defaultBuilder:
+          (_, __) => HomeActionCardTablet(
+            title: title,
+            assetPath: assetPath,
+            onTap: onTap,
+          ),
+      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
+        handset:
+            (_, __) => HomeActionCardHandset(
+              title: title,
+              assetPath: assetPath,
+              onTap: onTap,
+            ),
+      ),
+    );
+  }
+}

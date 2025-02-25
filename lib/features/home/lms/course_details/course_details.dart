@@ -1,4 +1,5 @@
 import 'package:app/features/home/lms/course_details/_handset.dart';
+import 'package:app/features/home/lms/course_details/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -13,7 +14,7 @@ class CourseDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => CourseDetailsPageHandset(courseUlid: courseUlid),
+          (_, __) => CourseDetailsPageTablet(courseUlid: courseUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => CourseDetailsPageHandset(courseUlid: courseUlid),
       ),

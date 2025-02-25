@@ -27,7 +27,7 @@ class AccountPageHandset extends StatelessWidget {
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -92,6 +92,7 @@ class AccountPageHandset extends StatelessWidget {
                   ),
                 ),
               ),
+
               ValueListenableBuilder(
                 valueListenable:
                     Hive.box<dynamic>(

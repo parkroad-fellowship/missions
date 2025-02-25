@@ -19,6 +19,7 @@
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/LaunchTheme"

@@ -1,4 +1,5 @@
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/_handset.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -20,7 +21,7 @@ class SessionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => SessionPageHandset(
+          (_, __) => SessionPageTablet(
             missionSessionUlid: missionSessionUlid,
             missionUlid: missionUlid,
             missionSessionId: missionSessionId,

@@ -69,7 +69,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                 // Start Navigation Bar
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 80.w),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

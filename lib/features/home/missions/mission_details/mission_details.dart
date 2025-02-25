@@ -1,4 +1,5 @@
 import 'package:app/features/home/missions/mission_details/_handset.dart';
+import 'package:app/features/home/missions/mission_details/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -16,7 +17,7 @@ class MissionsDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => MissionsDetailsPageHandset(missionUlid: missionUlid),
+          (_, __) => MissionsDetailsPageTablet(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset:
             (_, __) => MissionsDetailsPageHandset(missionUlid: missionUlid),

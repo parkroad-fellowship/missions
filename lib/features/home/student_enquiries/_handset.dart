@@ -41,7 +41,7 @@ class _StudentEnquiriesPageHandsetState
               // Start Navigation Bar
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
