@@ -2,6 +2,7 @@ import 'package:app/app/app.dart';
 import 'package:app/bootstrap.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main() async {
@@ -19,10 +20,15 @@ Future<void> main() async {
     ),
   );
 
-  await bootstrap(
-    () => MultiBlocProvider(
-      providers: Singletons.registerCubits(),
-      child: const PRFSuperApp(),
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+     DeviceOrientation.portraitDown,
+  ]).then(
+    (_) async => bootstrap(
+      () => MultiBlocProvider(
+        providers: Singletons.registerCubits(),
+        child: const PRFSuperApp(),
+      ),
     ),
   );
 }
