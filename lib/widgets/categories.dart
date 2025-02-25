@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/circular_progress_indicator.dart';
+import 'package:app/widgets/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +42,8 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
             BlocBuilder<GetFaqCategoriesCubit, GetFaqCategoriesState>(
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: PRFCircularProgressIndicator.new,
+                  orElse: () => SizedBox.shrink(),
+                  loading: () => PRFLinearProgressIndicator(),
                   loaded:
                       (faqCategories) => SizedBox(
                         height: 42,

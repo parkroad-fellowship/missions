@@ -100,7 +100,7 @@ class _MissionGroundSuggestionsPageHandsetState
                         orElse:
                             () =>
                                 const Center(child: LinearProgressIndicator()),
-                        error: (message) => Center(child: Text(message)),
+                        error: (message) => SizedBox.shrink(),
                         loaded: (_) => const SizedBox.shrink(),
                       ),
                 ),
@@ -116,7 +116,7 @@ class _MissionGroundSuggestionsPageHandsetState
                           child: Center(child: CircularProgressIndicator()),
                         ),
                     error:
-                        (message) => SliverToBoxAdapter(
+                        (message) => SliverFillRemaining(
                           child: Center(child: Text(message)),
                         ),
                     loaded: (missionGroundSuggestions) {
