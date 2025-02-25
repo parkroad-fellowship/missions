@@ -133,7 +133,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                           Text(
                             l10n.missionDetails,
                             style: PRFText.theme().displayLarge?.copyWith(
-                              fontSize: 64.sp,
+                              fontSize: 56.sp,
                             ),
                           ),
                           const Spacer(),
