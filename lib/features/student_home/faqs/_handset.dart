@@ -151,7 +151,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                         loading:
                             () =>
                                 const Center(child: LinearProgressIndicator()),
-                        orElse: () => SizedBox.shrink(),
+                        orElse: SizedBox.shrink,
                         loaded: (_) => const SizedBox.shrink(),
                       ),
                 ),
@@ -179,7 +179,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: () => SizedBox.shrink(),
+                    orElse: SizedBox.shrink,
                     loading:
                         () => const SliverToBoxAdapter(
                           child: PRFLinearProgressIndicator(),

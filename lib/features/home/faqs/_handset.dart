@@ -178,7 +178,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: () => SizedBox.shrink(),
+                    orElse: SizedBox.shrink,
                     loading:
                         () => const SliverToBoxAdapter(
                           child: PRFLinearProgressIndicator(),

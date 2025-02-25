@@ -100,7 +100,7 @@ class _MissionGroundSuggestionsPageHandsetState
                         orElse:
                             () =>
                                 const Center(child: LinearProgressIndicator()),
-                        error: (message) => SizedBox.shrink(),
+                        error: (message) => const SizedBox.shrink(),
                         loaded: (_) => const SizedBox.shrink(),
                       ),
                 ),
