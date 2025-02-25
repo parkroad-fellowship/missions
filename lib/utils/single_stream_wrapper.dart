@@ -27,8 +27,6 @@ class SingleStreamWrapper<T> extends StatelessWidget {
 
         final entity = snapshot.data;
 
-        Logger().d(entity);
-
         if (entity == null) {
           return nullWidget;
         }

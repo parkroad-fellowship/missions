@@ -105,7 +105,6 @@ abstract class LocalDBService {
   Future<void> persistMissions({required List<PRFMission> missions});
   Stream<List<PRFLocalMission>> get missions;
   Future<void> refreshMissions();
-  void disposeMissions();
   Stream<PRFLocalMission> getMission({required String missionUlid});
 
   Future<void> persistMemberMissions({
@@ -113,7 +112,6 @@ abstract class LocalDBService {
   });
   Stream<List<PRFLocalMission>> get memberMissions;
   Future<void> refreshMemberMissions();
-  void disposeMemberMissions();
 
   Future<void> persistMissionSubscriptions({
     required List<PRFMissionSubscription> missionSubscriptions,
@@ -151,9 +149,8 @@ abstract class LocalDBService {
   Stream<Map<DateTime, List<PRFLocalMissionSession>>> getMissionSessions({
     required String missionUlid,
   });
-  Stream<PRFLocalMissionSession?> getMissionSession({
-    required int missionSessionId,
-  });
+  Future<void> getMissionSession({required String missionSessionUlid});
+  Stream<PRFLocalMissionSession> get missionSession;
   Future<void> deleteMissionSession({required String missionSessionUlid});
 }
 
@@ -745,12 +742,7 @@ class LocalDBServiceImpl implements LocalDBService {
             .build()
             .findAll();
 
-    _missionsController.add(missions); // Push new data into the stream
-  }
-
-  @override
-  void disposeMissions() {
-    _missionsController.close(); // Close stream when no longer needed
+    _missionsController.add(missions);
   }
 
   @override
@@ -887,11 +879,6 @@ class LocalDBServiceImpl implements LocalDBService {
             .findAll(); // Get latest data
 
     _memberMissionsController.add(missions); // Push new data into the stream
-  }
-
-  @override
-  void disposeMemberMissions() {
-    _memberMissionsController.close(); // Close stream when no longer needed
   }
 
   @override
@@ -1135,67 +1122,99 @@ class LocalDBServiceImpl implements LocalDBService {
   }) async {
     Logger().i('persistMissionSessions :: Start');
     await prfDBInstance.writeTxn(() async {
-      for (final missionSession in missionSessions) {
+      if (missionSessions.length == 1) {
         await prfDBInstance.pRFLocalMissionSessions.put(
-          PRFLocalMissionSession(
-            missionUlid: missionUlid,
-            ulid: missionSession.ulid,
-            startsAt: missionSession.startsAt,
-            endsAt: missionSession.endsAt,
-            notes: missionSession.notes,
-            order: missionSession.order,
-            facilitator: PRFLocalMember(
-              ulid: missionSession.facilitator?.ulid,
-              fullName: missionSession.facilitator?.fullName,
-              phoneNumber: missionSession.facilitator?.phoneNumber,
-            ),
-            speaker: PRFLocalMember(
-              ulid: missionSession.speaker?.ulid,
-              fullName: missionSession.speaker?.fullName,
-              phoneNumber: missionSession.speaker?.phoneNumber,
-            ),
-
-            classGroup: PRFLocalClassGroup(
-              ulid: missionSession.classGroup?.ulid,
-              name: missionSession.classGroup?.name,
-            ),
-            transcripts:
-                missionSession.transcripts
-                    .map(
-                      (transcript) => PRFLocalMissionSessionTranscript(
-                        ulid: transcript.ulid,
-                        content: transcript.content,
-                        media: PRFLocalMedia(
-                          collectionName: transcript.media?.collectionName,
-                          fileName: transcript.media?.fileName,
-                          temporaryURL: transcript.media?.temporaryURL,
-                          size: transcript.media?.size,
-                          humanReadableSize:
-                              transcript.media?.humanReadableSize,
-                          mimeType: transcript.media?.mimeType,
-                          name: transcript.media?.name,
-                          createdAt: transcript.media?.createdAt,
-                          updatedAt: transcript.media?.updatedAt,
-                        ),
-                      ),
-                    )
-                    .toList(),
+          _transformRemoteMissionSessionToLocalMissionSession(
+            missionSessions[0],
+            missionUlid,
           ),
         );
+      }
 
-        Logger().i('persistMissionSessions :: Persisted');
+      if (missionSessions.length > 1) {
+        for (final missionSession in missionSessions) {
+          await prfDBInstance.pRFLocalMissionSessions.put(
+            _transformRemoteMissionSessionToLocalMissionSession(
+              missionSession,
+              missionUlid,
+            ),
+          );
+
+          Logger().i('persistMissionSessions :: Persisted');
+        }
       }
     });
   }
 
+  PRFLocalMissionSession _transformRemoteMissionSessionToLocalMissionSession(
+    PRFMissionSession missionSession,
+    String missionUlid,
+  ) => PRFLocalMissionSession(
+    missionUlid: missionUlid,
+    ulid: missionSession.ulid,
+    startsAt: missionSession.startsAt,
+    endsAt: missionSession.endsAt,
+    notes: missionSession.notes,
+    order: missionSession.order,
+    facilitator: PRFLocalMember(
+      ulid: missionSession.facilitator?.ulid,
+      fullName: missionSession.facilitator?.fullName,
+      phoneNumber: missionSession.facilitator?.phoneNumber,
+    ),
+    speaker: PRFLocalMember(
+      ulid: missionSession.speaker?.ulid,
+      fullName: missionSession.speaker?.fullName,
+      phoneNumber: missionSession.speaker?.phoneNumber,
+    ),
+
+    classGroup: PRFLocalClassGroup(
+      ulid: missionSession.classGroup?.ulid,
+      name: missionSession.classGroup?.name,
+    ),
+    transcripts:
+        missionSession.transcripts
+            .map(
+              (transcript) => PRFLocalMissionSessionTranscript(
+                ulid: transcript.ulid,
+                content: transcript.content,
+                media: PRFLocalMedia(
+                  collectionName: transcript.media?.collectionName,
+                  fileName: transcript.media?.fileName,
+                  temporaryURL: transcript.media?.temporaryURL,
+                  size: transcript.media?.size,
+                  humanReadableSize: transcript.media?.humanReadableSize,
+                  mimeType: transcript.media?.mimeType,
+                  name: transcript.media?.name,
+                  createdAt: transcript.media?.createdAt,
+                  updatedAt: transcript.media?.updatedAt,
+                ),
+              ),
+            )
+            .toList(),
+  );
+
+  final _missionSessionController =
+      StreamController<PRFLocalMissionSession>.broadcast();
+
   @override
-  Stream<PRFLocalMissionSession?> getMissionSession({
-    required int missionSessionId,
-  }) async* {
-    yield* prfDBInstance.pRFLocalMissionSessions
-        .watchObject(missionSessionId, fireImmediately: true)
-        .asBroadcastStream();
+  Future<void> getMissionSession({required String missionSessionUlid}) async {
+    final missionSession =
+        await prfDBInstance.pRFLocalMissionSessions
+            .filter()
+            .ulidEqualTo(missionSessionUlid)
+            .build()
+            .findFirst();
+
+    Logger().i(missionSession);
+
+    if (missionSession != null) {
+      _missionSessionController.add(missionSession);
+    }
   }
+
+  @override
+  Stream<PRFLocalMissionSession> get missionSession =>
+      _missionSessionController.stream;
 
   @override
   Future<void> deleteMissionSession({

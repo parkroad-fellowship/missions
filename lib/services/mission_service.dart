@@ -346,6 +346,10 @@ class MissionServiceImpl implements MissionService {
       final res = await _networkUtil.putReq(
         '/mission-sessions/$missionSessionUlid',
         body: json.encode(sessionDTO.toJson()),
+        queryParameters: {
+          'include':
+              'facilitator,speaker,classGroup,missionSessionTranscripts.media',
+        },
       );
 
       return PRFMissionSession.fromJson(res['data'] as Map<String, dynamic>);

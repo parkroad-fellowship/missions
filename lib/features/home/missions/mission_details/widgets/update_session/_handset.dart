@@ -18,6 +18,7 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
 import 'package:gaimon/gaimon.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class UpdateSessionViewHandset extends StatefulWidget {
   const UpdateSessionViewHandset({
@@ -43,9 +44,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
 
   bool _isLoading = false;
 
-  PRFLocalMember? selectedFacilitator;
-  PRFLocalMember? selectedSpeaker;
-  PRFClassGroup? selectedClassGroup;
+  String? selectedFacilitatorUlid;
+  String? selectedSpeakerUlid;
+  String? selectedClassGroupUlid;
   DateTime? startsAt;
   DateTime? endsAt;
 
@@ -58,16 +59,11 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     context.read<GetClassGroupsCubit>().getClassGroups();
 
     // Initialize the fields with the current values
-    selectedFacilitator = missionSession.facilitator;
-    selectedSpeaker = missionSession.speaker;
+    selectedFacilitatorUlid = missionSession.facilitator.ulid;
+    Logger().f(selectedFacilitatorUlid);
+    selectedSpeakerUlid = missionSession.speaker?.ulid;
     if (missionSession.classGroup != null) {
-      selectedClassGroup = PRFClassGroup(
-        missionSession.classGroup!.ulid!,
-        missionSession.classGroup!.name!,
-        1,
-        DateTime.now(),
-        DateTime.now(),
-      );
+      selectedClassGroupUlid = missionSession.classGroup!.ulid;
     }
     startsAt = missionSession.startsAt;
     endsAt = missionSession.endsAt;
@@ -105,23 +101,22 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               widget:
                   (context, subscribers) => LayoutBuilder(
                     builder: (context, constraints) {
-                      return DropdownMenu<PRFLocalMember>(
+                      return DropdownMenu<String>(
                         width: constraints.maxWidth,
-                        initialSelection: selectedFacilitator,
+                        initialSelection: selectedFacilitatorUlid,
                         hintText: l10n.facilitator,
                         dropdownMenuEntries:
                             subscribers
                                 .map(
-                                  (subscriber) =>
-                                      DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member,
-                                        label: subscriber.member.fullName!,
-                                      ),
+                                  (subscriber) => DropdownMenuEntry<String>(
+                                    value: subscriber.member.ulid!,
+                                    label: subscriber.member.fullName!,
+                                  ),
                                 )
                                 .toList(),
                         onSelected:
                             (member) => setState(() {
-                              selectedFacilitator = member;
+                              selectedFacilitatorUlid = member;
                             }),
                         inputDecorationTheme: InputDecorationTheme(
                           disabledBorder: OutlineInputBorder(
@@ -168,23 +163,22 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               widget:
                   (context, subscribers) => LayoutBuilder(
                     builder: (context, constraints) {
-                      return DropdownMenu<PRFLocalMember>(
+                      return DropdownMenu<String>(
                         width: constraints.maxWidth,
-                        initialSelection: selectedSpeaker,
+                        initialSelection: selectedSpeakerUlid,
                         hintText: l10n.speaker,
                         dropdownMenuEntries:
                             subscribers
                                 .map(
-                                  (subscriber) =>
-                                      DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member,
-                                        label: subscriber.member.fullName!,
-                                      ),
+                                  (subscriber) => DropdownMenuEntry<String>(
+                                    value: subscriber.member.ulid!,
+                                    label: subscriber.member.fullName!,
+                                  ),
                                 )
                                 .toList(),
                         onSelected:
                             (member) => setState(() {
-                              selectedSpeaker = member;
+                              selectedSpeakerUlid = member;
                             }),
                         inputDecorationTheme: InputDecorationTheme(
                           disabledBorder: OutlineInputBorder(
@@ -230,23 +224,23 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                   loaded:
                       (classes) => LayoutBuilder(
                         builder: (context, constraints) {
-                          return DropdownMenu<PRFClassGroup>(
+                          return DropdownMenu<String>(
                             width: constraints.maxWidth,
-                            initialSelection: selectedClassGroup,
+                            initialSelection: selectedClassGroupUlid,
                             hintText: l10n.classGroup,
                             dropdownMenuEntries:
                                 classes
                                     .map(
                                       (classGroup) =>
-                                          DropdownMenuEntry<PRFClassGroup>(
-                                            value: classGroup,
+                                          DropdownMenuEntry<String>(
+                                            value: classGroup.ulid!,
                                             label: classGroup.name,
                                           ),
                                     )
                                     .toList(),
                             onSelected:
                                 (classGroup) => setState(() {
-                                  selectedClassGroup = classGroup;
+                                  selectedClassGroupUlid = classGroup;
                                 }),
                             inputDecorationTheme: InputDecorationTheme(
                               disabledBorder: OutlineInputBorder(
@@ -367,7 +361,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,
                         onPressed: () async {
-                          if (selectedFacilitator == null) {
+                          if (selectedFacilitatorUlid == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(l10n.selectFacilitator)),
                             );
@@ -404,12 +398,12 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                               .updateMissionSession(
                                 missionUlid: widget.missionUlid,
                                 missionSessionUlid: missionSession.ulid,
-                                facilitatorUlid: selectedFacilitator!.ulid!,
+                                facilitatorUlid: selectedFacilitatorUlid!,
                                 startsAt: startsAt!,
                                 endsAt: endsAt!,
                                 notes: _notesController.text,
-                                speakerUlid: selectedSpeaker?.ulid,
-                                classGroupUlid: selectedClassGroup?.ulid,
+                                speakerUlid: selectedSpeakerUlid,
+                                classGroupUlid: selectedClassGroupUlid,
                               );
                         },
                       ),

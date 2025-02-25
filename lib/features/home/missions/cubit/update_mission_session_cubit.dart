@@ -46,6 +46,9 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
         missionSessions: [updatedMissionSession],
         missionUlid: missionUlid,
       );
+      await _localDBService.getMissionSession(
+        missionSessionUlid: missionSessionUlid,
+      );
       emit(const UpdateMissionSessionState.loaded());
     } catch (e) {
       emit(UpdateMissionSessionState.error(e.toString()));

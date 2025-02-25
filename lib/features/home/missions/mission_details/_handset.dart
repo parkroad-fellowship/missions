@@ -145,7 +145,6 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     controller: _tabController,
                     onTap:
                         (value) => setState(() {
-                          Logger().d(value);
                           _currentTab = value;
                         }),
                     dividerColor: Colors.white,

@@ -28,6 +28,9 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
 
       if (!refresh) {
         emit(const GetMissionSessionState.loaded());
+        await _localDBService.getMissionSession(
+          missionSessionUlid: missionSessionUlid,
+        );
         return;
       }
 
@@ -38,6 +41,9 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
       await _localDBService.persistMissionSessions(
         missionSessions: [missionSession],
         missionUlid: missionUlid,
+      );
+      await _localDBService.getMissionSession(
+        missionSessionUlid: missionSessionUlid,
       );
 
       emit(const GetMissionSessionState.loaded());
