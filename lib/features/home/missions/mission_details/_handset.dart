@@ -99,75 +99,83 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: CustomScrollView(
+              physics: const ScrollPhysics(),
               slivers: [
                 // Start Navigation Bar
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 80.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: PRFApp.theme().kPrimaryColorV2,
-                              width: 1.w,
+                PinnedHeaderSliver(
+                  child: ColoredBox(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 80.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: PRFApp.theme().kPrimaryColorV2,
+                                width: 1.w,
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.arrow_back_ios),
+                              padding: const EdgeInsets.only(left: 8),
+                              onPressed:
+                                  () => context.router.popUntilRouteWithPath(
+                                    PRFSuperAppRouter.missionsRoute,
+                                  ),
                             ),
                           ),
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back_ios),
-                            padding: const EdgeInsets.only(left: 8),
-                            onPressed:
-                                () => context.router.popUntilRouteWithPath(
-                                  PRFSuperAppRouter.missionsRoute,
-                                ),
+                          const Spacer(),
+                          Text(
+                            l10n.missionDetails,
+                            style: PRFText.theme().displayLarge?.copyWith(
+                              fontSize: 80.sp,
+                            ),
                           ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          l10n.missionDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 80.sp,
-                          ),
-                        ),
-                        const Spacer(),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // End Navigation Bar
+                PinnedHeaderSliver(
+                  child: ColoredBox(
+                    color: Colors.white,
+                    child: TabBar(
+                      controller: _tabController,
+                      onTap:
+                          (value) => setState(() {
+                            _currentTab = value;
+                          }),
+                      dividerColor: Colors.white,
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      labelStyle: PRFText.theme().displayMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: PRFApp.theme().kPrimaryColorV2,
+                      ),
+                      indicatorColor: Colors.white,
+                      overlayColor: WidgetStateProperty.all(Colors.transparent),
+                      tabs: [
+                        Tab(text: l10n.missionGround),
+                        Tab(text: l10n.going),
+                        Tab(text: l10n.sessions),
+                        Tab(text: l10n.souls),
+                        Tab(text: l10n.debriefNotes),
+                        Tab(text: l10n.missionQuestions),
+                        Tab(text: l10n.expenses),
+                        Tab(text: l10n.gallery),
                       ],
                     ),
                   ),
                 ),
-                // End Navigation Bar
-                SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-                SliverToBoxAdapter(
-                  child: TabBar(
-                    controller: _tabController,
-                    onTap:
-                        (value) => setState(() {
-                          _currentTab = value;
-                        }),
-                    dividerColor: Colors.white,
-                    isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    labelStyle: PRFText.theme().displayMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: PRFApp.theme().kPrimaryColorV2,
-                    ),
-                    indicatorColor: Colors.white,
-                    overlayColor: WidgetStateProperty.all(Colors.transparent),
-                    tabs: [
-                      Tab(text: l10n.missionGround),
-                      Tab(text: l10n.going),
-                      Tab(text: l10n.sessions),
-                      Tab(text: l10n.souls),
-                      Tab(text: l10n.debriefNotes),
-                      Tab(text: l10n.missionQuestions),
-                      Tab(text: l10n.expenses),
-                      Tab(text: l10n.gallery),
-                    ],
-                  ),
-                ),
                 SliverFillRemaining(
+                  fillOverscroll: true,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: TabBarView(

@@ -52,7 +52,6 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
       ),
       widget:
           (context, missionSessions) => ListView.builder(
-            shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: missionSessions.length,
             itemBuilder: (context, index) {

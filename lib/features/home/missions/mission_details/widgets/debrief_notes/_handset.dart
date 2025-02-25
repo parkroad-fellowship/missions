@@ -47,7 +47,6 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
       ),
       widget:
           (context, debriefNotes) => ListView.separated(
-            shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: debriefNotes.length,
             separatorBuilder: (context, index) => SizedBox(height: 8.h),

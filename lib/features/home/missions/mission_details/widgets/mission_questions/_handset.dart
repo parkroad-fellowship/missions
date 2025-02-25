@@ -49,7 +49,6 @@ class _MissionQuestionsViewHandsetState
       ),
       widget:
           (context, missionQuestions) => ListView.separated(
-            shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: missionQuestions.length,
             separatorBuilder: (context, index) => SizedBox(height: 8.h),
