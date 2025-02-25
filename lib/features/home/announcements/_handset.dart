@@ -38,7 +38,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
               // Start Navigation Bar
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -165,7 +165,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 80.w),
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
                                   style: PRFText.theme().bodyLarge?.copyWith(

@@ -44,7 +44,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                 surfaceTintColor: Colors.white,
                 pinned: true,
                 flexibleSpace: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 80.w),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
