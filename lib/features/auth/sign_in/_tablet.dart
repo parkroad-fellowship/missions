@@ -187,24 +187,18 @@ class _SignInTabletState extends State<SignInTablet> {
                                       isLoading,
                                       title,
                                     ) = signInWithGoogleState.maybeWhen(
-                                      loading:
-                                          () => (
-                                            true,
-                                            'Continue with Google...',
-                                          ),
+                                      loading: () => (true, 'Please wait ...'),
                                       orElse:
                                           () => socialSignUpState.maybeWhen(
                                             loading:
-                                                () => (
-                                                  true,
-                                                  'Continue with Google...',
-                                                ),
+                                                () => (true, 'Please wait ...'),
                                             orElse:
+                                                // ignore: lines_longer_than_80_chars
                                                 () => socialSignInState.maybeWhen(
                                                   loading:
                                                       () => (
                                                         true,
-                                                        'Continue with Google...',
+                                                        'Please wait ...',
                                                       ),
                                                   orElse:
                                                       () => (
