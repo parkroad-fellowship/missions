@@ -84,7 +84,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                         orElse:
                             () =>
                                 const Center(child: LinearProgressIndicator()),
-                        error: (message) => Center(child: Text(message)),
+                        error: (message) => const SizedBox.shrink(),
                         loaded:
                             (isEmpty) =>
                                 isEmpty
