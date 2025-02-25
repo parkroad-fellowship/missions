@@ -1,4 +1,5 @@
 import 'package:app/features/home/student_enquiries/enquiry_replies/_handset.dart';
+import 'package:app/features/home/student_enquiries/enquiry_replies/_tablet.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class StudentEnquiryRepliesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => StudentEnquiryRepliesPageHandset(enquiry: enquiry),
+          (_, __) => StudentEnquiryRepliesPageTablet(enquiry: enquiry),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => StudentEnquiryRepliesPageHandset(enquiry: enquiry),
       ),
