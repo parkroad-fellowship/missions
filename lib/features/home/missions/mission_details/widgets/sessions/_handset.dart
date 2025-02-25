@@ -66,7 +66,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                   Row(
                     children: [
                       Text(
-                        DateFormat.MMMMEEEEd().format(
+                        DateFormat.MMMMEEEEd().add_y().format(
                           missionSessions.keys.elementAt(index),
                         ),
                         style: PRFText.theme().headlineSmall!.copyWith(
