@@ -8,6 +8,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StudentIntroPageHandset extends StatefulWidget {
   const StudentIntroPageHandset({super.key});
@@ -24,10 +25,11 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    Misc.initDimensions(context);
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+        padding:  EdgeInsets.symmetric(horizontal: 16.w),
         child: SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height * 1,
