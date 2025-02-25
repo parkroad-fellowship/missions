@@ -12,13 +12,16 @@ class SubscribeCubit extends Cubit<SubscribeState> {
   SubscribeCubit({
     required MissionService missionService,
     required HiveService hiveService,
+    required LocalDBService localDBService,
   }) : super(const SubscribeState.initial()) {
     _missionService = missionService;
     _hiveService = hiveService;
+    _localDBService = localDBService;
   }
 
   late MissionService _missionService;
   late HiveService _hiveService;
+  late LocalDBService _localDBService;
 
   Future<void> subscribe({required String missionUlid}) async {
     emit(const SubscribeState.loading());
@@ -29,6 +32,10 @@ class SubscribeCubit extends Cubit<SubscribeState> {
           missionUlid: missionUlid,
           memberUlid: member.ulid,
         ),
+      );
+      await _localDBService.persistMissionSubscriptions(
+        missionSubscriptions: [missionSubscription],
+        missionUlid: missionUlid,
       );
       emit(SubscribeState.loaded(subscription: missionSubscription));
     } on Failure catch (e) {

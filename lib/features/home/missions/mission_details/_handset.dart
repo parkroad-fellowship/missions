@@ -20,7 +20,6 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/circular_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
@@ -28,13 +27,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:logger/logger.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class MissionsDetailsPageHandset extends StatefulWidget {
-  const MissionsDetailsPageHandset({required this.mission, super.key});
+  const MissionsDetailsPageHandset({required this.missionUlid, super.key});
 
-  final PRFMission mission;
+  final String missionUlid;
 
   @override
   State<MissionsDetailsPageHandset> createState() =>
@@ -43,7 +41,7 @@ class MissionsDetailsPageHandset extends StatefulWidget {
 
 class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     with SingleTickerProviderStateMixin {
-  PRFMission get mission => widget.mission;
+  String get missionUlid => widget.missionUlid;
 
   int tabCount = 8;
 
@@ -58,10 +56,30 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(length: tabCount, vsync: this);
     _tabController.addListener(_changeTab);
 
-    super.initState();
+    context.read<GetSubscribersCubit>().getSubscriptions(
+      missionUlid: widget.missionUlid,
+      refresh: true,
+    );
+    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
+    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
+    context.read<GetSoulsCubit>().getSouls(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
+    context.read<GetMissionSessionsCubit>().getMissionSessions(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
   }
 
   @override
@@ -81,89 +99,96 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: CustomScrollView(
+              physics: const ScrollPhysics(),
               slivers: [
                 // Start Navigation Bar
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 80.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: PRFApp.theme().kPrimaryColorV2,
-                              width: 1.w,
+                PinnedHeaderSliver(
+                  child: ColoredBox(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 80.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: PRFApp.theme().kPrimaryColorV2,
+                                width: 1.w,
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.arrow_back_ios),
+                              padding: const EdgeInsets.only(left: 8),
+                              onPressed:
+                                  () => context.router.popUntilRouteWithPath(
+                                    PRFSuperAppRouter.missionsRoute,
+                                  ),
                             ),
                           ),
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back_ios),
-                            padding: const EdgeInsets.only(left: 8),
-                            onPressed:
-                                () => context.router.popUntilRouteWithPath(
-                                  PRFSuperAppRouter.missionsRoute,
-                                ),
+                          const Spacer(),
+                          Text(
+                            l10n.missionDetails,
+                            style: PRFText.theme().displayLarge?.copyWith(
+                              fontSize: 80.sp,
+                            ),
                           ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          l10n.missionDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 80.sp,
-                          ),
-                        ),
-                        const Spacer(),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // End Navigation Bar
+                PinnedHeaderSliver(
+                  child: ColoredBox(
+                    color: Colors.white,
+                    child: TabBar(
+                      controller: _tabController,
+                      onTap:
+                          (value) => setState(() {
+                            _currentTab = value;
+                          }),
+                      dividerColor: Colors.white,
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      labelStyle: PRFText.theme().displayMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: PRFApp.theme().kPrimaryColorV2,
+                      ),
+                      indicatorColor: Colors.white,
+                      overlayColor: WidgetStateProperty.all(Colors.transparent),
+                      tabs: [
+                        Tab(text: l10n.missionGround),
+                        Tab(text: l10n.going),
+                        Tab(text: l10n.sessions),
+                        Tab(text: l10n.souls),
+                        Tab(text: l10n.debriefNotes),
+                        Tab(text: l10n.missionQuestions),
+                        Tab(text: l10n.expenses),
+                        Tab(text: l10n.gallery),
                       ],
                     ),
                   ),
                 ),
-                // End Navigation Bar
-                SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-                SliverToBoxAdapter(
-                  child: TabBar(
-                    controller: _tabController,
-                    onTap:
-                        (value) => setState(() {
-                          Logger().d(value);
-                          _currentTab = value;
-                        }),
-                    dividerColor: Colors.white,
-                    isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    labelStyle: PRFText.theme().displayMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: PRFApp.theme().kPrimaryColorV2,
-                    ),
-                    indicatorColor: Colors.white,
-                    overlayColor: WidgetStateProperty.all(Colors.transparent),
-                    tabs: [
-                      Tab(text: l10n.missionGround),
-                      Tab(text: l10n.going),
-                      Tab(text: l10n.sessions),
-                      Tab(text: l10n.souls),
-                      Tab(text: l10n.debriefNotes),
-                      Tab(text: l10n.missionQuestions),
-                      Tab(text: l10n.expenses),
-                      Tab(text: l10n.gallery),
-                    ],
-                  ),
-                ),
                 SliverFillRemaining(
+                  fillOverscroll: true,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        MissionDetailsView(mission: mission),
-                        SubscribersView(missionUlid: mission.ulid),
-                        SessionsView(missionUlid: mission.ulid),
-                        SoulsView(missionUlid: mission.ulid),
-                        DebriefNotesView(missionUlid: mission.ulid),
-                        MissionQuestionsView(missionUlid: mission.ulid),
-                        ExpensesView(missionUlid: mission.ulid),
-                        GalleryView(missionUlid: mission.ulid),
+                        MissionDetailsView(missionUlid: missionUlid),
+                        SubscribersView(missionUlid: missionUlid),
+                        SessionsView(missionUlid: missionUlid),
+                        SoulsView(missionUlid: missionUlid),
+                        DebriefNotesView(missionUlid: missionUlid),
+                        MissionQuestionsView(missionUlid: missionUlid),
+                        ExpensesView(missionUlid: missionUlid),
+                        GalleryView(missionUlid: missionUlid),
                       ],
                     ),
                   ),
@@ -196,11 +221,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               onPressed:
                   () async => context
                       .read<SubscribeCubit>()
-                      .subscribe(missionUlid: mission.ulid)
+                      .subscribe(missionUlid: missionUlid)
                       .then((_) {
                         if (context.mounted) {
                           context.read<GetSubscribersCubit>().getSubscriptions(
-                            missionUlid: mission.ulid,
+                            missionUlid: missionUlid,
                           );
                         }
                       }),
@@ -241,7 +266,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddSessionView(missionUlid: mission.ulid),
+                        child: AddSessionView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -249,7 +274,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetMissionSessionsCubit>().getMissionSessions(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -264,7 +289,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddSoulView(missionUlid: mission.ulid),
+                        child: AddSoulView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -272,7 +297,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetSoulsCubit>().getSouls(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -288,7 +313,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
                         child: AddDebriefNoteViewHandset(
-                          missionUlid: mission.ulid,
+                          missionUlid: missionUlid,
                         ),
                       ),
                     ),
@@ -297,7 +322,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetDebriefNotesCubit>().getDebriefNotes(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -312,9 +337,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddMissionQuestionView(
-                          missionUlid: mission.ulid,
-                        ),
+                        child: AddMissionQuestionView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -322,7 +345,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetMissionQuestionsCubit>().getMissionQuestions(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -337,7 +360,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddExpenseView(missionUlid: mission.ulid),
+                        child: AddExpenseView(missionUlid: missionUlid),
                       ),
                     ),
                   ];
@@ -345,7 +368,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               ).then((_) {
                 if (context.mounted) {
                   context.read<GetMissionExpenseCubit>().getMissionExpense(
-                    missionUlid: mission.ulid,
+                    missionUlid: missionUlid,
                   );
                 }
               });
@@ -361,7 +384,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
                         height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddMediaView(missionUlid: mission.ulid),
+                        child: AddMediaView(missionUlid: missionUlid),
                       ),
                     ),
                   ];

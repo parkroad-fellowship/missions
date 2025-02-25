@@ -5,4 +5,5 @@ export 'debouncer.dart';
 export 'misc.dart';
 export 'network.dart';
 export 'router.dart';
+export 'single_stream_wrapper.dart';
 export 'singletons.dart';

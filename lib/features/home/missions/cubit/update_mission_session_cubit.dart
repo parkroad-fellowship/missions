@@ -1,4 +1,3 @@
-import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/models/remote/prf_mission_session_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
@@ -8,12 +7,16 @@ part 'update_mission_session_state.dart';
 part 'update_mission_session_cubit.freezed.dart';
 
 class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
-  UpdateMissionSessionCubit({required MissionService missionService})
-    : super(const UpdateMissionSessionState.initial()) {
+  UpdateMissionSessionCubit({
+    required MissionService missionService,
+    required LocalDBService localDBService,
+  }) : super(const UpdateMissionSessionState.initial()) {
     _missionService = missionService;
+    _localDBService = localDBService;
   }
 
   late MissionService _missionService;
+  late LocalDBService _localDBService;
 
   Future<void> updateMissionSession({
     required String missionSessionUlid,
@@ -39,9 +42,14 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
           classGroupUlid: classGroupUlid,
         ),
       );
-      emit(
-        UpdateMissionSessionState.loaded(missionSession: updatedMissionSession),
+      await _localDBService.persistMissionSessions(
+        missionSessions: [updatedMissionSession],
+        missionUlid: missionUlid,
       );
+      await _localDBService.getMissionSession(
+        missionSessionUlid: missionSessionUlid,
+      );
+      emit(const UpdateMissionSessionState.loaded());
     } catch (e) {
       emit(UpdateMissionSessionState.error(e.toString()));
     }

@@ -4,6 +4,7 @@ import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/linear_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -147,11 +148,10 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                 child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
                   builder:
                       (context, state) => state.maybeWhen(
-                        orElse:
+                        loading:
                             () =>
                                 const Center(child: LinearProgressIndicator()),
-                        error: (message) => Center(child: Text(message)),
-                        loaded: (_) => const SizedBox.shrink(),
+                        orElse: () => const SizedBox.shrink(),
                       ),
                 ),
               ),
@@ -178,12 +178,13 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse:
+                    orElse: SizedBox.shrink,
+                    loading:
                         () => const SliverToBoxAdapter(
-                          child: Center(child: CircularProgressIndicator()),
+                          child: PRFLinearProgressIndicator(),
                         ),
                     error:
-                        (message) => SliverToBoxAdapter(
+                        (message) => SliverFillRemaining(
                           child: Center(child: Text(message)),
                         ),
                     loaded: (faqs) {

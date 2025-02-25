@@ -10,19 +10,23 @@ class PRFSuperAppRouter extends RootStackRouter {
 
   // Landing
   static const String missionsRoute = '/missions';
+  static const String missionDetailsRoute = '/mission-details/:missionUlid';
+  static const String missionSessionRoute =
+      '/mission-details/:missionUlid/mission-sessions/:missionSessionUlid/:missionSessionId';
+
   static const String lmsRoute = '/lms';
   static const String studentEnquiriesRoute = '/student-enquiries';
   static const String memberLearnerFaqs = '/member-learner-faqs';
   static const String accountRoute = '/account';
   static const String announcementsRoute = '/announcements';
   static const String landingRoute = '/landing';
-  static const String missionDetailsRoute = '/mission-details';
+
   static const String myMissionDetailsRoute = '/my-mission-details';
   static const String repliesRoute = '/replies';
   static const String missionGroundSuggestionsRoute =
       '/mission-ground-suggestions';
   static const String givingRoute = '/giving';
-  static const String missionSessionRoute = '/mission-session';
+
   static const String eventsRoute = '/events';
   static const String eventDetailsRoute = '/event-details';
 

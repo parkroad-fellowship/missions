@@ -1,6 +1,7 @@
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_soul.dart';
+import 'package:app/models/local/prf_soul.dart';
+import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -30,34 +31,26 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<GetSoulsCubit, GetSoulsState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          orElse: () => const Center(child: CircularProgressIndicator()),
-          loaded: (souls) {
-            if (souls.isEmpty) {
-              return Center(
-                child: Text(
-                  l10n.noSubscribers,
-                  style: PRFText.theme().headlineSmall!.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: PRFApp.theme().kPrimaryColorV2,
-                  ),
-                ),
-              );
-            }
-
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              itemCount: souls.length,
-              separatorBuilder: (context, index) => SizedBox(height: 16.h),
-              itemBuilder: (context, index) => SoulCard(soul: souls[index]),
-            );
-          },
-        );
-      },
+    return SingleStreamWrapper(
+      stream: getIt<LocalDBService>().getSouls(missionUlid: missionUlid),
+      nullWidget: Center(
+        child: Text(
+          l10n.noSubscribers,
+          style: PRFText.theme().headlineSmall!.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: PRFApp.theme().kPrimaryColorV2,
+          ),
+        ),
+      ),
+      widget:
+          (context, souls) => ListView.separated(
+            shrinkWrap: true,
+            physics: const ScrollPhysics(),
+            itemCount: souls.length,
+            separatorBuilder: (context, index) => SizedBox(height: 16.h),
+            itemBuilder: (context, index) => SoulCard(soul: souls[index]),
+          ),
     );
   }
 }
@@ -65,7 +58,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
 class SoulCard extends StatelessWidget {
   const SoulCard({required this.soul, super.key});
 
-  final PRFSoul soul;
+  final PRFLocalSoul soul;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +86,7 @@ class SoulCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                Text(soul.classGroup!.name),
+                Text(soul.classGroup.name.toString()),
                 SizedBox(height: 16.h),
               ],
             ),

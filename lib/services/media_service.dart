@@ -115,7 +115,11 @@ class MediaServiceImpl implements MediaService {
   }) async {
     try {
       final result = await FilePicker.platform
-          .pickFiles(allowMultiple: true, type: FileType.audio)
+          .pickFiles(
+            allowMultiple: true,
+            type: FileType.custom,
+            allowedExtensions: ['mp3', 'aac', 'ogg', 'mp4', 'wav', 'flac'],
+          )
           .catchError((dynamic error) {
             if (error is PlatformException &&
                 error.code == 'multiple_request') {

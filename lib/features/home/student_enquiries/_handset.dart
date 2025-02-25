@@ -102,7 +102,7 @@ class _StudentEnquiriesPageHandsetState
                         orElse:
                             () =>
                                 const Center(child: LinearProgressIndicator()),
-                        error: (message) => Center(child: Text(message)),
+                        error: (message) => const SizedBox.shrink(),
                         loaded: SizedBox.shrink,
                       ),
                 ),

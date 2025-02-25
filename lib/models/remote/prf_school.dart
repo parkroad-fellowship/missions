@@ -16,10 +16,10 @@ class PRFSchool with _$PRFSchool {
     @JsonKey(name: 'is_active') int isActive,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
-    String? description,
-    String? directions,
-    String? distance,
-    @JsonKey(name: 'static_duration') String? staticDuration,
+    @Default('N/A') String description,
+    @Default('N/A') String directions,
+    @Default('N/A') String distance,
+    @Default('N/A') @JsonKey(name: 'static_duration') String staticDuration,
     @JsonKey(name: 'school_contacts') List<PRFContact>? contacts,
   }) = _PRFSchool;
 

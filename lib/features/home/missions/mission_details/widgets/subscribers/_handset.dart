@@ -1,8 +1,10 @@
 import 'package:app/enums/prf_mission_role.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission_subscription.dart';
+import 'package:app/models/local/prf_local_mission_subscription.dart';
+import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,34 +33,72 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<GetSubscribersCubit, GetSubscribersState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          orElse: () => const Center(child: CircularProgressIndicator()),
-          loaded: (subscriptions) {
-            if (subscriptions.isEmpty) {
-              return Center(
-                child: Text(
-                  l10n.noSubscribers,
-                  style: PRFText.theme().headlineSmall!.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: PRFApp.theme().kPrimaryColorV2,
+    return StreamBuilder<List<PRFLocalMissionSubscription>>(
+      stream: getIt<LocalDBService>().getMissionSubscriptions(
+        missionUlid: widget.missionUlid,
+      ),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const PRFCircularProgressIndicator();
+        }
+
+        final subscriptions = snapshot.data;
+
+        if (subscriptions != null && subscriptions.isEmpty) {
+          return RefreshIndicator(
+            onRefresh:
+                () => context.read<GetSubscribersCubit>().getSubscriptions(
+                  missionUlid: widget.missionUlid,
+                ),
+            child: Column(
+              children: [
+                const Spacer(),
+                const Icon(Icons.directions_walk),
+                Center(
+                  child: Text(
+                    l10n.noSubscribers,
+                    style: PRFText.theme().headlineMedium!.copyWith(
+                      color: PRFApp.theme().kDullGreyColor,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              );
-            }
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.05,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        l10n.pleaseWait,
+                        style: PRFText.theme().displayLarge!.copyWith(
+                          color: PRFApp.theme().kPrimaryColorV2,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+              ],
+            ),
+          );
+        }
 
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              itemCount: subscriptions.length,
-              separatorBuilder: (context, index) => SizedBox(height: 16.h),
-              itemBuilder:
-                  (context, index) =>
-                      SubscriberActionCard(subscription: subscriptions[index]),
-            );
-          },
+        return RefreshIndicator(
+          onRefresh:
+              () => context.read<GetSubscribersCubit>().getSubscriptions(
+                missionUlid: widget.missionUlid,
+              ),
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: const ScrollPhysics(),
+            itemCount: subscriptions!.length,
+            separatorBuilder: (context, index) => SizedBox(height: 16.h),
+            itemBuilder:
+                (context, index) =>
+                    SubscriberActionCard(subscription: subscriptions[index]),
+          ),
         );
       },
     );
@@ -68,7 +108,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
 class SubscriberActionCard extends StatelessWidget {
   const SubscriberActionCard({required this.subscription, super.key});
 
-  final PRFMissionSubscription subscription;
+  final PRFLocalMissionSubscription subscription;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +135,7 @@ class SubscriberActionCard extends StatelessWidget {
                     children: [
                       Text.rich(
                         TextSpan(
-                          text: subscription.member!.fullName,
+                          text: subscription.member.fullName,
                           style: PRFText.theme().displayLarge?.copyWith(
                             color: PRFApp.theme().kPrimaryColorV2,
                             fontWeight: FontWeight.w600,
@@ -142,7 +182,7 @@ class SubscriberActionCard extends StatelessWidget {
                       onPressed: () async {
                         final uri = Uri(
                           scheme: 'tel',
-                          path: subscription.member!.phoneNumber,
+                          path: subscription.member.phoneNumber,
                         );
                         await Misc.openUrl(uri);
                       },

@@ -9,12 +9,16 @@ part 'add_debrief_note_state.dart';
 part 'add_debrief_note_cubit.freezed.dart';
 
 class AddDebriefNoteCubit extends Cubit<AddDebriefNoteState> {
-  AddDebriefNoteCubit({required DebriefService debriefService})
-    : super(const AddDebriefNoteState.initial()) {
+  AddDebriefNoteCubit({
+    required DebriefService debriefService,
+    required LocalDBService localDBService,
+  }) : super(const AddDebriefNoteState.initial()) {
     _debriefService = debriefService;
+    _localDBService = localDBService;
   }
 
   late DebriefService _debriefService;
+  late LocalDBService _localDBService;
 
   Future<void> addDebriefNote({
     required String missionUlid,
@@ -24,6 +28,10 @@ class AddDebriefNoteCubit extends Cubit<AddDebriefNoteState> {
     try {
       final debriefNote = await _debriefService.addDebriefNote(
         debriefNoteDTO: PRFDebriefNoteDTO(missionUlid: missionUlid, note: note),
+      );
+      await _localDBService.persistDebriefNotes(
+        debriefNotes: [debriefNote],
+        missionUlid: missionUlid,
       );
       emit(AddDebriefNoteState.loaded(debriefNote: debriefNote));
     } on Failure catch (e) {

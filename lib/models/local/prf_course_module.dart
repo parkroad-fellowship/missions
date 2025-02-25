@@ -1,5 +1,5 @@
 import 'package:app/enums/prf_completion_status.dart';
-import 'package:app/models/local/prf_course.dart';
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:isar/isar.dart';
 
 part 'prf_course_module.g.dart';

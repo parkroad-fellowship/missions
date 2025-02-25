@@ -93,7 +93,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                         orElse:
                             () =>
                                 const Center(child: LinearProgressIndicator()),
-                        error: (message) => Center(child: Text(message)),
+                        error: (message) => const SizedBox.shrink(),
                         loaded: (_) => const SizedBox.shrink(),
                       ),
                 ),
@@ -106,7 +106,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                           child: Center(child: CircularProgressIndicator()),
                         ),
                     error:
-                        (message) => SliverToBoxAdapter(
+                        (message) => SliverFillRemaining(
                           child: Center(child: Text(message)),
                         ),
                     empty:

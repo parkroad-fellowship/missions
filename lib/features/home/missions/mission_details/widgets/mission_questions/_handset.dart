@@ -1,6 +1,7 @@
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission_question.dart';
+import 'package:app/models/local/prf_mission_question.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -32,38 +33,30 @@ class _MissionQuestionsViewHandsetState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
-    return BlocBuilder<GetMissionQuestionsCubit, GetMissionQuestionsState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          orElse: () => const Center(child: CircularProgressIndicator()),
-          loaded: (missionQuestions) {
-            if (missionQuestions.isEmpty) {
-              return Center(
-                child: Text(
-                  l10n.noSubscribers,
-                  style: PRFText.theme().headlineSmall!.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: PRFApp.theme().kPrimaryColorV2,
-                  ),
+    return SingleStreamWrapper(
+      stream: getIt<LocalDBService>().getMissionQuestions(
+        missionUlid: missionUlid,
+      ),
+      nullWidget: Center(
+        child: Text(
+          l10n.noQuestions,
+          style: PRFText.theme().headlineSmall!.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: PRFApp.theme().kPrimaryColorV2,
+          ),
+        ),
+      ),
+      widget:
+          (context, missionQuestions) => ListView.separated(
+            physics: const ScrollPhysics(),
+            itemCount: missionQuestions.length,
+            separatorBuilder: (context, index) => SizedBox(height: 8.h),
+            itemBuilder:
+                (context, index) => MissionQuestionCard(
+                  missionQuestion: missionQuestions[index],
                 ),
-              );
-            }
-
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              itemCount: missionQuestions.length,
-              separatorBuilder: (context, index) => SizedBox(height: 8.h),
-              itemBuilder:
-                  (context, index) => MissionQuestionCard(
-                    missionQuestion: missionQuestions[index],
-                  ),
-            );
-          },
-        );
-      },
+          ),
     );
   }
 }
@@ -71,7 +64,7 @@ class _MissionQuestionsViewHandsetState
 class MissionQuestionCard extends StatelessWidget {
   const MissionQuestionCard({required this.missionQuestion, super.key});
 
-  final PRFMissionQuestion missionQuestion;
+  final PRFLocalMissionQuestion missionQuestion;
 
   @override
   Widget build(BuildContext context) {

@@ -84,8 +84,9 @@ class MissionServiceImpl implements MissionService {
         queryParameters: {
           'include':
               'school,missionType,school.schoolContacts.contactType,'
-              'loggedInMemberMissionSubscription,weatherForecasts,media',
+              'loggedInMemberMissionSubscription,weatherForecasts',
           'filter[status_key]': PRFMissionStatus.approved.apiKey,
+          'filter[unsubscribed]': true,
           'order_by': 'start_date',
           'order_direction': 'asc',
         },
@@ -328,6 +329,10 @@ class MissionServiceImpl implements MissionService {
       final res = await _networkUtil.postReq(
         '/mission-sessions',
         body: json.encode(sessionDTO.toJson()),
+        queryParameters: {
+          'include':
+              'facilitator,speaker,classGroup,missionSessionTranscripts.media',
+        },
       );
 
       return PRFMissionSession.fromJson(res['data'] as Map<String, dynamic>);
@@ -345,6 +350,10 @@ class MissionServiceImpl implements MissionService {
       final res = await _networkUtil.putReq(
         '/mission-sessions/$missionSessionUlid',
         body: json.encode(sessionDTO.toJson()),
+        queryParameters: {
+          'include':
+              'facilitator,speaker,classGroup,missionSessionTranscripts.media',
+        },
       );
 
       return PRFMissionSession.fromJson(res['data'] as Map<String, dynamic>);
