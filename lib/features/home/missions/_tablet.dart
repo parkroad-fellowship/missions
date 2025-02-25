@@ -64,7 +64,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
             style: PRFText.theme().displayLarge?.copyWith(fontSize: 56.sp),
           ),
           leading: Container(
-            margin:  EdgeInsets.only(left: 16.w),
+            margin: EdgeInsets.only(left: 16.w),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),

@@ -118,7 +118,7 @@ class _StudentIntroPageTabletState extends State<StudentIntroPageTablet> {
                         );
                       },
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     SecondaryButton(
                       onPressed: () => context.router.popForced(),
                       title: l10n.cancel,

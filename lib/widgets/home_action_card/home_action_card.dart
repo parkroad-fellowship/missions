@@ -1,15 +1,13 @@
-import 'package:app/features/student_home/faqs/_handset.dart';
 import 'package:app/widgets/home_action_card/_handset.dart';
 import 'package:app/widgets/home_action_card/_tablet.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
 class HomeActionCard extends StatelessWidget {
   const HomeActionCard({
-    super.key,
     required this.title,
     required this.assetPath,
+    super.key,
     this.onTap,
   });
 

@@ -75,8 +75,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                     const Spacer(),
                     IconButton(
                       onPressed:
-                          () =>
-                              context.read<GetPaymentsCubit>().getPayments(),
+                          () => context.read<GetPaymentsCubit>().getPayments(),
                       icon: const Icon(Icons.refresh),
                     ),
                   ],

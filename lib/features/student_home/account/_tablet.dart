@@ -91,7 +91,7 @@ class StudentAccountPageTablet extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               ValueListenableBuilder(
                 valueListenable:
                     Hive.box<dynamic>(

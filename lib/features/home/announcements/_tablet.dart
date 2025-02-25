@@ -181,7 +181,8 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                   shrinkWrap: true,
                                   itemCount: entries!.length,
                                   separatorBuilder:
-                                      (context, index) => SizedBox(height: 16.w),
+                                      (context, index) =>
+                                          SizedBox(height: 16.w),
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {},
@@ -192,7 +193,8 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                           vertical: 32.h,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: PRFApp.theme().kSecondaryColorV2
+                                          color: PRFApp.theme()
+                                              .kSecondaryColorV2
                                               .withValues(alpha: 1),
                                           borderRadius: BorderRadius.circular(
                                             48.r,
@@ -202,7 +204,8 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                           contentPadding: EdgeInsets.zero,
                                           title: Text(
                                             entries[index].title.toUpperCase(),
-                                            style: PRFText.theme().headlineMedium
+                                            style: PRFText.theme()
+                                                .headlineMedium
                                                 ?.copyWith(
                                                   color:
                                                       PRFApp.theme()

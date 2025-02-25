@@ -3,7 +3,6 @@ import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/home_action_card/_handset.dart';
 import 'package:app/widgets/home_action_card/home_action_card.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,7 @@ class _StudentLandingPageTabletState extends State<StudentLandingPageTablet> {
                           getIt<HiveService>().retrieveProfile()!.student!.name,
                         ),
                         style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
+                          fontSize: 48.sp,
                         ),
                       ),
                       const Spacer(),

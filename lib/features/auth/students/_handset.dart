@@ -29,7 +29,7 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
 
     return Scaffold(
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height * 1,
@@ -114,7 +114,7 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                     );
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 SecondaryButton(
                   onPressed: () => context.router.popForced(),
                   title: l10n.cancel,

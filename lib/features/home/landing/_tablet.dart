@@ -86,7 +86,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                                 .lastName,
                           ),
                           style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 56.sp,
+                            fontSize: 48.sp,
                           ),
                         ),
                         const Spacer(),

@@ -92,7 +92,7 @@ class AccountPageTablet extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               ValueListenableBuilder(
                 valueListenable:
                     Hive.box<dynamic>(
