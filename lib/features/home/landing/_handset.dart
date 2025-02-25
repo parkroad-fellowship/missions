@@ -26,14 +26,14 @@ class LandingPageHandset extends StatefulWidget {
 class _LandingPageHandsetState extends State<LandingPageHandset> {
   @override
   void initState() {
-    context.read<GetClassGroupsCubit>().getClassGroups();
-    context.read<GetPaymentTypesCubit>().getPaymentTypes();
-    context.read<GetExpenseCategoriesCubit>().getExpenseCategories();
-    context.read<GetAnnouncementsCubit>().getAnnouncements();
-    context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
-    context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();
-    context.read<GetFaqCategoriesCubit>().getFaqCategories();
-    context.read<GetFaqsCubit>().getFaqs();
+    // context.read<GetClassGroupsCubit>().getClassGroups();
+    // context.read<GetPaymentTypesCubit>().getPaymentTypes();
+    // context.read<GetExpenseCategoriesCubit>().getExpenseCategories();
+    // context.read<GetAnnouncementsCubit>().getAnnouncements();
+    // context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
+    // context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();
+    // context.read<GetFaqCategoriesCubit>().getFaqCategories();
+    // context.read<GetFaqsCubit>().getFaqs();
     super.initState();
   }
 
