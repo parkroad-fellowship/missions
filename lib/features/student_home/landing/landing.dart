@@ -1,4 +1,5 @@
 import 'package:app/features/student_home/landing/_handset.dart';
+import 'package:app/features/student_home/landing/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -15,7 +16,7 @@ class _StudentLandingPageState extends State<StudentLandingPage> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const StudentLandingPageHandset(),
+      defaultBuilder: (_, __) => const StudentLandingPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => const StudentLandingPageHandset(),
       ),
