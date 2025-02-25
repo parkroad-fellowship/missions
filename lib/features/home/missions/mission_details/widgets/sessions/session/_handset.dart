@@ -10,7 +10,6 @@ import 'package:app/models/local/prf_mission_session.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -168,7 +167,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                   loading: defaultLoadingWidget,
                   widget:
                       (context, missionSession) => MissionSessionDataView(
-                        missionSession: missionSession!,
+                        missionSession: missionSession,
                         missionUlid: widget.missionUlid,
                       ),
                 ),
@@ -265,7 +264,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                   loading: defaultLoadingWidget,
                   widget:
                       (context, missionSession) =>
-                          missionSession!.transcripts.isEmpty
+                          missionSession.transcripts.isEmpty
                               ? SliverFillRemaining(
                                 child: Center(
                                   child: Text(

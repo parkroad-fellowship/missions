@@ -5,8 +5,6 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/local/prf_mission_session.dart';
-import 'package:app/models/local/shared_embeds.dart';
-import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
@@ -231,11 +229,10 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             dropdownMenuEntries:
                                 classes
                                     .map(
-                                      (classGroup) =>
-                                          DropdownMenuEntry<String>(
-                                            value: classGroup.ulid!,
-                                            label: classGroup.name,
-                                          ),
+                                      (classGroup) => DropdownMenuEntry<String>(
+                                        value: classGroup.ulid,
+                                        label: classGroup.name,
+                                      ),
                                     )
                                     .toList(),
                             onSelected:
