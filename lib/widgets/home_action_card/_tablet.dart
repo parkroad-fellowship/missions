@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeActionCard extends StatelessWidget {
-  const HomeActionCard({
+class HomeActionCardTablet extends StatelessWidget {
+  const HomeActionCardTablet({
     required this.title,
     required this.assetPath,
     this.onTap,
@@ -40,6 +40,7 @@ class HomeActionCard extends StatelessWidget {
                   style: PRFText.theme().displayLarge?.copyWith(
                     color: PRFApp.theme().kPrimaryColorV2,
                     fontWeight: FontWeight.w600,
+                    fontSize: 54.sp,
                   ),
                 ),
               ],
@@ -50,7 +51,7 @@ class HomeActionCard extends StatelessWidget {
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
-              child: SizedBox(height: 225.h, width: 210.w),
+              child: SizedBox.square(dimension: 220.h),
             ),
           ),
           Positioned(
@@ -64,16 +65,12 @@ class HomeActionCard extends StatelessWidget {
                   color: PRFApp.theme().kPrimaryColorV2,
                   shape: BoxShape.circle,
                 ),
-                child: SizedBox(
-                  width: 230.w,
-                  height: 230.h,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.play_arrow_rounded,
-                      color: Colors.white,
-                      size: 400.dg,
-                    ),
-                    onPressed: () {},
+                child: SizedBox.square(
+                  dimension: 230.h,
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 300.dg,
                   ),
                 ),
               ),
