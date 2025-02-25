@@ -13,10 +13,12 @@ import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/local/prf_media_upload.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/prf_mission_question.dart';
+import 'package:app/models/local/prf_mission_session.dart';
 import 'package:app/models/local/prf_prayer_response.dart';
 import 'package:app/models/local/prf_soul.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_course.dart';
 import 'package:app/models/remote/prf_course_module.dart';
@@ -27,6 +29,7 @@ import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_question.dart';
+import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_soul.dart';
@@ -141,6 +144,17 @@ abstract class LocalDBService {
     required String missionUlid,
   });
   Stream<List<PRFLocalSoul>> getSouls({required String missionUlid});
+  Future<void> persistMissionSessions({
+    required List<PRFMissionSession> missionSessions,
+    required String missionUlid,
+  });
+  Stream<Map<DateTime, List<PRFLocalMissionSession>>> getMissionSessions({
+    required String missionUlid,
+  });
+  Stream<PRFLocalMissionSession?> getMissionSession({
+    required int missionSessionId,
+  });
+  Future<void> deleteMissionSession({required String missionSessionUlid});
 }
 
 class LocalDBServiceImpl implements LocalDBService {
@@ -164,6 +178,7 @@ class LocalDBServiceImpl implements LocalDBService {
       PRFLocalDebriefNoteSchema,
       PRFLocalMissionQuestionSchema,
       PRFLocalSoulSchema,
+      PRFLocalMissionSessionSchema,
     ];
 
     return Isar.open(schemas, directory: dir.path);
@@ -1084,6 +1099,113 @@ class LocalDBServiceImpl implements LocalDBService {
 
         Logger().i('persistSouls :: Persisted');
       }
+    });
+  }
+
+  @override
+  Stream<Map<DateTime, List<PRFLocalMissionSession>>> getMissionSessions({
+    required String missionUlid,
+  }) async* {
+    await for (final localMissionSessions
+        in prfDBInstance.pRFLocalMissionSessions
+            .filter()
+            .missionUlidEqualTo(missionUlid)
+            .sortByStartsAt()
+            .build()
+            .watch(fireImmediately: true)
+            .asBroadcastStream()) {
+      final groupedSessions = collection
+          .groupBy<PRFLocalMissionSession, DateTime>(
+            localMissionSessions,
+            (session) => DateTime(
+              session.startsAt.year,
+              session.startsAt.month,
+              session.startsAt.day,
+            ),
+          );
+
+      yield groupedSessions;
+    }
+  }
+
+  @override
+  Future<void> persistMissionSessions({
+    required List<PRFMissionSession> missionSessions,
+    required String missionUlid,
+  }) async {
+    Logger().i('persistMissionSessions :: Start');
+    await prfDBInstance.writeTxn(() async {
+      for (final missionSession in missionSessions) {
+        await prfDBInstance.pRFLocalMissionSessions.put(
+          PRFLocalMissionSession(
+            missionUlid: missionUlid,
+            ulid: missionSession.ulid,
+            startsAt: missionSession.startsAt,
+            endsAt: missionSession.endsAt,
+            notes: missionSession.notes,
+            order: missionSession.order,
+            facilitator: PRFLocalMember(
+              ulid: missionSession.facilitator?.ulid,
+              fullName: missionSession.facilitator?.fullName,
+              phoneNumber: missionSession.facilitator?.phoneNumber,
+            ),
+            speaker: PRFLocalMember(
+              ulid: missionSession.speaker?.ulid,
+              fullName: missionSession.speaker?.fullName,
+              phoneNumber: missionSession.speaker?.phoneNumber,
+            ),
+
+            classGroup: PRFLocalClassGroup(
+              ulid: missionSession.classGroup?.ulid,
+              name: missionSession.classGroup?.name,
+            ),
+            transcripts:
+                missionSession.transcripts
+                    .map(
+                      (transcript) => PRFLocalMissionSessionTranscript(
+                        ulid: transcript.ulid,
+                        content: transcript.content,
+                        media: PRFLocalMedia(
+                          collectionName: transcript.media?.collectionName,
+                          fileName: transcript.media?.fileName,
+                          temporaryURL: transcript.media?.temporaryURL,
+                          size: transcript.media?.size,
+                          humanReadableSize:
+                              transcript.media?.humanReadableSize,
+                          mimeType: transcript.media?.mimeType,
+                          name: transcript.media?.name,
+                          createdAt: transcript.media?.createdAt,
+                          updatedAt: transcript.media?.updatedAt,
+                        ),
+                      ),
+                    )
+                    .toList(),
+          ),
+        );
+
+        Logger().i('persistMissionSessions :: Persisted');
+      }
+    });
+  }
+
+  @override
+  Stream<PRFLocalMissionSession?> getMissionSession({
+    required int missionSessionId,
+  }) async* {
+    yield* prfDBInstance.pRFLocalMissionSessions
+        .watchObject(missionSessionId, fireImmediately: true)
+        .asBroadcastStream();
+  }
+
+  @override
+  Future<void> deleteMissionSession({
+    required String missionSessionUlid,
+  }) async {
+    await prfDBInstance.writeTxn(() async {
+      await prfDBInstance.pRFLocalMissionSessions
+          .where()
+          .ulidEqualTo(missionSessionUlid)
+          .deleteAll();
     });
   }
 }

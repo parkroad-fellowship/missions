@@ -77,6 +77,10 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       missionUlid: missionUlid,
       refresh: true,
     );
+    context.read<GetMissionSessionsCubit>().getMissionSessions(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
   }
 
   @override

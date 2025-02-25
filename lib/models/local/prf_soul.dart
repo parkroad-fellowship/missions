@@ -1,3 +1,4 @@
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:isar/isar.dart';
 
 part 'prf_soul.g.dart';
@@ -19,12 +20,4 @@ class PRFLocalSoul {
   final DateTime createdAt;
   final String missionUlid;
   final PRFLocalClassGroup classGroup;
-}
-
-@embedded
-class PRFLocalClassGroup {
-  PRFLocalClassGroup({this.ulid, this.name});
-
-  final String? ulid;
-  final String? name;
 }

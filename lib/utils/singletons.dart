@@ -353,16 +353,32 @@ class Singletons {
         create: (context) => GetMissionMediaCubit(missionService: getIt()),
       ),
       BlocProvider<GetMissionSessionsCubit>(
-        create: (context) => GetMissionSessionsCubit(missionService: getIt()),
+        create:
+            (context) => GetMissionSessionsCubit(
+              missionService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<AddMissionSessionCubit>(
-        create: (context) => AddMissionSessionCubit(missionService: getIt()),
+        create:
+            (context) => AddMissionSessionCubit(
+              missionService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<UpdateMissionSessionCubit>(
-        create: (context) => UpdateMissionSessionCubit(missionService: getIt()),
+        create:
+            (context) => UpdateMissionSessionCubit(
+              missionService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<DeleteMissionSessionCubit>(
-        create: (context) => DeleteMissionSessionCubit(missionService: getIt()),
+        create:
+            (context) => DeleteMissionSessionCubit(
+              missionService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<GetMissionGroundSuggestionsCubit>(
         create:
@@ -403,7 +419,11 @@ class Singletons {
                 AddPaymentCubit(paymentService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<GetMissionSessionCubit>(
-        create: (context) => GetMissionSessionCubit(missionService: getIt()),
+        create:
+            (context) => GetMissionSessionCubit(
+              missionService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<DownloadFileCubit>(
         create: (context) => DownloadFileCubit(mediaService: getIt()),

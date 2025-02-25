@@ -1,10 +1,12 @@
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
+import 'package:app/models/local/prf_mission_session.dart';
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
@@ -25,7 +27,7 @@ class UpdateSessionViewHandset extends StatefulWidget {
   });
 
   final String missionUlid;
-  final PRFMissionSession missionSession;
+  final PRFLocalMissionSession missionSession;
 
   @override
   State<UpdateSessionViewHandset> createState() =>
@@ -33,7 +35,7 @@ class UpdateSessionViewHandset extends StatefulWidget {
 }
 
 class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
-  PRFMissionSession get missionSession => widget.missionSession;
+  PRFLocalMissionSession get missionSession => widget.missionSession;
 
   final _notesController = TextEditingController();
   final _startDateController = TextEditingController();
@@ -56,17 +58,17 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     context.read<GetClassGroupsCubit>().getClassGroups();
 
     // Initialize the fields with the current values
-    selectedFacilitator = PRFLocalMember(
-      ulid: missionSession.facilitator?.ulid,
-      fullName: missionSession.facilitator?.fullName,
-      phoneNumber: missionSession.facilitator?.phoneNumber,
-    );
-    selectedSpeaker = PRFLocalMember(
-      ulid: missionSession.speaker?.ulid,
-      fullName: missionSession.speaker?.fullName,
-      phoneNumber: missionSession.speaker?.phoneNumber,
-    );
-    selectedClassGroup = missionSession.classGroup;
+    selectedFacilitator = missionSession.facilitator;
+    selectedSpeaker = missionSession.speaker;
+    if (missionSession.classGroup != null) {
+      selectedClassGroup = PRFClassGroup(
+        missionSession.classGroup!.ulid!,
+        missionSession.classGroup!.name!,
+        1,
+        DateTime.now(),
+        DateTime.now(),
+      );
+    }
     startsAt = missionSession.startsAt;
     endsAt = missionSession.endsAt;
     _notesController.text = missionSession.notes;
@@ -348,6 +350,11 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(l10n.sessionRecorded)),
+                    );
+                    context.read<GetMissionSessionCubit>().getMissionSession(
+                      missionSessionUlid: widget.missionSession.ulid,
+                      missionUlid: widget.missionUlid,
+                      refresh: true,
                     );
                   },
                 );

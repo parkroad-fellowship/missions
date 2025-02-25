@@ -1,42 +1,41 @@
-import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart' as collection;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'get_mission_sessions_cubit.freezed.dart';
 part 'get_mission_sessions_state.dart';
 
 class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
-  GetMissionSessionsCubit({required MissionService missionService})
-    : super(const GetMissionSessionsState.initial()) {
+  GetMissionSessionsCubit({
+    required MissionService missionService,
+    required LocalDBService localDBService,
+  }) : super(const GetMissionSessionsState.initial()) {
     _missionService = missionService;
+    _localDBService = localDBService;
   }
 
   late MissionService _missionService;
+  late LocalDBService _localDBService;
 
-  Future<void> getMissionSessions({required String missionUlid}) async {
+  Future<void> getMissionSessions({
+    required String missionUlid,
+    bool refresh = false,
+  }) async {
     emit(const GetMissionSessionsState.loading());
     try {
+      if (!refresh) {
+        emit(const GetMissionSessionsState.loaded());
+        return;
+      }
       final missionSessions = await _missionService.getMissionSessions(
         missionUlid: missionUlid,
       );
-
-      final groupedSessions = collection.groupBy<PRFMissionSession, DateTime>(
-        missionSessions,
-        (session) => DateTime(
-          session.startsAt.year,
-          session.startsAt.month,
-          session.startsAt.day,
-        ),
+      await _localDBService.persistMissionSessions(
+        missionSessions: missionSessions,
+        missionUlid: missionUlid,
       );
 
-      if (missionSessions.isEmpty) {
-        emit(const GetMissionSessionsState.empty());
-        return;
-      }
-
-      emit(GetMissionSessionsState.loaded(groupedSessions: groupedSessions));
+      emit(const GetMissionSessionsState.loaded());
     } catch (e) {
       emit(GetMissionSessionsState.error(e.toString()));
     }
