@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/auth.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/secondary_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +111,12 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                           ),
                     );
                   },
+                ),
+                SizedBox(height: 16),
+                SecondaryButton(
+                  onPressed: () => context.router.popForced(),
+                  title: l10n.cancel,
+                  disabled: false,
                 ),
                 const Spacer(),
               ],

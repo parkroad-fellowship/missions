@@ -1,4 +1,5 @@
 import 'package:app/features/auth/sign_in/_handset.dart';
+import 'package:app/features/auth/sign_in/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -10,9 +11,9 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const SignInHandset(),
+      defaultBuilder: (_, _) => const SignInTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const SignInHandset(),
+        handset: (_, _) => const SignInHandset(),
       ),
     );
   }
