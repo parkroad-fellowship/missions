@@ -1,4 +1,5 @@
 import 'package:app/features/home/lms/module_details/_handset.dart';
+import 'package:app/features/home/lms/module_details/_tablet.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class ModuleDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => ModuleDetailsPageHandset(
+          (_, __) => ModuleDetailsPageTablet(
             courseModuleUlid: courseModule.ulid,
             moduleUlid: courseModule.module.ulid!,
             courseUlid: courseModule.courseUlid,

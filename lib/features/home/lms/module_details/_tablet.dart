@@ -1,35 +1,32 @@
-import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
+import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CourseDetailsPageTablet extends StatefulWidget {
-  const CourseDetailsPageTablet({required this.courseUlid, super.key});
+class ModuleDetailsPageTablet extends StatefulWidget {
+  const ModuleDetailsPageTablet({
+    required this.courseModuleUlid,
+    required this.moduleUlid,
+    required this.courseUlid,
+    super.key,
+  });
 
+  final String courseModuleUlid;
+  final String moduleUlid;
   final String courseUlid;
 
   @override
-  State<CourseDetailsPageTablet> createState() =>
-      _CourseDetailsPageTabletState();
+  State<ModuleDetailsPageTablet> createState() =>
+      _ModuleDetailsPageTabletState();
 }
 
-class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
-  String get courseUlid => widget.courseUlid;
-
-  @override
-  void initState() {
-    context.read<GetCourseModulesCubit>().getCourseModules(
-      courseUlid: courseUlid,
-    );
-    super.initState();
-  }
+class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
+  String get courseModuleUlid => widget.courseModuleUlid;
 
   @override
   Widget build(BuildContext context) {
@@ -67,47 +64,47 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.lmsRoute,
+                                PRFSuperAppRouter.courseDetailsRoute,
                               ),
                         ),
                       ),
                       const Spacer(),
-                      SingleStreamWrapper<PRFLocalCourse>(
-                        stream: getIt<LocalDBService>().getCourse(
-                          courseUlid: courseUlid,
+                      SizedBox(
+                        child: Text(
+                          l10n.moduleDetails,
+                          style: PRFText.theme().displayLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 56.sp,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        widget:
-                            (context, course) => SizedBox(
-                              child: Text(
-                                course.name,
-                                style: PRFText.theme().displayLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 56.sp,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
                       ),
-
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
-                        child: SingleStreamWrapper<PRFLocalCourse>(
-                          stream: getIt<LocalDBService>().getCourse(
-                            courseUlid: courseUlid,
+                        child: StreamBuilder<PRFLocalCourseModule>(
+                          stream: getIt<LocalDBService>().getCourseModule(
+                            courseModuleUlid: courseModuleUlid,
                           ),
-                          widget:
-                              (context, course) => Text(
-                                l10n.percentage(
-                                  course.courseMember?.percentComplete!
-                                          .toInt() ??
-                                      0,
-                                ),
-                                style: PRFText.theme().displaySmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 48.sp,
-                                ),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            final courseModule = snapshot.data!;
+                            return Text(
+                              l10n.percentage(
+                                courseModule.memberModule?.percentComplete
+                                        ?.toInt() ??
+                                    0,
                               ),
+                              style: PRFText.theme().displaySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 48.sp,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -116,22 +113,49 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
               ),
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-
               SliverToBoxAdapter(
-                child: SingleStreamWrapper<PRFLocalCourse>(
-                  stream: getIt<LocalDBService>().getCourse(
-                    courseUlid: courseUlid,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40.w),
+                  child: StreamBuilder<PRFLocalCourseModule>(
+                    stream: getIt<LocalDBService>().getCourseModule(
+                      courseModuleUlid: courseModuleUlid,
+                    ),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final courseModule = snapshot.data!;
+                      return Text(
+                        courseModule.module.name!,
+                        style: PRFText.theme().headlineMedium?.copyWith(
+                          fontSize: 48.sp,
+                        ),
+                      );
+                    },
                   ),
-                  widget:
-                      (context, course) => Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: Text(
-                          course.description,
-                          style: PRFText.theme().bodySmall?.copyWith(
-                            fontSize: 16,
-                          ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
+                child: StreamBuilder<PRFLocalCourseModule>(
+                  stream: getIt<LocalDBService>().getCourseModule(
+                    courseModuleUlid: courseModuleUlid,
+                  ),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final course = snapshot.data;
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.w),
+                      child: Text(
+                        course!.module.description!,
+                        style: PRFText.theme().bodySmall?.copyWith(
+                          fontSize: 16,
                         ),
                       ),
+                    );
+                  },
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
@@ -139,31 +163,18 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
-                    l10n.modules,
+                    l10n.lessons,
                     style: PRFText.theme().displayLarge?.copyWith(
                       fontSize: 48.sp,
                     ),
                   ),
                 ),
               ),
+
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-              SliverToBoxAdapter(
-                child:
-                    BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
-                      builder:
-                          (context, state) => state.maybeWhen(
-                            loading:
-                                () => const Center(
-                                  child: LinearProgressIndicator(),
-                                ),
-                            orElse: SizedBox.shrink,
-                          ),
-                    ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
-              StreamBuilder<List<PRFLocalCourseModule>>(
-                stream: getIt<LocalDBService>().getCourseModules(
-                  courseUlid: courseUlid,
+              StreamBuilder<List<PRFLocalLessonModule>>(
+                stream: getIt<LocalDBService>().getLessonModules(
+                  moduleUlid: widget.moduleUlid,
                 ),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -181,8 +192,10 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                   return SliverList.separated(
                     itemCount: courseModules!.length,
                     itemBuilder:
-                        (context, index) => CourseDetailsActionCard(
-                          courseModule: courseModules[index],
+                        (context, index) => ModuleDetailsActionCard(
+                          lessonModule: courseModules[index],
+                          courseUlid: widget.courseUlid,
+                          moduleUlid: widget.moduleUlid,
                         ),
                     separatorBuilder:
                         (context, index) => SizedBox(height: 16.h),
@@ -197,20 +210,29 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
   }
 }
 
-class CourseDetailsActionCard extends StatelessWidget {
-  const CourseDetailsActionCard({required this.courseModule, super.key});
+class ModuleDetailsActionCard extends StatelessWidget {
+  const ModuleDetailsActionCard({
+    required this.lessonModule,
+    required this.courseUlid,
+    required this.moduleUlid,
+    super.key,
+  });
 
-  final PRFLocalCourseModule courseModule;
+  final PRFLocalLessonModule lessonModule;
+  final String courseUlid;
+  final String moduleUlid;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     final width = MediaQuery.sizeOf(context).width;
     return GestureDetector(
       onTap:
           () => context.router.push(
-            ModuleDetailsRoute(courseModule: courseModule),
+            LessonDetailsRoute(
+              lessonModule: lessonModule,
+              courseUlid: courseUlid,
+              moduleUlid: moduleUlid,
+            ),
           ),
       child: Stack(
         children: [
@@ -231,7 +253,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                     Flexible(
                       flex: 8,
                       child: Text(
-                        courseModule.module.name!,
+                        lessonModule.lesson.name!,
                         style: PRFText.theme().displayMedium?.copyWith(
                           color: PRFApp.theme().kPrimaryColorV2,
                           fontWeight: FontWeight.w600,
@@ -240,30 +262,17 @@ class CourseDetailsActionCard extends StatelessWidget {
                     ),
                     Flexible(
                       flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 32.w,
-                          vertical: 4.h,
-                        ),
-                        child: Text(
-                          l10n.percentage(
-                            courseModule.memberModule?.percentComplete
-                                    ?.toInt() ??
-                                0,
-                          ),
-                          style: PRFText.theme().bodySmall,
-                        ),
+                      child: Icon(
+                        lessonModule.lessonMember?.completionStatus?.icon ??
+                            Icons.watch_later_outlined,
+                        color: PRFApp.theme().kPrimaryColorV2,
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  courseModule.module.description!,
+                  lessonModule.lesson.description!,
                   style: PRFText.theme().headlineSmall?.copyWith(
                     color: PRFApp.theme().kBlackColor,
                   ),
