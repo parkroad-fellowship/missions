@@ -32,9 +32,14 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   try {
     Bloc.observer = const AppBlocObserver();
 
+    // Initialize Firebase
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    // Ensure timezone data is loaded
+    await Future<dynamic>.delayed(const Duration(milliseconds: 100));
+
     // Report errors to Crashlytics in release mode only
     if (kReleaseMode) {
       FlutterError.onError =
