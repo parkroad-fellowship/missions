@@ -275,107 +275,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                               )
                               : SliverList.builder(
                                 itemCount: missionSession.transcripts.length,
-                                itemBuilder: (context, index) {
-                                  final transcript =
-                                      missionSession.transcripts[index];
-                                  return ExpansionTile(
-                                    initiallyExpanded: true,
-                                    title: Text(l10n.recordingItem(++index)),
-                                    expandedAlignment: Alignment.centerLeft,
-                                    expandedCrossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ListTile(
-                                        title: Text(
-                                          l10n.downloadTeaching,
-                                          style: PRFText.theme().bodySmall,
-                                        ),
-                                        trailing: IconButton(
-                                          icon: BlocConsumer<
-                                            DownloadFileCubit,
-                                            DownloadFileState
-                                          >(
-                                            listener: (context, state) {
-                                              state.mapOrNull(
-                                                loaded: (_) {
-                                                  ScaffoldMessenger.of(
-                                                    context,
-                                                  ).showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        l10n.downloaded,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            builder:
-                                                (
-                                                  context,
-                                                  state,
-                                                ) => state.maybeWhen(
-                                                  orElse:
-                                                      () => const Icon(
-                                                        Icons.download,
-                                                      ),
-                                                  loading:
-                                                      PRFCircularProgressIndicator
-                                                          .new,
-                                                ),
-                                          ),
-                                          onPressed:
-                                              () => context
-                                                  .read<DownloadFileCubit>()
-                                                  .downloadFile(
-                                                    transcript
-                                                        .media!
-                                                        .temporaryURL!,
-                                                  ),
-                                        ),
-                                      ),
-                                      if (transcript.content?.isEmpty ?? false)
-                                        Badge(
-                                          label: Text(l10n.inTesting),
-                                          backgroundColor:
-                                              PRFApp.theme().kPrimaryColorV2,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 2,
-                                          ),
-                                          child: Chip(
-                                            backgroundColor: Colors.white,
-                                            label: Text(
-                                              l10n.transcriptProcessing,
-                                              style: PRFText.theme().bodySmall,
-                                            ),
-                                          ),
-                                        ),
-                                      if (transcript.content?.isNotEmpty ??
-                                          true)
-                                        Badge(
-                                          label: Text(l10n.inTesting),
-                                          backgroundColor:
-                                              PRFApp.theme().kPrimaryColorV2,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 2,
-                                          ),
-                                          child: GestureDetector(
-                                            onTap:
-                                                () =>
-                                                    _viewTranscript(transcript),
-                                            child: Chip(
-                                              backgroundColor: Colors.white,
-                                              label: Text(
-                                                l10n.viewTranscript,
-                                                style:
-                                                    PRFText.theme().bodySmall,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  );
-                                },
+                                itemBuilder:
+                                    (context, index) => _viewTranscripts(
+                                      missionSession.transcripts[index],
+                                      index,
+                                      l10n,
+                                    ),
                               ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 16)),
@@ -386,6 +291,73 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
       ),
     );
   }
+
+  Widget _viewTranscripts(
+    PRFLocalMissionSessionTranscript transcript,
+    int index,
+    AppLocalizations l10n,
+  ) => ExpansionTile(
+    initiallyExpanded: true,
+    title: Text(l10n.recordingItem(index + 1)),
+    expandedAlignment: Alignment.centerLeft,
+    expandedCrossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      ListTile(
+        title: Text(l10n.downloadTeaching, style: PRFText.theme().bodySmall),
+        trailing: IconButton(
+          icon: BlocConsumer<DownloadFileCubit, DownloadFileState>(
+            listener: (context, state) {
+              state.mapOrNull(
+                loaded: (_) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(l10n.downloaded)));
+                },
+              );
+            },
+            builder:
+                (context, state) => state.maybeWhen(
+                  orElse: () => const Icon(Icons.download),
+                  loading: PRFCircularProgressIndicator.new,
+                ),
+          ),
+          onPressed:
+              () => context.read<DownloadFileCubit>().downloadFile(
+                transcript.media!.temporaryURL!,
+              ),
+        ),
+      ),
+      if (transcript.content?.isEmpty ?? false)
+        Badge(
+          label: Text(l10n.inTesting),
+          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: Chip(
+            backgroundColor: Colors.white,
+            label: Text(
+              l10n.transcriptProcessing,
+              style: PRFText.theme().bodySmall,
+            ),
+          ),
+        ),
+      if (transcript.content?.isNotEmpty ?? true)
+        Badge(
+          label: Text(l10n.inTesting),
+          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: GestureDetector(
+            onTap: () => _viewTranscript(transcript),
+            child: Chip(
+              backgroundColor: Colors.white,
+              label: Text(
+                l10n.viewTranscript,
+                style: PRFText.theme().bodySmall,
+              ),
+            ),
+          ),
+        ),
+    ],
+  );
 
   void _viewTranscript(PRFLocalMissionSessionTranscript transcript) =>
       WoltModalSheet.show<void>(
