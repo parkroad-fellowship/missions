@@ -1,4 +1,5 @@
 import 'package:app/features/home/events/event_details/_handset.dart';
+import 'package:app/features/home/events/event_details/_tablet.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class EventDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => EventDetailsPageHandset(event: event),
+      defaultBuilder: (_, __) => EventDetailsPageTablet(event: event),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, __) => EventDetailsPageHandset(event: event),
       ),
