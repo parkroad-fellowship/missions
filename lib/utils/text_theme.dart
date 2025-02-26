@@ -36,6 +36,11 @@ class PRFTextTheme {
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.w600,
       ),
+      headlineLarge: GoogleFonts.lato(
+        fontSize: 20 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w700,
+      ),
       headlineMedium: GoogleFonts.lato(
         fontSize: 15 * adjustedScaleFactor,
         fontStyle: FontStyle.normal,
@@ -44,6 +49,11 @@ class PRFTextTheme {
       headlineSmall: GoogleFonts.lato(
         fontSize: 14 * adjustedScaleFactor,
         fontStyle: FontStyle.normal,
+      ),
+      titleLarge: GoogleFonts.lato(
+        fontSize: 16 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
       ),
       titleMedium: GoogleFonts.lato(fontSize: 11 * adjustedScaleFactor),
       titleSmall: GoogleFonts.lato(
@@ -79,11 +89,6 @@ class PRFTextTheme {
         fontSize: 11 * adjustedScaleFactor,
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.w500,
-      ),
-      headlineLarge: GoogleFonts.lato(
-        fontSize: 20 * adjustedScaleFactor,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.w700,
       ),
     );
   }
