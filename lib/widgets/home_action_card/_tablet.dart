@@ -37,11 +37,7 @@ class HomeActionCardTablet extends StatelessWidget {
                 SizedBox(height: 100.h),
                 Text(
                   title,
-                  style: PRFText.theme().displayLarge?.copyWith(
-                    color: PRFApp.theme().kPrimaryColorV2,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 54.sp,
-                  ),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
               ],
             ),

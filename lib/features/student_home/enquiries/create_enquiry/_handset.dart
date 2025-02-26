@@ -26,9 +26,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
       appBar: AppBar(
         title: Text(
           l10n.ask,
-          style: PRFText.theme().displayLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.displayLarge,
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,

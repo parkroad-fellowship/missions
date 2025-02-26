@@ -84,9 +84,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                 .member!
                                 .lastName,
                           ),
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 60.sp,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                         ),
                         const Spacer(),
                         Animate(
@@ -130,11 +128,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                         EdgeInsets.only(bottom: 80.h),
                     child: Text(
                       l10n.iWantTo,
-                      style: PRFText.theme().displayLarge?.copyWith(
-                        color: PRFApp.theme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 94.sp,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
                   SizedBox(height: 16.h),

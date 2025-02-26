@@ -111,10 +111,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             vertical: 20,
                           ),
                           fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                            color: PRFApp.theme().kDullGreyColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          hintStyle: Theme.of(context).textTheme.headlineSmall!,
                         ),
                       );
                     },
@@ -174,10 +171,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             vertical: 20,
                           ),
                           fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                            color: PRFApp.theme().kDullGreyColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          hintStyle: Theme.of(context).textTheme.headlineSmall!,
                         ),
                       );
                     },
@@ -237,11 +231,8 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                 vertical: 20,
                               ),
                               fillColor: PRFApp.theme().kBackgroundColor,
-                              hintStyle: PRFText.theme().headlineSmall!
-                                  .copyWith(
-                                    color: PRFApp.theme().kDullGreyColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              hintStyle: Theme.of(context).textTheme.headlineSmall!
+                                  ,
                             ),
                           );
                         },
@@ -405,15 +396,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         backgroundColor: PRFApp.theme().kBackgroundColor,
-        itemStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kBlackColor,
-        ),
-        doneStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
-        cancelStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
+        itemStyle: Theme.of(context).textTheme.headlineSmall!,
+        doneStyle: Theme.of(context).textTheme.headlineSmall!,
+        cancelStyle: Theme.of(context).textTheme.headlineSmall!,
       ),
       onConfirm: (date) {
         setState(() {
@@ -434,15 +419,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         backgroundColor: PRFApp.theme().kBackgroundColor,
-        itemStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kBlackColor,
-        ),
-        doneStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
-        cancelStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
+        itemStyle: Theme.of(context).textTheme.headlineSmall!,
+        doneStyle: Theme.of(context).textTheme.headlineSmall!,
+        cancelStyle: Theme.of(context).textTheme.headlineSmall!,
       ),
       onConfirm: (date) {
         setState(() {

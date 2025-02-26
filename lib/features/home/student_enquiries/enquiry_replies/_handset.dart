@@ -99,9 +99,7 @@ class _StudentEnquiryRepliesPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.studentQuestions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                     ],

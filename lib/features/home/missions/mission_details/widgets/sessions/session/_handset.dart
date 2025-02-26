@@ -100,9 +100,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         const Spacer(),
                         Text(
                           l10n.sessionDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 80.sp,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                         ),
                         const Spacer(),
                       ],
@@ -269,7 +267,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                                 child: Center(
                                   child: Text(
                                     l10n.noRecordings,
-                                    style: PRFText.theme().bodySmall,
+                                    style: Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ),
                               )
@@ -303,7 +301,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
     expandedCrossAxisAlignment: CrossAxisAlignment.start,
     children: [
       ListTile(
-        title: Text(l10n.downloadTeaching, style: PRFText.theme().bodySmall),
+        title: Text(l10n.downloadTeaching, style: Theme.of(context).textTheme.bodySmall),
         trailing: IconButton(
           icon: BlocConsumer<DownloadFileCubit, DownloadFileState>(
             listener: (context, state) {
@@ -336,7 +334,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
             backgroundColor: Colors.white,
             label: Text(
               l10n.transcriptProcessing,
-              style: PRFText.theme().bodySmall,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ),
@@ -351,7 +349,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
               backgroundColor: Colors.white,
               label: Text(
                 l10n.viewTranscript,
-                style: PRFText.theme().bodySmall,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
           ),
@@ -373,7 +371,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     transcript.content!,
-                    style: PRFText.theme().bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
               ),

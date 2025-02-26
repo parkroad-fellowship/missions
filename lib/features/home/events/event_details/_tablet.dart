@@ -92,9 +92,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                       const Spacer(),
                       Text(
                         l10n.eventDetails,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       // Show an icon with the number of tickets
@@ -107,10 +105,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                                   .loggedInMemberEventSubscription!
                                   .numberOfAttendees
                                   .toString(),
-                              style: PRFText.theme().displayMedium!.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: PRFApp.theme().kPrimaryColorV2,
-                              ),
+                              style: Theme.of(context).textTheme.displayMedium!,
                             ),
                             const Icon(Icons.group),
                           ],
@@ -131,10 +126,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                     dividerColor: Colors.white,
                     isScrollable: true,
                     tabAlignment: TabAlignment.start,
-                    labelStyle: PRFText.theme().displayMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: PRFApp.theme().kPrimaryColorV2,
-                    ),
+                    labelStyle: Theme.of(context).textTheme.displayMedium!,
                     indicatorColor: Colors.white,
                     overlayColor: WidgetStateProperty.all(Colors.transparent),
                     tabs: [Tab(text: l10n.info), Tab(text: l10n.gallery)],

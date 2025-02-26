@@ -61,7 +61,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
           centerTitle: true,
           title: Text(
             l10n.missions,
-            style: PRFText.theme().displayLarge?.copyWith(fontSize: 56.sp),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
           leading: Container(
             margin: EdgeInsets.only(left: 16.w),
@@ -118,10 +118,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
             dividerColor: Colors.white,
             isScrollable: true,
             tabAlignment: TabAlignment.start,
-            labelStyle: PRFText.theme().displayMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: PRFApp.theme().kPrimaryColorV2,
-            ),
+            labelStyle: Theme.of(context).textTheme.displayMedium!,
             indicatorColor: Colors.white,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
             tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
@@ -155,10 +152,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                         Center(
                           child: Text(
                             l10n.noMissions,
-                            style: PRFText.theme().headlineMedium!.copyWith(
-                              color: PRFApp.theme().kDullGreyColor,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: Theme.of(context).textTheme.headlineMedium!,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -169,10 +163,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                             children: [
                               Text(
                                 l10n.pleaseWait,
-                                style: PRFText.theme().displayLarge!.copyWith(
-                                  color: PRFApp.theme().kPrimaryColorV2,
-                                  fontSize: 14,
-                                ),
+                                style: Theme.of(context).textTheme.displayLarge!,
                               ),
                             ],
                           ),
@@ -233,10 +224,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                         Center(
                           child: Text(
                             l10n.noMissions,
-                            style: PRFText.theme().headlineMedium!.copyWith(
-                              color: PRFApp.theme().kDullGreyColor,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: Theme.of(context).textTheme.headlineMedium!,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -247,10 +235,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                             children: [
                               Text(
                                 l10n.pleaseWait,
-                                style: PRFText.theme().displayLarge!.copyWith(
-                                  color: PRFApp.theme().kPrimaryColorV2,
-                                  fontSize: 14,
-                                ),
+                                style: Theme.of(context).textTheme.displayLarge!,
                               ),
                             ],
                           ),
@@ -333,13 +318,10 @@ class MissionActionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (status != null)
-                    Text(status!.name, style: PRFText.theme().bodySmall),
+                    Text(status!.name, style: Theme.of(context).textTheme.bodySmall),
                   Text(
                     mission.school!.name!,
-                    style: PRFText.theme().displayLarge?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   SizedBox(height: 16.h),
                   Text(
@@ -351,10 +333,7 @@ class MissionActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     mission.missionType!.name!,
-                    style: PRFText.theme().headlineMedium?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
               ),

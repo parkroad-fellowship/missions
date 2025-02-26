@@ -52,9 +52,7 @@ class AccountPageTablet extends StatelessWidget {
                       const Spacer(),
                       Text(
                         l10n.myAccount,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Animate(
@@ -75,12 +73,10 @@ class AccountPageTablet extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   l10n.signOut,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kRedColor,
-                                        fontSize: 40.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.headlineMedium!,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -173,11 +169,7 @@ class AccountPageTablet extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: Text(
                         l10n.memberships,
-                        style: PRFText.theme().headlineMedium!.copyWith(
-                          color: PRFApp.theme().kBlackColor,
-                          fontSize: 40.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.headlineMedium!,
                       ),
                     ),
                   );
@@ -214,17 +206,13 @@ class AccountPageTablet extends StatelessWidget {
                                   .memberships![index]
                                   .spiritualYear!
                                   .name,
-                              style: PRFText.theme().bodySmall?.copyWith(
-                                fontSize: 40.sp,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                             subtitle: Text(
                               PrfMembershipType.fromIndex(
                                 profile.member!.memberships![index].type,
                               ).name,
-                              style: PRFText.theme().bodySmall?.copyWith(
-                                fontSize: 32.sp,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                             trailing: Icon(
                               profile.member!.memberships![index].approved
@@ -249,20 +237,12 @@ class AccountPageTablet extends StatelessWidget {
                     child: Text.rich(
                       TextSpan(
                         text: l10n.byUsing,
-                        style: PRFText.theme().displaySmall!.copyWith(
-                          fontSize: 12,
-                          color: const Color(0xFF727272),
-                          height: 1.5,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.displaySmall!
+                            .copyWith(color: const Color(0xFF727272)),
                         children: [
                           TextSpan(
                             text: l10n.terms,
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: PRFApp.theme().kPrimaryColorV2,
-                            ),
+                            style: Theme.of(context).textTheme.displaySmall!,
                             recognizer:
                                 TapGestureRecognizer()
                                   ..onTap = () async {
@@ -276,19 +256,11 @@ class AccountPageTablet extends StatelessWidget {
                           ),
                           TextSpan(
                             text: l10n.and,
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                              color: PRFApp.theme().kBlackColor,
-                            ),
+                            style: Theme.of(context).textTheme.displaySmall!,
                           ),
                           TextSpan(
                             text: l10n.privacyPolicy,
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: PRFApp.theme().kPrimaryColorV2,
-                            ),
+                            style: Theme.of(context).textTheme.displaySmall!,
                             recognizer:
                                 TapGestureRecognizer()
                                   ..onTap = () async {
@@ -312,11 +284,8 @@ class AccountPageTablet extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Text(
                     l10n.version(Misc.getAppVersion()),
-                    style: PRFText.theme().displaySmall!.copyWith(
-                      fontSize: 12,
+                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
                       color: const Color(0xFF727272),
-                      height: 1.5,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),

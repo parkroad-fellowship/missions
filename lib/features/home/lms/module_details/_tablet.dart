@@ -72,10 +72,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                       SizedBox(
                         child: Text(
                           l10n.moduleDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 56.sp,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -99,10 +96,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                                         ?.toInt() ??
                                     0,
                               ),
-                              style: PRFText.theme().displaySmall?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 48.sp,
-                              ),
+                              style: Theme.of(context).textTheme.displaySmall,
                             );
                           },
                         ),
@@ -127,9 +121,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                       final courseModule = snapshot.data!;
                       return Text(
                         courseModule.module.name!,
-                        style: PRFText.theme().headlineMedium?.copyWith(
-                          fontSize: 48.sp,
-                        ),
+                        style: Theme.of(context).textTheme.headlineMedium,
                       );
                     },
                   ),
@@ -150,9 +142,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: Text(
                         course!.module.description!,
-                        style: PRFText.theme().bodySmall?.copyWith(
-                          fontSize: 16,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     );
                   },
@@ -164,9 +154,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     l10n.lessons,
-                    style: PRFText.theme().displayLarge?.copyWith(
-                      fontSize: 48.sp,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
               ),
@@ -254,10 +242,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                       flex: 8,
                       child: Text(
                         lessonModule.lesson.name!,
-                        style: PRFText.theme().displayMedium?.copyWith(
-                          color: PRFApp.theme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ),
                     Flexible(
@@ -273,9 +258,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 SizedBox(height: 16.h),
                 Text(
                   lessonModule.lesson.description!,
-                  style: PRFText.theme().headlineSmall?.copyWith(
-                    color: PRFApp.theme().kBlackColor,
-                  ),
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ],
             ),

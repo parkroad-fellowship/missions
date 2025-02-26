@@ -73,9 +73,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.questions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Padding(
@@ -120,11 +118,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
                       ),
-                      hintStyle: PRFText.theme().bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: PRFApp.theme().kPrimaryColorV2.withAlpha(200),
-                        fontSize: 12,
-                      ),
+                      hintStyle: Theme.of(context).textTheme.bodyMedium,
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: PRFApp.theme().kAccent2BackgroundColor,
@@ -202,11 +196,8 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                                 Center(
                                   child: Text(
                                     l10n.noFaqs,
-                                    style: PRFText.theme().headlineMedium!
-                                        .copyWith(
-                                          color: PRFApp.theme().kDullGreyColor,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                    style: Theme.of(context).textTheme.headlineMedium!
+                                        ,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -219,13 +210,8 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                                     children: [
                                       Text(
                                         l10n.pleaseWait,
-                                        style: PRFText.theme().displayLarge!
-                                            .copyWith(
-                                              color:
-                                                  PRFApp.theme()
-                                                      .kPrimaryColorV2,
-                                              fontSize: 14,
-                                            ),
+                                        style: Theme.of(context).textTheme.displayLarge!
+                                            ,
                                       ),
                                     ],
                                   ),
@@ -280,18 +266,12 @@ class FaqCard extends StatelessWidget {
               children: [
                 Text(
                   faq.question,
-                  style: PRFText.theme().titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge!,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   faq.answer,
-                  style: PRFText.theme().bodySmall!.copyWith(
-                    color: PRFApp.theme().kBlackColor,
-                    fontSize: 14,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall!,
                 ),
                 SizedBox(height: 8.h),
               ],

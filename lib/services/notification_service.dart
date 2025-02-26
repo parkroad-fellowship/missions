@@ -84,21 +84,14 @@ abstract class NotificationService {
                                 ),
                                 title: Text(
                                   l10n.prayerAlert,
-                                  style: PRFText.theme().displayMedium
-                                      ?.copyWith(
-                                        color: PRFApp.theme().kPrimaryColorV2,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
                                 ),
                               ),
                               ListTile(
                                 title: Text(
                                   payload['prayer_prompt_description']!,
-                                  style: PRFText.theme().bodySmall?.copyWith(
-                                    color: PRFApp.theme().kPrimaryColorV2,
-                                    fontSize: 18,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
                               OverflowBar(

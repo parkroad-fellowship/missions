@@ -58,10 +58,7 @@ class SecondaryButton extends StatelessWidget {
                 const SizedBox.shrink(),
               Text(
                 title,
-                style: PRFText.theme().headlineSmall!.copyWith(
-                  color: PRFApp.theme().kPrimaryColorV2,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ],
           ),

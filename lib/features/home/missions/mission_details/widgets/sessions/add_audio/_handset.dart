@@ -41,7 +41,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                           () => ListTile(
                             title: Text(
                               l10n.tapToAdd,
-                              style: PRFText.theme().displayLarge,
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                             leading: const Icon(
                               Icons.speaker,
@@ -60,7 +60,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                           () => ListTile(
                             title: Text(
                               l10n.tapToAdd,
-                              style: PRFText.theme().displayLarge,
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                             leading: const Icon(
                               Icons.speaker,
@@ -89,7 +89,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                                   ),
                                   title: Text(
                                     files[index].name,
-                                    style: PRFText.theme().bodyLarge,
+                                    style: Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 );
                               },

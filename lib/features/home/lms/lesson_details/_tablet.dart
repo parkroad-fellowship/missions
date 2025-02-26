@@ -79,10 +79,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                       SizedBox(
                         child: Text(
                           l10n.lessonDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 56.sp,
-                          ),
+                          style:Theme.of(context).textTheme.displayLarge,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -104,9 +101,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     lesson.name!.toUpperCase(),
-                    style: PRFText.theme().headlineMedium?.copyWith(
-                      fontSize: 48.sp,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
               ),
@@ -119,9 +114,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: HtmlWidget(
                         lesson.content!,
-                        textStyle: PRFText.theme().bodySmall?.copyWith(
-                          fontSize: 16,
-                        ),
+                        textStyle: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
 

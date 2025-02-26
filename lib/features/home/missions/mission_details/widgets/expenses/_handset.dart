@@ -44,11 +44,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
               () => Center(
                 child: Text(
                   l10n.askMissionDeskToDisburseFunds,
-                  style: PRFText.theme().headlineSmall!.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: PRFApp.theme().kPrimaryColorV2,
-                  ),
+                  style: Theme.of(context).textTheme.headlineSmall!,
                 ),
               ),
           loaded: (missionExpense) {
@@ -66,10 +62,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                       children: [
                         Text(
                           l10n.summary,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                         ),
                         const Spacer(),
                         BlocBuilder<
@@ -250,10 +243,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   SliverToBoxAdapter(
                     child: Text(
                       l10n.breakdown,
-                      style: PRFText.theme().displayLarge?.copyWith(
-                        color: PRFApp.theme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
                   SliverToBoxAdapter(
@@ -341,10 +331,7 @@ class ExpenseCard extends StatelessWidget {
                     locale: 'en_KE',
                     symbol: 'KES ',
                   ).format(expense.unitCost),
-                  style: PRFText.theme().displayLarge?.copyWith(
-                    color: PRFApp.theme().kPrimaryColorV2,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 16.h),
                 Text(expense.confirmationMessage.toString()),

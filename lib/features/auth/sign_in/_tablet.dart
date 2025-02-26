@@ -88,7 +88,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             l10n.signIn,
-                            style: PRFText.theme().displayLarge,
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -232,12 +232,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           alignment: Alignment.bottomCenter,
                           child: Text(
                             l10n.version(Misc.getAppVersion()),
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
-                              color: const Color(0xFF727272),
-                              height: 1.5,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: Theme.of(context).textTheme.displaySmall,
                           ),
                         ),
                         const Spacer(),

@@ -131,9 +131,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                           const Spacer(),
                           Text(
                             l10n.missionDetails,
-                            style: PRFText.theme().displayLarge?.copyWith(
-                              fontSize: 80.sp,
-                            ),
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                           const Spacer(),
                         ],
@@ -155,10 +153,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       dividerColor: Colors.white,
                       isScrollable: true,
                       tabAlignment: TabAlignment.start,
-                      labelStyle: PRFText.theme().displayMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: PRFApp.theme().kPrimaryColorV2,
-                      ),
+                      labelStyle: Theme.of(context).textTheme.displayMedium!,
                       indicatorColor: Colors.white,
                       overlayColor: WidgetStateProperty.all(Colors.transparent),
                       tabs: [
@@ -232,7 +227,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               backgroundColor: PRFApp.theme().kPrimaryColorV2,
               label: Text(
                 l10n.sendMe,
-                style: PRFText.theme().bodySmall?.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               icon: BlocBuilder<SubscribeCubit, SubscribeState>(
                 builder:

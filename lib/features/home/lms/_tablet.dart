@@ -67,9 +67,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                       const Spacer(),
                       Text(
                         l10n.learn,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Padding(
@@ -119,10 +117,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                             Center(
                               child: Text(
                                 l10n.noCourses,
-                                style: PRFText.theme().headlineMedium!.copyWith(
-                                  color: PRFApp.theme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context).textTheme.headlineMedium!,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -134,11 +129,8 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                                 children: [
                                   Text(
                                     l10n.pleaseWait,
-                                    style: PRFText.theme().displayLarge!
-                                        .copyWith(
-                                          color: PRFApp.theme().kPrimaryColorV2,
-                                          fontSize: 14,
-                                        ),
+                                    style: Theme.of(context).textTheme.displayLarge!
+                                        ,
                                   ),
                                 ],
                               ),
@@ -202,10 +194,7 @@ class CourseActionCard extends StatelessWidget {
                     children: [
                       Text(
                         course.name,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          color: PRFApp.theme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Container(
@@ -221,7 +210,7 @@ class CourseActionCard extends StatelessWidget {
                           l10n.percentage(
                             course.courseMember?.percentComplete?.toInt() ?? 0,
                           ),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -229,9 +218,7 @@ class CourseActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     course.description,
-                    style: PRFText.theme().bodySmall?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),

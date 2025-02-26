@@ -43,11 +43,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
       nullWidget: Center(
         child: Text(
           l10n.noSessions,
-          style: PRFText.theme().headlineSmall!.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: PRFApp.theme().kPrimaryColorV2,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall!,
         ),
       ),
       widget:
@@ -68,11 +64,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                         DateFormat.MMMMEEEEd().add_y().format(
                           missionSessions.keys.elementAt(index),
                         ),
-                        style: PRFText.theme().headlineSmall!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: PRFApp.theme().kBlackColor,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall!,
                       ),
                     ],
                   ),
@@ -145,10 +137,7 @@ class MissionSessionCard extends StatelessWidget {
                       Text(
                         '${DateFormat.jm().format(missionSession.startsAt)} -'
                         ' ${DateFormat.jm().format(missionSession.endsAt)}',
-                        style: PRFText.theme().titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
+                        style: Theme.of(context).textTheme.titleLarge!,
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -156,10 +145,7 @@ class MissionSessionCard extends StatelessWidget {
                         '${missionSession.facilitator.fullName}\n'
                         '${l10n.speaker}: '
                         '${missionSession.speaker?.fullName}',
-                        style: PRFText.theme().bodySmall!.copyWith(
-                          color: PRFApp.theme().kBlackColor,
-                          fontSize: 14,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall!,
                       ),
                       SizedBox(height: 8.h),
                     ],

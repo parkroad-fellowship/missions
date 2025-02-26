@@ -64,9 +64,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                       const Spacer(),
                       Text(
                         l10n.announcements,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                     ],
@@ -95,14 +93,10 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                         Center(
                                           child: Text(
                                             l10n.noAnnouncements,
-                                            style: PRFText.theme()
-                                                .headlineMedium!
-                                                .copyWith(
-                                                  color:
-                                                      PRFApp.theme()
-                                                          .kDullGreyColor,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.headlineMedium!,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -119,14 +113,10 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                               Text(
                                                 l10n.pleaseWaitForOS,
                                                 maxLines: 2,
-                                                style: PRFText.theme()
-                                                    .displayLarge!
-                                                    .copyWith(
-                                                      color:
-                                                          PRFApp.theme()
-                                                              .kPrimaryColorV2,
-                                                      fontSize: 12,
-                                                    ),
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.displayLarge!,
                                               ),
                                             ],
                                           ),
@@ -169,11 +159,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                               children: [
                                 Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
-                                  style: PRFText.theme().bodyLarge?.copyWith(
-                                    color: PRFApp.theme().kPrimaryColorV2,
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 48.sp,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 SizedBox(height: 16.h),
                                 ListView.separated(
@@ -204,34 +190,24 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                           contentPadding: EdgeInsets.zero,
                                           title: Text(
                                             entries[index].title.toUpperCase(),
-                                            style: PRFText.theme()
-                                                .headlineMedium
-                                                ?.copyWith(
-                                                  color:
-                                                      PRFApp.theme()
-                                                          .kPrimaryColorV2,
-                                                  fontWeight: FontWeight.w300,
-                                                ),
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.headlineMedium,
                                           ),
                                           subtitle: Text(
                                             entries[index].content,
-                                            style: PRFText.theme().bodySmall
-                                                ?.copyWith(
-                                                  color:
-                                                      PRFApp.theme()
-                                                          .kPrimaryColorV2,
-                                                ),
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.bodySmall,
                                           ),
                                           trailing: Text(
                                             Misc.formatTimeFromDateTime(
                                               entries[index].publishedAt,
                                             ),
-                                            style: PRFText.theme().bodySmall
-                                                ?.copyWith(
-                                                  color:
-                                                      PRFApp.theme()
-                                                          .kPrimaryColorV2,
-                                                ),
+                                            style: Theme.of(context).textTheme.bodySmall
+                                                ,
                                           ),
                                         ),
                                       ),

@@ -69,10 +69,9 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                                       _selectedCategory == null
                                           ? PRFApp.theme().kPrimaryColorV2
                                           : Colors.white,
-                                  labelStyle: PRFText.theme().bodyMedium
+                                  labelStyle: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
+
                                         color:
                                             _selectedCategory == null
                                                 ? Colors.white
@@ -101,10 +100,8 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                                     _selectedCategory == faqCategory
                                         ? PRFApp.theme().kPrimaryColorV2
                                         : Colors.white,
-                                labelStyle: PRFText.theme().bodyMedium
+                                labelStyle: Theme.of(context).textTheme.labelSmall
                                     ?.copyWith(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
                                       color:
                                           _selectedCategory == faqCategory
                                               ? Colors.white

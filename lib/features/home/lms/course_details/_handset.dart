@@ -80,9 +80,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                             (context, course) => SizedBox(
                               child: Text(
                                 course.name,
-                                style: PRFText.theme().displayLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context).textTheme.displayLarge,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -102,9 +100,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                                           .toInt() ??
                                       0,
                                 ),
-                                style: PRFText.theme().displaySmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                         ),
                       ),
@@ -125,9 +121,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           course.description,
-                          style: PRFText.theme().bodySmall?.copyWith(
-                            fontSize: 16,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                 ),
@@ -138,9 +132,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     l10n.modules,
-                    style: PRFText.theme().displayLarge?.copyWith(
-                      fontSize: 64.sp,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
               ),
@@ -230,10 +222,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                       flex: 8,
                       child: Text(
                         courseModule.module.name!,
-                        style: PRFText.theme().displayMedium?.copyWith(
-                          color: PRFApp.theme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ),
                     Flexible(
@@ -253,7 +242,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                                     ?.toInt() ??
                                 0,
                           ),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ),
@@ -262,9 +251,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                 SizedBox(height: 16.h),
                 Text(
                   courseModule.module.description!,
-                  style: PRFText.theme().headlineSmall?.copyWith(
-                    color: PRFApp.theme().kBlackColor,
-                  ),
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ],
             ),

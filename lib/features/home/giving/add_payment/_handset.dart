@@ -91,11 +91,8 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                                 vertical: 20,
                               ),
                               fillColor: PRFApp.theme().kBackgroundColor,
-                              hintStyle: PRFText.theme().headlineSmall!
-                                  .copyWith(
-                                    color: PRFApp.theme().kDullGreyColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              hintStyle: Theme.of(context).textTheme.headlineSmall!
+                                  ,
                             ),
                           );
                         },

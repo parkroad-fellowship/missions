@@ -57,10 +57,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 event.name.toUpperCase(),
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,20 +68,20 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                       Misc.formatMissionDate(event.startDate),
                       Misc.formatTime(event.startTime),
                     ),
-                    style: PRFText.theme().bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
                     l10n.missionEnd(
                       Misc.formatMissionDate(event.endDate),
                       Misc.formatTime(event.endTime),
                     ),
-                    style: PRFText.theme().bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
                     event.capacity != 0
                         ? l10n.capacity(event.capacity.toString())
                         : l10n.capacity('N/A'),
-                    style: PRFText.theme().bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
                     event.subscriptionsNeeded != null
@@ -92,7 +89,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                           event.subscriptionsNeeded.toString(),
                         )
                         : l10n.subscriptionsNeeded('N/A'),
-                    style: PRFText.theme().bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
@@ -103,15 +100,12 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.description,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(event.description, style: PRFText.theme().bodySmall),
+                  Text(event.description, style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
             ),
@@ -122,10 +116,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                 children: [
                   Text(
                     l10n.address,
-                    style: PRFText.theme().headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const Spacer(),
                   Animate(
@@ -188,7 +179,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(event.venue ?? '', style: PRFText.theme().bodySmall),
+                  Text(event.venue ?? '', style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
             ),
@@ -198,10 +189,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                 contentPadding: EdgeInsets.zero,
                 title: Text(
                   l10n.weather,
-                  style: PRFText.theme().headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             ...event.weatherForecasts.map(
@@ -212,10 +200,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                     event.weatherForecasts.indexOf(forecast) + 1,
                     forecast.weatherCodeDescription,
                   ),
-                  style: PRFText.theme().headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,7 +212,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                         forecast.temperature.apparentMax,
                         forecast.temperature.apparentAvg,
                       ),
-                      style: PRFText.theme().bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
                       l10n.humidity(
@@ -235,7 +220,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                         forecast.humidity.max,
                         forecast.humidity.avg,
                       ),
-                      style: PRFText.theme().bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
                       l10n.visibility(
@@ -243,7 +228,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                         forecast.visibility.max,
                         forecast.visibility.avg,
                       ),
-                      style: PRFText.theme().bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
                       l10n.precipitationProbability(
@@ -251,19 +236,16 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                         forecast.precipitationProbability.max,
                         forecast.precipitationProbability.avg,
                       ),
-                      style: PRFText.theme().bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       l10n.dressingRecommendations,
-                      style: PRFText.theme().headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Text(
                       forecast.dressingRecommendations,
-                      style: PRFText.theme().bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),

@@ -75,13 +75,11 @@ class _InputFormFieldState extends State<InputFormField> {
                 const TextInputType.numberWithOptions(decimal: true))
           FilteringTextInputFormatter.digitsOnly,
       ],
-      style: PRFText.theme().headlineSmall!.copyWith(
+      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
         color:
             widget.isEmail != null
                 ? PRFApp.theme().kPrimaryColorV2
                 : PRFApp.theme().kBlackColor,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         disabledBorder:
@@ -162,12 +160,11 @@ class _InputFormFieldState extends State<InputFormField> {
                 : PRFApp.theme().kBackgroundColor,
         filled: widget.enabled == false,
         hintText: widget.hintText,
-        hintStyle: PRFText.theme().headlineSmall!.copyWith(
+        hintStyle: Theme.of(context).textTheme.headlineSmall!.copyWith(
           color:
               widget.isUnderLine != null
                   ? PRFApp.theme().kAccent12GreyColor
                   : PRFApp.theme().kDullGreyColor,
-          fontWeight: FontWeight.w500,
         ),
       ),
     );

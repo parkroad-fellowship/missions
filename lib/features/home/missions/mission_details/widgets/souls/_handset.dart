@@ -36,11 +36,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
       nullWidget: Center(
         child: Text(
           l10n.noSubscribers,
-          style: PRFText.theme().headlineSmall!.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: PRFApp.theme().kPrimaryColorV2,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall!,
         ),
       ),
       widget:
@@ -80,10 +76,7 @@ class SoulCard extends StatelessWidget {
               children: [
                 Text(
                   soul.fullName,
-                  style: PRFText.theme().displayLarge?.copyWith(
-                    color: PRFApp.theme().kPrimaryColorV2,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 16.h),
                 Text(soul.classGroup.name.toString()),

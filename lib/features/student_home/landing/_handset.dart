@@ -68,9 +68,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                         l10n.hello(
                           getIt<HiveService>().retrieveProfile()!.student!.name,
                         ),
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 60.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                     ],
@@ -82,11 +80,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                       EdgeInsets.only(bottom: 80.h),
                   child: Text(
                     l10n.lookingFor,
-                    style: PRFText.theme().displayLarge?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 88.sp,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
                 SizedBox(height: 16.h),
@@ -170,7 +164,9 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                                             child: Text(
                                               l10n.credentials(email, password),
                                               style:
-                                                  PRFText.theme().headlineLarge,
+                                                  Theme.of(
+                                                    context,
+                                                  ).textTheme.headlineLarge,
                                             ),
                                           ),
                                         ],

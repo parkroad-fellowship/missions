@@ -98,9 +98,7 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                       const Spacer(),
                       Text(
                         l10n.replies,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                     ],

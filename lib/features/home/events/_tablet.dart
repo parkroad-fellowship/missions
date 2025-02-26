@@ -39,7 +39,7 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
           centerTitle: true,
           title: Text(
             l10n.events,
-            style: PRFText.theme().displayLarge?.copyWith(fontSize: 56.sp),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
           leading: Container(
             margin: const EdgeInsets.only(left: 8),
@@ -65,10 +65,7 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
             dividerColor: Colors.white,
             isScrollable: true,
             tabAlignment: TabAlignment.start,
-            labelStyle: PRFText.theme().displayMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: PRFApp.theme().kPrimaryColorV2,
-            ),
+            labelStyle: Theme.of(context).textTheme.displayMedium!,
             indicatorColor: Colors.white,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
             tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
@@ -95,11 +92,8 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
                               Center(
                                 child: Text(
                                   l10n.noEvents,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kDullGreyColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                  style: Theme.of(context).textTheme.headlineMedium!
+                                      ,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -112,12 +106,8 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
                                   children: [
                                     Text(
                                       l10n.pleaseWaitOS,
-                                      style: PRFText.theme().displayLarge!
-                                          .copyWith(
-                                            color:
-                                                PRFApp.theme().kPrimaryColorV2,
-                                            fontSize: 14,
-                                          ),
+                                      style: Theme.of(context).textTheme.displayLarge!
+                                          ,
                                     ),
                                   ],
                                 ),
@@ -176,11 +166,8 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
                               Center(
                                 child: Text(
                                   l10n.noEvents,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kDullGreyColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                  style: Theme.of(context).textTheme.headlineMedium!
+                                      ,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -193,12 +180,8 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
                                   children: [
                                     Text(
                                       l10n.pleaseWaitOS,
-                                      style: PRFText.theme().displayLarge!
-                                          .copyWith(
-                                            color:
-                                                PRFApp.theme().kPrimaryColorV2,
-                                            fontSize: 14,
-                                          ),
+                                      style: Theme.of(context).textTheme.displayLarge!
+                                          ,
                                     ),
                                   ],
                                 ),
@@ -271,10 +254,7 @@ class EventActionCard extends StatelessWidget {
                 children: [
                   Text(
                     event.name,
-                    style: PRFText.theme().displayLarge?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   SizedBox(height: 16.h),
                   Text(
@@ -286,10 +266,7 @@ class EventActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     event.description.split('\n').first,
-                    style: PRFText.theme().bodyMedium?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

@@ -58,9 +58,7 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
             _selectedReplyStatus == false
                 ? PRFApp.theme().kPrimaryColorV2
                 : Colors.white,
-        labelStyle: PRFText.theme().bodyMedium?.copyWith(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+        labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           color:
               _selectedReplyStatus == false
                   ? Colors.white
@@ -82,9 +80,7 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
             _selectedReplyStatus ?? true
                 ? PRFApp.theme().kPrimaryColorV2
                 : Colors.white,
-        labelStyle: PRFText.theme().bodyMedium?.copyWith(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+        labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           color:
               _selectedReplyStatus ?? true
                   ? Colors.white

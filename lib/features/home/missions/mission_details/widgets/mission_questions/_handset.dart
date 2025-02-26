@@ -40,11 +40,7 @@ class _MissionQuestionsViewHandsetState
       nullWidget: Center(
         child: Text(
           l10n.noQuestions,
-          style: PRFText.theme().headlineSmall!.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: PRFApp.theme().kPrimaryColorV2,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall!,
         ),
       ),
       widget:
@@ -86,12 +82,12 @@ class MissionQuestionCard extends StatelessWidget {
               children: [
                 Text(
                   missionQuestion.question,
-                  style: PRFText.theme().bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   Misc.formatDateTime(missionQuestion.createdAt),
-                  style: PRFText.theme().bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 SizedBox(height: 8.h),
               ],

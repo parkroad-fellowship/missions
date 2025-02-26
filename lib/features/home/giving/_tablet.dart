@@ -68,9 +68,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                     const Spacer(),
                     Text(
                       l10n.give,
-                      style: PRFText.theme().displayLarge?.copyWith(
-                        fontSize: 56.sp,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                     const Spacer(),
                     IconButton(
@@ -201,16 +199,11 @@ class PaymentCard extends StatelessWidget {
                             locale: 'en_KE',
                             symbol: 'KES ',
                           ).format(payment.amount),
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                           children: [
                             TextSpan(
                               text: ', ${payment.paymentStatus.name}',
-                              style: PRFText.theme().displaySmall?.copyWith(
-                                color: PRFApp.theme().kPrimaryColorV2,
-                              ),
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ],
                         ),

@@ -72,9 +72,7 @@ class _MissionGroundSuggestionsPageTabletState
                     const Spacer(),
                     Text(
                       l10n.suggestAMission,
-                      style: PRFText.theme().displayLarge?.copyWith(
-                        fontSize: 56.sp,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                     const Spacer(),
                     Padding(
@@ -264,16 +262,11 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: missionGroundSuggestion.name,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                           children: [
                             TextSpan(
                               text: ', ${missionGroundSuggestion.status.name}',
-                              style: PRFText.theme().displaySmall?.copyWith(
-                                color: PRFApp.theme().kPrimaryColorV2,
-                              ),
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ],
                         ),

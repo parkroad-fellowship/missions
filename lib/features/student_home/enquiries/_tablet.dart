@@ -70,9 +70,7 @@ class _LearnerEnquiriesPageTabletState
                       const Spacer(),
                       Text(
                         l10n.myQuestions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Padding(
@@ -143,10 +141,7 @@ class _LearnerEnquiriesPageTabletState
                             Center(
                               child: Text(
                                 l10n.noQuestions,
-                                style: PRFText.theme().headlineMedium!.copyWith(
-                                  color: PRFApp.theme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context).textTheme.headlineMedium!,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -188,10 +183,7 @@ class _LearnerEnquiriesPageTabletState
                               ? enquiry.content.substring(0, 35).trim()
                               : enquiry.content +
                                   (enquiry.content.length > 35 ? ' ...' : ''),
-                          style: PRFText.theme().bodySmall!.copyWith(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall!,
                         ),
                         trailing: Text(
                           Misc.formatTimeFromDateTime(enquiry.createdAt),

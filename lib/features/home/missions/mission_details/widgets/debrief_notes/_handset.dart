@@ -38,11 +38,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
       nullWidget: Center(
         child: Text(
           l10n.noNotes,
-          style: PRFText.theme().headlineSmall!.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: PRFApp.theme().kPrimaryColorV2,
-          ),
+          style: Theme.of(context).textTheme.headlineSmall!,
         ),
       ),
       widget:
@@ -81,11 +77,11 @@ class DebriefNoteCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(debriefNote.note, style: PRFText.theme().bodySmall),
+                Text(debriefNote.note, style: Theme.of(context).textTheme.bodySmall),
                 SizedBox(height: 8.h),
                 Text(
                   Misc.formatDateTime(debriefNote.createdAt),
-                  style: PRFText.theme().bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 SizedBox(height: 8.h),
               ],

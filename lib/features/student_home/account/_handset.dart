@@ -51,9 +51,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                       const Spacer(),
                       Text(
                         l10n.myAccount,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Animate(
@@ -74,12 +72,11 @@ class StudentAccountPageHandset extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   l10n.signOut,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kRedColor,
-                                        fontSize: 54.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineMedium!.copyWith(
+                                    color: PRFApp.theme().kRedColor,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -154,20 +151,12 @@ class StudentAccountPageHandset extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                               text: l10n.byUsing,
-                              style: PRFText.theme().displaySmall!.copyWith(
-                                fontSize: 12,
-                                color: const Color(0xFF727272),
-                                height: 1.5,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context).textTheme.displaySmall!
+                                  .copyWith(color: const Color(0xFF727272)),
                               children: [
                                 TextSpan(
                                   text: l10n.terms,
-                                  style: PRFText.theme().displaySmall!.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: PRFApp.theme().kPrimaryColorV2,
-                                  ),
+                                  style: Theme.of(context).textTheme.displaySmall!,
                                   recognizer:
                                       TapGestureRecognizer()
                                         ..onTap = () async {
@@ -181,19 +170,11 @@ class StudentAccountPageHandset extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: l10n.and,
-                                  style: PRFText.theme().displaySmall!.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: PRFApp.theme().kBlackColor,
-                                  ),
+                                  style:Theme.of(context).textTheme.displaySmall,
                                 ),
                                 TextSpan(
                                   text: l10n.privacyPolicy,
-                                  style: PRFText.theme().displaySmall!.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: PRFApp.theme().kPrimaryColorV2,
-                                  ),
+                                  style: Theme.of(context).textTheme.displaySmall!,
                                   recognizer:
                                       TapGestureRecognizer()
                                         ..onTap = () async {
@@ -215,11 +196,10 @@ class StudentAccountPageHandset extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: Text(
                           l10n.version(Misc.getAppVersion()),
-                          style: PRFText.theme().displaySmall!.copyWith(
-                            fontSize: 12,
+                          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                            
                             color: const Color(0xFF727272),
-                            height: 1.5,
-                            fontWeight: FontWeight.w500,
+
                           ),
                         ),
                       ),

@@ -57,10 +57,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                 Center(
                   child: Text(
                     l10n.noSubscribers,
-                    style: PRFText.theme().headlineMedium!.copyWith(
-                      color: PRFApp.theme().kDullGreyColor,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium!,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -71,10 +68,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                     children: [
                       Text(
                         l10n.pleaseWait,
-                        style: PRFText.theme().displayLarge!.copyWith(
-                          color: PRFApp.theme().kPrimaryColorV2,
-                          fontSize: 14,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge!,
                       ),
                     ],
                   ),
@@ -136,18 +130,13 @@ class SubscriberActionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: subscription.member.fullName,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                           children: [
                             if (subscription.missionRole !=
                                 PRFMissionRole.member)
                               TextSpan(
                                 text: ' ${subscription.missionRole.name}',
-                                style: PRFText.theme().displaySmall?.copyWith(
-                                  color: PRFApp.theme().kPrimaryColorV2,
-                                ),
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                           ],
                         ),

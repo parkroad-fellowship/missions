@@ -47,14 +47,14 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                 Align(
                   child: Text(
                     l10n.registerNewStudent,
-                    style: PRFText.theme().displayMedium,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
                 const SizedBox(height: 24),
                 Align(
                   child: Text(
                     l10n.studentIntro,
-                    style: PRFText.theme().bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
                 const SizedBox(height: 16),
