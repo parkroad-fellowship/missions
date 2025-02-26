@@ -7,6 +7,7 @@ import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/utils/_index.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -79,7 +80,7 @@ class MediaServiceImpl implements MediaService {
       final assets = await AssetPicker.pickAssets(
         context,
         pickerConfig: AssetPickerConfig(
-          themeColor: PRFApp.theme().kPrimaryColorV2,
+          themeColor: Theme.of(context).colorScheme.primary,
           textDelegate: const EnglishAssetPickerTextDelegate(),
           requestType: mediaType,
           maxAssets: count,

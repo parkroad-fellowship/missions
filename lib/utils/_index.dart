@@ -1,4 +1,3 @@
-export 'color_pallete.dart';
 export 'constants.dart';
 export 'debouncer.dart';
 export 'misc.dart';

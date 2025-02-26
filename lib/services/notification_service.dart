@@ -80,7 +80,7 @@ abstract class NotificationService {
                               ListTile(
                                 leading: Icon(
                                   Icons.warning_amber_rounded,
-                                  color: PRFApp.theme().kPrimaryColorV2,
+                                 color: Theme.of(context).colorScheme.primary,
                                 ),
                                 title: Text(
                                   l10n.prayerAlert,

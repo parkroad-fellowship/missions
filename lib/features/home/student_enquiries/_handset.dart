@@ -50,7 +50,7 @@ class _StudentEnquiriesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                           color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),

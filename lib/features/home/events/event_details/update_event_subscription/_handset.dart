@@ -55,7 +55,6 @@ class _UpdateEventSubscriptionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.tickets,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),

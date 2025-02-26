@@ -35,10 +35,7 @@ class AccountPageHandset extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            width: 1.w,
-                          ),
+                          border: Border.all(width: 1.w),
                         ),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
@@ -106,7 +103,6 @@ class AccountPageHandset extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: FormFieldLabel(
                           label: l10n.name,
-                          color: PRFApp.theme().kBlackColor,
                         ),
                       ),
                       SizedBox(height: 10.h),
@@ -124,7 +120,6 @@ class AccountPageHandset extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: FormFieldLabel(
                           label: l10n.email,
-                          color: PRFApp.theme().kBlackColor,
                         ),
                       ),
                       SizedBox(height: 10.h),

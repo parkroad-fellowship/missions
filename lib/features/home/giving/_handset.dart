@@ -53,7 +53,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                           color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -141,7 +141,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: PRFApp.theme().kPrimaryColorV2,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: _addPayment,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -185,7 +185,7 @@ class PaymentCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -234,7 +234,7 @@ class PaymentCard extends StatelessWidget {
                     visible: false,
                     child: IconButton(
                       icon: const Icon(Icons.refresh_outlined),
-                      color: PRFApp.theme().kPrimaryColorV2,
+                     color: Theme.of(context).colorScheme.primary,
                       onPressed: () async {
                         if (payment.redirectUrl != null) {
                           final uri = Uri.parse(payment.redirectUrl!);

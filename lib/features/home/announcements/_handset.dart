@@ -47,7 +47,6 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -179,8 +178,6 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         horizontal: 16.w,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: PRFApp.theme().kSecondaryColorV2
-                                            .withValues(alpha: 1),
                                         borderRadius: BorderRadius.circular(
                                           48.r,
                                         ),

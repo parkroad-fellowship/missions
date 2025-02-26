@@ -55,7 +55,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                           color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -229,7 +229,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 80.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -250,7 +250,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                       child: Icon(
                         lessonModule.lessonMember?.completionStatus?.icon ??
                             Icons.watch_later_outlined,
-                        color: PRFApp.theme().kPrimaryColorV2,
+                       color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ],

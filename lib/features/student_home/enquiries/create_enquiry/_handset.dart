@@ -42,7 +42,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               child: FormFieldLabel(
                 label: l10n.enquiry,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 6),
@@ -51,7 +51,6 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               child: FormFieldLabel(
                 label: l10n.rules,
                 isRequired: true,
-                color: PRFApp.theme().kErrorColor,
               ),
             ),
             const SizedBox(height: 8),

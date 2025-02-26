@@ -53,16 +53,15 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       },
       child: Chip(
         label: Text(l10n.unread.toUpperCase()),
-        side: BorderSide(color: PRFApp.theme().kAccent12GreyColor),
         backgroundColor:
             _selectedReplyStatus == false
-                ? PRFApp.theme().kPrimaryColorV2
+                ? Theme.of(context).colorScheme.primary
                 : Colors.white,
         labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           color:
               _selectedReplyStatus == false
                   ? Colors.white
-                  : PRFApp.theme().kPrimaryColorV2,
+                  : Theme.of(context).colorScheme.primary,
         ),
       ),
     ),
@@ -75,16 +74,15 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       },
       child: Chip(
         label: Text(l10n.replied.toUpperCase()),
-        side: BorderSide(color: PRFApp.theme().kAccent12GreyColor),
         backgroundColor:
             _selectedReplyStatus ?? true
-                ? PRFApp.theme().kPrimaryColorV2
+                ? Theme.of(context).colorScheme.primary
                 : Colors.white,
         labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           color:
               _selectedReplyStatus ?? true
                   ? Colors.white
-                  : PRFApp.theme().kPrimaryColorV2,
+                  : Theme.of(context).colorScheme.primary,
         ),
       ),
     ),

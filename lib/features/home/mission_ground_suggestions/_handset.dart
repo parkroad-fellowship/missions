@@ -57,7 +57,7 @@ class _MissionGroundSuggestionsPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                           color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -170,7 +170,7 @@ class _MissionGroundSuggestionsPageHandsetState
           ),
         ],
         child: FloatingActionButton(
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           onPressed: _addMissionGroundSuggestion,
           child: const Icon(Icons.add, color: Colors.white),
         ),
@@ -250,7 +250,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -301,7 +301,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       ],
                       child: IconButton(
                         icon: const Icon(Icons.call),
-                        color: PRFApp.theme().kPrimaryColorV2,
+                       color: Theme.of(context).colorScheme.primary,
                         onPressed: () async {
                           final uri = Uri(
                             scheme: 'tel',

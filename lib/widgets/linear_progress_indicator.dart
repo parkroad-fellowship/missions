@@ -11,7 +11,7 @@ class PRFLinearProgressIndicator extends StatelessWidget {
     return Center(
       child: LinearProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(
-          color ?? PRFApp.theme().kPrimaryColorV2,
+          color ?? Theme.of(context).colorScheme.primary,
         ),
       ),
     );

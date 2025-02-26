@@ -1,6 +1,5 @@
 import 'package:app/features/home/missions/cubit/add_token_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/color_pallete.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +33,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
             child: FormFieldLabel(
               label: l10n.tokenAmount,
               isRequired: true,
-              color: PRFApp.theme().kBlackColor,
+              
             ),
           ),
           const SizedBox(height: 5),

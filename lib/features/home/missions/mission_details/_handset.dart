@@ -115,7 +115,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: PRFApp.theme().kPrimaryColorV2,
+                               color: Theme.of(context).colorScheme.primary,
                                 width: 1.w,
                               ),
                             ),
@@ -224,7 +224,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                           );
                         }
                       }),
-              backgroundColor: PRFApp.theme().kPrimaryColorV2,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               label: Text(
                 l10n.sendMe,
                 style: Theme.of(context).textTheme.bodySmall,
@@ -387,7 +387,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               );
             }
           },
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           child: const Icon(Icons.add, color: Colors.white),
         ),
         _ => null,

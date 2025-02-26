@@ -25,13 +25,9 @@ class PrimaryButton extends StatelessWidget {
       builder: (context) {
         return MaterialButton(
           color:
-              isAlert ?? false
-                  ? (disabled || (isLoading ?? false))
-                      ? PRFApp.theme().kErrorColor.withValues(alpha: .4)
-                      : PRFApp.theme().kErrorColor
-                  : (disabled || (isLoading ?? false))
-                  ? PRFApp.theme().kPrimaryColorV2.withValues(alpha: .4)
-                  : PRFApp.theme().kPrimaryColorV2,
+              isAlert ?? (disabled || (isLoading ?? false))
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: .4)
+                  : Theme.of(context).colorScheme.primary,
           minWidth: double.infinity,
           height: height ?? 55,
           elevation: 0,
@@ -48,7 +44,6 @@ class PrimaryButton extends StatelessWidget {
                   height: 14,
                   width: 14,
                   child: CircularProgressIndicator(
-                    color: PRFApp.theme().kBackgroundColor,
                     backgroundColor: Colors.transparent,
                     strokeWidth: 2,
                   ),
@@ -56,10 +51,7 @@ class PrimaryButton extends StatelessWidget {
                 const SizedBox(width: 8),
               ] else
                 const SizedBox.shrink(),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
+              Text(title, style: Theme.of(context).textTheme.headlineSmall),
             ],
           ),
         );

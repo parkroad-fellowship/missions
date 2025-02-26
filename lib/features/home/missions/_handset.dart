@@ -69,7 +69,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: PRFApp.theme().kPrimaryColorV2,
+               color: Theme.of(context).colorScheme.primary,
                 width: 1.w,
               ),
             ),
@@ -311,7 +311,7 @@ class MissionActionCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+                 color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Column(

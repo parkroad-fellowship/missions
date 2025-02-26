@@ -35,7 +35,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                           color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -74,9 +74,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                                   l10n.signOut,
                                   style: Theme.of(
                                     context,
-                                  ).textTheme.headlineMedium!.copyWith(
-                                    color: PRFApp.theme().kRedColor,
-                                  ),
+                                  ).textTheme.headlineMedium!,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -105,7 +103,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: FormFieldLabel(
                           label: l10n.name,
-                          color: PRFApp.theme().kBlackColor,
+                          
                         ),
                       ),
                       SizedBox(height: 10.h),
@@ -123,7 +121,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: FormFieldLabel(
                           label: l10n.email,
-                          color: PRFApp.theme().kBlackColor,
+                          
                         ),
                       ),
                       SizedBox(height: 10.h),

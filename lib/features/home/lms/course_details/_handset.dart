@@ -58,7 +58,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                           color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -209,7 +209,7 @@ class CourseDetailsActionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 80.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: .1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(

@@ -27,7 +27,8 @@ class HomeActionCardHandset extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 80.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: 1),
+              // color: Theme.of(context).colorScheme.secondary.withValues(alpha: 1),
+              color: Theme.of(context).colorScheme.secondary.withValues(alpha: 1),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -58,7 +59,7 @@ class HomeActionCardHandset extends StatelessWidget {
               radius: 140.r,
               child: Container(
                 decoration: BoxDecoration(
-                  color: PRFApp.theme().kPrimaryColorV2,
+                 color: Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
                 child: SizedBox.square(

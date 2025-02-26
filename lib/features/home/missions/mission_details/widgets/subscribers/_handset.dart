@@ -116,7 +116,7 @@ class SubscriberActionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -167,7 +167,7 @@ class SubscriberActionCard extends StatelessWidget {
                     ],
                     child: IconButton(
                       icon: const Icon(Icons.call),
-                      color: PRFApp.theme().kPrimaryColorV2,
+                     color: Theme.of(context).colorScheme.primary,
                       onPressed: () async {
                         final uri = Uri(
                           scheme: 'tel',

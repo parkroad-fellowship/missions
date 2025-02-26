@@ -24,14 +24,10 @@ class SecondaryButton extends StatelessWidget {
     return Builder(
       builder: (context) {
         return MaterialButton(
-          color:
-              isAlert ?? false
-                  ? (disabled || (isLoading ?? false))
-                      ? PRFApp.theme().kErrorColor.withValues(alpha: .4)
-                      : PRFApp.theme().kErrorColor
-                  : (disabled || (isLoading ?? false))
-                  ? PRFApp.theme().kBackgroundColor.withValues(alpha: .4)
-                  : PRFApp.theme().kBackgroundColor,
+           color:
+              isAlert ?? (disabled || (isLoading ?? false))
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: .4)
+                  : Theme.of(context).colorScheme.primary,
           minWidth: double.infinity,
           height: height ?? 55,
           elevation: 0,
@@ -48,7 +44,6 @@ class SecondaryButton extends StatelessWidget {
                   height: 14,
                   width: 14,
                   child: CircularProgressIndicator(
-                    color: PRFApp.theme().kPrimaryColorV2,
                     backgroundColor: Colors.transparent,
                     strokeWidth: 2,
                   ),

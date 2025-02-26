@@ -43,7 +43,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.expenseCategory,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 5),
@@ -77,20 +77,19 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                  
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
+                                  
                                 ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
                               ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
                               hintStyle: Theme.of(context).textTheme.headlineSmall!
                                   ,
                             ),
@@ -106,7 +105,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.unitCost,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 12),
@@ -122,7 +121,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.quantity,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 12),
@@ -138,7 +137,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.confirmationMessage,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 6),
@@ -155,7 +154,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.transactionType,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 5),
@@ -182,20 +181,19 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
                       borderSide: BorderSide(
-                        color: PRFApp.theme().kSecondaryGreyColor,
+                        
                       ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
                       borderSide: BorderSide(
-                        color: PRFApp.theme().kSecondaryGreyColor,
+                        
                       ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 20,
                     ),
-                    fillColor: PRFApp.theme().kBackgroundColor,
                     hintStyle: Theme.of(context).textTheme.headlineSmall!,
                   ),
                 );

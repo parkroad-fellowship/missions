@@ -48,7 +48,6 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
                           ),
                         ),
@@ -179,9 +178,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                           vertical: 32.h,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: PRFApp.theme()
-                                              .kSecondaryColorV2
-                                              .withValues(alpha: 1),
+                                          
                                           borderRadius: BorderRadius.circular(
                                             48.r,
                                           ),

@@ -63,11 +63,10 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                                 child: Chip(
                                   label: Text(l10n.all.toUpperCase()),
                                   side: BorderSide(
-                                    color: PRFApp.theme().kAccent12GreyColor,
                                   ),
                                   backgroundColor:
                                       _selectedCategory == null
-                                          ? PRFApp.theme().kPrimaryColorV2
+                                          ? Theme.of(context).colorScheme.primary
                                           : Colors.white,
                                   labelStyle: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
@@ -75,8 +74,7 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                                         color:
                                             _selectedCategory == null
                                                 ? Colors.white
-                                                : PRFApp.theme()
-                                                    .kPrimaryColorV2,
+                                                : Theme.of(context).colorScheme.primary,
                                       ),
                                 ),
                               );
@@ -93,19 +91,18 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                               child: Chip(
                                 label: Text(faqCategory.name.toUpperCase()),
                                 side: BorderSide(
-                                  color: PRFApp.theme().kAccent12GreyColor,
                                   width: 1.w,
                                 ),
                                 backgroundColor:
                                     _selectedCategory == faqCategory
-                                        ? PRFApp.theme().kPrimaryColorV2
+                                        ? Theme.of(context).colorScheme.primary
                                         : Colors.white,
                                 labelStyle: Theme.of(context).textTheme.labelSmall
                                     ?.copyWith(
                                       color:
                                           _selectedCategory == faqCategory
                                               ? Colors.white
-                                              : PRFApp.theme().kPrimaryColorV2,
+                                              : Theme.of(context).colorScheme.primary,
                                     ),
                               ),
                             );

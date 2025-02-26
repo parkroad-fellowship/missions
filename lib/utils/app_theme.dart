@@ -70,5 +70,9 @@ class PRFTheme {
       thickness: 1,
       color: Colors.black12,
     ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: Color(primaryColor),
+      
+    ),
   );
 }

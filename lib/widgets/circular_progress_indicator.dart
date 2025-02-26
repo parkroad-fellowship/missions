@@ -11,7 +11,7 @@ class PRFCircularProgressIndicator extends StatelessWidget {
     return Center(
       child: CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(
-          color ?? PRFApp.theme().kPrimaryColorV2,
+          color ?? Theme.of(context).colorScheme.primary,
         ),
       ),
     );

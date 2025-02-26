@@ -87,7 +87,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               child: FormFieldLabel(
                 label: l10n.facilitator,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 5),
@@ -120,20 +120,18 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
+                              
                             ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
                           hintStyle: Theme.of(context).textTheme.headlineSmall!,
                         ),
                       );
@@ -146,7 +144,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
                 label: l10n.speaker,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 5),
@@ -179,20 +177,17 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
                             ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
                           hintStyle: Theme.of(context).textTheme.headlineSmall!,
                         ),
                       );
@@ -204,7 +199,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
                 label: l10n.classGroup,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 5),
@@ -237,20 +232,17 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
                                 ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
                               ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
                               hintStyle:
                                   Theme.of(context).textTheme.headlineSmall!,
                             ),
@@ -266,7 +258,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               child: FormFieldLabel(
                 label: l10n.startTime,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 6),
@@ -285,7 +277,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               child: FormFieldLabel(
                 label: l10n.endTime,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 6),
@@ -304,7 +296,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               child: FormFieldLabel(
                 label: l10n.notes,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 6),
@@ -411,7 +403,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       minTime: DateTime.now(),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
-        backgroundColor: PRFApp.theme().kBackgroundColor,
         itemStyle: Theme.of(context).textTheme.headlineSmall!,
         doneStyle: Theme.of(context).textTheme.headlineSmall!,
         cancelStyle: Theme.of(context).textTheme.headlineSmall!,
@@ -434,7 +425,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       minTime: DateTime.now(),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
-        backgroundColor: PRFApp.theme().kBackgroundColor,
         itemStyle: Theme.of(context).textTheme.headlineSmall!,
         doneStyle: Theme.of(context).textTheme.headlineSmall!,
         cancelStyle: Theme.of(context).textTheme.headlineSmall!,

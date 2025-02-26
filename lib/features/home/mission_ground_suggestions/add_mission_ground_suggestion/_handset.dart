@@ -38,7 +38,6 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.missionGround,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -53,7 +52,6 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactPerson,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -68,7 +66,7 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactNumber,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
+                
               ),
             ),
             const SizedBox(height: 6),
@@ -81,17 +79,17 @@ class _AddMissionGroundSuggestionViewHandsetState
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: PRFApp.theme().kBlackColor.withAlpha(150),
+                    
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: PRFApp.theme().kBlackColor.withAlpha(150),
+                    
                   ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                fillColor: PRFApp.theme().kBackgroundColor,
+               
                 filled: false,
               ),
             ),

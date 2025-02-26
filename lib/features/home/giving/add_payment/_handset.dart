@@ -43,7 +43,6 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(
                 label: l10n.reasonForGiving,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -77,20 +76,17 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
                                 ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
                               ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
                               hintStyle: Theme.of(context).textTheme.headlineSmall!
                                   ,
                             ),
@@ -106,7 +102,6 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(
                 label: l10n.amount,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),

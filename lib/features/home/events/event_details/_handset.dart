@@ -78,7 +78,6 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: PRFApp.theme().kPrimaryColorV2,
                               width: 1.w,
                             ),
                           ),
@@ -199,7 +198,6 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
               });
             }
           },
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
           child: Icon(
             event.loggedInMemberEventSubscription == null
                 ? Icons.add
@@ -227,7 +225,6 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
               );
             }
           },
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
           child: const Icon(Icons.add, color: Colors.white),
         ),
         _ => null,

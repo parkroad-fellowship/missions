@@ -57,7 +57,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                           color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -113,7 +113,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                     },
                     decoration: InputDecoration(
                       hintText: l10n.whatWouldYouLikeToKnow,
-                      suffixIconColor: PRFApp.theme().kPrimaryColorV2,
+                      suffixIconColor: Theme.of(context).colorScheme.primary,
                       suffixIcon: Container(
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
@@ -121,13 +121,13 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                       hintStyle: Theme.of(context).textTheme.bodyMedium,
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: PRFApp.theme().kAccent2BackgroundColor,
+                          
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: PRFApp.theme().kAccent2BackgroundColor,
+                          
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -258,7 +258,7 @@ class FaqCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
