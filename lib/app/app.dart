@@ -1,6 +1,8 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/app_theme.dart';
+import 'package:app/utils/text_theme.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,14 +53,8 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
               }
               return MaterialApp.router(
                 debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  colorSchemeSeed: PRFApp.theme().kPrimaryColorV2,
-                  appBarTheme: AppBarTheme(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.inversePrimary,
-                  ),
-                  scaffoldBackgroundColor: Colors.white,
-                  useMaterial3: true,
+                theme: PRFTheme.light.copyWith(
+                  textTheme: PRFTextTheme.getLightTheme(context),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
