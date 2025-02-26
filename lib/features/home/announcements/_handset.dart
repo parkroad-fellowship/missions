@@ -46,9 +46,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            width: 1.w,
-                          ),
+                          border: Border.all(width: 1.w),
                         ),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
@@ -91,9 +89,10 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         Center(
                                           child: Text(
                                             l10n.noAnnouncements,
-                                            style: Theme.of(context).textTheme
-                                                .headlineMedium!
-                                                ,
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.headlineMedium,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -110,9 +109,10 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                               Text(
                                                 l10n.pleaseWaitForOS,
                                                 maxLines: 2,
-                                                style: Theme.of(context).textTheme
-                                                    .displayLarge!
-                                                    ,
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.displayLarge,
                                               ),
                                             ],
                                           ),
@@ -186,20 +186,26 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         contentPadding: EdgeInsets.zero,
                                         title: Text(
                                           entries[index].title.toUpperCase(),
-                                          style: Theme.of(context).textTheme.headlineMedium
-                                              ,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.headlineMedium,
                                         ),
                                         subtitle: Text(
                                           entries[index].content,
-                                          style: Theme.of(context).textTheme.bodySmall
-                                              ,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall,
                                         ),
                                         trailing: Text(
                                           Misc.formatTimeFromDateTime(
                                             entries[index].publishedAt,
                                           ),
-                                          style: Theme.of(context).textTheme.bodySmall
-                                              ,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall,
                                         ),
                                       ),
                                     ),

@@ -164,7 +164,9 @@ class _StudentLandingPageTabletState extends State<StudentLandingPageTablet> {
                                             child: Text(
                                               l10n.credentials(email, password),
                                               style:
-                                                  Theme.of(context).textTheme.headlineLarge,
+                                                  Theme.of(
+                                                    context,
+                                                  ).textTheme.headlineLarge,
                                             ),
                                           ),
                                         ],

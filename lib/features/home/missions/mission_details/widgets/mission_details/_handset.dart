@@ -87,7 +87,10 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: <Widget>[
-                        Text(mission.theme!, style: Theme.of(context).textTheme.bodySmall),
+                        Text(
+                          mission.theme!,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
                         Text(
                           l10n.population(mission.school!.totalStudents!),
                           style: Theme.of(context).textTheme.bodySmall,
@@ -394,8 +397,10 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                 SizedBox(height: 8.h),
                                 Text(
                                   l10n.dressingRecommendations,
-                                  style: Theme.of(context).textTheme.headlineMedium
-                                      ,
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.headlineMedium,
                                 ),
                                 Text(
                                   forecast.dressingRecommendations.toString(),

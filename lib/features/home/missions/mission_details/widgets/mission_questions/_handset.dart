@@ -40,7 +40,7 @@ class _MissionQuestionsViewHandsetState
       nullWidget: Center(
         child: Text(
           l10n.noQuestions,
-          style: Theme.of(context).textTheme.headlineSmall!,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
       widget:
@@ -74,7 +74,9 @@ class MissionQuestionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(

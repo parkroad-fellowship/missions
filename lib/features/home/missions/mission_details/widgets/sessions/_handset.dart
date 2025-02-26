@@ -43,7 +43,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
       nullWidget: Center(
         child: Text(
           l10n.noSessions,
-          style: Theme.of(context).textTheme.headlineSmall!,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
       widget:
@@ -64,7 +64,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                         DateFormat.MMMMEEEEd().add_y().format(
                           missionSessions.keys.elementAt(index),
                         ),
-                        style: Theme.of(context).textTheme.headlineSmall!,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ],
                   ),
@@ -125,7 +125,9 @@ class MissionSessionCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                 color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.secondary.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Row(
@@ -137,7 +139,7 @@ class MissionSessionCard extends StatelessWidget {
                       Text(
                         '${DateFormat.jm().format(missionSession.startsAt)} -'
                         ' ${DateFormat.jm().format(missionSession.endsAt)}',
-                        style: Theme.of(context).textTheme.titleLarge!,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -145,7 +147,7 @@ class MissionSessionCard extends StatelessWidget {
                         '${missionSession.facilitator.fullName}\n'
                         '${l10n.speaker}: '
                         '${missionSession.speaker?.fullName}',
-                        style: Theme.of(context).textTheme.bodySmall!,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       SizedBox(height: 8.h),
                     ],

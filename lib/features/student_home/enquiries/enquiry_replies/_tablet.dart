@@ -82,7 +82,7 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                           color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -151,7 +151,13 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                             vertical: 32.h,
                           ),
                           decoration: BoxDecoration(
-                                                        color: enquiryReply.isStudent ? Theme.of(context).colorScheme.secondary.withValues(alpha: .2) : Theme.of(context).colorScheme.primary.withValues(alpha:.2),
+                            color:
+                                enquiryReply.isStudent
+                                    ? Theme.of(context).colorScheme.secondary
+                                        .withValues(alpha: .2)
+                                    : Theme.of(
+                                      context,
+                                    ).colorScheme.primary.withValues(alpha: .2),
 
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -198,7 +204,6 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                                 child: FormFieldLabel(
                                   label: l10n.reply,
                                   isRequired: true,
-                                  
                                 ),
                               ),
                               const SizedBox(height: 8),

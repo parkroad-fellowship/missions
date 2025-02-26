@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -40,7 +39,7 @@ class PrimaryButton extends StatelessWidget {
           child: Wrap(
             children: [
               if (isLoading ?? false) ...[
-                SizedBox(
+                const SizedBox(
                   height: 14,
                   width: 14,
                   child: CircularProgressIndicator(

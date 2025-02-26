@@ -56,7 +56,7 @@ class _MissionGroundSuggestionsPageTabletState
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                         color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.primary,
                           width: 1.w,
                         ),
                       ),
@@ -248,7 +248,9 @@ class MissionGroundSuggestionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -299,7 +301,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       ],
                       child: IconButton(
                         icon: const Icon(Icons.call),
-                       color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.primary,
                         onPressed: () async {
                           final uri = Uri(
                             scheme: 'tel',

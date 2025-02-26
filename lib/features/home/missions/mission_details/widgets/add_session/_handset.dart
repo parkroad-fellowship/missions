@@ -60,11 +60,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.facilitator,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.facilitator, isRequired: true),
             ),
             const SizedBox(height: 5),
             SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
@@ -96,19 +92,15 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                         inputDecorationTheme: InputDecorationTheme(
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                            ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                            ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          hintStyle: Theme.of(context).textTheme.headlineSmall!,
+                          hintStyle: Theme.of(context).textTheme.headlineSmall,
                         ),
                       );
                     },
@@ -118,10 +110,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.speaker,
-                
-              ),
+              child: FormFieldLabel(label: l10n.speaker),
             ),
             const SizedBox(height: 5),
             SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
@@ -153,19 +142,15 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                         inputDecorationTheme: InputDecorationTheme(
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                            ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                            ),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 20,
                           ),
-                          hintStyle: Theme.of(context).textTheme.headlineSmall!,
+                          hintStyle: Theme.of(context).textTheme.headlineSmall,
                         ),
                       );
                     },
@@ -175,10 +160,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.classGroup,
-                
-              ),
+              child: FormFieldLabel(label: l10n.classGroup),
             ),
             const SizedBox(height: 5),
             BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
@@ -211,22 +193,23 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color:  Theme.of(context).colorScheme.secondary
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
                                 borderSide: BorderSide(
-                                  color:  Theme.of(context).colorScheme.secondary
-
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
                               ),
-                              hintStyle: Theme.of(context).textTheme.headlineSmall!
-                                  ,
+                              hintStyle:
+                                  Theme.of(context).textTheme.headlineSmall,
                             ),
                           );
                         },
@@ -237,11 +220,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.startTime,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.startTime, isRequired: true),
             ),
             const SizedBox(height: 6),
             GestureDetector(
@@ -256,11 +235,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.endTime,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.endTime, isRequired: true),
             ),
             const SizedBox(height: 6),
             GestureDetector(
@@ -275,11 +250,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.notes,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.notes, isRequired: true),
             ),
             const SizedBox(height: 6),
             InputFormField(

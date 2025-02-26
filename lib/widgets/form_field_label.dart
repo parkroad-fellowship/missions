@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class FormFieldLabel extends StatelessWidget {
@@ -30,7 +29,7 @@ class FormFieldLabel extends StatelessWidget {
               if (isRequired ?? false)
                 TextSpan(
                   text: ' *',
-                  style: Theme.of(context).textTheme.headlineSmall!,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               if (isOptional ?? false)
                 TextSpan(

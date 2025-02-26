@@ -2,7 +2,6 @@ import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +63,6 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.missionGround,
                 isRequired: true,
-                
               ),
             ),
             const SizedBox(height: 6),
@@ -79,7 +77,6 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactPerson,
                 isRequired: true,
-                
               ),
             ),
             const SizedBox(height: 6),
@@ -94,7 +91,6 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactNumber,
                 isRequired: true,
-                
               ),
             ),
             const SizedBox(height: 6),
@@ -107,15 +103,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   }),
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 filled: false,
@@ -124,11 +114,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.status,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.status, isRequired: true),
             ),
             const SizedBox(height: 6),
             LayoutBuilder(
@@ -152,15 +138,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   inputDecorationTheme: InputDecorationTheme(
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide(
-                        
-                      ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide(
-                        
-                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 20,
@@ -174,11 +154,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.comments,
-                isRequired: false,
-                
-              ),
+              child: FormFieldLabel(label: l10n.comments, isRequired: false),
             ),
             const SizedBox(height: 6),
             InputFormField(

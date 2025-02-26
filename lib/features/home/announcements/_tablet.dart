@@ -47,9 +47,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            width: 1.w,
-                          ),
+                          border: Border.all(width: 1.w),
                         ),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
@@ -95,7 +93,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                             style:
                                                 Theme.of(
                                                   context,
-                                                ).textTheme.headlineMedium!,
+                                                ).textTheme.headlineMedium,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -115,7 +113,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                                 style:
                                                     Theme.of(
                                                       context,
-                                                    ).textTheme.displayLarge!,
+                                                    ).textTheme.displayLarge,
                                               ),
                                             ],
                                           ),
@@ -178,7 +176,6 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                           vertical: 32.h,
                                         ),
                                         decoration: BoxDecoration(
-                                          
                                           borderRadius: BorderRadius.circular(
                                             48.r,
                                           ),
@@ -203,8 +200,10 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                             Misc.formatTimeFromDateTime(
                                               entries[index].publishedAt,
                                             ),
-                                            style: Theme.of(context).textTheme.bodySmall
-                                                ,
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.bodySmall,
                                           ),
                                         ),
                                       ),

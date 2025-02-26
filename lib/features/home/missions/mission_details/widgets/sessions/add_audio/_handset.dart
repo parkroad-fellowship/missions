@@ -2,7 +2,6 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/secondary_button.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +88,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                                   ),
                                   title: Text(
                                     files[index].name,
-                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 );
                               },

@@ -101,9 +101,7 @@ class AccountPageHandset extends StatelessWidget {
                       SizedBox(height: 64.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(
-                          label: l10n.name,
-                        ),
+                        child: FormFieldLabel(label: l10n.name),
                       ),
                       SizedBox(height: 10.h),
                       Padding(
@@ -118,9 +116,7 @@ class AccountPageHandset extends StatelessWidget {
                       SizedBox(height: 15.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(
-                          label: l10n.email,
-                        ),
+                        child: FormFieldLabel(label: l10n.email),
                       ),
                       SizedBox(height: 10.h),
                       Padding(

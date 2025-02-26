@@ -75,20 +75,16 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                             inputDecorationTheme: InputDecorationTheme(
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
                               ),
-                              hintStyle: Theme.of(context).textTheme.headlineSmall!
-                                  ,
+                              hintStyle:
+                                  Theme.of(context).textTheme.headlineSmall,
                             ),
                           );
                         },
@@ -99,10 +95,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.amount,
-                isRequired: true,
-              ),
+              child: FormFieldLabel(label: l10n.amount, isRequired: true),
             ),
             const SizedBox(height: 6),
             InputFormField(

@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatelessWidget {
@@ -24,7 +23,7 @@ class SecondaryButton extends StatelessWidget {
     return Builder(
       builder: (context) {
         return MaterialButton(
-           color:
+          color:
               isAlert ?? (disabled || (isLoading ?? false))
                   ? Theme.of(context).colorScheme.primary.withValues(alpha: .4)
                   : Theme.of(context).colorScheme.primary,
@@ -40,7 +39,7 @@ class SecondaryButton extends StatelessWidget {
           child: Wrap(
             children: [
               if (isLoading ?? false) ...[
-                SizedBox(
+                const SizedBox(
                   height: 14,
                   width: 14,
                   child: CircularProgressIndicator(
@@ -51,10 +50,7 @@ class SecondaryButton extends StatelessWidget {
                 const SizedBox(width: 8),
               ] else
                 const SizedBox.shrink(),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
+              Text(title, style: Theme.of(context).textTheme.headlineSmall),
             ],
           ),
         );

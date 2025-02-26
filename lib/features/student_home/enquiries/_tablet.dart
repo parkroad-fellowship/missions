@@ -54,7 +54,7 @@ class _LearnerEnquiriesPageTabletState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                           color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -141,7 +141,8 @@ class _LearnerEnquiriesPageTabletState
                             Center(
                               child: Text(
                                 l10n.noQuestions,
-                                style: Theme.of(context).textTheme.headlineMedium!,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -183,7 +184,7 @@ class _LearnerEnquiriesPageTabletState
                               ? enquiry.content.substring(0, 35).trim()
                               : enquiry.content +
                                   (enquiry.content.length > 35 ? ' ...' : ''),
-                          style: Theme.of(context).textTheme.bodySmall!,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
                           Misc.formatTimeFromDateTime(enquiry.createdAt),

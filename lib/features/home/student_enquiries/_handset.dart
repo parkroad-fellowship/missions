@@ -50,7 +50,7 @@ class _StudentEnquiriesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                           color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -134,7 +134,8 @@ class _StudentEnquiriesPageHandsetState
                             Center(
                               child: Text(
                                 l10n.noQuestions,
-                                style: Theme.of(context).textTheme.headlineMedium!,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -146,8 +147,10 @@ class _StudentEnquiriesPageHandsetState
                                 children: [
                                   Text(
                                     l10n.pleaseWait,
-                                    style: Theme.of(context).textTheme.displayLarge!
-                                        ,
+                                    style:
+                                        Theme.of(
+                                          context,
+                                        ).textTheme.displayLarge,
                                   ),
                                 ],
                               ),
@@ -176,7 +179,7 @@ class _StudentEnquiriesPageHandsetState
                               ? enquiry.content.substring(0, 35).trim()
                               : enquiry.content +
                                   (enquiry.content.length > 35 ? ' ...' : ''),
-                          style: Theme.of(context).textTheme.bodySmall!,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
                           Misc.formatTimeFromDateTime(enquiry.createdAt),

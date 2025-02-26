@@ -44,7 +44,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
               () => Center(
                 child: Text(
                   l10n.askMissionDeskToDisburseFunds,
-                  style: Theme.of(context).textTheme.headlineSmall!,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
           loaded: (missionExpense) {
@@ -320,7 +320,9 @@ class ExpenseCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(

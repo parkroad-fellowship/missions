@@ -1,6 +1,5 @@
 import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +65,6 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactNumber,
                 isRequired: true,
-                
               ),
             ),
             const SizedBox(height: 6),
@@ -78,18 +76,12 @@ class _AddMissionGroundSuggestionViewHandsetState
                   }),
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-               
+
                 filled: false,
               ),
             ),

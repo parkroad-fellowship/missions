@@ -77,9 +77,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              width: 1.w,
-                            ),
+                            border: Border.all(width: 1.w),
                           ),
                           child: IconButton(
                             icon: const Icon(Icons.arrow_back_ios),
@@ -106,7 +104,8 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                                     .loggedInMemberEventSubscription!
                                     .numberOfAttendees
                                     .toString(),
-                                style: Theme.of(context).textTheme.displayMedium!,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
                               ),
                               const Icon(Icons.group),
                             ],
@@ -128,7 +127,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                     dividerColor: Colors.white,
                     isScrollable: true,
                     tabAlignment: TabAlignment.start,
-                    labelStyle: Theme.of(context).textTheme.displayMedium!,
+                    labelStyle: Theme.of(context).textTheme.displayMedium,
                     indicatorColor: Colors.white,
                     overlayColor: WidgetStateProperty.all(Colors.transparent),
                     tabs: [Tab(text: l10n.info), Tab(text: l10n.gallery)],

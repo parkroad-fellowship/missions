@@ -57,7 +57,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                 Center(
                   child: Text(
                     l10n.noSubscribers,
-                    style: Theme.of(context).textTheme.headlineMedium!,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -68,7 +68,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                     children: [
                       Text(
                         l10n.pleaseWait,
-                        style: Theme.of(context).textTheme.displayLarge!,
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ],
                   ),
@@ -116,7 +116,9 @@ class SubscriberActionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -167,7 +169,7 @@ class SubscriberActionCard extends StatelessWidget {
                     ],
                     child: IconButton(
                       icon: const Icon(Icons.call),
-                     color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.primary,
                       onPressed: () async {
                         final uri = Uri(
                           scheme: 'tel',

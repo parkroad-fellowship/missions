@@ -69,7 +69,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-               color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.primary,
                 width: 1.w,
               ),
             ),
@@ -118,7 +118,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
             dividerColor: Colors.white,
             isScrollable: true,
             tabAlignment: TabAlignment.start,
-            labelStyle: Theme.of(context).textTheme.displayMedium!,
+            labelStyle: Theme.of(context).textTheme.displayMedium,
             indicatorColor: Colors.white,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
             tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
@@ -152,7 +152,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                         Center(
                           child: Text(
                             l10n.noMissions,
-                            style: Theme.of(context).textTheme.headlineMedium!,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -163,7 +163,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                             children: [
                               Text(
                                 l10n.pleaseWait,
-                                style: Theme.of(context).textTheme.displayLarge!,
+                                style: Theme.of(context).textTheme.displayLarge,
                               ),
                             ],
                           ),
@@ -224,7 +224,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                         Center(
                           child: Text(
                             l10n.noMissions,
-                            style: Theme.of(context).textTheme.headlineMedium!,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -235,7 +235,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                             children: [
                               Text(
                                 l10n.pleaseWait,
-                                style: Theme.of(context).textTheme.displayLarge!,
+                                style: Theme.of(context).textTheme.displayLarge,
                               ),
                             ],
                           ),
@@ -311,14 +311,19 @@ class MissionActionCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                 color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.secondary.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (status != null)
-                    Text(status!.name, style: Theme.of(context).textTheme.bodySmall),
+                    Text(
+                      status!.name,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   Text(
                     mission.school!.name!,
                     style: Theme.of(context).textTheme.displayLarge,

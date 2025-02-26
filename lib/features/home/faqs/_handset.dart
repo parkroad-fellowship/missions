@@ -120,15 +120,9 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                       ),
                       hintStyle: Theme.of(context).textTheme.bodyMedium,
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          
-                        ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          
-                        ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       fillColor: Colors.white,
@@ -195,8 +189,10 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                 Center(
                                   child: Text(
                                     l10n.noFaqs,
-                                    style: Theme.of(context).textTheme.headlineMedium!
-                                        ,
+                                    style:
+                                        Theme.of(
+                                          context,
+                                        ).textTheme.headlineMedium,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -209,8 +205,10 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                     children: [
                                       Text(
                                         l10n.pleaseWait,
-                                        style: Theme.of(context).textTheme.displayLarge!
-                                            ,
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.displayLarge,
                                       ),
                                     ],
                                   ),
@@ -257,7 +255,9 @@ class FaqCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -265,13 +265,10 @@ class FaqCard extends StatelessWidget {
               children: [
                 Text(
                   faq.question,
-                  style: Theme.of(context).textTheme.titleLarge!,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 SizedBox(height: 8.h),
-                Text(
-                  faq.answer,
-                  style: Theme.of(context).textTheme.bodySmall!,
-                ),
+                Text(faq.answer, style: Theme.of(context).textTheme.bodySmall),
                 SizedBox(height: 8.h),
               ],
             ),

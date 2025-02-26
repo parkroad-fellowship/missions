@@ -103,7 +103,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                 color: Theme.of(context).colorScheme.primary,
+                                  color: Theme.of(context).colorScheme.primary,
                                   width: 1.w,
                                 ),
                               ),

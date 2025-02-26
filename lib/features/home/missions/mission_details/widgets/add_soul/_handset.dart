@@ -2,7 +2,6 @@ import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,11 +34,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.classGroup,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.classGroup, isRequired: true),
             ),
             const SizedBox(height: 5),
             BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
@@ -71,22 +66,16 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                             inputDecorationTheme: InputDecorationTheme(
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  
-                                ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  
-                                ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
                               ),
-                              hintStyle: Theme.of(context).textTheme.headlineSmall!
-                                  ,
+                              hintStyle:
+                                  Theme.of(context).textTheme.headlineSmall,
                             ),
                           );
                         },
@@ -97,11 +86,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.fullName,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.fullName, isRequired: true),
             ),
             const SizedBox(height: 6),
             InputFormField(

@@ -115,7 +115,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                               color: Theme.of(context).colorScheme.primary,
+                                color: Theme.of(context).colorScheme.primary,
                                 width: 1.w,
                               ),
                             ),
@@ -153,7 +153,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       dividerColor: Colors.white,
                       isScrollable: true,
                       tabAlignment: TabAlignment.start,
-                      labelStyle: Theme.of(context).textTheme.displayMedium!,
+                      labelStyle: Theme.of(context).textTheme.displayMedium,
                       indicatorColor: Colors.white,
                       overlayColor: WidgetStateProperty.all(Colors.transparent),
                       tabs: [

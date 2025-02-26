@@ -3,7 +3,6 @@ import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,10 +37,7 @@ class _AddEventSubscriptionViewHandsetState
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.tickets,
-                isRequired: true,
-              ),
+              child: FormFieldLabel(label: l10n.tickets, isRequired: true),
             ),
             const SizedBox(height: 6),
             InputFormField(

@@ -3,7 +3,6 @@ import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,7 +42,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.expenseCategory,
                 isRequired: true,
-                
               ),
             ),
             const SizedBox(height: 5),
@@ -76,22 +74,16 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             inputDecorationTheme: InputDecorationTheme(
                               disabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  
-                                ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  
-                                ),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
                               ),
-                              hintStyle: Theme.of(context).textTheme.headlineSmall!
-                                  ,
+                              hintStyle:
+                                  Theme.of(context).textTheme.headlineSmall,
                             ),
                           );
                         },
@@ -102,11 +94,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.unitCost,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.unitCost, isRequired: true),
             ),
             const SizedBox(height: 12),
             InputFormField(
@@ -118,11 +106,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.quantity,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.quantity, isRequired: true),
             ),
             const SizedBox(height: 12),
             InputFormField(
@@ -137,7 +121,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.confirmationMessage,
                 isRequired: true,
-                
               ),
             ),
             const SizedBox(height: 6),
@@ -154,7 +137,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(
                 label: l10n.transactionType,
                 isRequired: true,
-                
               ),
             ),
             const SizedBox(height: 5),
@@ -180,21 +162,15 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                   inputDecorationTheme: InputDecorationTheme(
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide(
-                        
-                      ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide(
-                        
-                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 20,
                     ),
-                    hintStyle: Theme.of(context).textTheme.headlineSmall!,
+                    hintStyle: Theme.of(context).textTheme.headlineSmall,
                   ),
                 );
               },

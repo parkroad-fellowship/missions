@@ -1,6 +1,5 @@
 import 'package:app/features/student_home/enquiries/cubit/create_enquiry_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,10 +23,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          l10n.ask,
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
+        title: Text(l10n.ask, style: Theme.of(context).textTheme.displayLarge),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -39,19 +35,12 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.enquiry,
-                isRequired: true,
-                
-              ),
+              child: FormFieldLabel(label: l10n.enquiry, isRequired: true),
             ),
             const SizedBox(height: 6),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.rules,
-                isRequired: true,
-              ),
+              child: FormFieldLabel(label: l10n.rules, isRequired: true),
             ),
             const SizedBox(height: 8),
             InputFormField(

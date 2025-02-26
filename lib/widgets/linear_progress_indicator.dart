@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class PRFLinearProgressIndicator extends StatelessWidget {

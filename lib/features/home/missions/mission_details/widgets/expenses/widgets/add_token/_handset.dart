@@ -30,11 +30,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
           const SizedBox(height: 16),
           Align(
             alignment: Alignment.centerLeft,
-            child: FormFieldLabel(
-              label: l10n.tokenAmount,
-              isRequired: true,
-              
-            ),
+            child: FormFieldLabel(label: l10n.tokenAmount, isRequired: true),
           ),
           const SizedBox(height: 5),
           InputFormField(

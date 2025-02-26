@@ -36,7 +36,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
       nullWidget: Center(
         child: Text(
           l10n.noSubscribers,
-          style: Theme.of(context).textTheme.headlineSmall!,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
       widget:
@@ -68,7 +68,9 @@ class SoulCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-               color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(

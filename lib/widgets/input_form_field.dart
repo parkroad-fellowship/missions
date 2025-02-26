@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,10 +83,7 @@ class _InputFormFieldState extends State<InputFormField> {
       decoration: InputDecoration(
         disabledBorder:
             widget.isUnderLine != null
-                ? UnderlineInputBorder(
-                  borderSide: BorderSide(
-                  ),
-                )
+                ? const UnderlineInputBorder()
                 : OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
@@ -99,10 +95,7 @@ class _InputFormFieldState extends State<InputFormField> {
                 ),
         border:
             widget.isUnderLine != null
-                ? UnderlineInputBorder(
-                  borderSide: BorderSide(
-                  ),
-                )
+                ? const UnderlineInputBorder()
                 : OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),
                   borderSide: BorderSide(
@@ -123,7 +116,7 @@ class _InputFormFieldState extends State<InputFormField> {
                             widget.hidePassword == false)
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    
+
                     size: 24,
                   ),
                 ),
@@ -143,11 +136,7 @@ class _InputFormFieldState extends State<InputFormField> {
                       ),
                     )
                     : null
-                : Icon(
-                  CupertinoIcons.search,
-                  
-                  size: 18,
-                ),
+                : const Icon(CupertinoIcons.search, size: 18),
         contentPadding:
             widget.isUnderLine != null
                 ? EdgeInsets.zero
@@ -159,10 +148,7 @@ class _InputFormFieldState extends State<InputFormField> {
         filled: widget.enabled == false,
         hintText: widget.hintText,
         hintStyle: Theme.of(context).textTheme.headlineSmall!.copyWith(
-          color:
-              widget.isUnderLine != null
-                  ? Colors.white
-                  : Colors.white,
+          color: widget.isUnderLine != null ? Colors.white : Colors.white,
         ),
       ),
     );

@@ -62,7 +62,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                           color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -79,7 +79,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                       SizedBox(
                         child: Text(
                           l10n.lessonDetails,
-                          style:Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.displayLarge,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

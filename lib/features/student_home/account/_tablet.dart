@@ -35,7 +35,7 @@ class StudentAccountPageTablet extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                           color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
@@ -75,7 +75,7 @@ class StudentAccountPageTablet extends StatelessWidget {
                                   style:
                                       Theme.of(
                                         context,
-                                      ).textTheme.headlineMedium!,
+                                      ).textTheme.headlineMedium,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -103,10 +103,7 @@ class StudentAccountPageTablet extends StatelessWidget {
                       SizedBox(height: 64.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(
-                          label: l10n.name,
-                          
-                        ),
+                        child: FormFieldLabel(label: l10n.name),
                       ),
                       SizedBox(height: 10.h),
                       Padding(
@@ -121,10 +118,7 @@ class StudentAccountPageTablet extends StatelessWidget {
                       SizedBox(height: 15.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(
-                          label: l10n.email,
-                          
-                        ),
+                        child: FormFieldLabel(label: l10n.email),
                       ),
                       SizedBox(height: 10.h),
                       Padding(
@@ -151,12 +145,12 @@ class StudentAccountPageTablet extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                               text: l10n.byUsing,
-                              style: Theme.of(context).textTheme.displaySmall!,
+                              style: Theme.of(context).textTheme.displaySmall,
                               children: [
                                 TextSpan(
                                   text: l10n.terms,
                                   style:
-                                      Theme.of(context).textTheme.displaySmall!,
+                                      Theme.of(context).textTheme.displaySmall,
                                   recognizer:
                                       TapGestureRecognizer()
                                         ..onTap = () async {
@@ -176,7 +170,7 @@ class StudentAccountPageTablet extends StatelessWidget {
                                 TextSpan(
                                   text: l10n.privacyPolicy,
                                   style:
-                                      Theme.of(context).textTheme.displaySmall!,
+                                      Theme.of(context).textTheme.displaySmall,
                                   recognizer:
                                       TapGestureRecognizer()
                                         ..onTap = () async {

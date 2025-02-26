@@ -105,7 +105,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(event.description, style: Theme.of(context).textTheme.bodySmall),
+                  Text(
+                    event.description,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 ],
               ),
             ),
@@ -179,7 +182,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(event.venue ?? '', style: Theme.of(context).textTheme.bodySmall),
+                  Text(
+                    event.venue ?? '',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 ],
               ),
             ),

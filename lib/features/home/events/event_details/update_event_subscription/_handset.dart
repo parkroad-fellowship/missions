@@ -5,7 +5,6 @@ import 'package:app/features/home/events/cubit/update_event_subscription_cubit.d
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,10 +51,7 @@ class _UpdateEventSubscriptionViewHandsetState
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.tickets,
-                isRequired: true,
-              ),
+              child: FormFieldLabel(label: l10n.tickets, isRequired: true),
             ),
             const SizedBox(height: 6),
             InputFormField(

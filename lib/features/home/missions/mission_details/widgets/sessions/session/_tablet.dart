@@ -87,7 +87,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                             color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.primary,
                               width: 1.w,
                             ),
                           ),
@@ -100,9 +100,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                         const Spacer(),
                         Text(
                           l10n.sessionDetails,
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            fontSize: 56.sp,
-                          ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.displayLarge?.copyWith(fontSize: 56.sp),
                         ),
                         const Spacer(),
                       ],
@@ -210,7 +210,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                           children: [
                             FormFieldLabel(
                               label: l10n.recordings,
-                              
+
                               isBold: true,
                             ),
                             SizedBox(
@@ -266,7 +266,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                                 child: Center(
                                   child: Text(
                                     l10n.noRecordings,
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ),
                               )
@@ -300,7 +301,10 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
     expandedCrossAxisAlignment: CrossAxisAlignment.start,
     children: [
       ListTile(
-        title: Text(l10n.downloadTeaching, style: Theme.of(context).textTheme.bodySmall),
+        title: Text(
+          l10n.downloadTeaching,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
         trailing: IconButton(
           icon: BlocConsumer<DownloadFileCubit, DownloadFileState>(
             listener: (context, state) {
@@ -542,11 +546,7 @@ class DataCard extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 40.w),
-          child: FormFieldLabel(
-            label: label,
-            
-            isBold: true,
-          ),
+          child: FormFieldLabel(label: label, isBold: true),
         ),
         const SizedBox(height: 6),
         Padding(

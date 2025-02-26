@@ -72,7 +72,6 @@ class PRFTheme {
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: Color(primaryColor),
-      
     ),
   );
 }

@@ -46,9 +46,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1.w,
-              ),
+              border: Border.all(width: 1.w),
             ),
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
@@ -64,7 +62,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
             dividerColor: Colors.white,
             isScrollable: true,
             tabAlignment: TabAlignment.start,
-            labelStyle: Theme.of(context).textTheme.displayMedium!,
+            labelStyle: Theme.of(context).textTheme.displayMedium,
             indicatorColor: Colors.white,
             overlayColor: WidgetStateProperty.all(Colors.transparent),
             tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
@@ -94,7 +92,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                                   style:
                                       Theme.of(
                                         context,
-                                      ).textTheme.headlineMedium!,
+                                      ).textTheme.headlineMedium,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -107,8 +105,10 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                                   children: [
                                     Text(
                                       l10n.pleaseWaitOS,
-                                      style: Theme.of(context).textTheme.displayLarge!
-                                          ,
+                                      style:
+                                          Theme.of(
+                                            context,
+                                          ).textTheme.displayLarge,
                                     ),
                                   ],
                                 ),
@@ -167,8 +167,10 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                               Center(
                                 child: Text(
                                   l10n.noEvents,
-                                  style: Theme.of(context).textTheme.headlineMedium!
-                                      ,
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.headlineMedium,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -181,8 +183,10 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                                   children: [
                                     Text(
                                       l10n.pleaseWaitOS,
-                                      style: Theme.of(context).textTheme.displayLarge!
-                                          ,
+                                      style:
+                                          Theme.of(
+                                            context,
+                                          ).textTheme.displayLarge,
                                     ),
                                   ],
                                 ),
@@ -247,7 +251,9 @@ class EventActionCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                 color: Theme.of(context).colorScheme.secondary.withValues(alpha:.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.secondary.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Column(
