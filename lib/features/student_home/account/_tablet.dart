@@ -24,6 +24,7 @@ class StudentAccountPageTablet extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: CustomScrollView(
             slivers: [
+              SliverToBoxAdapter(child: SizedBox(height: 36,)),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),

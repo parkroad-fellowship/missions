@@ -40,6 +40,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 36,)),
               SliverAppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,

@@ -38,6 +38,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 36,)),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),

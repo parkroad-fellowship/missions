@@ -103,6 +103,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
               physics: const ScrollPhysics(),
               slivers: [
                 // Start Navigation Bar
+                SliverToBoxAdapter(child: SizedBox(height: 36,)),
                 PinnedHeaderSliver(
                   child: ColoredBox(
                     color: Colors.white,

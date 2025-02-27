@@ -40,6 +40,7 @@ class _StudentEnquiriesPageTabletState
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
+              SliverToBoxAdapter(child: SizedBox(height: 36,)),
               SliverToBoxAdapter(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -35,6 +35,7 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        
         appBar: AppBar(
           centerTitle: true,
           title: Text(
