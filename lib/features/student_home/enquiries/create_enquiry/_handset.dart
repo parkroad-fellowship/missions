@@ -1,6 +1,8 @@
 import 'package:app/features/student_home/enquiries/cubit/create_enquiry_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,10 +25,31 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.ask, style: Theme.of(context).textTheme.displayLarge),
         centerTitle: true,
+        title: Text(
+          l10n.ask,
+          style: Theme.of(context).textTheme.displayLarge,
+        ),
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 1.w),
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            padding: const EdgeInsets.only(left: 16, right: 8),
+            onPressed:
+                () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.learnerEnquiriesRoute,
+                ),
+          ),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
