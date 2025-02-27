@@ -63,6 +63,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
             l10n.missions,
             style: Theme.of(context).textTheme.displayLarge,
           ),
+
           leading: Container(
             margin: EdgeInsets.only(left: 16.w),
             decoration: BoxDecoration(

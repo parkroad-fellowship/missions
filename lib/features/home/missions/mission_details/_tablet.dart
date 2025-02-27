@@ -143,6 +143,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                 ),
 
                 // End Navigation Bar
+                SliverToBoxAdapter(child: SizedBox(height: 32,)),
                 PinnedHeaderSliver(
                   child: ColoredBox(
                     color: Colors.white,
@@ -167,6 +168,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                     ),
                   ),
                 ),
+                SliverToBoxAdapter(child: SizedBox(height: 32,)),
                 SliverFillRemaining(
                   fillOverscroll: true,
                   child: Padding(
