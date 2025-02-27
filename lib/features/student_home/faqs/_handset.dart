@@ -93,7 +93,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: TextField(
+                  child: TextFormField(
                     onChanged: (value) {
                       setState(() {
                         _searchQuery = value;
@@ -113,6 +113,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                         );
                       });
                     },
+                    style: Theme.of(context).textTheme.bodySmall,
                     decoration: InputDecoration(
                       hintText: l10n.whatWouldYouLikeToKnow,
                       suffixIconColor: Theme.of(context).colorScheme.primary,
@@ -120,33 +121,11 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
                       ),
-                      hintStyle: Theme.of(context).textTheme.bodyMedium,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
                     ),
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              SliverToBoxAdapter(
-                child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
-                  builder:
-                      (context, state) => state.maybeWhen(
-                        loading:
-                            () =>
-                                const Center(child: LinearProgressIndicator()),
-                        orElse: SizedBox.shrink,
-                        loaded: (_) => const SizedBox.shrink(),
-                      ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              ),SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              
               SliverToBoxAdapter(
                 child: FaqCategoriesPreview(
                   onCategorySelected: (newValue) {
@@ -166,14 +145,24 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
+                child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        loading:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        orElse: () => const SizedBox.shrink(),
+                      ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: SizedBox.shrink,
-                    loading:
-                        () => const SliverToBoxAdapter(
-                          child: PRFLinearProgressIndicator(),
-                        ),
+                    orElse:
+                        () =>
+                            const SliverToBoxAdapter(child: SizedBox.shrink()),
                     error:
                         (message) => SliverFillRemaining(
                           child: Center(child: Text(message)),
@@ -184,41 +173,7 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                           child: RefreshIndicator(
                             onRefresh:
                                 () => context.read<GetFaqsCubit>().getFaqs(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Spacer(),
-                                const Icon(Icons.directions_walk),
-                                Center(
-                                  child: Text(
-                                    l10n.noFaqs,
-                                    style:
-                                        Theme.of(
-                                          context,
-                                        ).textTheme.headlineMedium,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.05,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        l10n.pleaseWait,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.displayLarge,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
+                            child: PRFEmptyView(label: l10n.noFaqs, description: l10n.pleaseWait,),
                           ),
                         );
                       }

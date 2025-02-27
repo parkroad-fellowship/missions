@@ -74,6 +74,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                     ],
                   ),
                 ),
+                SizedBox(height: 64.h),
                 Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w) +
@@ -166,7 +167,7 @@ class _StudentLandingPageHandsetState extends State<StudentLandingPageHandset> {
                                               style:
                                                   Theme.of(
                                                     context,
-                                                  ).textTheme.headlineLarge,
+                                                  ).textTheme.headlineMedium,
                                             ),
                                           ),
                                         ],
