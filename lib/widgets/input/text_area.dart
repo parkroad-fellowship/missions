@@ -21,6 +21,7 @@ class PRFTextAreaInput extends StatelessWidget {
       controller: controller,
       enabled: !isLoading,
       minLines: 5,
+      maxLines: 5,
     );
   }
 }
