@@ -145,13 +145,17 @@ class StudentAccountPageHandset extends StatelessWidget {
                           child: Text.rich(
                             TextSpan(
                               text: l10n.byUsing,
-                              style: Theme.of(context).textTheme.displaySmall!
-                                  .copyWith(color: const Color(0xFF727272)),
+                              style: Theme.of(context).textTheme.labelLarge,
                               children: [
                                 TextSpan(
                                   text: l10n.terms,
-                                  style:
-                                      Theme.of(context).textTheme.displaySmall,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.labelLarge?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                   recognizer:
                                       TapGestureRecognizer()
                                         ..onTap = () async {
@@ -166,12 +170,17 @@ class StudentAccountPageHandset extends StatelessWidget {
                                 TextSpan(
                                   text: l10n.and,
                                   style:
-                                      Theme.of(context).textTheme.displaySmall,
+                                      Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
                                   text: l10n.privacyPolicy,
-                                  style:
-                                      Theme.of(context).textTheme.displaySmall,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.labelLarge?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                   recognizer:
                                       TapGestureRecognizer()
                                         ..onTap = () async {
@@ -193,8 +202,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: Text(
                           l10n.version(Misc.getAppVersion()),
-                          style: Theme.of(context).textTheme.displaySmall!
-                              .copyWith(color: const Color(0xFF727272)),
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ),
                     ]),
