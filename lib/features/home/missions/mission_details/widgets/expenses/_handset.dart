@@ -287,7 +287,7 @@ class ExpensesDataTable extends StatelessWidget {
                     ),
                     DataCell(
                       _text(
-                        '${Misc.formatCash(expense.lineTotal)} \n'
+                        '${Misc.formatCash(expense.lineTotal)} '
                         '(${Misc.formatCash(expense.charge)})',
                       ),
                     ),
