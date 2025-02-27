@@ -38,7 +38,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 36,)),
+              SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -49,7 +49,10 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1.w),
+                          border: Border.all(
+                            width: 1.w,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                         child: IconButton(
                           icon: Icon(
@@ -132,7 +135,8 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                               children: [
                                 Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                                   style:
+                                      Theme.of(context).textTheme.headlineSmall,
                                 ),
                                 SizedBox(height: 16.h),
                                 ListView.separated(
@@ -155,6 +159,10 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                           borderRadius: BorderRadius.circular(
                                             48.r,
                                           ),
+                                          color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withValues(alpha: .4),
                                         ),
                                         child: ListTile(
                                           contentPadding: EdgeInsets.zero,
