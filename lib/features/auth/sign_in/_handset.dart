@@ -142,7 +142,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                         );
                       },
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     PRFSecondaryButton(
                       onPressed:
                           () => context.router.pushNamed(
@@ -151,8 +151,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                       title: l10n.registerStudent,
                       disabled: false,
                     ),
+                    const SizedBox(height: 24),
                     const Divider(),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 24),
                     BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
                       builder: (context, signInWithGoogleState) {
                         return BlocBuilder<SocialLoginCubit, SocialLoginState>(
@@ -166,21 +167,17 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   isLoading,
                                   title,
                                 ) = signInWithGoogleState.maybeWhen(
-                                  loading:
-                                      () => (true, 'Continue with Google...'),
+                                  loading: () => (true, 'Please wait ...'),
                                   orElse:
                                       () => socialSignUpState.maybeWhen(
                                         loading:
-                                            () => (
-                                              true,
-                                              'Continue with Google...',
-                                            ),
+                                            () => (true, 'Please wait ...'),
                                         orElse:
                                             () => socialSignInState.maybeWhen(
                                               loading:
                                                   () => (
                                                     true,
-                                                    'Continue with Google...',
+                                                    'Please wait ...',
                                                   ),
                                               orElse:
                                                   () => (
@@ -192,13 +189,11 @@ class _SignInHandsetState extends State<SignInHandset> {
                                 );
 
                                 return GoogleAuthButton(
-                                  onPressed: () {
-                                    if (!isLoading) {
-                                      context
-                                          .read<GoogleSignInCubit>()
-                                          .signInwithGoogle();
-                                    }
-                                  },
+                                  onPressed:
+                                      () =>
+                                          context
+                                              .read<GoogleSignInCubit>()
+                                              .signInwithGoogle(),
                                   title: title,
                                   disabled: isLoading,
                                   isLoading: isLoading,
@@ -214,7 +209,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       alignment: Alignment.bottomCenter,
                       child: Text(
                         l10n.version(Misc.getAppVersion()),
-                        style: Theme.of(context).textTheme.displaySmall,
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ),
                     const Spacer(),

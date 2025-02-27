@@ -29,7 +29,7 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height * 1,
@@ -57,7 +57,7 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
                 BlocConsumer<RegisterStudentCubit, RegisterStudentState>(
                   listener: (context, state) {
                     state.maybeWhen(
@@ -100,7 +100,7 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                   builder: (context, state) {
                     return state.maybeWhen(
                       orElse:
-                          () => PrimaryButton(
+                          () => PRFPrimaryButton(
                             onPressed:
                                 () =>
                                     context
@@ -114,8 +114,8 @@ class _StudentIntroPageHandsetState extends State<StudentIntroPageHandset> {
                     );
                   },
                 ),
-                const SizedBox(height: 16),
-                SecondaryButton(
+                const SizedBox(height: 24),
+                PRFSecondaryButton(
                   onPressed: () => context.router.popForced(),
                   title: l10n.cancel,
                   disabled: false,

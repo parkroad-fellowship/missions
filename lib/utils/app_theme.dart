@@ -68,7 +68,7 @@ class PRFTheme {
     ),
     dividerTheme: const DividerThemeData(
       space: 1,
-      thickness: 1,
+      thickness: 2,
       color: Colors.black12,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
