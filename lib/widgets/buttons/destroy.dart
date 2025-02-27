@@ -23,7 +23,9 @@ class PRFDestoryButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
         style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
-          backgroundColor: const WidgetStatePropertyAll(Colors.red),
+          backgroundColor: WidgetStatePropertyAll(
+            Theme.of(context).colorScheme.error,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -208,11 +208,12 @@ class EventActionCard extends StatelessWidget {
                       Misc.formatDate(event.startDate),
                       Misc.formatTime(event.startTime),
                     ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   SizedBox(height: 16.h),
                   Text(
                     event.description.split('\n').first,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
                   ),
                 ],
               ),

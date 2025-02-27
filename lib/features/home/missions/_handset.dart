@@ -288,6 +288,7 @@ class MissionActionCard extends StatelessWidget {
                       Misc.formatDate(mission.startDate),
                       Misc.formatTime(mission.startTime),
                     ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   SizedBox(height: 16.h),
                   Text(

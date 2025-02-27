@@ -163,7 +163,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         color:
                                             Theme.of(
                                               context,
-                                            ).colorScheme.secondary,
+                                            ).colorScheme.secondary.withValues(alpha: .4),
                                       ),
                                       child: ListTile(
                                         contentPadding: EdgeInsets.zero,

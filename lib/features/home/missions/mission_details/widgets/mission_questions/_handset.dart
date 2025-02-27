@@ -86,7 +86,7 @@ class MissionQuestionCard extends StatelessWidget {
                   missionQuestion.question,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 16.h),
                 Text(
                   Misc.formatDateTime(missionQuestion.createdAt),
                   style: Theme.of(context).textTheme.bodySmall,

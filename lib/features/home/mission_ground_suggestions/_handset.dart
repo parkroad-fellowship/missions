@@ -270,7 +270,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: missionGroundSuggestion.name,
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           children: [
                             TextSpan(
                               text: ', ${missionGroundSuggestion.status.name}',
@@ -280,7 +280,10 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      Text(missionGroundSuggestion.contactPerson),
+                      Text(
+                        missionGroundSuggestion.contactPerson,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                       SizedBox(height: 16.h),
                     ],
                   ),

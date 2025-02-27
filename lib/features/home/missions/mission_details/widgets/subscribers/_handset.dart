@@ -4,6 +4,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -50,31 +51,9 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                 () => context.read<GetSubscribersCubit>().getSubscriptions(
                   missionUlid: widget.missionUlid,
                 ),
-            child: Column(
-              children: [
-                const Spacer(),
-                const Icon(Icons.directions_walk),
-                Center(
-                  child: Text(
-                    l10n.noSubscribers,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.05,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        l10n.pleaseWait,
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-              ],
+            child: PRFEmptyView(
+              label: l10n.noSubscribers,
+              description: l10n.pleaseWait,
             ),
           );
         }
@@ -144,7 +123,7 @@ class SubscriberActionCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      Text(subscription.status.name),
+                      Text(subscription.status.name, style: Theme.of(context).textTheme.bodySmall,),
                       SizedBox(height: 16.h),
                     ],
                   ),

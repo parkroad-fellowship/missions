@@ -35,13 +35,12 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
       stream: getIt<LocalDBService>().getSouls(missionUlid: missionUlid),
       nullWidget: Center(
         child: Text(
-          l10n.noSubscribers,
+          l10n.noSouls,
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
       widget:
           (context, souls) => ListView.separated(
-            shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: souls.length,
             separatorBuilder: (context, index) => SizedBox(height: 16.h),
@@ -81,7 +80,7 @@ class SoulCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 16.h),
-                Text(soul.classGroup.name.toString()),
+                Text(soul.classGroup.name.toString(), style: Theme.of(context).textTheme.bodySmall,),
                 SizedBox(height: 16.h),
               ],
             ),

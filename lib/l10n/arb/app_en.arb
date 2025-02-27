@@ -671,5 +671,7 @@
     "noModules": "No modules",
     "@noModules": {},
     "noLessons": "No lessons",
-    "@noLessons": {}
+    "@noLessons": {},
+    "noSouls": "No souls",
+    "@noSouls": {}
 }
