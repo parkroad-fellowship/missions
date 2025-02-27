@@ -4,8 +4,8 @@ class PRFTheme {
   PRFTheme._();
 
   static const int primaryColor = 0xff17154c;
-  static const int secondaryColor = 0xFF93D500;
-  static const int errorColor = 0xFF78251B;
+  static const int secondaryColor = 0xff93d500;
+  static const int errorColor = 0xff78251b;
 
   static final light = ThemeData(
     useMaterial3: true,
@@ -108,5 +108,6 @@ class PRFTheme {
       overlayColor: WidgetStateProperty.all(Colors.transparent),
     ),
     dataTableTheme: const DataTableThemeData(),
+    snackBarTheme: const SnackBarThemeData(),
   );
 }

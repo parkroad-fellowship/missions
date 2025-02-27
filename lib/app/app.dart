@@ -79,6 +79,11 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                     dataTextStyle: textTheme.bodyMedium,
                     headingTextStyle: textTheme.headlineMedium,
                   ),
+                  snackBarTheme: PRFTheme.light.snackBarTheme.copyWith(
+                    contentTextStyle: textTheme.bodySmall?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
