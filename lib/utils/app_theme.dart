@@ -5,6 +5,7 @@ class PRFTheme {
 
   static const int primaryColor = 0xff17154c;
   static const int secondaryColor = 0xFF93D500;
+  static const int errorColor = 0xFF78251B;
 
   static final light = ThemeData(
     useMaterial3: true,
@@ -14,7 +15,7 @@ class PRFTheme {
       primary: Color(primaryColor),
       secondary: Color(secondaryColor),
       surface: Colors.white,
-      error: Colors.red,
+      error: Color(errorColor),
       onPrimary: Colors.white,
       onSecondary: Colors.black,
       onSurface: Colors.black,

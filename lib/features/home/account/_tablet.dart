@@ -73,7 +73,9 @@ class AccountPageTablet extends StatelessWidget {
                                   style:
                                       Theme.of(
                                         context,
-                                      ).textTheme.headlineMedium,
+                                      ).textTheme.headlineMedium?.copyWith(
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
