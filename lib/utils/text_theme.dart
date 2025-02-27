@@ -77,7 +77,7 @@ class PRFTextTheme {
         color: defaultTextColor,
       ),
       bodyMedium: GoogleFonts.lato(
-        fontSize: 8 * adjustedScaleFactor,
+        fontSize: 12 * adjustedScaleFactor,
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.w500,
         color: defaultTextColor,

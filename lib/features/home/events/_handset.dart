@@ -213,7 +213,7 @@ class EventActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     event.description.split('\n').first,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

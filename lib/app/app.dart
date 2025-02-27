@@ -74,8 +74,11 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                       ?.copyWith(
                         hintStyle: textTheme.bodySmall,
                         labelStyle: textTheme.bodySmall,
-                        
                       ),
+                  dataTableTheme: PRFTheme.light.dataTableTheme.copyWith(
+                    dataTextStyle: textTheme.bodyMedium,
+                    headingTextStyle: textTheme.headlineMedium
+                  ),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
