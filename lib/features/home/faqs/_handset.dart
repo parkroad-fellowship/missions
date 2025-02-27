@@ -93,7 +93,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: TextField(
+                  child: TextFormField(
                     onChanged: (value) {
                       setState(() {
                         _searchQuery = value;
@@ -113,6 +113,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                         );
                       });
                     },
+                    style: Theme.of(context).textTheme.bodySmall,
                     decoration: InputDecoration(
                       hintText: l10n.whatWouldYouLikeToKnow,
                       suffixIconColor: Theme.of(context).colorScheme.primary,
@@ -120,32 +121,12 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
                       ),
-                      hintStyle: Theme.of(context).textTheme.bodyMedium,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
                     ),
                   ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              SliverToBoxAdapter(
-                child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
-                  builder:
-                      (context, state) => state.maybeWhen(
-                        loading:
-                            () =>
-                                const Center(child: LinearProgressIndicator()),
-                        orElse: () => const SizedBox.shrink(),
-                      ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+
               SliverToBoxAdapter(
                 child: FaqCategoriesPreview(
                   onCategorySelected: (newValue) {
@@ -165,14 +146,24 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+              SliverToBoxAdapter(
+                child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
+                  builder:
+                      (context, state) => state.maybeWhen(
+                        loading:
+                            () =>
+                                const Center(child: LinearProgressIndicator()),
+                        orElse: () => const SizedBox.shrink(),
+                      ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               BlocBuilder<GetFaqsCubit, GetFaqsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse: SizedBox.shrink,
-                    loading:
-                        () => const SliverToBoxAdapter(
-                          child: PRFLinearProgressIndicator(),
-                        ),
+                    orElse:
+                        () =>
+                            const SliverToBoxAdapter(child: SizedBox.shrink()),
                     error:
                         (message) => SliverFillRemaining(
                           child: Center(child: Text(message)),

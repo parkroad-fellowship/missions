@@ -70,6 +70,12 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  inputDecorationTheme: PRFTheme.light.inputDecorationTheme
+                      ?.copyWith(
+                        hintStyle: textTheme.bodySmall,
+                        labelStyle: textTheme.bodySmall,
+                        
+                      ),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
