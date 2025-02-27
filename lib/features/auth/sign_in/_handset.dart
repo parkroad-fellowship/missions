@@ -86,26 +86,17 @@ class _SignInHandsetState extends State<SignInHandset> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    InputFormField(
+                    PRFEmailInput(
                       hintText: l10n.studentEmail,
-                      controller: _emailController,
-                      enabled: !_isLoading,
+                      emailController: _emailController,
+                      isLoading: _isLoading,
                     ),
                     const SizedBox(height: 20),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: _hidePasswordNotifier,
-                      builder: (context, hidePassword, child) {
-                        return InputFormField(
-                          hintText: l10n.enterPassword,
-                          controller: _passwordController,
-                          showSuffix: true,
-                          hidePassword: hidePassword,
-                          toggleHidePassword: () {
-                            _hidePasswordNotifier.value = !hidePassword;
-                          },
-                          enabled: !_isLoading,
-                        );
-                      },
+                    PRFPasswordInput(
+                      hintText: l10n.enterPassword,
+                      hidePasswordNotifier: _hidePasswordNotifier,
+                      passwordController: _passwordController,
+                      isLoading: _isLoading,
                     ),
                     const SizedBox(height: 16),
                     BlocConsumer<SigninCubit, SignInState>(
@@ -136,7 +127,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       builder: (context, state) {
                         return state.maybeWhen(
                           orElse:
-                              () => PrimaryButton(
+                              () => PRFPrimaryButton(
                                 onPressed: () {
                                   context.read<SigninCubit>().signIn(
                                     email: _emailController.text.trim(),
@@ -152,7 +143,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       },
                     ),
                     const SizedBox(height: 8),
-                    SecondaryButton(
+                    PRFSecondaryButton(
                       onPressed:
                           () => context.router.pushNamed(
                             PRFSuperAppRouter.registerStudentRoute,

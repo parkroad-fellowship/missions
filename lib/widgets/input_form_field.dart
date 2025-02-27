@@ -68,18 +68,8 @@ class _InputFormFieldState extends State<InputFormField> {
       maxLines: widget.maxLines,
       onTap: widget.onTap,
       onChanged: widget.onChanged == null ? (_) {} : (_) => widget.onChanged!(),
-      inputFormatters: [
-        if (widget.keyboardType == TextInputType.number ||
-            widget.keyboardType ==
-                const TextInputType.numberWithOptions(decimal: true))
-          FilteringTextInputFormatter.digitsOnly,
-      ],
-      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-        color:
-            widget.isEmail != null
-                ? Theme.of(context).colorScheme.primary
-                : Colors.black,
-      ),
+      inputFormatters: widget.inputFormatters,
+     
       decoration: InputDecoration(
         disabledBorder:
             widget.isUnderLine != null

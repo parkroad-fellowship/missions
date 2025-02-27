@@ -1,7 +1,7 @@
 import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_faq_category.dart';
-import 'package:app/widgets/linear_progress_indicator.dart';
+import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
