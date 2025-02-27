@@ -47,6 +47,7 @@ class PRFTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
     ),
+    
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.grey[50],
@@ -99,5 +100,10 @@ class PRFTheme {
         ),
       ),
     ),
+    iconTheme: IconThemeData(
+      color: Color(primaryColor),
+      size: 24
+    ),
+    
   );
 }

@@ -106,12 +106,12 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                   width: 1.w,
                                 ),
                               ),
-                              child: const CircleAvatar(
+                              child: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 child: Badge(
                                   child: Icon(
                                     Icons.notifications_none,
-                                    size: 24,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ),

@@ -107,12 +107,12 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                                   width: 1.w,
                                 ),
                               ),
-                              child: const CircleAvatar(
+                              child: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 child: Badge(
                                   child: Icon(
                                     Icons.notifications_none,
-                                    size: 24,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ),
