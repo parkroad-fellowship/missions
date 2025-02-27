@@ -97,11 +97,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(label: l10n.unitCost, isRequired: true),
             ),
             const SizedBox(height: 12),
-            InputFormField(
+            PRFNumberInput(
               hintText: l10n.unitCost,
               controller: _unitCostController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
             const SizedBox(height: 16),
             Align(
@@ -109,11 +107,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               child: FormFieldLabel(label: l10n.quantity, isRequired: true),
             ),
             const SizedBox(height: 12),
-            InputFormField(
+            PRFNumberInput(
               hintText: l10n.quantity,
               controller: _quantityController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
             const SizedBox(height: 16),
             Align(

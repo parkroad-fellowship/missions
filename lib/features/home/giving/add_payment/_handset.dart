@@ -98,11 +98,9 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(label: l10n.amount, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNumberInput(
               hintText: l10n.enterAmount,
               controller: _amountController,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 32),
             BlocConsumer<AddPaymentCubit, AddPaymentState>(

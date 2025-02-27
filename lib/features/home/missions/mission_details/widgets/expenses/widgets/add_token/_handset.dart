@@ -33,11 +33,9 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
             child: FormFieldLabel(label: l10n.tokenAmount, isRequired: true),
           ),
           const SizedBox(height: 5),
-          InputFormField(
+          PRFNumberInput(
             hintText: l10n.tokenAmount,
             controller: _amountController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
           const SizedBox(height: 16),
           BlocConsumer<AddTokenCubit, AddTokenState>(

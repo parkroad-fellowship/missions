@@ -40,11 +40,9 @@ class _AddEventSubscriptionViewHandsetState
               child: FormFieldLabel(label: l10n.tickets, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNumberInput(
               hintText: l10n.tickets,
               controller: _ticketController,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              keyboardType: TextInputType.number,
             ),
 
             const SizedBox(height: 32),
