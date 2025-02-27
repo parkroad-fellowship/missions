@@ -134,6 +134,28 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               ),
             ),
             SizedBox(height: 8.h),
+            SingleStreamWrapper(
+              stream: getIt<LocalDBService>().getMission(
+                missionUlid: missionUlid,
+              ),
+              widget:
+                  (context, mission) =>
+                      (mission.whatsAppLink != null)
+                          ? ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(Icons.link),
+                            title: Text(
+                              l10n.joinWhatsApp,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            onTap:
+                                () => Misc.openUrl(
+                                  Uri.parse(mission.whatsAppLink!),
+                                ),
+                          )
+                          : const SizedBox.shrink(),
+            ),
+            SizedBox(height: 8.h),
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(
@@ -141,7 +163,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
-
+            SizedBox(height: 8.h),
             SingleStreamWrapper(
               stream: getIt<LocalDBService>().getMission(
                 missionUlid: missionUlid,

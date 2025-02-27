@@ -28,6 +28,7 @@ class PRFMission with _$PRFMission {
     @JsonKey(name: 'logged_in_member_mission_subscription')
     PRFMissionSubscription? loggedInMemberMissionSubscription,
     @Default('Open Topic') String? theme,
+    @JsonKey(name: 'whats_app_link') String? whatsAppLink,
     PRFSchool? school,
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,
     @JsonKey(name: 'mission_type') PRFMissionType? missionType,

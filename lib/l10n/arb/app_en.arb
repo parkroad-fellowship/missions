@@ -673,5 +673,7 @@
     "noLessons": "No lessons",
     "@noLessons": {},
     "noSouls": "No souls",
-    "@noSouls": {}
+    "@noSouls": {},
+    "joinWhatsApp": "Join the WhatsApp group for this mission",
+    "@joinWhatsApp": {}
 }
