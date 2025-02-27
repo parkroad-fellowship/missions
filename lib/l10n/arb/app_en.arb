@@ -208,7 +208,7 @@
     "@registerStudent": {},
     "registerNewStudent": "Register a new student account",
     "@registerNewStudent": {},
-    "studentIntro": "To keep your identity private, you get random credentials that you can use to access the app. Please ensure to save them somewhere if you want to come back to the app at another time.",
+    "studentIntro": "To keep your identity private, you get random credentials that you can use to access the app. Please ensure to save them somewhere if you want to come back to the app at another time or on a different device.",
     "@studentIntro": {},
     "iAmReady": "I am ready",
     "@iAmReady": {},

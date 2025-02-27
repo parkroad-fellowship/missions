@@ -156,7 +156,7 @@ class _SignInTabletState extends State<SignInTablet> {
                             );
                           },
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 32),
                         PRFSecondaryButton(
                           onPressed:
                               () => context.router.pushNamed(
@@ -165,6 +165,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           title: l10n.registerStudent,
                           disabled: false,
                         ),
+                        const SizedBox(height: 40),
                         const Divider(),
                         const SizedBox(height: 40),
                         BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
@@ -225,12 +226,12 @@ class _SignInTabletState extends State<SignInTablet> {
                         ),
                         const SizedBox(height: 54),
                         Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                            l10n.version(Misc.getAppVersion()),
-                            style: Theme.of(context).textTheme.displaySmall,
-                          ),
-                        ),
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        l10n.version(Misc.getAppVersion()),
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                    ),
                         const Spacer(),
                       ],
                     ),
