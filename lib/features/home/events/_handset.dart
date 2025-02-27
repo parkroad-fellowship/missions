@@ -5,6 +5,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -49,7 +50,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
               border: Border.all(width: 1.w),
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
+              icon:  Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface,),
               padding: const EdgeInsets.only(left: 16, right: 8),
               onPressed:
                   () => context.router.popUntilRouteWithPath(
@@ -82,39 +83,9 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                         () => RefreshIndicator(
                           onRefresh:
                               () => context.read<GetEventsCubit>().getEvents(),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              const Icon(Icons.directions_walk),
-                              Center(
-                                child: Text(
-                                  l10n.noEvents,
-                                  style:
-                                      Theme.of(
-                                        context,
-                                      ).textTheme.headlineMedium,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      l10n.pleaseWaitOS,
-                                      style:
-                                          Theme.of(
-                                            context,
-                                          ).textTheme.displayLarge,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
+                          child: PRFEmptyView(
+                            label: l10n.noEvents,
+                            description: l10n.pleaseWaitOS,
                           ),
                         ),
                     loaded:
@@ -160,39 +131,9 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                                         GetMemberMissionSubscriptionsCubit
                                       >()
                                       .getSubscriptions(),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              const Icon(Icons.directions_walk),
-                              Center(
-                                child: Text(
-                                  l10n.noEvents,
-                                  style:
-                                      Theme.of(
-                                        context,
-                                      ).textTheme.headlineMedium,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      l10n.pleaseWaitOS,
-                                      style:
-                                          Theme.of(
-                                            context,
-                                          ).textTheme.displayLarge,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
+                          child: PRFEmptyView(
+                            label: l10n.noEvents,
+                            description: l10n.pleaseWaitForOS,
                           ),
                         ),
                     loaded: (events) {

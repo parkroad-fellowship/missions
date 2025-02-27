@@ -86,7 +86,10 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(

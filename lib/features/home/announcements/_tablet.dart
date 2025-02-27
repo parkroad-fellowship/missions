@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,10 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                           border: Border.all(width: 1.w),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -71,58 +75,17 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
-                child: BlocBuilder<
-                  GetAnnouncementsCubit,
-                  GetAnnouncementsState
-                >(
-                  builder:
-                      (context, state) => state.maybeWhen(
-                        orElse:
-                            () =>
-                                const Center(child: LinearProgressIndicator()),
-                        error: (message) => const SizedBox.shrink(),
-                        loaded:
-                            (isEmpty) =>
-                                isEmpty
-                                    ? Column(
-                                      children: [
-                                        const Icon(Icons.timer),
-                                        Center(
-                                          child: Text(
-                                            l10n.noAnnouncements,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.headlineMedium,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.sizeOf(
-                                                context,
-                                              ).height *
-                                              0.05,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(
-                                                l10n.pleaseWaitForOS,
-                                                maxLines: 2,
-                                                style:
-                                                    Theme.of(
-                                                      context,
-                                                    ).textTheme.displayLarge,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                    : const SizedBox.shrink(),
-                      ),
-                ),
+                child:
+                    BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
+                      builder:
+                          (context, state) => state.maybeWhen(
+                            loading:
+                                () => const Center(
+                                  child: LinearProgressIndicator(),
+                                ),
+                            orElse: () => const SizedBox.shrink(),
+                          ),
+                    ),
               ),
               StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
                 stream: getIt<LocalDBService>().getAnnouncements(),
@@ -136,7 +99,19 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                   final groupedEntries = snapshot.data;
 
                   if (groupedEntries != null && groupedEntries.isEmpty) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    return SliverFillRemaining(
+                      child: RefreshIndicator(
+                        onRefresh:
+                            () =>
+                                context
+                                    .read<GetAnnouncementsCubit>()
+                                    .getAnnouncements(),
+                        child: PRFEmptyView(
+                          label: l10n.noAnnouncements,
+                          description: l10n.pleaseWaitForOS,
+                        ),
+                      ),
+                    );
                   }
 
                   return SliverList.separated(

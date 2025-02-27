@@ -49,7 +49,7 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
               border: Border.all(width: 1.w),
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
+              icon:  Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface,),
               padding: const EdgeInsets.only(left: 16, right: 8),
               onPressed:
                   () => context.router.popUntilRouteWithPath(
