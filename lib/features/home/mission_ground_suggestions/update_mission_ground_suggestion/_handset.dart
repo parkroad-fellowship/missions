@@ -99,6 +99,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   (phoneNumber) => setState(() {
                     contactNumber = phoneNumber;
                   }),
+                   textStyle: Theme.of(context).textTheme.bodySmall,
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),

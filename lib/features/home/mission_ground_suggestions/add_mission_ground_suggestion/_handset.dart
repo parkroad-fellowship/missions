@@ -73,6 +73,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                   (phoneNumber) => setState(() {
                     _contactNumber = phoneNumber;
                   }),
+              textStyle: Theme.of(context).textTheme.bodySmall,
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),
