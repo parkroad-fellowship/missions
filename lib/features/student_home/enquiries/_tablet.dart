@@ -138,33 +138,9 @@ class _LearnerEnquiriesPageTabletState
                                 context
                                     .read<GetStudentEnquiriesCubit>()
                                     .getStudentEnquiries(),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.directions_walk),
-                            Center(
-                              child: Text(
-                                l10n.noQuestions,
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 32.w),
-                              child: SizedBox(
-                                child: PRFPrimaryButton(
-                                  onPressed:
-                                      () => context.router.pushNamed(
-                                        PRFSuperAppRouter
-                                            .createStudentEnquiryRoute,
-                                      ),
-                                  title: l10n.askAQuestion,
-                                  disabled: false,
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: PRFEmptyView(
+                          label: l10n.noQuestions,
+                          description: l10n.pleaseWait,
                         ),
                       ),
                     );
