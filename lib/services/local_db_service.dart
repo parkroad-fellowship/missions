@@ -555,7 +555,7 @@ class LocalDBServiceImpl implements LocalDBService {
         in prfDBInstance.pRFLocalAnnouncements
             .filter()
             .idGreaterThan(0)
-            .sortByPublishedAtDesc()
+            .sortByPublishedAt()
             .build()
             .watch(fireImmediately: true)
             .asBroadcastStream()) {
@@ -773,6 +773,7 @@ class LocalDBServiceImpl implements LocalDBService {
       endTime: mission.endTime,
       missionPrepNotes: mission.missionPrepNotes,
       theme: mission.theme,
+      whatsAppLink: mission.whatsAppLink,
       capacity: mission.capacity,
       status: mission.status,
       missionSubscriptionsNeeded: mission.missionSubscriptionsNeeded,

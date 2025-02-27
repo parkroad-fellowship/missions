@@ -90,7 +90,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                 empty:
                     () => SliverFillRemaining(
                       child: Center(
-                        child: PrimaryButton(
+                        child: PRFPrimaryButton(
                           title: l10n.addPhotos,
                           disabled: false,
                           onPressed:

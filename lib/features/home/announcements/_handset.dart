@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,12 +48,15 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
                             width: 1.w,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -63,9 +67,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.announcements,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                     ],
@@ -75,66 +77,17 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
               // End Navigation Bar
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
-                child: BlocBuilder<
-                  GetAnnouncementsCubit,
-                  GetAnnouncementsState
-                >(
-                  builder:
-                      (context, state) => state.maybeWhen(
-                        orElse:
-                            () =>
-                                const Center(child: LinearProgressIndicator()),
-                        error: (message) => const SizedBox.shrink(),
-                        loaded:
-                            (isEmpty) =>
-                                isEmpty
-                                    ? Column(
-                                      children: [
-                                        const Icon(Icons.timer),
-                                        Center(
-                                          child: Text(
-                                            l10n.noAnnouncements,
-                                            style: PRFText.theme()
-                                                .headlineMedium!
-                                                .copyWith(
-                                                  color:
-                                                      PRFApp.theme()
-                                                          .kDullGreyColor,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.sizeOf(
-                                                context,
-                                              ).height *
-                                              0.05,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(
-                                                l10n.pleaseWaitForOS,
-                                                maxLines: 2,
-                                                style: PRFText.theme()
-                                                    .displayLarge!
-                                                    .copyWith(
-                                                      color:
-                                                          PRFApp.theme()
-                                                              .kPrimaryColorV2,
-                                                      fontSize: 12,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                    : const SizedBox.shrink(),
-                      ),
-                ),
+                child:
+                    BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
+                      builder:
+                          (context, state) => state.maybeWhen(
+                            loading:
+                                () => const Center(
+                                  child: LinearProgressIndicator(),
+                                ),
+                            orElse: () => const SizedBox.shrink(),
+                          ),
+                    ),
               ),
               StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
                 stream: getIt<LocalDBService>().getAnnouncements(),
@@ -148,7 +101,19 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                   final groupedEntries = snapshot.data;
 
                   if (groupedEntries != null && groupedEntries.isEmpty) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    return SliverFillRemaining(
+                      child: RefreshIndicator(
+                        onRefresh:
+                            () =>
+                                context
+                                    .read<GetAnnouncementsCubit>()
+                                    .getAnnouncements(),
+                        child: PRFEmptyView(
+                          label: l10n.noAnnouncements,
+                          description: l10n.pleaseWaitForOS,
+                        ),
+                      ),
+                    );
                   }
 
                   return SliverList.separated(
@@ -168,17 +133,14 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
-                                  style: PRFText.theme().bodyLarge?.copyWith(
-                                    color: PRFApp.theme().kPrimaryColorV2,
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 64.sp,
-                                  ),
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
                                 ),
                               ),
                               SizedBox(height: 16.h),
                               ListView.separated(
-                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: entries!.length,
                                 separatorBuilder:
                                     (context, index) => SizedBox(height: 16.w),
@@ -195,43 +157,38 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         horizontal: 16.w,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: PRFApp.theme().kSecondaryColorV2
-                                            .withValues(alpha: 1),
                                         borderRadius: BorderRadius.circular(
                                           48.r,
                                         ),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withValues(alpha: .4),
                                       ),
                                       child: ListTile(
                                         contentPadding: EdgeInsets.zero,
                                         title: Text(
                                           entries[index].title.toUpperCase(),
-                                          style: PRFText.theme().headlineMedium
-                                              ?.copyWith(
-                                                color:
-                                                    PRFApp.theme()
-                                                        .kPrimaryColorV2,
-                                                fontWeight: FontWeight.w300,
-                                              ),
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.headlineMedium,
                                         ),
                                         subtitle: Text(
                                           entries[index].content,
-                                          style: PRFText.theme().bodySmall
-                                              ?.copyWith(
-                                                color:
-                                                    PRFApp.theme()
-                                                        .kPrimaryColorV2,
-                                              ),
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall,
                                         ),
                                         trailing: Text(
                                           Misc.formatTimeFromDateTime(
                                             entries[index].publishedAt,
                                           ),
-                                          style: PRFText.theme().bodySmall
-                                              ?.copyWith(
-                                                color:
-                                                    PRFApp.theme()
-                                                        .kPrimaryColorV2,
-                                              ),
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall,
                                         ),
                                       ),
                                     ),

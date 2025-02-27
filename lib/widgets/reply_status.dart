@@ -1,5 +1,4 @@
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class ReplyStatusView extends StatefulWidget {
@@ -53,18 +52,15 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       },
       child: Chip(
         label: Text(l10n.unread.toUpperCase()),
-        side: BorderSide(color: PRFApp.theme().kAccent12GreyColor),
         backgroundColor:
             _selectedReplyStatus == false
-                ? PRFApp.theme().kPrimaryColorV2
+                ? Theme.of(context).colorScheme.primary
                 : Colors.white,
-        labelStyle: PRFText.theme().bodyMedium?.copyWith(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+        labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           color:
               _selectedReplyStatus == false
                   ? Colors.white
-                  : PRFApp.theme().kPrimaryColorV2,
+                  : Theme.of(context).colorScheme.primary,
         ),
       ),
     ),
@@ -77,18 +73,15 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       },
       child: Chip(
         label: Text(l10n.replied.toUpperCase()),
-        side: BorderSide(color: PRFApp.theme().kAccent12GreyColor),
         backgroundColor:
             _selectedReplyStatus ?? true
-                ? PRFApp.theme().kPrimaryColorV2
+                ? Theme.of(context).colorScheme.primary
                 : Colors.white,
-        labelStyle: PRFText.theme().bodyMedium?.copyWith(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+        labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           color:
               _selectedReplyStatus ?? true
                   ? Colors.white
-                  : PRFApp.theme().kPrimaryColorV2,
+                  : Theme.of(context).colorScheme.primary,
         ),
       ),
     ),

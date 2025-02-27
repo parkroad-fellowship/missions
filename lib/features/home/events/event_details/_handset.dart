@@ -77,10 +77,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: PRFApp.theme().kPrimaryColorV2,
-                              width: 1.w,
-                            ),
+                            border: Border.all(width: 1.w),
                           ),
                           child: IconButton(
                             icon: const Icon(Icons.arrow_back_ios),
@@ -94,9 +91,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                         const Spacer(),
                         Text(
                           l10n.eventDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 80.sp,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                         ),
                         const Spacer(),
                         // Show an icon with the number of tickets
@@ -109,10 +104,8 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                                     .loggedInMemberEventSubscription!
                                     .numberOfAttendees
                                     .toString(),
-                                style: PRFText.theme().displayMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: PRFApp.theme().kPrimaryColorV2,
-                                ),
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
                               ),
                               const Icon(Icons.group),
                             ],
@@ -131,15 +124,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                           Logger().d(value);
                           _currentTab = value;
                         }),
-                    dividerColor: Colors.white,
                     isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    labelStyle: PRFText.theme().displayMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: PRFApp.theme().kPrimaryColorV2,
-                    ),
-                    indicatorColor: Colors.white,
-                    overlayColor: WidgetStateProperty.all(Colors.transparent),
                     tabs: [Tab(text: l10n.info), Tab(text: l10n.gallery)],
                   ),
                 ),
@@ -207,7 +192,6 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
               });
             }
           },
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
           child: Icon(
             event.loggedInMemberEventSubscription == null
                 ? Icons.add
@@ -235,7 +219,6 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
               );
             }
           },
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
           child: const Icon(Icons.add, color: Colors.white),
         ),
         _ => null,

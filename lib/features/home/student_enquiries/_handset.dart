@@ -4,7 +4,7 @@ import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
-import 'package:app/widgets/reply_status.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,12 +50,15 @@ class _StudentEnquiriesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -66,9 +69,7 @@ class _StudentEnquiriesPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.studentQuestions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Padding(
@@ -129,38 +130,9 @@ class _StudentEnquiriesPageHandsetState
                                 context
                                     .read<GetEnquiriesCubit>()
                                     .getStudentEnquiries(),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.directions_walk),
-                            Center(
-                              child: Text(
-                                l10n.noQuestions,
-                                style: PRFText.theme().headlineMedium!.copyWith(
-                                  color: PRFApp.theme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.05,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    l10n.pleaseWait,
-                                    style: PRFText.theme().displayLarge!
-                                        .copyWith(
-                                          color: PRFApp.theme().kPrimaryColorV2,
-                                          fontSize: 14,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        child: PRFEmptyView(
+                          label: l10n.noQuestions,
+                          description: l10n.pleaseWait,
                         ),
                       ),
                     );
@@ -177,6 +149,7 @@ class _StudentEnquiriesPageHandsetState
                           backgroundColor: Colors.white,
                           child: Text(
                             Misc.getUserNameInitials(enquiry.content),
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ),
                         title: Text(
@@ -184,10 +157,7 @@ class _StudentEnquiriesPageHandsetState
                               ? enquiry.content.substring(0, 35).trim()
                               : enquiry.content +
                                   (enquiry.content.length > 35 ? ' ...' : ''),
-                          style: PRFText.theme().bodySmall!.copyWith(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
                           Misc.formatTimeFromDateTime(enquiry.createdAt),

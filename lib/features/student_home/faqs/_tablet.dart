@@ -4,7 +4,6 @@ import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/linear_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -43,6 +42,7 @@ class _FAQPageTabletState extends State<FAQPageTablet> {
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverAppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
@@ -58,12 +58,15 @@ class _FAQPageTabletState extends State<FAQPageTablet> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -74,9 +77,7 @@ class _FAQPageTabletState extends State<FAQPageTablet> {
                       const Spacer(),
                       Text(
                         l10n.questions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Padding(
@@ -116,26 +117,16 @@ class _FAQPageTabletState extends State<FAQPageTablet> {
                     },
                     decoration: InputDecoration(
                       hintText: l10n.whatWouldYouLikeToKnow,
-                      suffixIconColor: PRFApp.theme().kPrimaryColorV2,
+                      suffixIconColor: Theme.of(context).colorScheme.primary,
                       suffixIcon: Container(
                         margin: const EdgeInsets.only(right: 8),
                         child: const Icon(Icons.search),
                       ),
-                      hintStyle: PRFText.theme().bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: PRFApp.theme().kPrimaryColorV2.withAlpha(200),
-                        fontSize: 12,
-                      ),
+                      hintStyle: Theme.of(context).textTheme.bodyMedium,
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: PRFApp.theme().kAccent2BackgroundColor,
-                        ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: PRFApp.theme().kAccent2BackgroundColor,
-                        ),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       fillColor: Colors.white,
@@ -202,11 +193,10 @@ class _FAQPageTabletState extends State<FAQPageTablet> {
                                 Center(
                                   child: Text(
                                     l10n.noFaqs,
-                                    style: PRFText.theme().headlineMedium!
-                                        .copyWith(
-                                          color: PRFApp.theme().kDullGreyColor,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                    style:
+                                        Theme.of(
+                                          context,
+                                        ).textTheme.headlineMedium,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -219,13 +209,10 @@ class _FAQPageTabletState extends State<FAQPageTablet> {
                                     children: [
                                       Text(
                                         l10n.pleaseWait,
-                                        style: PRFText.theme().displayLarge!
-                                            .copyWith(
-                                              color:
-                                                  PRFApp.theme()
-                                                      .kPrimaryColorV2,
-                                              fontSize: 14,
-                                            ),
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.displayLarge,
                                       ),
                                     ],
                                   ),
@@ -272,7 +259,9 @@ class FaqCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -280,19 +269,10 @@ class FaqCard extends StatelessWidget {
               children: [
                 Text(
                   faq.question,
-                  style: PRFText.theme().titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 SizedBox(height: 8.h),
-                Text(
-                  faq.answer,
-                  style: PRFText.theme().bodySmall!.copyWith(
-                    color: PRFApp.theme().kBlackColor,
-                    fontSize: 14,
-                  ),
-                ),
+                Text(faq.answer, style: Theme.of(context).textTheme.bodySmall),
                 SizedBox(height: 8.h),
               ],
             ),

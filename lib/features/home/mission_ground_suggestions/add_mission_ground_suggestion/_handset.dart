@@ -1,6 +1,5 @@
 import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,29 +37,26 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.missionGround,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.missionGround,
               controller: _nameController,
-              textCapitalization: TextCapitalization.words,
             ),
+
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
                 label: l10n.contactPerson,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.contactPerson,
               controller: _contactPersonController,
-              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -68,7 +64,6 @@ class _AddMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactNumber,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -78,20 +73,15 @@ class _AddMissionGroundSuggestionViewHandsetState
                   (phoneNumber) => setState(() {
                     _contactNumber = phoneNumber;
                   }),
+              textStyle: Theme.of(context).textTheme.bodySmall,
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: PRFApp.theme().kBlackColor.withAlpha(150),
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: PRFApp.theme().kBlackColor.withAlpha(150),
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                fillColor: PRFApp.theme().kBackgroundColor,
+
                 filled: false,
               ),
             ),
@@ -137,7 +127,7 @@ class _AddMissionGroundSuggestionViewHandsetState
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,

@@ -4,7 +4,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/circular_progress_indicator.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,37 +50,9 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
                 () => context.read<GetSubscribersCubit>().getSubscriptions(
                   missionUlid: widget.missionUlid,
                 ),
-            child: Column(
-              children: [
-                const Spacer(),
-                const Icon(Icons.directions_walk),
-                Center(
-                  child: Text(
-                    l10n.noSubscribers,
-                    style: PRFText.theme().headlineMedium!.copyWith(
-                      color: PRFApp.theme().kDullGreyColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.05,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        l10n.pleaseWait,
-                        style: PRFText.theme().displayLarge!.copyWith(
-                          color: PRFApp.theme().kPrimaryColorV2,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-              ],
+            child: PRFEmptyView(
+              label: l10n.noSubscribers,
+              description: l10n.pleaseWait,
             ),
           );
         }
@@ -122,7 +94,9 @@ class SubscriberActionCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -136,24 +110,22 @@ class SubscriberActionCard extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           text: subscription.member.fullName,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                           children: [
                             if (subscription.missionRole !=
                                 PRFMissionRole.member)
                               TextSpan(
                                 text: ' ${subscription.missionRole.name}',
-                                style: PRFText.theme().displaySmall?.copyWith(
-                                  color: PRFApp.theme().kPrimaryColorV2,
-                                ),
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                           ],
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      Text(subscription.status.name),
+                      Text(
+                        subscription.status.name,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                       SizedBox(height: 16.h),
                     ],
                   ),
@@ -178,7 +150,7 @@ class SubscriberActionCard extends StatelessWidget {
                     ],
                     child: IconButton(
                       icon: const Icon(Icons.call),
-                      color: PRFApp.theme().kPrimaryColorV2,
+                      color: Theme.of(context).colorScheme.primary,
                       onPressed: () async {
                         final uri = Uri(
                           scheme: 'tel',

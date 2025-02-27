@@ -4,6 +4,7 @@ import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/widgets/data_card.dart';
 import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
@@ -76,6 +77,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
             child: CustomScrollView(
               slivers: [
                 // Start Navigation Bar
+                const SliverToBoxAdapter(child: SizedBox(height: 36)),
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -87,7 +89,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: PRFApp.theme().kPrimaryColorV2,
+                              color: Theme.of(context).colorScheme.primary,
                               width: 1.w,
                             ),
                           ),
@@ -100,9 +102,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                         const Spacer(),
                         Text(
                           l10n.sessionDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 56.sp,
-                          ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.displayLarge?.copyWith(fontSize: 56.sp),
                         ),
                         const Spacer(),
                       ],
@@ -210,12 +212,12 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                           children: [
                             FormFieldLabel(
                               label: l10n.recordings,
-                              color: PRFApp.theme().kBlackColor,
+
                               isBold: true,
                             ),
                             SizedBox(
                               width: 500.w,
-                              child: PrimaryButton(
+                              child: PRFPrimaryButton(
                                 title: l10n.uploadRecording,
                                 onPressed:
                                     () => WoltModalSheet.show<void>(
@@ -266,7 +268,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                                 child: Center(
                                   child: Text(
                                     l10n.noRecordings,
-                                    style: PRFText.theme().bodySmall,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ),
                               )
@@ -300,7 +303,10 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
     expandedCrossAxisAlignment: CrossAxisAlignment.start,
     children: [
       ListTile(
-        title: Text(l10n.downloadTeaching, style: PRFText.theme().bodySmall),
+        title: Text(
+          l10n.downloadTeaching,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
         trailing: IconButton(
           icon: BlocConsumer<DownloadFileCubit, DownloadFileState>(
             listener: (context, state) {
@@ -327,20 +333,20 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
       if (transcript.content?.isEmpty ?? false)
         Badge(
           label: Text(l10n.inTesting),
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: Chip(
             backgroundColor: Colors.white,
             label: Text(
               l10n.transcriptProcessing,
-              style: PRFText.theme().bodySmall,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ),
       if (transcript.content?.isNotEmpty ?? true)
         Badge(
           label: Text(l10n.inTesting),
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: GestureDetector(
             onTap: () => _viewTranscript(transcript),
@@ -348,7 +354,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
               backgroundColor: Colors.white,
               label: Text(
                 l10n.viewTranscript,
-                style: PRFText.theme().bodySmall,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
           ),
@@ -370,7 +376,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     transcript.content!,
-                    style: PRFText.theme().bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
               ),
@@ -422,13 +428,31 @@ class MissionSessionDataView extends StatelessWidget {
             label: l10n.classGroup,
             value: missionSession.classGroup!.name ?? 'N/A',
           ),
-        DataCard(label: l10n.notes, value: missionSession.notes),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.w),
+              child: FormFieldLabel(label: l10n.notes, isBold: true),
+            ),
+            const SizedBox(height: 6),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.w),
+              child: PRFTextAreaInput(
+                hintText: '',
+                controller: TextEditingController(text: missionSession.notes),
+                enabled: false,
+              ),
+            ),
+            SizedBox(height: 15.h),
+          ],
+        ),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
-              child: PrimaryButton(
+              child: PRFPrimaryButton(
                 title: l10n.edit,
                 onPressed:
                     () => WoltModalSheet.show<void>(
@@ -454,8 +478,7 @@ class MissionSessionDataView extends StatelessWidget {
             ),
             SizedBox(width: 16.w),
             Expanded(
-              child: PrimaryButton(
-                isAlert: true,
+              child: PRFDestoryButton(
                 title: l10n.delete,
                 disabled: false,
                 onPressed:
@@ -525,42 +548,6 @@ class MissionSessionDataView extends StatelessWidget {
           ],
         ),
       ]),
-    );
-  }
-}
-
-class DataCard extends StatelessWidget {
-  const DataCard({required this.label, required this.value, super.key});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.w),
-          child: FormFieldLabel(
-            label: label,
-            color: PRFApp.theme().kBlackColor,
-            isBold: true,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.w),
-          child: InputFormField(
-            hintText: '',
-            controller: TextEditingController(text: value),
-            isUnderLine: true,
-            enabled: false,
-            maxLines: 15,
-          ),
-        ),
-        SizedBox(height: 15.h),
-      ],
     );
   }
 }

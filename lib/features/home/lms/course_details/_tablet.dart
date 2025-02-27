@@ -1,10 +1,11 @@
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
+import 'package:app/features/home/lms/widgets/course_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,6 +44,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverAppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
@@ -58,12 +60,15 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -80,10 +85,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                             (context, course) => SizedBox(
                               child: Text(
                                 course.name,
-                                style: PRFText.theme().displayLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 56.sp,
-                                ),
+                                style: Theme.of(context).textTheme.displayLarge,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -103,10 +105,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                                           .toInt() ??
                                       0,
                                 ),
-                                style: PRFText.theme().displaySmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 48.sp,
-                                ),
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                         ),
                       ),
@@ -127,9 +126,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
                           course.description,
-                          style: PRFText.theme().bodySmall?.copyWith(
-                            fontSize: 16,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                 ),
@@ -140,9 +137,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     l10n.modules,
-                    style: PRFText.theme().displayLarge?.copyWith(
-                      fontSize: 48.sp,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
               ),
@@ -175,7 +170,12 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                   final courseModules = snapshot.data;
 
                   if (courseModules != null && courseModules.isEmpty) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    return SliverToBoxAdapter(
+                      child: PRFEmptyView(
+                        label: l10n.noModules,
+                        description: l10n.pleaseWait,
+                      ),
+                    );
                   }
 
                   return SliverList.separated(
@@ -192,86 +192,6 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CourseDetailsActionCard extends StatelessWidget {
-  const CourseDetailsActionCard({required this.courseModule, super.key});
-
-  final PRFLocalCourseModule courseModule;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    final width = MediaQuery.sizeOf(context).width;
-    return GestureDetector(
-      onTap:
-          () => context.router.push(
-            ModuleDetailsRoute(courseModule: courseModule),
-          ),
-      child: Stack(
-        children: [
-          Container(
-            width: width,
-            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 80.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              color: PRFApp.theme().kPrimaryColorV2.withValues(alpha: .1),
-              borderRadius: BorderRadius.circular(48.r),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 8,
-                      child: Text(
-                        courseModule.module.name!,
-                        style: PRFText.theme().displayMedium?.copyWith(
-                          color: PRFApp.theme().kPrimaryColorV2,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 32.w,
-                          vertical: 4.h,
-                        ),
-                        child: Text(
-                          l10n.percentage(
-                            courseModule.memberModule?.percentComplete
-                                    ?.toInt() ??
-                                0,
-                          ),
-                          style: PRFText.theme().bodySmall,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  courseModule.module.description!,
-                  style: PRFText.theme().headlineSmall?.copyWith(
-                    color: PRFApp.theme().kBlackColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

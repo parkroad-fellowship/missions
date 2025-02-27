@@ -20,6 +20,7 @@ class PRFLocalMission {
     required this.updatedAt,
     this.missionPrepNotes,
     this.theme,
+    this.whatsAppLink,
     this.loggedInMemberMissionSubscription,
     this.school,
     this.missionType,
@@ -45,6 +46,7 @@ class PRFLocalMission {
 
   final String? missionPrepNotes;
   final String? theme;
+  final String? whatsAppLink;
   PRFLocalMissionMemberSubscription? loggedInMemberMissionSubscription;
   final PRFLocalSchool? school;
   final PRFLocalMissionType? missionType;

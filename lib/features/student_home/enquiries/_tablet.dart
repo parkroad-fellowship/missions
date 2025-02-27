@@ -40,6 +40,7 @@ class _LearnerEnquiriesPageTabletState
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverAppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
@@ -54,12 +55,15 @@ class _LearnerEnquiriesPageTabletState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -70,9 +74,7 @@ class _LearnerEnquiriesPageTabletState
                       const Spacer(),
                       Text(
                         l10n.myQuestions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 56.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Padding(
@@ -136,35 +138,9 @@ class _LearnerEnquiriesPageTabletState
                                 context
                                     .read<GetStudentEnquiriesCubit>()
                                     .getStudentEnquiries(),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.directions_walk),
-                            Center(
-                              child: Text(
-                                l10n.noQuestions,
-                                style: PRFText.theme().headlineMedium!.copyWith(
-                                  color: PRFApp.theme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 32.w),
-                              child: SizedBox(
-                                child: PrimaryButton(
-                                  onPressed:
-                                      () => context.router.pushNamed(
-                                        PRFSuperAppRouter
-                                            .createStudentEnquiryRoute,
-                                      ),
-                                  title: l10n.askAQuestion,
-                                  disabled: false,
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: PRFEmptyView(
+                          label: l10n.noQuestions,
+                          description: l10n.pleaseWait,
                         ),
                       ),
                     );
@@ -181,6 +157,7 @@ class _LearnerEnquiriesPageTabletState
                           backgroundColor: Colors.white,
                           child: Text(
                             Misc.getUserNameInitials(enquiry.content),
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ),
                         title: Text(
@@ -188,10 +165,7 @@ class _LearnerEnquiriesPageTabletState
                               ? enquiry.content.substring(0, 35).trim()
                               : enquiry.content +
                                   (enquiry.content.length > 35 ? ' ...' : ''),
-                          style: PRFText.theme().bodySmall!.copyWith(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
                           Misc.formatTimeFromDateTime(enquiry.createdAt),
@@ -214,7 +188,7 @@ class _LearnerEnquiriesPageTabletState
             () => context.router.pushNamed(
               PRFSuperAppRouter.createStudentEnquiryRoute,
             ),
-        backgroundColor: PRFApp.theme().kPrimaryColorV2,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );

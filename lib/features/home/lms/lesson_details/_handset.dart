@@ -62,12 +62,15 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -79,9 +82,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       SizedBox(
                         child: Text(
                           l10n.lessonDetails,
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -103,9 +104,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: Text(
                     lesson.name!.toUpperCase(),
-                    style: PRFText.theme().headlineMedium?.copyWith(
-                      fontSize: 52.sp,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
               ),
@@ -118,9 +117,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: HtmlWidget(
                         lesson.content!,
-                        textStyle: PRFText.theme().bodySmall?.copyWith(
-                          fontSize: 16,
-                        ),
+                        textStyle: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
 
@@ -213,7 +210,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                           orElse:
                               () => Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 40.w),
-                                child: PrimaryButton(
+                                child: PRFPrimaryButton(
                                   onPressed:
                                       () async => context
                                           .read<FinishLessonCubit>()

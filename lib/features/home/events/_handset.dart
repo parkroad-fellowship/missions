@@ -5,6 +5,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -39,20 +40,20 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
           centerTitle: true,
           title: Text(
             l10n.events,
-            style: PRFText.theme().displayLarge?.copyWith(fontSize: 80.sp),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
           leading: Container(
             margin: const EdgeInsets.only(left: 8),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: PRFApp.theme().kPrimaryColorV2,
-                width: 1.w,
-              ),
+              border: Border.all(width: 1.w),
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
               padding: const EdgeInsets.only(left: 16, right: 8),
               onPressed:
                   () => context.router.popUntilRouteWithPath(
@@ -62,15 +63,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
           ),
           backgroundColor: Colors.transparent,
           bottom: TabBar(
-            dividerColor: Colors.white,
             isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            labelStyle: PRFText.theme().displayMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: PRFApp.theme().kPrimaryColorV2,
-            ),
-            indicatorColor: Colors.white,
-            overlayColor: WidgetStateProperty.all(Colors.transparent),
             tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
           ),
         ),
@@ -88,42 +81,9 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                         () => RefreshIndicator(
                           onRefresh:
                               () => context.read<GetEventsCubit>().getEvents(),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              const Icon(Icons.directions_walk),
-                              Center(
-                                child: Text(
-                                  l10n.noEvents,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kDullGreyColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      l10n.pleaseWaitOS,
-                                      style: PRFText.theme().displayLarge!
-                                          .copyWith(
-                                            color:
-                                                PRFApp.theme().kPrimaryColorV2,
-                                            fontSize: 14,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
+                          child: PRFEmptyView(
+                            label: l10n.noEvents,
+                            description: l10n.pleaseWaitOS,
                           ),
                         ),
                     loaded:
@@ -169,42 +129,9 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
                                         GetMemberMissionSubscriptionsCubit
                                       >()
                                       .getSubscriptions(),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              const Icon(Icons.directions_walk),
-                              Center(
-                                child: Text(
-                                  l10n.noEvents,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kDullGreyColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height:
-                                    MediaQuery.sizeOf(context).height * 0.05,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      l10n.pleaseWaitOS,
-                                      style: PRFText.theme().displayLarge!
-                                          .copyWith(
-                                            color:
-                                                PRFApp.theme().kPrimaryColorV2,
-                                            fontSize: 14,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
+                          child: PRFEmptyView(
+                            label: l10n.noEvents,
+                            description: l10n.pleaseWaitForOS,
                           ),
                         ),
                     loaded: (events) {
@@ -263,7 +190,9 @@ class EventActionCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.secondary.withValues(alpha: .3),
                 borderRadius: BorderRadius.circular(48.r),
               ),
               child: Column(
@@ -271,10 +200,7 @@ class EventActionCard extends StatelessWidget {
                 children: [
                   Text(
                     event.name,
-                    style: PRFText.theme().displayLarge?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                   SizedBox(height: 16.h),
                   Text(
@@ -282,14 +208,12 @@ class EventActionCard extends StatelessWidget {
                       Misc.formatDate(event.startDate),
                       Misc.formatTime(event.startTime),
                     ),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   SizedBox(height: 16.h),
                   Text(
                     event.description.split('\n').first,
-                    style: PRFText.theme().bodyMedium?.copyWith(
-                      color: PRFApp.theme().kPrimaryColorV2,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

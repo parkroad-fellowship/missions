@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class PRFLinearProgressIndicator extends StatelessWidget {
@@ -11,7 +10,7 @@ class PRFLinearProgressIndicator extends StatelessWidget {
     return Center(
       child: LinearProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(
-          color ?? PRFApp.theme().kPrimaryColorV2,
+          color ?? Theme.of(context).colorScheme.primary,
         ),
       ),
     );

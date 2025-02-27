@@ -83,12 +83,15 @@ class _StudentEnquiryRepliesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -99,9 +102,7 @@ class _StudentEnquiryRepliesPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.studentQuestions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                     ],
@@ -156,14 +157,18 @@ class _StudentEnquiryRepliesPageHandsetState
                           decoration: BoxDecoration(
                             color:
                                 enquiryReply.isStudent
-                                    ? PRFApp.theme().kSecondaryColorV2
+                                    ? Theme.of(context).colorScheme.secondary
                                         .withValues(alpha: .2)
-                                    : PRFApp.theme().kGreyColor.withValues(
-                                      alpha: .2,
-                                    ),
+                                    : Theme.of(
+                                      context,
+                                    ).colorScheme.primary.withValues(alpha: .2),
+
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text(enquiryReply.content),
+                          child: Text(
+                            enquiryReply.content,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
                       );
                     },
@@ -195,18 +200,16 @@ class _StudentEnquiryRepliesPageHandsetState
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.3,
+                        height: MediaQuery.sizeOf(context).height * 0.4,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
                             children: [
-                              const SizedBox(height: 16),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: FormFieldLabel(
                                   label: l10n.reply,
                                   isRequired: true,
-                                  color: PRFApp.theme().kBlackColor,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -215,17 +218,12 @@ class _StudentEnquiryRepliesPageHandsetState
                                 child: FormFieldLabel(
                                   label: l10n.rules,
                                   isRequired: true,
-                                  color: PRFApp.theme().kErrorColor,
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              InputFormField(
+                              PRFTextAreaInput(
                                 hintText: l10n.reply,
                                 controller: _enquiryReplyController,
-                                isTextBox: true,
-                                maxLines: 5,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
                               ),
                               const SizedBox(height: 16),
                               BlocConsumer<
@@ -256,7 +254,7 @@ class _StudentEnquiryRepliesPageHandsetState
                                 builder: (context, state) {
                                   return state.maybeWhen(
                                     orElse:
-                                        () => PrimaryButton(
+                                        () => PRFPrimaryButton(
                                           title:
                                               _isLoading
                                                   ? l10n.replying
@@ -286,7 +284,7 @@ class _StudentEnquiryRepliesPageHandsetState
                   ];
                 },
               ),
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           child: const Icon(Icons.add, color: Colors.white),
         ),
       ),

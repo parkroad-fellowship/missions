@@ -2,7 +2,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/linear_progress_indicator.dart';
+import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,10 +47,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     contentPadding: EdgeInsets.zero,
                     title: Text(
                       mission.school!.name!.toUpperCase(),
-                      style: PRFText.theme().headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,14 +58,14 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                             Misc.formatMissionDate(mission.startDate),
                             Misc.formatTime(mission.startTime),
                           ),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           l10n.missionEnd(
                             Misc.formatMissionDate(mission.endDate),
                             Misc.formatTime(mission.endTime),
                           ),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -78,10 +75,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.theme,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               subtitle: SingleStreamWrapper<PRFLocalMission>(
                 stream: getIt<LocalDBService>().getMission(
@@ -93,20 +87,23 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: <Widget>[
-                        Text(mission.theme!, style: PRFText.theme().bodySmall),
+                        Text(
+                          mission.theme!,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
                         Text(
                           l10n.population(mission.school!.totalStudents!),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           l10n.missionariesRequested(mission.capacity),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           l10n.missionariesNeeded(
                             mission.missionSubscriptionsNeeded,
                           ),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -117,10 +114,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.missionPrepNotes,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               subtitle: SingleStreamWrapper<PRFLocalMission>(
                 stream: getIt<LocalDBService>().getMission(
@@ -133,24 +127,43 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       children: <Widget>[
                         Text(
                           mission.missionPrepNotes.toString(),
-                          style: PRFText.theme().bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
               ),
             ),
             SizedBox(height: 8.h),
+            SingleStreamWrapper(
+              stream: getIt<LocalDBService>().getMission(
+                missionUlid: missionUlid,
+              ),
+              widget:
+                  (context, mission) =>
+                      (mission.whatsAppLink != null)
+                          ? ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: const Icon(Icons.link),
+                            title: Text(
+                              l10n.joinWhatsApp,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            onTap:
+                                () => Misc.openUrl(
+                                  Uri.parse(mission.whatsAppLink!),
+                                ),
+                          )
+                          : const SizedBox.shrink(),
+            ),
+            SizedBox(height: 8.h),
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(
                 l10n.contactPersons,
-                style: PRFText.theme().headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
-
+            SizedBox(height: 8.h),
             SingleStreamWrapper(
               stream: getIt<LocalDBService>().getMission(
                 missionUlid: missionUlid,
@@ -168,7 +181,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                               Text(
                                 contact.contactType!.name!,
                                 overflow: TextOverflow.clip,
-                                style: PRFText.theme().bodySmall,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
@@ -203,10 +216,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: [
                   Text(
                     l10n.address,
-                    style: PRFText.theme().headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const Spacer(),
                   SingleStreamWrapper<PRFLocalMission>(
@@ -291,11 +301,11 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     children: <Widget>[
                       Text(
                         mission.school!.address!,
-                        style: PRFText.theme().bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         mission.school!.directions.toString(),
-                        style: PRFText.theme().bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   );
@@ -309,10 +319,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 children: [
                   Text(
                     l10n.depaturePlanning,
-                    style: PRFText.theme().headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const Spacer(),
                 ],
@@ -329,19 +336,17 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         l10n.estimatedDistance(
                           mission.school!.distance.toString(),
                         ),
-                        style: PRFText.theme().bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         l10n.estimatedTravelTime(
                           mission.school!.staticDuration.toString(),
                         ),
-                        style: PRFText.theme().bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         l10n.estimationDisclaimer,
-                        style: PRFText.theme().bodySmall?.copyWith(
-                          fontStyle: FontStyle.italic,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   );
@@ -361,10 +366,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                           contentPadding: EdgeInsets.zero,
                           title: Text(
                             l10n.weather,
-                            style: PRFText.theme().headlineMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),
                       if (mission.weatherForecasts?.isNotEmpty ?? false)
@@ -376,10 +378,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                 mission.weatherForecasts!.indexOf(forecast) + 1,
                                 forecast.weatherCodeDescription!,
                               ),
-                              style: PRFText.theme().headlineMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,7 +390,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                     forecast.temperature!.apparentMax!,
                                     forecast.temperature!.apparentAvg!,
                                   ),
-                                  style: PRFText.theme().bodySmall,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
                                   l10n.humidity(
@@ -399,7 +398,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                     forecast.humidity!.max!,
                                     forecast.humidity!.avg!,
                                   ),
-                                  style: PRFText.theme().bodySmall,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
                                   l10n.visibility(
@@ -407,7 +406,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                     forecast.visibility!.max!,
                                     forecast.visibility!.avg!,
                                   ),
-                                  style: PRFText.theme().bodySmall,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
                                   l10n.precipitationProbability(
@@ -415,20 +414,19 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                     forecast.precipitationProbability!.max!,
                                     forecast.precipitationProbability!.avg!,
                                   ),
-                                  style: PRFText.theme().bodySmall,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
                                   l10n.dressingRecommendations,
-                                  style: PRFText.theme().headlineMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.headlineMedium,
                                 ),
                                 Text(
                                   forecast.dressingRecommendations.toString(),
-                                  style: PRFText.theme().bodySmall,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
                             ),

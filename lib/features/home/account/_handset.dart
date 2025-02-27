@@ -35,13 +35,13 @@ class AccountPageHandset extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            width: 1.w,
-                          ),
+                          border: Border.all(width: 1.w),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -52,9 +52,7 @@ class AccountPageHandset extends StatelessWidget {
                       const Spacer(),
                       Text(
                         l10n.myAccount,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Animate(
@@ -75,12 +73,11 @@ class AccountPageHandset extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   l10n.signOut,
-                                  style: PRFText.theme().headlineMedium!
-                                      .copyWith(
-                                        color: PRFApp.theme().kRedColor,
-                                        fontSize: 54.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineMedium?.copyWith(
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -108,39 +105,32 @@ class AccountPageHandset extends StatelessWidget {
                       SizedBox(height: 64.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(
-                          label: l10n.name,
-                          color: PRFApp.theme().kBlackColor,
-                        ),
+                        child: FormFieldLabel(label: l10n.name),
                       ),
                       SizedBox(height: 10.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: InputFormField(
+                        child: PRFNameInput(
                           hintText: l10n.enterName,
                           controller: TextEditingController(text: profile.name),
-                          isUnderLine: true,
+
                           enabled: false,
                         ),
                       ),
                       SizedBox(height: 15.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(
-                          label: l10n.email,
-                          color: PRFApp.theme().kBlackColor,
-                        ),
+                        child: FormFieldLabel(label: l10n.email),
                       ),
                       SizedBox(height: 10.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: InputFormField(
+                        child: PRFNameInput(
                           hintText: l10n.enterEmail,
                           controller: TextEditingController(
                             text: profile.email,
                           ),
-                          isUnderLine: true,
-                          isEmail: true,
+
                           enabled: false,
                         ),
                       ),
@@ -173,11 +163,7 @@ class AccountPageHandset extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: Text(
                         l10n.memberships,
-                        style: PRFText.theme().headlineMedium!.copyWith(
-                          color: PRFApp.theme().kBlackColor,
-                          fontSize: 54.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
                   );
@@ -212,17 +198,13 @@ class AccountPageHandset extends StatelessWidget {
                                 .memberships![index]
                                 .spiritualYear!
                                 .name,
-                            style: PRFText.theme().bodySmall?.copyWith(
-                              fontSize: 48.sp,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                           subtitle: Text(
                             PrfMembershipType.fromIndex(
                               profile.member!.memberships![index].type,
                             ).name,
-                            style: PRFText.theme().bodySmall?.copyWith(
-                              fontSize: 40.sp,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                           trailing: Icon(
                             profile.member!.memberships![index].approved
@@ -246,19 +228,15 @@ class AccountPageHandset extends StatelessWidget {
                     child: Text.rich(
                       TextSpan(
                         text: l10n.byUsing,
-                        style: PRFText.theme().displaySmall!.copyWith(
-                          fontSize: 12,
-                          color: const Color(0xFF727272),
-                          height: 1.5,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.labelLarge,
                         children: [
                           TextSpan(
                             text: l10n.terms,
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.labelLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w700,
-                              color: PRFApp.theme().kPrimaryColorV2,
                             ),
                             recognizer:
                                 TapGestureRecognizer()
@@ -273,18 +251,15 @@ class AccountPageHandset extends StatelessWidget {
                           ),
                           TextSpan(
                             text: l10n.and,
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                              color: PRFApp.theme().kBlackColor,
-                            ),
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                           TextSpan(
                             text: l10n.privacyPolicy,
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.labelLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w700,
-                              color: PRFApp.theme().kPrimaryColorV2,
                             ),
                             recognizer:
                                 TapGestureRecognizer()
@@ -309,12 +284,7 @@ class AccountPageHandset extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Text(
                     l10n.version(Misc.getAppVersion()),
-                    style: PRFText.theme().displaySmall!.copyWith(
-                      fontSize: 12,
-                      color: const Color(0xFF727272),
-                      height: 1.5,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
               ),

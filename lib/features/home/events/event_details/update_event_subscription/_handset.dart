@@ -5,10 +5,8 @@ import 'package:app/features/home/events/cubit/update_event_subscription_cubit.d
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
@@ -52,18 +50,12 @@ class _UpdateEventSubscriptionViewHandsetState
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.tickets,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.tickets, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNumberInput(
               hintText: l10n.tickets,
               controller: _ticketController,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              keyboardType: TextInputType.number,
             ),
 
             const SizedBox(height: 32),
@@ -106,7 +98,7 @@ class _UpdateEventSubscriptionViewHandsetState
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,
@@ -135,8 +127,7 @@ class _UpdateEventSubscriptionViewHandsetState
 
             SizedBox(
               width: double.infinity,
-              child: PrimaryButton(
-                isAlert: true,
+              child: PRFDestoryButton(
                 title: l10n.cancelRegistration,
                 disabled: false,
                 onPressed:

@@ -1,8 +1,7 @@
 import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_faq_category.dart';
-import 'package:app/utils/_index.dart';
-import 'package:app/widgets/linear_progress_indicator.dart';
+import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,23 +61,23 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                                 },
                                 child: Chip(
                                   label: Text(l10n.all.toUpperCase()),
-                                  side: BorderSide(
-                                    color: PRFApp.theme().kAccent12GreyColor,
-                                  ),
+                                  side: const BorderSide(),
                                   backgroundColor:
                                       _selectedCategory == null
-                                          ? PRFApp.theme().kPrimaryColorV2
+                                          ? Theme.of(
+                                            context,
+                                          ).colorScheme.primary
                                           : Colors.white,
-                                  labelStyle: PRFText.theme().bodyMedium
-                                      ?.copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            _selectedCategory == null
-                                                ? Colors.white
-                                                : PRFApp.theme()
-                                                    .kPrimaryColorV2,
-                                      ),
+                                  labelStyle: Theme.of(
+                                    context,
+                                  ).textTheme.labelSmall?.copyWith(
+                                    color:
+                                        _selectedCategory == null
+                                            ? Colors.white
+                                            : Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                  ),
                                 ),
                               );
                             }
@@ -93,23 +92,21 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                               },
                               child: Chip(
                                 label: Text(faqCategory.name.toUpperCase()),
-                                side: BorderSide(
-                                  color: PRFApp.theme().kAccent12GreyColor,
-                                  width: 1.w,
-                                ),
+                                side: BorderSide(width: 1.w),
                                 backgroundColor:
                                     _selectedCategory == faqCategory
-                                        ? PRFApp.theme().kPrimaryColorV2
+                                        ? Theme.of(context).colorScheme.primary
                                         : Colors.white,
-                                labelStyle: PRFText.theme().bodyMedium
-                                    ?.copyWith(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color:
-                                          _selectedCategory == faqCategory
-                                              ? Colors.white
-                                              : PRFApp.theme().kPrimaryColorV2,
-                                    ),
+                                labelStyle: Theme.of(
+                                  context,
+                                ).textTheme.labelSmall?.copyWith(
+                                  color:
+                                      _selectedCategory == faqCategory
+                                          ? Colors.white
+                                          : Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                ),
                               ),
                             );
                           },

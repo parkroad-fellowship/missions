@@ -35,17 +35,12 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
       stream: getIt<LocalDBService>().getSouls(missionUlid: missionUlid),
       nullWidget: Center(
         child: Text(
-          l10n.noSubscribers,
-          style: PRFText.theme().headlineSmall!.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: PRFApp.theme().kPrimaryColorV2,
-          ),
+          l10n.noSouls,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
       widget:
           (context, souls) => ListView.separated(
-            shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: souls.length,
             separatorBuilder: (context, index) => SizedBox(height: 16.h),
@@ -72,7 +67,9 @@ class SoulCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Column(
@@ -80,13 +77,13 @@ class SoulCard extends StatelessWidget {
               children: [
                 Text(
                   soul.fullName,
-                  style: PRFText.theme().displayLarge?.copyWith(
-                    color: PRFApp.theme().kPrimaryColorV2,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 16.h),
-                Text(soul.classGroup.name.toString()),
+                Text(
+                  soul.classGroup.name.toString(),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
                 SizedBox(height: 16.h),
               ],
             ),

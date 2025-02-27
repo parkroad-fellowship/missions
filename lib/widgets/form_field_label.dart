@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class FormFieldLabel extends StatelessWidget {
@@ -23,23 +22,20 @@ class FormFieldLabel extends StatelessWidget {
         return RichText(
           text: TextSpan(
             text: label,
-            style: PRFText.theme().headlineSmall!.copyWith(
-              fontSize: 15,
-              color: color,
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               fontWeight: isBold ?? false ? FontWeight.bold : null,
             ),
             children: [
               if (isRequired ?? false)
                 TextSpan(
                   text: ' *',
-                  style: PRFText.theme().headlineSmall!.copyWith(fontSize: 14),
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               if (isOptional ?? false)
                 TextSpan(
                   text: ' (optional)',
-                  style: PRFText.theme().titleMedium!.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                     color: const Color(0xff939393),
-                    fontSize: 14,
                   ),
                 ),
             ],

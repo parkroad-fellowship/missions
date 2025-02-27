@@ -2,9 +2,8 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/secondary_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,7 +40,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                           () => ListTile(
                             title: Text(
                               l10n.tapToAdd,
-                              style: PRFText.theme().displayLarge,
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                             leading: const Icon(
                               Icons.speaker,
@@ -60,7 +59,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                           () => ListTile(
                             title: Text(
                               l10n.tapToAdd,
-                              style: PRFText.theme().displayLarge,
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                             leading: const Icon(
                               Icons.speaker,
@@ -89,13 +88,14 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                                   ),
                                   title: Text(
                                     files[index].name,
-                                    style: PRFText.theme().bodyLarge,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 );
                               },
                             ),
                             const SizedBox(height: 16),
-                            SecondaryButton(
+                            PRFSecondaryButton(
                               onPressed:
                                   () => context
                                       .read<SelectMediaCubit>()
@@ -121,7 +121,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                     orElse: () => true,
                   );
 
-                  return PrimaryButton(
+                  return PRFPrimaryButton(
                     title: l10n.upload,
                     disabled: isDisabled,
                     onPressed:
@@ -140,7 +140,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                 },
               ),
               const SizedBox(height: 16),
-              SecondaryButton(
+              PRFSecondaryButton(
                 title: l10n.cancel,
                 disabled: false,
                 onPressed: () async {

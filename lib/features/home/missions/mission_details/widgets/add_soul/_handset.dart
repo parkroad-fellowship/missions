@@ -2,7 +2,6 @@ import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,11 +34,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.classGroup,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.classGroup, isRequired: true),
             ),
             const SizedBox(height: 5),
             BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
@@ -68,30 +63,6 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedClassGroup = classGroup;
                                 }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
-                              hintStyle: PRFText.theme().headlineSmall!
-                                  .copyWith(
-                                    color: PRFApp.theme().kDullGreyColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
                           );
                         },
                       ),
@@ -101,17 +72,12 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.fullName,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.fullName, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.fullName,
               controller: _fullNameController,
-              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddSoulCubit, AddSoulState>(
@@ -146,7 +112,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,

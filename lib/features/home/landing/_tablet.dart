@@ -85,9 +85,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                                 .member!
                                 .lastName,
                           ),
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            fontSize: 48.sp,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                         ),
                         const Spacer(),
                         Animate(
@@ -105,16 +103,16 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: PRFApp.theme().kPrimaryColorV2,
+                                  color: Theme.of(context).colorScheme.primary,
                                   width: 1.w,
                                 ),
                               ),
-                              child: const CircleAvatar(
+                              child: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 child: Badge(
                                   child: Icon(
                                     Icons.notifications_none,
-                                    size: 24,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ),
@@ -131,11 +129,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                         EdgeInsets.only(bottom: 80.h),
                     child: Text(
                       l10n.iWantTo,
-                      style: PRFText.theme().displayLarge?.copyWith(
-                        color: PRFApp.theme().kPrimaryColorV2,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 60.sp,
-                      ),
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
                   SizedBox(height: 16.h),

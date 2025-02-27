@@ -4,7 +4,7 @@ import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/secondary_button.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
@@ -82,30 +82,21 @@ class _SignInHandsetState extends State<SignInHandset> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         l10n.signIn,
-                        style: PRFText.theme().displayLarge,
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ),
                     const SizedBox(height: 20),
-                    InputFormField(
+                    PRFEmailInput(
                       hintText: l10n.studentEmail,
-                      controller: _emailController,
+                      emailController: _emailController,
                       enabled: !_isLoading,
                     ),
                     const SizedBox(height: 20),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: _hidePasswordNotifier,
-                      builder: (context, hidePassword, child) {
-                        return InputFormField(
-                          hintText: l10n.enterPassword,
-                          controller: _passwordController,
-                          showSuffix: true,
-                          hidePassword: hidePassword,
-                          toggleHidePassword: () {
-                            _hidePasswordNotifier.value = !hidePassword;
-                          },
-                          enabled: !_isLoading,
-                        );
-                      },
+                    PRFPasswordInput(
+                      hintText: l10n.enterPassword,
+                      hidePasswordNotifier: _hidePasswordNotifier,
+                      passwordController: _passwordController,
+                      enabled: !_isLoading,
                     ),
                     const SizedBox(height: 16),
                     BlocConsumer<SigninCubit, SignInState>(
@@ -136,7 +127,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       builder: (context, state) {
                         return state.maybeWhen(
                           orElse:
-                              () => PrimaryButton(
+                              () => PRFPrimaryButton(
                                 onPressed: () {
                                   context.read<SigninCubit>().signIn(
                                     email: _emailController.text.trim(),
@@ -151,8 +142,8 @@ class _SignInHandsetState extends State<SignInHandset> {
                         );
                       },
                     ),
-                    const SizedBox(height: 8),
-                    SecondaryButton(
+                    const SizedBox(height: 16),
+                    PRFSecondaryButton(
                       onPressed:
                           () => context.router.pushNamed(
                             PRFSuperAppRouter.registerStudentRoute,
@@ -160,8 +151,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                       title: l10n.registerStudent,
                       disabled: false,
                     ),
+                    const SizedBox(height: 24),
                     const Divider(),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 24),
                     BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
                       builder: (context, signInWithGoogleState) {
                         return BlocBuilder<SocialLoginCubit, SocialLoginState>(
@@ -175,21 +167,17 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   isLoading,
                                   title,
                                 ) = signInWithGoogleState.maybeWhen(
-                                  loading:
-                                      () => (true, 'Continue with Google...'),
+                                  loading: () => (true, 'Please wait ...'),
                                   orElse:
                                       () => socialSignUpState.maybeWhen(
                                         loading:
-                                            () => (
-                                              true,
-                                              'Continue with Google...',
-                                            ),
+                                            () => (true, 'Please wait ...'),
                                         orElse:
                                             () => socialSignInState.maybeWhen(
                                               loading:
                                                   () => (
                                                     true,
-                                                    'Continue with Google...',
+                                                    'Please wait ...',
                                                   ),
                                               orElse:
                                                   () => (
@@ -201,13 +189,11 @@ class _SignInHandsetState extends State<SignInHandset> {
                                 );
 
                                 return GoogleAuthButton(
-                                  onPressed: () {
-                                    if (!isLoading) {
-                                      context
-                                          .read<GoogleSignInCubit>()
-                                          .signInwithGoogle();
-                                    }
-                                  },
+                                  onPressed:
+                                      () =>
+                                          context
+                                              .read<GoogleSignInCubit>()
+                                              .signInwithGoogle(),
                                   title: title,
                                   disabled: isLoading,
                                   isLoading: isLoading,
@@ -223,12 +209,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       alignment: Alignment.bottomCenter,
                       child: Text(
                         l10n.version(Misc.getAppVersion()),
-                        style: PRFText.theme().displaySmall!.copyWith(
-                          fontSize: 12,
-                          color: const Color(0xFF727272),
-                          height: 1.5,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ),
                     const Spacer(),

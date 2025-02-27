@@ -8,7 +8,6 @@ import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -60,11 +59,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.facilitator,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.facilitator, isRequired: true),
             ),
             const SizedBox(height: 5),
             SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
@@ -93,29 +88,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             (member) => setState(() {
                               selectedFacilitator = member;
                             }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                            color: PRFApp.theme().kDullGreyColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
                       );
                     },
                   ),
@@ -124,10 +96,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.speaker,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.speaker),
             ),
             const SizedBox(height: 5),
             SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
@@ -156,29 +125,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             (member) => setState(() {
                               selectedSpeaker = member;
                             }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(
-                              color: PRFApp.theme().kSecondaryGreyColor,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          fillColor: PRFApp.theme().kBackgroundColor,
-                          hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                            color: PRFApp.theme().kDullGreyColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
                       );
                     },
                   ),
@@ -187,10 +133,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.classGroup,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.classGroup),
             ),
             const SizedBox(height: 5),
             BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
@@ -219,30 +162,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedClassGroup = classGroup;
                                 }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
-                              hintStyle: PRFText.theme().headlineSmall!
-                                  .copyWith(
-                                    color: PRFApp.theme().kDullGreyColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
                           );
                         },
                       ),
@@ -252,58 +171,40 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.startTime,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.startTime, isRequired: true),
             ),
             const SizedBox(height: 6),
             GestureDetector(
               onTap: _selectStartDate,
-              child: InputFormField(
+              child: PRFTextInput(
                 hintText: l10n.startTime,
                 controller: _startDateController,
-                keyboardType: TextInputType.text,
                 enabled: false,
               ),
             ),
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.endTime,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.endTime, isRequired: true),
             ),
             const SizedBox(height: 6),
             GestureDetector(
               onTap: _selectEndDate,
-              child: InputFormField(
+              child: PRFTextInput(
                 hintText: l10n.endTime,
                 controller: _endDateController,
-                keyboardType: TextInputType.text,
                 enabled: false,
               ),
             ),
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.notes,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.notes, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.notes,
               controller: _notesController,
-              keyboardType: TextInputType.text,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddMissionSessionCubit, AddMissionSessionState>(
@@ -338,7 +239,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,
@@ -404,16 +305,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
       minTime: DateTime.now(),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
-        backgroundColor: PRFApp.theme().kBackgroundColor,
-        itemStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kBlackColor,
-        ),
-        doneStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
-        cancelStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
+        itemStyle: Theme.of(context).textTheme.headlineSmall!,
+        doneStyle: Theme.of(context).textTheme.headlineSmall!,
+        cancelStyle: Theme.of(context).textTheme.headlineSmall!,
       ),
       onConfirm: (date) {
         setState(() {
@@ -433,16 +327,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
       minTime: DateTime.now(),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
-        backgroundColor: PRFApp.theme().kBackgroundColor,
-        itemStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kBlackColor,
-        ),
-        doneStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
-        cancelStyle: PRFText.theme().headlineSmall!.copyWith(
-          color: PRFApp.theme().kPrimaryColorV2,
-        ),
+        itemStyle: Theme.of(context).textTheme.headlineSmall!,
+        doneStyle: Theme.of(context).textTheme.headlineSmall!,
+        cancelStyle: Theme.of(context).textTheme.headlineSmall!,
       ),
       onConfirm: (date) {
         setState(() {

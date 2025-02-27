@@ -4,7 +4,8 @@ import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/secondary_button.dart';
+import 'package:app/widgets/buttons/secondary.dart';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,31 +81,24 @@ abstract class NotificationService {
                               ListTile(
                                 leading: Icon(
                                   Icons.warning_amber_rounded,
-                                  color: PRFApp.theme().kPrimaryColorV2,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                                 title: Text(
                                   l10n.prayerAlert,
-                                  style: PRFText.theme().displayMedium
-                                      ?.copyWith(
-                                        color: PRFApp.theme().kPrimaryColorV2,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
                                 ),
                               ),
                               ListTile(
                                 title: Text(
                                   payload['prayer_prompt_description']!,
-                                  style: PRFText.theme().bodySmall?.copyWith(
-                                    color: PRFApp.theme().kPrimaryColorV2,
-                                    fontSize: 18,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
                               OverflowBar(
                                 alignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  SecondaryButton(
+                                  PRFSecondaryButton(
                                     title: l10n.amen,
                                     disabled: false,
                                     onPressed: () {

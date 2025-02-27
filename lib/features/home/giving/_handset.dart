@@ -3,7 +3,8 @@ import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_payment.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/primary_button.dart';
+import 'package:app/widgets/_index.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -53,12 +54,15 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -69,9 +73,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       const Spacer(),
                       Text(
                         l10n.give,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       IconButton(
@@ -118,7 +120,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                         .read<GetPaymentsCubit>()
                                         .getPayments(),
                             child: Center(
-                              child: PrimaryButton(
+                              child: PRFPrimaryButton(
                                 title: l10n.considerGiving,
                                 disabled: false,
                                 onPressed: _addPayment,
@@ -143,7 +145,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: PRFApp.theme().kPrimaryColorV2,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: _addPayment,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -187,7 +189,9 @@ class PaymentCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
-              color: PRFApp.theme().kSecondaryColorV2.withValues(alpha: .3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: .3),
               borderRadius: BorderRadius.circular(48.r),
             ),
             child: Row(
@@ -204,16 +208,11 @@ class PaymentCard extends StatelessWidget {
                             locale: 'en_KE',
                             symbol: 'KES ',
                           ).format(payment.amount),
-                          style: PRFText.theme().displayLarge?.copyWith(
-                            color: PRFApp.theme().kPrimaryColorV2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge,
                           children: [
                             TextSpan(
                               text: ', ${payment.paymentStatus.name}',
-                              style: PRFText.theme().displaySmall?.copyWith(
-                                color: PRFApp.theme().kPrimaryColorV2,
-                              ),
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ],
                         ),
@@ -241,7 +240,7 @@ class PaymentCard extends StatelessWidget {
                     visible: false,
                     child: IconButton(
                       icon: const Icon(Icons.refresh_outlined),
-                      color: PRFApp.theme().kPrimaryColorV2,
+                      color: Theme.of(context).colorScheme.primary,
                       onPressed: () async {
                         if (payment.redirectUrl != null) {
                           final uri = Uri.parse(payment.redirectUrl!);

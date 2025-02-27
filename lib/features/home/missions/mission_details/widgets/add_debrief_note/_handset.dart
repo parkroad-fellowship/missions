@@ -1,6 +1,5 @@
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,20 +31,10 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.note,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.note, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
-              hintText: l10n.note,
-              controller: _noteController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
-            ),
+            PRFTextAreaInput(hintText: l10n.note, controller: _noteController),
             const SizedBox(height: 16),
             BlocConsumer<AddDebriefNoteCubit, AddDebriefNoteState>(
               listener: (context, state) {
@@ -79,7 +68,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,

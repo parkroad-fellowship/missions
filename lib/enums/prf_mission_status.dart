@@ -1,5 +1,3 @@
-import 'package:app/utils/_index.dart';
-import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFMissionStatus {
@@ -26,20 +24,6 @@ enum PRFMissionStatus {
         return 'Cancelled';
       case PRFMissionStatus.serviced:
         return 'Serviced';
-    }
-  }
-
-  static Color switchColor(PRFMissionStatus status) {
-    switch (status) {
-      case PRFMissionStatus.approved:
-        return PRFApp.theme().kPrimaryColorV2;
-      case PRFMissionStatus.serviced:
-        return PRFApp.theme().kGreenColor;
-      case PRFMissionStatus.pending:
-        return PRFApp.theme().kYellowColor;
-      case PRFMissionStatus.rejected:
-      case PRFMissionStatus.cancelled:
-        return PRFApp.theme().kRedColor;
     }
   }
 

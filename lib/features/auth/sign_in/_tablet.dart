@@ -4,7 +4,7 @@ import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/secondary_button.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
@@ -88,27 +88,23 @@ class _SignInTabletState extends State<SignInTablet> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             l10n.signIn,
-                            style: PRFText.theme().displayLarge,
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        InputFormField(
+                        PRFEmailInput(
                           hintText: l10n.studentEmail,
-                          controller: _emailController,
+                          emailController: _emailController,
                           enabled: !_isLoading,
                         ),
                         const SizedBox(height: 20),
                         ValueListenableBuilder<bool>(
                           valueListenable: _hidePasswordNotifier,
                           builder: (context, hidePassword, child) {
-                            return InputFormField(
+                            return PRFPasswordInput(
                               hintText: l10n.enterPassword,
-                              controller: _passwordController,
-                              showSuffix: true,
-                              hidePassword: hidePassword,
-                              toggleHidePassword: () {
-                                _hidePasswordNotifier.value = !hidePassword;
-                              },
+                              hidePasswordNotifier: _hidePasswordNotifier,
+                              passwordController: _passwordController,
                               enabled: !_isLoading,
                             );
                           },
@@ -142,7 +138,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           builder: (context, state) {
                             return state.maybeWhen(
                               orElse:
-                                  () => PrimaryButton(
+                                  () => PRFPrimaryButton(
                                     onPressed: () {
                                       context.read<SigninCubit>().signIn(
                                         email: _emailController.text.trim(),
@@ -160,8 +156,8 @@ class _SignInTabletState extends State<SignInTablet> {
                             );
                           },
                         ),
-                        const SizedBox(height: 8),
-                        SecondaryButton(
+                        const SizedBox(height: 32),
+                        PRFSecondaryButton(
                           onPressed:
                               () => context.router.pushNamed(
                                 PRFSuperAppRouter.registerStudentRoute,
@@ -169,6 +165,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           title: l10n.registerStudent,
                           disabled: false,
                         ),
+                        const SizedBox(height: 40),
                         const Divider(),
                         const SizedBox(height: 40),
                         BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
@@ -232,12 +229,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           alignment: Alignment.bottomCenter,
                           child: Text(
                             l10n.version(Misc.getAppVersion()),
-                            style: PRFText.theme().displaySmall!.copyWith(
-                              fontSize: 12,
-                              color: const Color(0xFF727272),
-                              height: 1.5,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
                         const Spacer(),

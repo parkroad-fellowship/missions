@@ -21,7 +21,7 @@ import 'package:app/features/home/missions/mission_details/widgets/souls/souls.d
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/circular_progress_indicator.dart';
+import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,6 +103,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
               physics: const ScrollPhysics(),
               slivers: [
                 // Start Navigation Bar
+                const SliverToBoxAdapter(child: SizedBox(height: 36)),
                 PinnedHeaderSliver(
                   child: ColoredBox(
                     color: Colors.white,
@@ -116,7 +117,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: PRFApp.theme().kPrimaryColorV2,
+                                color: Theme.of(context).colorScheme.primary,
                                 width: 1.w,
                               ),
                             ),
@@ -132,9 +133,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                           const Spacer(),
                           Text(
                             l10n.missionDetails,
-                            style: PRFText.theme().displayLarge?.copyWith(
-                              fontSize: 56.sp,
-                            ),
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                           const Spacer(),
                         ],
@@ -144,6 +143,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                 ),
 
                 // End Navigation Bar
+                const SliverToBoxAdapter(child: SizedBox(height: 32)),
                 PinnedHeaderSliver(
                   child: ColoredBox(
                     color: Colors.white,
@@ -153,15 +153,8 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                           (value) => setState(() {
                             _currentTab = value;
                           }),
-                      dividerColor: Colors.white,
                       isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      labelStyle: PRFText.theme().displayMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: PRFApp.theme().kPrimaryColorV2,
-                      ),
-                      indicatorColor: Colors.white,
-                      overlayColor: WidgetStateProperty.all(Colors.transparent),
+
                       tabs: [
                         Tab(text: l10n.missionGround),
                         Tab(text: l10n.going),
@@ -175,6 +168,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                     ),
                   ),
                 ),
+                const SliverToBoxAdapter(child: SizedBox(height: 32)),
                 SliverFillRemaining(
                   fillOverscroll: true,
                   child: Padding(
@@ -230,10 +224,10 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                           );
                         }
                       }),
-              backgroundColor: PRFApp.theme().kPrimaryColorV2,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               label: Text(
                 l10n.sendMe,
-                style: PRFText.theme().bodySmall?.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               icon: BlocBuilder<SubscribeCubit, SubscribeState>(
                 builder:
@@ -393,7 +387,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
               );
             }
           },
-          backgroundColor: PRFApp.theme().kPrimaryColorV2,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           child: const Icon(Icons.add, color: Colors.white),
         ),
         _ => null,

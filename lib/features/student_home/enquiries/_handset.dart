@@ -53,12 +53,15 @@ class _LearnerEnquiriesPageHandsetState
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: PRFApp.theme().kPrimaryColorV2,
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.w,
                           ),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back_ios),
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
                               () => context.router.popUntilRouteWithPath(
@@ -69,9 +72,7 @@ class _LearnerEnquiriesPageHandsetState
                       const Spacer(),
                       Text(
                         l10n.myQuestions,
-                        style: PRFText.theme().displayLarge?.copyWith(
-                          fontSize: 80.sp,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       const Spacer(),
                       Padding(
@@ -142,17 +143,15 @@ class _LearnerEnquiriesPageHandsetState
                             Center(
                               child: Text(
                                 l10n.noQuestions,
-                                style: PRFText.theme().headlineMedium!.copyWith(
-                                  color: PRFApp.theme().kDullGreyColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
                             const SizedBox(height: 10),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 32.w),
                               child: SizedBox(
-                                child: PrimaryButton(
+                                child: PRFPrimaryButton(
                                   onPressed:
                                       () => context.router.pushNamed(
                                         PRFSuperAppRouter
@@ -180,6 +179,7 @@ class _LearnerEnquiriesPageHandsetState
                           backgroundColor: Colors.white,
                           child: Text(
                             Misc.getUserNameInitials(enquiry.content),
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ),
                         title: Text(
@@ -187,10 +187,7 @@ class _LearnerEnquiriesPageHandsetState
                               ? enquiry.content.substring(0, 35).trim()
                               : enquiry.content +
                                   (enquiry.content.length > 35 ? ' ...' : ''),
-                          style: PRFText.theme().bodySmall!.copyWith(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
                           Misc.formatTimeFromDateTime(enquiry.createdAt),
@@ -213,7 +210,7 @@ class _LearnerEnquiriesPageHandsetState
             () => context.router.pushNamed(
               PRFSuperAppRouter.createStudentEnquiryRoute,
             ),
-        backgroundColor: PRFApp.theme().kPrimaryColorV2,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );

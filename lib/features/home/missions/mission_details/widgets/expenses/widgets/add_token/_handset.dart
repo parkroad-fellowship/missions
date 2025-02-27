@@ -1,9 +1,7 @@
 import 'package:app/features/home/missions/cubit/add_token_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/color_pallete.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddTokenViewHandset extends StatefulWidget {
@@ -31,18 +29,12 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
           const SizedBox(height: 16),
           Align(
             alignment: Alignment.centerLeft,
-            child: FormFieldLabel(
-              label: l10n.tokenAmount,
-              isRequired: true,
-              color: PRFApp.theme().kBlackColor,
-            ),
+            child: FormFieldLabel(label: l10n.tokenAmount, isRequired: true),
           ),
           const SizedBox(height: 5),
-          InputFormField(
+          PRFNumberInput(
             hintText: l10n.tokenAmount,
             controller: _amountController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
           const SizedBox(height: 16),
           BlocConsumer<AddTokenCubit, AddTokenState>(
@@ -67,7 +59,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
             builder: (context, state) {
               return state.maybeWhen(
                 orElse:
-                    () => PrimaryButton(
+                    () => PRFPrimaryButton(
                       title: _isLoading ? l10n.recording : l10n.record,
                       disabled: _isLoading,
                       isLoading: _isLoading ? true : null,

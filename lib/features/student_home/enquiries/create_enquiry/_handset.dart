@@ -2,6 +2,7 @@ import 'package:app/features/student_home/enquiries/cubit/create_enquiry_cubit.d
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,15 +25,28 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          l10n.ask,
-          style: PRFText.theme().displayLarge?.copyWith(
-            fontWeight: FontWeight.w600,
+        centerTitle: true,
+        title: Text(l10n.ask, style: Theme.of(context).textTheme.displayLarge),
+        backgroundColor: Colors.transparent,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 1.w),
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            padding: const EdgeInsets.only(left: 16, right: 8),
+            onPressed:
+                () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.learnerEnquiriesRoute,
+                ),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -41,28 +55,17 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.enquiry,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.enquiry, isRequired: true),
             ),
             const SizedBox(height: 6),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.rules,
-                isRequired: true,
-                color: PRFApp.theme().kErrorColor,
-              ),
+              child: FormFieldLabel(label: l10n.rules, isRequired: true),
             ),
             const SizedBox(height: 8),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.enquiry,
               controller: _enquiryController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 16),
             BlocConsumer<CreateEnquiryCubit, CreateEnquiryState>(
@@ -88,7 +91,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.ask,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,

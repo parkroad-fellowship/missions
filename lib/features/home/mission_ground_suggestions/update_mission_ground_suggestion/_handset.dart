@@ -2,7 +2,6 @@ import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,14 +63,12 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.missionGround,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.missionGround,
               controller: _nameController,
-              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -79,14 +76,12 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactPerson,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.contactPerson,
               controller: _contactPersonController,
-              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -94,7 +89,6 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(
                 label: l10n.contactNumber,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -105,31 +99,21 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   (phoneNumber) => setState(() {
                     contactNumber = phoneNumber;
                   }),
+              textStyle: Theme.of(context).textTheme.bodySmall,
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: PRFApp.theme().kBlackColor.withAlpha(150),
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: PRFApp.theme().kBlackColor.withAlpha(150),
-                  ),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                fillColor: PRFApp.theme().kBackgroundColor,
                 filled: false,
               ),
             ),
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.status,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.status, isRequired: true),
             ),
             const SizedBox(height: 6),
             LayoutBuilder(
@@ -150,48 +134,18 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                       (status) => setState(() {
                         _selectedStatus = status;
                       }),
-                  inputDecorationTheme: InputDecorationTheme(
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide(
-                        color: PRFApp.theme().kSecondaryGreyColor,
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide(
-                        color: PRFApp.theme().kSecondaryGreyColor,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
-                    ),
-                    fillColor: PRFApp.theme().kBackgroundColor,
-                    hintStyle: PRFText.theme().headlineSmall!.copyWith(
-                      color: PRFApp.theme().kDullGreyColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                 );
               },
             ),
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.comments,
-                isRequired: false,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.comments, isRequired: false),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.comments,
               controller: _notesController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 32),
             BlocConsumer<
@@ -235,7 +189,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,

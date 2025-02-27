@@ -5,7 +5,6 @@ import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
@@ -43,7 +42,6 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               child: FormFieldLabel(
                 label: l10n.reasonForGiving,
                 isRequired: true,
-                color: PRFApp.theme().kBlackColor,
               ),
             ),
             const SizedBox(height: 6),
@@ -73,30 +71,6 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                                 (paymentType) => setState(() {
                                   selectedPaymentType = paymentType;
                                 }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color: PRFApp.theme().kSecondaryGreyColor,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              fillColor: PRFApp.theme().kBackgroundColor,
-                              hintStyle: PRFText.theme().headlineSmall!
-                                  .copyWith(
-                                    color: PRFApp.theme().kDullGreyColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
                           );
                         },
                       ),
@@ -106,18 +80,12 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.amount,
-                isRequired: true,
-                color: PRFApp.theme().kBlackColor,
-              ),
+              child: FormFieldLabel(label: l10n.amount, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNumberInput(
               hintText: l10n.enterAmount,
               controller: _amountController,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 32),
             BlocConsumer<AddPaymentCubit, AddPaymentState>(
@@ -154,7 +122,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,
