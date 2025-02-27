@@ -207,7 +207,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                           orElse:
                               () => Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 40.w),
-                                child: PrimaryButton(
+                                child: PRFPrimaryButton(
                                   onPressed:
                                       () async => context
                                           .read<FinishLessonCubit>()

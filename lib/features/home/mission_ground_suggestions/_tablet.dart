@@ -4,7 +4,8 @@ import 'package:app/features/home/mission_ground_suggestions/update_mission_grou
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/primary_button.dart';
+import 'package:app/widgets/_index.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -127,7 +128,7 @@ class _MissionGroundSuggestionsPageTabletState
                                         >()
                                         .getMissionGroundSuggestions(),
                             child: Center(
-                              child: PrimaryButton(
+                              child: PRFPrimaryButton(
                                 title: l10n.suggestAMission,
                                 disabled: false,
                                 onPressed: _addMissionGroundSuggestion,

@@ -253,7 +253,7 @@ class _StudentEnquiryRepliesPageHandsetState
                                 builder: (context, state) {
                                   return state.maybeWhen(
                                     orElse:
-                                        () => PrimaryButton(
+                                        () => PRFPrimaryButton(
                                           title:
                                               _isLoading
                                                   ? l10n.replying

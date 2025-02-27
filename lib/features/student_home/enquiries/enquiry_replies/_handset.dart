@@ -251,7 +251,7 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                                 builder: (context, state) {
                                   return state.maybeWhen(
                                     orElse:
-                                        () => PrimaryButton(
+                                        () => PRFPrimaryButton(
                                           title:
                                               _isLoading
                                                   ? l10n.replying

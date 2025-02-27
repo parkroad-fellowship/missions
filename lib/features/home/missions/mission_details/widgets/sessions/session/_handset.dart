@@ -215,7 +215,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                               ),
                               SizedBox(
                                 width: 500.w,
-                                child: PrimaryButton(
+                                child: PRFPrimaryButton(
                                   title: l10n.uploadRecording,
                                   onPressed:
                                       () => WoltModalSheet.show<void>(
@@ -433,7 +433,7 @@ class MissionSessionDataView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
-              child: PrimaryButton(
+              child: PRFPrimaryButton(
                 title: l10n.edit,
                 onPressed:
                     () => WoltModalSheet.show<void>(
@@ -459,8 +459,8 @@ class MissionSessionDataView extends StatelessWidget {
             ),
             SizedBox(width: 16.w),
             Expanded(
-              child: PrimaryButton(
-                isAlert: true,
+              child: PRFDestoryButton(
+     
                 title: l10n.delete,
                 disabled: false,
                 onPressed:

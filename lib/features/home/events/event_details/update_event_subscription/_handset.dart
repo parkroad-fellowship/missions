@@ -101,7 +101,7 @@ class _UpdateEventSubscriptionViewHandsetState
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse:
-                      () => PrimaryButton(
+                      () => PRFPrimaryButton(
                         title: _isLoading ? l10n.recording : l10n.record,
                         disabled: _isLoading,
                         isLoading: _isLoading ? true : null,
@@ -130,8 +130,8 @@ class _UpdateEventSubscriptionViewHandsetState
 
             SizedBox(
               width: double.infinity,
-              child: PrimaryButton(
-                isAlert: true,
+              child: PRFDestoryButton(
+     
                 title: l10n.cancelRegistration,
                 disabled: false,
                 onPressed:

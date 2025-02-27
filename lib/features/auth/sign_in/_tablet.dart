@@ -4,7 +4,7 @@ import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/secondary_button.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
@@ -142,7 +142,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           builder: (context, state) {
                             return state.maybeWhen(
                               orElse:
-                                  () => PrimaryButton(
+                                  () => PRFPrimaryButton(
                                     onPressed: () {
                                       context.read<SigninCubit>().signIn(
                                         email: _emailController.text.trim(),
@@ -161,7 +161,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           },
                         ),
                         const SizedBox(height: 8),
-                        SecondaryButton(
+                        PRFSecondaryButton(
                           onPressed:
                               () => context.router.pushNamed(
                                 PRFSuperAppRouter.registerStudentRoute,
