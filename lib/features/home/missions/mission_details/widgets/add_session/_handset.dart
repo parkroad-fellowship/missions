@@ -89,19 +89,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             (member) => setState(() {
                               selectedFacilitator = member;
                             }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          hintStyle: Theme.of(context).textTheme.headlineSmall,
-                        ),
+                        
                       );
                     },
                   ),
@@ -139,19 +127,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             (member) => setState(() {
                               selectedSpeaker = member;
                             }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          hintStyle: Theme.of(context).textTheme.headlineSmall,
-                        ),
+                        
                       );
                     },
                   ),
@@ -189,28 +165,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedClassGroup = classGroup;
                                 }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              hintStyle:
-                                  Theme.of(context).textTheme.headlineSmall,
-                            ),
+                           
                           );
                         },
                       ),

@@ -72,20 +72,6 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                                 (paymentType) => setState(() {
                                   selectedPaymentType = paymentType;
                                 }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              hintStyle:
-                                  Theme.of(context).textTheme.headlineSmall,
-                            ),
                           );
                         },
                       ),

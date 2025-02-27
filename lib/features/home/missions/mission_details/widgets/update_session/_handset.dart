@@ -112,19 +112,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             (member) => setState(() {
                               selectedFacilitatorUlid = member;
                             }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          hintStyle: Theme.of(context).textTheme.headlineSmall,
-                        ),
                       );
                     },
                   ),
@@ -161,19 +148,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             (member) => setState(() {
                               selectedSpeakerUlid = member;
                             }),
-                        inputDecorationTheme: InputDecorationTheme(
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          hintStyle: Theme.of(context).textTheme.headlineSmall,
-                        ),
                       );
                     },
                   ),
@@ -209,20 +183,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedClassGroupUlid = classGroup;
                                 }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              hintStyle:
-                                  Theme.of(context).textTheme.headlineSmall,
-                            ),
                           );
                         },
                       ),
@@ -266,7 +226,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
             PRFTextAreaInput(
               hintText: l10n.notes,
               controller: _notesController,
-              
             ),
             const SizedBox(height: 16),
             BlocConsumer<UpdateMissionSessionCubit, UpdateMissionSessionState>(

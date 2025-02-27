@@ -71,20 +71,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedExpenseCategory = classGroup;
                                 }),
-                            inputDecorationTheme: InputDecorationTheme(
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              hintStyle:
-                                  Theme.of(context).textTheme.headlineSmall,
-                            ),
+                            
                           );
                         },
                       ),
@@ -153,19 +140,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       (chargeType) => setState(() {
                         selectedChargeType = chargeType;
                       }),
-                  inputDecorationTheme: InputDecorationTheme(
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
-                    ),
-                    hintStyle: Theme.of(context).textTheme.headlineSmall,
-                  ),
+                  
                 );
               },
             ),

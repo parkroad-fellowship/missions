@@ -74,5 +74,28 @@ class PRFTheme {
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: Color(primaryColor),
     ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.grey[50],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: Color(primaryColor)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: Color(primaryColor)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 18,
+        ),
+      ),
+    ),
   );
 }
