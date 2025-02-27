@@ -215,13 +215,10 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              InputFormField(
+                              PRFTextAreaInput(
                                 hintText: l10n.reply,
                                 controller: _enquiryReplyController,
-                                isTextBox: true,
-                                maxLines: 5,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
+                                
                               ),
                               const SizedBox(height: 16),
                               BlocConsumer<

@@ -155,12 +155,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               child: FormFieldLabel(label: l10n.comments, isRequired: false),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.comments,
               controller: _notesController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 32),
             BlocConsumer<

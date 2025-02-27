@@ -9,6 +9,7 @@ export 'reply_status.dart';
 export 'input/email_address.dart';
 export 'input/password.dart';
 export 'input/name.dart';
+export 'input/text_area.dart';
 
 export 'buttons/primary.dart';
 export 'buttons/secondary.dart';

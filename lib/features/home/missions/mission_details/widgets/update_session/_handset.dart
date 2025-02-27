@@ -265,13 +265,10 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               child: FormFieldLabel(label: l10n.notes, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.notes,
               controller: _notesController,
-              keyboardType: TextInputType.text,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
+              
             ),
             const SizedBox(height: 16),
             BlocConsumer<UpdateMissionSessionCubit, UpdateMissionSessionState>(

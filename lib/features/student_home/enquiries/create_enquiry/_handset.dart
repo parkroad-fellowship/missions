@@ -43,12 +43,10 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
               child: FormFieldLabel(label: l10n.rules, isRequired: true),
             ),
             const SizedBox(height: 8),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.enquiry,
               controller: _enquiryController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
+              
             ),
             const SizedBox(height: 16),
             BlocConsumer<CreateEnquiryCubit, CreateEnquiryState>(

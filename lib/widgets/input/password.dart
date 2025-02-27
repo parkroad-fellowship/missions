@@ -6,7 +6,7 @@ class PRFPasswordInput extends StatelessWidget {
     required this.hintText,
     required this.hidePasswordNotifier,
     required this.passwordController,
-    required this.isLoading,
+     this.isLoading = false,
   });
 
   final String hintText;

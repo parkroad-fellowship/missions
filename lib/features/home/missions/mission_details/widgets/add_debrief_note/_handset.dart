@@ -34,12 +34,10 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
               child: FormFieldLabel(label: l10n.note, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.note,
               controller: _noteController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
+              
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddDebriefNoteCubit, AddDebriefNoteState>(

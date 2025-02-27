@@ -35,12 +35,10 @@ class _AddMissionQuestionViewHandsetState
               child: FormFieldLabel(label: l10n.addQuestion, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFTextAreaInput(
               hintText: l10n.addQuestion,
               controller: _questionController,
-              isTextBox: true,
-              maxLines: 5,
-              textCapitalization: TextCapitalization.sentences,
+              
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(

@@ -214,13 +214,10 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              InputFormField(
+                              PRFTextAreaInput(
                                 hintText: l10n.reply,
                                 controller: _enquiryReplyController,
-                                isTextBox: true,
-                                maxLines: 5,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
+                                
                               ),
                               const SizedBox(height: 16),
                               BlocConsumer<
