@@ -165,7 +165,10 @@ class _StudentEnquiryRepliesPageHandsetState
 
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text(enquiryReply.content, style: Theme.of(context).textTheme.bodySmall,),
+                          child: Text(
+                            enquiryReply.content,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
                       );
                     },
@@ -197,12 +200,11 @@ class _StudentEnquiryRepliesPageHandsetState
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.3,
+                        height: MediaQuery.sizeOf(context).height * 0.4,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
                             children: [
-                              const SizedBox(height: 16),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: FormFieldLabel(

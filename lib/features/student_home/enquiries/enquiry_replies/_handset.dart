@@ -195,12 +195,11 @@ class _EnquiryRepliesPageHandsetState extends State<EnquiryRepliesPageHandset> {
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.3,
+                        height: MediaQuery.sizeOf(context).height * 0.4,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
                             children: [
-                              const SizedBox(height: 16),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: FormFieldLabel(
