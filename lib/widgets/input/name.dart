@@ -20,7 +20,7 @@ class PRFNameInput extends StatelessWidget {
       decoration: InputDecoration(hintText: hintText),
       style: Theme.of(context).textTheme.bodySmall,
       controller: controller,
-      enabled: !enabled,
+      enabled: enabled,
     );
   }
 }

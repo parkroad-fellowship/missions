@@ -4,6 +4,7 @@ import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/widgets/data_card.dart';
 import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
@@ -427,7 +428,25 @@ class MissionSessionDataView extends StatelessWidget {
             label: l10n.classGroup,
             value: missionSession.classGroup!.name ?? 'N/A',
           ),
-        DataCard(label: l10n.notes, value: missionSession.notes),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.w),
+              child: FormFieldLabel(label: l10n.notes, isBold: true),
+            ),
+            const SizedBox(height: 6),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.w),
+              child: PRFTextAreaInput(
+                hintText: '',
+                controller: TextEditingController(text: missionSession.notes),
+                enabled: false,
+              ),
+            ),
+            SizedBox(height: 15.h),
+          ],
+        ),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -460,7 +479,6 @@ class MissionSessionDataView extends StatelessWidget {
             SizedBox(width: 16.w),
             Expanded(
               child: PRFDestoryButton(
-     
                 title: l10n.delete,
                 disabled: false,
                 onPressed:
@@ -534,33 +552,3 @@ class MissionSessionDataView extends StatelessWidget {
   }
 }
 
-class DataCard extends StatelessWidget {
-  const DataCard({required this.label, required this.value, super.key});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.w),
-          child: FormFieldLabel(label: label, isBold: true),
-        ),
-        const SizedBox(height: 6),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.w),
-          child: PRFTextInput(
-            hintText: '',
-            controller: TextEditingController(text: value),
-       
-            enabled: false,
-          ),
-        ),
-        SizedBox(height: 15.h),
-      ],
-    );
-  }
-}
