@@ -143,31 +143,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                   return RefreshIndicator(
                     onRefresh:
                         () => context.read<GetMissionsCubit>().getMissions(),
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        const Icon(Icons.directions_walk),
-                        Center(
-                          child: Text(
-                            l10n.noMissions,
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.05,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                l10n.pleaseWait,
-                                style: Theme.of(context).textTheme.displayLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                      ],
+                    child: PRFEmptyView(
+                      label: l10n.noMissions,
+                      description: l10n.pleaseWait,
                     ),
                   );
                 }
@@ -215,31 +193,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                             context
                                 .read<GetMemberMissionSubscriptionsCubit>()
                                 .getSubscriptions(),
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        const Icon(Icons.directions_walk),
-                        Center(
-                          child: Text(
-                            l10n.noMissions,
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.05,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                l10n.pleaseWait,
-                                style: Theme.of(context).textTheme.displayLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                      ],
+                    child: PRFEmptyView(
+                      label: l10n.noMissions,
+                      description: l10n.pleaseWait,
                     ),
                   );
                 }

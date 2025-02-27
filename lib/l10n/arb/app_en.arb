@@ -667,5 +667,9 @@
     "unread": "Unread",
     "@unread": {},
     "replied": "Replied",
-    "@replied": {}
+    "@replied": {},
+    "noModules": "No modules",
+    "@noModules": {},
+    "noLessons": "No lessons",
+    "@noLessons": {}
 }

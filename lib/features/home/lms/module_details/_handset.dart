@@ -4,6 +4,7 @@ import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -177,7 +178,10 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   final courseModules = snapshot.data;
 
                   if (courseModules != null && courseModules.isEmpty) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    return  SliverToBoxAdapter(child: PRFEmptyView(
+                        label: l10n.noLessons,
+                        description: l10n.pleaseWait,
+                      ));
                   }
 
                   return SliverList.separated(
@@ -246,8 +250,8 @@ class ModuleDetailsActionCard extends StatelessWidget {
                     Flexible(
                       flex: 8,
                       child: Text(
-                        lessonModule.lesson.name!,
-                        style: Theme.of(context).textTheme.displayMedium,
+                        lessonModule.lesson.name!.toUpperCase(),
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
                     Flexible(
@@ -263,7 +267,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 SizedBox(height: 16.h),
                 Text(
                   lessonModule.lesson.description!,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),

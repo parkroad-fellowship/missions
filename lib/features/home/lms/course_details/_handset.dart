@@ -5,6 +5,7 @@ import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -168,7 +169,12 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   final courseModules = snapshot.data;
 
                   if (courseModules != null && courseModules.isEmpty) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                    return SliverToBoxAdapter(
+                      child: PRFEmptyView(
+                        label: l10n.noModules,
+                        description: l10n.pleaseWait,
+                      ),
+                    );
                   }
 
                   return SliverList.separated(
@@ -227,7 +233,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                       flex: 8,
                       child: Text(
                         courseModule.module.name!,
-                        style: Theme.of(context).textTheme.displayMedium,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
                     Flexible(
@@ -256,7 +262,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                 SizedBox(height: 16.h),
                 Text(
                   courseModule.module.description!,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
