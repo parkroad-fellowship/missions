@@ -139,6 +139,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                               ),
                               SizedBox(height: 16.h),
                               ListView.separated(
+                                shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: entries!.length,
                                 separatorBuilder:
