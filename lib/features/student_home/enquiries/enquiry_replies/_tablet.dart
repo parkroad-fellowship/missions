@@ -197,7 +197,7 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
                       child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.3,
+                        height: MediaQuery.sizeOf(context).height * 0.4,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
@@ -276,6 +276,7 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                                   );
                                 },
                               ),
+                              const SizedBox(height: 16),
                             ],
                           ),
                         ),

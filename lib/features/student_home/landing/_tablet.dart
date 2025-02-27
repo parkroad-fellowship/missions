@@ -157,7 +157,7 @@ class _StudentLandingPageTabletState extends State<StudentLandingPageTablet> {
                                     child: SizedBox(
                                       height:
                                           MediaQuery.sizeOf(context).height *
-                                          0.4,
+                                          0.2,
                                       child: Column(
                                         children: [
                                           Align(
@@ -166,7 +166,7 @@ class _StudentLandingPageTabletState extends State<StudentLandingPageTablet> {
                                               style:
                                                   Theme.of(
                                                     context,
-                                                  ).textTheme.headlineLarge,
+                                                  ).textTheme.headlineMedium,
                                             ),
                                           ),
                                         ],
