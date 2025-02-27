@@ -555,7 +555,7 @@ class LocalDBServiceImpl implements LocalDBService {
         in prfDBInstance.pRFLocalAnnouncements
             .filter()
             .idGreaterThan(0)
-            .sortByPublishedAtDesc()
+            .sortByPublishedAt()
             .build()
             .watch(fireImmediately: true)
             .asBroadcastStream()) {
