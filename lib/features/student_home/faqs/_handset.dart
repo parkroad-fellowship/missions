@@ -124,8 +124,9 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                     ),
                   ),
                 ),
-              ),SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+
               SliverToBoxAdapter(
                 child: FaqCategoriesPreview(
                   onCategorySelected: (newValue) {
@@ -173,7 +174,10 @@ class _FAQPageHandsetState extends State<FAQPageHandset> {
                           child: RefreshIndicator(
                             onRefresh:
                                 () => context.read<GetFaqsCubit>().getFaqs(),
-                            child: PRFEmptyView(label: l10n.noFaqs, description: l10n.pleaseWait,),
+                            child: PRFEmptyView(
+                              label: l10n.noFaqs,
+                              description: l10n.pleaseWait,
+                            ),
                           ),
                         );
                       }

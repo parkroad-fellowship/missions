@@ -169,8 +169,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: l10n.and,
-                                  style:
-                                      Theme.of(context).textTheme.labelLarge,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
                                   text: l10n.privacyPolicy,

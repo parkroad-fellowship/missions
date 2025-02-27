@@ -60,7 +60,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
             const SizedBox(height: 6),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.rules, isRequired: true, ),
+              child: FormFieldLabel(label: l10n.rules, isRequired: true),
             ),
             const SizedBox(height: 8),
             PRFTextAreaInput(

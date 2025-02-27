@@ -73,10 +73,9 @@ class AccountPageTablet extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   l10n.signOut,
-                                  style:
-                                      Theme.of(
-                                        context,
-                                      ).textTheme.headlineMedium?.copyWith(
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineMedium?.copyWith(
                                     color: Theme.of(context).colorScheme.error,
                                   ),
                                   textAlign: TextAlign.center,

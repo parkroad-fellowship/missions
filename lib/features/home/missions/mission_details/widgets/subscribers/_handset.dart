@@ -5,7 +5,6 @@ import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -123,7 +122,10 @@ class SubscriberActionCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      Text(subscription.status.name, style: Theme.of(context).textTheme.bodySmall,),
+                      Text(
+                        subscription.status.name,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                       SizedBox(height: 16.h),
                     ],
                   ),

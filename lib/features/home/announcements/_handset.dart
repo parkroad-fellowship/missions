@@ -160,10 +160,10 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
                                         borderRadius: BorderRadius.circular(
                                           48.r,
                                         ),
-                                        color:
-                                            Theme.of(
-                                              context,
-                                            ).colorScheme.secondary.withValues(alpha: .4),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withValues(alpha: .4),
                                       ),
                                       child: ListTile(
                                         contentPadding: EdgeInsets.zero,

@@ -74,7 +74,10 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
               ),
             ),
             child: IconButton(
-              icon:  Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface,),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
               padding: const EdgeInsets.only(left: 16, right: 8),
               onPressed:
                   () => context.router.popUntilRouteWithPath(

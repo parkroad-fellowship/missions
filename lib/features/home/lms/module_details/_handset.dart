@@ -178,10 +178,12 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   final courseModules = snapshot.data;
 
                   if (courseModules != null && courseModules.isEmpty) {
-                    return  SliverToBoxAdapter(child: PRFEmptyView(
+                    return SliverToBoxAdapter(
+                      child: PRFEmptyView(
                         label: l10n.noLessons,
                         description: l10n.pleaseWait,
-                      ));
+                      ),
+                    );
                   }
 
                   return SliverList.separated(

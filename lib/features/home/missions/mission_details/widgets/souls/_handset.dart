@@ -80,7 +80,10 @@ class SoulCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 16.h),
-                Text(soul.classGroup.name.toString(), style: Theme.of(context).textTheme.bodySmall,),
+                Text(
+                  soul.classGroup.name.toString(),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
                 SizedBox(height: 16.h),
               ],
             ),

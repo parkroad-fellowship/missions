@@ -71,13 +71,13 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                     ),
                   ),
                   inputDecorationTheme: PRFTheme.light.inputDecorationTheme
-                      ?.copyWith(
+                      .copyWith(
                         hintStyle: textTheme.bodySmall,
                         labelStyle: textTheme.bodySmall,
                       ),
                   dataTableTheme: PRFTheme.light.dataTableTheme.copyWith(
                     dataTextStyle: textTheme.bodyMedium,
-                    headingTextStyle: textTheme.headlineMedium
+                    headingTextStyle: textTheme.headlineMedium,
                   ),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,

@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 
 class PRFEmptyView extends StatelessWidget {
   const PRFEmptyView({
-    super.key,
     required this.label,
     required this.description,
+    super.key,
   });
 
   final String label;
@@ -20,7 +19,10 @@ class PRFEmptyView extends StatelessWidget {
         children: [
           const Icon(Icons.timer),
           Center(
-            child: Text(label, style: Theme.of(context).textTheme.headlineMedium),
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
           const SizedBox(height: 10),
           SizedBox(

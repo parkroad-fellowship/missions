@@ -107,8 +107,6 @@ class PRFTheme {
       indicatorColor: Colors.white,
       overlayColor: WidgetStateProperty.all(Colors.transparent),
     ),
-    dataTableTheme: DataTableThemeData(
-      
-    )
+    dataTableTheme: const DataTableThemeData(),
   );
 }
