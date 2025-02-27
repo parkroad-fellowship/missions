@@ -1,4 +1,3 @@
-
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/utils/router.gr.dart';

@@ -1,12 +1,7 @@
-
-import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_course.dart';
-import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ModuleDetailsActionCard extends StatelessWidget {

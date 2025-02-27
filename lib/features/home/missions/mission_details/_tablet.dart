@@ -103,7 +103,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
               physics: const ScrollPhysics(),
               slivers: [
                 // Start Navigation Bar
-                SliverToBoxAdapter(child: SizedBox(height: 36,)),
+                const SliverToBoxAdapter(child: SizedBox(height: 36)),
                 PinnedHeaderSliver(
                   child: ColoredBox(
                     color: Colors.white,
@@ -143,7 +143,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                 ),
 
                 // End Navigation Bar
-                SliverToBoxAdapter(child: SizedBox(height: 32,)),
+                const SliverToBoxAdapter(child: SizedBox(height: 32)),
                 PinnedHeaderSliver(
                   child: ColoredBox(
                     color: Colors.white,
@@ -168,7 +168,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(child: SizedBox(height: 32,)),
+                const SliverToBoxAdapter(child: SizedBox(height: 32)),
                 SliverFillRemaining(
                   fillOverscroll: true,
                   child: Padding(

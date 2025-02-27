@@ -226,12 +226,12 @@ class _SignInTabletState extends State<SignInTablet> {
                         ),
                         const SizedBox(height: 54),
                         Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        l10n.version(Misc.getAppVersion()),
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                    ),
+                          alignment: Alignment.bottomCenter,
+                          child: Text(
+                            l10n.version(Misc.getAppVersion()),
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ),
                         const Spacer(),
                       ],
                     ),

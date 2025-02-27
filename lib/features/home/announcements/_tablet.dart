@@ -38,7 +38,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 36)),
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -135,7 +135,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                               children: [
                                 Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
-                                   style:
+                                  style:
                                       Theme.of(context).textTheme.headlineSmall,
                                 ),
                                 SizedBox(height: 16.h),
@@ -160,9 +160,9 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                             48.r,
                                           ),
                                           color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary
-                                            .withValues(alpha: .4),
+                                              .colorScheme
+                                              .secondary
+                                              .withValues(alpha: .4),
                                         ),
                                         child: ListTile(
                                           contentPadding: EdgeInsets.zero,

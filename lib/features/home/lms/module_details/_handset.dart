@@ -4,7 +4,6 @@ import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -207,4 +206,3 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
     );
   }
 }
-

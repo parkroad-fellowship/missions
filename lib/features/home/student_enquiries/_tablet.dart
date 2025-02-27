@@ -40,7 +40,7 @@ class _StudentEnquiriesPageTabletState
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 36,)),
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverToBoxAdapter(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -171,7 +171,7 @@ class _StudentEnquiriesPageTabletState
                           backgroundColor: Colors.white,
                           child: Text(
                             Misc.getUserNameInitials(enquiry.content),
-                             style: Theme.of(context).textTheme.headlineSmall,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ),
                         title: Text(

@@ -1,14 +1,11 @@
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/lms/widgets/course_action_card.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_course.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -38,7 +35,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
           child: CustomScrollView(
             slivers: [
               // Start Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 36,)),
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverAppBar(
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
@@ -141,4 +138,3 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
     );
   }
 }
-
