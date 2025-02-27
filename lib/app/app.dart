@@ -72,7 +72,9 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                   ),
                   inputDecorationTheme: PRFTheme.light.inputDecorationTheme
                       .copyWith(
-                        hintStyle: textTheme.bodySmall,
+                        hintStyle: textTheme.bodySmall?.copyWith(
+                          color: Colors.grey,
+                        ),
                         labelStyle: textTheme.bodySmall,
                       ),
                   dataTableTheme: PRFTheme.light.dataTableTheme.copyWith(
