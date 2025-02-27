@@ -124,12 +124,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                           Logger().d(value);
                           _currentTab = value;
                         }),
-                    dividerColor: Colors.white,
                     isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    labelStyle: Theme.of(context).textTheme.displayMedium,
-                    indicatorColor: Colors.white,
-                    overlayColor: WidgetStateProperty.all(Colors.transparent),
                     tabs: [Tab(text: l10n.info), Tab(text: l10n.gallery)],
                   ),
                 ),

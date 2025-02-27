@@ -150,12 +150,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                           (value) => setState(() {
                             _currentTab = value;
                           }),
-                      dividerColor: Colors.white,
                       isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      labelStyle: Theme.of(context).textTheme.displayMedium,
-                      indicatorColor: Colors.white,
-                      overlayColor: WidgetStateProperty.all(Colors.transparent),
                       tabs: [
                         Tab(text: l10n.missionGround),
                         Tab(text: l10n.going),

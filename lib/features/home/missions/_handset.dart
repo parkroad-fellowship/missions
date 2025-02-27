@@ -74,7 +74,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               ),
             ),
             child: IconButton(
-              icon:  Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface,),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
               padding: const EdgeInsets.only(left: 16, right: 8),
               onPressed:
                   () => context.router.popUntilRouteWithPath(
@@ -115,12 +118,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           backgroundColor: Colors.transparent,
           bottom: TabBar(
             controller: _tabController,
-            dividerColor: Colors.white,
             isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            labelStyle: Theme.of(context).textTheme.displayMedium,
-            indicatorColor: Colors.white,
-            overlayColor: WidgetStateProperty.all(Colors.transparent),
             tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
           ),
         ),

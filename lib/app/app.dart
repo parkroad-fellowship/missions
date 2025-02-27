@@ -51,12 +51,24 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                   PRFSuperAppRouter.decisionRoute,
                 );
               }
+
+              final textTheme = PRFTextTheme.getLightTheme(context);
+
               return MaterialApp.router(
                 debugShowCheckedModeBanner: false,
                 theme: PRFTheme.light.copyWith(
-                  textTheme: PRFTextTheme.getLightTheme(context),
+                  textTheme: textTheme,
                   dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme.copyWith(
-                    textStyle: PRFTextTheme.getLightTheme(context).bodySmall,
+                    textStyle: textTheme.bodySmall,
+                  ),
+                  tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
+                    labelStyle: textTheme.displaySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: const Color(PRFTheme.secondaryColor),
+                    ),
+                    unselectedLabelStyle: textTheme.displaySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,

@@ -47,7 +47,7 @@ class PRFTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
     ),
-    
+
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.grey[50],
@@ -100,10 +100,12 @@ class PRFTheme {
         ),
       ),
     ),
-    iconTheme: IconThemeData(
-      color: Color(primaryColor),
-      size: 24
+    iconTheme: const IconThemeData(color: Color(primaryColor), size: 24),
+    tabBarTheme: TabBarTheme(
+      dividerColor: Colors.white,
+      tabAlignment: TabAlignment.start,
+      indicatorColor: Colors.white,
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
     ),
-    
   );
 }
