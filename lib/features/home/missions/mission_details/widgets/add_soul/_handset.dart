@@ -89,10 +89,9 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               child: FormFieldLabel(label: l10n.fullName, isRequired: true),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.fullName,
               controller: _fullNameController,
-              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddSoulCubit, AddSoulState>(

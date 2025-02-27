@@ -66,10 +66,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               ),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.missionGround,
               controller: _nameController,
-              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(
@@ -80,10 +79,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               ),
             ),
             const SizedBox(height: 6),
-            InputFormField(
+            PRFNameInput(
               hintText: l10n.contactPerson,
               controller: _contactPersonController,
-              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             Align(

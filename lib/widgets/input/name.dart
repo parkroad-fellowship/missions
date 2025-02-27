@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 
-class PRFEmailInput extends StatelessWidget {
-  const PRFEmailInput({
+class PRFNameInput extends StatelessWidget {
+  const PRFNameInput({
     super.key,
     required this.hintText,
-    required this.emailController,
-    required this.isLoading,
+    required this.controller,
+     this.isLoading = false,
   });
 
   final String hintText;
-  final TextEditingController emailController;
+  final TextEditingController controller;
   final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.name,
+      textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(hintText: hintText),
       style: Theme.of(context).textTheme.bodySmall,
-      controller: emailController,
+      controller: controller,
       enabled: !isLoading,
     );
   }
