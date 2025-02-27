@@ -6,13 +6,13 @@ class PRFPasswordInput extends StatelessWidget {
     required this.hintText,
     required this.hidePasswordNotifier,
     required this.passwordController,
-     this.isLoading = false,
+     this.enabled = true,
   });
 
   final String hintText;
   final ValueNotifier<bool> hidePasswordNotifier;
   final TextEditingController passwordController;
-  final bool isLoading;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class PRFPasswordInput extends StatelessWidget {
             ),
             style: Theme.of(context).textTheme.bodySmall,
             controller: passwordController,
-            enabled: !isLoading,
+            enabled: enabled,
           ),
     );
   }

@@ -5,12 +5,12 @@ class PRFEmailInput extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.emailController,
-     this.isLoading = false,
+     this.enabled = false,
   });
 
   final String hintText;
   final TextEditingController emailController;
-  final bool isLoading;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PRFEmailInput extends StatelessWidget {
       decoration: InputDecoration(hintText: hintText),
       style: Theme.of(context).textTheme.bodySmall,
       controller: emailController,
-      enabled: !isLoading,
+      enabled: enabled,
     );
   }
 }

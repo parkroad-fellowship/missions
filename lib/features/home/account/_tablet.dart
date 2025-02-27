@@ -106,10 +106,10 @@ class AccountPageTablet extends StatelessWidget {
                       SizedBox(height: 10.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: InputFormField(
+                        child: PRFNameInput(
                           hintText: l10n.enterName,
                           controller: TextEditingController(text: profile.name),
-                          isUnderLine: true,
+                       
                           enabled: false,
                         ),
                       ),
@@ -121,13 +121,12 @@ class AccountPageTablet extends StatelessWidget {
                       SizedBox(height: 10.h),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: InputFormField(
+                        child: PRFNameInput(
                           hintText: l10n.enterEmail,
                           controller: TextEditingController(
                             text: profile.email,
                           ),
-                          isUnderLine: true,
-                          isEmail: true,
+                      
                           enabled: false,
                         ),
                       ),

@@ -92,23 +92,19 @@ class _SignInTabletState extends State<SignInTablet> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        InputFormField(
+                        PRFEmailInput(
                           hintText: l10n.studentEmail,
-                          controller: _emailController,
+                          emailController: _emailController,
                           enabled: !_isLoading,
                         ),
                         const SizedBox(height: 20),
                         ValueListenableBuilder<bool>(
                           valueListenable: _hidePasswordNotifier,
                           builder: (context, hidePassword, child) {
-                            return InputFormField(
+                            return PRFPasswordInput(
                               hintText: l10n.enterPassword,
-                              controller: _passwordController,
-                              showSuffix: true,
-                              hidePassword: hidePassword,
-                              toggleHidePassword: () {
-                                _hidePasswordNotifier.value = !hidePassword;
-                              },
+                              hidePasswordNotifier: _hidePasswordNotifier,
+                              passwordController: _passwordController,
                               enabled: !_isLoading,
                             );
                           },

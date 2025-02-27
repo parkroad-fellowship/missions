@@ -89,14 +89,14 @@ class _SignInHandsetState extends State<SignInHandset> {
                     PRFEmailInput(
                       hintText: l10n.studentEmail,
                       emailController: _emailController,
-                      isLoading: _isLoading,
+                      enabled: !_isLoading,
                     ),
                     const SizedBox(height: 20),
                     PRFPasswordInput(
                       hintText: l10n.enterPassword,
                       hidePasswordNotifier: _hidePasswordNotifier,
                       passwordController: _passwordController,
-                      isLoading: _isLoading,
+                      enabled: !_isLoading,
                     ),
                     const SizedBox(height: 16),
                     BlocConsumer<SigninCubit, SignInState>(

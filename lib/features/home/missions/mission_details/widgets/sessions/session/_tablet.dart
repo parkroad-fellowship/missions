@@ -550,12 +550,10 @@ class DataCard extends StatelessWidget {
         const SizedBox(height: 6),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 40.w),
-          child: InputFormField(
+          child: PRFNameInput(
             hintText: '',
             controller: TextEditingController(text: value),
-            isUnderLine: true,
             enabled: false,
-            maxLines: 15,
           ),
         ),
         SizedBox(height: 15.h),

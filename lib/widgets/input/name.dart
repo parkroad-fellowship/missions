@@ -5,12 +5,12 @@ class PRFNameInput extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.controller,
-     this.isLoading = false,
+     this.enabled = true,
   });
 
   final String hintText;
   final TextEditingController controller;
-  final bool isLoading;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class PRFNameInput extends StatelessWidget {
       decoration: InputDecoration(hintText: hintText),
       style: Theme.of(context).textTheme.bodySmall,
       controller: controller,
-      enabled: !isLoading,
+      enabled: !enabled,
     );
   }
 }
