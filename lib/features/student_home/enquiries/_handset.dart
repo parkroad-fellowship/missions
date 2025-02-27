@@ -179,6 +179,7 @@ class _LearnerEnquiriesPageHandsetState
                           backgroundColor: Colors.white,
                           child: Text(
                             Misc.getUserNameInitials(enquiry.content),
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ),
                         title: Text(

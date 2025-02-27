@@ -26,10 +26,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          l10n.ask,
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
+        title: Text(l10n.ask, style: Theme.of(context).textTheme.displayLarge),
         backgroundColor: Colors.transparent,
         leading: Container(
           margin: const EdgeInsets.only(left: 8),
@@ -63,7 +60,7 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
             const SizedBox(height: 6),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.rules, isRequired: true),
+              child: FormFieldLabel(label: l10n.rules, isRequired: true, ),
             ),
             const SizedBox(height: 8),
             PRFTextAreaInput(
