@@ -18,9 +18,15 @@ class EventsPageTablet extends StatefulWidget {
   State<EventsPageTablet> createState() => _EventsPageTabletState();
 }
 
-class _EventsPageTabletState extends State<EventsPageTablet> {
+class _EventsPageTabletState extends State<EventsPageTablet>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+
     context.read<GetEventsCubit>().getEvents();
     context
         .read<GetMemberEventSubscriptionsCubit>()
@@ -35,7 +41,6 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -63,8 +68,8 @@ class _EventsPageTabletState extends State<EventsPageTablet> {
           ),
           backgroundColor: Colors.transparent,
           bottom: TabBar(
+            controller: _tabController,
             isScrollable: true,
-
             tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
           ),
         ),
