@@ -237,10 +237,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
             const SizedBox(height: 6),
             GestureDetector(
               onTap: _selectStartDate,
-              child: InputFormField(
+              child: PRFTextInput(
                 hintText: l10n.startTime,
                 controller: _startDateController,
-                keyboardType: TextInputType.text,
                 enabled: false,
               ),
             ),
@@ -252,10 +251,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
             const SizedBox(height: 6),
             GestureDetector(
               onTap: _selectEndDate,
-              child: InputFormField(
+              child: PRFTextInput(
                 hintText: l10n.endTime,
                 controller: _endDateController,
-                keyboardType: TextInputType.text,
                 enabled: false,
               ),
             ),
