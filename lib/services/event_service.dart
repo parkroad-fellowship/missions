@@ -44,6 +44,7 @@ class EventServiceImpl implements EventService {
               'loggedInMemberEventSubscription,posters',
           'order_by': 'start_date',
           'order_direction': 'asc',
+          'filter[unsubscribed]': true,
         },
       );
 
