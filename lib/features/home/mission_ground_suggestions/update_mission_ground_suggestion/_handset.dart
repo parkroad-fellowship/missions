@@ -133,7 +133,6 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                       (status) => setState(() {
                         _selectedStatus = status;
                       }),
-                  
                 );
               },
             ),

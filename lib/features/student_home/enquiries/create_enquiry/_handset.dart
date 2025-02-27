@@ -46,7 +46,6 @@ class _CreateEnquiryPageHandsetState extends State<CreateEnquiryPageHandset> {
             PRFTextAreaInput(
               hintText: l10n.enquiry,
               controller: _enquiryController,
-              
             ),
             const SizedBox(height: 16),
             BlocConsumer<CreateEnquiryCubit, CreateEnquiryState>(

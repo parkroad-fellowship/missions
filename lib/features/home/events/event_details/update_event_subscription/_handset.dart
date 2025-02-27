@@ -7,7 +7,6 @@ import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
@@ -129,7 +128,6 @@ class _UpdateEventSubscriptionViewHandsetState
             SizedBox(
               width: double.infinity,
               child: PRFDestoryButton(
-     
                 title: l10n.cancelRegistration,
                 disabled: false,
                 onPressed:

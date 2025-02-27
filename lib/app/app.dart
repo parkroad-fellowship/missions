@@ -55,7 +55,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                 debugShowCheckedModeBanner: false,
                 theme: PRFTheme.light.copyWith(
                   textTheme: PRFTextTheme.getLightTheme(context),
-                  dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme?.copyWith(
+                  dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme.copyWith(
                     textStyle: PRFTextTheme.getLightTheme(context).bodySmall,
                   ),
                 ),

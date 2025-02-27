@@ -63,7 +63,6 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedClassGroup = classGroup;
                                 }),
-                            
                           );
                         },
                       ),

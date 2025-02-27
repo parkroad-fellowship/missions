@@ -23,18 +23,18 @@ class GoogleAuthButton extends StatelessWidget {
       width: double.infinity,
       child: OutlinedButton.icon(
         style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
-          backgroundColor: WidgetStatePropertyAll(Colors.white),
+          backgroundColor: const WidgetStatePropertyAll(Colors.white),
         ),
         onPressed: (isLoading ?? false) ? null : onPressed,
         label: Text(
           title,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: Color(PRFTheme.primaryColor),
+            color: const Color(PRFTheme.primaryColor),
           ),
         ),
         icon:
             (isLoading ?? false)
-                ? SizedBox(
+                ? const SizedBox(
                   height: 16,
                   width: 16,
                   child: PRFCircularProgressIndicator(

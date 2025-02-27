@@ -23,7 +23,7 @@ class PRFSecondaryButton extends StatelessWidget {
 
       child: OutlinedButton(
         style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
-          backgroundColor: WidgetStatePropertyAll(Colors.white),
+          backgroundColor: const WidgetStatePropertyAll(Colors.white),
         ),
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
         child: Row(
@@ -33,16 +33,18 @@ class PRFSecondaryButton extends StatelessWidget {
               const SizedBox(
                 height: 16,
                 width: 16,
-                child: PRFCircularProgressIndicator(color: Color(PRFTheme.primaryColor)),
+                child: PRFCircularProgressIndicator(
+                  color: Color(PRFTheme.primaryColor),
+                ),
               ),
               const SizedBox(width: 8),
             ] else
               const SizedBox.shrink(),
             Text(
               title,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(color: Color(PRFTheme.primaryColor)),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: const Color(PRFTheme.primaryColor),
+              ),
             ),
           ],
         ),

@@ -126,7 +126,7 @@ class AccountPageHandset extends StatelessWidget {
                           controller: TextEditingController(
                             text: profile.email,
                           ),
-                
+
                           enabled: false,
                         ),
                       ),

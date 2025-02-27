@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 
 class PRFNumberInput extends StatelessWidget {
   const PRFNumberInput({
-    super.key,
     required this.hintText,
     required this.controller,
+    super.key,
     this.isLoading = false,
   });
 

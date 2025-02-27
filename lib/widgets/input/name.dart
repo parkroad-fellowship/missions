@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class PRFNameInput extends StatelessWidget {
   const PRFNameInput({
-    super.key,
     required this.hintText,
     required this.controller,
-     this.enabled = true,
+    super.key,
+    this.enabled = true,
   });
 
   final String hintText;

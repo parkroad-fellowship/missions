@@ -20,7 +20,7 @@ class PRFTextTheme {
       isTablet ? 1.6 : 1.4, // Maximum scale - slightly larger for tablets
     ); // Limit scaling range
 
-    final defaultTextColor = Colors.black;
+    const defaultTextColor = Colors.black;
 
     return GoogleFonts.latoTextTheme().copyWith(
       displayLarge: GoogleFonts.lato(

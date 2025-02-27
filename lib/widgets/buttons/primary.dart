@@ -29,9 +29,7 @@ class PRFPrimaryButton extends StatelessWidget {
               const SizedBox(
                 height: 16,
                 width: 16,
-                child: PRFCircularProgressIndicator(
-                  color: Colors.white,
-                ),
+                child: PRFCircularProgressIndicator(color: Colors.white),
               ),
               const SizedBox(width: 8),
             ] else

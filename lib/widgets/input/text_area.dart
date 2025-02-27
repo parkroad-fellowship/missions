@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class PRFTextAreaInput extends StatelessWidget {
   const PRFTextAreaInput({
-    super.key,
     required this.hintText,
     required this.controller,
+    super.key,
     this.enabled = true,
   });
 

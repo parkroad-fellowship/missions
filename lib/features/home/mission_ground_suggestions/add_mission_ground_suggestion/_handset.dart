@@ -44,7 +44,7 @@ class _AddMissionGroundSuggestionViewHandsetState
               hintText: l10n.missionGround,
               controller: _nameController,
             ),
-          
+
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,

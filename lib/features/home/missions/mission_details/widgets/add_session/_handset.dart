@@ -8,7 +8,6 @@ import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -89,7 +88,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             (member) => setState(() {
                               selectedFacilitator = member;
                             }),
-                        
                       );
                     },
                   ),
@@ -127,7 +125,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             (member) => setState(() {
                               selectedSpeaker = member;
                             }),
-                        
                       );
                     },
                   ),
@@ -165,7 +162,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedClassGroup = classGroup;
                                 }),
-                           
                           );
                         },
                       ),
@@ -209,7 +205,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
             PRFTextAreaInput(
               hintText: l10n.notes,
               controller: _notesController,
-              
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddMissionSessionCubit, AddMissionSessionState>(

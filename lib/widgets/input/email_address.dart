@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class PRFEmailInput extends StatelessWidget {
   const PRFEmailInput({
-    super.key,
     required this.hintText,
     required this.emailController,
-     this.enabled = false,
+    super.key,
+    this.enabled = false,
   });
 
   final String hintText;

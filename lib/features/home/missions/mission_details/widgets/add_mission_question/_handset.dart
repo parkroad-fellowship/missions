@@ -38,7 +38,6 @@ class _AddMissionQuestionViewHandsetState
             PRFTextAreaInput(
               hintText: l10n.addQuestion,
               controller: _questionController,
-              
             ),
             const SizedBox(height: 16),
             BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(

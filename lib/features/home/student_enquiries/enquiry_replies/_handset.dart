@@ -219,7 +219,6 @@ class _StudentEnquiryRepliesPageHandsetState
                               PRFTextAreaInput(
                                 hintText: l10n.reply,
                                 controller: _enquiryReplyController,
-                                
                               ),
                               const SizedBox(height: 16),
                               BlocConsumer<

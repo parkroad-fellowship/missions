@@ -218,7 +218,6 @@ class _EnquiryRepliesPageTabletState extends State<EnquiryRepliesPageTablet> {
                               PRFTextAreaInput(
                                 hintText: l10n.reply,
                                 controller: _enquiryReplyController,
-                                
                               ),
                               const SizedBox(height: 16),
                               BlocConsumer<

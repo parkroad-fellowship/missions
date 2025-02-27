@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class PRFPasswordInput extends StatelessWidget {
   const PRFPasswordInput({
-    super.key,
     required this.hintText,
     required this.hidePasswordNotifier,
     required this.passwordController,
-     this.enabled = true,
+    super.key,
+    this.enabled = true,
   });
 
   final String hintText;

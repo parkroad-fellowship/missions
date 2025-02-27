@@ -109,7 +109,7 @@ class AccountPageTablet extends StatelessWidget {
                         child: PRFNameInput(
                           hintText: l10n.enterName,
                           controller: TextEditingController(text: profile.name),
-                       
+
                           enabled: false,
                         ),
                       ),
@@ -126,7 +126,7 @@ class AccountPageTablet extends StatelessWidget {
                           controller: TextEditingController(
                             text: profile.email,
                           ),
-                      
+
                           enabled: false,
                         ),
                       ),

@@ -37,8 +37,10 @@ class PRFTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        backgroundColor: Color(primaryColor),
-        disabledBackgroundColor: Color(primaryColor).withValues(alpha: .4),
+        backgroundColor: const Color(primaryColor),
+        disabledBackgroundColor: const Color(
+          primaryColor,
+        ).withValues(alpha: .4),
         minimumSize: const Size(88, 56),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
@@ -75,7 +77,6 @@ class PRFTheme {
       color: Color(primaryColor),
     ),
     dropdownMenuTheme: DropdownMenuThemeData(
-      
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.grey[50],

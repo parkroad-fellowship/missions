@@ -23,8 +23,7 @@ class PRFDestoryButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
         style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
-          backgroundColor: WidgetStatePropertyAll(Colors.red),
-          
+          backgroundColor: const WidgetStatePropertyAll(Colors.red),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -33,9 +32,7 @@ class PRFDestoryButton extends StatelessWidget {
               const SizedBox(
                 height: 16,
                 width: 16,
-                child: PRFCircularProgressIndicator(
-                  color: Colors.white,
-                ),
+                child: PRFCircularProgressIndicator(color: Colors.white),
               ),
               const SizedBox(width: 8),
             ] else

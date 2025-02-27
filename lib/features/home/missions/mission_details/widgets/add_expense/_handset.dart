@@ -5,7 +5,6 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
@@ -71,7 +70,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                                 (classGroup) => setState(() {
                                   selectedExpenseCategory = classGroup;
                                 }),
-                            
                           );
                         },
                       ),
@@ -110,7 +108,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             PRFTextAreaInput(
               hintText: l10n.confirmationMessage,
               controller: _confirmationMessageController,
-              
             ),
             const SizedBox(height: 16),
             Align(
@@ -140,7 +137,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       (chargeType) => setState(() {
                         selectedChargeType = chargeType;
                       }),
-                  
                 );
               },
             ),

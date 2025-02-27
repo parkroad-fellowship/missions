@@ -12,7 +12,6 @@ class PRFCircularProgressIndicator extends StatelessWidget {
         strokeWidth: 2,
         valueColor: AlwaysStoppedAnimation<Color>(
           color ?? Theme.of(context).colorScheme.primary,
-        
         ),
       ),
     );

@@ -110,7 +110,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                         child: PRFNameInput(
                           hintText: l10n.enterName,
                           controller: TextEditingController(text: profile.name),
-                          
+
                           enabled: false,
                         ),
                       ),
