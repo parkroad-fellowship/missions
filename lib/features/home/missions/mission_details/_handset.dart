@@ -224,7 +224,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               backgroundColor: Theme.of(context).colorScheme.primary,
               label: Text(
                 l10n.sendMe,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white),
               ),
               icon: BlocBuilder<SubscribeCubit, SubscribeState>(
                 builder:
