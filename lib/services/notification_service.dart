@@ -208,7 +208,10 @@ class NotificationServiceImpl implements NotificationService {
         schedule: NotificationCalendar(
           weekday: prayerPrompt.dayOfWeek,
           hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
+          minute: 0,
+          second: 0,
           repeats: true,
+          allowWhileIdle: true,
         ),
       );
     }
@@ -230,7 +233,9 @@ class NotificationServiceImpl implements NotificationService {
         weekday: 5,
         hour: 12,
         minute: 50,
+        second: 0,
         repeats: true,
+        allowWhileIdle: true,
       ),
     );
   }
