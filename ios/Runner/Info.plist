@@ -82,5 +82,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>$(FLAVOR_APP_NAME) needs to protect your giving history.</string>
 </dict>
 </plist>
