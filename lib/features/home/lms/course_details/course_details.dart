@@ -13,10 +13,9 @@ class CourseDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, __) => CourseDetailsPageTablet(courseUlid: courseUlid),
+      defaultBuilder: (_, _) => CourseDetailsPageTablet(courseUlid: courseUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => CourseDetailsPageHandset(courseUlid: courseUlid),
+        handset: (_, _) => CourseDetailsPageHandset(courseUlid: courseUlid),
       ),
     );
   }

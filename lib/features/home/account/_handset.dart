@@ -117,7 +117,7 @@ class AccountPageHandset extends StatelessWidget {
                                 Hive.box<dynamic>(
                                   PRFSuperAppConfig.instance!.values.hiveBox,
                                 ).listenable(),
-                            builder: (context, box, _) {
+                            builder: (context, _, _) {
                               final profilePicture =
                                   getIt<HiveService>()
                                       .retrieveMember()
@@ -152,7 +152,7 @@ class AccountPageHandset extends StatelessWidget {
                             Hive.box<dynamic>(
                               PRFSuperAppConfig.instance!.values.hiveBox,
                             ).listenable(),
-                        builder: (context, box, _) {
+                        builder: (context, _, _) {
                           final member = getIt<HiveService>().retrieveMember();
                           if (member == null) return const SizedBox.shrink();
                           return Positioned(
@@ -243,7 +243,7 @@ class AccountPageHandset extends StatelessWidget {
                     Hive.box<dynamic>(
                       PRFSuperAppConfig.instance!.values.hiveBox,
                     ).listenable(),
-                builder: (context, box, _) {
+                builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -313,7 +313,7 @@ class AccountPageHandset extends StatelessWidget {
                     Hive.box<dynamic>(
                       PRFSuperAppConfig.instance!.values.hiveBox,
                     ).listenable(),
-                builder: (context, box, _) {
+                builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -340,7 +340,7 @@ class AccountPageHandset extends StatelessWidget {
                     Hive.box<dynamic>(
                       PRFSuperAppConfig.instance!.values.hiveBox,
                     ).listenable(),
-                builder: (context, box, _) {
+                builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());

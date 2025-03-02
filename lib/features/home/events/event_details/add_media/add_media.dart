@@ -10,9 +10,9 @@ class AddEventMediaView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => AddEventMediaViewHandset(eventUlid: eventUlid),
+      defaultBuilder: (_, _) => AddEventMediaViewHandset(eventUlid: eventUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => AddEventMediaViewHandset(eventUlid: eventUlid),
+        handset: (_, _) => AddEventMediaViewHandset(eventUlid: eventUlid),
       ),
     );
   }

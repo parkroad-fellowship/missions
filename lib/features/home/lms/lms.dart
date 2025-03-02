@@ -11,9 +11,9 @@ class LMSPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const LMSPageTablet(),
+      defaultBuilder: (_, _) => const LMSPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const LMSPageHandset(),
+        handset: (_, _) => const LMSPageHandset(),
       ),
     );
   }

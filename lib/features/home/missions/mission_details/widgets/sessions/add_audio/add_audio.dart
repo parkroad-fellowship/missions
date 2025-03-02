@@ -11,11 +11,10 @@ class AddAudioView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) =>
-              AddAudioViewHandset(missionSessionUlid: missionSessionUlid),
+          (_, _) => AddAudioViewHandset(missionSessionUlid: missionSessionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset:
-            (_, __) =>
+            (_, _) =>
                 AddAudioViewHandset(missionSessionUlid: missionSessionUlid),
       ),
     );

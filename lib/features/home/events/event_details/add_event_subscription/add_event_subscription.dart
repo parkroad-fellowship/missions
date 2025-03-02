@@ -11,9 +11,9 @@ class AddEventSubscriptionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => AddEventSubscriptionViewHandset(event: event),
+      defaultBuilder: (_, _) => AddEventSubscriptionViewHandset(event: event),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => AddEventSubscriptionViewHandset(event: event),
+        handset: (_, _) => AddEventSubscriptionViewHandset(event: event),
       ),
     );
   }

@@ -11,9 +11,9 @@ class EventDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => EventDetailsViewHandset(event: event),
+      defaultBuilder: (_, _) => EventDetailsViewHandset(event: event),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => EventDetailsViewHandset(event: event),
+        handset: (_, _) => EventDetailsViewHandset(event: event),
       ),
     );
   }

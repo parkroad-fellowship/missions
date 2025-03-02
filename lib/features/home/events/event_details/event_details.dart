@@ -14,9 +14,9 @@ class EventDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => EventDetailsPageTablet(event: event),
+      defaultBuilder: (_, _) => EventDetailsPageTablet(event: event),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => EventDetailsPageHandset(event: event),
+        handset: (_, _) => EventDetailsPageHandset(event: event),
       ),
     );
   }

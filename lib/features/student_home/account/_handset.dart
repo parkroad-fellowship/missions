@@ -95,7 +95,7 @@ class StudentAccountPageHandset extends StatelessWidget {
                     Hive.box<dynamic>(
                       PRFSuperAppConfig.instance!.values.hiveBox,
                     ).listenable(),
-                builder: (context, box, _) {
+                builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());

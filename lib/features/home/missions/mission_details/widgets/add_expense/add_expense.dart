@@ -10,10 +10,9 @@ class AddExpenseView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, __) => AddExpenseViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) => AddExpenseViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => AddExpenseViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => AddExpenseViewHandset(missionUlid: missionUlid),
       ),
     );
   }

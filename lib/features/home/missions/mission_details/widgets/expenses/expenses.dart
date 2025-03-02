@@ -10,9 +10,9 @@ class ExpensesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => ExpensesViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) => ExpensesViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => ExpensesViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => ExpensesViewHandset(missionUlid: missionUlid),
       ),
     );
   }

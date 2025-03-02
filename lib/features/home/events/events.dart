@@ -11,9 +11,9 @@ class EventsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const EventsPageTablet(),
+      defaultBuilder: (_, _) => const EventsPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const EventsPageHandset(),
+        handset: (_, _) => const EventsPageHandset(),
       ),
     );
   }

@@ -16,9 +16,9 @@ class _StudentLandingPageState extends State<StudentLandingPage> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const StudentLandingPageTablet(),
+      defaultBuilder: (_, _) => const StudentLandingPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const StudentLandingPageHandset(),
+        handset: (_, _) => const StudentLandingPageHandset(),
       ),
     );
   }

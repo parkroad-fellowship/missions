@@ -43,7 +43,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                 Hive.box<dynamic>(
                   PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
                 ).listenable(),
-            builder: (context, _, __) {
+            builder: (context, _, _) {
               final isLoggedOut = getIt<HiveService>().isLoggedOut();
               Logger().e('isLoggedOut: $isLoggedOut');
               if (isLoggedOut) {

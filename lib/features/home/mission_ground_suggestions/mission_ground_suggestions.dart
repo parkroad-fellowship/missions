@@ -11,9 +11,9 @@ class MissionGroundSuggestionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const MissionGroundSuggestionsPageTablet(),
+      defaultBuilder: (_, _) => const MissionGroundSuggestionsPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const MissionGroundSuggestionsPageHandset(),
+        handset: (_, _) => const MissionGroundSuggestionsPageHandset(),
       ),
     );
   }

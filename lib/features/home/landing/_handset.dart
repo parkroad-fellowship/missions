@@ -83,7 +83,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                                           .values
                                           .hiveBox,
                                     ).listenable(),
-                                builder: (context, box, _) {
+                                builder: (context, _, _) {
                                   final profilePicture =
                                       getIt<HiveService>()
                                           .retrieveMember()
@@ -123,9 +123,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                         Text(
                           l10n.hello(
                             getIt<HiveService>()
-                                .retrieveProfile()!
-                                .member!
-                                .lastName,
+                                    .retrieveProfile()
+                                    ?.member
+                                    ?.lastName ??
+                                '',
                           ),
                           style: Theme.of(context).textTheme.displayLarge,
                         ),

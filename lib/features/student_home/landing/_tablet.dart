@@ -125,7 +125,7 @@ class _StudentLandingPageTabletState extends State<StudentLandingPageTablet> {
                       Hive.box<dynamic>(
                         PRFSuperAppConfig.instance!.values.hiveBox,
                       ).listenable(),
-                  builder: (context, _, __) {
+                  builder: (context, _, _) {
                     final (email, password) =
                         getIt<HiveService>().retrieveStudentCredentials();
                     if (password == null) {

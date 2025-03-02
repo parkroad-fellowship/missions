@@ -10,9 +10,9 @@ class GalleryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => GalleryViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) => GalleryViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => GalleryViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => GalleryViewHandset(missionUlid: missionUlid),
       ),
     );
   }

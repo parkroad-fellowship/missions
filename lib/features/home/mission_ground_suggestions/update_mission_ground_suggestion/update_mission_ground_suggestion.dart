@@ -15,12 +15,12 @@ class UpdateMissionGroundSuggestionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => UpdateMissionGroundSuggestionViewHandset(
+          (_, _) => UpdateMissionGroundSuggestionViewHandset(
             missionGroundSuggestion: missionGroundSuggestion,
           ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset:
-            (_, __) => UpdateMissionGroundSuggestionViewHandset(
+            (_, _) => UpdateMissionGroundSuggestionViewHandset(
               missionGroundSuggestion: missionGroundSuggestion,
             ),
       ),

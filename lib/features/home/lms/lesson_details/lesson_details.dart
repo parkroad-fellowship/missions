@@ -22,14 +22,14 @@ class LessonDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => LessonDetailsTablet(
+          (_, _) => LessonDetailsTablet(
             lessonModule: lessonModule,
             courseUlid: courseUlid,
             moduleUlid: moduleUlid,
           ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset:
-            (_, __) => LessonDetailsHandset(
+            (_, _) => LessonDetailsHandset(
               lessonModule: lessonModule,
               courseUlid: courseUlid,
               moduleUlid: moduleUlid,

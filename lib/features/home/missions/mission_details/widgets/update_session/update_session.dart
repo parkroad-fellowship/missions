@@ -17,13 +17,13 @@ class UpdateSessionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => UpdateSessionViewHandset(
+          (_, _) => UpdateSessionViewHandset(
             missionUlid: missionUlid,
             missionSession: missionSession,
           ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset:
-            (_, __) => UpdateSessionViewHandset(
+            (_, _) => UpdateSessionViewHandset(
               missionUlid: missionUlid,
               missionSession: missionSession,
             ),

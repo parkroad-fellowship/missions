@@ -10,10 +10,9 @@ class AddSessionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, __) => AddSessionViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) => AddSessionViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => AddSessionViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => AddSessionViewHandset(missionUlid: missionUlid),
       ),
     );
   }

@@ -10,9 +10,9 @@ class SoulsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => SoulsViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) => SoulsViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => SoulsViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => SoulsViewHandset(missionUlid: missionUlid),
       ),
     );
   }

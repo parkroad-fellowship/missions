@@ -11,9 +11,9 @@ class MemberFAQPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const MemberFAQPageTablet(),
+      defaultBuilder: (_, _) => const MemberFAQPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const MemberFAQPageHandset(),
+        handset: (_, _) => const MemberFAQPageHandset(),
       ),
     );
   }

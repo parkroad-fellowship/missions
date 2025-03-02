@@ -10,9 +10,9 @@ class AddMediaView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => AddMediaViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) => AddMediaViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => AddMediaViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => AddMediaViewHandset(missionUlid: missionUlid),
       ),
     );
   }

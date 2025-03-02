@@ -47,7 +47,7 @@ class NetworkUtil {
     }
 
     (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
-        () => HttpClient()..badCertificateCallback = (_, __, ___) => true;
+        () => HttpClient()..badCertificateCallback = (_, _, __) => true;
     return dio;
   }
 

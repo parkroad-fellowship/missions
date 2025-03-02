@@ -11,9 +11,9 @@ class FAQPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const FAQPageTablet(),
+      defaultBuilder: (_, _) => const FAQPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const FAQPageHandset(),
+        handset: (_, _) => const FAQPageHandset(),
       ),
     );
   }
