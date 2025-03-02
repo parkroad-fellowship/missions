@@ -31,6 +31,8 @@ class PRFMember with _$PRFMember {
     @JsonKey(name: 'profession_institution') String? professionInstitution,
     @JsonKey(name: 'profession_location') String? professionLocation,
     @JsonKey(name: 'profession_contact') String? professionContact,
+    String? bio,
+    @JsonKey(name: 'linked_in_url') String? linkedInUrl,
     PRFUser? user,
     @JsonKey(name: 'marital_status') PRFMaritalStatus? maritalStatus,
     PRFProfession? profession,

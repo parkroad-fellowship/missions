@@ -43,7 +43,7 @@ class AuthServiceImpl implements AuthService {
         queryParameters: <String, dynamic>{
           'include':
               'roles.permissions,member.groupMembers.group,student,'
-              'member.memberships.spiritualYear',
+              'member.memberships.spiritualYear,member.profilePicture',
         },
       );
 

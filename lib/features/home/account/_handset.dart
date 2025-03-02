@@ -1,4 +1,6 @@
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_membership_type.dart';
+import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
@@ -10,7 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logger/logger.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class AccountPageHandset extends StatelessWidget {
   const AccountPageHandset({super.key});
@@ -18,6 +24,8 @@ class AccountPageHandset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+
+    Logger().d(getIt<HiveService>().retrieveMember());
 
     return Scaffold(
       body: SafeArea(
@@ -95,8 +103,8 @@ class AccountPageHandset extends StatelessWidget {
                   child: Stack(
                     children: [
                       Container(
-                        width: 120,
-                        height: 120,
+                        width: 200,
+                        height: 200,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
@@ -112,8 +120,10 @@ class AccountPageHandset extends StatelessWidget {
                                 ).listenable(),
                             builder: (context, box, _) {
                               final profilePicture =
-                                  getIt<HiveService>().retrieveMember()!.profilePicture;
-                              
+                                  getIt<HiveService>()
+                                      .retrieveMember()
+                                      ?.profilePicture;
+
                               return profilePicture != null
                                   ? Image.network(
                                     profilePicture.temporaryURL,
@@ -138,36 +148,95 @@ class AccountPageHandset extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () async {
-                            // TODO: Implement image picker and upload logic
-                            // final ImagePicker picker = ImagePicker();
-                            // final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                            // if (image != null) {
-                            //   // Upload image and update profile
-                            // }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(8.w),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              shape: BoxShape.circle,
+                      ValueListenableBuilder(
+                        valueListenable:
+                            Hive.box<dynamic>(
+                              PRFSuperAppConfig.instance!.values.hiveBox,
+                            ).listenable(),
+                        builder: (context, box, _) {
+                          final member = getIt<HiveService>().retrieveMember();
+                          if (member == null) return SizedBox.shrink();
+                          return Positioned(
+                            bottom: 10,
+                            right: 10,
+                            child: GestureDetector(
+                              onTap:
+                                  () => context
+                                      .read<ChangeProfilePictureCubit>()
+                                      .changeProfilePicture(
+                                        context: context,
+                                        modelUlid: member.ulid,
+                                        model:
+                                            PRFMediaModel.memberProfilePictures,
+                                        mediaType: RequestType.image,
+                                      ),
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: BlocConsumer<
+                                  ChangeProfilePictureCubit,
+                                  ChangeProfilePictureState
+                                >(
+                                  listener: (context, state) {
+                                    state.mapOrNull(
+                                      loaded: (_) {
+                                        Gaimon.success();
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              l10n.successfullyUpdated,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      error: (error) {
+                                        Gaimon.error();
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(error.message),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  builder:
+                                      (context, state) => state.maybeWhen(
+                                        orElse:
+                                            () => Icon(
+                                              Icons.edit,
+                                              size: 24,
+                                              color: Colors.white,
+                                            ),
+                                        loading:
+                                            () => SizedBox.square(
+                                              dimension: 24,
+                                              child:
+                                                  PRFCircularProgressIndicator(
+                                                    color:
+                                                        Theme.of(
+                                                          context,
+                                                        ).colorScheme.surface,
+                                                  ),
+                                            ),
+                                      ),
+                                ),
+                              ),
                             ),
-                            child: Icon(
-                              Icons.edit,
-                              size: 24,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
               ),
+
               SliverToBoxAdapter(child: SizedBox(height: 24.h)),
 
               ValueListenableBuilder(
@@ -214,6 +283,28 @@ class AccountPageHandset extends StatelessWidget {
                           enabled: false,
                         ),
                       ),
+                      SizedBox(height: 15.h),
+                      if (profile.member?.bio != null ||
+                          (profile.member?.bio?.isEmpty ?? false))
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40.w),
+                          child: FormFieldLabel(label: l10n.bio),
+                        ),
+                      if (profile.member?.bio != null ||
+                          (profile.member?.bio?.isEmpty ?? false))
+                        SizedBox(height: 10.h),
+                      if (profile.member?.bio != null ||
+                          (profile.member?.bio?.isEmpty ?? false))
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40.w),
+                          child: PRFTextAreaInput(
+                            hintText: l10n.enterEmail,
+                            controller: TextEditingController(
+                              text: profile.member?.bio,
+                            ),
+                            enabled: false,
+                          ),
+                        ),
                     ]),
                   );
                 },
@@ -260,7 +351,6 @@ class AccountPageHandset extends StatelessWidget {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
-              
                   return SliverList.builder(
                     itemCount: profile.member!.memberships!.length,
                     itemBuilder:
