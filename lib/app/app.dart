@@ -29,7 +29,6 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
           NotificationService.onDismissActionReceivedMethod,
     );
 
-    getIt<NotificationService>().requestPermissions();
     super.initState();
   }
 

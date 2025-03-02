@@ -6,7 +6,10 @@ import 'package:app/models/remote/remote_config.dart';
 import 'package:app/utils/_index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
+import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 
 abstract class AuthService {
@@ -18,6 +21,7 @@ abstract class AuthService {
   Future<void> initRemoteConfig();
   RemoteConfig getReviewConfig();
   bool canShowAuth();
+  Future<(bool, String?)> authenticateLocally();
 }
 
 class AuthServiceImpl implements AuthService {
@@ -27,6 +31,8 @@ class AuthServiceImpl implements AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
+
+  final LocalAuthentication localAuth = LocalAuthentication();
 
   @override
   Future<String> signIn({required SignInDTO signInDTO}) async {
@@ -143,5 +149,31 @@ class AuthServiceImpl implements AuthService {
     Logger().i(reviewConfig);
     return reviewConfig.isInReview &&
         reviewConfig.appVersion == Misc.getFullAppVersion();
+  }
+
+  @override
+  Future<(bool, String?)> authenticateLocally() async {
+    try {
+      final result = await localAuth.authenticate(
+        localizedReason: 'We need to protect your giving history.',
+        options: const AuthenticationOptions(useErrorDialogs: false),
+      );
+
+      return (result, null);
+    } on PlatformException catch (e) {
+      if (e.code == auth_error.notAvailable) {
+        return (
+          false,
+          'Biometric authentication is not available on this device.',
+        );
+      } else if (e.code == auth_error.notEnrolled) {
+        return (
+          false,
+          'Biometric authentication is not enrolled on this device.',
+        );
+      } else {
+        return (false, e.message);
+      }
+    }
   }
 }

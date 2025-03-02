@@ -9,18 +9,19 @@ import 'package:app/widgets/buttons/secondary.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:logger/logger.dart';
 
 abstract class NotificationService {
-  void init();
+  Future<void> init();
 
-  void requestPermissions();
+  Future<void> requestPermissions();
 
   void createNotification({required NotificationContent content});
-  void schedulePrayerPromptNotifications({
+  Future<void> schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   });
-  void scheduleGivingNotification();
+  Future<void> scheduleGivingNotification();
   @pragma('vm:entry-point')
   static Future<void> onNotificationCreatedMethod(
     ReceivedNotification receivedNotification,
@@ -138,8 +139,8 @@ abstract class NotificationService {
 
 class NotificationServiceImpl implements NotificationService {
   @override
-  void init() {
-    AwesomeNotifications().initialize(
+  Future<void> init() async {
+    await AwesomeNotifications().initialize(
       null,
       [
         NotificationChannel(
@@ -170,8 +171,8 @@ class NotificationServiceImpl implements NotificationService {
   }
 
   @override
-  void requestPermissions() {
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+  Future<void> requestPermissions() async {
+    await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
         // This is just a basic example. For real apps, you must show some
         // friendly dialog box before call the request method.
@@ -187,11 +188,11 @@ class NotificationServiceImpl implements NotificationService {
   }
 
   @override
-  void schedulePrayerPromptNotifications({
+  Future<void> schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
-  }) {
+  }) async {
     for (final prayerPrompt in prayerPrompts) {
-      AwesomeNotifications().createNotification(
+      await AwesomeNotifications().createNotification(
         content: NotificationContent(
           autoDismissible: false,
           id: int.parse('${prayerPrompt.dayOfWeek}${prayerPrompt.timeOfDay}'),
@@ -212,14 +213,15 @@ class NotificationServiceImpl implements NotificationService {
           second: 0,
           repeats: true,
           allowWhileIdle: true,
+          timeZone: await _timezone,
         ),
       );
     }
   }
 
   @override
-  void scheduleGivingNotification() {
-    AwesomeNotifications().createNotification(
+  Future<void> scheduleGivingNotification() async {
+    await AwesomeNotifications().createNotification(
       content: NotificationContent(
         autoDismissible: false,
         id: 111001,
@@ -236,7 +238,10 @@ class NotificationServiceImpl implements NotificationService {
         second: 0,
         repeats: true,
         allowWhileIdle: true,
+        timeZone: await _timezone,
       ),
     );
   }
+
+  Future<String> get _timezone => FlutterTimezone.getLocalTimezone();
 }

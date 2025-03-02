@@ -23,7 +23,7 @@ class GetPrayerPromptsCubit extends Cubit<GetPrayerPromptsState> {
     try {
       final prayerPrompts = await _missionService.getPrayerPrompts();
 
-      _notificationService.schedulePrayerPromptNotifications(
+      await _notificationService.schedulePrayerPromptNotifications(
         prayerPrompts: prayerPrompts,
       );
 
