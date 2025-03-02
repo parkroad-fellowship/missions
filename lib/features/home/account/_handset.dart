@@ -90,6 +90,86 @@ class AccountPageHandset extends StatelessWidget {
                 ),
               ),
 
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: ValueListenableBuilder(
+                            valueListenable:
+                                Hive.box<dynamic>(
+                                  PRFSuperAppConfig.instance!.values.hiveBox,
+                                ).listenable(),
+                            builder: (context, box, _) {
+                              final profilePicture =
+                                  getIt<HiveService>().retrieveMember()!.profilePicture;
+                              
+                              return profilePicture != null
+                                  ? Image.network(
+                                    profilePicture.temporaryURL,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) => Icon(
+                                          Icons.person,
+                                          size: 60,
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.primary,
+                                        ),
+                                  )
+                                  : Icon(
+                                    Icons.person,
+                                    size: 60,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  );
+                            },
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () async {
+                            // TODO: Implement image picker and upload logic
+                            // final ImagePicker picker = ImagePicker();
+                            // final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                            // if (image != null) {
+                            //   // Upload image and update profile
+                            // }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8.w),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              size: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 24.h)),
+
               ValueListenableBuilder(
                 valueListenable:
                     Hive.box<dynamic>(
@@ -153,10 +233,6 @@ class AccountPageHandset extends StatelessWidget {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
-                  if (profile.member!.memberships == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
                   return SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.only(top: 64.w),
@@ -184,10 +260,7 @@ class AccountPageHandset extends StatelessWidget {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
-                  if (profile.member!.memberships == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
+              
                   return SliverList.builder(
                     itemCount: profile.member!.memberships!.length,
                     itemBuilder:

@@ -154,10 +154,7 @@ class AccountPageTablet extends StatelessWidget {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
-                  if (profile.member!.memberships == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
+      
                   return SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.only(top: 64.w),
@@ -185,9 +182,6 @@ class AccountPageTablet extends StatelessWidget {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
-                  if (profile.member!.memberships == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
 
                   return SliverList.builder(
                     itemCount: profile.member!.memberships!.length,
