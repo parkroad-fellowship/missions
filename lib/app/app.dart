@@ -64,10 +64,11 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                   tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
                     labelStyle: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: const Color(PRFTheme.secondaryColor),
+                      color: const Color(PRFTheme.primaryColor),
                     ),
                     unselectedLabelStyle: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Colors.grey,
                     ),
                   ),
                   inputDecorationTheme: PRFTheme.light.inputDecorationTheme
