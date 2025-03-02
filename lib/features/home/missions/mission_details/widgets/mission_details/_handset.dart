@@ -304,7 +304,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        mission!.school!.directions.toString(),
+                        mission.school!.directions.toString(),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
