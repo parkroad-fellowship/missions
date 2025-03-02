@@ -112,7 +112,7 @@ class Misc {
   ).format(amount);
 
   static double getScaleFactor(BuildContext context) {
-     final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
     final isTablet =
         screenWidth >= 600; // Material Design breakpoint for tablets
 

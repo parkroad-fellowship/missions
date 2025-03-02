@@ -2,6 +2,7 @@ import 'package:app/enums/prf_mission_role.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
@@ -156,7 +157,7 @@ class SubscriberActionCard extends StatelessWidget {
                         },
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     Animate(
                       effects: const [
                         ShakeEffect(
@@ -165,111 +166,10 @@ class SubscriberActionCard extends StatelessWidget {
                         ),
                       ],
                       child: IconButton(
-                        icon: Icon(Icons.remove_red_eye),
+                        icon: const Icon(Icons.remove_red_eye),
                         color: Theme.of(context).colorScheme.primary,
                         onPressed:
-                            () => WoltModalSheet.show<void>(
-                              context: context,
-                              pageListBuilder: (modalSheetContext) {
-                                return [
-                                  WoltModalSheetPage(
-                                    backgroundColor: Colors.white,
-                                    surfaceTintColor: Colors.white,
-                                    child: SizedBox(
-                                      height:
-                                          MediaQuery.sizeOf(context).height *
-                                          0.4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              width: 200,
-                                              height: 200,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color:
-                                                      Theme.of(
-                                                        context,
-                                                      ).colorScheme.primary,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                              child: ClipOval(
-                                                child:
-                                                    subscription
-                                                                    .member
-                                                                    .profilePictureUrl !=
-                                                                null &&
-                                                            subscription
-                                                                .member
-                                                                .profilePictureUrl!
-                                                                .isNotEmpty
-                                                        ? Image.network(
-                                                          subscription
-                                                              .member
-                                                              .profilePictureUrl!,
-                                                          fit: BoxFit.cover,
-                                                          errorBuilder:
-                                                              (
-                                                                context,
-                                                                error,
-                                                                stackTrace,
-                                                              ) => Icon(
-                                                                Icons.person,
-                                                                size: 60,
-                                                                color:
-                                                                    Theme.of(
-                                                                          context,
-                                                                        )
-                                                                        .colorScheme
-                                                                        .primary,
-                                                              ),
-                                                        )
-                                                        : Icon(
-                                                          Icons.person,
-                                                          size: 60,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                        ),
-                                              ),
-                                            ),
-                                            if (subscription.member.bio !=
-                                                    null &&
-                                                subscription
-                                                    .member
-                                                    .bio!
-                                                    .isNotEmpty)
-                                              SizedBox(height: 16.h),
-                                            if (subscription.member.bio !=
-                                                    null &&
-                                                subscription
-                                                    .member
-                                                    .bio!
-                                                    .isNotEmpty)
-                                              Align(
-                                                child: Text(
-                                                  subscription.member.bio!,
-                                                  textAlign: TextAlign.center,
-                                                  style:
-                                                      Theme.of(
-                                                        context,
-                                                      ).textTheme.bodyLarge,
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ];
-                              },
-                            ),
+                            () => _viewSubscriber(context, subscription.member),
                       ),
                     ),
                   ],
@@ -281,4 +181,71 @@ class SubscriberActionCard extends StatelessWidget {
       ),
     );
   }
+
+  void _viewSubscriber(
+    BuildContext context,
+    PRFLocalMember member,
+  ) => WoltModalSheet.show<void>(
+    context: context,
+    pageListBuilder: (modalSheetContext) {
+      return [
+        WoltModalSheetPage(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.4,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                    ),
+                    child: ClipOval(
+                      child:
+                          member.profilePictureUrl != null &&
+                                  member.profilePictureUrl!.isNotEmpty
+                              ? Image.network(
+                                member.profilePictureUrl!,
+                                fit: BoxFit.cover,
+                                errorBuilder:
+                                    (context, error, stackTrace) => Icon(
+                                      Icons.person,
+                                      size: 60,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                              )
+                              : Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                    ),
+                  ),
+                  if (subscription.member.bio != null && member.bio!.isNotEmpty)
+                    SizedBox(height: 16.h),
+                  if (member.bio != null && member.bio!.isNotEmpty)
+                    Align(
+                      child: Text(
+                        member.bio!,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ];
+    },
+  );
 }

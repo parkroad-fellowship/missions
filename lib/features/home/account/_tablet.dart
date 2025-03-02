@@ -94,7 +94,7 @@ class AccountPageTablet extends StatelessWidget {
                   ),
                 ),
               ),
-const SliverToBoxAdapter(child: SizedBox(height: 36)),
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
               SliverToBoxAdapter(
                 child: Center(
                   child: Stack(

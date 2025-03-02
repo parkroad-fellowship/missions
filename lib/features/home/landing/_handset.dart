@@ -54,7 +54,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Row(

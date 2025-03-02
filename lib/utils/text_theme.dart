@@ -6,8 +6,7 @@ class PRFTextTheme {
   PRFTextTheme._();
 
   static TextTheme getLightTheme(BuildContext context) {
-   
-   final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = Misc.getScaleFactor(context);
 
     const defaultTextColor = Colors.black;
 

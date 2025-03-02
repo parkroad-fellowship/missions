@@ -55,7 +55,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const  SizedBox(height: 36),
+                  const SizedBox(height: 36),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Row(
