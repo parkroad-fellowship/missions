@@ -964,6 +964,9 @@ class LocalDBServiceImpl implements LocalDBService {
               ulid: missionSubscription.member!.ulid,
               fullName: missionSubscription.member!.fullName,
               phoneNumber: missionSubscription.member!.phoneNumber,
+              profilePictureUrl:
+                  missionSubscription.member!.profilePicture?.temporaryURL,
+              bio: missionSubscription.member!.bio,
             ),
             missionUlid: missionUlid,
           ),

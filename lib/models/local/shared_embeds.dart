@@ -4,11 +4,19 @@ part 'shared_embeds.g.dart';
 
 @embedded
 class PRFLocalMember {
-  PRFLocalMember({this.ulid, this.fullName, this.phoneNumber});
+  PRFLocalMember({
+    this.ulid,
+    this.fullName,
+    this.phoneNumber,
+    this.profilePictureUrl,
+    this.bio,
+  });
 
   final String? ulid;
   final String? fullName;
   final String? phoneNumber;
+  final String? profilePictureUrl;
+  final String? bio;
 }
 
 @embedded

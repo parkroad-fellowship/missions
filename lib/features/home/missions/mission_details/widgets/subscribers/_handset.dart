@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class SubscribersViewHandset extends StatefulWidget {
   const SubscribersViewHandset({required this.missionUlid, super.key});
@@ -85,6 +87,7 @@ class SubscriberActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
+    Logger().i(subscription.member.profilePictureUrl);
     return Animate(
       effects: const [SaturateEffect()],
       child: Stack(
@@ -131,35 +134,145 @@ class SubscriberActionCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Container(
-                  alignment: Alignment.centerRight,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 32.w,
-                    vertical: 4.h,
-                  ),
-                  child: Animate(
-                    effects: const [
-                      ShakeEffect(
-                        duration: Duration(seconds: 2),
-                        delay: Duration(milliseconds: 500),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Animate(
+                      effects: const [
+                        ShakeEffect(
+                          duration: Duration(seconds: 2),
+                          delay: Duration(milliseconds: 500),
+                        ),
+                      ],
+                      child: IconButton(
+                        icon: const Icon(Icons.call),
+                        color: Theme.of(context).colorScheme.primary,
+                        onPressed: () async {
+                          final uri = Uri(
+                            scheme: 'tel',
+                            path: subscription.member.phoneNumber,
+                          );
+                          await Misc.openUrl(uri);
+                        },
                       ),
-                    ],
-                    child: IconButton(
-                      icon: const Icon(Icons.call),
-                      color: Theme.of(context).colorScheme.primary,
-                      onPressed: () async {
-                        final uri = Uri(
-                          scheme: 'tel',
-                          path: subscription.member.phoneNumber,
-                        );
-                        await Misc.openUrl(uri);
-                      },
                     ),
-                  ),
+                    SizedBox(width: 16),
+                    Animate(
+                      effects: const [
+                        ShakeEffect(
+                          duration: Duration(seconds: 2),
+                          delay: Duration(milliseconds: 500),
+                        ),
+                      ],
+                      child: IconButton(
+                        icon: Icon(Icons.remove_red_eye),
+                        color: Theme.of(context).colorScheme.primary,
+                        onPressed:
+                            () => WoltModalSheet.show<void>(
+                              context: context,
+                              pageListBuilder: (modalSheetContext) {
+                                return [
+                                  WoltModalSheetPage(
+                                    backgroundColor: Colors.white,
+                                    surfaceTintColor: Colors.white,
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.sizeOf(context).height *
+                                          0.4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: 200,
+                                              height: 200,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color:
+                                                      Theme.of(
+                                                        context,
+                                                      ).colorScheme.primary,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: ClipOval(
+                                                child:
+                                                    subscription
+                                                                    .member
+                                                                    .profilePictureUrl !=
+                                                                null &&
+                                                            subscription
+                                                                .member
+                                                                .profilePictureUrl!
+                                                                .isNotEmpty
+                                                        ? Image.network(
+                                                          subscription
+                                                              .member
+                                                              .profilePictureUrl!,
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder:
+                                                              (
+                                                                context,
+                                                                error,
+                                                                stackTrace,
+                                                              ) => Icon(
+                                                                Icons.person,
+                                                                size: 60,
+                                                                color:
+                                                                    Theme.of(
+                                                                          context,
+                                                                        )
+                                                                        .colorScheme
+                                                                        .primary,
+                                                              ),
+                                                        )
+                                                        : Icon(
+                                                          Icons.person,
+                                                          size: 60,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                        ),
+                                              ),
+                                            ),
+                                            if (subscription.member.bio !=
+                                                    null &&
+                                                subscription
+                                                    .member
+                                                    .bio!
+                                                    .isNotEmpty)
+                                              SizedBox(height: 16.h),
+                                            if (subscription.member.bio !=
+                                                    null &&
+                                                subscription
+                                                    .member
+                                                    .bio!
+                                                    .isNotEmpty)
+                                              Align(
+                                                child: Text(
+                                                  subscription.member.bio!,
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.bodyLarge,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ];
+                              },
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
