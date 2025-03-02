@@ -7,7 +7,7 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/versioning/build_version.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart' show BuildContext, Size;
+import 'package:flutter/material.dart' show BuildContext, MediaQuery, Size;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:slugify/slugify.dart' as slugify;
@@ -46,8 +46,12 @@ class Misc {
       (value * pow(10, fractionalDigits)).truncate() /
       pow(10, fractionalDigits);
 
+  static String getFullAppVersion() {
+    return packageVersion.trim();
+  }
+
   static String getAppVersion() {
-    return packageVersion.replaceRange(6, packageVersion.length, '');
+    return packageVersion.replaceRange(7, packageVersion.length, '');
   }
 
   static String getSluggedAppVersion() {
@@ -106,4 +110,21 @@ class Misc {
     symbol: '',
     decimalDigits: 0,
   ).format(amount);
+
+  static double getScaleFactor(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet =
+        screenWidth >= 600; // Material Design breakpoint for tablets
+
+    // Use different base widths for tablet and phone
+    final baseWidth =
+        isTablet ? 600.0 : 375.0; // 600 for tablets, 375 for phones (iPhone SE)
+    final scaleFactor = screenWidth / baseWidth;
+
+    // Different scale ranges for tablet and phone
+    return scaleFactor.clamp(
+      isTablet ? 0.8 : 0.8, // Minimum scale
+      isTablet ? 1.6 : 1.4, // Maximum scale - slightly larger for tablets
+    ); // Limit scaling range
+  }
 }

@@ -33,7 +33,7 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
       final missionSubscriptions = await _missionService.getSubscriptions(
         missionUlid: missionUlid,
         subscriptionStatus: PRFMissionSubscriptionStatus.approved,
-        includes: 'member',
+        includes: 'member.profilePicture',
       );
       await _localDBService.persistMissionSubscriptions(
         missionSubscriptions: missionSubscriptions,

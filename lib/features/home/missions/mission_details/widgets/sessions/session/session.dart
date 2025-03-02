@@ -21,14 +21,14 @@ class SessionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => SessionPageTablet(
+          (_, _) => SessionPageTablet(
             missionSessionUlid: missionSessionUlid,
             missionUlid: missionUlid,
             missionSessionId: missionSessionId,
           ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset:
-            (_, __) => SessionPageHandset(
+            (_, _) => SessionPageHandset(
               missionSessionUlid: missionSessionUlid,
               missionUlid: missionUlid,
               missionSessionId: missionSessionId,

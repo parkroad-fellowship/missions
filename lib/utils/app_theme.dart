@@ -100,7 +100,7 @@ class PRFTheme {
         ),
       ),
     ),
-    iconTheme: const IconThemeData(color: Color(primaryColor), size: 24),
+    iconTheme: const IconThemeData(color: Color(primaryColor)),
     tabBarTheme: TabBarTheme(
       dividerColor: Colors.white,
       tabAlignment: TabAlignment.start,

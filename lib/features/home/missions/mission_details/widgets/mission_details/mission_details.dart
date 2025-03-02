@@ -11,9 +11,9 @@ class MissionDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => MissionDetailsViewHandset(missionUlid: missionUlid),
+          (_, _) => MissionDetailsViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => MissionDetailsViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => MissionDetailsViewHandset(missionUlid: missionUlid),
       ),
     );
   }

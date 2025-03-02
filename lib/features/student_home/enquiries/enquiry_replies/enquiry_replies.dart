@@ -14,9 +14,9 @@ class EnquiryRepliesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => EnquiryRepliesPageTablet(enquiry: enquiry),
+      defaultBuilder: (_, _) => EnquiryRepliesPageTablet(enquiry: enquiry),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => EnquiryRepliesPageHandset(enquiry: enquiry),
+        handset: (_, _) => EnquiryRepliesPageHandset(enquiry: enquiry),
       ),
     );
   }

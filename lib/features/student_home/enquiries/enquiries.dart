@@ -11,9 +11,9 @@ class LearnerEnquiriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const LearnerEnquiriesPageTablet(),
+      defaultBuilder: (_, _) => const LearnerEnquiriesPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const LearnerEnquiriesPageHandset(),
+        handset: (_, _) => const LearnerEnquiriesPageHandset(),
       ),
     );
   }

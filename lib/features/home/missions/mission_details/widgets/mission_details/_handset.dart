@@ -37,7 +37,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            SingleStreamWrapper<PRFLocalMission>(
+            SingleStreamWrapper<PRFLocalMission?>(
               stream: getIt<LocalDBService>().getMission(
                 missionUlid: missionUlid,
               ),
@@ -46,7 +46,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   (context, mission) => ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      mission.school!.name!.toUpperCase(),
+                      mission!.school!.name!.toUpperCase(),
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     subtitle: Column(
@@ -77,7 +77,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 l10n.theme,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              subtitle: SingleStreamWrapper<PRFLocalMission>(
+              subtitle: SingleStreamWrapper<PRFLocalMission?>(
                 stream: getIt<LocalDBService>().getMission(
                   missionUlid: missionUlid,
                 ),
@@ -88,7 +88,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       spacing: 8,
                       children: <Widget>[
                         Text(
-                          mission.theme!,
+                          mission!.theme!,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
@@ -116,7 +116,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                 l10n.missionPrepNotes,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              subtitle: SingleStreamWrapper<PRFLocalMission>(
+              subtitle: SingleStreamWrapper<PRFLocalMission?>(
                 stream: getIt<LocalDBService>().getMission(
                   missionUlid: missionUlid,
                 ),
@@ -126,7 +126,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          mission.missionPrepNotes.toString(),
+                          mission!.missionPrepNotes.toString(),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -140,7 +140,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               ),
               widget:
                   (context, mission) =>
-                      (mission.whatsAppLink != null)
+                      (mission!.whatsAppLink != null)
                           ? ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: const Icon(Icons.link),
@@ -171,7 +171,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               widget:
                   (context, mission) => Column(
                     children: [
-                      ...mission.school!.contacts!.map(
+                      ...mission!.school!.contacts!.map(
                         (contact) => ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(contact.name!),
@@ -219,7 +219,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const Spacer(),
-                  SingleStreamWrapper<PRFLocalMission>(
+                  SingleStreamWrapper<PRFLocalMission?>(
                     stream: getIt<LocalDBService>().getMission(
                       missionUlid: missionUlid,
                     ),
@@ -233,7 +233,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         ],
                         child: IconButton(
                           onPressed: () async {
-                            final school = mission.school!;
+                            final school = mission!.school!;
 
                             final isGoogleMapAvaialable =
                                 await MapLauncher.isMapAvailable(
@@ -291,7 +291,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   ),
                 ],
               ),
-              subtitle: SingleStreamWrapper<PRFLocalMission>(
+              subtitle: SingleStreamWrapper<PRFLocalMission?>(
                 stream: getIt<LocalDBService>().getMission(
                   missionUlid: missionUlid,
                 ),
@@ -300,7 +300,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        mission.school!.address!,
+                        mission!.school!.address!,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
@@ -324,7 +324,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                   const Spacer(),
                 ],
               ),
-              subtitle: SingleStreamWrapper<PRFLocalMission>(
+              subtitle: SingleStreamWrapper<PRFLocalMission?>(
                 stream: getIt<LocalDBService>().getMission(
                   missionUlid: missionUlid,
                 ),
@@ -334,7 +334,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     children: <Widget>[
                       Text(
                         l10n.estimatedDistance(
-                          mission.school!.distance.toString(),
+                          mission!.school!.distance.toString(),
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
@@ -361,7 +361,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               widget:
                   (context, mission) => Column(
                     children: [
-                      if (mission.weatherForecasts?.isNotEmpty ?? false)
+                      if (mission!.weatherForecasts?.isNotEmpty ?? false)
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(

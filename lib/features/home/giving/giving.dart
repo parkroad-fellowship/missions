@@ -11,9 +11,9 @@ class GivingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const GivingPageTablet(),
+      defaultBuilder: (_, _) => const GivingPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const GivingPageHandset(),
+        handset: (_, _) => const GivingPageHandset(),
       ),
     );
   }

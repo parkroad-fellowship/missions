@@ -10,9 +10,9 @@ class CreateEnquiryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const CreateEnquiryPageHandset(),
+      defaultBuilder: (_, _) => const CreateEnquiryPageHandset(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const CreateEnquiryPageHandset(),
+        handset: (_, _) => const CreateEnquiryPageHandset(),
       ),
     );
   }

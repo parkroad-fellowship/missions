@@ -1,3 +1,4 @@
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -5,20 +6,7 @@ class PRFTextTheme {
   PRFTextTheme._();
 
   static TextTheme getLightTheme(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet =
-        screenWidth >= 600; // Material Design breakpoint for tablets
-
-    // Use different base widths for tablet and phone
-    final baseWidth =
-        isTablet ? 600.0 : 375.0; // 600 for tablets, 375 for phones (iPhone SE)
-    final scaleFactor = screenWidth / baseWidth;
-
-    // Different scale ranges for tablet and phone
-    final adjustedScaleFactor = scaleFactor.clamp(
-      isTablet ? 0.8 : 0.8, // Minimum scale
-      isTablet ? 1.6 : 1.4, // Maximum scale - slightly larger for tablets
-    ); // Limit scaling range
+    final adjustedScaleFactor = Misc.getScaleFactor(context);
 
     const defaultTextColor = Colors.black;
 

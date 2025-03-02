@@ -10,7 +10,9 @@ enum PRFMissionStatus {
   @JsonValue(4)
   cancelled,
   @JsonValue(5)
-  serviced;
+  serviced,
+  @JsonValue(6)
+  fullySubscribed;
 
   String get name {
     switch (this) {
@@ -24,6 +26,8 @@ enum PRFMissionStatus {
         return 'Cancelled';
       case PRFMissionStatus.serviced:
         return 'Serviced';
+      case PRFMissionStatus.fullySubscribed:
+        return 'Fully Subscribed';
     }
   }
 
@@ -39,6 +43,8 @@ enum PRFMissionStatus {
         return 4;
       case PRFMissionStatus.serviced:
         return 5;
+      case PRFMissionStatus.fullySubscribed:
+        return 6;
     }
   }
 }

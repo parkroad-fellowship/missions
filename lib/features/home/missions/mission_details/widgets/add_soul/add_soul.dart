@@ -10,9 +10,9 @@ class AddSoulView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => AddSoulViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) => AddSoulViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => AddSoulViewHandset(missionUlid: missionUlid),
+        handset: (_, _) => AddSoulViewHandset(missionUlid: missionUlid),
       ),
     );
   }

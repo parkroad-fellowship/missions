@@ -16,9 +16,9 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const AnnouncementsPageTablet(),
+      defaultBuilder: (_, _) => const AnnouncementsPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const AnnouncementsPageHandset(),
+        handset: (_, _) => const AnnouncementsPageHandset(),
       ),
     );
   }

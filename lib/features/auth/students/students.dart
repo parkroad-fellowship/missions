@@ -11,9 +11,9 @@ class StudentIntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const StudentIntroPageTablet(),
+      defaultBuilder: (_, _) => const StudentIntroPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const StudentIntroPageHandset(),
+        handset: (_, _) => const StudentIntroPageHandset(),
       ),
     );
   }

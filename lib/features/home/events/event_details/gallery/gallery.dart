@@ -10,9 +10,9 @@ class EventGalleryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => EventGalleryViewHandset(eventUlid: eventUlid),
+      defaultBuilder: (_, _) => EventGalleryViewHandset(eventUlid: eventUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => EventGalleryViewHandset(eventUlid: eventUlid),
+        handset: (_, _) => EventGalleryViewHandset(eventUlid: eventUlid),
       ),
     );
   }

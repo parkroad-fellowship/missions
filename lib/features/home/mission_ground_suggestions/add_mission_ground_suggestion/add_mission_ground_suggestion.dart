@@ -8,9 +8,9 @@ class AddMissionGroundSuggestionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const AddMissionGroundSuggestionViewHandset(),
+      defaultBuilder: (_, _) => const AddMissionGroundSuggestionViewHandset(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const AddMissionGroundSuggestionViewHandset(),
+        handset: (_, _) => const AddMissionGroundSuggestionViewHandset(),
       ),
     );
   }

@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class LandingPageTablet extends StatefulWidget {
   const LandingPageTablet({super.key});
@@ -54,25 +55,68 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 36),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         GestureDetector(
                           onTap:
                               () => context.router.pushNamed(
                                 PRFSuperAppRouter.accountRoute,
                               ),
-                          child: CircleAvatar(
-                            radius: 70.r,
-                            backgroundColor: Colors.white,
-                            child: CircleAvatar(
-                              child: Text(
-                                Misc.getUserNameInitials(
-                                  getIt<HiveService>()
-                                      .retrieveMember()!
-                                      .fullName,
-                                ),
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipOval(
+                              child: ValueListenableBuilder(
+                                valueListenable:
+                                    Hive.box<dynamic>(
+                                      PRFSuperAppConfig
+                                          .instance!
+                                          .values
+                                          .hiveBox,
+                                    ).listenable(),
+                                builder: (context, _, _) {
+                                  final profilePicture =
+                                      getIt<HiveService>()
+                                          .retrieveMember()
+                                          ?.profilePicture;
+
+                                  return profilePicture != null
+                                      ? Image.network(
+                                        profilePicture.temporaryURL,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Icon(
+                                                  Icons.person,
+                                                  size: 60,
+                                                  color:
+                                                      Theme.of(
+                                                        context,
+                                                      ).colorScheme.primary,
+                                                ),
+                                      )
+                                      : CircleAvatar(
+                                        child: Text(
+                                          Misc.getUserNameInitials(
+                                            getIt<HiveService>()
+                                                    .retrieveMember()
+                                                    ?.fullName ??
+                                                '',
+                                          ),
+                                        ),
+                                      );
+                                },
                               ),
                             ),
                           ),
@@ -81,9 +125,10 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                         Text(
                           l10n.hello(
                             getIt<HiveService>()
-                                .retrieveProfile()!
-                                .member!
-                                .lastName,
+                                    .retrieveProfile()
+                                    ?.member
+                                    ?.lastName ??
+                                '',
                           ),
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
@@ -122,6 +167,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                       ],
                     ),
                   ),
+
                   SizedBox(height: 48.h),
                   Padding(
                     padding:

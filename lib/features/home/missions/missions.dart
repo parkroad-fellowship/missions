@@ -11,9 +11,9 @@ class MissionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const MissionsPageTablet(),
+      defaultBuilder: (_, _) => const MissionsPageTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const MissionsPageHandset(),
+        handset: (_, _) => const MissionsPageHandset(),
       ),
     );
   }

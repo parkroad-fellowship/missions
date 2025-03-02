@@ -83,7 +83,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
-                        child: StreamBuilder<PRFLocalCourseModule>(
+                        child: StreamBuilder<PRFLocalCourseModule?>(
                           stream: getIt<LocalDBService>().getCourseModule(
                             courseModuleUlid: courseModuleUlid,
                           ),
@@ -93,10 +93,10 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                                 child: CircularProgressIndicator(),
                               );
                             }
-                            final courseModule = snapshot.data!;
+                            final courseModule = snapshot.data;
                             return Text(
                               l10n.percentage(
-                                courseModule.memberModule?.percentComplete
+                                courseModule?.memberModule?.percentComplete
                                         ?.toInt() ??
                                     0,
                               ),
@@ -114,7 +114,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40.w),
-                  child: StreamBuilder<PRFLocalCourseModule>(
+                  child: StreamBuilder<PRFLocalCourseModule?>(
                     stream: getIt<LocalDBService>().getCourseModule(
                       courseModuleUlid: courseModuleUlid,
                     ),
@@ -122,9 +122,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       if (!snapshot.hasData) {
                         return const Center(child: CircularProgressIndicator());
                       }
-                      final courseModule = snapshot.data!;
+                      final courseModule = snapshot.data;
                       return Text(
-                        courseModule.module.name!,
+                        courseModule?.module.name! ?? '',
                         style: Theme.of(context).textTheme.headlineMedium,
                       );
                     },
@@ -133,7 +133,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
               ),
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
-                child: StreamBuilder<PRFLocalCourseModule>(
+                child: StreamBuilder<PRFLocalCourseModule?>(
                   stream: getIt<LocalDBService>().getCourseModule(
                     courseModuleUlid: courseModuleUlid,
                   ),
@@ -145,7 +145,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 40.w),
                       child: Text(
-                        course!.module.description!,
+                        course?.module.description ?? '',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     );

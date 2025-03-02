@@ -307,7 +307,7 @@
     "@all": {},
     "subscribed": "Subscribed",
     "@subscribed": {},
-    "version": "Version: {version}",
+    "version": " v{version}",
     "@version": {
         "placeholders": {
             "version": {
@@ -675,5 +675,9 @@
     "noSouls": "No souls",
     "@noSouls": {},
     "joinWhatsApp": "Join the WhatsApp group for this mission",
-    "@joinWhatsApp": {}
+    "@joinWhatsApp": {},
+    "successfullyUpdated": "Your profile picture has been successfully updated",
+    "@successfullyUpdated": {},
+    "bio": "Bio",
+    "@bio": {}
 }

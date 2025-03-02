@@ -1,4 +1,6 @@
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_membership_type.dart';
+import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
@@ -10,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AccountPageTablet extends StatelessWidget {
   const AccountPageTablet({super.key});
@@ -90,13 +94,152 @@ class AccountPageTablet extends StatelessWidget {
                   ),
                 ),
               ),
+              const SliverToBoxAdapter(child: SizedBox(height: 36)),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: ValueListenableBuilder(
+                            valueListenable:
+                                Hive.box<dynamic>(
+                                  PRFSuperAppConfig.instance!.values.hiveBox,
+                                ).listenable(),
+                            builder: (context, _, _) {
+                              final profilePicture =
+                                  getIt<HiveService>()
+                                      .retrieveMember()
+                                      ?.profilePicture;
+
+                              return profilePicture != null
+                                  ? Image.network(
+                                    profilePicture.temporaryURL,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) => Icon(
+                                          Icons.person,
+                                          size: 60,
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.primary,
+                                        ),
+                                  )
+                                  : Icon(
+                                    Icons.person,
+                                    size: 60,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  );
+                            },
+                          ),
+                        ),
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable:
+                            Hive.box<dynamic>(
+                              PRFSuperAppConfig.instance!.values.hiveBox,
+                            ).listenable(),
+                        builder: (context, _, _) {
+                          final member = getIt<HiveService>().retrieveMember();
+                          if (member == null) return const SizedBox.shrink();
+                          return Positioned(
+                            bottom: 10,
+                            right: 10,
+                            child: GestureDetector(
+                              onTap:
+                                  () => context
+                                      .read<ChangeProfilePictureCubit>()
+                                      .changeProfilePicture(
+                                        context: context,
+                                        modelUlid: member.ulid,
+                                        model:
+                                            PRFMediaModel.memberProfilePictures,
+                                        mediaType: RequestType.image,
+                                      ),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: BlocConsumer<
+                                  ChangeProfilePictureCubit,
+                                  ChangeProfilePictureState
+                                >(
+                                  listener: (context, state) {
+                                    state.mapOrNull(
+                                      loaded: (_) {
+                                        Gaimon.success();
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              l10n.successfullyUpdated,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      error: (error) {
+                                        Gaimon.error();
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(error.message),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  builder:
+                                      (context, state) => state.maybeWhen(
+                                        orElse:
+                                            () => const Icon(
+                                              Icons.edit,
+                                              size: 24,
+                                              color: Colors.white,
+                                            ),
+                                        loading:
+                                            () => SizedBox.square(
+                                              dimension: 24,
+                                              child:
+                                                  PRFCircularProgressIndicator(
+                                                    color:
+                                                        Theme.of(
+                                                          context,
+                                                        ).colorScheme.surface,
+                                                  ),
+                                            ),
+                                      ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
               ValueListenableBuilder(
                 valueListenable:
                     Hive.box<dynamic>(
                       PRFSuperAppConfig.instance!.values.hiveBox,
                     ).listenable(),
-                builder: (context, box, _) {
+                builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -135,6 +278,28 @@ class AccountPageTablet extends StatelessWidget {
                           enabled: false,
                         ),
                       ),
+                      SizedBox(height: 15.h),
+                      if (profile.member?.bio != null ||
+                          (profile.member?.bio?.isEmpty ?? false))
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40.w),
+                          child: FormFieldLabel(label: l10n.bio),
+                        ),
+                      if (profile.member?.bio != null ||
+                          (profile.member?.bio?.isEmpty ?? false))
+                        SizedBox(height: 10.h),
+                      if (profile.member?.bio != null ||
+                          (profile.member?.bio?.isEmpty ?? false))
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40.w),
+                          child: PRFTextAreaInput(
+                            hintText: l10n.enterEmail,
+                            controller: TextEditingController(
+                              text: profile.member?.bio,
+                            ),
+                            enabled: false,
+                          ),
+                        ),
                     ]),
                   );
                 },
@@ -144,17 +309,13 @@ class AccountPageTablet extends StatelessWidget {
                     Hive.box<dynamic>(
                       PRFSuperAppConfig.instance!.values.hiveBox,
                     ).listenable(),
-                builder: (context, box, _) {
+                builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
                   if (profile.member == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
-                  if (profile.member!.memberships == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
@@ -175,7 +336,7 @@ class AccountPageTablet extends StatelessWidget {
                     Hive.box<dynamic>(
                       PRFSuperAppConfig.instance!.values.hiveBox,
                     ).listenable(),
-                builder: (context, box, _) {
+                builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -185,12 +346,8 @@ class AccountPageTablet extends StatelessWidget {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
 
-                  if (profile.member!.memberships == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
                   return SliverList.builder(
-                    itemCount: profile.member!.memberships!.length,
+                    itemCount: profile.member!.memberships.length,
                     itemBuilder:
                         (context, index) => Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -198,19 +355,19 @@ class AccountPageTablet extends StatelessWidget {
                             title: Text(
                               profile
                                   .member!
-                                  .memberships![index]
+                                  .memberships[index]
                                   .spiritualYear!
                                   .name,
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                             subtitle: Text(
                               PrfMembershipType.fromIndex(
-                                profile.member!.memberships![index].type,
+                                profile.member!.memberships[index].type,
                               ).name,
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                             trailing: Icon(
-                              profile.member!.memberships![index].approved
+                              profile.member!.memberships[index].approved
                                   ? Icons.check_outlined
                                   : Icons.pending_actions,
                             ),

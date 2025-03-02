@@ -12,9 +12,9 @@ class UpdateEventSubscriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder:
-          (_, __) => UpdateEventSubscriptionViewHandset(event: event),
+          (_, _) => UpdateEventSubscriptionViewHandset(event: event),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => UpdateEventSubscriptionViewHandset(event: event),
+        handset: (_, _) => UpdateEventSubscriptionViewHandset(event: event),
       ),
     );
   }

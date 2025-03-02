@@ -2,6 +2,7 @@ import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/register_student_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
+import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
@@ -458,6 +459,13 @@ class Singletons {
       BlocProvider<DeleteEventSubscriptionCubit>(
         create:
             (context) => DeleteEventSubscriptionCubit(eventService: getIt()),
+      ),
+      BlocProvider<ChangeProfilePictureCubit>(
+        create:
+            (context) => ChangeProfilePictureCubit(
+              mediaService: getIt(),
+              hiveService: getIt(),
+            ),
       ),
     ];
   }

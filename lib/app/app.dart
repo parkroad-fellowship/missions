@@ -43,7 +43,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                 Hive.box<dynamic>(
                   PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
                 ).listenable(),
-            builder: (context, _, __) {
+            builder: (context, _, _) {
               final isLoggedOut = getIt<HiveService>().isLoggedOut();
               Logger().e('isLoggedOut: $isLoggedOut');
               if (isLoggedOut) {
@@ -64,10 +64,11 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                   tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
                     labelStyle: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: const Color(PRFTheme.secondaryColor),
+                      color: const Color(PRFTheme.primaryColor),
                     ),
                     unselectedLabelStyle: textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Colors.grey,
                     ),
                   ),
                   inputDecorationTheme: PRFTheme.light.inputDecorationTheme
@@ -85,6 +86,9 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                     contentTextStyle: textTheme.bodySmall?.copyWith(
                       color: Colors.white,
                     ),
+                  ),
+                  iconTheme: PRFTheme.light.iconTheme.copyWith(
+                    size: 24 * Misc.getScaleFactor(context),
                   ),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,

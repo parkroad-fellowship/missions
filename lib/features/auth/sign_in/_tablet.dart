@@ -2,6 +2,7 @@ import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 
@@ -33,6 +34,7 @@ class _SignInTabletState extends State<SignInTablet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     Misc.initDimensions(context);
+    final canShowAuth = getIt<AuthService>().canShowAuth();
 
     return BlocListener<GoogleSignInCubit, GoogleSignInState>(
       listener: (context, state) {
@@ -75,6 +77,7 @@ class _SignInTabletState extends State<SignInTablet> {
                     height: MediaQuery.sizeOf(context).height,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Spacer(),
                         Center(
@@ -84,90 +87,85 @@ class _SignInTabletState extends State<SignInTablet> {
                             width: 232,
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            l10n.signIn,
-                            style: Theme.of(context).textTheme.displayLarge,
+                        if (canShowAuth) ...[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              l10n.signIn,
+                              style: Theme.of(context).textTheme.displayLarge,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        PRFEmailInput(
-                          hintText: l10n.studentEmail,
-                          emailController: _emailController,
-                          enabled: !_isLoading,
-                        ),
-                        const SizedBox(height: 20),
-                        ValueListenableBuilder<bool>(
-                          valueListenable: _hidePasswordNotifier,
-                          builder: (context, hidePassword, child) {
-                            return PRFPasswordInput(
-                              hintText: l10n.enterPassword,
-                              hidePasswordNotifier: _hidePasswordNotifier,
-                              passwordController: _passwordController,
-                              enabled: !_isLoading,
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        BlocConsumer<SigninCubit, SignInState>(
-                          listener: (context, state) {
-                            state.maybeWhen(
-                              loading:
-                                  () => setState(() {
+                          const SizedBox(height: 20),
+
+                          PRFEmailInput(
+                            hintText: l10n.studentEmail,
+                            emailController: _emailController,
+                            enabled: !_isLoading,
+                          ),
+                          const SizedBox(height: 20),
+                          ValueListenableBuilder<bool>(
+                            valueListenable: _hidePasswordNotifier,
+                            builder: (context, hidePassword, child) {
+                              return PRFPasswordInput(
+                                hintText: l10n.enterPassword,
+                                hidePasswordNotifier: _hidePasswordNotifier,
+                                passwordController: _passwordController,
+                                enabled: !_isLoading,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          BlocConsumer<SigninCubit, SignInState>(
+                            listener: (context, state) {
+                              state.maybeWhen(
+                                loading:
+                                    () => setState(() {
+                                      _isLoading = !_isLoading;
+                                    }),
+                                loaded:
+                                    () => context.router.pushNamed(
+                                      PRFSuperAppRouter.landingRoute,
+                                    ),
+                                error: (message) {
+                                  setState(() {
                                     _isLoading = !_isLoading;
-                                  }),
-                              loaded:
-                                  () => context.router.pushNamed(
-                                    PRFSuperAppRouter.landingRoute,
-                                  ),
-                              error: (message) {
-                                setState(() {
-                                  _isLoading = !_isLoading;
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(message),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              },
-                              orElse: () {},
-                            );
-                          },
-                          builder: (context, state) {
-                            return state.maybeWhen(
-                              orElse:
-                                  () => PRFPrimaryButton(
-                                    onPressed: () {
-                                      context.read<SigninCubit>().signIn(
-                                        email: _emailController.text.trim(),
-                                        password:
-                                            _passwordController.text.trim(),
-                                      );
-                                    },
-                                    title:
-                                        _isLoading
-                                            ? l10n.signingIn
-                                            : l10n.signIn,
-                                    disabled: _isLoading,
-                                    isLoading: _isLoading ? true : null,
-                                  ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 32),
-                        PRFSecondaryButton(
-                          onPressed:
-                              () => context.router.pushNamed(
-                                PRFSuperAppRouter.registerStudentRoute,
-                              ),
-                          title: l10n.registerStudent,
-                          disabled: false,
-                        ),
-                        const SizedBox(height: 40),
-                        const Divider(),
-                        const SizedBox(height: 40),
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(message),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                },
+                                orElse: () {},
+                              );
+                            },
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse:
+                                    () => PRFPrimaryButton(
+                                      onPressed: () {
+                                        context.read<SigninCubit>().signIn(
+                                          email: _emailController.text.trim(),
+                                          password:
+                                              _passwordController.text.trim(),
+                                        );
+                                      },
+                                      title:
+                                          _isLoading
+                                              ? l10n.signingIn
+                                              : l10n.signIn,
+                                      disabled: _isLoading,
+                                      isLoading: _isLoading ? true : null,
+                                    ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 64),
+
+                          const Divider(),
+                          const SizedBox(height: 64),
+                        ],
                         BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
                           builder: (context, signInWithGoogleState) {
                             return BlocBuilder<

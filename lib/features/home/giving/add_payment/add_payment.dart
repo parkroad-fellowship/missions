@@ -8,9 +8,9 @@ class AddPaymentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const AppPaymentHandset(),
+      defaultBuilder: (_, _) => const AppPaymentHandset(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const AppPaymentHandset(),
+        handset: (_, _) => const AppPaymentHandset(),
       ),
     );
   }

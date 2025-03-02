@@ -2,6 +2,7 @@ import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/prf_church.dart';
 import 'package:app/models/remote/prf_group_member.dart';
 import 'package:app/models/remote/prf_marital_status.dart';
+import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_membership.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_profession.dart';
@@ -30,13 +31,16 @@ class PRFMember with _$PRFMember {
     @JsonKey(name: 'profession_institution') String? professionInstitution,
     @JsonKey(name: 'profession_location') String? professionLocation,
     @JsonKey(name: 'profession_contact') String? professionContact,
+    String? bio,
+    @JsonKey(name: 'linked_in_url') String? linkedInUrl,
     PRFUser? user,
     @JsonKey(name: 'marital_status') PRFMaritalStatus? maritalStatus,
     PRFProfession? profession,
     PRFChurch? church,
     List<PRFMission>? missions,
     @JsonKey(name: 'group_members') List<PRFGroupMember>? groupMembers,
-    List<PRFMembership>? memberships,
+    @Default([]) List<PRFMembership> memberships,
+    @JsonKey(name: 'profile_picture') PRFMedia? profilePicture,
   }) = _PRFMember;
 
   factory PRFMember.fromJson(Map<String, dynamic> json) =>
