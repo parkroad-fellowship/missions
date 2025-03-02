@@ -86,6 +86,9 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                       color: Colors.white,
                     ),
                   ),
+                  iconTheme: PRFTheme.light.iconTheme.copyWith(
+                    size: 24 * Misc.getScaleFactor(context),
+                  ),
                 ),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
