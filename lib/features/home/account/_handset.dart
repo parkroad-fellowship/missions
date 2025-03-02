@@ -16,7 +16,6 @@ import 'package:gaimon/gaimon.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class AccountPageHandset extends StatelessWidget {
   const AccountPageHandset({super.key});
@@ -155,7 +154,7 @@ class AccountPageHandset extends StatelessWidget {
                             ).listenable(),
                         builder: (context, box, _) {
                           final member = getIt<HiveService>().retrieveMember();
-                          if (member == null) return SizedBox.shrink();
+                          if (member == null) return const SizedBox.shrink();
                           return Positioned(
                             bottom: 10,
                             right: 10,
@@ -171,7 +170,7 @@ class AccountPageHandset extends StatelessWidget {
                                         mediaType: RequestType.image,
                                       ),
                               child: Container(
-                                padding: EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.primary,
                                   shape: BoxShape.circle,
@@ -209,7 +208,7 @@ class AccountPageHandset extends StatelessWidget {
                                   builder:
                                       (context, state) => state.maybeWhen(
                                         orElse:
-                                            () => Icon(
+                                            () => const Icon(
                                               Icons.edit,
                                               size: 24,
                                               color: Colors.white,
@@ -352,25 +351,25 @@ class AccountPageHandset extends StatelessWidget {
                   }
 
                   return SliverList.builder(
-                    itemCount: profile.member!.memberships!.length,
+                    itemCount: profile.member!.memberships.length,
                     itemBuilder:
                         (context, index) => ListTile(
                           title: Text(
                             profile
                                 .member!
-                                .memberships![index]
+                                .memberships[index]
                                 .spiritualYear!
                                 .name,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           subtitle: Text(
                             PrfMembershipType.fromIndex(
-                              profile.member!.memberships![index].type,
+                              profile.member!.memberships[index].type,
                             ).name,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           trailing: Icon(
-                            profile.member!.memberships![index].approved
+                            profile.member!.memberships[index].approved
                                 ? Icons.check_outlined
                                 : Icons.pending_actions,
                           ),

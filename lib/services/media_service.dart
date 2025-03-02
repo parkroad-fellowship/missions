@@ -49,7 +49,7 @@ class MediaServiceImpl implements MediaService {
         url.write('mission-sessions');
       case PRFMediaModel.eventPhotos:
         url.write('events');
-        case PRFMediaModel.memberProfilePictures:
+      case PRFMediaModel.memberProfilePictures:
         url.write('members');
     }
 

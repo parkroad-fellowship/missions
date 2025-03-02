@@ -15,7 +15,7 @@ enum PRFMediaModel {
         return 'session-audios';
       case PRFMediaModel.eventPhotos:
         return 'event-photos';
-        case PRFMediaModel.memberProfilePictures:
+      case PRFMediaModel.memberProfilePictures:
         return 'profile-pictures';
     }
   }

@@ -13,7 +13,7 @@ class ChangeProfilePictureCubit extends Cubit<ChangeProfilePictureState> {
   ChangeProfilePictureCubit({
     required MediaService mediaService,
     required HiveService hiveService,
-  }) : super(ChangeProfilePictureState.initial()) {
+  }) : super(const ChangeProfilePictureState.initial()) {
     _mediaService = mediaService;
     _hiveService = hiveService;
   }
@@ -50,7 +50,7 @@ class ChangeProfilePictureCubit extends Cubit<ChangeProfilePictureState> {
       final updatedUser = user.member!.copyWith(profilePicture: profilePicture);
       _hiveService.persistProfile(user.copyWith(member: updatedUser));
 
-      emit(ChangeProfilePictureState.loaded());
+      emit(const ChangeProfilePictureState.loaded());
     } on Failure catch (e) {
       emit(ChangeProfilePictureState.error(e.message));
     } catch (e) {
