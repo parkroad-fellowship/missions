@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/remote_config.dart';
 import 'package:app/utils/_index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 
 abstract class AuthService {
   Future<String> signIn({required SignInDTO signInDTO});
@@ -12,11 +15,15 @@ abstract class AuthService {
   Future<String> socialLogin({required SocialAuthDTO socialAuthDTO});
   Future<PRFUser> registerStudent();
   Future<PRFUser> getUser();
+  Future<void> initRemoteConfig();
+  RemoteConfig getReviewConfig();
+  bool canShowAuth();
 }
 
 class AuthServiceImpl implements AuthService {
   final _networkUtil = NetworkUtil();
 
+  final remoteConfig = FirebaseRemoteConfig.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
@@ -114,5 +121,27 @@ class AuthServiceImpl implements AuthService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<void> initRemoteConfig() async {
+    await remoteConfig.fetchAndActivate();
+  }
+
+  @override
+  RemoteConfig getReviewConfig() {
+    final config = remoteConfig.getValue('prf_missions_in_review');
+
+    return RemoteConfig.fromJson(
+      json.decode(config.asString()) as Map<String, dynamic>,
+    );
+  }
+
+  @override
+  bool canShowAuth() {
+    final reviewConfig = getReviewConfig();
+    Logger().i(reviewConfig);
+    return reviewConfig.isInReview &&
+        reviewConfig.appVersion == Misc.getFullAppVersion();
   }
 }

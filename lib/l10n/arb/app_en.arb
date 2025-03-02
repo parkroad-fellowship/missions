@@ -307,7 +307,7 @@
     "@all": {},
     "subscribed": "Subscribed",
     "@subscribed": {},
-    "version": "Version: {version}",
+    "version": " v{version}",
     "@version": {
         "placeholders": {
             "version": {

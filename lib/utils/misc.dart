@@ -46,8 +46,12 @@ class Misc {
       (value * pow(10, fractionalDigits)).truncate() /
       pow(10, fractionalDigits);
 
+  static String getFullAppVersion() {
+    return packageVersion.trim();
+  }
+
   static String getAppVersion() {
-    return packageVersion.replaceRange(6, packageVersion.length, '');
+    return packageVersion.replaceRange(7, packageVersion.length, '');
   }
 
   static String getSluggedAppVersion() {
