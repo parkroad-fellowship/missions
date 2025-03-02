@@ -47,7 +47,7 @@ abstract class LocalDBService {
 
   Future<void> persistCourses({required List<PRFCourse> courses});
   Stream<List<PRFLocalCourse>> getCourses();
-  Stream<PRFLocalCourse> getCourse({required String courseUlid});
+  Stream<PRFLocalCourse?> getCourse({required String courseUlid});
 
   Future<void> persistCourseModules({
     required List<PRFCourseModule> courseModules,
@@ -56,7 +56,7 @@ abstract class LocalDBService {
   Stream<List<PRFLocalCourseModule>> getCourseModules({
     required String courseUlid,
   });
-  Stream<PRFLocalCourseModule> getCourseModule({
+  Stream<PRFLocalCourseModule?> getCourseModule({
     required String courseModuleUlid,
   });
 
@@ -105,7 +105,7 @@ abstract class LocalDBService {
   Future<void> persistMissions({required List<PRFMission> missions});
   Stream<List<PRFLocalMission>> get missions;
   Future<void> refreshMissions();
-  Stream<PRFLocalMission> getMission({required String missionUlid});
+  Stream<PRFLocalMission?> getMission({required String missionUlid});
 
   Future<void> persistMemberMissions({
     required List<PRFMissionSubscription> missionSubscriptions,
@@ -243,7 +243,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Stream<PRFLocalCourse> getCourse({required String courseUlid}) async* {
+  Stream<PRFLocalCourse?> getCourse({required String courseUlid}) async* {
     await for (final localCourse
         in prfDBInstance.pRFLocalCourses
             .filter()
@@ -252,7 +252,11 @@ class LocalDBServiceImpl implements LocalDBService {
             .build()
             .watch(fireImmediately: true)
             .asBroadcastStream()) {
-      yield localCourse.first;
+      if (localCourse.isEmpty) {
+        yield null;
+      } else {
+        yield localCourse.first;
+      }
     }
   }
 
@@ -338,7 +342,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Stream<PRFLocalCourseModule> getCourseModule({
+  Stream<PRFLocalCourseModule?> getCourseModule({
     required String courseModuleUlid,
   }) async* {
     await for (final localCourseModule
@@ -348,7 +352,11 @@ class LocalDBServiceImpl implements LocalDBService {
             .build()
             .watch(fireImmediately: true)
             .asBroadcastStream()) {
-      yield localCourseModule.first;
+      if (localCourseModule.isEmpty) {
+        yield null;
+      } else {
+        yield localCourseModule.first;
+      }
     }
   }
 
@@ -716,7 +724,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }
 
   @override
-  Stream<PRFLocalMission> getMission({required String missionUlid}) async* {
+  Stream<PRFLocalMission?> getMission({required String missionUlid}) async* {
     await for (final localMission
         in prfDBInstance.pRFLocalMissions
             .filter()
@@ -725,7 +733,11 @@ class LocalDBServiceImpl implements LocalDBService {
             .build()
             .watch(fireImmediately: true)
             .asBroadcastStream()) {
-      yield localMission.first;
+      if (localMission.isEmpty) {
+        yield null;
+      } else {
+        yield localMission.first;
+      }
     }
   }
 

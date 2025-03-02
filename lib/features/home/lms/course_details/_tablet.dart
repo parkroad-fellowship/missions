@@ -77,14 +77,14 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                         ),
                       ),
                       const Spacer(),
-                      SingleStreamWrapper<PRFLocalCourse>(
+                      SingleStreamWrapper<PRFLocalCourse?>(
                         stream: getIt<LocalDBService>().getCourse(
                           courseUlid: courseUlid,
                         ),
                         widget:
                             (context, course) => SizedBox(
                               child: Text(
-                                course.name,
+                                course?.name ?? '',
                                 style: Theme.of(context).textTheme.displayLarge,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -94,14 +94,14 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                       const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(right: 16.w),
-                        child: SingleStreamWrapper<PRFLocalCourse>(
+                        child: SingleStreamWrapper<PRFLocalCourse?>(
                           stream: getIt<LocalDBService>().getCourse(
                             courseUlid: courseUlid,
                           ),
                           widget:
                               (context, course) => Text(
                                 l10n.percentage(
-                                  course.courseMember?.percentComplete!
+                                  course?.courseMember?.percentComplete!
                                           .toInt() ??
                                       0,
                                 ),
@@ -117,7 +117,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
 
               SliverToBoxAdapter(
-                child: SingleStreamWrapper<PRFLocalCourse>(
+                child: SingleStreamWrapper<PRFLocalCourse?>(
                   stream: getIt<LocalDBService>().getCourse(
                     courseUlid: courseUlid,
                   ),
@@ -125,7 +125,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                       (context, course) => Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Text(
-                          course.description,
+                          course?.description ?? '',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
