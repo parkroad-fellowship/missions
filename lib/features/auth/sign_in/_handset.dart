@@ -149,7 +149,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       ),
                       const SizedBox(height: 32),
 
-                      Divider(),
+                      const Divider(),
                       const SizedBox(height: 32),
                     ],
                     BlocBuilder<GoogleSignInCubit, GoogleSignInState>(

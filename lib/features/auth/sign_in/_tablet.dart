@@ -163,7 +163,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           ),
                           const SizedBox(height: 64),
 
-                          Divider(),
+                          const Divider(),
                           const SizedBox(height: 64),
                         ],
                         BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
