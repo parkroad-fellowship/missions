@@ -3,7 +3,6 @@ import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-
 part 'get_faq_categories_state.dart';
 part 'get_faq_categories_cubit.freezed.dart';
 

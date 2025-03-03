@@ -6,7 +6,6 @@ class PRFSuperAppRouter extends RootStackRouter {
   // Auth
   static const String decisionRoute = '/';
   static const String signInRoute = '/sign-in';
-  static const String registerStudentRoute = '/register-student';
 
   // Landing
   static const String missionsRoute = '/missions';
@@ -40,7 +39,6 @@ class PRFSuperAppRouter extends RootStackRouter {
     // Auth
     AutoRoute(page: DecisionRoute.page, path: decisionRoute),
     AutoRoute(page: SignInRoute.page, path: signInRoute),
-    AutoRoute(page: StudentIntroRoute.page, path: registerStudentRoute),
 
     // Landing
     AutoRoute(page: MissionsRoute.page, path: missionsRoute),
