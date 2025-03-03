@@ -13,14 +13,17 @@ class SigninCubit extends Cubit<SignInState> {
     required AuthService authService,
     required HiveService hiveService,
     required SocketService socketService,
+    required AnalyticsService analyticsService,
   }) : super(const SignInState.initial()) {
     _authService = authService;
     _hiveService = hiveService;
     _socketService = socketService;
+    _analyticsService = analyticsService;
   }
   late HiveService _hiveService;
   late AuthService _authService;
   late SocketService _socketService;
+  late AnalyticsService _analyticsService;
 
   Future<void> signIn({required String email, required String password}) async {
     emit(const SignInState.loading());
@@ -41,6 +44,8 @@ class SigninCubit extends Cubit<SignInState> {
           presenceChannels: _socketService.defaultConfig().presenceChannels,
         ),
       );
+
+      await _analyticsService.identifyUser(user: user);
 
       emit(const SignInState.loaded());
     } on Failure catch (e) {
