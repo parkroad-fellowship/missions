@@ -14,6 +14,8 @@ import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
 import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/features/home/events/cubit/update_event_subscription_cubit.dart';
+import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
+import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
@@ -51,12 +53,6 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
-import 'package:app/features/student_home/enquiries/cubit/create_enquiry_cubit.dart';
-import 'package:app/features/student_home/enquiries/cubit/create_student_enquiry_reply_cubit.dart';
-import 'package:app/features/student_home/enquiries/cubit/get_student_enquiries_cubit.dart';
-import 'package:app/features/student_home/enquiries/cubit/get_student_enquiry_replies_cubit.dart';
-import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -215,37 +211,6 @@ class Singletons {
         create:
             (context) => GetFaqCategoriesCubit(
               studentService: getIt(),
-              localDBService: getIt(),
-            ),
-      ),
-      BlocProvider<GetStudentEnquiriesCubit>(
-        create:
-            (context) => GetStudentEnquiriesCubit(
-              studentService: getIt(),
-              hiveService: getIt(),
-              localDBService: getIt(),
-            ),
-      ),
-      BlocProvider<GetStudentEnquiryRepliesCubit>(
-        create:
-            (context) => GetStudentEnquiryRepliesCubit(
-              studentService: getIt(),
-              localDBService: getIt(),
-            ),
-      ),
-      BlocProvider<CreateEnquiryCubit>(
-        create:
-            (context) => CreateEnquiryCubit(
-              studentService: getIt(),
-              hiveService: getIt(),
-              localDBService: getIt(),
-            ),
-      ),
-      BlocProvider<CreateStudentEnquiryReplyCubit>(
-        create:
-            (context) => CreateStudentEnquiryReplyCubit(
-              studentService: getIt(),
-              hiveService: getIt(),
               localDBService: getIt(),
             ),
       ),

@@ -30,14 +30,6 @@ class PRFSuperAppRouter extends RootStackRouter {
   static const String eventsRoute = '/events';
   static const String eventDetailsRoute = '/event-details';
 
-  // Student Landing
-  static const String studentLandingRoute = '/student-landing';
-  static const String learnerEnquiriesRoute = '/learner-enquiries';
-  static const String learnerFaqs = '/learner-faqs';
-  static const String studentAccountRoute = '/student-account';
-  static const String studentRepliesRoute = '/student-replies';
-  static const String createStudentEnquiryRoute = '/create-student-enquiry';
-
   // Course Work
   static const String courseDetailsRoute = '/course-details';
   static const String moduleDetailsRoute = '/module-details';
@@ -68,14 +60,6 @@ class PRFSuperAppRouter extends RootStackRouter {
     AutoRoute(page: SessionRoute.page, path: missionSessionRoute),
     AutoRoute(page: EventsRoute.page, path: eventsRoute),
     AutoRoute(page: EventDetailsRoute.page, path: eventDetailsRoute),
-
-    // Student Landing
-    AutoRoute(page: StudentLandingRoute.page, path: studentLandingRoute),
-    AutoRoute(page: LearnerEnquiriesRoute.page, path: learnerEnquiriesRoute),
-    AutoRoute(page: FAQRoute.page, path: learnerFaqs),
-    AutoRoute(page: StudentAccountRoute.page, path: studentAccountRoute),
-    AutoRoute(page: EnquiryRepliesRoute.page, path: studentRepliesRoute),
-    AutoRoute(page: CreateEnquiryRoute.page, path: createStudentEnquiryRoute),
 
     // Course Work
     AutoRoute(page: CourseDetailsRoute.page, path: courseDetailsRoute),

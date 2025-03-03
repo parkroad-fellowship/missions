@@ -1,4 +1,4 @@
-import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
+import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';

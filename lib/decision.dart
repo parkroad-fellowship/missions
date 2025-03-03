@@ -42,7 +42,7 @@ class _DecisionPageState extends State<DecisionPage> {
       _redirectToPage(context, PRFSuperAppRouter.landingRoute);
       return;
     } else {
-      _redirectToPage(context, PRFSuperAppRouter.studentLandingRoute);
+      _redirectToPage(context, PRFSuperAppRouter.signInRoute);
       return;
     }
   }

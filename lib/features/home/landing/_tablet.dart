@@ -1,11 +1,11 @@
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
+import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
+import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/student_home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/student_home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
