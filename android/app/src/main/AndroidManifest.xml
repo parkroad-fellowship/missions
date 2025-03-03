@@ -44,6 +44,12 @@
             
         </activity>
 
+        <meta-data android:name="com.posthog.posthog.AUTO_INIT" android:value="false" />
+        <meta-data android:name="com.posthog.posthog.API_KEY" android:value="phc_qMm6StosFNCMhAkrmcoJAOlX5kOhvVTR6dsCFCIkE3g" />
+        <meta-data android:name="com.posthog.posthog.POSTHOG_HOST" android:value="https://eu.i.posthog.com" />  <!-- usually 'https://us.i.posthog.com' or 'https://eu.i.posthog.com' -->
+        <meta-data android:name="com.posthog.posthog.TRACK_APPLICATION_LIFECYCLE_EVENTS" android:value="true" />
+        <meta-data android:name="com.posthog.posthog.DEBUG" android:value="true" />
+
         <provider
             android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
             android:authorities="${applicationId}.flutter_downloader.provider"

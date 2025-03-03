@@ -66,9 +66,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<AuthService>().initRemoteConfig();
 
-    final userUlid = getIt<HiveService>().retrieveProfile()?.ulid;
+    await getIt<AnalyticsService>().init();
 
-    if (userUlid != null) {
+    final user = getIt<HiveService>().retrieveProfile();
+
+    if (user != null) {
       final defaultConfig = getIt<SocketService>().defaultConfig();
 
       try {
@@ -81,6 +83,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       } catch (e) {
         Logger().e('SocketService init error: $e');
       }
+
+      await getIt<AnalyticsService>().identifyUser(user: user);
     }
 
     await getIt<MediaService>().initDownloader();

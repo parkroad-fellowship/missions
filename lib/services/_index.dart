@@ -1,3 +1,4 @@
+export 'analytics_service.dart';
 export 'auth_service.dart';
 export 'debrief_service.dart';
 export 'event_service.dart';
