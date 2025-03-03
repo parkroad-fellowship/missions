@@ -237,8 +237,8 @@ class PaymentCard extends StatelessWidget {
                       icon: const Icon(Icons.refresh_outlined),
                       color: Theme.of(context).colorScheme.primary,
                       onPressed: () async {
-                        if (payment.redirectUrl != null) {
-                          final uri = Uri.parse(payment.redirectUrl!);
+                        if (payment.authorizationUrl != null) {
+                          final uri = Uri.parse(payment.authorizationUrl!);
                           await Misc.openUrl(uri);
                         }
                       },

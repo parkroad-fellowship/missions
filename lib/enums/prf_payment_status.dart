@@ -4,16 +4,20 @@ enum PRFPaymentStatus {
   @JsonValue(1)
   pending,
   @JsonValue(2)
-  success,
+  initialised,
   @JsonValue(3)
-  cancelled,
+  success,
   @JsonValue(4)
+  cancelled,
+  @JsonValue(5)
   failed;
 
   String get name {
     switch (this) {
       case PRFPaymentStatus.pending:
         return 'Pending';
+      case PRFPaymentStatus.initialised:
+        return 'Initialised';
       case PRFPaymentStatus.success:
         return 'Success';
       case PRFPaymentStatus.cancelled:

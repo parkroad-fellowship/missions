@@ -11,8 +11,10 @@ class PRFPayment with _$PRFPayment {
     String ulid,
     int amount,
     @JsonKey(name: 'payment_status') PRFPaymentStatus paymentStatus,
+
     @JsonKey(name: 'created_at') DateTime createdAt, {
-    @JsonKey(name: 'redirect_url') String? redirectUrl,
+    @JsonKey(name: 'authorization_url') String? authorizationUrl,
+    String? reference,
     @JsonKey(name: 'payment_type') PRFPaymentType? paymentType,
   }) = _PRFPayment;
 

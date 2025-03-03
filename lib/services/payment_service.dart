@@ -12,6 +12,7 @@ abstract class PaymentService {
   });
   Future<List<PRFPaymentType>> getPaymentTypes();
   Future<PRFPayment> addPayment({required PRFPaymentDTO paymentDTO});
+  Future<PRFPayment> checkPaymentStatus({required String paymentUlid});
 }
 
 class PaymentServiceImpl implements PaymentService {
@@ -57,6 +58,19 @@ class PaymentServiceImpl implements PaymentService {
       final res = await _networkUtil.getReq('/payment-types');
 
       return PRFPaymentTypeResponse.fromJson(res).data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PRFPayment> checkPaymentStatus({required String paymentUlid}) async {
+    try {
+      final res = await _networkUtil.postReq(
+        '/payments/$paymentUlid/check-status',
+      );
+
+      return PRFPayment.fromJson(res);
     } catch (e) {
       rethrow;
     }
