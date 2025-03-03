@@ -58,6 +58,8 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your audio files for upload.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>$(FLAVOR_APP_NAME) needs to protect your giving history.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your images and videos for upload.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -82,17 +84,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSFaceIDUsageDescription</key>
-	<string>$(FLAVOR_APP_NAME) needs to protect your giving history.</string>
+	<key>com.posthog.posthog.API_KEY</key>
+	<string>phc_qMm6StosFNCMhAkrmcoJAOlX5kOhvVTR6dsCFCIkE3g</string>
 	<key>com.posthog.posthog.AUTO_INIT</key>
 	<false/>
-	<key>com.posthog.posthog.API_KEY</key>
-    <string>phc_qMm6StosFNCMhAkrmcoJAOlX5kOhvVTR6dsCFCIkE3g</string>
-    <key>com.posthog.posthog.POSTHOG_HOST</key>
-    <string>https://eu.i.posthog.com</string>
-    <key>com.posthog.posthog.CAPTURE_APPLICATION_LIFECYCLE_EVENTS</key>
-    <true/>
-    <key>com.posthog.posthog.DEBUG</key>
-    <true/>
+	<key>com.posthog.posthog.CAPTURE_APPLICATION_LIFECYCLE_EVENTS</key>
+	<true/>
+	<key>com.posthog.posthog.DEBUG</key>
+	<true/>
+	<key>com.posthog.posthog.POSTHOG_HOST</key>
+	<string>https://eu.i.posthog.com</string>
 </dict>
 </plist>
