@@ -92,7 +92,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                       const SizedBox(height: 20),
 
                       PRFEmailInput(
-                        hintText: l10n.studentEmail,
+                        hintText: l10n.enterEmail,
                         emailController: _emailController,
                         enabled: !_isLoading,
                       ),

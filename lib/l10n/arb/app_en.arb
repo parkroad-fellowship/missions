@@ -333,8 +333,6 @@
     "@amen": {},
     "viewCredentials": "for my credentials",
     "@viewCredentials": {},
-    "studentEmail": "Enter student assigned email",
-    "@studentEmail": {},
     "expenses": "Expenses",
     "@expenses": {},
     "confirmationMessage": "Confirmation Message",
