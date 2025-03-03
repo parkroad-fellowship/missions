@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
+import 'package:posthog_flutter/posthog_flutter.dart';
 
 class PRFSuperApp extends StatefulWidget {
   const PRFSuperApp({super.key});
@@ -53,46 +54,52 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
 
               final textTheme = PRFTextTheme.getLightTheme(context);
 
-              return MaterialApp.router(
-                debugShowCheckedModeBanner: false,
-                theme: PRFTheme.light.copyWith(
-                  textTheme: textTheme,
-                  dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme.copyWith(
-                    textStyle: textTheme.bodySmall,
-                  ),
-                  tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
-                    labelStyle: textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: const Color(PRFTheme.primaryColor),
+              return PostHogWidget(
+                child: MaterialApp.router(
+                  
+                  debugShowCheckedModeBanner: false,
+                  theme: PRFTheme.light.copyWith(
+                    textTheme: textTheme,
+                    dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme.copyWith(
+                      textStyle: textTheme.bodySmall,
                     ),
-                    unselectedLabelStyle: textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  inputDecorationTheme: PRFTheme.light.inputDecorationTheme
-                      .copyWith(
-                        hintStyle: textTheme.bodySmall?.copyWith(
-                          color: Colors.grey,
-                        ),
-                        labelStyle: textTheme.bodySmall,
+                    tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
+                      labelStyle: textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: const Color(PRFTheme.primaryColor),
                       ),
-                  dataTableTheme: PRFTheme.light.dataTableTheme.copyWith(
-                    dataTextStyle: textTheme.bodyMedium,
-                    headingTextStyle: textTheme.headlineMedium,
-                  ),
-                  snackBarTheme: PRFTheme.light.snackBarTheme.copyWith(
-                    contentTextStyle: textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
+                      unselectedLabelStyle: textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    inputDecorationTheme: PRFTheme.light.inputDecorationTheme
+                        .copyWith(
+                          hintStyle: textTheme.bodySmall?.copyWith(
+                            color: Colors.grey,
+                          ),
+                          labelStyle: textTheme.bodySmall,
+                        ),
+                    dataTableTheme: PRFTheme.light.dataTableTheme.copyWith(
+                      dataTextStyle: textTheme.bodyMedium,
+                      headingTextStyle: textTheme.headlineMedium,
+                    ),
+                    snackBarTheme: PRFTheme.light.snackBarTheme.copyWith(
+                      contentTextStyle: textTheme.bodySmall?.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                    iconTheme: PRFTheme.light.iconTheme.copyWith(
+                      size: 24 * Misc.getScaleFactor(context),
                     ),
                   ),
-                  iconTheme: PRFTheme.light.iconTheme.copyWith(
-                    size: 24 * Misc.getScaleFactor(context),
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  routerConfig: getIt<PRFSuperAppRouter>().config(
+      
                   ),
+                  
                 ),
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                routerConfig: getIt<PRFSuperAppRouter>().config(),
               );
             },
           ),

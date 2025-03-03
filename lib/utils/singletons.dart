@@ -81,7 +81,8 @@ class Singletons {
       ..registerSingleton<MediaService>(MediaServiceImpl())
       ..registerSingleton<MissionGroundsService>(MissionGroundsServiceImpl())
       ..registerSingleton<PaymentService>(PaymentServiceImpl())
-      ..registerSingleton<EventService>(EventServiceImpl());
+      ..registerSingleton<EventService>(EventServiceImpl())
+      ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
   }
 
   static Future<void> setupDatabase() async {

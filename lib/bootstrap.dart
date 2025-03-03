@@ -66,6 +66,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<AuthService>().initRemoteConfig();
 
+    await getIt<AnalyticsService>().init();
+
     final userUlid = getIt<HiveService>().retrieveProfile()?.ulid;
 
     if (userUlid != null) {
