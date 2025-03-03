@@ -102,9 +102,9 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     });
                     Gaimon.success();
                     Navigator.of(context).pop();
-                    if (result.payment.redirectUrl != null) {
+                    if (result.payment.authorizationUrl != null) {
                       await Misc.openUrl(
-                        Uri.parse(result.payment.redirectUrl!),
+                        Uri.parse(result.payment.authorizationUrl!),
                       );
                     }
                   },
