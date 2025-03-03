@@ -19,7 +19,6 @@ import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
-import 'package:app/features/home/giving/cubit/verify_transaction_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
@@ -434,9 +433,6 @@ class Singletons {
               mediaService: getIt(),
               hiveService: getIt(),
             ),
-      ),
-      BlocProvider<VerifyTransactionCubit>(
-        create: (context) => VerifyTransactionCubit(paymentService: getIt()),
       ),
     ];
   }
