@@ -1,3 +1,4 @@
+export 'analytics_service.dart';
 export 'auth_service.dart';
 export 'debrief_service.dart';
 export 'event_service.dart';
@@ -12,4 +13,3 @@ export 'payment_service.dart';
 export 'socket_service.dart';
 export 'soul_service.dart';
 export 'student_service.dart';
-export 'analytics_service.dart';

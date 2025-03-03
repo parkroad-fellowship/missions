@@ -56,13 +56,11 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
 
               return PostHogWidget(
                 child: MaterialApp.router(
-                  
                   debugShowCheckedModeBanner: false,
                   theme: PRFTheme.light.copyWith(
                     textTheme: textTheme,
-                    dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme.copyWith(
-                      textStyle: textTheme.bodySmall,
-                    ),
+                    dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme
+                        .copyWith(textStyle: textTheme.bodySmall),
                     tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
                       labelStyle: textTheme.displaySmall?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -93,12 +91,10 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
                       size: 24 * Misc.getScaleFactor(context),
                     ),
                   ),
-                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
                   supportedLocales: AppLocalizations.supportedLocales,
-                  routerConfig: getIt<PRFSuperAppRouter>().config(
-      
-                  ),
-                  
+                  routerConfig: getIt<PRFSuperAppRouter>().config(),
                 ),
               );
             },
