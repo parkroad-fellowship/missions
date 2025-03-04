@@ -55,6 +55,14 @@ jobs:
       - name: ⚙️ Build AAB
         run: flutter build appbundle  --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
 
+      - name: ⚙️ Upload debug symbols to Firebase
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          zip -r debug-symbols.zip debug-symbols
+          curl -sL https://firebase.tools | bash
+          firebase crashlytics:symbols:upload --app=FIREBASE_PROD_APP_ID debug-symbols.zip
+
       - name: ⚙️ Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
