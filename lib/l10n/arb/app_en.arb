@@ -677,5 +677,9 @@
     "successfullyUpdated": "Your profile picture has been successfully updated",
     "@successfullyUpdated": {},
     "bio": "Bio",
-    "@bio": {}
+    "@bio": {},
+    "directed": "Note: You will be redirected to the payment page",
+    "@directed": {},
+    "testing": "This is a test. No real money will be charges.",
+    "@testing": {}
 }
