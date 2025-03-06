@@ -15,18 +15,18 @@ part 'prf_member.g.dart';
 class PRFMember with _$PRFMember {
   factory PRFMember(
     String ulid,
-    int gender,
     @JsonKey(name: 'first_name') String firstName,
     @JsonKey(name: 'last_name') String lastName,
     @JsonKey(name: 'full_name') String fullName,
-    @JsonKey(name: 'phone_number') String phoneNumber,
-    String email,
-    String residence,
-    String pastor, {
+    String email, {
     @JsonKey(name: 'church_volunteer') required bool churchVolunteer,
     @JsonKey(name: 'accept_terms') required bool acceptTerms,
     @JsonKey(name: 'approved') required bool approved,
-    @JsonKey(name: 'postal_address') required String postalAddress,
+    @JsonKey(name: 'phone_number') String? phoneNumber,
+    @JsonKey(name: 'postal_address') String? postalAddress,
+    String? residence,
+    String? pastor,
+    int? gender,
     @JsonKey(name: 'year_of_salvation') int? yearOfSalvation,
     @JsonKey(name: 'profession_institution') String? professionInstitution,
     @JsonKey(name: 'profession_location') String? professionLocation,
