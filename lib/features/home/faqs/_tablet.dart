@@ -185,40 +185,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                           child: RefreshIndicator(
                             onRefresh:
                                 () => context.read<GetFaqsCubit>().getFaqs(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Spacer(),
-                                const Icon(Icons.directions_walk),
-                                Center(
-                                  child: Text(
-                                    l10n.noFaqs,
-                                    style:
-                                        Theme.of(
-                                          context,
-                                        ).textTheme.headlineMedium,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.05,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        l10n.pleaseWait,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.displayLarge,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
+                            child: PRFEmptyView(
+                              label: l10n.noFaqs,
+                              description: l10n.pleaseWait,
                             ),
                           ),
                         );
