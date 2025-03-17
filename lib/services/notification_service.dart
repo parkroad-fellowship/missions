@@ -174,9 +174,6 @@ class NotificationServiceImpl implements NotificationService {
   Future<void> requestPermissions() async {
     await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
-        // This is just a basic example. For real apps, you must show some
-        // friendly dialog box before call the request method.
-        // This is very important to not harm the user experience
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
     });
@@ -191,6 +188,7 @@ class NotificationServiceImpl implements NotificationService {
   Future<void> schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   }) async {
+    await requestPermissions();
     for (final prayerPrompt in prayerPrompts) {
       await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -221,6 +219,7 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   Future<void> scheduleGivingNotification() async {
+    await requestPermissions();
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         autoDismissible: false,
