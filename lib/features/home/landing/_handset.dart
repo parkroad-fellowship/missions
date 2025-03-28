@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gaimon/gaimon.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class LandingPageHandset extends StatefulWidget {
@@ -280,20 +279,10 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.give,
                       assetPath: 'assets/svgs/giving.svg',
-                      onTap: () async {
-                        final (success, result) =
-                            await getIt<AuthService>().authenticateLocally();
-                        if (success) {
-                          await context.router.pushNamed(
+                      onTap:
+                          () => context.router.pushNamed(
                             PRFSuperAppRouter.givingRoute,
-                          );
-                        } else {
-                          Gaimon.error();
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(result!)));
-                        }
-                      },
+                          ),
                     ),
                   ),
                   SizedBox(height: 32.h),
