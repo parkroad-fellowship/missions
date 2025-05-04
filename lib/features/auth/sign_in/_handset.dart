@@ -81,7 +81,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                         width: 232,
                       ),
                     ),
-                    if (canShowAuth) ...[
+                    if (canShowAuth || kDebugMode) ...[
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(

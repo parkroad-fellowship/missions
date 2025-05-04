@@ -87,7 +87,7 @@ class _SignInTabletState extends State<SignInTablet> {
                             width: 232,
                           ),
                         ),
-                        if (canShowAuth) ...[
+                        if (canShowAuth || kDebugMode) ...[
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
