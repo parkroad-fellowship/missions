@@ -681,5 +681,27 @@
     "directed": "Note: You will be redirected to the payment page",
     "@directed": {},
     "testing": "This is a test. No real money will be charged.",
-    "@testing": {}
+    "@testing": {},
+    "submitPrayerRequest": "Send a Prayer Request",
+    "@submitPrayerRequest": {},
+    "submitting": "Submitting...",
+    "@submit": {},
+    "submit": "Submit...",
+    "@submit": {},
+    "name": "Name",
+    "@name": {
+    "description": "Title for the name input field in the prayer request form"
+    },
+    "prayerRequest": "Prayer Request",
+    "@prayerRequest": {
+    "description": "Description label for the prayer request textarea"
+   },
+  "prayerRequestSubmitted": "Your prayer request has been submitted.",
+  "submitting": "Submitting...",
+  "submit": "Submit",
+  "fillAllFields": "Please fill in all fields.",
+  "prayerRequestSubmitted": "Your prayer request has been submitted.",
+  "submitting": "Submitting...",
+  "submit": "Submit"
 }
+
