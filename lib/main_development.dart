@@ -11,7 +11,7 @@ Future<void> main() async {
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
       hiveBox: '--prf-super-app-${Misc.getSluggedAppVersion()}',
-      baseDomain: 'prf-sockets.test',
+      baseDomain: '127.0.0.1:8000',
       urlScheme: 'http',
       socketDomain: 'prf-sockets.test',
       socketKey: 'yvnlkaqadqiadutrs9sa',
