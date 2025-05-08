@@ -1,5 +1,5 @@
 import 'package:app/features/home/prayer_requests/add_prayer_request/add_prayer_request.dart';
-import 'package:app/features/home/prayer_requests/cubit/prayer_request_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/get_prayer_request_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
@@ -22,7 +22,7 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
   @override
   void initState() {
     super.initState();
-    context.read<PrayerRequestCubit>().fetchPrayerRequests();
+    context.read<GetPrayerRequestCubit>().fetchPrayerRequests();
   }
 
   @override
@@ -79,7 +79,7 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 48)),
-              BlocBuilder<PrayerRequestCubit, PrayerRequestState>(
+              BlocBuilder<GetPrayerRequestCubit, GetPrayerRequestState>(
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse:
@@ -97,7 +97,7 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
                             onRefresh:
                                 () =>
                                     context
-                                        .read<PrayerRequestCubit>()
+                                        .read<GetPrayerRequestCubit>()
                                         .fetchPrayerRequests(),
                             child: Center(
                               child: PRFPrimaryButton(
@@ -161,7 +161,7 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
         ];
       },
     ).then((_) {
-      context.read<PrayerRequestCubit>().fetchPrayerRequests();
+      context.read<GetPrayerRequestCubit>().fetchPrayerRequests();
     });
   }
 }

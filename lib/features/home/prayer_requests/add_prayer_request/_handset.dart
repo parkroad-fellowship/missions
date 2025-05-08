@@ -1,4 +1,4 @@
-import 'package:app/features/home/prayer_requests/cubit/prayer_request_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/widgets/buttons/primary.dart';
 import 'package:app/widgets/input/name.dart';
@@ -37,11 +37,11 @@ class _AddPrayerRequestViewHandsetState
               controller: _requestController,
             ),
             const SizedBox(height: 32),
-            BlocConsumer<PrayerRequestCubit, PrayerRequestState>(
+            BlocConsumer<AddPrayerRequestCubit, AddPrayerRequestState>(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) => setState(() => _isLoading = true),
-                  loaded: (_) {
+                  success: (_) {
                     setState(() => _isLoading = false);
                     Gaimon.success();
                     Navigator.of(context).pop();
@@ -75,7 +75,7 @@ class _AddPrayerRequestViewHandsetState
                       return;
                     }
 
-                    context.read<PrayerRequestCubit>().addPrayerRequest(
+                    context.read<AddPrayerRequestCubit>().addPrayerRequest(
                       title: name,
                       description: request,
                     );
