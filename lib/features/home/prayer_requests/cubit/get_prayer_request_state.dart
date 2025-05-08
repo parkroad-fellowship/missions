@@ -4,8 +4,8 @@ part of 'get_prayer_request_cubit.dart';
 class GetPrayerRequestState with _$GetPrayerRequestState {
   const factory GetPrayerRequestState.initial() = _Initial;
   const factory GetPrayerRequestState.loading() = _Loading;
-  const factory GetPrayerRequestState.loaded(
-    List<PRFPrayerRequest> prayerRequests,
+  const factory GetPrayerRequestState.loaded({
+    List<PRFPrayerRequest> prayerRequests,}
   ) = _Loaded;
   const factory GetPrayerRequestState.error(String message) = _Error;
 }
