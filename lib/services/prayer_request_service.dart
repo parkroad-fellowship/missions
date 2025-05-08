@@ -1,24 +1,20 @@
 import 'dart:convert';
-
-import 'package:app/models/remote/prf_prayer_request.dart' as request;
+import 'package:app/models/remote/prf_prayer_request.dart';
 import 'package:app/models/remote/prf_prayer_request_dto.dart';
-import 'package:app/models/remote/prf_prayer_request_response.dart' as response;
 import 'package:app/utils/_index.dart';
 
 abstract class PrayerRequestService {
-  Future<List<request.PRFPrayerRequest>> getPrayerRequests({
+  Future<List<PRFPrayerRequest>> getPrayerRequests({
     required String memberUlid,
   });
-  Future<request.PRFPrayerRequest> addPrayerRequest({
-    required PRFPrayerRequestDTO dto,
-  });
+  Future<PRFPrayerRequest> addPrayerRequest({required PRFPrayerRequestDTO dto});
 }
 
 class PrayerRequestServiceImpl implements PrayerRequestService {
   final _networkUtil = NetworkUtil();
 
   @override
-  Future<List<request.PRFPrayerRequest>> getPrayerRequests({
+  Future<List<PRFPrayerRequest>> getPrayerRequests({
     required String memberUlid,
   }) async {
     try {
@@ -30,14 +26,14 @@ class PrayerRequestServiceImpl implements PrayerRequestService {
         },
       );
 
-      return response.PRFPrayerRequestResponse.fromJson(res).data;
+      return PRFPrayerRequestResponse.fromJson(res).data;
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<request.PRFPrayerRequest> addPrayerRequest({
+  Future<PRFPrayerRequest> addPrayerRequest({
     required PRFPrayerRequestDTO dto,
   }) async {
     try {
@@ -47,9 +43,7 @@ class PrayerRequestServiceImpl implements PrayerRequestService {
         queryParameters: {'include': 'member'},
       );
 
-      return request.PRFPrayerRequest.fromJson(
-        res['data'] as Map<String, dynamic>,
-      );
+      return PRFPrayerRequest.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
