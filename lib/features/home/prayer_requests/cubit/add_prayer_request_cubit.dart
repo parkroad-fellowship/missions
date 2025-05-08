@@ -25,11 +25,7 @@ class AddPrayerRequestCubit extends Cubit<AddPrayerRequestState> {
   }) async {
     emit(const AddPrayerRequestState.loading());
 
-    final member = _hiveService.retrieveMember();
-    if (member == null) {
-      emit(const AddPrayerRequestState.error('Member not found'));
-      return;
-    }
+    final member = _hiveService.retrieveMember()!;
 
     try {
       final prayerRequest = await _prayerRequestService.addPrayerRequest(
