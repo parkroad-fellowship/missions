@@ -8,11 +8,20 @@ part 'prf_prayer_request.g.dart';
 class PRFPrayerRequest with _$PRFPrayerRequest {
   factory PRFPrayerRequest({
     required String ulid,
-    @JsonKey(name: 'title') required String title,
-    @JsonKey(name: 'description') required String description,
+    required String title,
+    required String description,
     PRFMember? member,
   }) = _PRFPrayerRequest;
 
   factory PRFPrayerRequest.fromJson(Map<String, dynamic> json) =>
       _$PRFPrayerRequestFromJson(json);
+}
+
+@freezed
+class PRFPrayerRequestResponse with _$PRFPrayerRequestResponse {
+  factory PRFPrayerRequestResponse({required List<PRFPrayerRequest> data}) =
+      _PRFPrayerRequestResponse;
+
+  factory PRFPrayerRequestResponse.fromJson(Map<String, dynamic> json) =>
+      _$PRFPrayerRequestResponseFromJson(json);
 }
