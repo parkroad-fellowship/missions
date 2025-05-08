@@ -305,7 +305,6 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                     ),
                   ),
 
-                  // test
                   SizedBox(height: 32.h),
                   Animate(
                     effects: [
@@ -317,7 +316,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                     ],
                     child: HomeActionCard(
                       title: l10n.submitPrayerRequest,
-                      assetPath: 'assets/svgs/events.svg',
+                      assetPath: 'assets/svgs/texting.svg',
                       onTap:
                           () => context.router.pushNamed(
                             PRFSuperAppRouter.prayerRequestRoute,
