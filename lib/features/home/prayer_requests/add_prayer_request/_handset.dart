@@ -41,7 +41,7 @@ class _AddPrayerRequestViewHandsetState
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) => setState(() => _isLoading = true),
-                  success: (_) {
+                  loaded: (_) {
                     setState(() => _isLoading = false);
                     Gaimon.success();
                     Navigator.of(context).pop();
