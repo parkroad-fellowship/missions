@@ -1,7 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-// ignore: directives_ordering
 import 'package:app/models/remote/prf_prayer_request.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 part 'prf_prayer_request_response.freezed.dart';
 part 'prf_prayer_request_response.g.dart';
 
