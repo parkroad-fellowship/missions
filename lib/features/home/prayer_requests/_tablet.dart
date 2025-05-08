@@ -161,6 +161,7 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
         ];
       },
     ).then((_) {
+      if (!mounted) return;
       context.read<GetPrayerRequestCubit>().fetchPrayerRequests();
     });
   }

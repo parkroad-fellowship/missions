@@ -177,6 +177,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
           ),
         ],
   ).then((_) {
+    if (!mounted) return;
     context.read<GetPrayerRequestCubit>().fetchPrayerRequests();
   });
 }
