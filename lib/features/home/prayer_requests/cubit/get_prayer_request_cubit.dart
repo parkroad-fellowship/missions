@@ -1,4 +1,3 @@
-// fetch_prayer_request_cubit.dart
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_prayer_request.dart';
 import 'package:app/services/hive_service.dart';
@@ -21,11 +20,7 @@ class GetPrayerRequestCubit extends Cubit<GetPrayerRequestState> {
 
   Future<void> fetchPrayerRequests() async {
     emit(const GetPrayerRequestState.loading());
-    final member = _hiveService.retrieveMember();
-    if (member == null) {
-      emit(const GetPrayerRequestState.error('Member information not found'));
-      return;
-    }
+    final member = _hiveService.retrieveMember()!;
 
     try {
       final prayerRequests = await _prayerRequestService.getPrayerRequests(
