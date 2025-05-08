@@ -50,7 +50,8 @@ import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
-import 'package:app/features/home/prayer_requests/cubit/prayer_request_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/get_prayer_request_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
@@ -438,9 +439,17 @@ class Singletons {
             ),
       ),
 
-      BlocProvider<PrayerRequestCubit>(
+      BlocProvider<AddPrayerRequestCubit>(
         create:
-            (context) => PrayerRequestCubit(
+            (context) => AddPrayerRequestCubit(
+              prayerRequestService: getIt(),
+              hiveService: getIt(),
+            ),
+      ),
+
+      BlocProvider<GetPrayerRequestCubit>(
+        create:
+            (context) => GetPrayerRequestCubit(
               prayerRequestService: getIt(),
               hiveService: getIt(),
             ),
