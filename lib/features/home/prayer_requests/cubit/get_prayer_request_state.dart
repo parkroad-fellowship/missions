@@ -5,7 +5,7 @@ class GetPrayerRequestState with _$GetPrayerRequestState {
   const factory GetPrayerRequestState.initial() = _Initial;
   const factory GetPrayerRequestState.loading() = _Loading;
   const factory GetPrayerRequestState.loaded({
-    List<PRFPrayerRequest> prayerRequests,}
-  ) = _Loaded;
+    @Default([]) List<PRFPrayerRequest> prayerRequests,
+  }) = _Loaded;
   const factory GetPrayerRequestState.error(String message) = _Error;
 }
