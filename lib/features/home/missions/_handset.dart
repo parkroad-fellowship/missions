@@ -160,6 +160,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                         (context, index) => SizedBox(height: 16.h),
                     itemBuilder:
                         (context, index) => MissionActionCard(
+                          status: missions[index].status.name,
                           mission: missions[index],
                           onTap:
                               () => context.router.push(
@@ -216,7 +217,11 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                       return MissionActionCard(
                         mission: mission,
                         status:
-                            mission.loggedInMemberMissionSubscription!.status,
+                            mission
+                                .loggedInMemberMissionSubscription!
+                                .status
+                                ?.name ??
+                            '',
                         onTap:
                             () => context.router.push(
                               MissionsDetailsRoute(
@@ -239,14 +244,14 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 class MissionActionCard extends StatelessWidget {
   const MissionActionCard({
     required this.mission,
-    this.status,
+    required this.status,
     this.onTap,
     super.key,
   });
 
   final PRFLocalMission mission;
 
-  final PRFMissionSubscriptionStatus? status;
+  final String status;
   final void Function()? onTap;
   String get timezone => getIt<HiveService>().timezone;
 
@@ -274,11 +279,7 @@ class MissionActionCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (status != null)
-                    Text(
-                      status!.name,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
+                  Text(status, style: Theme.of(context).textTheme.bodySmall),
                   Text(
                     mission.school!.name!,
                     style: Theme.of(context).textTheme.displayLarge,
