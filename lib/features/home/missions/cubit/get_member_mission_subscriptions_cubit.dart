@@ -2,6 +2,7 @@ import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'get_member_mission_subscriptions_state.dart';
 part 'get_member_mission_subscriptions_cubit.freezed.dart';
@@ -47,7 +48,9 @@ class GetMemberMissionSubscriptionsCubit
       emit(const GetMemberMissionSubscriptionsState.loaded());
     } on Failure catch (e) {
       emit(GetMemberMissionSubscriptionsState.error(e.message));
-    } catch (e) {
+    } catch (e, s) {
+      Logger().e(e);
+      Logger().e(s);
       emit(GetMemberMissionSubscriptionsState.error(e.toString()));
     }
   }
