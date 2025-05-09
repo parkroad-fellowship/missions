@@ -26,7 +26,7 @@ class GetPrayerRequestCubit extends Cubit<GetPrayerRequestState> {
       final prayerRequests = await _prayerRequestService.getPrayerRequests(
         memberUlid: member.ulid,
       );
-      emit(GetPrayerRequestState.loaded(prayerRequests));
+      emit(GetPrayerRequestState.loaded(prayerRequests: prayerRequests));
     } on Failure catch (e) {
       emit(GetPrayerRequestState.error(e.message));
     } catch (e) {
