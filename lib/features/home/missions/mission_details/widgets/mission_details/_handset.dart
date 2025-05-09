@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
@@ -203,11 +204,16 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                             ],
                             child: IconButton(
                               onPressed: () async {
-                                final uri = Uri(
-                                  scheme: 'tel',
-                                  path: contact.phone,
-                                );
-                                await Misc.openUrl(uri);
+                                if (mission.status ==
+                                        PRFMissionStatus.fullySubscribed ||
+                                    mission.status ==
+                                        PRFMissionStatus.approved) {
+                                  final uri = Uri(
+                                    scheme: 'tel',
+                                    path: contact.phone,
+                                  );
+                                  await Misc.openUrl(uri);
+                                }
                               },
                               icon: const Icon(Icons.phone),
                             ),
