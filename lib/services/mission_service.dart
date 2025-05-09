@@ -85,7 +85,10 @@ class MissionServiceImpl implements MissionService {
           'include':
               'school,missionType,school.schoolContacts.contactType,'
               'loggedInMemberMissionSubscription,weatherForecasts',
-          'filter[status_key]': PRFMissionStatus.approved.apiKey,
+          'filter[status_keys]': [
+            PRFMissionStatus.approved.apiKey,
+            PRFMissionStatus.fullySubscribed.apiKey,
+          ].join(','),
           'filter[unsubscribed]': true,
           'order_by': 'start_date',
           'order_direction': 'asc',
@@ -114,8 +117,10 @@ class MissionServiceImpl implements MissionService {
           if (memberUlid != null) 'filter[member_ulid]': memberUlid,
           if (missionUlid != null) 'filter[mission_ulid]': missionUlid,
           if (includes != null) 'include': includes,
-          if (subscriptionStatus != null)
-            'filter[status_key]': subscriptionStatus.apiKey,
+          'filter[status_keys]': [
+            PRFMissionSubscriptionStatus.approved.apiKey,
+            PRFMissionSubscriptionStatus.withdrawn.apiKey,
+          ].join(','),
           if (past != null) 'filter[past]': true,
           if (upcoming != null) 'filter[upcoming]': true,
         },

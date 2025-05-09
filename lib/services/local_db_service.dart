@@ -901,6 +901,11 @@ class LocalDBServiceImpl implements LocalDBService {
     Logger().i('persistMemberMissions :: Start');
     await prfDBInstance.writeTxn(() async {
       for (final missionSubscription in missionSubscriptions) {
+        if(missionSubscription.mission == null) {
+          Logger().i('persistMemberMissions :: Mission is null');
+          Logger().e(missionSubscription);
+          continue;
+        }
         await prfDBInstance.pRFLocalMemberMissionSubscriptions.put(
           PRFLocalMemberMissionSubscription(
             ulid: missionSubscription.ulid,
