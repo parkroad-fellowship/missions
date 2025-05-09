@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/services/_index.dart';
@@ -21,6 +22,7 @@ class MissionDetailsViewHandset extends StatefulWidget {
 class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
   String get missionUlid => widget.missionUlid;
   String get timezone => getIt<HiveService>().timezone;
+  String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;
 
   @override
   void initState() {
@@ -142,7 +144,12 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               widget:
                   (context, mission) =>
                       (mission!.whatsAppLink != null &&
-                              mission.loggedInMemberMissionSubscription != null)
+                              mission.loggedInMemberMissionSubscription !=
+                                  null &&
+                              mission
+                                      .loggedInMemberMissionSubscription!
+                                      .status ==
+                                  PRFMissionSubscriptionStatus.approved)
                           ? ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: const Icon(Icons.link),
