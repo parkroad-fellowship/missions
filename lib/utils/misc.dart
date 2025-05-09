@@ -17,34 +17,42 @@ import 'package:url_launcher/url_launcher.dart';
 class Misc {
   static String formatDateTime(DateTime dateTime, String timezone) {
     final location = tz.getLocation(timezone);
-    final dateTimeInLocation = tz.TZDateTime.from(dateTime, location);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
     return DateFormat.yMMMd().add_jm().add_EEEE().format(dateTimeInLocation);
   }
 
   static String formatMissionDate(DateTime dateTime, String timezone) {
     final location = tz.getLocation(timezone);
-    final dateTimeInLocation = tz.TZDateTime.from(dateTime, location);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
     return DateFormat.EEEE().add_yMMMd().format(dateTimeInLocation);
   }
 
   static String formatDate(DateTime dateTime, String timezone) {
     final location = tz.getLocation(timezone);
-    final dateTimeInLocation = tz.TZDateTime.from(dateTime, location);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
     return DateFormat.yMMMMd().format(dateTimeInLocation);
   }
 
   static String formatTime(String time, String timezone) {
+    // Assuming the input 'time' string (e.g., "10:30:00") is meant to be UTC.
+    // Parse it as UTC by appending 'Z'.
+    final dateTimeUtc = DateTime.parse('2012-02-27 ${time}Z');
     final location = tz.getLocation(timezone);
-    final dateTimeInLocation = tz.TZDateTime.from(
-      DateTime.parse('2012-02-27 $time'),
-      location,
-    );
+    final dateTimeInLocation = tz.TZDateTime.from(dateTimeUtc, location);
     return DateFormat.jm().format(dateTimeInLocation);
   }
 
   static String formatTimeFromDateTime(DateTime dateTime, String timezone) {
     final location = tz.getLocation(timezone);
-    final dateTimeInLocation = tz.TZDateTime.from(dateTime, location);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
     return DateFormat.jm().format(dateTimeInLocation);
   }
 

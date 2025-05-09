@@ -218,10 +218,9 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
           builder: (context, state) {
             return FloatingActionButton.extended(
               onPressed:
-                  () async => context
-                      .read<SubscribeCubit>()
-                      .subscribe(missionUlid: missionUlid)
-                      ,
+                  () async => context.read<SubscribeCubit>().subscribe(
+                    missionUlid: missionUlid,
+                  ),
               backgroundColor: Theme.of(context).colorScheme.primary,
               label: Text(
                 l10n.sendMe,
