@@ -132,6 +132,7 @@ class Singletons {
             (context) => GetSubscribersCubit(
               missionService: getIt(),
               localDBService: getIt(),
+              hiveService: getIt(),
             ),
       ),
       BlocProvider<SubscribeCubit>(

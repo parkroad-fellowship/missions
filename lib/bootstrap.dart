@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
+import 'package:timezone/data/latest.dart' as tz_data;
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -39,6 +40,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       );
       yield LicenseEntryWithLineBreaks(['google_fonts'], license);
     });
+
+    tz_data.initializeTimeZones();
 
     // Initialize Firebase
     await Firebase.initializeApp(

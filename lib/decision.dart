@@ -25,7 +25,11 @@ class _DecisionPageState extends State<DecisionPage> {
       return;
     }
 
-    final profile = getIt<HiveService>().retrieveProfile()!;
+    final profile = getIt<HiveService>().retrieveProfile();
+    if (profile == null) {
+      _redirectToPage(context, PRFSuperAppRouter.signInRoute);
+      return;
+    }
 
     /// If both the member and student are null, then the user is lacking a
     /// profile and should be redirected to the sign-in page.

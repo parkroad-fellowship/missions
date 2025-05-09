@@ -1,10 +1,10 @@
-import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -160,6 +160,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                         (context, index) => SizedBox(height: 16.h),
                     itemBuilder:
                         (context, index) => MissionActionCard(
+                          status: missions[index].status.name,
                           mission: missions[index],
                           onTap:
                               () => context.router.push(
@@ -216,7 +217,11 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                       return MissionActionCard(
                         mission: mission,
                         status:
-                            mission.loggedInMemberMissionSubscription!.status,
+                            mission
+                                .loggedInMemberMissionSubscription!
+                                .status
+                                ?.name ??
+                            '',
                         onTap:
                             () => context.router.push(
                               MissionsDetailsRoute(
@@ -236,17 +241,17 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
   }
 }
 
-class MissionActionCard extends StatelessWidget {
+class MissionActionCard extends StatelessWidget with TimezoneMixin {
   const MissionActionCard({
     required this.mission,
-    this.status,
+    required this.status,
     this.onTap,
     super.key,
   });
 
   final PRFLocalMission mission;
 
-  final PRFMissionSubscriptionStatus? status;
+  final String status;
   final void Function()? onTap;
 
   @override
@@ -273,11 +278,7 @@ class MissionActionCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (status != null)
-                    Text(
-                      status!.name,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
+                  Text(status, style: Theme.of(context).textTheme.bodySmall),
                   Text(
                     mission.school!.name!,
                     style: Theme.of(context).textTheme.displayLarge,
@@ -285,8 +286,8 @@ class MissionActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     l10n.missionStart(
-                      Misc.formatDate(mission.startDate),
-                      Misc.formatTime(mission.startTime),
+                      Misc.formatDate(mission.startDate, timezone),
+                      Misc.formatTime(mission.startTime, timezone),
                     ),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),

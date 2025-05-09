@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.28.06+22806
+version: 2.28.07+22807
 publish_to: none
 
 environment:
@@ -61,6 +61,7 @@ dependencies:
   posthog_flutter: ^4.10.4
   pretty_dio_logger: ^1.4.0
   slugify: ^2.0.0
+  timezone: ^0.10.1
   upgrader: ^11.3.1
   url_launcher: ^6.3.1
   wechat_assets_picker: ^9.4.2

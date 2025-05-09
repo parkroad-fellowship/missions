@@ -196,6 +196,10 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             state.mapOrNull(
               loaded: (_) {
                 Gaimon.success();
+                context.read<GetSubscribersCubit>().getSubscriptions(
+                  missionUlid: missionUlid,
+                  refresh: true,
+                );
                 ScaffoldMessenger.maybeOf(context)?.showSnackBar(
                   SnackBar(content: Text(l10n.successfullySubscribed)),
                 );
@@ -211,16 +215,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
           builder: (context, state) {
             return FloatingActionButton.extended(
               onPressed:
-                  () async => context
-                      .read<SubscribeCubit>()
-                      .subscribe(missionUlid: missionUlid)
-                      .then((_) {
-                        if (context.mounted) {
-                          context.read<GetSubscribersCubit>().getSubscriptions(
-                            missionUlid: missionUlid,
-                          );
-                        }
-                      }),
+                  () async => context.read<SubscribeCubit>().subscribe(
+                    missionUlid: missionUlid,
+                  ),
               backgroundColor: Theme.of(context).colorScheme.primary,
               label: Text(
                 l10n.sendMe,

@@ -1,7 +1,10 @@
+import 'package:app/enums/prf_mission_status.dart';
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -18,8 +21,11 @@ class MissionDetailsViewHandset extends StatefulWidget {
       _MissionDetailsViewHandsetState();
 }
 
-class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
+class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
+    with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
+
+  String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;
 
   @override
   void initState() {
@@ -55,15 +61,15 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         const SizedBox(height: 8),
                         Text(
                           l10n.missionStart(
-                            Misc.formatMissionDate(mission.startDate),
-                            Misc.formatTime(mission.startTime),
+                            Misc.formatMissionDate(mission.startDate, timezone),
+                            Misc.formatTime(mission.startTime, timezone),
                           ),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           l10n.missionEnd(
-                            Misc.formatMissionDate(mission.endDate),
-                            Misc.formatTime(mission.endTime),
+                            Misc.formatMissionDate(mission.endDate, timezone),
+                            Misc.formatTime(mission.endTime, timezone),
                           ),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
@@ -126,7 +132,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          mission!.missionPrepNotes.toString(),
+                          mission!.missionPrepNotes ?? 'N/A',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -140,7 +146,13 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               ),
               widget:
                   (context, mission) =>
-                      (mission!.whatsAppLink != null)
+                      (mission!.whatsAppLink != null &&
+                              mission.loggedInMemberMissionSubscription !=
+                                  null &&
+                              mission
+                                      .loggedInMemberMissionSubscription!
+                                      .status ==
+                                  PRFMissionSubscriptionStatus.approved)
                           ? ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: const Icon(Icons.link),
@@ -194,11 +206,16 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                             ],
                             child: IconButton(
                               onPressed: () async {
-                                final uri = Uri(
-                                  scheme: 'tel',
-                                  path: contact.phone,
-                                );
-                                await Misc.openUrl(uri);
+                                if (mission.status ==
+                                        PRFMissionStatus.fullySubscribed ||
+                                    mission.status ==
+                                        PRFMissionStatus.approved) {
+                                  final uri = Uri(
+                                    scheme: 'tel',
+                                    path: contact.phone,
+                                  );
+                                  await Misc.openUrl(uri);
+                                }
                               },
                               icon: const Icon(Icons.phone),
                             ),
@@ -304,7 +321,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        mission.school!.directions.toString(),
+                        mission.school!.directions ?? '',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -334,13 +351,13 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     children: <Widget>[
                       Text(
                         l10n.estimatedDistance(
-                          mission!.school!.distance.toString(),
+                          mission!.school!.distance ?? 'N/A',
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         l10n.estimatedTravelTime(
-                          mission.school!.staticDuration.toString(),
+                          mission.school!.staticDuration ?? 'N/A',
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
@@ -425,7 +442,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                       ).textTheme.headlineMedium,
                                 ),
                                 Text(
-                                  forecast.dressingRecommendations.toString(),
+                                  forecast.dressingRecommendations ?? 'N/A',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],

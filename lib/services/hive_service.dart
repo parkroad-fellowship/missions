@@ -22,6 +22,7 @@ abstract class HiveService {
 
   void persistProfile(PRFUser profile);
   PRFUser? retrieveProfile();
+  String get timezone;
   PRFMember? retrieveMember();
   List<String>? retrieveMemberGroupUlids();
   String retrieveStudentUlid();
@@ -142,6 +143,9 @@ class HiveServiceImpl implements HiveService {
     final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
     return box.get('profile') as PRFUser?;
   }
+
+  @override
+  String get timezone => retrieveProfile()!.timezone;
 
   @override
   PRFMember? retrieveMember() {
