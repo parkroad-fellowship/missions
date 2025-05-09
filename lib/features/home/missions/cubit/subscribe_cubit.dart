@@ -43,7 +43,7 @@ class SubscribeCubit extends Cubit<SubscribeState> {
     } on Failure catch (e) {
       emit(SubscribeState.error(e.message));
     } catch (e, s) {
-      Logger().e(s);
+      Logger().e(e.toString(), stackTrace: s);
       emit(SubscribeState.error(e.toString()));
     }
   }

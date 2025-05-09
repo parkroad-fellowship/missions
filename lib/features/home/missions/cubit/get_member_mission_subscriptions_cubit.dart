@@ -49,8 +49,7 @@ class GetMemberMissionSubscriptionsCubit
     } on Failure catch (e) {
       emit(GetMemberMissionSubscriptionsState.error(e.message));
     } catch (e, s) {
-      Logger().e(e);
-      Logger().e(s);
+      Logger().e(e.toString(), stackTrace: s);
       emit(GetMemberMissionSubscriptionsState.error(e.toString()));
     }
   }
