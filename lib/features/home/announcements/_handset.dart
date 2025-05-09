@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class AnnouncementsPageHandset extends StatefulWidget {
       _AnnouncementsPageHandsetState();
 }
 
-class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset> {
-  String get timezone => getIt<HiveService>().timezone;
+class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
+    with TimezoneMixin {
   @override
   void initState() {
     context.read<GetAnnouncementsCubit>().getAnnouncements();

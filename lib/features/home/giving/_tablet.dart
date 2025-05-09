@@ -2,10 +2,9 @@ import 'package:app/features/home/giving/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_payment.dart';
-import 'package:app/services/hive_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/_index.dart';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -168,12 +167,10 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
   });
 }
 
-class PaymentCard extends StatelessWidget {
+class PaymentCard extends StatelessWidget with TimezoneMixin {
   const PaymentCard({required this.payment, super.key});
 
   final PRFPayment payment;
-
-  String get timezone => getIt<HiveService>().timezone;
 
   @override
   Widget build(BuildContext context) {

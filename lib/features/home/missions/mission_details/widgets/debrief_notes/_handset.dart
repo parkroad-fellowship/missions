@@ -1,9 +1,9 @@
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_debrief_note.dart';
-import 'package:app/services/hive_service.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,12 +55,10 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   }
 }
 
-class DebriefNoteCard extends StatelessWidget {
+class DebriefNoteCard extends StatelessWidget with TimezoneMixin {
   const DebriefNoteCard({required this.debriefNote, super.key});
 
   final PRFLocalDebriefNote debriefNote;
-
-  String get timezone => getIt<HiveService>().timezone;
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
-import 'package:app/services/hive_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,9 +17,9 @@ class EventDetailsViewHandset extends StatefulWidget {
       _EventDetailsViewHandsetState();
 }
 
-class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
+class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
+    with TimezoneMixin {
   PRFEvent get event => widget.event;
-  String get timezone => getIt<HiveService>().timezone;
 
   @override
   Widget build(BuildContext context) {

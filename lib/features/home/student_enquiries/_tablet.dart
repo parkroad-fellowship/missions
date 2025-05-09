@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -19,11 +20,10 @@ class StudentEnquiriesPageTablet extends StatefulWidget {
       _StudentEnquiriesPageTabletState();
 }
 
-class _StudentEnquiriesPageTabletState
-    extends State<StudentEnquiriesPageTablet> {
+class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
+    with TimezoneMixin {
   bool _selectedReplyStatus = false;
 
-  String get timezone => getIt<HiveService>().timezone;
   @override
   void initState() {
     context.read<GetEnquiriesCubit>().getStudentEnquiries();

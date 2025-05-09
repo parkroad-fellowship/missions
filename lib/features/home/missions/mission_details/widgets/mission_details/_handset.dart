@@ -4,6 +4,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -20,9 +21,10 @@ class MissionDetailsViewHandset extends StatefulWidget {
       _MissionDetailsViewHandsetState();
 }
 
-class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
+class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
+    with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
-  String get timezone => getIt<HiveService>().timezone;
+
   String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;
 
   @override

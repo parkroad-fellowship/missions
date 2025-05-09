@@ -3,8 +3,8 @@ import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cu
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
-import 'package:app/services/hive_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -20,7 +20,8 @@ class EventsPageHandset extends StatefulWidget {
   State<EventsPageHandset> createState() => _EventsPageHandsetState();
 }
 
-class _EventsPageHandsetState extends State<EventsPageHandset> {
+class _EventsPageHandsetState extends State<EventsPageHandset>
+    with TimezoneMixin {
   @override
   void initState() {
     context.read<GetEventsCubit>().getEvents();
@@ -168,14 +169,12 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
   }
 }
 
-class EventActionCard extends StatelessWidget {
+class EventActionCard extends StatelessWidget with TimezoneMixin {
   const EventActionCard({required this.event, this.onTap, super.key});
 
   final PRFEvent event;
 
   final void Function()? onTap;
-
-  String get timezone => getIt<HiveService>().timezone;
 
   @override
   Widget build(BuildContext context) {
