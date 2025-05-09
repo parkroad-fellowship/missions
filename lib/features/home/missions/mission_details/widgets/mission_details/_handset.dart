@@ -130,7 +130,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          mission!.missionPrepNotes.toString(),
+                          mission!.missionPrepNotes ?? 'N/A',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -319,7 +319,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
-                        mission.school!.directions.toString(),
+                        mission.school!.directions ?? '',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -349,13 +349,13 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                     children: <Widget>[
                       Text(
                         l10n.estimatedDistance(
-                          mission!.school!.distance.toString(),
+                          mission!.school!.distance ?? 'N/A',
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         l10n.estimatedTravelTime(
-                          mission.school!.staticDuration.toString(),
+                          mission.school!.staticDuration ?? 'N/A',
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
@@ -440,7 +440,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                                       ).textTheme.headlineMedium,
                                 ),
                                 Text(
-                                  forecast.dressingRecommendations.toString(),
+                                  forecast.dressingRecommendations ?? 'N/A',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
