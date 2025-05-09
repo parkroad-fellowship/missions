@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
@@ -116,6 +117,7 @@ abstract class LocalDBService {
   Future<void> persistMissionSubscriptions({
     required List<PRFMissionSubscription> missionSubscriptions,
     required String missionUlid,
+    required String memberUlid,
   });
   Stream<List<PRFLocalMissionSubscription>> getMissionSubscriptions({
     required String missionUlid,
@@ -901,7 +903,7 @@ class LocalDBServiceImpl implements LocalDBService {
     Logger().i('persistMemberMissions :: Start');
     await prfDBInstance.writeTxn(() async {
       for (final missionSubscription in missionSubscriptions) {
-        if(missionSubscription.mission == null) {
+        if (missionSubscription.mission == null) {
           Logger().i('persistMemberMissions :: Mission is null');
           Logger().e(missionSubscription);
           continue;
@@ -968,10 +970,24 @@ class LocalDBServiceImpl implements LocalDBService {
   Future<void> persistMissionSubscriptions({
     required List<PRFMissionSubscription> missionSubscriptions,
     required String missionUlid,
+    required String memberUlid,
   }) async {
     Logger().i('persistMissionSubscriptions :: Start');
     await prfDBInstance.writeTxn(() async {
       for (final missionSubscription in missionSubscriptions) {
+        if (missionSubscription.member == null) {
+          Logger().i('persistMissionSubscriptions :: Member is null');
+          Logger().e(missionSubscription);
+          continue;
+        }
+        if (missionSubscription.member!.ulid != memberUlid &&
+            missionSubscription.status !=
+                PRFMissionSubscriptionStatus.approved) {
+          Logger().i('persistMissionSubscriptions :: Member is not approved');
+          Logger().e(missionSubscription);
+          continue;
+        }
+
         await prfDBInstance.pRFLocalMissionSubscriptions.put(
           PRFLocalMissionSubscription(
             ulid: missionSubscription.ulid,

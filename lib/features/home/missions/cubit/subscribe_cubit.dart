@@ -4,6 +4,7 @@ import 'package:app/models/remote/prf_mission_subscription_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'subscribe_state.dart';
 part 'subscribe_cubit.freezed.dart';
@@ -36,11 +37,13 @@ class SubscribeCubit extends Cubit<SubscribeState> {
       await _localDBService.persistMissionSubscriptions(
         missionSubscriptions: [missionSubscription],
         missionUlid: missionUlid,
+        memberUlid: member.ulid,
       );
       emit(SubscribeState.loaded(subscription: missionSubscription));
     } on Failure catch (e) {
       emit(SubscribeState.error(e.message));
-    } catch (e) {
+    } catch (e, s) {
+      Logger().e(s);
       emit(SubscribeState.error(e.toString()));
     }
   }

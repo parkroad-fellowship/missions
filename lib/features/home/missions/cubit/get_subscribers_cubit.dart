@@ -11,13 +11,16 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
   GetSubscribersCubit({
     required MissionService missionService,
     required LocalDBService localDBService,
+    required HiveService hiveService,
   }) : super(const GetSubscribersState.initial()) {
     _missionService = missionService;
     _localDBService = localDBService;
+    _hiveService = hiveService;
   }
 
   late MissionService _missionService;
   late LocalDBService _localDBService;
+  late HiveService _hiveService;
 
   Future<void> getSubscriptions({
     required String missionUlid,
@@ -30,14 +33,18 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
         return;
       }
 
+      final member = _hiveService.retrieveMember()!;
+
       final missionSubscriptions = await _missionService.getSubscriptions(
         missionUlid: missionUlid,
         subscriptionStatus: PRFMissionSubscriptionStatus.approved,
         includes: 'member.profilePicture',
       );
+
       await _localDBService.persistMissionSubscriptions(
         missionSubscriptions: missionSubscriptions,
         missionUlid: missionUlid,
+        memberUlid: member.ulid,
       );
       emit(const GetSubscribersState.loaded());
     } on Failure catch (e) {

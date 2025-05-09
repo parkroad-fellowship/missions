@@ -120,6 +120,7 @@ class MissionServiceImpl implements MissionService {
           'filter[status_keys]': [
             PRFMissionSubscriptionStatus.approved.apiKey,
             PRFMissionSubscriptionStatus.withdrawn.apiKey,
+            PRFMissionSubscriptionStatus.pending.apiKey,
           ].join(','),
           if (past != null) 'filter[past]': true,
           if (upcoming != null) 'filter[upcoming]': true,
