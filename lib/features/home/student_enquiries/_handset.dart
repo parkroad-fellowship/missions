@@ -22,6 +22,7 @@ class StudentEnquiriesPageHandset extends StatefulWidget {
 class _StudentEnquiriesPageHandsetState
     extends State<StudentEnquiriesPageHandset> {
   bool _selectedReplyStatus = false;
+  String get timezone => getIt<HiveService>().timezone;
   @override
   void initState() {
     context.read<GetEnquiriesCubit>().getStudentEnquiries();
@@ -160,7 +161,10 @@ class _StudentEnquiriesPageHandsetState
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
-                          Misc.formatTimeFromDateTime(enquiry.createdAt),
+                          Misc.formatTimeFromDateTime(
+                            enquiry.createdAt,
+                            timezone,
+                          ),
                         ),
                         onTap:
                             () => context.router.push(

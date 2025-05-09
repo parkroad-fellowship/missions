@@ -1,5 +1,6 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
+import 'package:app/services/hive_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -18,6 +19,7 @@ class EventDetailsViewHandset extends StatefulWidget {
 
 class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
   PRFEvent get event => widget.event;
+  String get timezone => getIt<HiveService>().timezone;
 
   @override
   Widget build(BuildContext context) {
@@ -65,15 +67,15 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.missionStart(
-                      Misc.formatMissionDate(event.startDate),
-                      Misc.formatTime(event.startTime),
+                      Misc.formatMissionDate(event.startDate, timezone),
+                      Misc.formatTime(event.startTime, timezone),
                     ),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
                     l10n.missionEnd(
-                      Misc.formatMissionDate(event.endDate),
-                      Misc.formatTime(event.endTime),
+                      Misc.formatMissionDate(event.endDate, timezone),
+                      Misc.formatTime(event.endTime, timezone),
                     ),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),

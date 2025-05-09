@@ -19,6 +19,7 @@ class AnnouncementsPageTablet extends StatefulWidget {
 }
 
 class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
+  String get timezone => getIt<HiveService>().timezone;
   @override
   void initState() {
     context.read<GetAnnouncementsCubit>().getAnnouncements();
@@ -183,6 +184,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet> {
                                           trailing: Text(
                                             Misc.formatTimeFromDateTime(
                                               entries[index].publishedAt,
+                                              timezone,
                                             ),
                                             style:
                                                 Theme.of(

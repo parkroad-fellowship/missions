@@ -62,6 +62,8 @@ class MissionQuestionCard extends StatelessWidget {
 
   final PRFLocalMissionQuestion missionQuestion;
 
+  String get timezone => getIt<HiveService>().timezone;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -88,7 +90,7 @@ class MissionQuestionCard extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  Misc.formatDateTime(missionQuestion.createdAt),
+                  Misc.formatDateTime(missionQuestion.createdAt, timezone),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 SizedBox(height: 8.h),

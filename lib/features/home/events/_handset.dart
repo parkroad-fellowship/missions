@@ -3,6 +3,7 @@ import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cu
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
+import 'package:app/services/hive_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
@@ -174,6 +175,8 @@ class EventActionCard extends StatelessWidget {
 
   final void Function()? onTap;
 
+  String get timezone => getIt<HiveService>().timezone;
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -205,8 +208,8 @@ class EventActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     l10n.missionStart(
-                      Misc.formatDate(event.startDate),
-                      Misc.formatTime(event.startTime),
+                      Misc.formatDate(event.startDate, timezone),
+                      Misc.formatTime(event.startTime, timezone),
                     ),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),

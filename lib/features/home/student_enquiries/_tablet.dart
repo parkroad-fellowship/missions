@@ -22,6 +22,8 @@ class StudentEnquiriesPageTablet extends StatefulWidget {
 class _StudentEnquiriesPageTabletState
     extends State<StudentEnquiriesPageTablet> {
   bool _selectedReplyStatus = false;
+
+  String get timezone => getIt<HiveService>().timezone;
   @override
   void initState() {
     context.read<GetEnquiriesCubit>().getStudentEnquiries();
@@ -156,7 +158,10 @@ class _StudentEnquiriesPageTabletState
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
-                          Misc.formatTimeFromDateTime(enquiry.createdAt),
+                          Misc.formatTimeFromDateTime(
+                            enquiry.createdAt,
+                            timezone,
+                          ),
                         ),
                         onTap:
                             () => context.router.push(

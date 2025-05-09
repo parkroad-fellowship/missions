@@ -294,6 +294,8 @@ class MissionActionCard extends StatelessWidget {
   final PRFMissionSubscriptionStatus? status;
   final void Function()? onTap;
 
+  String get timezone => getIt<HiveService>().timezone;
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -330,8 +332,8 @@ class MissionActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     l10n.missionStart(
-                      Misc.formatDate(mission.startDate),
-                      Misc.formatTime(mission.startTime),
+                      Misc.formatDate(mission.startDate, timezone),
+                      Misc.formatTime(mission.startTime, timezone),
                     ),
                   ),
                   SizedBox(height: 16.h),

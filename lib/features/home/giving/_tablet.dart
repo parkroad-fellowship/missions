@@ -2,6 +2,7 @@ import 'package:app/features/home/giving/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_payment.dart';
+import 'package:app/services/hive_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 
@@ -172,6 +173,8 @@ class PaymentCard extends StatelessWidget {
 
   final PRFPayment payment;
 
+  String get timezone => getIt<HiveService>().timezone;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -213,7 +216,7 @@ class PaymentCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      Text(Misc.formatDateTime(payment.createdAt)),
+                      Text(Misc.formatDateTime(payment.createdAt, timezone)),
                       SizedBox(height: 16.h),
                     ],
                   ),

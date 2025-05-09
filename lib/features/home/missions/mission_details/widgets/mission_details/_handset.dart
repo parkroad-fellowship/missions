@@ -20,6 +20,7 @@ class MissionDetailsViewHandset extends StatefulWidget {
 
 class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
   String get missionUlid => widget.missionUlid;
+  String get timezone => getIt<HiveService>().timezone;
 
   @override
   void initState() {
@@ -55,15 +56,15 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
                         const SizedBox(height: 8),
                         Text(
                           l10n.missionStart(
-                            Misc.formatMissionDate(mission.startDate),
-                            Misc.formatTime(mission.startTime),
+                            Misc.formatMissionDate(mission.startDate, timezone),
+                            Misc.formatTime(mission.startTime, timezone),
                           ),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
                           l10n.missionEnd(
-                            Misc.formatMissionDate(mission.endDate),
-                            Misc.formatTime(mission.endTime),
+                            Misc.formatMissionDate(mission.endDate, timezone),
+                            Misc.formatTime(mission.endTime, timezone),
                           ),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
@@ -140,7 +141,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset> {
               ),
               widget:
                   (context, mission) =>
-                      (mission!.whatsAppLink != null)
+                      (mission!.whatsAppLink != null &&
+                              mission.loggedInMemberMissionSubscription != null)
                           ? ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: const Icon(Icons.link),

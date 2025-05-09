@@ -1,6 +1,7 @@
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_debrief_note.dart';
+import 'package:app/services/hive_service.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class DebriefNoteCard extends StatelessWidget {
 
   final PRFLocalDebriefNote debriefNote;
 
+  String get timezone => getIt<HiveService>().timezone;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -85,7 +88,7 @@ class DebriefNoteCard extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  Misc.formatDateTime(debriefNote.createdAt),
+                  Misc.formatDateTime(debriefNote.createdAt, timezone),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 SizedBox(height: 16.h),
