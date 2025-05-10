@@ -696,7 +696,7 @@
     "@testing": {},
     "expenseDetails": "Expense Details",
     "@expenseDetails": {},
-    "submitPrayerRequest": "Send a Prayer Request",
+    "submitPrayerRequest": "Share a prayer request",
     "@submitPrayerRequest": {},
     "submitting": "Submitting...",
     "@submitting": {},
