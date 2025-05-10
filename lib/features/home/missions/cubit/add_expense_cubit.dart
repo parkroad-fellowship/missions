@@ -27,6 +27,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     required String expenseCategoryUlid,
     required String unitCost,
     required String quantity,
+    required String charge,
     required PRFChargeType chargeType,
     required String confirmationMessage,
   }) async {
@@ -45,6 +46,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           confirmationMessage: confirmationMessage,
           unitCost: int.parse(unitCost),
           quantity: int.parse(quantity),
+          charge: int.parse(charge),
         ),
       );
 

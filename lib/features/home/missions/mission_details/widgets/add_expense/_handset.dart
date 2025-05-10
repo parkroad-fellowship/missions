@@ -20,6 +20,7 @@ class AddExpenseViewHandset extends StatefulWidget {
 class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
   final _unitCostController = TextEditingController();
   final _quantityController = TextEditingController();
+  final _chargeController = TextEditingController();
   final _confirmationMessageController = TextEditingController();
 
   bool _isLoading = false;
@@ -32,7 +33,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     final l10n = context.l10n;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16) + const EdgeInsets.only(bottom: 16),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -95,6 +96,16 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             PRFNumberInput(
               hintText: l10n.quantity,
               controller: _quantityController,
+            ),
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(label: l10n.charge, isRequired: true),
+            ),
+            const SizedBox(height: 12),
+            PRFNumberInput(
+              hintText: l10n.charge,
+              controller: _chargeController,
             ),
             const SizedBox(height: 16),
             Align(
@@ -206,6 +217,22 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             return;
                           }
 
+                          if (_quantityController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterQuantity)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
+
+                          if (_chargeController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterCharge)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
+
                           if (_confirmationMessageController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -222,6 +249,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             unitCost: _unitCostController.text,
                             quantity: _quantityController.text,
                             chargeType: selectedChargeType!,
+                            charge: _chargeController.text,
                             confirmationMessage:
                                 _confirmationMessageController.text,
                           );
