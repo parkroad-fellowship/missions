@@ -707,5 +707,7 @@
     "submit": "Submit",
     "@submit": {},
     "fillAllFields": "Please fill in all fields.",
-    "@fillAllFields": {}
+    "@fillAllFields": {},
+    "title": "Title",
+    "@title": {}
 }

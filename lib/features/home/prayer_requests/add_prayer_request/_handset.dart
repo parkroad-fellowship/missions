@@ -1,5 +1,6 @@
 import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/buttons/primary.dart';
 import 'package:app/widgets/input/name.dart';
 import 'package:app/widgets/input/text_area.dart';
@@ -17,7 +18,7 @@ class AddPrayerRequestViewHandset extends StatefulWidget {
 
 class _AddPrayerRequestViewHandsetState
     extends State<AddPrayerRequestViewHandset> {
-  final _nameController = TextEditingController();
+  final _titleController = TextEditingController();
   final _requestController = TextEditingController();
   bool _isLoading = false;
 
@@ -30,8 +31,21 @@ class _AddPrayerRequestViewHandsetState
       child: SingleChildScrollView(
         child: Column(
           children: [
-            PRFNameInput(hintText: l10n.name, controller: _nameController),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(label: l10n.title, isRequired: true),
+            ),
+            const SizedBox(height: 12),
+            PRFNameInput(hintText: l10n.title, controller: _titleController),
             const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.prayerRequest,
+                isRequired: true,
+              ),
+            ),
+            const SizedBox(height: 12),
             PRFTextAreaInput(
               hintText: l10n.prayerRequest,
               controller: _requestController,
@@ -64,7 +78,7 @@ class _AddPrayerRequestViewHandsetState
                   isLoading: _isLoading,
                   disabled: _isLoading,
                   onPressed: () {
-                    final name = _nameController.text.trim();
+                    final name = _titleController.text.trim();
                     final request = _requestController.text.trim();
 
                     if (name.isEmpty || request.isEmpty) {

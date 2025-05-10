@@ -19,10 +19,9 @@ class GetPrayerRequestCubit extends Cubit<GetPrayerRequestState> {
   final PrayerRequestService _prayerRequestService;
 
   Future<void> fetchPrayerRequests() async {
-    emit(const GetPrayerRequestState.loading());
-    final member = _hiveService.retrieveMember()!;
-
     try {
+      emit(const GetPrayerRequestState.loading());
+      final member = _hiveService.retrieveMember()!;
       final prayerRequests = await _prayerRequestService.getPrayerRequests(
         memberUlid: member.ulid,
       );
