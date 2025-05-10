@@ -5,31 +5,31 @@ import 'package:app/services/prayer_request_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'get_prayer_request_state.dart';
-part 'get_prayer_request_cubit.freezed.dart';
+part 'get_prayer_requests_state.dart';
+part 'get_prayer_requests_cubit.freezed.dart';
 
-class GetPrayerRequestCubit extends Cubit<GetPrayerRequestState> {
-  GetPrayerRequestCubit({
+class GetPrayerRequestsCubit extends Cubit<GetPrayerRequestsState> {
+  GetPrayerRequestsCubit({
     required HiveService hiveService,
     required PrayerRequestService prayerRequestService,
   }) : _hiveService = hiveService,
        _prayerRequestService = prayerRequestService,
-       super(const GetPrayerRequestState.initial());
+       super(const GetPrayerRequestsState.initial());
   final HiveService _hiveService;
   final PrayerRequestService _prayerRequestService;
 
   Future<void> fetchPrayerRequests() async {
     try {
-      emit(const GetPrayerRequestState.loading());
+      emit(const GetPrayerRequestsState.loading());
       final member = _hiveService.retrieveMember()!;
       final prayerRequests = await _prayerRequestService.getPrayerRequests(
         memberUlid: member.ulid,
       );
-      emit(GetPrayerRequestState.loaded(prayerRequests: prayerRequests));
+      emit(GetPrayerRequestsState.loaded(prayerRequests: prayerRequests));
     } on Failure catch (e) {
-      emit(GetPrayerRequestState.error(e.message));
+      emit(GetPrayerRequestsState.error(e.message));
     } catch (e) {
-      emit(GetPrayerRequestState.error(e.toString()));
+      emit(GetPrayerRequestsState.error(e.toString()));
     }
   }
 }

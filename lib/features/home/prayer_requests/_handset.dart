@@ -1,5 +1,5 @@
 import 'package:app/features/home/prayer_requests/add_prayer_request/add_prayer_request.dart';
-import 'package:app/features/home/prayer_requests/cubit/get_prayer_request_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
@@ -22,7 +22,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
   @override
   void initState() {
     super.initState();
-    context.read<GetPrayerRequestCubit>().fetchPrayerRequests();
+    context.read<GetPrayerRequestsCubit>().fetchPrayerRequests();
   }
 
   @override
@@ -85,7 +85,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
               SliverToBoxAdapter(child: SizedBox(height: 48.h)),
               SliverToBoxAdapter(
                 child:
-                    BlocBuilder<GetPrayerRequestCubit, GetPrayerRequestState>(
+                    BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
                       builder:
                           (context, state) => state.maybeWhen(
                             orElse:
@@ -97,7 +97,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                           ),
                     ),
               ),
-              BlocBuilder<GetPrayerRequestCubit, GetPrayerRequestState>(
+              BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse:
@@ -115,7 +115,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                             onRefresh:
                                 () =>
                                     context
-                                        .read<GetPrayerRequestCubit>()
+                                        .read<GetPrayerRequestsCubit>()
                                         .fetchPrayerRequests(),
                             child: Center(
                               child: PRFPrimaryButton(
@@ -178,6 +178,6 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
         ],
   ).then((_) {
     if (!mounted) return;
-    context.read<GetPrayerRequestCubit>().fetchPrayerRequests();
+    context.read<GetPrayerRequestsCubit>().fetchPrayerRequests();
   });
 }
