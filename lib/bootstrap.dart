@@ -67,7 +67,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<HiveService>().initBoxes();
 
-    await getIt<AuthService>().initRemoteConfig();
+    try {
+      await getIt<AuthService>().initRemoteConfig();
+    } catch (e) {
+      Logger().e(e);
+    }
 
     await getIt<AnalyticsService>().init();
 
