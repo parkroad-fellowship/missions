@@ -3,6 +3,7 @@ import 'package:app/features/home/missions/mission_details/widgets/expenses/widg
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -262,7 +263,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
   }
 }
 
-class ExpensesDataTable extends StatelessWidget {
+class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
   const ExpensesDataTable({required this.expenses, super.key});
   final List<PRFExpense> expenses;
 
@@ -284,6 +285,91 @@ class ExpensesDataTable extends StatelessWidget {
           expenses
               .map(
                 (expense) => DataRow(
+                  onLongPress:
+                      () => WoltModalSheet.show<dynamic>(
+                        context: context,
+                        useSafeArea: true,
+                        pageListBuilder:
+                            (_) => [
+                              WoltModalSheetPage(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ) +
+                                      const EdgeInsets.only(bottom: 16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        l10n.expenseDetails,
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.headlineMedium,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      _buildDetailRow(
+                                        context,
+                                        l10n.expenseCategory,
+                                        expense.expenseCategory?.name ?? 'N/A',
+                                      ),
+                                      _buildDetailRow(
+                                        context,
+                                        l10n.narration,
+                                        expense.narration.isNotEmpty
+                                            ? expense.narration
+                                            : 'N/A',
+                                      ),
+                                      _buildDetailRow(
+                                        context,
+                                        l10n.unitCost,
+                                        Misc.formatCash(expense.unitCost),
+                                      ),
+                                      _buildDetailRow(
+                                        context,
+                                        l10n.quantity,
+                                        expense.quantity.toString(),
+                                      ),
+                                      _buildDetailRow(
+                                        context,
+                                        l10n.total,
+                                        Misc.formatCash(expense.lineTotal),
+                                      ),
+                                      _buildDetailRow(
+                                        context,
+                                        'Charge',
+                                        Misc.formatCash(expense.charge),
+                                      ),
+                                      _buildDetailRow(
+                                        context,
+                                        'Created At',
+                                        Misc.timestamp(
+                                          expense.createdAt,
+                                          timezone,
+                                        ),
+                                      ),
+                                      if (expense.confirmationMessage !=
+                                          null) ...[
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          'Confirmation Message:',
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.titleMedium?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(expense.confirmationMessage ?? ''),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                      ),
                   cells: [
                     DataCell(
                       ConstrainedBox(
@@ -327,6 +413,29 @@ class ExpensesDataTable extends StatelessWidget {
               .toList(),
     );
   }
+}
+
+Widget _buildDetailRow(BuildContext context, String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 100,
+          child: Text(
+            '$label:',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
+        ),
+      ],
+    ),
+  );
 }
 
 Widget _title(String text) {

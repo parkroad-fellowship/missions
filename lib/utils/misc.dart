@@ -39,6 +39,15 @@ class Misc {
     return DateFormat.yMMMMd().format(dateTimeInLocation);
   }
 
+  static String timestamp(DateTime dateTime, String timezone) {
+    final location = tz.getLocation(timezone);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
+    return '${DateFormat.yMMMMEEEEd().format(dateTimeInLocation)} '
+        '${DateFormat.jm().format(dateTimeInLocation)}';
+  }
+
   static String formatTime(String time, String timezone) {
     // Assuming the input 'time' string (e.g., "10:30:00") is meant to be UTC.
     // Parse it as UTC by appending 'Z'.
