@@ -29,6 +29,8 @@ class PRFSuperAppRouter extends RootStackRouter {
   static const String eventsRoute = '/events';
   static const String eventDetailsRoute = '/event-details';
 
+  static const String prayerRequestRoute = '/prayer-requests';
+
   // Course Work
   static const String courseDetailsRoute = '/course-details';
   static const String moduleDetailsRoute = '/module-details';
@@ -41,6 +43,7 @@ class PRFSuperAppRouter extends RootStackRouter {
     AutoRoute(page: SignInRoute.page, path: signInRoute),
 
     // Landing
+    AutoRoute(page: PrayerRequest.page, path: prayerRequestRoute),
     AutoRoute(page: MissionsRoute.page, path: missionsRoute),
     AutoRoute(page: LMSRoute.page, path: lmsRoute),
     AutoRoute(page: StudentEnquiriesRoute.page, path: studentEnquiriesRoute),

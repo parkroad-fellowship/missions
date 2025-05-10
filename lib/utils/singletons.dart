@@ -50,10 +50,13 @@ import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/prayer_request_service.dart';
 import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -82,7 +85,8 @@ class Singletons {
       ..registerSingleton<MissionGroundsService>(MissionGroundsServiceImpl())
       ..registerSingleton<PaymentService>(PaymentServiceImpl())
       ..registerSingleton<EventService>(EventServiceImpl())
-      ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
+      ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl())
+      ..registerSingleton<PrayerRequestService>(PrayerRequestServiceImpl());
   }
 
   static Future<void> setupDatabase() async {
@@ -432,6 +436,22 @@ class Singletons {
         create:
             (context) => ChangeProfilePictureCubit(
               mediaService: getIt(),
+              hiveService: getIt(),
+            ),
+      ),
+
+      BlocProvider<AddPrayerRequestCubit>(
+        create:
+            (context) => AddPrayerRequestCubit(
+              prayerRequestService: getIt(),
+              hiveService: getIt(),
+            ),
+      ),
+
+      BlocProvider<GetPrayerRequestsCubit>(
+        create:
+            (context) => GetPrayerRequestsCubit(
+              prayerRequestService: getIt(),
               hiveService: getIt(),
             ),
       ),

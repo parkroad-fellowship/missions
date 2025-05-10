@@ -695,5 +695,19 @@
     "testing": "This is a test. No real money will be charged.",
     "@testing": {},
     "expenseDetails": "Expense Details",
-    "@expenseDetails": {}
+    "@expenseDetails": {},
+    "submitPrayerRequest": "Share a prayer request",
+    "@submitPrayerRequest": {},
+    "submitting": "Submitting...",
+    "@submitting": {},
+    "prayerRequest": "Prayer Request",
+    "@prayerRequest": {},
+    "prayerRequestSubmitted": "Your prayer request has been submitted.",
+    "@prayerRequestSubmitted": {},
+    "submit": "Submit",
+    "@submit": {},
+    "fillAllFields": "Please fill in all fields.",
+    "@fillAllFields": {},
+    "title": "Title",
+    "@title": {}
 }

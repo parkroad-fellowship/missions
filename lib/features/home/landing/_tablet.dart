@@ -304,6 +304,25 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                           ),
                     ),
                   ),
+
+                  SizedBox(height: 32.h),
+                  Animate(
+                    effects: [
+                      MoveEffect(
+                        duration: .5.seconds,
+                        curve: Curves.easeOutQuad,
+                        begin: const Offset(-160, 0),
+                      ),
+                    ],
+                    child: HomeActionCard(
+                      title: l10n.submitPrayerRequest,
+                      assetPath: 'assets/svgs/texting.svg',
+                      onTap:
+                          () => context.router.pushNamed(
+                            PRFSuperAppRouter.prayerRequestRoute,
+                          ),
+                    ),
+                  ),
                 ],
               ),
             ),

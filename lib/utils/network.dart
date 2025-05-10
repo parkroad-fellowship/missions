@@ -64,7 +64,7 @@ class NetworkUtil {
       final responseBody = response.data as Map<String, dynamic>;
 
       if (responseBody.isEmpty) {
-        throw Failure(message: 'An error occured, please try again later');
+        throw Failure(message: 'An error occurred, please try again later');
       }
 
       return responseBody;
