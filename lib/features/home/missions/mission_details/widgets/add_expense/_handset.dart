@@ -21,6 +21,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
   final _unitCostController = TextEditingController();
   final _quantityController = TextEditingController();
   final _chargeController = TextEditingController();
+  final _narrationController = TextEditingController();
   final _confirmationMessageController = TextEditingController();
 
   bool _isLoading = false;
@@ -33,7 +34,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     final l10n = context.l10n;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16) + const EdgeInsets.only(bottom: 16),
+      padding:
+          const EdgeInsets.symmetric(horizontal: 16) +
+          const EdgeInsets.only(bottom: 16),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -76,6 +79,18 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       ),
                 );
               },
+            ),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(label: l10n.narration, isRequired: true),
+            ),
+            const SizedBox(height: 6),
+            PRFTextAreaInput(
+              hintText: l10n.narration,
+              controller: _narrationController,
+              minLines: 2,
+       
             ),
             const SizedBox(height: 16),
             Align(
@@ -243,6 +258,14 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             return;
                           }
 
+                          if (_narrationController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.enterNarration)),
+                            );
+                            Gaimon.warning();
+                            return;
+                          }
+
                           await context.read<AddExpenseCubit>().addExpense(
                             missionUlid: widget.missionUlid,
                             expenseCategoryUlid: selectedExpenseCategory!.ulid,
@@ -252,6 +275,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             charge: _chargeController.text,
                             confirmationMessage:
                                 _confirmationMessageController.text,
+                            narration: _narrationController.text.trim(),
                           );
                         },
                       ),

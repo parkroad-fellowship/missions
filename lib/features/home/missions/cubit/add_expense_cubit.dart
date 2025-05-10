@@ -30,6 +30,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     required String charge,
     required PRFChargeType chargeType,
     required String confirmationMessage,
+    required String narration,
   }) async {
     emit(const AddExpenseState.loading());
     try {
@@ -47,6 +48,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           unitCost: int.parse(unitCost),
           quantity: int.parse(quantity),
           charge: int.parse(charge),
+          narration: narration,
         ),
       );
 

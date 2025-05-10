@@ -19,6 +19,7 @@ class PRFExpense with _$PRFExpense {
     int charge,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @Default('') String narration,
     @JsonKey(name: 'confirmation_message') String? confirmationMessage,
     @JsonKey(name: 'expense_category') PRFExpenseCategory? expenseCategory,
     PRFMember? member,
