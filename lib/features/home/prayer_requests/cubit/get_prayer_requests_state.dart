@@ -1,6 +1,5 @@
 part of 'get_prayer_requests_cubit.dart';
 
-
 @freezed
 class GetPrayerRequestsState with _$GetPrayerRequestsState {
   const factory GetPrayerRequestsState.initial() = _Initial;
