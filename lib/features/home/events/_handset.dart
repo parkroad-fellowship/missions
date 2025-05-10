@@ -4,6 +4,7 @@ import 'package:app/features/home/missions/cubit/get_member_mission_subscription
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -19,7 +20,8 @@ class EventsPageHandset extends StatefulWidget {
   State<EventsPageHandset> createState() => _EventsPageHandsetState();
 }
 
-class _EventsPageHandsetState extends State<EventsPageHandset> {
+class _EventsPageHandsetState extends State<EventsPageHandset>
+    with TimezoneMixin {
   @override
   void initState() {
     context.read<GetEventsCubit>().getEvents();
@@ -167,7 +169,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset> {
   }
 }
 
-class EventActionCard extends StatelessWidget {
+class EventActionCard extends StatelessWidget with TimezoneMixin {
   const EventActionCard({required this.event, this.onTap, super.key});
 
   final PRFEvent event;
@@ -205,8 +207,8 @@ class EventActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     l10n.missionStart(
-                      Misc.formatDate(event.startDate),
-                      Misc.formatTime(event.startTime),
+                      Misc.formatDate(event.startDate, timezone),
+                      Misc.formatTime(event.startTime, timezone),
                     ),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),

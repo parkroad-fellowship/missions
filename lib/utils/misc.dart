@@ -11,23 +11,59 @@ import 'package:flutter/material.dart' show BuildContext, MediaQuery, Size;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:slugify/slugify.dart' as slugify;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 
 class Misc {
-  static String formatDateTime(DateTime dateTime) {
-    return DateFormat.yMMMd().add_jm().format(dateTime.toLocal());
+  static String formatDateTime(DateTime dateTime, String timezone) {
+    final location = tz.getLocation(timezone);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
+    return DateFormat.yMMMd().add_jm().add_EEEE().format(dateTimeInLocation);
   }
 
-  static String formatMissionDate(DateTime dateTime) =>
-      DateFormat.EEEE().add_yMMMd().format(dateTime.toLocal());
+  static String formatMissionDate(DateTime dateTime, String timezone) {
+    final location = tz.getLocation(timezone);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
+    return DateFormat.EEEE().add_yMMMd().format(dateTimeInLocation);
+  }
 
-  static String formatDate(DateTime dateTime) =>
-      DateFormat.yMMMMd().format(dateTime.toLocal());
+  static String formatDate(DateTime dateTime, String timezone) {
+    final location = tz.getLocation(timezone);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
+    return DateFormat.yMMMMd().format(dateTimeInLocation);
+  }
 
-  static String formatTime(String time) =>
-      DateFormat.jm().format(DateTime.parse('2012-02-27 $time'));
-  static String formatTimeFromDateTime(DateTime dateTime) =>
-      DateFormat.jm().format(dateTime);
+  static String timestamp(DateTime dateTime, String timezone) {
+    final location = tz.getLocation(timezone);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
+    return '${DateFormat.yMMMMEEEEd().format(dateTimeInLocation)} '
+        '${DateFormat.jm().format(dateTimeInLocation)}';
+  }
+
+  static String formatTime(String time, String timezone) {
+    // Assuming the input 'time' string (e.g., "10:30:00") is meant to be UTC.
+    // Parse it as UTC by appending 'Z'.
+    final dateTimeUtc = DateTime.parse('2012-02-27 ${time}Z');
+    final location = tz.getLocation(timezone);
+    final dateTimeInLocation = tz.TZDateTime.from(dateTimeUtc, location);
+    return DateFormat.jm().format(dateTimeInLocation);
+  }
+
+  static String formatTimeFromDateTime(DateTime dateTime, String timezone) {
+    final location = tz.getLocation(timezone);
+    // Ensure we are converting from a universal point in time (UTC)
+    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
+    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
+    return DateFormat.jm().format(dateTimeInLocation);
+  }
 
   static String getUserNameInitials(String userName) {
     final trimmedName = userName.trim();

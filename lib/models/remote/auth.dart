@@ -21,6 +21,7 @@ class PRFUser with _$PRFUser {
     required String ulid,
     required String name,
     required String email,
+    required String timezone,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
     required List<PRFRole> roles,

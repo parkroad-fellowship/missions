@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_question.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +58,7 @@ class _MissionQuestionsViewHandsetState
   }
 }
 
-class MissionQuestionCard extends StatelessWidget {
+class MissionQuestionCard extends StatelessWidget with TimezoneMixin {
   const MissionQuestionCard({required this.missionQuestion, super.key});
 
   final PRFLocalMissionQuestion missionQuestion;
@@ -88,7 +89,7 @@ class MissionQuestionCard extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  Misc.formatDateTime(missionQuestion.createdAt),
+                  Misc.formatDateTime(missionQuestion.createdAt, timezone),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 SizedBox(height: 8.h),

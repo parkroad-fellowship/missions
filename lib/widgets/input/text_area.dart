@@ -6,11 +6,15 @@ class PRFTextAreaInput extends StatelessWidget {
     required this.controller,
     super.key,
     this.enabled = true,
+    this.maxLines = 5,
+    this.minLines = 5,
   });
 
   final String hintText;
   final TextEditingController controller;
   final bool enabled;
+  final int minLines;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +24,8 @@ class PRFTextAreaInput extends StatelessWidget {
       style: Theme.of(context).textTheme.bodySmall,
       controller: controller,
       enabled: enabled,
-      minLines: 5,
-      maxLines: 5,
+      minLines: minLines,
+      maxLines: maxLines,
     );
   }
 }

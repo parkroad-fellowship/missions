@@ -1,6 +1,7 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +17,8 @@ class EventDetailsViewHandset extends StatefulWidget {
       _EventDetailsViewHandsetState();
 }
 
-class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
+class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
+    with TimezoneMixin {
   PRFEvent get event => widget.event;
 
   @override
@@ -65,15 +67,15 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset> {
                   const SizedBox(height: 8),
                   Text(
                     l10n.missionStart(
-                      Misc.formatMissionDate(event.startDate),
-                      Misc.formatTime(event.startTime),
+                      Misc.formatMissionDate(event.startDate, timezone),
+                      Misc.formatTime(event.startTime, timezone),
                     ),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
                     l10n.missionEnd(
-                      Misc.formatMissionDate(event.endDate),
-                      Misc.formatTime(event.endTime),
+                      Misc.formatMissionDate(event.endDate, timezone),
+                      Misc.formatTime(event.endTime, timezone),
                     ),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),

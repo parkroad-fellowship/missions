@@ -14,6 +14,8 @@ class PRFExpenseDTO with _$PRFExpenseDTO {
     @JsonKey(name: 'confirmation_message') required String confirmationMessage,
     @JsonKey(name: 'unit_cost') required int unitCost,
     required int quantity,
+    required int charge,
+    required String narration,
   }) = _PRFExpenseDTO;
 
   factory PRFExpenseDTO.fromJson(Map<String, dynamic> json) =>

@@ -5,6 +5,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router.gr.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -281,7 +282,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
   }
 }
 
-class MissionActionCard extends StatelessWidget {
+class MissionActionCard extends StatelessWidget with TimezoneMixin {
   const MissionActionCard({
     required this.mission,
     this.status,
@@ -330,8 +331,8 @@ class MissionActionCard extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     l10n.missionStart(
-                      Misc.formatDate(mission.startDate),
-                      Misc.formatTime(mission.startTime),
+                      Misc.formatDate(mission.startDate, timezone),
+                      Misc.formatTime(mission.startTime, timezone),
                     ),
                   ),
                   SizedBox(height: 16.h),
