@@ -90,7 +90,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               hintText: l10n.narration,
               controller: _narrationController,
               minLines: 2,
-       
             ),
             const SizedBox(height: 16),
             Align(

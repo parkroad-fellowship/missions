@@ -125,6 +125,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 32.w),
                       child: DataTable(
+                        columnSpacing: 24,
+                        dataRowMinHeight: 48,
+                        dataRowMaxHeight: double.infinity,
                         columns: [
                           DataColumn(label: Text(l10n.item)),
                           DataColumn(label: Text(l10n.figure)),
@@ -268,17 +271,44 @@ class ExpensesDataTable extends StatelessWidget {
     final l10n = context.l10n;
 
     return DataTable(
+      columnSpacing: 24,
+      horizontalMargin: 16,
+      dataRowMinHeight: 64,
+      dataRowMaxHeight: double.infinity,
       columns: [
-        DataColumn(label: _text(l10n.item)),
-        DataColumn(label: _text(l10n.unitCostAndQty)),
-        DataColumn(label: _text(l10n.totalCost)),
+        DataColumn(label: _title(l10n.item)),
+        DataColumn(label: _title(l10n.unitCostAndQty)),
+        DataColumn(label: _title(l10n.totalCost)),
       ],
       rows:
           expenses
               .map(
                 (expense) => DataRow(
                   cells: [
-                    DataCell(Text(expense.expenseCategory!.name)),
+                    DataCell(
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              expense.expenseCategory!.name,
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            if (expense.narration.isNotEmpty)
+                              Text(
+                                '- ${expense.narration}',
+
+                                softWrap: true,
+                                overflow: TextOverflow.visible,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
                     DataCell(
                       _text(
                         '${Misc.formatCash(expense.unitCost)} x'
@@ -299,8 +329,15 @@ class ExpensesDataTable extends StatelessWidget {
   }
 }
 
+Widget _title(String text) {
+  return SizedBox(
+    width: 120,
+    child: Text(text, softWrap: true, overflow: TextOverflow.visible),
+  );
+}
+
 Widget _text(String text) {
-  return Text(text, overflow: TextOverflow.ellipsis);
+  return Text(text, softWrap: true, overflow: TextOverflow.visible);
 }
 
 class ExpenseCard extends StatelessWidget {
