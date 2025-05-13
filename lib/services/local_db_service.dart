@@ -765,6 +765,9 @@ class LocalDBServiceImpl implements LocalDBService {
   @override
   Future<void> persistMissions({required List<PRFMission> missions}) async {
     await prfDBInstance.writeTxn(() async {
+      await prfDBInstance.pRFLocalMissions.clear();
+    });
+    await prfDBInstance.writeTxn(() async {
       for (final mission in missions) {
         await prfDBInstance.pRFLocalMissions.put(
           _transformRemoteMissionToLocalMission(mission),
@@ -1114,6 +1117,7 @@ class LocalDBServiceImpl implements LocalDBService {
             createdAt: soul.createdAt,
             missionUlid: missionUlid,
             fullName: soul.fullName,
+            admissionNumber: soul.admissionNumber,
             classGroup: PRFLocalClassGroup(
               ulid: soul.classGroup?.ulid,
               name: soul.classGroup?.name,

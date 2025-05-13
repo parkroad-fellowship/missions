@@ -18,6 +18,7 @@ class AddSoulViewHandset extends StatefulWidget {
 
 class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
   final _fullNameController = TextEditingController();
+  final _admissionNumberController = TextEditingController();
   bool _isLoading = false;
 
   PRFClassGroup? selectedClassGroup;
@@ -80,6 +81,19 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               controller: _fullNameController,
             ),
             const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: FormFieldLabel(
+                label: l10n.admissionNumber,
+                isRequired: true,
+              ),
+            ),
+            const SizedBox(height: 6),
+            PRFNameInput(
+              hintText: l10n.admissionNumber,
+              controller: _admissionNumberController,
+            ),
+            const SizedBox(height: 16),
             BlocConsumer<AddSoulCubit, AddSoulState>(
               listener: (context, state) {
                 state.mapOrNull(
@@ -137,6 +151,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                             missionUlid: widget.missionUlid,
                             classGroup: selectedClassGroup!,
                             fullName: _fullNameController.text,
+                            admissionNumber: _admissionNumberController.text,
                           );
                         },
                       ),

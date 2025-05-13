@@ -25,6 +25,7 @@ class AddSoulCubit extends Cubit<AddSoulState> {
     required String missionUlid,
     required PRFClassGroup classGroup,
     required String fullName,
+    String? admissionNumber,
   }) async {
     emit(const AddSoulState.loading());
     try {
@@ -33,6 +34,7 @@ class AddSoulCubit extends Cubit<AddSoulState> {
           missionUlid: missionUlid,
           classGroupUlid: classGroup.ulid,
           fullName: fullName,
+          admissionNumber: admissionNumber,
         ),
       );
 
