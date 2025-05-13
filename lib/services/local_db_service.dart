@@ -1114,6 +1114,7 @@ class LocalDBServiceImpl implements LocalDBService {
             createdAt: soul.createdAt,
             missionUlid: missionUlid,
             fullName: soul.fullName,
+            admissionNumber: soul.admissionNumber,
             classGroup: PRFLocalClassGroup(
               ulid: soul.classGroup?.ulid,
               name: soul.classGroup?.name,

@@ -11,12 +11,14 @@ class PRFLocalSoul {
     required this.createdAt,
     required this.missionUlid,
     required this.classGroup,
+    this.admissionNumber,
   });
 
   Id id = Isar.autoIncrement;
   @Index(unique: true, replace: true)
   final String ulid;
   final String fullName;
+  final String? admissionNumber;
   final DateTime createdAt;
   final String missionUlid;
   final PRFLocalClassGroup classGroup;

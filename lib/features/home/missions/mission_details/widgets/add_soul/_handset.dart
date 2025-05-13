@@ -83,7 +83,10 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
             const SizedBox(height: 16),
             Align(
               alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.fullName, isRequired: true),
+              child: FormFieldLabel(
+                label: l10n.admissionNumber,
+                isRequired: true,
+              ),
             ),
             const SizedBox(height: 6),
             PRFNameInput(

@@ -12,6 +12,7 @@ class PRFSoul with _$PRFSoul {
     @JsonKey(name: 'full_name') String fullName,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @JsonKey(name: 'admission_number') String? admissionNumber,
     PRFMission? mission,
     @JsonKey(name: 'class_group') PRFClassGroup? classGroup,
   }) = _PRFSoul;
