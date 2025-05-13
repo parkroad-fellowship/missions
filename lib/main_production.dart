@@ -10,7 +10,7 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      hiveBox: 'prf-missions',
+      hiveBox: 'prf-missions-${Misc.getSluggedAppVersion()}',
       baseDomain: 'api.parkroadfellowship.org',
       urlScheme: 'https',
       socketDomain: 'ws.parkroadfellowship.org',
