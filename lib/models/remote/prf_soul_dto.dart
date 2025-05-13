@@ -9,6 +9,7 @@ class PRFSoulDTO with _$PRFSoulDTO {
     @JsonKey(name: 'full_name') required String fullName,
     @JsonKey(name: 'mission_ulid') required String missionUlid,
     @JsonKey(name: 'class_group_ulid') required String classGroupUlid,
+    @JsonKey(name: 'admission_number') String? admissionNumber,
   }) = _PRFSoulDTO;
 
   factory PRFSoulDTO.fromJson(Map<String, dynamic> json) =>
