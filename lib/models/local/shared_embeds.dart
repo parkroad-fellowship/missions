@@ -51,3 +51,158 @@ class PRFLocalMedia {
   DateTime? createdAt;
   DateTime? updatedAt;
 }
+
+@embedded
+class PRFLocalSchool {
+  PRFLocalSchool({
+    this.ulid,
+    this.createdAt,
+    this.updatedAt,
+    this.name,
+    this.description,
+    this.directions,
+    this.distance,
+    this.staticDuration,
+    this.totalStudents,
+    this.address,
+    this.latitude,
+    this.longitude,
+    this.contacts,
+  });
+
+  final String? ulid;
+  final String? name;
+  final String? description;
+  final String? directions;
+  final String? distance;
+  final String? staticDuration;
+
+  final int? totalStudents;
+  final String? address;
+  final double? latitude;
+  final double? longitude;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final List<PRFLocalContact>? contacts;
+}
+
+@embedded
+class PRFLocalContact {
+  PRFLocalContact({this.ulid, this.name, this.phone, this.contactType});
+
+  final String? ulid;
+  final String? name;
+  final String? phone;
+  final PRFLocalContactType? contactType;
+}
+
+@embedded
+class PRFLocalContactType {
+  PRFLocalContactType({this.ulid, this.name});
+
+  final String? ulid;
+  final String? name;
+}
+
+@embedded
+class PRFLocalSchoolTerm {
+  PRFLocalSchoolTerm({
+    this.ulid,
+    this.name,
+    this.year,
+    this.isActive,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  final String? ulid;
+  final String? name;
+  final int? year;
+  final int? isActive;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+}
+
+@embedded
+class PRFLocalMissionType {
+  PRFLocalMissionType({
+    this.ulid,
+    this.name,
+    this.isActive,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  final String? ulid;
+  final String? name;
+  final int? isActive;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+}
+
+@embedded
+class PRFLocalWeatherForecast {
+  PRFLocalWeatherForecast({
+    this.ulid,
+    this.forecastDate,
+    this.weatherCodeDescription,
+    this.temperature,
+    this.visibility,
+    this.precipitationProbability,
+    this.humidity,
+    this.dressingRecommendations,
+    this.activityRecommendations,
+  });
+
+  String? ulid;
+  String? forecastDate;
+  String? weatherCodeDescription;
+  PRFLocalTemperature? temperature;
+  PRFLocalVisibility? visibility;
+  PRFLocalPrecipitationProbability? precipitationProbability;
+  PRFLocalHumidity? humidity;
+  String? dressingRecommendations;
+  String? activityRecommendations;
+}
+
+@embedded
+class PRFLocalTemperature {
+  PRFLocalTemperature({
+    this.apparentAvg,
+    this.apparentMax,
+    this.apparentMin,
+    this.avg,
+    this.max,
+    this.min,
+  });
+  String? apparentAvg;
+  String? apparentMax;
+  String? apparentMin;
+  String? avg;
+  String? max;
+  String? min;
+}
+
+@embedded
+class PRFLocalVisibility {
+  PRFLocalVisibility({this.avg, this.max, this.min});
+  String? avg;
+  String? max;
+  String? min;
+}
+
+@embedded
+class PRFLocalPrecipitationProbability {
+  PRFLocalPrecipitationProbability({this.avg, this.max, this.min});
+  String? avg;
+  String? max;
+  String? min;
+}
+
+@embedded
+class PRFLocalHumidity {
+  PRFLocalHumidity({this.avg, this.max, this.min});
+  String? avg;
+  String? max;
+  String? min;
+}
