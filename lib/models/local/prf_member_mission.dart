@@ -1,13 +1,14 @@
+import 'package:app/enums/prf_mission_role.dart';
 import 'package:app/enums/prf_mission_status.dart';
-import 'package:app/models/local/prf_member_mission.dart';
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:isar/isar.dart';
 
-part 'prf_mission.g.dart';
+part 'prf_member_mission.g.dart';
 
 @collection
-class PRFLocalMission {
-  PRFLocalMission({
+class PRFLocalMemberMission {
+  PRFLocalMemberMission({
     required this.ulid,
     required this.startDate,
     required this.startTime,
@@ -20,11 +21,11 @@ class PRFLocalMission {
     required this.updatedAt,
     this.missionPrepNotes,
     this.theme,
+    this.whatsAppLink,
+    this.loggedInMemberMissionSubscription,
     this.school,
     this.missionType,
     this.weatherForecasts,
-    this.whatsAppLink,
-    this.loggedInMemberMissionSubscription,
   });
 
   Id id = Isar.autoIncrement;
@@ -46,9 +47,30 @@ class PRFLocalMission {
 
   final String? missionPrepNotes;
   final String? theme;
+  final String? whatsAppLink;
+  PRFLocalMissionMemberSubscription? loggedInMemberMissionSubscription;
   final PRFLocalSchool? school;
   final PRFLocalMissionType? missionType;
   final List<PRFLocalWeatherForecast>? weatherForecasts;
-  final String? whatsAppLink;
-  final PRFLocalMissionMemberSubscription? loggedInMemberMissionSubscription;
+}
+
+@embedded
+class PRFLocalMissionMemberSubscription {
+  PRFLocalMissionMemberSubscription({
+    this.ulid,
+    this.status,
+    this.missionRole,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  final String? ulid;
+
+  @Enumerated(EnumType.ordinal32)
+  final PRFMissionSubscriptionStatus? status;
+  @Enumerated(EnumType.ordinal32)
+  final PRFMissionRole? missionRole;
+
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 }

@@ -175,7 +175,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             ),
 
             StreamBuilder<List<PRFLocalMission>>(
-              key: PageStorageKey('missions_stream_${_tabController.index}'),
+              key: PageStorageKey(
+                'member_missions_stream_${_tabController.index}',
+              ),
               initialData: const [],
               stream: _memberMissionsStream,
               builder: (context, snapshot) {
