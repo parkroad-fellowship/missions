@@ -122,6 +122,7 @@ class MissionServiceImpl implements MissionService {
             PRFMissionSubscriptionStatus.withdrawn.apiKey,
             PRFMissionSubscriptionStatus.pending.apiKey,
             PRFMissionSubscriptionStatus.fullySubscribed.apiKey,
+            PRFMissionSubscriptionStatus.conflict.apiKey,
           ].join(','),
           if (past != null) 'filter[past]': true,
           if (upcoming != null) 'filter[upcoming]': true,
