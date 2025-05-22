@@ -1,9 +1,10 @@
-name: Release to production
+name: Release to Huawei App Gallery
 
 on:
   push:
     branches:
       - main
+      - devops/*
 
 jobs:
   build:
@@ -73,15 +74,6 @@ jobs:
         run: |
           gem install bundler:2.0.2
           bundle install
-
-      - name: 🚀 Release to Google Play (Production)
-        env:
-          SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
-          SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
-        run: |
-          bundle exec fastlane supply \
-          --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
-          --track production
 
       - name: 🚀 Deploy to Huawei App Gallery
         uses: muhamedzeema/appgallery-deply-action@main
