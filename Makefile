@@ -57,3 +57,6 @@ sha1:
 
 pods:
 		cd ios && pod install --repo-update --verbose && cd ..
+
+gallery:
+		keytool -export -rfc -keystore upload-keystore.jks -alias [alias] -file upload_certificate.pem
