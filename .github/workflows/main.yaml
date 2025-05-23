@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      aab_path: ${{ steps.save_aab_path.outputs.aab_path }}
 
     steps:
       - name: Set up JDK 17
@@ -63,6 +65,37 @@ jobs:
       #     curl -sL https://firebase.tools | bash
       #     firebase crashlytics:symbols:upload --app=FIREBASE_PROD_APP_ID debug-symbols.zip
 
+      - name: 📦 Upload AAB artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-production-release
+          path: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          retention-days: 1
+
+      - name: 💾 Save AAB path
+        id: save_aab_path
+        run: echo "aab_path=build/app/outputs/bundle/productionRelease/app-production-release.aab" >> $GITHUB_OUTPUT
+
+      - name: Status
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: https://hooks.slack.com/services/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
+
+  release_google_play:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: ⬇️ Download AAB artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-production-release
+          path: build/app/outputs/bundle/productionRelease/
+
       - name: ⚙️ Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -82,6 +115,36 @@ jobs:
           bundle exec fastlane supply \
           --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
           --track production
+
+      - name: Status
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: https://hooks.slack.com/services/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
+
+  release_app_gallery:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: ⬇️ Download AAB artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-production-release
+          path: build/app/outputs/bundle/productionRelease/
+
+      - name: 🚀 Deploy to Huawei App Gallery
+        uses: muhamedzeema/appgallery-deply-action@main
+        with:
+          client-id: ${{secrets.HUAWEI_CLIENT_ID}}
+          client-key: ${{secrets.HUAWEI_CLIENT_KEY}}
+          app-id: ${{secrets.HUAWEI_APP_ID}}
+          file-extension: "aab"
+          file-path: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          submit: false
 
       - name: Status
         if: failure()
