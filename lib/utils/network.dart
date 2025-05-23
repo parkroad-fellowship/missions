@@ -24,7 +24,10 @@ class NetworkUtil {
       BaseOptions(
         baseUrl: '${PRFSuperAppConfig.instance!.values.baseUrl}/api/v1',
         contentType: 'application/json',
-        headers: <String, dynamic>{'Accept': 'application/json'},
+        headers: <String, dynamic>{
+          'Accept': 'application/json',
+          'X-App-Version': Misc.getFullAppVersion(),
+        },
         connectTimeout: const Duration(seconds: 60 * 1000),
         receiveTimeout: const Duration(seconds: 60 * 1000),
       ),
