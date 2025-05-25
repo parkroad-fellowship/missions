@@ -11,6 +11,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gaimon/gaimon.dart';
 
 class SignInHandset extends StatefulWidget {
   const SignInHandset({super.key});
@@ -134,6 +135,30 @@ class _SignInHandsetState extends State<SignInHandset> {
                             orElse:
                                 () => PRFPrimaryButton(
                                   onPressed: () {
+                                    if (_emailController.text.isEmpty) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(l10n.enterEmail),
+                                        ),
+                                      );
+                                      Gaimon.warning();
+                                      return;
+                                    }
+
+                                    if (_passwordController.text.isEmpty) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(l10n.enterPassword),
+                                        ),
+                                      );
+                                      Gaimon.warning();
+                                      return;
+                                    }
+
                                     context.read<SigninCubit>().signIn(
                                       email: _emailController.text.trim(),
                                       password: _passwordController.text.trim(),
