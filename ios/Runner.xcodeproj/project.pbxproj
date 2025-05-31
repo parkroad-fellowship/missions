@@ -405,13 +405,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -426,13 +422,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -579,7 +571,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "Parkroad Fellowship";
+				FLAVOR_APP_NAME = "PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -677,7 +669,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "Parkroad Fellowship";
+				FLAVOR_APP_NAME = "PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -770,7 +762,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "Parkroad Fellowship";
+				FLAVOR_APP_NAME = "PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -868,7 +860,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] Parkroad Fellowship";
+				FLAVOR_APP_NAME = "[DEV] PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -964,7 +956,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] Parkroad Fellowship";
+				FLAVOR_APP_NAME = "[DEV] PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1059,7 +1051,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] Parkroad Fellowship";
+				FLAVOR_APP_NAME = "[DEV] PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1157,7 +1149,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] Parkroad Fellowship";
+				FLAVOR_APP_NAME = "[STG] PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1255,7 +1247,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] Parkroad Fellowship";
+				FLAVOR_APP_NAME = "[STG] PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1348,7 +1340,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 5MFWXSC878;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] Parkroad Fellowship";
+				FLAVOR_APP_NAME = "[STG] PRF Missions";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
