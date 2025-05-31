@@ -28,7 +28,7 @@ dependencies:
   flutter_animate: ^4.5.2
   flutter_bloc: ^9.1.1
   flutter_datetime_picker_plus: ^2.2.0
-  # flutter_downloader: ^1.12.0
+  flutter_downloader: ^1.12.0
   flutter_localizations:
     sdk: flutter
   flutter_screenutil: ^5.9.3

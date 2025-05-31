@@ -6,10 +6,13 @@ import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/utils/_index.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
@@ -25,10 +28,9 @@ abstract class MediaService {
     required String modelUlid,
     required PRFMediaModel model,
   });
-  void print();
 
-  // Future<void> initDownloader();
-  // Future<void> downloadFile(String downloadURL);
+  Future<void> initDownloader();
+  Future<void> downloadFile(String downloadURL);
 }
 
 class MediaServiceImpl implements MediaService {
@@ -168,47 +170,41 @@ class MediaServiceImpl implements MediaService {
     }
   }
 
-  // @override
-  // Future<void> initDownloader() async {
-  //   await FlutterDownloader.initialize(debug: kDebugMode);
-  //   await FlutterDownloader.registerCallback(callback);
-  // }
+  @override
+  Future<void> initDownloader() async {
+    await FlutterDownloader.initialize(debug: kDebugMode);
+    await FlutterDownloader.registerCallback(callback);
+  }
 
   static void callback(String id, int status, int progress) {
     Logger().d('$id: $status ($progress)');
   }
 
   @override
-  void print() {
-    Logger().d('MediaService');
+  Future<void> downloadFile(String downloadURL) async {
+    try {
+      await Permission.storage.request();
+      late String appDocDir;
+      if (Platform.isAndroid) {
+        appDocDir = (await path_provider.getExternalStorageDirectory())!.path;
+      } else {
+        appDocDir =
+            (await path_provider.getApplicationDocumentsDirectory())
+                .absolute
+                .path;
+      }
+
+      await FlutterDownloader.enqueue(
+        url: downloadURL,
+        fileName: Misc.getFileName(downloadURL),
+        savedDir: appDocDir,
+        saveInPublicStorage: true,
+      );
+    } on SocketException {
+      throw Failure(message: 'Check network connection!');
+    } catch (e) {
+      Logger().e(e.toString());
+      rethrow;
+    }
   }
-
-  // @override
-  // Future<void> downloadFile(String downloadURL) async {
-  //   try {
-  //     await Permission.storage.request();
-  //     late String appDocDir;
-  //     if (Platform.isAndroid) {
-  //       appDocDir = (await path_provider.getExternalStorageDirectory())!
-  // .path;
-  //     } else {
-  //       appDocDir =
-  //           (await path_provider.getApplicationDocumentsDirectory())
-  //               .absolute
-  //               .path;
-  //     }
-
-  //     await FlutterDownloader.enqueue(
-  //       url: downloadURL,
-  //       fileName: Misc.getFileName(downloadURL),
-  //       savedDir: appDocDir,
-  //       saveInPublicStorage: true,
-  //     );
-  //   } on SocketException {
-  //     throw Failure(message: 'Check network connection!');
-  //   } catch (e) {
-  //     Logger().e(e.toString());
-  //     rethrow;
-  //   }
-  // }
 }

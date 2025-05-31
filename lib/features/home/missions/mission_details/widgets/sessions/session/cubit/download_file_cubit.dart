@@ -16,8 +16,7 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
   Future<void> downloadFile(String downloadUrl) async {
     try {
       emit(const DownloadFileState.loading());
-      // await _mediaService.downloadFile(downloadUrl);
-      _mediaService.print();
+      await _mediaService.downloadFile(downloadUrl);
       emit(const DownloadFileState.loaded());
     } catch (e) {
       emit(DownloadFileState.error(e.toString()));
