@@ -44,6 +44,10 @@ flutter pub get
 # Run code gen
 dart run build_runner build --delete-conflicting-outputs
 
+# Activate FlutterFire CLI globally to ensure 'flutterfire' command is available
+# This is crucial for build phases that use flutterfire, like Crashlytics symbol uploads.
+dart pub global activate flutterfire_cli
+
 # # Run static analysis
 # flutter analyze lib
 
