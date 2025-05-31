@@ -60,6 +60,8 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your audio files for upload.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(FLAVOR_APP_NAME) needs to access your microphone to record sermon sessions.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to protect your giving history.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
