@@ -1,4 +1,4 @@
-import 'package:app/l10n/l10n.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/app_theme.dart';

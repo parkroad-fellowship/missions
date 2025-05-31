@@ -1,3 +1,4 @@
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 

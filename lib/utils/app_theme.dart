@@ -65,7 +65,7 @@ class PRFTheme {
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       clipBehavior: Clip.antiAlias,
@@ -101,7 +101,7 @@ class PRFTheme {
       ),
     ),
     iconTheme: const IconThemeData(color: Color(primaryColor)),
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
       dividerColor: Colors.white,
       tabAlignment: TabAlignment.start,
       indicatorColor: Colors.white,
