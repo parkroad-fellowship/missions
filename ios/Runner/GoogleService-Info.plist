@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g.apps.googleusercontent.com</string>
+	<string>899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g</string>
+	<string>com.googleusercontent.apps.899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>899177334428-f5s6jicejvusrm5clppm2lkt81fmo41b.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.parkroadfellowship.app</string>
+	<string>app.parkroadfellowship.org</string>
 	<key>PROJECT_ID</key>
 	<string>parkroad-fellowship</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:899177334428:ios:1447634a6c2d9dd0b18f59</string>
+	<string>1:899177334428:ios:44321bf608b421d7b18f59</string>
 </dict>
 </plist>
