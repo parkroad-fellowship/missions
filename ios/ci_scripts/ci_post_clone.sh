@@ -7,11 +7,18 @@ set -e
 set -x
 
 # The default execution directory of this script is the ci_scripts directory.
-cd $CI_PRIMARY_REPOSITORY_PATH # change working directory to the root of your cloned repo.
+cd $CI_PRIMARY_REPOSITORY_PATH  # Change working directory to the root of your cloned repo.
 
 # Install Flutter using git.
-git clone https://github.com/flutter/flutter.git --depth 1 -b 3.29.0 $HOME/flutter
+git clone https://github.com/flutter/flutter.git $HOME/flutter
+cd $HOME/flutter
+git checkout 3.29.0
+
+# Add Flutter to PATH for the current session.
 export PATH="$PATH:$HOME/flutter/bin"
+
+# Step out of the Flutter folder.
+cd $CI_PRIMARY_REPOSITORY_PATH
 
 app_env="$APP_ENV"
 if [ "$app_env" = "production" ]; then
