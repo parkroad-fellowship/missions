@@ -47,6 +47,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GIDClientID</key>
 	<string>899177334428-4d9ar4pslt6tnfg8n9j0sbe41a0o068g.apps.googleusercontent.com</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -60,10 +62,12 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your audio files for upload.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>$(FLAVOR_APP_NAME) needs to access your microphone to record sermon sessions.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to protect your giving history.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>ITSAppUsesNonExemptEncryption</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(FLAVOR_APP_NAME) needs to access your microphone to record sermon sessions.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your images and videos for upload.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
