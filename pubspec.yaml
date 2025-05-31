@@ -1,6 +1,7 @@
 name: app
 description: The PRF Super App
-version: 2.36.00+23600
+# version: 2.36.00+23600
+version: 2.35.01+235001
 publish_to: none
 
 environment:
