@@ -94,7 +94,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       await getIt<AnalyticsService>().identifyUser(user: user);
     }
 
-    await getIt<MediaService>().initDownloader();
+    // await getIt<MediaService>().initDownloader();
 
     await getIt<NotificationService>().init();
     await getIt<NotificationService>().requestPermissions().then(
