@@ -58,7 +58,7 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
                         icon: const Icon(Icons.arrow_back_ios),
                         padding: const EdgeInsets.only(left: 8),
                         onPressed:
-                            () => context.router.pushNamed(
+                            () => context.router.popUntilRouteWithPath(
                               PRFSuperAppRouter.landingRoute,
                             ),
                       ),

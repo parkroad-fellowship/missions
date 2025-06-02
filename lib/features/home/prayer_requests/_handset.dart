@@ -61,7 +61,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                           ),
                           padding: const EdgeInsets.only(left: 8),
                           onPressed:
-                              () => context.router.pushNamed(
+                              () => context.router.popUntilRouteWithPath(
                                 PRFSuperAppRouter.landingRoute,
                               ),
                         ),
