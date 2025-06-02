@@ -302,7 +302,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
   Future<void> _selectStartDate() async {
     await DatePicker.showDateTimePicker(
       context,
-      minTime: DateTime.now(),
+      minTime: DateTime.now().subtract(const Duration(days: 7)),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         itemStyle: Theme.of(context).textTheme.headlineSmall!,
@@ -324,7 +324,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
   Future<void> _selectEndDate() async {
     await DatePicker.showDateTimePicker(
       context,
-      minTime: DateTime.now(),
+      minTime: DateTime.now().subtract(const Duration(days: 7)),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         itemStyle: Theme.of(context).textTheme.headlineSmall!,
