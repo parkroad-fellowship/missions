@@ -74,9 +74,15 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void clearPrefs() {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox).deleteAll(
-      <String>['accessToken', 'profile', 'classGroups', 'studentCredentials'],
-    );
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).deleteAll(<String>[
+      'accessToken',
+      'profile',
+      'classGroups',
+      'studentCredentials',
+      'expenseCategories',
+    ]);
   }
 
   @override
