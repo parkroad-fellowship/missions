@@ -81,17 +81,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Parkroad Fellowship"]
+            manifestPlaceholders = [appName: "PRF Missions"]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Parkroad Fellowship"]
+            manifestPlaceholders = [appName: "[STG] PRF Missions"]
         }
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] Parkroad Fellowship"]
+            manifestPlaceholders = [appName: "[DEV] PRF Missions"]
         }
     }
 
