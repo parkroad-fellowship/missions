@@ -100,7 +100,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       await getIt<NotificationService>().init();
       await getIt<NotificationService>().requestPermissions();
       await getIt<NotificationService>().scheduleGivingNotification();
-      
     } catch (e) {
       Logger().e('NotificationService init error: $e');
     }
