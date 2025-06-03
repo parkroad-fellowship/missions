@@ -96,10 +96,14 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<MediaService>().initDownloader();
 
-    await getIt<NotificationService>().init();
-    await getIt<NotificationService>().requestPermissions().then(
-      (_) async => getIt<NotificationService>().scheduleGivingNotification(),
-    );
+    try {
+      await getIt<NotificationService>().init();
+      await getIt<NotificationService>().requestPermissions();
+      await getIt<NotificationService>().scheduleGivingNotification();
+      
+    } catch (e) {
+      Logger().e('NotificationService init error: $e');
+    }
 
     runApp(await builder());
   } catch (error, stackTrace) {
