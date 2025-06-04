@@ -872,4 +872,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get title => 'Title';
+
+  @override
+  String get getNotified => 'Get Notified!';
+
+  @override
+  String get allowNotifications =>
+      'Allow PRF Missions to send you prayer and mission notifications.';
+
+  @override
+  String get deny => 'Deny';
+
+  @override
+  String get allow => 'Allow';
 }

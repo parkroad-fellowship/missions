@@ -713,5 +713,13 @@
     "fillAllFields": "Please fill in all fields.",
     "@fillAllFields": {},
     "title": "Title",
-    "@title": {}
+    "@title": {},
+    "getNotified": "Get Notified!",
+    "@getNotified": {},
+    "allowNotifications": "Allow PRF Missions to send you prayer and mission notifications.",
+    "@allowNotifications": {},
+    "deny": "Deny",
+    "@deny": {},
+    "allow": "Allow",
+    "@allow": {}
 }

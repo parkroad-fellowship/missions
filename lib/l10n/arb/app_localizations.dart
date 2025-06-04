@@ -1695,6 +1695,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title'**
   String get title;
+
+  /// No description provided for @getNotified.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Notified!'**
+  String get getNotified;
+
+  /// No description provided for @allowNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow PRF Missions to send you prayer and mission notifications.'**
+  String get allowNotifications;
+
+  /// No description provided for @deny.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny'**
+  String get deny;
+
+  /// No description provided for @allow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allow;
 }
 
 class _AppLocalizationsDelegate

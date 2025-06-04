@@ -3,6 +3,7 @@ import 'package:app/enums/prf_time_of_day.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/buttons/secondary.dart';
 
@@ -172,11 +173,61 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   Future<void> requestPermissions() async {
-    await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
+    final notificationsDisabled =
+        getIt<HiveService>().areNotificationsDisabled();
+    if (notificationsDisabled) return;
+
+    var userAuthorized = false;
+    final context = getIt<PRFSuperAppRouter>().navigatorKey.currentContext;
+    if (context == null) return;
+    final l10n = context.l10n;
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: Text(
+            l10n.getNotified,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [Text(l10n.allowNotifications)],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: Text(
+                l10n.deny,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                userAuthorized = true;
+                Navigator.of(ctx).pop();
+              },
+              child: Text(
+                l10n.allow,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: Colors.deepPurple),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (userAuthorized) {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+    } else {
+      getIt<HiveService>().disableNotifications();
+    }
   }
 
   @override
@@ -188,7 +239,6 @@ class NotificationServiceImpl implements NotificationService {
   Future<void> schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   }) async {
-    await requestPermissions();
     for (final prayerPrompt in prayerPrompts) {
       await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -219,7 +269,6 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   Future<void> scheduleGivingNotification() async {
-    await requestPermissions();
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         autoDismissible: false,
