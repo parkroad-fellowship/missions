@@ -69,7 +69,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your microphone to record sermon sessions.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(FLAVOR_APP_NAME) needs to access your images and videos for upload.</string>
+	<string>$(FLAVOR_APP_NAME) requires access to your photos and videos to enable you to set your profile picture and upload photos from events and missions you attend.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
