@@ -229,6 +229,7 @@ class NotificationServiceImpl implements NotificationService {
 
     if (userAuthorized) {
       await AwesomeNotifications().requestPermissionToSendNotifications();
+      getIt<HiveService>().disableNotifications();
     } else {
       getIt<HiveService>().disableNotifications();
     }
