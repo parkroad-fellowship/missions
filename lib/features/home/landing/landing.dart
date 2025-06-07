@@ -16,15 +16,13 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-
   @override
   void initState() {
     super.initState();
 
-  WidgetsBinding.instance.addPostFrameCallback((_){
-    _initializeNotifications();
-  });
-    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeNotifications();
+    });
   }
 
   Future<void> _initializeNotifications() async {
