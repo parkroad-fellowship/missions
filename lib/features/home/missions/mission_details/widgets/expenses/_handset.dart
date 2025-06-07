@@ -357,7 +357,7 @@ class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
                                           'Confirmation Message:',
                                           style: Theme.of(
                                             context,
-                                          ).textTheme.titleMedium?.copyWith(
+                                          ).textTheme.bodyMedium?.copyWith(
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),

@@ -51,6 +51,9 @@ abstract class HiveService {
 
   void persistPaymentTypes(PRFPaymentTypeResponse paymentTypes);
   List<PRFPaymentType> retrievePaymentTypes();
+
+  void disableNotifications();
+  bool areNotificationsEnabled();
 }
 
 class HiveServiceImpl implements HiveService {
@@ -92,14 +95,12 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistToken(String token) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox).put(
-      'tokenExpiryTime',
-      DateTime.now().add(const Duration(days: 3)).toString(),
-    );
-
-    Hive.box<dynamic>(
-      PRFSuperAppConfig.instance!.values.hiveBox,
-    ).put('accessToken', token);
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+      ..put(
+        'tokenExpiryTime',
+        DateTime.now().toUtc().add(const Duration(days: 3)).toIso8601String(),
+      )
+      ..put('accessToken', token);
 
     Hive.box<dynamic>(
       PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
@@ -116,7 +117,7 @@ class HiveServiceImpl implements HiveService {
     if (expiryTime == null) return null;
 
     final expiry = DateTime.parse(expiryTime);
-    if (DateTime.now().isAfter(expiry)) {
+    if (DateTime.now().toUtc().isAfter(expiry)) {
       clearPrefs();
       Hive.box<dynamic>(
         PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
@@ -310,5 +311,18 @@ class HiveServiceImpl implements HiveService {
     final paymentTypes = box.get('paymentTypes') as PRFPaymentTypeResponse?;
     if (paymentTypes == null) return [];
     return paymentTypes.data;
+  }
+
+  @override
+  void disableNotifications() {
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.hiveBox,
+    ).put('notificationsEnabled', false);
+  }
+
+  @override
+  bool areNotificationsEnabled() {
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    return box.get('notificationsEnabled') as bool? ?? true;
   }
 }

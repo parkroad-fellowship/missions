@@ -3,6 +3,7 @@ import 'package:app/enums/prf_time_of_day.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
+import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/buttons/secondary.dart';
 
@@ -140,6 +141,8 @@ abstract class NotificationService {
 class NotificationServiceImpl implements NotificationService {
   @override
   Future<void> init() async {
+    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    if (!notificationsEnabled) return;
     await AwesomeNotifications().initialize(
       null,
       [
@@ -168,19 +171,74 @@ class NotificationServiceImpl implements NotificationService {
       ],
       debug: true,
     );
+
+    await AwesomeNotifications().setListeners(
+      onActionReceivedMethod: NotificationService.onActionReceivedMethod,
+      onNotificationCreatedMethod:
+          NotificationService.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod:
+          NotificationService.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod:
+          NotificationService.onDismissActionReceivedMethod,
+    );
   }
 
   @override
   Future<void> requestPermissions() async {
-    await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
+    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    if (!notificationsEnabled) return;
+
+    var userAuthorized = false;
+    final context = getIt<PRFSuperAppRouter>().navigatorKey.currentContext;
+    if (context == null) return;
+    final l10n = context.l10n;
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(l10n.getNotified),
+          content: Text(l10n.allowNotifications),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                l10n.deny,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                userAuthorized = true;
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                l10n.allow,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (userAuthorized) {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+      getIt<HiveService>().disableNotifications();
+    } else {
+      getIt<HiveService>().disableNotifications();
+    }
   }
 
   @override
   void createNotification({required NotificationContent content}) {
+    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    if (!notificationsEnabled) return;
     AwesomeNotifications().createNotification(content: content);
   }
 
@@ -188,7 +246,8 @@ class NotificationServiceImpl implements NotificationService {
   Future<void> schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   }) async {
-    await requestPermissions();
+    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    if (!notificationsEnabled) return;
     for (final prayerPrompt in prayerPrompts) {
       await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -219,7 +278,8 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   Future<void> scheduleGivingNotification() async {
-    await requestPermissions();
+    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    if (!notificationsEnabled) return;
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         autoDismissible: false,
