@@ -95,14 +95,12 @@ class HiveServiceImpl implements HiveService {
 
   @override
   void persistToken(String token) {
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox).put(
-      'tokenExpiryTime',
-      DateTime.now().add(const Duration(days: 3)).toString(),
-    );
-
-    Hive.box<dynamic>(
-      PRFSuperAppConfig.instance!.values.hiveBox,
-    ).put('accessToken', token);
+    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
+      ..put(
+        'tokenExpiryTime',
+        DateTime.now().add(const Duration(days: 3)).toString(),
+      )
+      ..put('accessToken', token);
 
     Hive.box<dynamic>(
       PRFSuperAppConfig.instance!.values.globalHiveAuthBox,

@@ -52,7 +52,10 @@ class PRFTextTheme {
         fontWeight: FontWeight.w600,
         color: defaultTextColor,
       ),
-      titleMedium: GoogleFonts.lato(fontSize: 11 * adjustedScaleFactor),
+      titleMedium: GoogleFonts.lato(
+        fontSize: 11 * adjustedScaleFactor,
+        color: defaultTextColor,
+      ),
       titleSmall: GoogleFonts.lato(
         fontSize: 10 * adjustedScaleFactor,
         fontWeight: FontWeight.w600,
