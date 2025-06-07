@@ -53,7 +53,7 @@ abstract class HiveService {
   List<PRFPaymentType> retrievePaymentTypes();
 
   void disableNotifications();
-  bool areNotificationsDisabled();
+  bool areNotificationsEnabled();
 }
 
 class HiveServiceImpl implements HiveService {
@@ -323,8 +323,8 @@ class HiveServiceImpl implements HiveService {
   }
 
   @override
-  bool areNotificationsDisabled() {
+  bool areNotificationsEnabled() {
     final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
-    return box.get('notificationsEnabled') as bool? ?? false;
+    return box.get('notificationsEnabled') as bool? ?? true;
   }
 }

@@ -19,21 +19,6 @@ class PRFSuperApp extends StatefulWidget {
 
 class _PRFSuperAppState extends State<PRFSuperApp> {
   @override
-  void initState() {
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod: NotificationService.onActionReceivedMethod,
-      onNotificationCreatedMethod:
-          NotificationService.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod:
-          NotificationService.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod:
-          NotificationService.onDismissActionReceivedMethod,
-    );
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(1290, 2796),
