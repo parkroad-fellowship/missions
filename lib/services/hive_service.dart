@@ -98,7 +98,7 @@ class HiveServiceImpl implements HiveService {
     Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox)
       ..put(
         'tokenExpiryTime',
-        DateTime.now().add(const Duration(days: 3)).toString(),
+        DateTime.now().toUtc().add(const Duration(days: 3)).toIso8601String(),
       )
       ..put('accessToken', token);
 
@@ -117,7 +117,7 @@ class HiveServiceImpl implements HiveService {
     if (expiryTime == null) return null;
 
     final expiry = DateTime.parse(expiryTime);
-    if (DateTime.now().isAfter(expiry)) {
+    if (DateTime.now().toUtc().isAfter(expiry)) {
       clearPrefs();
       Hive.box<dynamic>(
         PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
