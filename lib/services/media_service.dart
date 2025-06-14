@@ -62,10 +62,8 @@ class MediaServiceImpl implements MediaService {
         PRFSuperAppConfig.instance!.values.azureConnString,
       );
 
-      final filePath = 'prf-media-upload/${Misc.getFileName(imageDTO.path)}';
-
       await azureStorage.putBlob(
-        filePath,
+        'prf-media-upload/${Misc.getFileName(imageDTO.path)}',
         bodyBytes: File(imageDTO.path).readAsBytesSync(),
       );
 
@@ -73,7 +71,7 @@ class MediaServiceImpl implements MediaService {
       final res = await _networkUtil.postReq(
         url.toString(),
         body: json.encode({
-          'media_file_storage_path': filePath,
+          'media_file_storage_path': imageDTO.name,
           'collection': imageDTO.model.collection,
         }),
         apiVersion: 'v2',
