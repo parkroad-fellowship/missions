@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:logger/logger.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class SubscribersViewHandset extends StatefulWidget {
@@ -88,7 +87,6 @@ class SubscriberActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    Logger().i(subscription.member.profilePictureUrl);
     return Animate(
       effects: const [SaturateEffect()],
       child: Stack(

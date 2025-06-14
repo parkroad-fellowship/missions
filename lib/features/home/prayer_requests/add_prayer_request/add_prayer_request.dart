@@ -8,9 +8,9 @@ class AddPrayerRequestView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const AddPrayerRequestViewHandset(),
+      defaultBuilder: (_, _) => const AddPrayerRequestViewHandset(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const AddPrayerRequestViewHandset(),
+        handset: (_, _) => const AddPrayerRequestViewHandset(),
       ),
     );
   }

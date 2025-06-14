@@ -11,9 +11,9 @@ class PrayerRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => const PrayerRequestTablet(),
+      defaultBuilder: (_, _) => const PrayerRequestTablet(),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, __) => const PrayerRequestHandset(),
+        handset: (_, _) => const PrayerRequestHandset(),
       ),
     );
   }

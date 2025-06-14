@@ -107,6 +107,7 @@ abstract class LocalDBService {
   Stream<List<PRFLocalMission>> get missions;
   Future<void> refreshMissions();
   Stream<PRFLocalMission?> getMission({required String missionUlid});
+  Future<PRFLocalMission> loadMission({required String missionUlid});
 
   Future<void> persistMemberMissions({
     required List<PRFMissionSubscription> missionSubscriptions,
@@ -628,6 +629,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }) async {
     await prfDBInstance.writeTxn(() async {
       for (final mediaDTO in mediaDTOs) {
+        Logger().d(mediaDTO.model);
         await prfDBInstance.pRFLocalMediaUploads.put(
           PRFLocalMediaUpload(
             modelUlid: mediaDTO.modelUlid,
@@ -835,6 +837,7 @@ class LocalDBServiceImpl implements LocalDBService {
         distance: school.distance,
         latitude: school.latitude,
         longitude: school.longitude,
+        institutionType: school.institutionType,
         contacts:
             contacts
                 .map(
@@ -941,6 +944,7 @@ class LocalDBServiceImpl implements LocalDBService {
         distance: school.distance,
         latitude: school.latitude,
         longitude: school.longitude,
+        institutionType: school.institutionType,
         contacts:
             contacts
                 .map(
@@ -1073,6 +1077,7 @@ class LocalDBServiceImpl implements LocalDBService {
         distance: school.distance,
         latitude: school.latitude,
         longitude: school.longitude,
+        institutionType: school.institutionType,
         contacts:
             contacts
                 .map(
@@ -1465,5 +1470,29 @@ class LocalDBServiceImpl implements LocalDBService {
           .ulidEqualTo(missionSessionUlid)
           .deleteAll();
     });
+  }
+
+  @override
+  Future<PRFLocalMission> loadMission({required String missionUlid}) async {
+    final localMemberMission =
+        await prfDBInstance.pRFLocalMemberMissions
+            .filter()
+            .ulidEqualTo(missionUlid)
+            .sortByCreatedAt()
+            .build()
+            .findFirst();
+
+    if (localMemberMission != null) {
+      return _transformLocalMemberMissionToLocalMission(
+        localMemberMission,
+      );
+    }
+
+    return (await prfDBInstance.pRFLocalMissions
+        .filter()
+        .ulidEqualTo(missionUlid)
+        .sortByCreatedAt()
+        .build()
+        .findFirst())!;
   }
 }

@@ -721,5 +721,15 @@
     "deny": "Deny",
     "@deny": {},
     "allow": "Allow",
-    "@allow": {}
+    "@allow": {},
+    "pleaseWaitForFunds": "Please inform the mission desk to confirm funds were issued.",
+    "@pleaseWaitForFunds": {},
+    "pleaseWaitForUpload": "Please wait while we upload this file.",
+    "@pleaseWaitForUpload": {},
+    "successfulUpload": "Your file has been successfully uploaded.",
+    "@successfulUpload": {},
+    "receipts": "Receipts:",
+    "@receipts": {},
+    "addedOn": "Added on",
+    "@addedOn": {}
 }

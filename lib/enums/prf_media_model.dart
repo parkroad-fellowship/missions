@@ -3,7 +3,8 @@ enum PRFMediaModel {
   missionFitChecks,
   missionSessionAudios,
   eventPhotos,
-  memberProfilePictures;
+  memberProfilePictures,
+  expenses;
 
   String get collection {
     switch (this) {
@@ -17,6 +18,8 @@ enum PRFMediaModel {
         return 'event-photos';
       case PRFMediaModel.memberProfilePictures:
         return 'profile-pictures';
+      case PRFMediaModel.expenses:
+        return 'receipts';
     }
   }
 }

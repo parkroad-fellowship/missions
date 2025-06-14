@@ -62,7 +62,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 late Isar prfDBInstance;
 
 class Singletons {
@@ -167,8 +167,11 @@ class Singletons {
       ),
       BlocProvider<GetClassGroupsCubit>(
         create:
-            (context) =>
-                GetClassGroupsCubit(soulService: getIt(), hiveService: getIt()),
+            (context) => GetClassGroupsCubit(
+              soulService: getIt(),
+              hiveService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<AddSoulCubit>(
         create:

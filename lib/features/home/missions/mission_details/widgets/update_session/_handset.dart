@@ -53,7 +53,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     context.read<GetSubscribersCubit>().getSubscriptions(
       missionUlid: widget.missionUlid,
     );
-    context.read<GetClassGroupsCubit>().getClassGroups();
+    context.read<GetClassGroupsCubit>().getClassGroups(
+      missionUlid: widget.missionUlid,
+    );
 
     // Initialize the fields with the current values
     selectedFacilitatorUlid = missionSession.facilitator.ulid;

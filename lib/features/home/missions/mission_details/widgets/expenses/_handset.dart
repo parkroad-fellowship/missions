@@ -1,15 +1,21 @@
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
+import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
+import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/widgets/add_token/add_token.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
+import 'package:app/models/remote/prf_media.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
+import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
@@ -251,7 +257,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: ExpensesDataTable(expenses: missionExpense.expenses),
+                    child: ExpensesDataTable(
+                      missionUlid: missionUlid,
+                      expenses: missionExpense.expenses,
+                    ),
                   ),
                 ],
               ),
@@ -264,8 +273,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
 }
 
 class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
-  const ExpensesDataTable({required this.expenses, super.key});
+  const ExpensesDataTable({
+    required this.expenses,
+    required this.missionUlid,
+    super.key,
+  });
   final List<PRFExpense> expenses;
+  final String missionUlid;
 
   @override
   Widget build(BuildContext context) {
@@ -286,89 +300,11 @@ class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
               .map(
                 (expense) => DataRow(
                   onLongPress:
-                      () => WoltModalSheet.show<dynamic>(
-                        context: context,
-                        useSafeArea: true,
-                        pageListBuilder:
-                            (_) => [
-                              WoltModalSheetPage(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ) +
-                                      const EdgeInsets.only(bottom: 16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        l10n.expenseDetails,
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.headlineMedium,
-                                      ),
-                                      const SizedBox(height: 16),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.expenseCategory,
-                                        expense.expenseCategory?.name ?? 'N/A',
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.narration,
-                                        expense.narration.isNotEmpty
-                                            ? expense.narration
-                                            : 'N/A',
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.unitCost,
-                                        Misc.formatCash(expense.unitCost),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.quantity,
-                                        expense.quantity.toString(),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.total,
-                                        Misc.formatCash(expense.lineTotal),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        'Charge',
-                                        Misc.formatCash(expense.charge),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        'Created At',
-                                        Misc.timestamp(
-                                          expense.createdAt,
-                                          timezone,
-                                        ),
-                                      ),
-                                      if (expense.confirmationMessage !=
-                                          null) ...[
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          'Confirmation Message:',
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.bodyMedium?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(expense.confirmationMessage ?? ''),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                      () => _showExpenseDetails(
+                        context,
+                        expense,
+                        missionUlid,
+                        timezone,
                       ),
                   cells: [
                     DataCell(
@@ -415,7 +351,11 @@ class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
   }
 }
 
-Widget _buildDetailRow(BuildContext context, String label, String value) {
+Widget _buildDetailRow(
+  BuildContext context,
+  String label,
+  String value,
+) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: Row(
@@ -447,6 +387,219 @@ Widget _title(String text) {
 
 Widget _text(String text) {
   return Text(text, softWrap: true, overflow: TextOverflow.visible);
+}
+
+Future<void> _showExpenseDetails(
+  BuildContext context,
+  PRFExpense expense,
+  String missionUlid,
+  String timezone,
+) async {
+  final l10n = context.l10n;
+  return WoltModalSheet.show<dynamic>(
+    context: context,
+    useSafeArea: true,
+    pageListBuilder:
+        (_) => [
+          WoltModalSheetPage(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ) +
+                  const EdgeInsets.only(bottom: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        l10n.expenseDetails,
+                        style:
+                            Theme.of(
+                              context,
+                            ).textTheme.headlineMedium,
+                      ),
+                      BlocConsumer<UploadMediaCubit, UploadMediaState>(
+                        listener: (context, state) {
+                          state.maybeWhen(
+                            orElse: () {},
+                            loading: () {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    l10n.pleaseWaitForUpload,
+                                  ),
+                                ),
+                              );
+                            },
+                            loaded: () {
+                              context
+                                  .read<GetMissionExpenseCubit>()
+                                  .getMissionExpense(
+                                    missionUlid: missionUlid,
+                                  );
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    l10n.successfulUpload,
+                                  ),
+                                ),
+                              );
+                            },
+                            error: (message) {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            orElse:
+                                () => IconButton(
+                                  icon: const Icon(
+                                    Icons.receipt_long,
+                                  ),
+                                  onPressed:
+                                      () => context
+                                          .read<SelectMediaCubit>()
+                                          .selectMedia(
+                                            context: context,
+                                            modelUlid: expense.ulid,
+                                            model: PRFMediaModel.expenses,
+                                            mediaType: RequestType.image,
+                                          )
+                                          .then((_) {
+                                            if (context.mounted) {
+                                              context
+                                                  .read<UploadMediaCubit>()
+                                                  .uploadMedia();
+                                            }
+                                          }),
+                                ),
+                            loading: () => const PRFCircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  _buildDetailRow(
+                    context,
+                    l10n.expenseCategory,
+                    expense.expenseCategory?.name ?? 'N/A',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.narration,
+                    expense.narration.isNotEmpty ? expense.narration : 'N/A',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.unitCost,
+                    Misc.formatCash(expense.unitCost),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.quantity,
+                    expense.quantity.toString(),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.total,
+                    Misc.formatCash(expense.lineTotal),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.charge,
+                    Misc.formatCash(expense.charge),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.addedOn,
+                    Misc.timestamp(
+                      expense.createdAt,
+                      timezone,
+                    ),
+                  ),
+                  if (expense.confirmationMessage != null) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      l10n.confirmationMessage,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(expense.confirmationMessage ?? ''),
+                  ],
+                  if (expense.receipts.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      l10n.receipts,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: expense.receipts.length,
+                        itemBuilder: (context, index) {
+                          final receipt = expense.receipts[index];
+                          return GestureDetector(
+                            onTap:
+                                () => _viewReceipt(
+                                  context,
+                                  receipt,
+                                ),
+                            child: Container(
+                              width: 80,
+                              margin: const EdgeInsets.only(
+                                right: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  8,
+                                ),
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.receipt,
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ],
+  );
 }
 
 class ExpenseCard extends StatelessWidget {
@@ -503,3 +656,46 @@ class ExpenseCard extends StatelessWidget {
     );
   }
 }
+
+Future<void> _viewReceipt(BuildContext context, PRFMedia receipt) =>
+    WoltModalSheet.show<void>(
+      context: context,
+      pageListBuilder: (modalSheetContext) {
+        return [
+          WoltModalSheetPage(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.8,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: Image.network(
+                      receipt.temporaryURL,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value:
+                                loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Icon(Icons.dangerous_outlined),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ];
+      },
+    );

@@ -7,6 +7,7 @@ class PRFSuperAppValues {
     required this.socketKey,
     required this.socketScheme,
     required this.socketPort,
+    required this.azureConnString,
   });
 
   final String urlScheme;
@@ -16,6 +17,7 @@ class PRFSuperAppValues {
   final String socketKey;
   final String socketScheme;
   final int socketPort;
+  final String azureConnString;
 
   String get baseUrl => '$urlScheme://$baseDomain';
   String get globalHiveAuthBox => 'prf-super-app-auth';

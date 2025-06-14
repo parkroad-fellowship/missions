@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
@@ -16,7 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
-  Future<PRFMedia> uploadFile({required PRFMediaDTO imageDTO});
+  Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO});
   Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
@@ -37,7 +38,7 @@ class MediaServiceImpl implements MediaService {
   final _networkUtil = NetworkUtil();
 
   @override
-  Future<PRFMedia> uploadFile({required PRFMediaDTO imageDTO}) async {
+  Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO}) async {
     final url = StringBuffer('/');
     Logger().d(imageDTO);
 
@@ -51,21 +52,37 @@ class MediaServiceImpl implements MediaService {
         url.write('events');
       case PRFMediaModel.memberProfilePictures:
         url.write('members');
+      case PRFMediaModel.expenses:
+        url.write('expenses');
     }
 
     url.write('/${imageDTO.modelUlid}/media');
 
     try {
-      final res = await _networkUtil.postWithUpload(
+      // Upload the actual file to Azure to have their servers handle the load
+      final azureStorage = AzureStorage.parse(
+        PRFSuperAppConfig.instance!.values.azureConnString,
+      );
+
+      await azureStorage.putBlob(
+        'prf-media-upload/${Misc.getFileName(imageDTO.path)}',
+        bodyBytes: File(imageDTO.path).readAsBytesSync(),
+      );
+
+      // Upload the reference to our server
+      final res = await _networkUtil.postReq(
         url.toString(),
-        field: 'media_file',
-        filePath: imageDTO.path,
-        body: <String, dynamic>{'collection': imageDTO.model.collection},
+        body: json.encode({
+          'media_file_storage_path': imageDTO.name,
+          'collection': imageDTO.model.collection,
+        }),
+        apiVersion: 'v2',
       );
 
       return PRFMedia.fromJson(res['data'] as Map<String, dynamic>);
-    } catch (_) {
-      rethrow;
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
     }
   }
 

@@ -20,6 +20,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/services/hive_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
@@ -342,6 +343,15 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               });
             }
             if (_currentTab == 6) {
+              final missionExpense = getIt<HiveService>()
+                  .retrieveMissionExpense(missionUlid);
+              if (missionExpense == null) {
+                Gaimon.error();
+                ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                  SnackBar(content: Text(l10n.pleaseWaitForFunds)),
+                );
+                return;
+              }
               WoltModalSheet.show<void>(
                 context: context,
                 pageListBuilder: (modalSheetContext) {

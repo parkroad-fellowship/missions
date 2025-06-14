@@ -44,7 +44,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     context.read<GetSubscribersCubit>().getSubscriptions(
       missionUlid: widget.missionUlid,
     );
-    context.read<GetClassGroupsCubit>().getClassGroups();
+    context.read<GetClassGroupsCubit>().getClassGroups(
+      missionUlid: widget.missionUlid,
+    );
   }
 
   @override

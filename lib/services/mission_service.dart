@@ -252,7 +252,9 @@ class MissionServiceImpl implements MissionService {
     try {
       final res = await _networkUtil.getReq(
         '/mission-expenses/$missionUlid',
-        queryParameters: {'include': 'expenses.expenseCategory'},
+        queryParameters: {
+          'include': 'expenses.expenseCategory,expenses.receipts',
+        },
       );
 
       return PRFMissionExpense.fromJson(res['data'] as Map<String, dynamic>);

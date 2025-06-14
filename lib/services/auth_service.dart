@@ -27,7 +27,7 @@ abstract class AuthService {
 class AuthServiceImpl implements AuthService {
   final _networkUtil = NetworkUtil();
 
-  final remoteConfig = FirebaseRemoteConfig.instance;
+  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);

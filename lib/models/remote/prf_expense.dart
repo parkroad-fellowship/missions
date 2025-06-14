@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_charge_type.dart';
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_member.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -23,6 +24,7 @@ class PRFExpense with _$PRFExpense {
     @JsonKey(name: 'confirmation_message') String? confirmationMessage,
     @JsonKey(name: 'expense_category') PRFExpenseCategory? expenseCategory,
     PRFMember? member,
+    @Default([]) @JsonKey(name: 'receipts') List<PRFMedia> receipts,
   }) = _PRFExpense;
 
   factory PRFExpense.fromJson(Map<String, dynamic> json) =>

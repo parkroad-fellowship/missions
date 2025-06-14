@@ -24,6 +24,14 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
   PRFClassGroup? selectedClassGroup;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<GetClassGroupsCubit>().getClassGroups(
+      missionUlid: widget.missionUlid,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
