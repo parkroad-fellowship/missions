@@ -70,7 +70,7 @@ jobs:
         uses: shorebirdtech/shorebird-release@v0
         with:
           platform: android
-          args: --flavor production --target lib/main_production.dart
+          args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols 
 
       - name: 🚀 Shorebird Patch
         uses: shorebirdtech/shorebird-patch@v0
