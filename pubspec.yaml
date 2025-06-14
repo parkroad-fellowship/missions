@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.39.00+23900
+version: 2.40.00+24000
 publish_to: none
 
 environment:
@@ -63,6 +63,7 @@ dependencies:
   permission_handler: ^12.0.0+1
   posthog_flutter: ^4.10.4
   pretty_dio_logger: ^1.4.0
+  shorebird_code_push: ^2.0.4
   slugify: ^2.0.0
   timezone: ^0.10.1
   upgrader: ^11.3.1
