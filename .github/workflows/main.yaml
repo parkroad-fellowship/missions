@@ -130,14 +130,14 @@ jobs:
           gem install bundler:2.0.2
           bundle install
 
-      - name: 🚀 Release to Google Play (Production)
+      - name: 🚀 Release to Google Play (Internal)
         env:
           SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
           SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
         run: |
           bundle exec fastlane supply \
           --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
-          --track production
+          --track internal
 
       - name: Status
         if: failure()
