@@ -19,10 +19,11 @@ class NetworkUtil {
 
   final _logger = Logger();
 
-  Dio _getHttpClient() {
+  Dio _getHttpClient({required String apiVersion}) {
     final dio = Dio(
       BaseOptions(
-        baseUrl: '${PRFSuperAppConfig.instance!.values.baseUrl}/api/v1',
+        baseUrl:
+            '${PRFSuperAppConfig.instance!.values.baseUrl}/api/$apiVersion',
         contentType: 'application/json',
         headers: <String, dynamic>{
           'Accept': 'application/json',
@@ -50,16 +51,19 @@ class NetworkUtil {
     }
 
     (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
-        () => HttpClient()..badCertificateCallback = (_, _, __) => true;
+        () => HttpClient()..badCertificateCallback = (_, _, _) => true;
     return dio;
   }
 
   Future<Map<String, dynamic>> getReq(
     String url, {
+    String apiVersion = 'v1',
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient().get<dynamic>(
+      final response = await _getHttpClient(
+        apiVersion: apiVersion,
+      ).get<dynamic>(
         url,
         queryParameters: queryParameters,
       );
@@ -118,10 +122,13 @@ class NetworkUtil {
   Future<Map<String, dynamic>> postReq(
     String url, {
     String? body,
+    String apiVersion = 'v1',
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient().post<dynamic>(
+      final response = await _getHttpClient(
+        apiVersion: apiVersion,
+      ).post<dynamic>(
         url,
         data: body,
         queryParameters: queryParameters,
@@ -194,10 +201,13 @@ class NetworkUtil {
   Future<Map<String, dynamic>> putReq(
     String url, {
     String? body,
+    String apiVersion = 'v1',
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient().put<dynamic>(
+      final response = await _getHttpClient(
+        apiVersion: apiVersion,
+      ).put<dynamic>(
         url,
         data: body,
         queryParameters: queryParameters,
@@ -267,9 +277,12 @@ class NetworkUtil {
     }
   }
 
-  Future<void> deleteReq(String url) async {
+  Future<void> deleteReq(
+    String url, {
+    String apiVersion = 'v1',
+  }) async {
     try {
-      await _getHttpClient().delete<dynamic>(url);
+      await _getHttpClient(apiVersion: apiVersion).delete<dynamic>(url);
     } on SocketException catch (_) {
       throw Failure(message: 'No internet connection');
     } on TimeoutException catch (_) {
@@ -329,11 +342,14 @@ class NetworkUtil {
     String url, {
     required String filePath,
     required String field,
+    String apiVersion = 'v1',
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient().post<dynamic>(
+      final response = await _getHttpClient(
+        apiVersion: apiVersion,
+      ).post<dynamic>(
         url,
         data: FormData.fromMap(<String, dynamic>{
           field: await MultipartFile.fromFile(filePath),

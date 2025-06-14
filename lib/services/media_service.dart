@@ -76,6 +76,7 @@ class MediaServiceImpl implements MediaService {
           'media_file_storage_path': filePath,
           'collection': imageDTO.model.collection,
         }),
+        apiVersion: 'v2',
       );
 
       return PRFMedia.fromJson(res['data'] as Map<String, dynamic>);
