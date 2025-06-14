@@ -889,4 +889,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pleaseWaitForFunds =>
       'Please inform the mission desk to confirm funds were issued.';
+
+  @override
+  String get pleaseWaitForUpload => 'Please wait while we upload this file.';
+
+  @override
+  String get successfulUpload => 'Your file has been successfully uploaded.';
 }

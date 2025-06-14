@@ -1725,6 +1725,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please inform the mission desk to confirm funds were issued.'**
   String get pleaseWaitForFunds;
+
+  /// No description provided for @pleaseWaitForUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait while we upload this file.'**
+  String get pleaseWaitForUpload;
+
+  /// No description provided for @successfulUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Your file has been successfully uploaded.'**
+  String get successfulUpload;
 }
 
 class _AppLocalizationsDelegate
