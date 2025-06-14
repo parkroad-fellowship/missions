@@ -31,7 +31,7 @@ jobs:
         uses: shorebirdtech/setup-shorebird@v1
         with:
           cache: true # Optionally cache your Shorebird installation
-  
+
       - name: 🚀 Use Shorebird
         run: shorebird --version
       - name: 📦 Install Dependencies
@@ -77,16 +77,6 @@ jobs:
         uses: shorebirdtech/shorebird-release@v0
         with:
           platform: android
-
-      - name: 🚀 Shorebird Release (iOS)
-        uses: shorebirdtech/shorebird-release@v0
-        with:
-          platform: ios
-
-      - name: 🚀 Shorebird Patch (iOS)
-        uses: shorebirdtech/shorebird-patch@v0
-        with:
-          platform: ios
 
       - name: 📦 Upload AAB artifact
         uses: actions/upload-artifact@v4
