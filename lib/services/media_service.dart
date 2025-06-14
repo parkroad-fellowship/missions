@@ -17,7 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
-  Future<PRFMedia> uploadFile({required PRFMediaDTO imageDTO});
+  Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO});
   Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
@@ -38,7 +38,7 @@ class MediaServiceImpl implements MediaService {
   final _networkUtil = NetworkUtil();
 
   @override
-  Future<PRFMedia> uploadFile({required PRFMediaDTO imageDTO}) async {
+  Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO}) async {
     final url = StringBuffer('/');
     Logger().d(imageDTO);
 
@@ -80,8 +80,9 @@ class MediaServiceImpl implements MediaService {
       );
 
       return PRFMedia.fromJson(res['data'] as Map<String, dynamic>);
-    } catch (_) {
-      rethrow;
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
     }
   }
 

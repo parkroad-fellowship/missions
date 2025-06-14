@@ -895,4 +895,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get successfulUpload => 'Your file has been successfully uploaded.';
+
+  @override
+  String get receipts => 'Receipts:';
+
+  @override
+  String get addedOn => 'Added on';
 }

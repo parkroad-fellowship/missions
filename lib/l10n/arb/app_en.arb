@@ -727,5 +727,9 @@
     "pleaseWaitForUpload": "Please wait while we upload this file.",
     "@pleaseWaitForUpload": {},
     "successfulUpload": "Your file has been successfully uploaded.",
-    "@successfulUpload": {}
+    "@successfulUpload": {},
+    "receipts": "Receipts:",
+    "@receipts": {},
+    "addedOn": "Added on",
+    "@addedOn": {}
 }

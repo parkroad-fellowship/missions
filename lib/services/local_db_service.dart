@@ -629,6 +629,7 @@ class LocalDBServiceImpl implements LocalDBService {
   }) async {
     await prfDBInstance.writeTxn(() async {
       for (final mediaDTO in mediaDTOs) {
+        Logger().d(mediaDTO.model);
         await prfDBInstance.pRFLocalMediaUploads.put(
           PRFLocalMediaUpload(
             modelUlid: mediaDTO.modelUlid,

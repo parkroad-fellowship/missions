@@ -19,7 +19,7 @@ enum PRFMediaModel {
       case PRFMediaModel.memberProfilePictures:
         return 'profile-pictures';
       case PRFMediaModel.expenses:
-        return 'expenses';
+        return 'receipts';
     }
   }
 }

@@ -521,12 +521,12 @@ Future<void> _showExpenseDetails(
                   ),
                   _buildDetailRow(
                     context,
-                    'Charge',
+                    l10n.charge,
                     Misc.formatCash(expense.charge),
                   ),
                   _buildDetailRow(
                     context,
-                    'Created At',
+                    l10n.addedOn,
                     Misc.timestamp(
                       expense.createdAt,
                       timezone,
@@ -535,7 +535,7 @@ Future<void> _showExpenseDetails(
                   if (expense.confirmationMessage != null) ...[
                     const SizedBox(height: 16),
                     Text(
-                      'Confirmation Message:',
+                      l10n.confirmationMessage,
                       style: Theme.of(
                         context,
                       ).textTheme.bodyMedium?.copyWith(
@@ -545,11 +545,10 @@ Future<void> _showExpenseDetails(
                     const SizedBox(height: 8),
                     Text(expense.confirmationMessage ?? ''),
                   ],
-                  // Add receipt display section
                   if (expense.receipts.isNotEmpty) ...[
                     const SizedBox(height: 16),
                     Text(
-                      'Receipts:',
+                      l10n.receipts,
                       style: Theme.of(
                         context,
                       ).textTheme.bodyMedium?.copyWith(

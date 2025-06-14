@@ -1737,6 +1737,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your file has been successfully uploaded.'**
   String get successfulUpload;
+
+  /// No description provided for @receipts.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipts:'**
+  String get receipts;
+
+  /// No description provided for @addedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Added on'**
+  String get addedOn;
 }
 
 class _AppLocalizationsDelegate
