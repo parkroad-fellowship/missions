@@ -31,7 +31,6 @@ enum PRFInstitutionType {
     }
   }
 
-
   int get value {
     switch (this) {
       case PRFInstitutionType.highSchool:
@@ -48,7 +47,6 @@ enum PRFInstitutionType {
         return 6;
     }
   }
-
 
   static PRFInstitutionType fromValue(int value) {
     switch (value) {

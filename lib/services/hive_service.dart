@@ -269,7 +269,7 @@ class HiveServiceImpl implements HiveService {
   @override
   void persistExpense(PRFExpense expense, String missionUlid) {
     final missionExpense = retrieveMissionExpense(missionUlid);
-if (missionExpense == null) return;
+    if (missionExpense == null) return;
     final modified = List<PRFExpense>.from(missionExpense.expenses)
       ..add(expense);
     persistMissionExpense(
@@ -302,7 +302,9 @@ if (missionExpense == null) return;
 
   @override
   bool areNotificationsEnabled() {
-    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.globalHiveAuthBox);
+    final box = Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+    );
     return box.get('notificationsEnabled') as bool? ?? true;
   }
 }

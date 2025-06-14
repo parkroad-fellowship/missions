@@ -3,7 +3,6 @@ import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart'
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/widgets/add_token/add_token.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_media.dart';
@@ -301,237 +300,11 @@ class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
               .map(
                 (expense) => DataRow(
                   onLongPress:
-                      () => WoltModalSheet.show<dynamic>(
-                        context: context,
-                        useSafeArea: true,
-                        pageListBuilder:
-                            (_) => [
-                              WoltModalSheetPage(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ) +
-                                      const EdgeInsets.only(bottom: 16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            l10n.expenseDetails,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.headlineMedium,
-                                          ),
-                                          BlocConsumer<
-                                            UploadMediaCubit,
-                                            UploadMediaState
-                                          >(
-                                            listener: (context, state) {
-                                              state.maybeWhen(
-                                                orElse: () {},
-                                                loading: () {
-                                                  ScaffoldMessenger.of(
-                                                    context,
-                                                  ).showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        l10n.pleaseWaitForUpload,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                loaded: () {
-                                                  context
-                                                      .read<
-                                                        GetMissionExpenseCubit
-                                                      >()
-                                                      .getMissionExpense(
-                                                        missionUlid:
-                                                            missionUlid,
-                                                      );
-                                                  ScaffoldMessenger.of(
-                                                    context,
-                                                  ).showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        l10n.successfulUpload,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                error: (message) {
-                                                  ScaffoldMessenger.of(
-                                                    context,
-                                                  ).showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(message),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            builder: (context, state) {
-                                              return state.maybeWhen(
-                                                orElse:
-                                                    () => IconButton(
-                                                      icon: const Icon(
-                                                        Icons.receipt_long,
-                                                      ),
-                                                      onPressed:
-                                                          () => context
-                                                              .read<
-                                                                SelectMediaCubit
-                                                              >()
-                                                              .selectMedia(
-                                                                context:
-                                                                    context,
-                                                                modelUlid:
-                                                                    expense
-                                                                        .ulid,
-                                                                model:
-                                                                    PRFMediaModel
-                                                                        .expenses,
-                                                                mediaType:
-                                                                    RequestType
-                                                                        .image,
-                                                              )
-                                                              .then((_) {
-                                                                if (context
-                                                                    .mounted) {
-                                                                  context
-                                                                      .read<
-                                                                        UploadMediaCubit
-                                                                      >()
-                                                                      .uploadMedia();
-                                                                }
-                                                              }),
-                                                    ),
-                                                loading:
-                                                    () =>
-                                                        const PRFCircularProgressIndicator(),
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 16),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.expenseCategory,
-                                        expense.expenseCategory?.name ?? 'N/A',
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.narration,
-                                        expense.narration.isNotEmpty
-                                            ? expense.narration
-                                            : 'N/A',
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.unitCost,
-                                        Misc.formatCash(expense.unitCost),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.quantity,
-                                        expense.quantity.toString(),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        l10n.total,
-                                        Misc.formatCash(expense.lineTotal),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        'Charge',
-                                        Misc.formatCash(expense.charge),
-                                      ),
-                                      _buildDetailRow(
-                                        context,
-                                        'Created At',
-                                        Misc.timestamp(
-                                          expense.createdAt,
-                                          timezone,
-                                        ),
-                                      ),
-                                      if (expense.confirmationMessage !=
-                                          null) ...[
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          'Confirmation Message:',
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.bodyMedium?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(expense.confirmationMessage ?? ''),
-                                      ],
-                                      // Add receipt display section
-                                      if (expense.receipts.isNotEmpty) ...[
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          'Receipts:',
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.bodyMedium?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        SizedBox(
-                                          height: 100,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: expense.receipts.length,
-                                            itemBuilder: (context, index) {
-                                              final receipt =
-                                                  expense.receipts[index];
-                                              return GestureDetector(
-                                                onTap:
-                                                    () => _viewReceipt(
-                                                      context,
-                                                      receipt,
-                                                    ),
-                                                child: Container(
-                                                  width: 80,
-                                                  margin: const EdgeInsets.only(
-                                                    right: 8,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors.grey,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          8,
-                                                        ),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Icon(
-                                                      Icons.receipt,
-                                                      size: 40,
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                      () => _showExpenseDetails(
+                        context,
+                        expense,
+                        missionUlid,
+                        timezone,
                       ),
                   cells: [
                     DataCell(
@@ -578,7 +351,11 @@ class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
   }
 }
 
-Widget _buildDetailRow(BuildContext context, String label, String value) {
+Widget _buildDetailRow(
+  BuildContext context,
+  String label,
+  String value,
+) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: Row(
@@ -610,6 +387,220 @@ Widget _title(String text) {
 
 Widget _text(String text) {
   return Text(text, softWrap: true, overflow: TextOverflow.visible);
+}
+
+Future<void> _showExpenseDetails(
+  BuildContext context,
+  PRFExpense expense,
+  String missionUlid,
+  String timezone,
+) async {
+  final l10n = context.l10n;
+  return WoltModalSheet.show<dynamic>(
+    context: context,
+    useSafeArea: true,
+    pageListBuilder:
+        (_) => [
+          WoltModalSheetPage(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ) +
+                  const EdgeInsets.only(bottom: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        l10n.expenseDetails,
+                        style:
+                            Theme.of(
+                              context,
+                            ).textTheme.headlineMedium,
+                      ),
+                      BlocConsumer<UploadMediaCubit, UploadMediaState>(
+                        listener: (context, state) {
+                          state.maybeWhen(
+                            orElse: () {},
+                            loading: () {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    l10n.pleaseWaitForUpload,
+                                  ),
+                                ),
+                              );
+                            },
+                            loaded: () {
+                              context
+                                  .read<GetMissionExpenseCubit>()
+                                  .getMissionExpense(
+                                    missionUlid: missionUlid,
+                                  );
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    l10n.successfulUpload,
+                                  ),
+                                ),
+                              );
+                            },
+                            error: (message) {
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            orElse:
+                                () => IconButton(
+                                  icon: const Icon(
+                                    Icons.receipt_long,
+                                  ),
+                                  onPressed:
+                                      () => context
+                                          .read<SelectMediaCubit>()
+                                          .selectMedia(
+                                            context: context,
+                                            modelUlid: expense.ulid,
+                                            model: PRFMediaModel.expenses,
+                                            mediaType: RequestType.image,
+                                          )
+                                          .then((_) {
+                                            if (context.mounted) {
+                                              context
+                                                  .read<UploadMediaCubit>()
+                                                  .uploadMedia();
+                                            }
+                                          }),
+                                ),
+                            loading: () => const PRFCircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  _buildDetailRow(
+                    context,
+                    l10n.expenseCategory,
+                    expense.expenseCategory?.name ?? 'N/A',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.narration,
+                    expense.narration.isNotEmpty ? expense.narration : 'N/A',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.unitCost,
+                    Misc.formatCash(expense.unitCost),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.quantity,
+                    expense.quantity.toString(),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    l10n.total,
+                    Misc.formatCash(expense.lineTotal),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    'Charge',
+                    Misc.formatCash(expense.charge),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    'Created At',
+                    Misc.timestamp(
+                      expense.createdAt,
+                      timezone,
+                    ),
+                  ),
+                  if (expense.confirmationMessage != null) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      'Confirmation Message:',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(expense.confirmationMessage ?? ''),
+                  ],
+                  // Add receipt display section
+                  if (expense.receipts.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      'Receipts:',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: expense.receipts.length,
+                        itemBuilder: (context, index) {
+                          final receipt = expense.receipts[index];
+                          return GestureDetector(
+                            onTap:
+                                () => _viewReceipt(
+                                  context,
+                                  receipt,
+                                ),
+                            child: Container(
+                              width: 80,
+                              margin: const EdgeInsets.only(
+                                right: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  8,
+                                ),
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.receipt,
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ],
+  );
 }
 
 class ExpenseCard extends StatelessWidget {
