@@ -721,5 +721,7 @@
     "deny": "Deny",
     "@deny": {},
     "allow": "Allow",
-    "@allow": {}
+    "@allow": {},
+    "pleaseWaitForFunds": "Please inform the mission desk to confirm funds were issued.",
+    "@pleaseWaitForFunds": {}
 }

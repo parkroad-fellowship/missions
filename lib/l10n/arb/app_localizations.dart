@@ -1719,6 +1719,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow'**
   String get allow;
+
+  /// No description provided for @pleaseWaitForFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Please inform the mission desk to confirm funds were issued.'**
+  String get pleaseWaitForFunds;
 }
 
 class _AppLocalizationsDelegate

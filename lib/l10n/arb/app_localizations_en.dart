@@ -885,4 +885,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allow => 'Allow';
+
+  @override
+  String get pleaseWaitForFunds =>
+      'Please inform the mission desk to confirm funds were issued.';
 }

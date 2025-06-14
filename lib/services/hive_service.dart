@@ -45,9 +45,7 @@ abstract class HiveService {
     String missionUlid,
   );
   void persistExpense(PRFExpense expense, String missionUlid);
-  List<PRFExpense> retrieveExpenses(String missionUlid);
-  void clearExpenses(String missionUlid);
-  PRFMissionExpense retrieveMissionExpense(String missionUlid);
+  PRFMissionExpense? retrieveMissionExpense(String missionUlid);
 
   void persistPaymentTypes(PRFPaymentTypeResponse paymentTypes);
   List<PRFPaymentType> retrievePaymentTypes();
@@ -253,15 +251,6 @@ class HiveServiceImpl implements HiveService {
   }
 
   @override
-  void clearExpenses(String missionUlid) {
-    final missionExpense = retrieveMissionExpense(missionUlid);
-    Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox).put(
-      'mission-expenses-$missionUlid',
-      missionExpense.copyWith(expenses: []),
-    );
-  }
-
-  @override
   void persistMissionExpense(
     PRFMissionExpense missionExpense,
     String missionUlid,
@@ -272,24 +261,15 @@ class HiveServiceImpl implements HiveService {
   }
 
   @override
-  List<PRFExpense> retrieveExpenses(String missionUlid) {
+  PRFMissionExpense? retrieveMissionExpense(String missionUlid) {
     final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
-    final missionExpense =
-        box.get('mission-expenses-$missionUlid') as PRFMissionExpense?;
-    if (missionExpense == null) return [];
-    return missionExpense.expenses.reversed.toList();
-  }
-
-  @override
-  PRFMissionExpense retrieveMissionExpense(String missionUlid) {
-    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
-    return box.get('mission-expenses-$missionUlid') as PRFMissionExpense;
+    return box.get('mission-expenses-$missionUlid') as PRFMissionExpense?;
   }
 
   @override
   void persistExpense(PRFExpense expense, String missionUlid) {
     final missionExpense = retrieveMissionExpense(missionUlid);
-
+if (missionExpense == null) return;
     final modified = List<PRFExpense>.from(missionExpense.expenses)
       ..add(expense);
     persistMissionExpense(
