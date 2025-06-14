@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_institution_type.dart';
 import 'package:app/models/remote/prf_contact.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,6 +11,7 @@ class PRFSchool with _$PRFSchool {
     String ulid,
     String name,
     @JsonKey(name: 'total_students') int totalStudents,
+    @JsonKey(name: 'institution_type') PRFInstitutionType institutionType,
     String address,
     double latitude,
     double longitude,

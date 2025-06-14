@@ -88,7 +88,6 @@ class SubscriberActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    Logger().i(subscription.member.profilePictureUrl);
     return Animate(
       effects: const [SaturateEffect()],
       child: Stack(

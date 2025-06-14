@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_institution_type.dart';
 import 'package:isar/isar.dart';
 
 part 'shared_embeds.g.dart';
@@ -68,6 +69,7 @@ class PRFLocalSchool {
     this.latitude,
     this.longitude,
     this.contacts,
+    this.institutionType,
   });
 
   final String? ulid;
@@ -84,6 +86,8 @@ class PRFLocalSchool {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<PRFLocalContact>? contacts;
+  @Enumerated(EnumType.ordinal32)
+  final PRFInstitutionType? institutionType;
 }
 
 @embedded

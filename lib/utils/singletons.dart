@@ -167,8 +167,11 @@ class Singletons {
       ),
       BlocProvider<GetClassGroupsCubit>(
         create:
-            (context) =>
-                GetClassGroupsCubit(soulService: getIt(), hiveService: getIt()),
+            (context) => GetClassGroupsCubit(
+              soulService: getIt(),
+              hiveService: getIt(),
+              localDBService: getIt(),
+            ),
       ),
       BlocProvider<AddSoulCubit>(
         create:
