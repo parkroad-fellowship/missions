@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
@@ -56,11 +57,25 @@ class MediaServiceImpl implements MediaService {
     url.write('/${imageDTO.modelUlid}/media');
 
     try {
-      final res = await _networkUtil.postWithUpload(
+      // Upload the actual file to Azure to have their servers handle the load
+      final azureStorage = AzureStorage.parse(
+        PRFSuperAppConfig.instance!.values.azureConnString,
+      );
+
+      final filePath = 'prf-media-upload/${Misc.getFileName(imageDTO.path)}';
+
+      await azureStorage.putBlob(
+        filePath,
+        bodyBytes: File(imageDTO.path).readAsBytesSync(),
+      );
+
+      // Upload the reference to our server
+      final res = await _networkUtil.postReq(
         url.toString(),
-        field: 'media_file',
-        filePath: imageDTO.path,
-        body: <String, dynamic>{'collection': imageDTO.model.collection},
+        body: json.encode({
+          'media_file_storage_path': filePath,
+          'collection': imageDTO.model.collection,
+        }),
       );
 
       return PRFMedia.fromJson(res['data'] as Map<String, dynamic>);
