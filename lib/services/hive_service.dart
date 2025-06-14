@@ -296,13 +296,13 @@ if (missionExpense == null) return;
   @override
   void disableNotifications() {
     Hive.box<dynamic>(
-      PRFSuperAppConfig.instance!.values.hiveBox,
+      PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
     ).put('notificationsEnabled', false);
   }
 
   @override
   bool areNotificationsEnabled() {
-    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
+    final box = Hive.box<dynamic>(PRFSuperAppConfig.instance!.values.globalHiveAuthBox);
     return box.get('notificationsEnabled') as bool? ?? true;
   }
 }
