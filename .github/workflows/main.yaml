@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+env:
+  SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,7 +27,13 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: 3
-
+      - name: 🐦 Setup Shorebird
+        uses: shorebirdtech/setup-shorebird@v1
+        with:
+          cache: true # Optionally cache your Shorebird installation
+  
+      - name: 🚀 Use Shorebird
+        run: shorebird --version
       - name: 📦 Install Dependencies
         run: flutter packages get
 
@@ -64,6 +72,21 @@ jobs:
       #     zip -r debug-symbols.zip debug-symbols
       #     curl -sL https://firebase.tools | bash
       #     firebase crashlytics:symbols:upload --app=FIREBASE_PROD_APP_ID debug-symbols.zip
+
+      - name: 🚀 Shorebird Release (Android)
+        uses: shorebirdtech/shorebird-release@v0
+        with:
+          platform: android
+
+      - name: 🚀 Shorebird Release (iOS)
+        uses: shorebirdtech/shorebird-release@v0
+        with:
+          platform: ios
+
+      - name: 🚀 Shorebird Patch (iOS)
+        uses: shorebirdtech/shorebird-patch@v0
+        with:
+          platform: ios
 
       - name: 📦 Upload AAB artifact
         uses: actions/upload-artifact@v4
