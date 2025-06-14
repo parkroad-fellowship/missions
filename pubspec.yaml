@@ -98,3 +98,4 @@ flutter:
     - assets/svgs/
     - assets/images/authentication/
     - assets/google_fonts/lato/
+    - shorebird.yaml
