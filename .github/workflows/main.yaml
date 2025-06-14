@@ -1,6 +1,9 @@
 name: Release to production
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -62,8 +65,8 @@ jobs:
           echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
-      - name: ⚙️ Build AAB
-        run: flutter build appbundle  --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
+      # - name: ⚙️ Build AAB
+      #   run: flutter build appbundle  --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
 
       # - name: ⚙️ Upload debug symbols to Firebase
       #   env:
@@ -77,6 +80,13 @@ jobs:
         uses: shorebirdtech/shorebird-release@v0
         with:
           platform: android
+          args: --flavor production --target lib/main_production.dart
+
+      - name: 🚀 Shorebird Patch
+        uses: shorebirdtech/shorebird-patch@v0
+        with:
+          platform: android
+          args: --flavor production --target lib/main_production.dart
 
       - name: 📦 Upload AAB artifact
         uses: actions/upload-artifact@v4
