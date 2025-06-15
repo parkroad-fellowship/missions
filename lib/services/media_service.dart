@@ -65,7 +65,7 @@ class MediaServiceImpl implements MediaService {
       );
 
       await azureStorage.putBlob(
-        'prf-media-upload/${Misc.getFileName(imageDTO.path)}',
+        'prf-core-container/${Misc.getFileName(imageDTO.path)}',
         bodyBytes: File(imageDTO.path).readAsBytesSync(),
       );
 
