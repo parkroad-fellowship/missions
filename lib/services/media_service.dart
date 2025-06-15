@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:logger/logger.dart';
+import 'package:mime/mime.dart' as mime;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
@@ -67,6 +68,7 @@ class MediaServiceImpl implements MediaService {
       await azureStorage.putBlob(
         'prf-media-upload/${Misc.getFileName(imageDTO.path)}',
         bodyBytes: File(imageDTO.path).readAsBytesSync(),
+        contentType: mime.lookupMimeType(imageDTO.path) ?? 'image/jpeg',
       );
 
       // Upload the reference to our server

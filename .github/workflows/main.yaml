@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+env:
+  SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,6 +27,13 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: 3
+      - name: 🐦 Setup Shorebird
+        uses: shorebirdtech/setup-shorebird@v1
+        with:
+          cache: true # Optionally cache your Shorebird installation
+
+      - name: 🚀 Use Shorebird
+        run: shorebird --version
 
       - name: 📦 Install Dependencies
         run: flutter packages get
@@ -54,16 +63,25 @@ jobs:
           echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
-      - name: ⚙️ Build AAB
-        run: flutter build appbundle  --flavor production --target lib/main_production.dart --obfuscate --split-debug-info=debug-symbols
+      - name: 🚀 Shorebird Release (Android)
+        uses: shorebirdtech/shorebird-release@v0
+        with:
+          platform: android
+          args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols 
 
-      # - name: ⚙️ Upload debug symbols to Firebase
-      #   env:
-      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-      #   run: |
-      #     zip -r debug-symbols.zip debug-symbols
-      #     curl -sL https://firebase.tools | bash
-      #     firebase crashlytics:symbols:upload --app=FIREBASE_PROD_APP_ID debug-symbols.zip
+      - name: 🚀 Shorebird Patch
+        uses: shorebirdtech/shorebird-patch@v0
+        with:
+          platform: android
+          args: --flavor production --target lib/main_production.dart
+
+      - name: ⚙️ Upload debug symbols to Firebase
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          zip -r debug-symbols.zip debug-symbols
+          curl -sL https://firebase.tools | bash
+          firebase crashlytics:symbols:upload --app=${{ secrets.FIREBASE_PROD_APP_ID }} debug-symbols.zip
 
       - name: 📦 Upload AAB artifact
         uses: actions/upload-artifact@v4
@@ -107,14 +125,14 @@ jobs:
           gem install bundler:2.0.2
           bundle install
 
-      - name: 🚀 Release to Google Play (Production)
+      - name: 🚀 Release to Google Play (Internal)
         env:
           SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
           SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
         run: |
           bundle exec fastlane supply \
           --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
-          --track production
+          --track internal
 
       - name: Status
         if: failure()

@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.39.00+23900
+version: 2.40.05+24005
 publish_to: none
 
 environment:
@@ -59,10 +59,12 @@ dependencies:
   local_auth: ^2.3.0
   logger: ^2.5.0
   map_launcher: ^3.5.0
+  mime: ^2.0.0
   path_provider: ^2.1.5
   permission_handler: ^12.0.0+1
   posthog_flutter: ^4.10.4
   pretty_dio_logger: ^1.4.0
+  shorebird_code_push: ^2.0.4
   slugify: ^2.0.0
   timezone: ^0.10.1
   upgrader: ^11.3.1
@@ -98,3 +100,4 @@ flutter:
     - assets/svgs/
     - assets/images/authentication/
     - assets/google_fonts/lato/
+    - shorebird.yaml

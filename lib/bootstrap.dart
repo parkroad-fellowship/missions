@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 
 class AppBlocObserver extends BlocObserver {
@@ -34,6 +35,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   try {
     Bloc.observer = const AppBlocObserver();
 
+    final patch = await ShorebirdUpdater().readCurrentPatch();
+
     LicenseRegistry.addLicense(() async* {
       final license = await rootBundle.loadString(
         'assets/google_fonts/OFL.txt',
@@ -53,6 +56,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     // Report errors to Crashlytics in release mode only
     if (kReleaseMode) {
+      await FirebaseCrashlytics.instance.setCustomKey(
+        'shorebird_patch_number',
+        '${patch?.number}',
+      );
+
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
 
