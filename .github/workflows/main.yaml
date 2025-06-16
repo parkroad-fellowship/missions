@@ -64,13 +64,13 @@ jobs:
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
       - name: 🚀 Shorebird Release (Android)
-        uses: shorebirdtech/shorebird-release@v1
+        uses: shorebirdtech/shorebird-release@v0
         with:
           platform: android
           args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols 
 
       - name: 🚀 Shorebird Patch
-        uses: shorebirdtech/shorebird-patch@v1
+        uses: shorebirdtech/shorebird-patch@v0
         with:
           platform: android
           args: --flavor production --target lib/main_production.dart
