@@ -1,5 +1,6 @@
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/prayer_response_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -10,14 +11,14 @@ part 'upload_prayer_response_cubit.freezed.dart';
 class UploadPrayerResponseCubit extends Cubit<UploadPrayerResponseState> {
   UploadPrayerResponseCubit({
     required LocalDBService localDBService,
-    required MissionService missionService,
+    required PrayerResponseService prayerResponseService,
   }) : super(const UploadPrayerResponseState.initial()) {
     _localDBService = localDBService;
-    _missionService = missionService;
+    _prayerResponseService = prayerResponseService;
   }
 
   late LocalDBService _localDBService;
-  late MissionService _missionService;
+  late PrayerResponseService _prayerResponseService;
 
   Future<void> uploadPrayerResponses() async {
     try {
@@ -28,8 +29,9 @@ class UploadPrayerResponseCubit extends Cubit<UploadPrayerResponseState> {
       for (final prayerResponse in prayerResponses) {
         responses.add(
           Future<PRFPrayerResponse>(() async {
-            return _missionService.respondToPrayerPrompt(
-              prayerResponse: prayerResponse,
+            return _prayerResponseService.create(
+              data: prayerResponse.toJson(),
+              includes: 'prayerPrompt',
             );
           }),
         );

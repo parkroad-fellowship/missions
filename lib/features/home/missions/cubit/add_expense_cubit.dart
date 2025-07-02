@@ -4,6 +4,7 @@ import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/expense_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,14 +13,14 @@ part 'add_expense_cubit.freezed.dart';
 
 class AddExpenseCubit extends Cubit<AddExpenseState> {
   AddExpenseCubit({
-    required MissionService missionService,
+    required ExpenseService expenseService,
     required HiveService hiveService,
   }) : super(const AddExpenseState.initial()) {
-    _missionService = missionService;
+    _expenseService = expenseService;
     _hiveService = hiveService;
   }
 
-  late MissionService _missionService;
+  late ExpenseService _expenseService;
   late HiveService _hiveService;
 
   Future<void> addExpense({
@@ -40,8 +41,8 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
         emit(const AddExpenseState.error('Please wait for funds to be issued'));
       }
 
-      final expense = await _missionService.addExpense(
-        expenseDTO: PRFExpenseDTO(
+      final expense = await _expenseService.create(
+        data: PRFExpenseDTO(
           expenseableType: PRFMorphType.missionExpense.apiKey,
           expenseableUlid: missionExpense!.ulid,
           expenseCategoryUlid: expenseCategoryUlid,
@@ -52,7 +53,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           quantity: int.parse(quantity),
           charge: int.parse(charge),
           narration: narration,
-        ),
+        ).toJson(),
       );
 
       _hiveService.persistExpense(expense, missionUlid);

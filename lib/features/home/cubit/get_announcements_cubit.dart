@@ -1,4 +1,5 @@
 import 'package:app/services/_index.dart';
+import 'package:app/services/announcement_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -7,16 +8,16 @@ part 'get_announcements_cubit.freezed.dart';
 
 class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
   GetAnnouncementsCubit({
-    required MissionService missionService,
+    required AnnouncementService announcementService,
     required LocalDBService localDBService,
     required HiveService hiveService,
   }) : super(const GetAnnouncementsState.initial()) {
-    _missionService = missionService;
+    _announcementService = announcementService;
     _localDBService = localDBService;
     _hiveService = hiveService;
   }
 
-  late MissionService _missionService;
+  late AnnouncementService _announcementService;
   late LocalDBService _localDBService;
   late HiveService _hiveService;
 
@@ -26,9 +27,13 @@ class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
     try {
       final memberGroupUlids = _hiveService.retrieveMemberGroupUlids();
 
-      final announcements = await _missionService.getAnnouncements(
-        groups: memberGroupUlids ?? [],
-        upcoming: true,
+      final announcements = await _announcementService.list(
+        filters: {
+          'filter[group_ulids]': memberGroupUlids.join(','),
+          'filter[upcoming]': true,
+        },
+        orderBy: 'published_at',
+        orderDirection: 'desc',
       );
 
       await _localDBService.persistAnnouncements(announcements: announcements);

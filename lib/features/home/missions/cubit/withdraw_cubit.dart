@@ -3,6 +3,7 @@ import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_update_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_subscription_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,14 +12,14 @@ part 'withdraw_cubit.freezed.dart';
 
 class WithdrawCubit extends Cubit<WithdrawState> {
   WithdrawCubit({
-    required MissionService missionService,
+    required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
   }) : super(const WithdrawState.initial()) {
-    _missionService = missionService;
+    _missionSubscriptionService = missionSubscriptionService;
     _hiveService = hiveService;
   }
 
-  late MissionService _missionService;
+  late MissionSubscriptionService _missionSubscriptionService;
   late HiveService _hiveService;
 
   Future<void> withdraw({
@@ -29,13 +30,13 @@ class WithdrawCubit extends Cubit<WithdrawState> {
     try {
       final member = _hiveService.retrieveMember()!;
 
-      final missionSubscription = await _missionService.updateSubscription(
-        missionSubscriptionUlid: missionSubscriptionUlid,
-        subscriptionDTO: PRFMissionSubscriptionUpdateDTO(
+      final missionSubscription = await _missionSubscriptionService.update(
+        id: missionSubscriptionUlid,
+        data: PRFMissionSubscriptionUpdateDTO(
           missionUlid: missionUlid,
           memberUlid: member.ulid,
           status: PRFMissionSubscriptionStatus.withdrawn,
-        ),
+        ).toJson(),
       );
       emit(WithdrawState.loaded(subscription: missionSubscription));
     } on Failure catch (e) {

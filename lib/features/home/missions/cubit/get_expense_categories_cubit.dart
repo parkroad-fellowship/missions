@@ -1,6 +1,7 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/expense_categories_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,14 +10,14 @@ part 'get_expense_categories_cubit.freezed.dart';
 
 class GetExpenseCategoriesCubit extends Cubit<GetExpenseCategoriesState> {
   GetExpenseCategoriesCubit({
-    required MissionService missionService,
+    required ExpenseCategoriesService expenseCategoriesService,
     required HiveService hiveService,
   }) : super(const GetExpenseCategoriesState.initial()) {
-    _missionService = missionService;
+    _expenseCategoriesService = expenseCategoriesService;
     _hiveService = hiveService;
   }
 
-  late MissionService _missionService;
+  late ExpenseCategoriesService _expenseCategoriesService;
   late HiveService _hiveService;
 
   Future<void> getExpenseCategories() async {
@@ -32,7 +33,9 @@ class GetExpenseCategoriesCubit extends Cubit<GetExpenseCategoriesState> {
         return;
       }
 
-      final expenseCategories = await _missionService.getExpenseCategories();
+      final expenseCategories = await _expenseCategoriesService.list(
+        limit: 100,
+      );
       _hiveService.persistExpenseCategories(
         PRFExpenseCategoryResponse(expenseCategories),
       );

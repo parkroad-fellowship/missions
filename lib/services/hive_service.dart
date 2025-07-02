@@ -24,7 +24,7 @@ abstract class HiveService {
   PRFUser? retrieveProfile();
   String get timezone;
   PRFMember? retrieveMember();
-  List<String>? retrieveMemberGroupUlids();
+  List<String> retrieveMemberGroupUlids();
   String retrieveStudentUlid();
   void persistStudentCredentials({required String email, int? password});
   (String email, int? password) retrieveStudentCredentials();
@@ -160,7 +160,7 @@ class HiveServiceImpl implements HiveService {
   }
 
   @override
-  List<String>? retrieveMemberGroupUlids() {
+  List<String> retrieveMemberGroupUlids() {
     return retrieveMember()!.groupMembers
             ?.map((groupMember) => groupMember.group!.ulid)
             .toList() ??

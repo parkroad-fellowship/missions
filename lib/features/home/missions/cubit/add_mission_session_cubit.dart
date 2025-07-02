@@ -1,7 +1,9 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_session_dto.dart';
+import 'package:app/services/expense_service.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/services/mission_service.dart';
+import 'package:app/services/mission_session_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +12,14 @@ part 'add_mission_session_state.dart';
 
 class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
   AddMissionSessionCubit({
-    required MissionService missionService,
+    required MissionSessionService missionSessionService,
     required LocalDBService localDBService,
   }) : super(const AddMissionSessionState.initial()) {
-    _missionService = missionService;
+    _missionSessionService = missionSessionService;
     _localDBService = localDBService;
   }
 
-  late MissionService _missionService;
+  late MissionSessionService _missionSessionService;
   late LocalDBService _localDBService;
 
   Future<void> addSession({
@@ -31,8 +33,8 @@ class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
   }) async {
     emit(const AddMissionSessionState.loading());
     try {
-      final missionSession = await _missionService.addSession(
-        sessionDTO: PRFMissionSessionDTO(
+      final missionSession = await _missionSessionService.create(
+        data: PRFMissionSessionDTO(
           missionUlid: missionUlid,
           facilitatorUlid: facilitatorUlid,
           startsAt: startsAt.toIso8601String(),
@@ -40,7 +42,9 @@ class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
           notes: notes,
           speakerUlid: speakerUlid,
           classGroupUlid: classGroupUlid,
-        ),
+        ).toJson(),
+        includes:
+            'facilitator,speaker,classGroup,missionSessionTranscripts.media',
       );
       await _localDBService.persistMissionSessions(
         missionSessions: [missionSession],

@@ -1,5 +1,6 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_session_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,14 +9,14 @@ part 'delete_mission_session_state.dart';
 
 class DeleteMissionSessionCubit extends Cubit<DeleteMissionSessionState> {
   DeleteMissionSessionCubit({
-    required MissionService missionService,
+    required MissionSessionService missionSessionService,
     required LocalDBService localDBService,
   }) : super(const DeleteMissionSessionState.initial()) {
-    _missionService = missionService;
+    _missionSessionService = missionSessionService;
     _localDBService = localDBService;
   }
 
-  late MissionService _missionService;
+  late MissionSessionService _missionSessionService;
   late LocalDBService _localDBService;
 
   Future<void> deleteMissionSession({
@@ -23,9 +24,7 @@ class DeleteMissionSessionCubit extends Cubit<DeleteMissionSessionState> {
   }) async {
     emit(const DeleteMissionSessionState.loading());
     try {
-      await _missionService.deleteSession(
-        missionSessionUlid: missionSessionUlid,
-      );
+      await _missionSessionService.delete(id: missionSessionUlid);
       await _localDBService.deleteMissionSession(
         missionSessionUlid: missionSessionUlid,
       );

@@ -55,8 +55,25 @@ import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubi
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/models/remote/prf_announcement.dart';
+import 'package:app/models/remote/prf_expense.dart';
+import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/models/remote/prf_mission.dart';
+import 'package:app/models/remote/prf_mission_expense.dart';
+import 'package:app/models/remote/prf_mission_subscription.dart';
+import 'package:app/models/remote/prf_prayer_prompt.dart';
+import 'package:app/models/remote/prf_prayer_response.dart';
+import 'package:app/services/_base_api_service.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/announcement_service.dart';
+import 'package:app/services/expense_categories_service.dart';
+import 'package:app/services/expense_service.dart';
+import 'package:app/services/mission_expenses_service.dart';
+import 'package:app/services/mission_subscription_service.dart';
+import 'package:app/services/missions_service.dart';
+import 'package:app/services/prayer_prompt_service.dart';
 import 'package:app/services/prayer_request_service.dart';
+import 'package:app/services/prayer_response_service.dart';
 import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -72,6 +89,28 @@ class Singletons {
       ..registerSingleton<HiveService>(HiveServiceImpl())
       ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
       ..registerSingleton<AuthService>(AuthServiceImpl())
+      // V2
+      ..registerSingleton<BaseAPIService<PRFMission>>(MissionsService())
+      ..registerSingleton<BaseAPIService<PRFMissionSubscription>>(
+        MissionSubscriptionService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFAnnouncement>>(
+        AnnouncementService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFPrayerPrompt>>(
+        PrayerPromptService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFPrayerResponse>>(
+        PrayerResponseService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFExpenseCategory>>(
+        ExpenseCategoriesService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFMissionExpense>>(
+        MissionExpensesService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFExpense>>(ExpenseService())
+      // End V2
       ..registerSingleton<MissionService>(MissionServiceImpl())
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
@@ -122,31 +161,33 @@ class Singletons {
       ),
       BlocProvider<GetMissionsCubit>(
         create: (context) => GetMissionsCubit(
-          missionService: getIt(),
+          missionsService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<GetSubscribersCubit>(
         create: (context) => GetSubscribersCubit(
-          missionService: getIt(),
+          missionSubscriptionService: getIt(),
           localDBService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<SubscribeCubit>(
         create: (context) => SubscribeCubit(
-          missionService: getIt(),
+          missionSubscriptionService: getIt(),
           hiveService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<WithdrawCubit>(
-        create: (context) =>
-            WithdrawCubit(missionService: getIt(), hiveService: getIt()),
+        create: (context) => WithdrawCubit(
+          missionSubscriptionService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<GetMemberMissionSubscriptionsCubit>(
         create: (context) => GetMemberMissionSubscriptionsCubit(
-          missionService: getIt(),
+          missionSubscriptionService: getIt(),
           hiveService: getIt(),
           localDBService: getIt(),
         ),
@@ -226,7 +267,7 @@ class Singletons {
       ),
       BlocProvider<GetAnnouncementsCubit>(
         create: (context) => GetAnnouncementsCubit(
-          missionService: getIt(),
+          announcementService: getIt(),
           localDBService: getIt(),
           hiveService: getIt(),
         ),
@@ -245,7 +286,7 @@ class Singletons {
       ),
       BlocProvider<GetPrayerPromptsCubit>(
         create: (context) => GetPrayerPromptsCubit(
-          missionService: getIt(),
+          prayerPromptService: getIt(),
           notificationService: getIt(),
         ),
       ),
@@ -258,27 +299,27 @@ class Singletons {
       BlocProvider<UploadPrayerResponseCubit>(
         create: (context) => UploadPrayerResponseCubit(
           localDBService: getIt(),
-          missionService: getIt(),
+          prayerResponseService: getIt(),
         ),
       ),
       BlocProvider<GetExpenseCategoriesCubit>(
         create: (context) => GetExpenseCategoriesCubit(
-          missionService: getIt(),
+          expenseCategoriesService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<GetMissionExpenseCubit>(
         create: (context) => GetMissionExpenseCubit(
-          missionService: getIt(),
+          missionExpensesService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<AddExpenseCubit>(
         create: (context) =>
-            AddExpenseCubit(missionService: getIt(), hiveService: getIt()),
+            AddExpenseCubit(expenseService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<AddTokenCubit>(
-        create: (context) => AddTokenCubit(missionService: getIt()),
+        create: (context) => AddTokenCubit(missionExpensesService: getIt()),
       ),
       BlocProvider<SelectMediaCubit>(
         create: (context) => SelectMediaCubit(
@@ -297,25 +338,25 @@ class Singletons {
       ),
       BlocProvider<GetMissionSessionsCubit>(
         create: (context) => GetMissionSessionsCubit(
-          missionService: getIt(),
+          missionSessionService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<AddMissionSessionCubit>(
         create: (context) => AddMissionSessionCubit(
-          missionService: getIt(),
+          missionSessionService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<UpdateMissionSessionCubit>(
         create: (context) => UpdateMissionSessionCubit(
-          missionService: getIt(),
+          missionSessionService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<DeleteMissionSessionCubit>(
         create: (context) => DeleteMissionSessionCubit(
-          missionService: getIt(),
+          missionSessionService: getIt(),
           localDBService: getIt(),
         ),
       ),
@@ -353,7 +394,7 @@ class Singletons {
       ),
       BlocProvider<GetMissionSessionCubit>(
         create: (context) => GetMissionSessionCubit(
-          missionService: getIt(),
+          missionSessionService: getIt(),
           localDBService: getIt(),
         ),
       ),

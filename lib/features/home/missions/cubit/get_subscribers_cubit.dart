@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_subscription_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,16 +10,16 @@ part 'get_subscribers_cubit.freezed.dart';
 
 class GetSubscribersCubit extends Cubit<GetSubscribersState> {
   GetSubscribersCubit({
-    required MissionService missionService,
+    required MissionSubscriptionService missionSubscriptionService,
     required LocalDBService localDBService,
     required HiveService hiveService,
   }) : super(const GetSubscribersState.initial()) {
-    _missionService = missionService;
+    _missionSubscriptionService = missionSubscriptionService;
     _localDBService = localDBService;
     _hiveService = hiveService;
   }
 
-  late MissionService _missionService;
+  late MissionSubscriptionService _missionSubscriptionService;
   late LocalDBService _localDBService;
   late HiveService _hiveService;
 
@@ -35,9 +36,11 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
 
       final member = _hiveService.retrieveMember()!;
 
-      final missionSubscriptions = await _missionService.getSubscriptions(
-        missionUlid: missionUlid,
-        subscriptionStatus: PRFMissionSubscriptionStatus.approved,
+      final missionSubscriptions = await _missionSubscriptionService.list(
+        filters: {
+          'filter[mission_ulid]': missionUlid,
+          'filter[status_key]': PRFMissionSubscriptionStatus.approved.apiKey,
+        },
         includes: 'member.profilePicture',
       );
 

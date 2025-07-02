@@ -1,6 +1,7 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_expenses_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,21 +10,22 @@ part 'get_mission_expense_cubit.freezed.dart';
 
 class GetMissionExpenseCubit extends Cubit<GetMissionExpenseState> {
   GetMissionExpenseCubit({
-    required MissionService missionService,
+    required MissionExpensesService missionExpensesService,
     required HiveService hiveService,
   }) : super(const GetMissionExpenseState.initial()) {
-    _missionService = missionService;
+    _missionExpensesService = missionExpensesService;
     _hiveService = hiveService;
   }
 
-  late MissionService _missionService;
+  late MissionExpensesService _missionExpensesService;
   late HiveService _hiveService;
 
   Future<void> getMissionExpense({required String missionUlid}) async {
     emit(const GetMissionExpenseState.loading());
     try {
-      final missionExpense = await _missionService.getMissionExpense(
-        missionUlid: missionUlid,
+      final missionExpense = await _missionExpensesService.get(
+        id: missionUlid,
+        includes: 'expenses.expenseCategory,expenses.receipts',
       );
 
       _hiveService.persistMissionExpense(missionExpense, missionUlid);

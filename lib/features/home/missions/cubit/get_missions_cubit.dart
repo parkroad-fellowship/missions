@@ -1,5 +1,7 @@
+import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/missions_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,14 +10,14 @@ part 'get_missions_cubit.freezed.dart';
 
 class GetMissionsCubit extends Cubit<GetMissionsState> {
   GetMissionsCubit({
-    required MissionService missionService,
+    required MissionsService missionsService,
     required LocalDBService localDBService,
   }) : super(const GetMissionsState.initial()) {
-    _missionService = missionService;
+    _missionsService = missionsService;
     _localDbService = localDBService;
   }
 
-  late MissionService _missionService;
+  late MissionsService _missionsService;
   late LocalDBService _localDbService;
 
   Future<void> getMissions({bool refresh = false}) async {
@@ -26,7 +28,20 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
         emit(const GetMissionsState.loaded());
         return;
       }
-      final missions = await _missionService.getMissions();
+      final missions = await _missionsService.list(
+        includes:
+            'school,missionType,school.schoolContacts.contactType,'
+            'loggedInMemberMissionSubscription,weatherForecasts',
+        filters: {
+          'filter[status_keys]': [
+            PRFMissionStatus.approved.apiKey,
+            PRFMissionStatus.fullySubscribed.apiKey,
+          ].join(','),
+          'filter[unsubscribed]': true,
+        },
+        orderBy: 'start_date',
+        orderDirection: 'asc',
+      );
 
       await _localDbService.persistMissions(missions: missions);
       await _localDbService.refreshMissions();

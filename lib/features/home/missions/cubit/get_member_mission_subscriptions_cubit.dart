@@ -1,5 +1,7 @@
+import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_subscription_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -10,16 +12,16 @@ part 'get_member_mission_subscriptions_cubit.freezed.dart';
 class GetMemberMissionSubscriptionsCubit
     extends Cubit<GetMemberMissionSubscriptionsState> {
   GetMemberMissionSubscriptionsCubit({
-    required MissionService missionService,
+    required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
     required LocalDBService localDBService,
   }) : super(const GetMemberMissionSubscriptionsState.initial()) {
-    _missionService = missionService;
+    _missionSubscriptionService = missionSubscriptionService;
     _hiveService = hiveService;
     _localDBService = localDBService;
   }
 
-  late MissionService _missionService;
+  late MissionSubscriptionService _missionSubscriptionService;
   late HiveService _hiveService;
   late LocalDBService _localDBService;
 
@@ -33,12 +35,21 @@ class GetMemberMissionSubscriptionsCubit
       }
 
       final member = _hiveService.retrieveMember()!;
-      final missionSubscriptions = await _missionService.getSubscriptions(
+      final missionSubscriptions = await _missionSubscriptionService.list(
         includes:
             'mission.missionType,mission.school,'
             'mission.school.schoolContacts.contactType,'
             'mission.weatherForecasts',
-        memberUlid: member.ulid,
+        filters: {
+          'filter[member_ulid]': member.ulid,
+          'filter[status_keys]': [
+            PRFMissionSubscriptionStatus.approved.apiKey,
+            PRFMissionSubscriptionStatus.withdrawn.apiKey,
+            PRFMissionSubscriptionStatus.pending.apiKey,
+            PRFMissionSubscriptionStatus.fullySubscribed.apiKey,
+            PRFMissionSubscriptionStatus.conflict.apiKey,
+          ].join(','),
+        },
       );
 
       await _localDBService.persistMemberMissions(

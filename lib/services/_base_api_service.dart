@@ -2,23 +2,20 @@ import 'dart:convert';
 
 import 'package:app/utils/network.dart';
 
-abstract class BaseService {
+abstract class BaseAPIService<T> {
   final _networkUtil = NetworkUtil();
 
   // Abstract property that subclasses must define
   String get endpoint;
 
-  // Abstract property for the type of data this service handles
-  Type get type;
-
   // Abstract factory method for creating instances from JSON
-  T createFromJson<T>(Map<String, dynamic> json);
+  T createFromJson(Map<String, dynamic> json);
 
   // Abstract factory method for creating list from response
-  List<T> createListFromResponse<T>(Map<String, dynamic> response);
+  List<T> createListFromResponse(Map<String, dynamic> response);
 
   // Method that uses the endpoint and type from the subclass
-  Future<List<T>> list<T>({
+  Future<List<T>> list({
     Map<String, dynamic>? filters,
     String? includes,
     int? limit,
@@ -61,14 +58,14 @@ abstract class BaseService {
       );
 
       // Use the subclass factory method to parse the response
-      return createListFromResponse<T>(res);
+      return createListFromResponse(res);
     } catch (e) {
       rethrow;
     }
   }
 
   // Method for fetching a single item
-  Future<T> get<T>({
+  Future<T> get({
     required String id,
     String? includes,
   }) async {
@@ -86,14 +83,14 @@ abstract class BaseService {
       );
 
       // Use the subclass factory method to parse the response
-      return createFromJson<T>(res['data'] as Map<String, dynamic>);
+      return createFromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
   }
 
   // Method for creating a new item
-  Future<T> create<T>({
+  Future<T> create({
     required Map<String, dynamic> data,
     String? includes,
   }) async {
@@ -109,14 +106,14 @@ abstract class BaseService {
         queryParameters: queryParameters,
       );
       // Use the subclass factory method to parse the response
-      return createFromJson<T>(res['data'] as Map<String, dynamic>);
+      return createFromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }
   }
 
   // Method for updating an existing item
-  Future<T> update<T>({
+  Future<T> update({
     required String id,
     required Map<String, dynamic> data,
     String? includes,
@@ -133,7 +130,7 @@ abstract class BaseService {
         queryParameters: queryParameters,
       );
       // Use the subclass factory method to parse the response
-      return createFromJson<T>(res['data'] as Map<String, dynamic>);
+      return createFromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       rethrow;
     }

@@ -2,6 +2,7 @@ import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_subscription_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -11,16 +12,16 @@ part 'subscribe_cubit.freezed.dart';
 
 class SubscribeCubit extends Cubit<SubscribeState> {
   SubscribeCubit({
-    required MissionService missionService,
+    required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
     required LocalDBService localDBService,
   }) : super(const SubscribeState.initial()) {
-    _missionService = missionService;
+    _missionSubscriptionService = missionSubscriptionService;
     _hiveService = hiveService;
     _localDBService = localDBService;
   }
 
-  late MissionService _missionService;
+  late MissionSubscriptionService _missionSubscriptionService;
   late HiveService _hiveService;
   late LocalDBService _localDBService;
 
@@ -28,11 +29,11 @@ class SubscribeCubit extends Cubit<SubscribeState> {
     emit(const SubscribeState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
-      final missionSubscription = await _missionService.subscribe(
-        subscriptionDTO: PRFMissionSubscriptionDTO(
+      final missionSubscription = await _missionSubscriptionService.create(
+        data: PRFMissionSubscriptionDTO(
           missionUlid: missionUlid,
           memberUlid: member.ulid,
-        ),
+        ).toJson(),
       );
       await _localDBService.persistMissionSubscriptions(
         missionSubscriptions: [missionSubscription],

@@ -1,5 +1,6 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_session_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,14 +9,14 @@ part 'get_mission_session_cubit.freezed.dart';
 
 class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
   GetMissionSessionCubit({
-    required MissionService missionService,
+    required MissionSessionService missionSessionService,
     required LocalDBService localDBService,
   }) : super(const GetMissionSessionState.initial()) {
-    _missionService = missionService;
+    _missionSessionService = missionSessionService;
     _localDBService = localDBService;
   }
 
-  late MissionService _missionService;
+  late MissionSessionService _missionSessionService;
   late LocalDBService _localDBService;
 
   Future<void> getMissionSession({
@@ -34,8 +35,10 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
         return;
       }
 
-      final missionSession = await _missionService.getMissionSession(
-        missionSessionUlid: missionSessionUlid,
+      final missionSession = await _missionSessionService.get(
+        id: missionSessionUlid,
+        includes:
+            'facilitator,speaker,classGroup,missionSessionTranscripts.media',
       );
 
       await _localDBService.persistMissionSessions(

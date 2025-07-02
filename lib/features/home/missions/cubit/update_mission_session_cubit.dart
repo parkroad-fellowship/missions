@@ -1,5 +1,6 @@
 import 'package:app/models/remote/prf_mission_session_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_session_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,14 +9,14 @@ part 'update_mission_session_cubit.freezed.dart';
 
 class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
   UpdateMissionSessionCubit({
-    required MissionService missionService,
+    required MissionSessionService missionSessionService,
     required LocalDBService localDBService,
   }) : super(const UpdateMissionSessionState.initial()) {
-    _missionService = missionService;
+    _missionSessionService = missionSessionService;
     _localDBService = localDBService;
   }
 
-  late MissionService _missionService;
+  late MissionSessionService _missionSessionService;
   late LocalDBService _localDBService;
 
   Future<void> updateMissionSession({
@@ -30,9 +31,9 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
   }) async {
     emit(const UpdateMissionSessionState.loading());
     try {
-      final updatedMissionSession = await _missionService.updateSession(
-        missionSessionUlid: missionSessionUlid,
-        sessionDTO: PRFMissionSessionDTO(
+      final updatedMissionSession = await _missionSessionService.update(
+        id: missionSessionUlid,
+        data: PRFMissionSessionDTO(
           missionUlid: missionUlid,
           facilitatorUlid: facilitatorUlid,
           startsAt: startsAt.toIso8601String(),
@@ -40,7 +41,9 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
           notes: notes,
           speakerUlid: speakerUlid,
           classGroupUlid: classGroupUlid,
-        ),
+        ).toJson(),
+        includes:
+            'facilitator,speaker,classGroup,missionSessionTranscripts.media',
       );
       await _localDBService.persistMissionSessions(
         missionSessions: [updatedMissionSession],
