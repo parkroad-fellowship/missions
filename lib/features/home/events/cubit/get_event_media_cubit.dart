@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/event_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -21,9 +22,13 @@ class GetEventMediaCubit extends Cubit<GetEventMediaState> {
   }) async {
     emit(const GetEventMediaState.loading());
     try {
-      final media = await _eventService.getEventMedia(
-        eventUlid: eventUlid,
-        model: model,
+      final media = await _eventService.listChildren(
+        parentId: eventUlid,
+        childPath: 'media',
+        queryParameters: {
+          'collection': model.collection,
+        },
+        fromJson: (json) => PRFMediaResponse.fromJson(json).data,
       );
 
       if (media.isEmpty) {

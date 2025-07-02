@@ -58,6 +58,8 @@ import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_re
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_debrief_note.dart';
+import 'package:app/models/remote/prf_event.dart';
+import 'package:app/models/remote/prf_event_subscription.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_mission.dart';
@@ -76,6 +78,8 @@ import 'package:app/services/_index.dart';
 import 'package:app/services/announcement_service.dart';
 import 'package:app/services/class_group_service.dart';
 import 'package:app/services/debrief_note_service.dart';
+import 'package:app/services/event_service.dart';
+import 'package:app/services/event_subscription_service.dart';
 import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
 import 'package:app/services/mission_expenses_service.dart';
@@ -134,6 +138,9 @@ class Singletons {
       ..registerSingleton<BaseAPIService<PRFPrayerRequest>>(PrayerRequestService())
       ..registerSingleton<BaseAPIService<PRFClassGroup>>(ClassGroupService())
       ..registerSingleton<BaseAPIService<PRFSoul>>(SoulService())
+      ..registerSingleton<BaseAPIService<PRFEvent>>(EventService())
+      ..registerSingleton<BaseAPIService<PRFEventSubscription>>(EventSubscriptionService())
+      
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<LMSService>(LMSServiceImpl())
@@ -142,7 +149,6 @@ class Singletons {
       )
       ..registerSingleton<StudentService>(StudentServiceImpl())
       ..registerSingleton<MediaService>(MediaServiceImpl())
-      ..registerSingleton<EventService>(EventServiceImpl())
       ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
   }
 
@@ -424,7 +430,7 @@ class Singletons {
       ),
       BlocProvider<GetMemberEventSubscriptionsCubit>(
         create: (context) => GetMemberEventSubscriptionsCubit(
-          eventService: getIt(),
+          eventSubscriptionService: getIt(),
           hiveService: getIt(),
         ),
       ),
@@ -433,19 +439,19 @@ class Singletons {
       ),
       BlocProvider<AddEventSubscriptionCubit>(
         create: (context) => AddEventSubscriptionCubit(
-          eventService: getIt(),
+          eventSubscriptionService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<UpdateEventSubscriptionCubit>(
         create: (context) => UpdateEventSubscriptionCubit(
-          eventService: getIt(),
+          eventSubscriptionService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<DeleteEventSubscriptionCubit>(
         create: (context) =>
-            DeleteEventSubscriptionCubit(eventService: getIt()),
+            DeleteEventSubscriptionCubit(eventSubscriptionService: getIt()),
       ),
       BlocProvider<ChangeProfilePictureCubit>(
         create: (context) => ChangeProfilePictureCubit(

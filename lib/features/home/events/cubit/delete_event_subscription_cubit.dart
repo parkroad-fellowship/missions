@@ -1,5 +1,5 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/services/event_service.dart';
+import 'package:app/services/event_subscription_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -7,20 +7,21 @@ part 'delete_event_subscription_state.dart';
 part 'delete_event_subscription_cubit.freezed.dart';
 
 class DeleteEventSubscriptionCubit extends Cubit<DeleteEventSubscriptionState> {
-  DeleteEventSubscriptionCubit({required EventService eventService})
-    : super(const DeleteEventSubscriptionState.initial()) {
-    _eventService = eventService;
+  DeleteEventSubscriptionCubit({
+    required EventSubscriptionService eventSubscriptionService,
+  }) : super(const DeleteEventSubscriptionState.initial()) {
+    _eventSubscriptionService = eventSubscriptionService;
   }
 
-  late EventService _eventService;
+  late EventSubscriptionService _eventSubscriptionService;
 
   Future<void> deleteSubscription({
     required String eventSubscriptionUlid,
   }) async {
     try {
       emit(const DeleteEventSubscriptionState.loading());
-      await _eventService.unsubscribe(
-        eventSubscriptionUlid: eventSubscriptionUlid,
+      await _eventSubscriptionService.delete(
+        id: eventSubscriptionUlid,
       );
       emit(const DeleteEventSubscriptionState.loaded());
     } on Failure catch (e) {
