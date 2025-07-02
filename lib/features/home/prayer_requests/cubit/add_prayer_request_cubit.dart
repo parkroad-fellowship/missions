@@ -28,12 +28,13 @@ class AddPrayerRequestCubit extends Cubit<AddPrayerRequestState> {
     final member = _hiveService.retrieveMember()!;
 
     try {
-      final prayerRequest = await _prayerRequestService.addPrayerRequest(
-        dto: PRFPrayerRequestDTO(
+      final prayerRequest = await _prayerRequestService.create(
+        data: PRFPrayerRequestDTO(
           title: title,
           description: description,
           memberUlid: member.ulid,
-        ),
+        ).toJson(),
+        includes: 'member',
       );
       emit(AddPrayerRequestState.loaded(prayerRequests: [prayerRequest]));
     } on Failure catch (e) {

@@ -22,8 +22,11 @@ class GetPrayerRequestsCubit extends Cubit<GetPrayerRequestsState> {
     try {
       emit(const GetPrayerRequestsState.loading());
       final member = _hiveService.retrieveMember()!;
-      final prayerRequests = await _prayerRequestService.getPrayerRequests(
-        memberUlid: member.ulid,
+      final prayerRequests = await _prayerRequestService.list(
+        includes: 'member',
+        filters: {
+          'filter[member_ulid]': member.ulid,
+        },
       );
       emit(GetPrayerRequestsState.loaded(prayerRequests: prayerRequests));
     } on Failure catch (e) {

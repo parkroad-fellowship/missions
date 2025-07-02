@@ -67,6 +67,7 @@ import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_payment.dart';
 import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
+import 'package:app/models/remote/prf_prayer_request.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/services/_base_api_service.dart';
 import 'package:app/services/_index.dart';
@@ -127,6 +128,7 @@ class Singletons {
       ..registerSingleton<BaseAPIService<PRFMissionGroundSuggestion>>(MissionGroundSuggestionService())
       ..registerSingleton<BaseAPIService<PRFPayment>>(PaymentService())
       ..registerSingleton<BaseAPIService<PRFPaymentType>>(PaymentTypeService())
+      ..registerSingleton<BaseAPIService<PRFPrayerRequest>>(PrayerRequestService())
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
@@ -137,8 +139,7 @@ class Singletons {
       ..registerSingleton<StudentService>(StudentServiceImpl())
       ..registerSingleton<MediaService>(MediaServiceImpl())
       ..registerSingleton<EventService>(EventServiceImpl())
-      ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl())
-      ..registerSingleton<PrayerRequestService>(PrayerRequestServiceImpl());
+      ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
   }
 
   static Future<void> setupDatabase() async {
