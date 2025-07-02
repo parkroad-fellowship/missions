@@ -5,6 +5,8 @@ import 'package:app/utils/network.dart';
 abstract class BaseAPIService<T> {
   final _networkUtil = NetworkUtil();
 
+  NetworkUtil get networkUtil => _networkUtil;
+
   // Abstract property that subclasses must define
   String get endpoint;
 

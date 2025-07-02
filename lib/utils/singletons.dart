@@ -55,6 +55,7 @@ import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubi
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_course.dart';
@@ -80,8 +81,8 @@ import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
-import 'package:app/services/api/_base_api_service.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/api/_base_api_service.dart';
 import 'package:app/services/api/announcement_service.dart';
 import 'package:app/services/api/class_group_service.dart';
 import 'package:app/services/api/course_module_service.dart';
@@ -104,6 +105,8 @@ import 'package:app/services/api/prayer_request_service.dart';
 import 'package:app/services/api/prayer_response_service.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
+import 'package:app/services/firebase_service.dart';
+import 'package:app/services/local_auth_service.dart';
 import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -118,8 +121,9 @@ class Singletons {
       ..registerSingleton<PRFSuperAppRouter>(PRFSuperAppRouter())
       ..registerSingleton<HiveService>(HiveServiceImpl())
       ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
-      ..registerSingleton<AuthService>(AuthServiceImpl())
-      // V2
+      ..registerSingleton<LocalAuthService>(LocalAuthService())
+      ..registerSingleton<FirebaseService>(FirebaseServiceImpl())
+      ..registerSingleton<BaseAPIService<PRFUser>>(AuthService())
       ..registerSingleton<BaseAPIService<PRFMission>>(MissionService())
       ..registerSingleton<BaseAPIService<PRFMissionSubscription>>(
         MissionSubscriptionService(),
@@ -177,7 +181,6 @@ class Singletons {
       ..registerSingleton<BaseAPIService<PRFLessonMember>>(
         LessonMemberService(),
       )
-      // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
@@ -201,7 +204,7 @@ class Singletons {
         ),
       ),
       BlocProvider<GoogleSignInCubit>(
-        create: (context) => GoogleSignInCubit(authService: getIt()),
+        create: (context) => GoogleSignInCubit(firebaseService: getIt()),
       ),
       BlocProvider<SocialLoginCubit>(
         create: (context) =>

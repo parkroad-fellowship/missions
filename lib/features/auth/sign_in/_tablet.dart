@@ -2,7 +2,7 @@ import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/firebase_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 
@@ -35,7 +35,7 @@ class _SignInTabletState extends State<SignInTablet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     Misc.initDimensions(context);
-    final canShowAuth = getIt<AuthService>().canShowAuth();
+    final canShowAuth = getIt<FirebaseService>().canShowAuth();
 
     return BlocListener<GoogleSignInCubit, GoogleSignInState>(
       listener: (context, state) {

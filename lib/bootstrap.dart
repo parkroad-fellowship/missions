@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/firebase_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -76,7 +77,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     await getIt<HiveService>().initBoxes();
 
     try {
-      await getIt<AuthService>().initRemoteConfig();
+      await getIt<FirebaseService>().initRemoteConfig();
     } catch (e) {
       Logger().e(e);
     }
