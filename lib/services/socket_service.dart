@@ -67,20 +67,20 @@ class SocketServiceImpl implements SocketService {
     return client.privateChannel(
       'private-$channelName',
       authorizationDelegate:
-      // ignore: lines_longer_than_80_chars
-      EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
-        authorizationEndpoint: Uri.parse(
-          '${PRFSuperAppConfig.instance!.values.baseUrl}/broadcasting/auth',
-        ),
-        onAuthFailed: (exception, trace) {
-          Logger().e(exception);
-          Logger().f(trace);
-        },
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Accept': 'application/json',
-        },
-      ),
+          // ignore: lines_longer_than_80_chars
+          EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
+            authorizationEndpoint: Uri.parse(
+              '${PRFSuperAppConfig.instance!.values.baseUrl}/broadcasting/auth',
+            ),
+            onAuthFailed: (exception, trace) {
+              Logger().e(exception);
+              Logger().f(trace);
+            },
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Accept': 'application/json',
+            },
+          ),
     );
   }
 
@@ -93,20 +93,20 @@ class SocketServiceImpl implements SocketService {
     return client.presenceChannel(
       'presence-$channelName',
       authorizationDelegate:
-      // ignore: lines_longer_than_80_chars
-      EndpointAuthorizableChannelTokenAuthorizationDelegate.forPresenceChannel(
-        authorizationEndpoint: Uri.parse(
-          '${PRFSuperAppConfig.instance!.values.baseUrl}/broadcasting/auth',
-        ),
-        onAuthFailed: (exception, trace) {
-          Logger().e(exception);
-          Logger().e(trace);
-        },
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Accept': 'application/json',
-        },
-      ),
+          // ignore: lines_longer_than_80_chars
+          EndpointAuthorizableChannelTokenAuthorizationDelegate.forPresenceChannel(
+            authorizationEndpoint: Uri.parse(
+              '${PRFSuperAppConfig.instance!.values.baseUrl}/broadcasting/auth',
+            ),
+            onAuthFailed: (exception, trace) {
+              Logger().e(exception);
+              Logger().e(trace);
+            },
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Accept': 'application/json',
+            },
+          ),
     );
   }
 
@@ -281,10 +281,9 @@ class SocketServiceImpl implements SocketService {
       ],
     };
 
-    final groups =
-        user.member?.groupMembers
-            ?.map((groupMember) => groupMember.group?.ulid)
-            .toList();
+    final groups = user.member?.groupMembers
+        ?.map((groupMember) => groupMember.group?.ulid)
+        .toList();
 
     final presenceChannels = <String, List<String>>{};
 

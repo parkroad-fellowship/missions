@@ -73,10 +73,9 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.moduleDetailsRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.moduleDetailsRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -174,10 +173,9 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                     BlocConsumer<FinishLessonCubit, FinishLessonState>(
                       listener: (context, state) {
                         state.maybeWhen(
-                          loading:
-                              () => setState(() {
-                                _isLoading = !_isLoading;
-                              }),
+                          loading: () => setState(() {
+                            _isLoading = !_isLoading;
+                          }),
                           loaded: () {
                             setState(() {
                               _isLoading = !_isLoading;
@@ -208,26 +206,23 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                       },
                       builder: (context, state) {
                         return state.maybeWhen(
-                          orElse:
-                              () => Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 40.w),
-                                child: PRFPrimaryButton(
-                                  onPressed:
-                                      () async => context
-                                          .read<FinishLessonCubit>()
-                                          .finishLesson(
-                                            lessonUlid: lesson.ulid!,
-                                            moduleUlid: moduleUlid,
-                                            courseUlid: courseUlid,
-                                          ),
-                                  title:
-                                      _isLoading
-                                          ? l10n.completing
-                                          : l10n.complete,
-                                  disabled: _isLoading,
-                                  isLoading: _isLoading ? true : null,
-                                ),
-                              ),
+                          orElse: () => Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40.w),
+                            child: PRFPrimaryButton(
+                              onPressed: () async => context
+                                  .read<FinishLessonCubit>()
+                                  .finishLesson(
+                                    lessonUlid: lesson.ulid!,
+                                    moduleUlid: moduleUlid,
+                                    courseUlid: courseUlid,
+                                  ),
+                              title: _isLoading
+                                  ? l10n.completing
+                                  : l10n.complete,
+                              disabled: _isLoading,
+                              isLoading: _isLoading ? true : null,
+                            ),
+                          ),
                         );
                       },
                     ),

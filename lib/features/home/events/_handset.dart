@@ -57,16 +57,18 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               padding: const EdgeInsets.only(left: 16, right: 8),
-              onPressed:
-                  () => context.router.popUntilRouteWithPath(
-                    PRFSuperAppRouter.landingRoute,
-                  ),
+              onPressed: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.landingRoute,
+              ),
             ),
           ),
           backgroundColor: Colors.transparent,
           bottom: TabBar(
             isScrollable: true,
-            tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
+            tabs: [
+              Tab(text: l10n.all),
+              Tab(text: l10n.subscribed),
+            ],
           ),
         ),
         body: TabBarView(
@@ -76,91 +78,82 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
               child: BlocBuilder<GetEventsCubit, GetEventsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse:
-                        () => const Center(child: CircularProgressIndicator()),
+                    orElse: () =>
+                        const Center(child: CircularProgressIndicator()),
                     error: (message) => Center(child: Text(message)),
-                    empty:
-                        () => RefreshIndicator(
-                          onRefresh:
-                              () => context.read<GetEventsCubit>().getEvents(),
-                          child: PRFEmptyView(
-                            label: l10n.noEvents,
-                            description: l10n.pleaseWaitOS,
+                    empty: () => RefreshIndicator(
+                      onRefresh: () =>
+                          context.read<GetEventsCubit>().getEvents(),
+                      child: PRFEmptyView(
+                        label: l10n.noEvents,
+                        description: l10n.pleaseWaitOS,
+                      ),
+                    ),
+                    loaded: (events) => RefreshIndicator(
+                      onRefresh: () =>
+                          context.read<GetEventsCubit>().getEvents(),
+                      child: ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: events.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 16.h),
+                        itemBuilder: (context, index) => EventActionCard(
+                          event: events[index],
+                          onTap: () => context.router.push(
+                            EventDetailsRoute(event: events[index]),
                           ),
                         ),
-                    loaded:
-                        (events) => RefreshIndicator(
-                          onRefresh:
-                              () => context.read<GetEventsCubit>().getEvents(),
-                          child: ListView.separated(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: events.length,
-                            separatorBuilder:
-                                (context, index) => SizedBox(height: 16.h),
-                            itemBuilder:
-                                (context, index) => EventActionCard(
-                                  event: events[index],
-                                  onTap:
-                                      () => context.router.push(
-                                        EventDetailsRoute(event: events[index]),
-                                      ),
-                                ),
-                          ),
-                        ),
+                      ),
+                    ),
                   );
                 },
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: BlocBuilder<
-                GetMemberEventSubscriptionsCubit,
-                GetMemberEventSubscriptionsState
-              >(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse:
-                        () => const Center(child: CircularProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    empty:
-                        () => RefreshIndicator(
-                          onRefresh:
-                              () =>
-                                  context
-                                      .read<
-                                        GetMemberMissionSubscriptionsCubit
-                                      >()
-                                      .getSubscriptions(),
+              child:
+                  BlocBuilder<
+                    GetMemberEventSubscriptionsCubit,
+                    GetMemberEventSubscriptionsState
+                  >(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        orElse: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        error: (message) => Center(child: Text(message)),
+                        empty: () => RefreshIndicator(
+                          onRefresh: () => context
+                              .read<GetMemberMissionSubscriptionsCubit>()
+                              .getSubscriptions(),
                           child: PRFEmptyView(
                             label: l10n.noEvents,
                             description: l10n.pleaseWaitForOS,
                           ),
                         ),
-                    loaded: (events) {
-                      return RefreshIndicator(
-                        onRefresh:
-                            () => context.read<GetEventsCubit>().getEvents(),
-                        child: ListView.separated(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: events.length,
-                          separatorBuilder:
-                              (context, index) => SizedBox(height: 16.h),
-                          itemBuilder: (context, index) {
-                            final event = events[index].event;
-                            return EventActionCard(
-                              event: event!,
-                              onTap:
-                                  () => context.router.push(
+                        loaded: (events) {
+                          return RefreshIndicator(
+                            onRefresh: () =>
+                                context.read<GetEventsCubit>().getEvents(),
+                            child: ListView.separated(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: events.length,
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 16.h),
+                              itemBuilder: (context, index) {
+                                final event = events[index].event;
+                                return EventActionCard(
+                                  event: event!,
+                                  onTap: () => context.router.push(
                                     EventDetailsRoute(event: event),
                                   ),
-                            );
-                          },
-                        ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
+                  ),
             ),
           ],
         ),

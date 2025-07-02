@@ -81,28 +81,27 @@ class _AddEventSubscriptionViewHandsetState
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (_ticketController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterTickets)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (_ticketController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterTickets)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context
-                              .read<AddEventSubscriptionCubit>()
-                              .addEventSubscription(
-                                event: widget.event,
-                                tickets: _ticketController.text.trim(),
-                              );
-                        },
-                      ),
+                      await context
+                          .read<AddEventSubscriptionCubit>()
+                          .addEventSubscription(
+                            event: widget.event,
+                            tickets: _ticketController.text.trim(),
+                          );
+                    },
+                  ),
                 );
               },
             ),

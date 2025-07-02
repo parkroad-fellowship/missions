@@ -68,10 +68,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.landingRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -109,9 +108,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                               _selectedCategory?.ulid,
                           query:
                               _searchQuery != null ||
-                                      (_searchQuery?.isNotEmpty ?? false)
-                                  ? _searchQuery
-                                  : null,
+                                  (_searchQuery?.isNotEmpty ?? false)
+                              ? _searchQuery
+                              : null,
                         );
                       });
                     },
@@ -138,13 +137,11 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
                 child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
-                  builder:
-                      (context, state) => state.maybeWhen(
-                        loading:
-                            () =>
-                                const Center(child: LinearProgressIndicator()),
-                        orElse: () => const SizedBox.shrink(),
-                      ),
+                  builder: (context, state) => state.maybeWhen(
+                    loading: () =>
+                        const Center(child: LinearProgressIndicator()),
+                    orElse: () => const SizedBox.shrink(),
+                  ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
@@ -159,9 +156,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                       categoryUlid: _selectedCategory?.ulid,
                       query:
                           _searchQuery != null ||
-                                  (_searchQuery?.isNotEmpty ?? false)
-                              ? _searchQuery
-                              : null,
+                              (_searchQuery?.isNotEmpty ?? false)
+                          ? _searchQuery
+                          : null,
                     );
                   },
                 ),
@@ -171,20 +168,18 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse: SizedBox.shrink,
-                    loading:
-                        () => const SliverToBoxAdapter(
-                          child: PRFLinearProgressIndicator(),
-                        ),
-                    error:
-                        (message) => SliverFillRemaining(
-                          child: Center(child: Text(message)),
-                        ),
+                    loading: () => const SliverToBoxAdapter(
+                      child: PRFLinearProgressIndicator(),
+                    ),
+                    error: (message) => SliverFillRemaining(
+                      child: Center(child: Text(message)),
+                    ),
                     loaded: (faqs) {
                       if (faqs.isEmpty) {
                         return SliverFillRemaining(
                           child: RefreshIndicator(
-                            onRefresh:
-                                () => context.read<GetFaqsCubit>().getFaqs(),
+                            onRefresh: () =>
+                                context.read<GetFaqsCubit>().getFaqs(),
                             child: PRFEmptyView(
                               label: l10n.noFaqs,
                               description: l10n.pleaseWait,
@@ -194,10 +189,10 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                       }
                       return SliverList.separated(
                         itemCount: faqs.length,
-                        separatorBuilder:
-                            (context, index) => SizedBox(height: 8.h),
-                        itemBuilder:
-                            (context, index) => FaqCard(faq: faqs[index]),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 8.h),
+                        itemBuilder: (context, index) =>
+                            FaqCard(faq: faqs[index]),
                       );
                     },
                   );

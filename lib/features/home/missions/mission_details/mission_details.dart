@@ -16,8 +16,8 @@ class MissionsDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => MissionsDetailsPageTablet(missionUlid: missionUlid),
+      defaultBuilder: (_, _) =>
+          MissionsDetailsPageTablet(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, _) => MissionsDetailsPageHandset(missionUlid: missionUlid),
       ),

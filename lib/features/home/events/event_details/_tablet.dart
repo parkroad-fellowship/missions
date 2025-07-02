@@ -84,10 +84,9 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.eventsRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.eventsRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -119,12 +118,14 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                 SliverToBoxAdapter(
                   child: TabBar(
                     controller: _tabController,
-                    onTap:
-                        (value) => setState(() {
-                          Logger().d(value);
-                          _currentTab = value;
-                        }),
-                    tabs: [Tab(text: l10n.info), Tab(text: l10n.gallery)],
+                    onTap: (value) => setState(() {
+                      Logger().d(value);
+                      _currentTab = value;
+                    }),
+                    tabs: [
+                      Tab(text: l10n.info),
+                      Tab(text: l10n.gallery),
+                    ],
                   ),
                 ),
                 SliverFillRemaining(

@@ -69,10 +69,9 @@ class _AddMissionGroundSuggestionViewHandsetState
             const SizedBox(height: 6),
             InternationalPhoneNumberInput(
               countries: const ['KE'],
-              onInputChanged:
-                  (phoneNumber) => setState(() {
-                    _contactNumber = phoneNumber;
-                  }),
+              onInputChanged: (phoneNumber) => setState(() {
+                _contactNumber = phoneNumber;
+              }),
               textStyle: Theme.of(context).textTheme.bodySmall,
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -126,46 +125,44 @@ class _AddMissionGroundSuggestionViewHandsetState
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (_nameController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterMissionGround)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (_nameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterMissionGround)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_contactPersonController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterContactPerson)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_contactPersonController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterContactPerson)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_contactNumber == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterContactNumber)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_contactNumber == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterContactNumber)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context
-                              .read<AddMissionGroundSuggestionCubit>()
-                              .suggestMissionGround(
-                                name: _nameController.text.trim(),
-                                contactPerson:
-                                    _contactPersonController.text.trim(),
-                                contactNumber: _contactNumber!,
-                              );
-                        },
-                      ),
+                      await context
+                          .read<AddMissionGroundSuggestionCubit>()
+                          .suggestMissionGround(
+                            name: _nameController.text.trim(),
+                            contactPerson: _contactPersonController.text.trim(),
+                            contactNumber: _contactNumber!,
+                          );
+                    },
+                  ),
                 );
               },
             ),

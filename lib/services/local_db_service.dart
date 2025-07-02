@@ -201,31 +201,29 @@ class LocalDBServiceImpl implements LocalDBService {
             name: course.name,
             description: course.description,
             createdAt: course.createdAt,
-            thumbnail:
-                course.thumbnail != null
-                    ? PRFLocalMedia(
-                      collectionName: course.thumbnail!.collectionName,
-                      fileName: course.thumbnail!.fileName,
-                      temporaryURL: course.thumbnail!.temporaryURL,
-                      size: course.thumbnail!.size,
-                      humanReadableSize: course.thumbnail!.humanReadableSize,
-                      mimeType: course.thumbnail!.mimeType,
-                      name: course.thumbnail!.name,
-                      createdAt: course.thumbnail!.createdAt,
-                      updatedAt: course.thumbnail!.updatedAt,
-                    )
-                    : null,
-            courseMember:
-                course.courseMember != null
-                    ? PRFLocalCourseMember(
-                      ulid: course.courseMember!.ulid,
-                      percentComplete: course.courseMember!.percentComplete,
-                      completionStatus: course.courseMember!.completionStatus,
-                      createdAt: course.courseMember!.createdAt,
-                      updatedAt: course.courseMember!.updatedAt,
-                      completedAt: course.courseMember!.completedAt,
-                    )
-                    : null,
+            thumbnail: course.thumbnail != null
+                ? PRFLocalMedia(
+                    collectionName: course.thumbnail!.collectionName,
+                    fileName: course.thumbnail!.fileName,
+                    temporaryURL: course.thumbnail!.temporaryURL,
+                    size: course.thumbnail!.size,
+                    humanReadableSize: course.thumbnail!.humanReadableSize,
+                    mimeType: course.thumbnail!.mimeType,
+                    name: course.thumbnail!.name,
+                    createdAt: course.thumbnail!.createdAt,
+                    updatedAt: course.thumbnail!.updatedAt,
+                  )
+                : null,
+            courseMember: course.courseMember != null
+                ? PRFLocalCourseMember(
+                    ulid: course.courseMember!.ulid,
+                    percentComplete: course.courseMember!.percentComplete,
+                    completionStatus: course.courseMember!.completionStatus,
+                    createdAt: course.courseMember!.createdAt,
+                    updatedAt: course.courseMember!.updatedAt,
+                    completedAt: course.courseMember!.completedAt,
+                  )
+                : null,
           ),
         );
       }
@@ -278,41 +276,38 @@ class LocalDBServiceImpl implements LocalDBService {
             order: courseModule.order,
             createdAt: courseModule.createdAt,
             updatedAt: courseModule.updatedAt,
-            memberModule:
-                courseModule.memberModule != null
-                    ? PRFLocalMemberModule(
-                      ulid: courseModule.memberModule!.ulid,
-                      percentComplete:
-                          courseModule.memberModule!.percentComplete,
-                      completionStatus:
-                          courseModule.memberModule!.completionStatus,
-                      createdAt: courseModule.memberModule!.createdAt,
-                      updatedAt: courseModule.memberModule!.updatedAt,
-                      completedAt: courseModule.memberModule!.completedAt,
-                    )
-                    : null,
+            memberModule: courseModule.memberModule != null
+                ? PRFLocalMemberModule(
+                    ulid: courseModule.memberModule!.ulid,
+                    percentComplete: courseModule.memberModule!.percentComplete,
+                    completionStatus:
+                        courseModule.memberModule!.completionStatus,
+                    createdAt: courseModule.memberModule!.createdAt,
+                    updatedAt: courseModule.memberModule!.updatedAt,
+                    completedAt: courseModule.memberModule!.completedAt,
+                  )
+                : null,
             module: PRFLocalModule(
               ulid: courseModule.module!.ulid,
               name: courseModule.module!.name,
               description: courseModule.module!.description,
               createdAt: courseModule.module!.createdAt,
-              thumbnail:
-                  courseModule.module!.thumbnail != null
-                      ? PRFLocalMedia(
-                        collectionName:
-                            courseModule.module!.thumbnail!.collectionName,
-                        fileName: courseModule.module!.thumbnail!.fileName,
-                        temporaryURL:
-                            courseModule.module!.thumbnail!.temporaryURL,
-                        size: courseModule.module!.thumbnail!.size,
-                        humanReadableSize:
-                            courseModule.module!.thumbnail!.humanReadableSize,
-                        mimeType: courseModule.module!.thumbnail!.mimeType,
-                        name: courseModule.module!.thumbnail!.name,
-                        createdAt: courseModule.module!.thumbnail!.createdAt,
-                        updatedAt: courseModule.module!.thumbnail!.updatedAt,
-                      )
-                      : null,
+              thumbnail: courseModule.module!.thumbnail != null
+                  ? PRFLocalMedia(
+                      collectionName:
+                          courseModule.module!.thumbnail!.collectionName,
+                      fileName: courseModule.module!.thumbnail!.fileName,
+                      temporaryURL:
+                          courseModule.module!.thumbnail!.temporaryURL,
+                      size: courseModule.module!.thumbnail!.size,
+                      humanReadableSize:
+                          courseModule.module!.thumbnail!.humanReadableSize,
+                      mimeType: courseModule.module!.thumbnail!.mimeType,
+                      name: courseModule.module!.thumbnail!.name,
+                      createdAt: courseModule.module!.thumbnail!.createdAt,
+                      updatedAt: courseModule.module!.thumbnail!.updatedAt,
+                    )
+                  : null,
             ),
           ),
         );
@@ -377,16 +372,15 @@ class LocalDBServiceImpl implements LocalDBService {
             lessonUlid: lessonModule.lesson!.ulid,
             moduleUlid: lessonModule.module!.ulid,
             createdAt: lessonModule.createdAt,
-            lessonMember:
-                lessonModule.lessonMember != null
-                    ? PRFLocalLessonMember(
-                      ulid: lessonModule.lessonMember!.ulid,
-                      completionStatus:
-                          lessonModule.lessonMember!.completionStatus,
-                      createdAt: lessonModule.lessonMember!.createdAt,
-                      completedAt: lessonModule.lessonMember!.completedAt,
-                    )
-                    : null,
+            lessonMember: lessonModule.lessonMember != null
+                ? PRFLocalLessonMember(
+                    ulid: lessonModule.lessonMember!.ulid,
+                    completionStatus:
+                        lessonModule.lessonMember!.completionStatus,
+                    createdAt: lessonModule.lessonMember!.createdAt,
+                    completedAt: lessonModule.lessonMember!.completedAt,
+                  )
+                : null,
             lesson: PRFLocalLesson(
               ulid: lessonModule.lesson!.ulid,
               name: lessonModule.lesson!.name,
@@ -397,54 +391,51 @@ class LocalDBServiceImpl implements LocalDBService {
               videoUrl: lessonModule.lesson!.videoUrl,
               audioUrl: lessonModule.lesson!.audioUrl,
               documentUrl: lessonModule.lesson!.documentUrl,
-              audios:
-                  lessonModule.lesson!.audios
-                      ?.map(
-                        (audio) => PRFLocalMedia(
-                          collectionName: audio.collectionName,
-                          fileName: audio.fileName,
-                          temporaryURL: audio.temporaryURL,
-                          size: audio.size,
-                          humanReadableSize: audio.humanReadableSize,
-                          mimeType: audio.mimeType,
-                          name: audio.name,
-                          createdAt: audio.createdAt,
-                          updatedAt: audio.updatedAt,
-                        ),
-                      )
-                      .toList(),
-              documents:
-                  lessonModule.lesson!.documents
-                      ?.map(
-                        (document) => PRFLocalMedia(
-                          collectionName: document.collectionName,
-                          fileName: document.fileName,
-                          temporaryURL: document.temporaryURL,
-                          size: document.size,
-                          humanReadableSize: document.humanReadableSize,
-                          mimeType: document.mimeType,
-                          name: document.name,
-                          createdAt: document.createdAt,
-                          updatedAt: document.updatedAt,
-                        ),
-                      )
-                      .toList(),
-              videos:
-                  lessonModule.lesson!.videos
-                      ?.map(
-                        (video) => PRFLocalMedia(
-                          collectionName: video.collectionName,
-                          fileName: video.fileName,
-                          temporaryURL: video.temporaryURL,
-                          size: video.size,
-                          humanReadableSize: video.humanReadableSize,
-                          mimeType: video.mimeType,
-                          name: video.name,
-                          createdAt: video.createdAt,
-                          updatedAt: video.updatedAt,
-                        ),
-                      )
-                      .toList(),
+              audios: lessonModule.lesson!.audios
+                  ?.map(
+                    (audio) => PRFLocalMedia(
+                      collectionName: audio.collectionName,
+                      fileName: audio.fileName,
+                      temporaryURL: audio.temporaryURL,
+                      size: audio.size,
+                      humanReadableSize: audio.humanReadableSize,
+                      mimeType: audio.mimeType,
+                      name: audio.name,
+                      createdAt: audio.createdAt,
+                      updatedAt: audio.updatedAt,
+                    ),
+                  )
+                  .toList(),
+              documents: lessonModule.lesson!.documents
+                  ?.map(
+                    (document) => PRFLocalMedia(
+                      collectionName: document.collectionName,
+                      fileName: document.fileName,
+                      temporaryURL: document.temporaryURL,
+                      size: document.size,
+                      humanReadableSize: document.humanReadableSize,
+                      mimeType: document.mimeType,
+                      name: document.name,
+                      createdAt: document.createdAt,
+                      updatedAt: document.updatedAt,
+                    ),
+                  )
+                  .toList(),
+              videos: lessonModule.lesson!.videos
+                  ?.map(
+                    (video) => PRFLocalMedia(
+                      collectionName: video.collectionName,
+                      fileName: video.fileName,
+                      temporaryURL: video.temporaryURL,
+                      size: video.size,
+                      humanReadableSize: video.humanReadableSize,
+                      mimeType: video.mimeType,
+                      name: video.name,
+                      createdAt: video.createdAt,
+                      updatedAt: video.updatedAt,
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         );
@@ -597,12 +588,11 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   List<PRFPrayerResponseDTO> retrievePrayerResponses() {
-    final responses =
-        prfDBInstance.pRFLocalPrayerResponses
-            .filter()
-            .idGreaterThan(0)
-            .build()
-            .findAllSync();
+    final responses = prfDBInstance.pRFLocalPrayerResponses
+        .filter()
+        .idGreaterThan(0)
+        .build()
+        .findAllSync();
     return responses
         .map<PRFPrayerResponseDTO>(
           (response) => PRFPrayerResponseDTO(
@@ -643,12 +633,11 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   List<PRFMediaDTO> retrieveMediaUploads() {
-    final responses =
-        prfDBInstance.pRFLocalMediaUploads
-            .filter()
-            .idGreaterThan(0)
-            .build()
-            .findAllSync();
+    final responses = prfDBInstance.pRFLocalMediaUploads
+        .filter()
+        .idGreaterThan(0)
+        .build()
+        .findAllSync();
     return responses
         .map<PRFMediaDTO>(
           (response) => PRFMediaDTO(
@@ -770,13 +759,12 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<void> refreshMissions() async {
-    final missions =
-        await prfDBInstance.pRFLocalMissions
-            .filter()
-            .idGreaterThan(0)
-            .sortByStartDate()
-            .build()
-            .findAll();
+    final missions = await prfDBInstance.pRFLocalMissions
+        .filter()
+        .idGreaterThan(0)
+        .sortByStartDate()
+        .build()
+        .findAll();
 
     _missionsController.add(missions);
   }
@@ -838,59 +826,54 @@ class LocalDBServiceImpl implements LocalDBService {
         latitude: school.latitude,
         longitude: school.longitude,
         institutionType: school.institutionType,
-        contacts:
-            contacts
-                .map(
-                  (contact) => PRFLocalContact(
-                    ulid: contact.ulid,
-                    name: contact.name,
-                    phone: contact.phone,
-                    contactType: PRFLocalContactType(
-                      ulid: contact.contactType!.ulid,
-                      name: contact.contactType!.name,
-                    ),
-                  ),
-                )
-                .toList(),
-      ),
-      weatherForecasts:
-          weatherForecasts
-              .map(
-                (weatherForecast) => PRFLocalWeatherForecast(
-                  ulid: weatherForecast.ulid,
-                  forecastDate: weatherForecast.forecastDate,
-                  weatherCodeDescription:
-                      weatherForecast.weatherCodeDescription,
-                  temperature: PRFLocalTemperature(
-                    apparentAvg: weatherForecast.temperature.apparentAvg,
-                    apparentMin: weatherForecast.temperature.apparentMin,
-                    apparentMax: weatherForecast.temperature.apparentMax,
-                    avg: weatherForecast.temperature.avg,
-                    min: weatherForecast.temperature.min,
-                    max: weatherForecast.temperature.max,
-                  ),
-                  visibility: PRFLocalVisibility(
-                    avg: weatherForecast.visibility.avg,
-                    min: weatherForecast.visibility.min,
-                    max: weatherForecast.visibility.max,
-                  ),
-                  precipitationProbability: PRFLocalPrecipitationProbability(
-                    avg: weatherForecast.precipitationProbability.avg,
-                    min: weatherForecast.precipitationProbability.min,
-                    max: weatherForecast.precipitationProbability.max,
-                  ),
-                  humidity: PRFLocalHumidity(
-                    avg: weatherForecast.humidity.avg,
-                    min: weatherForecast.humidity.min,
-                    max: weatherForecast.humidity.max,
-                  ),
-                  dressingRecommendations:
-                      weatherForecast.dressingRecommendations,
-                  activityRecommendations:
-                      weatherForecast.activityRecommendations,
+        contacts: contacts
+            .map(
+              (contact) => PRFLocalContact(
+                ulid: contact.ulid,
+                name: contact.name,
+                phone: contact.phone,
+                contactType: PRFLocalContactType(
+                  ulid: contact.contactType!.ulid,
+                  name: contact.contactType!.name,
                 ),
-              )
-              .toList(),
+              ),
+            )
+            .toList(),
+      ),
+      weatherForecasts: weatherForecasts
+          .map(
+            (weatherForecast) => PRFLocalWeatherForecast(
+              ulid: weatherForecast.ulid,
+              forecastDate: weatherForecast.forecastDate,
+              weatherCodeDescription: weatherForecast.weatherCodeDescription,
+              temperature: PRFLocalTemperature(
+                apparentAvg: weatherForecast.temperature.apparentAvg,
+                apparentMin: weatherForecast.temperature.apparentMin,
+                apparentMax: weatherForecast.temperature.apparentMax,
+                avg: weatherForecast.temperature.avg,
+                min: weatherForecast.temperature.min,
+                max: weatherForecast.temperature.max,
+              ),
+              visibility: PRFLocalVisibility(
+                avg: weatherForecast.visibility.avg,
+                min: weatherForecast.visibility.min,
+                max: weatherForecast.visibility.max,
+              ),
+              precipitationProbability: PRFLocalPrecipitationProbability(
+                avg: weatherForecast.precipitationProbability.avg,
+                min: weatherForecast.precipitationProbability.min,
+                max: weatherForecast.precipitationProbability.max,
+              ),
+              humidity: PRFLocalHumidity(
+                avg: weatherForecast.humidity.avg,
+                min: weatherForecast.humidity.min,
+                max: weatherForecast.humidity.max,
+              ),
+              dressingRecommendations: weatherForecast.dressingRecommendations,
+              activityRecommendations: weatherForecast.activityRecommendations,
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -945,59 +928,54 @@ class LocalDBServiceImpl implements LocalDBService {
         latitude: school.latitude,
         longitude: school.longitude,
         institutionType: school.institutionType,
-        contacts:
-            contacts
-                .map(
-                  (contact) => PRFLocalContact(
-                    ulid: contact.ulid,
-                    name: contact.name,
-                    phone: contact.phone,
-                    contactType: PRFLocalContactType(
-                      ulid: contact.contactType!.ulid,
-                      name: contact.contactType!.name,
-                    ),
-                  ),
-                )
-                .toList(),
-      ),
-      weatherForecasts:
-          weatherForecasts
-              .map(
-                (weatherForecast) => PRFLocalWeatherForecast(
-                  ulid: weatherForecast.ulid,
-                  forecastDate: weatherForecast.forecastDate,
-                  weatherCodeDescription:
-                      weatherForecast.weatherCodeDescription,
-                  temperature: PRFLocalTemperature(
-                    apparentAvg: weatherForecast.temperature.apparentAvg,
-                    apparentMin: weatherForecast.temperature.apparentMin,
-                    apparentMax: weatherForecast.temperature.apparentMax,
-                    avg: weatherForecast.temperature.avg,
-                    min: weatherForecast.temperature.min,
-                    max: weatherForecast.temperature.max,
-                  ),
-                  visibility: PRFLocalVisibility(
-                    avg: weatherForecast.visibility.avg,
-                    min: weatherForecast.visibility.min,
-                    max: weatherForecast.visibility.max,
-                  ),
-                  precipitationProbability: PRFLocalPrecipitationProbability(
-                    avg: weatherForecast.precipitationProbability.avg,
-                    min: weatherForecast.precipitationProbability.min,
-                    max: weatherForecast.precipitationProbability.max,
-                  ),
-                  humidity: PRFLocalHumidity(
-                    avg: weatherForecast.humidity.avg,
-                    min: weatherForecast.humidity.min,
-                    max: weatherForecast.humidity.max,
-                  ),
-                  dressingRecommendations:
-                      weatherForecast.dressingRecommendations,
-                  activityRecommendations:
-                      weatherForecast.activityRecommendations,
+        contacts: contacts
+            .map(
+              (contact) => PRFLocalContact(
+                ulid: contact.ulid,
+                name: contact.name,
+                phone: contact.phone,
+                contactType: PRFLocalContactType(
+                  ulid: contact.contactType!.ulid,
+                  name: contact.contactType!.name,
                 ),
-              )
-              .toList(),
+              ),
+            )
+            .toList(),
+      ),
+      weatherForecasts: weatherForecasts
+          .map(
+            (weatherForecast) => PRFLocalWeatherForecast(
+              ulid: weatherForecast.ulid,
+              forecastDate: weatherForecast.forecastDate,
+              weatherCodeDescription: weatherForecast.weatherCodeDescription,
+              temperature: PRFLocalTemperature(
+                apparentAvg: weatherForecast.temperature.apparentAvg,
+                apparentMin: weatherForecast.temperature.apparentMin,
+                apparentMax: weatherForecast.temperature.apparentMax,
+                avg: weatherForecast.temperature.avg,
+                min: weatherForecast.temperature.min,
+                max: weatherForecast.temperature.max,
+              ),
+              visibility: PRFLocalVisibility(
+                avg: weatherForecast.visibility.avg,
+                min: weatherForecast.visibility.min,
+                max: weatherForecast.visibility.max,
+              ),
+              precipitationProbability: PRFLocalPrecipitationProbability(
+                avg: weatherForecast.precipitationProbability.avg,
+                min: weatherForecast.precipitationProbability.min,
+                max: weatherForecast.precipitationProbability.max,
+              ),
+              humidity: PRFLocalHumidity(
+                avg: weatherForecast.humidity.avg,
+                min: weatherForecast.humidity.min,
+                max: weatherForecast.humidity.max,
+              ),
+              dressingRecommendations: weatherForecast.dressingRecommendations,
+              activityRecommendations: weatherForecast.activityRecommendations,
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -1010,16 +988,16 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<void> refreshMemberMissions() async {
-    final missions =
-        await prfDBInstance.pRFLocalMemberMissions
-            .filter()
-            .idGreaterThan(0)
-            .sortByStartDate()
-            .build()
-            .findAll(); // Get latest data
+    final missions = await prfDBInstance.pRFLocalMemberMissions
+        .filter()
+        .idGreaterThan(0)
+        .sortByStartDate()
+        .build()
+        .findAll(); // Get latest data
 
-    final transformedMissions =
-        missions.map(_transformLocalMemberMissionToLocalMission).toList();
+    final transformedMissions = missions
+        .map(_transformLocalMemberMissionToLocalMission)
+        .toList();
 
     _memberMissionsController.add(
       transformedMissions,
@@ -1078,59 +1056,54 @@ class LocalDBServiceImpl implements LocalDBService {
         latitude: school.latitude,
         longitude: school.longitude,
         institutionType: school.institutionType,
-        contacts:
-            contacts
-                .map(
-                  (contact) => PRFLocalContact(
-                    ulid: contact.ulid,
-                    name: contact.name,
-                    phone: contact.phone,
-                    contactType: PRFLocalContactType(
-                      ulid: contact.contactType!.ulid,
-                      name: contact.contactType!.name,
-                    ),
-                  ),
-                )
-                .toList(),
-      ),
-      weatherForecasts:
-          weatherForecasts
-              ?.map(
-                (weatherForecast) => PRFLocalWeatherForecast(
-                  ulid: weatherForecast.ulid,
-                  forecastDate: weatherForecast.forecastDate,
-                  weatherCodeDescription:
-                      weatherForecast.weatherCodeDescription,
-                  temperature: PRFLocalTemperature(
-                    apparentAvg: weatherForecast.temperature?.apparentAvg,
-                    apparentMin: weatherForecast.temperature?.apparentMin,
-                    apparentMax: weatherForecast.temperature?.apparentMax,
-                    avg: weatherForecast.temperature?.avg,
-                    min: weatherForecast.temperature?.min,
-                    max: weatherForecast.temperature?.max,
-                  ),
-                  visibility: PRFLocalVisibility(
-                    avg: weatherForecast.visibility?.avg,
-                    min: weatherForecast.visibility?.min,
-                    max: weatherForecast.visibility?.max,
-                  ),
-                  precipitationProbability: PRFLocalPrecipitationProbability(
-                    avg: weatherForecast.precipitationProbability?.avg,
-                    min: weatherForecast.precipitationProbability?.min,
-                    max: weatherForecast.precipitationProbability?.max,
-                  ),
-                  humidity: PRFLocalHumidity(
-                    avg: weatherForecast.humidity?.avg,
-                    min: weatherForecast.humidity?.min,
-                    max: weatherForecast.humidity?.max,
-                  ),
-                  dressingRecommendations:
-                      weatherForecast.dressingRecommendations,
-                  activityRecommendations:
-                      weatherForecast.activityRecommendations,
+        contacts: contacts
+            .map(
+              (contact) => PRFLocalContact(
+                ulid: contact.ulid,
+                name: contact.name,
+                phone: contact.phone,
+                contactType: PRFLocalContactType(
+                  ulid: contact.contactType!.ulid,
+                  name: contact.contactType!.name,
                 ),
-              )
-              .toList(),
+              ),
+            )
+            .toList(),
+      ),
+      weatherForecasts: weatherForecasts
+          ?.map(
+            (weatherForecast) => PRFLocalWeatherForecast(
+              ulid: weatherForecast.ulid,
+              forecastDate: weatherForecast.forecastDate,
+              weatherCodeDescription: weatherForecast.weatherCodeDescription,
+              temperature: PRFLocalTemperature(
+                apparentAvg: weatherForecast.temperature?.apparentAvg,
+                apparentMin: weatherForecast.temperature?.apparentMin,
+                apparentMax: weatherForecast.temperature?.apparentMax,
+                avg: weatherForecast.temperature?.avg,
+                min: weatherForecast.temperature?.min,
+                max: weatherForecast.temperature?.max,
+              ),
+              visibility: PRFLocalVisibility(
+                avg: weatherForecast.visibility?.avg,
+                min: weatherForecast.visibility?.min,
+                max: weatherForecast.visibility?.max,
+              ),
+              precipitationProbability: PRFLocalPrecipitationProbability(
+                avg: weatherForecast.precipitationProbability?.avg,
+                min: weatherForecast.precipitationProbability?.min,
+                max: weatherForecast.precipitationProbability?.max,
+              ),
+              humidity: PRFLocalHumidity(
+                avg: weatherForecast.humidity?.avg,
+                min: weatherForecast.humidity?.min,
+                max: weatherForecast.humidity?.max,
+              ),
+              dressingRecommendations: weatherForecast.dressingRecommendations,
+              activityRecommendations: weatherForecast.activityRecommendations,
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -1415,26 +1388,25 @@ class LocalDBServiceImpl implements LocalDBService {
       ulid: missionSession.classGroup?.ulid,
       name: missionSession.classGroup?.name,
     ),
-    transcripts:
-        missionSession.transcripts
-            .map(
-              (transcript) => PRFLocalMissionSessionTranscript(
-                ulid: transcript.ulid,
-                content: transcript.content,
-                media: PRFLocalMedia(
-                  collectionName: transcript.media?.collectionName,
-                  fileName: transcript.media?.fileName,
-                  temporaryURL: transcript.media?.temporaryURL,
-                  size: transcript.media?.size,
-                  humanReadableSize: transcript.media?.humanReadableSize,
-                  mimeType: transcript.media?.mimeType,
-                  name: transcript.media?.name,
-                  createdAt: transcript.media?.createdAt,
-                  updatedAt: transcript.media?.updatedAt,
-                ),
-              ),
-            )
-            .toList(),
+    transcripts: missionSession.transcripts
+        .map(
+          (transcript) => PRFLocalMissionSessionTranscript(
+            ulid: transcript.ulid,
+            content: transcript.content,
+            media: PRFLocalMedia(
+              collectionName: transcript.media?.collectionName,
+              fileName: transcript.media?.fileName,
+              temporaryURL: transcript.media?.temporaryURL,
+              size: transcript.media?.size,
+              humanReadableSize: transcript.media?.humanReadableSize,
+              mimeType: transcript.media?.mimeType,
+              name: transcript.media?.name,
+              createdAt: transcript.media?.createdAt,
+              updatedAt: transcript.media?.updatedAt,
+            ),
+          ),
+        )
+        .toList(),
   );
 
   final _missionSessionController =
@@ -1442,12 +1414,11 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<void> getMissionSession({required String missionSessionUlid}) async {
-    final missionSession =
-        await prfDBInstance.pRFLocalMissionSessions
-            .filter()
-            .ulidEqualTo(missionSessionUlid)
-            .build()
-            .findFirst();
+    final missionSession = await prfDBInstance.pRFLocalMissionSessions
+        .filter()
+        .ulidEqualTo(missionSessionUlid)
+        .build()
+        .findFirst();
 
     Logger().i(missionSession);
 
@@ -1474,13 +1445,12 @@ class LocalDBServiceImpl implements LocalDBService {
 
   @override
   Future<PRFLocalMission> loadMission({required String missionUlid}) async {
-    final localMemberMission =
-        await prfDBInstance.pRFLocalMemberMissions
-            .filter()
-            .ulidEqualTo(missionUlid)
-            .sortByCreatedAt()
-            .build()
-            .findFirst();
+    final localMemberMission = await prfDBInstance.pRFLocalMemberMissions
+        .filter()
+        .ulidEqualTo(missionUlid)
+        .sortByCreatedAt()
+        .build()
+        .findFirst();
 
     if (localMemberMission != null) {
       return _transformLocalMemberMissionToLocalMission(

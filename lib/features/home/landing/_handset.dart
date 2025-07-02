@@ -61,10 +61,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         GestureDetector(
-                          onTap:
-                              () => context.router.pushNamed(
-                                PRFSuperAppRouter.accountRoute,
-                              ),
+                          onTap: () => context.router.pushNamed(
+                            PRFSuperAppRouter.accountRoute,
+                          ),
                           child: Container(
                             width: 50,
                             height: 50,
@@ -77,44 +76,38 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                             ),
                             child: ClipOval(
                               child: ValueListenableBuilder(
-                                valueListenable:
-                                    Hive.box<dynamic>(
-                                      PRFSuperAppConfig
-                                          .instance!
-                                          .values
-                                          .hiveBox,
-                                    ).listenable(),
+                                valueListenable: Hive.box<dynamic>(
+                                  PRFSuperAppConfig.instance!.values.hiveBox,
+                                ).listenable(),
                                 builder: (context, _, _) {
-                                  final profilePicture =
-                                      getIt<HiveService>()
-                                          .retrieveMember()
-                                          ?.profilePicture;
+                                  final profilePicture = getIt<HiveService>()
+                                      .retrieveMember()
+                                      ?.profilePicture;
 
                                   return profilePicture != null
                                       ? Image.network(
-                                        profilePicture.temporaryURL,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                Icon(
-                                                  Icons.person,
-                                                  size: 60,
-                                                  color:
-                                                      Theme.of(
-                                                        context,
-                                                      ).colorScheme.primary,
-                                                ),
-                                      )
+                                          profilePicture.temporaryURL,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Icon(
+                                                    Icons.person,
+                                                    size: 60,
+                                                    color: Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary,
+                                                  ),
+                                        )
                                       : CircleAvatar(
-                                        child: Text(
-                                          Misc.getUserNameInitials(
-                                            getIt<HiveService>()
-                                                    .retrieveMember()
-                                                    ?.fullName ??
-                                                '',
+                                          child: Text(
+                                            Misc.getUserNameInitials(
+                                              getIt<HiveService>()
+                                                      .retrieveMember()
+                                                      ?.fullName ??
+                                                  '',
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
                                 },
                               ),
                             ),
@@ -138,10 +131,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                             const ShakeEffect(),
                           ],
                           child: GestureDetector(
-                            onTap:
-                                () => context.router.pushNamed(
-                                  PRFSuperAppRouter.announcementsRoute,
-                                ),
+                            onTap: () => context.router.pushNamed(
+                              PRFSuperAppRouter.announcementsRoute,
+                            ),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -189,10 +181,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.goToAMission,
                       assetPath: 'assets/svgs/missions.svg',
-                      onTap:
-                          () => context.router.pushNamed(
-                            PRFSuperAppRouter.missionsRoute,
-                          ),
+                      onTap: () => context.router.pushNamed(
+                        PRFSuperAppRouter.missionsRoute,
+                      ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -207,10 +198,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.learnSomething,
                       assetPath: 'assets/svgs/lms.svg',
-                      onTap:
-                          () => context.router.pushNamed(
-                            PRFSuperAppRouter.lmsRoute,
-                          ),
+                      onTap: () => context.router.pushNamed(
+                        PRFSuperAppRouter.lmsRoute,
+                      ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -225,10 +215,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.studentFaqs,
                       assetPath: 'assets/svgs/explore.svg',
-                      onTap:
-                          () => context.router.pushNamed(
-                            PRFSuperAppRouter.memberLearnerFaqs,
-                          ),
+                      onTap: () => context.router.pushNamed(
+                        PRFSuperAppRouter.memberLearnerFaqs,
+                      ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -243,10 +232,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.ministerToAStudent,
                       assetPath: 'assets/svgs/student_ministry.svg',
-                      onTap:
-                          () => context.router.pushNamed(
-                            PRFSuperAppRouter.studentEnquiriesRoute,
-                          ),
+                      onTap: () => context.router.pushNamed(
+                        PRFSuperAppRouter.studentEnquiriesRoute,
+                      ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -261,10 +249,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.suggestAMission,
                       assetPath: 'assets/svgs/chatting.svg',
-                      onTap:
-                          () => context.router.pushNamed(
-                            PRFSuperAppRouter.missionGroundSuggestionsRoute,
-                          ),
+                      onTap: () => context.router.pushNamed(
+                        PRFSuperAppRouter.missionGroundSuggestionsRoute,
+                      ),
                     ),
                   ),
                   SizedBox(height: 32.h),
@@ -297,10 +284,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.registerForEvent,
                       assetPath: 'assets/svgs/events.svg',
-                      onTap:
-                          () => context.router.pushNamed(
-                            PRFSuperAppRouter.eventsRoute,
-                          ),
+                      onTap: () => context.router.pushNamed(
+                        PRFSuperAppRouter.eventsRoute,
+                      ),
                     ),
                   ),
 
@@ -316,10 +302,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     child: HomeActionCard(
                       title: l10n.submitPrayerRequest,
                       assetPath: 'assets/svgs/texting.svg',
-                      onTap:
-                          () => context.router.pushNamed(
-                            PRFSuperAppRouter.prayerRequestRoute,
-                          ),
+                      onTap: () => context.router.pushNamed(
+                        PRFSuperAppRouter.prayerRequestRoute,
+                      ),
                     ),
                   ),
                 ],

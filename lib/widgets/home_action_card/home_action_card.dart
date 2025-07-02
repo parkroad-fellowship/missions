@@ -18,19 +18,17 @@ class HomeActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => HomeActionCardTablet(
-            title: title,
-            assetPath: assetPath,
-            onTap: onTap,
-          ),
+      defaultBuilder: (_, _) => HomeActionCardTablet(
+        title: title,
+        assetPath: assetPath,
+        onTap: onTap,
+      ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset:
-            (_, _) => HomeActionCardHandset(
-              title: title,
-              assetPath: assetPath,
-              onTap: onTap,
-            ),
+        handset: (_, _) => HomeActionCardHandset(
+          title: title,
+          assetPath: assetPath,
+          onTap: onTap,
+        ),
       ),
     );
   }

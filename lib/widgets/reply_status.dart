@@ -37,8 +37,9 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 8,
-        children:
-            widget.reversed ? _chips(l10n).reversed.toList() : _chips(l10n),
+        children: widget.reversed
+            ? _chips(l10n).reversed.toList()
+            : _chips(l10n),
       ),
     );
   }
@@ -53,15 +54,13 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       },
       child: Chip(
         label: Text(l10n.unread.toUpperCase()),
-        backgroundColor:
-            _selectedReplyStatus == false
-                ? Theme.of(context).colorScheme.primary
-                : Colors.white,
+        backgroundColor: _selectedReplyStatus == false
+            ? Theme.of(context).colorScheme.primary
+            : Colors.white,
         labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color:
-              _selectedReplyStatus == false
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.primary,
+          color: _selectedReplyStatus == false
+              ? Colors.white
+              : Theme.of(context).colorScheme.primary,
         ),
       ),
     ),
@@ -74,15 +73,13 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       },
       child: Chip(
         label: Text(l10n.replied.toUpperCase()),
-        backgroundColor:
-            _selectedReplyStatus ?? true
-                ? Theme.of(context).colorScheme.primary
-                : Colors.white,
+        backgroundColor: _selectedReplyStatus ?? true
+            ? Theme.of(context).colorScheme.primary
+            : Colors.white,
         labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color:
-              _selectedReplyStatus ?? true
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.primary,
+          color: _selectedReplyStatus ?? true
+              ? Colors.white
+              : Theme.of(context).colorScheme.primary,
         ),
       ),
     ),

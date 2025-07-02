@@ -51,30 +51,26 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
                   loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded:
-                      (classes) => LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFClassGroup>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedClassGroup,
-                            hintText: l10n.classGroup,
-                            dropdownMenuEntries:
-                                classes
-                                    .map(
-                                      (classGroup) =>
-                                          DropdownMenuEntry<PRFClassGroup>(
-                                            value: classGroup,
-                                            label: classGroup.name,
-                                          ),
-                                    )
-                                    .toList(),
-                            onSelected:
-                                (classGroup) => setState(() {
-                                  selectedClassGroup = classGroup;
-                                }),
-                          );
-                        },
-                      ),
+                  loaded: (classes) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<PRFClassGroup>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedClassGroup,
+                        hintText: l10n.classGroup,
+                        dropdownMenuEntries: classes
+                            .map(
+                              (classGroup) => DropdownMenuEntry<PRFClassGroup>(
+                                value: classGroup,
+                                label: classGroup.name,
+                              ),
+                            )
+                            .toList(),
+                        onSelected: (classGroup) => setState(() {
+                          selectedClassGroup = classGroup;
+                        }),
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -133,36 +129,35 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (selectedClassGroup == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.selectClass)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (selectedClassGroup == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.selectClass)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_fullNameController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterName)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_fullNameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterName)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context.read<AddSoulCubit>().addSoul(
-                            missionUlid: widget.missionUlid,
-                            classGroup: selectedClassGroup!,
-                            fullName: _fullNameController.text,
-                            admissionNumber: _admissionNumberController.text,
-                          );
-                        },
-                      ),
+                      await context.read<AddSoulCubit>().addSoul(
+                        missionUlid: widget.missionUlid,
+                        classGroup: selectedClassGroup!,
+                        fullName: _fullNameController.text,
+                        admissionNumber: _admissionNumberController.text,
+                      );
+                    },
+                  ),
                 );
               },
             ),

@@ -82,8 +82,8 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                           child: IconButton(
                             icon: const Icon(Icons.arrow_back_ios),
                             padding: const EdgeInsets.only(left: 8),
-                            onPressed:
-                                () => context.router.popUntilRouteWithPath(
+                            onPressed: () =>
+                                context.router.popUntilRouteWithPath(
                                   PRFSuperAppRouter.eventsRoute,
                                 ),
                           ),
@@ -104,8 +104,9 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                                     .loggedInMemberEventSubscription!
                                     .numberOfAttendees
                                     .toString(),
-                                style:
-                                    Theme.of(context).textTheme.displayMedium,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.displayMedium,
                               ),
                               const Icon(Icons.group),
                             ],
@@ -119,13 +120,15 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                 SliverToBoxAdapter(
                   child: TabBar(
                     controller: _tabController,
-                    onTap:
-                        (value) => setState(() {
-                          Logger().d(value);
-                          _currentTab = value;
-                        }),
+                    onTap: (value) => setState(() {
+                      Logger().d(value);
+                      _currentTab = value;
+                    }),
                     isScrollable: true,
-                    tabs: [Tab(text: l10n.info), Tab(text: l10n.gallery)],
+                    tabs: [
+                      Tab(text: l10n.info),
+                      Tab(text: l10n.gallery),
+                    ],
                   ),
                 ),
                 SliverFillRemaining(

@@ -41,10 +41,9 @@ class _SignInTabletState extends State<SignInTablet> {
       listener: (context, state) {
         state.maybeWhen(
           orElse: () {},
-          loaded:
-              (socialLoginDTO) => context.read<SocialLoginCubit>().login(
-                socialAuthDTO: socialLoginDTO,
-              ),
+          loaded: (socialLoginDTO) => context.read<SocialLoginCubit>().login(
+            socialAuthDTO: socialLoginDTO,
+          ),
           error: (message) {
             ScaffoldMessenger.of(
               context,
@@ -56,8 +55,8 @@ class _SignInTabletState extends State<SignInTablet> {
         listener: (context, state) {
           state.maybeWhen(
             orElse: () {},
-            loaded:
-                () => context.router.pushNamed(PRFSuperAppRouter.decisionRoute),
+            loaded: () =>
+                context.router.pushNamed(PRFSuperAppRouter.decisionRoute),
             error: (message) {
               ScaffoldMessenger.of(
                 context,
@@ -119,14 +118,12 @@ class _SignInTabletState extends State<SignInTablet> {
                           BlocConsumer<SigninCubit, SignInState>(
                             listener: (context, state) {
                               state.maybeWhen(
-                                loading:
-                                    () => setState(() {
-                                      _isLoading = !_isLoading;
-                                    }),
-                                loaded:
-                                    () => context.router.pushNamed(
-                                      PRFSuperAppRouter.landingRoute,
-                                    ),
+                                loading: () => setState(() {
+                                  _isLoading = !_isLoading;
+                                }),
+                                loaded: () => context.router.pushNamed(
+                                  PRFSuperAppRouter.landingRoute,
+                                ),
                                 error: (message) {
                                   setState(() {
                                     _isLoading = !_isLoading;
@@ -143,46 +140,43 @@ class _SignInTabletState extends State<SignInTablet> {
                             },
                             builder: (context, state) {
                               return state.maybeWhen(
-                                orElse:
-                                    () => PRFPrimaryButton(
-                                      onPressed: () {
-                                        if (_emailController.text.isEmpty) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(l10n.enterEmail),
-                                            ),
-                                          );
-                                          Gaimon.warning();
-                                          return;
-                                        }
+                                orElse: () => PRFPrimaryButton(
+                                  onPressed: () {
+                                    if (_emailController.text.isEmpty) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(l10n.enterEmail),
+                                        ),
+                                      );
+                                      Gaimon.warning();
+                                      return;
+                                    }
 
-                                        if (_passwordController.text.isEmpty) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(l10n.enterPassword),
-                                            ),
-                                          );
-                                          Gaimon.warning();
-                                          return;
-                                        }
+                                    if (_passwordController.text.isEmpty) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(l10n.enterPassword),
+                                        ),
+                                      );
+                                      Gaimon.warning();
+                                      return;
+                                    }
 
-                                        context.read<SigninCubit>().signIn(
-                                          email: _emailController.text.trim(),
-                                          password:
-                                              _passwordController.text.trim(),
-                                        );
-                                      },
-                                      title:
-                                          _isLoading
-                                              ? l10n.signingIn
-                                              : l10n.signIn,
-                                      disabled: _isLoading,
-                                      isLoading: _isLoading ? true : null,
-                                    ),
+                                    context.read<SigninCubit>().signIn(
+                                      email: _emailController.text.trim(),
+                                      password: _passwordController.text.trim(),
+                                    );
+                                  },
+                                  title: _isLoading
+                                      ? l10n.signingIn
+                                      : l10n.signIn,
+                                  disabled: _isLoading,
+                                  isLoading: _isLoading ? true : null,
+                                ),
                               );
                             },
                           ),
@@ -208,25 +202,22 @@ class _SignInTabletState extends State<SignInTablet> {
                                       title,
                                     ) = signInWithGoogleState.maybeWhen(
                                       loading: () => (true, 'Please wait ...'),
-                                      orElse:
-                                          () => socialSignUpState.maybeWhen(
-                                            loading:
-                                                () => (true, 'Please wait ...'),
-                                            orElse:
-                                                // ignore: lines_longer_than_80_chars
-                                                () => socialSignInState.maybeWhen(
-                                                  loading:
-                                                      () => (
-                                                        true,
-                                                        'Please wait ...',
-                                                      ),
-                                                  orElse:
-                                                      () => (
-                                                        false,
-                                                        'Continue with Google',
-                                                      ),
-                                                ),
-                                          ),
+                                      orElse: () => socialSignUpState.maybeWhen(
+                                        loading: () =>
+                                            (true, 'Please wait ...'),
+                                        orElse:
+                                            // ignore: lines_longer_than_80_chars
+                                            () => socialSignInState.maybeWhen(
+                                              loading: () => (
+                                                true,
+                                                'Please wait ...',
+                                              ),
+                                              orElse: () => (
+                                                false,
+                                                'Continue with Google',
+                                              ),
+                                            ),
+                                      ),
                                     );
 
                                     return GoogleAuthButton(

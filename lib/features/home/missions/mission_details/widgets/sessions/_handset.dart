@@ -46,49 +46,47 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
-      widget:
-          (context, missionSessions) => ListView.builder(
-            physics: const ScrollPhysics(),
-            itemCount: missionSessions.length,
-            itemBuilder: (context, index) {
-              final sortedDailySessions = List<PRFLocalMissionSession>.from(
-                missionSessions.values.elementAt(index),
-              )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
+      widget: (context, missionSessions) => ListView.builder(
+        physics: const ScrollPhysics(),
+        itemCount: missionSessions.length,
+        itemBuilder: (context, index) {
+          final sortedDailySessions = List<PRFLocalMissionSession>.from(
+            missionSessions.values.elementAt(index),
+          )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        DateFormat.MMMMEEEEd().add_y().format(
-                          missionSessions.keys.elementAt(index),
-                        ),
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ],
+                  Text(
+                    DateFormat.MMMMEEEEd().add_y().format(
+                      missionSessions.keys.elementAt(index),
+                    ),
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  const SizedBox(height: 8),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ScrollPhysics(),
-                    itemCount: sortedDailySessions.length,
-                    itemBuilder:
-                        (context, i) => Column(
-                          children: [
-                            MissionSessionCard(
-                              missionSession: sortedDailySessions[i],
-                              missionUlid: missionUlid,
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                        ),
-                  ),
-                  const SizedBox(height: 16),
                 ],
-              );
-            },
-          ),
+              ),
+              const SizedBox(height: 8),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const ScrollPhysics(),
+                itemCount: sortedDailySessions.length,
+                itemBuilder: (context, i) => Column(
+                  children: [
+                    MissionSessionCard(
+                      missionSession: sortedDailySessions[i],
+                      missionUlid: missionUlid,
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          );
+        },
+      ),
     );
   }
 }
@@ -110,14 +108,13 @@ class MissionSessionCard extends StatelessWidget {
     return Animate(
       effects: const [SaturateEffect()],
       child: GestureDetector(
-        onTap:
-            () => context.router.push(
-              SessionRoute(
-                missionSessionUlid: missionSession.ulid,
-                missionUlid: missionUlid,
-                missionSessionId: missionSession.id,
-              ),
-            ),
+        onTap: () => context.router.push(
+          SessionRoute(
+            missionSessionUlid: missionSession.ulid,
+            missionUlid: missionUlid,
+            missionSessionId: missionSession.id,
+          ),
+        ),
         child: Stack(
           children: [
             Container(

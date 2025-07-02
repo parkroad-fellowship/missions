@@ -18,29 +18,28 @@ class PRFPasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
       valueListenable: hidePasswordNotifier,
-      builder:
-          (context, hidePassword, child) => TextFormField(
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: hidePassword,
-            decoration: InputDecoration(
-              hintText: hintText,
-              suffix: GestureDetector(
-                onTap: () {
-                  hidePasswordNotifier.value = !hidePassword;
-                },
-                child: Icon(
-                  hidePassword
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
+      builder: (context, hidePassword, child) => TextFormField(
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: hidePassword,
+        decoration: InputDecoration(
+          hintText: hintText,
+          suffix: GestureDetector(
+            onTap: () {
+              hidePasswordNotifier.value = !hidePassword;
+            },
+            child: Icon(
+              hidePassword
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
 
-                  // size: 24,
-                ),
-              ),
+              // size: 24,
             ),
-            style: Theme.of(context).textTheme.bodySmall,
-            controller: passwordController,
-            enabled: enabled,
           ),
+        ),
+        style: Theme.of(context).textTheme.bodySmall,
+        controller: passwordController,
+        enabled: enabled,
+      ),
     );
   }
 }

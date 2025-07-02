@@ -32,18 +32,17 @@ class GoogleAuthButton extends StatelessWidget {
             color: const Color(PRFTheme.primaryColor),
           ),
         ),
-        icon:
-            (isLoading ?? false)
-                ? const SizedBox(
-                  height: 16,
-                  width: 16,
-                  child: PRFCircularProgressIndicator(
-                    color: Color(PRFTheme.primaryColor),
-                  ),
-                )
-                : SvgPicture.asset(
-                  'assets/images/authentication/google_logo.svg',
+        icon: (isLoading ?? false)
+            ? const SizedBox(
+                height: 16,
+                width: 16,
+                child: PRFCircularProgressIndicator(
+                  color: Color(PRFTheme.primaryColor),
                 ),
+              )
+            : SvgPicture.asset(
+                'assets/images/authentication/google_logo.svg',
+              ),
       ),
     );
   }

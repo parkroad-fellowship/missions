@@ -48,10 +48,9 @@ class AccountPageTablet extends StatelessWidget {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.landingRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -65,10 +64,9 @@ class AccountPageTablet extends StatelessWidget {
                         child: BlocListener<SignOutCubit, SignOutState>(
                           listener: (context, state) {
                             state.maybeWhen(
-                              orElse:
-                                  () => context.router.pushNamed(
-                                    PRFSuperAppRouter.decisionRoute,
-                                  ),
+                              orElse: () => context.router.pushNamed(
+                                PRFSuperAppRouter.decisionRoute,
+                              ),
                             );
                           },
                           child: GestureDetector(
@@ -78,11 +76,14 @@ class AccountPageTablet extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   l10n.signOut,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.headlineMedium?.copyWith(
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.headlineMedium?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.error,
+                                      ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -111,45 +112,42 @@ class AccountPageTablet extends StatelessWidget {
                         ),
                         child: ClipOval(
                           child: ValueListenableBuilder(
-                            valueListenable:
-                                Hive.box<dynamic>(
-                                  PRFSuperAppConfig.instance!.values.hiveBox,
-                                ).listenable(),
+                            valueListenable: Hive.box<dynamic>(
+                              PRFSuperAppConfig.instance!.values.hiveBox,
+                            ).listenable(),
                             builder: (context, _, _) {
-                              final profilePicture =
-                                  getIt<HiveService>()
-                                      .retrieveMember()
-                                      ?.profilePicture;
+                              final profilePicture = getIt<HiveService>()
+                                  .retrieveMember()
+                                  ?.profilePicture;
 
                               return profilePicture != null
                                   ? Image.network(
-                                    profilePicture.temporaryURL,
-                                    fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) => Icon(
-                                          Icons.person,
-                                          size: 60,
-                                          color:
-                                              Theme.of(
-                                                context,
-                                              ).colorScheme.primary,
-                                        ),
-                                  )
+                                      profilePicture.temporaryURL,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) => Icon(
+                                            Icons.person,
+                                            size: 60,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                          ),
+                                    )
                                   : Icon(
-                                    Icons.person,
-                                    size: 60,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  );
+                                      Icons.person,
+                                      size: 60,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    );
                             },
                           ),
                         ),
                       ),
                       ValueListenableBuilder(
-                        valueListenable:
-                            Hive.box<dynamic>(
-                              PRFSuperAppConfig.instance!.values.hiveBox,
-                            ).listenable(),
+                        valueListenable: Hive.box<dynamic>(
+                          PRFSuperAppConfig.instance!.values.hiveBox,
+                        ).listenable(),
                         builder: (context, _, _) {
                           final member = getIt<HiveService>().retrieveMember();
                           if (member == null) return const SizedBox.shrink();
@@ -157,73 +155,69 @@ class AccountPageTablet extends StatelessWidget {
                             bottom: 10,
                             right: 10,
                             child: GestureDetector(
-                              onTap:
-                                  () => context
-                                      .read<ChangeProfilePictureCubit>()
-                                      .changeProfilePicture(
-                                        context: context,
-                                        modelUlid: member.ulid,
-                                        model:
-                                            PRFMediaModel.memberProfilePictures,
-                                        mediaType: RequestType.image,
-                                      ),
+                              onTap: () => context
+                                  .read<ChangeProfilePictureCubit>()
+                                  .changeProfilePicture(
+                                    context: context,
+                                    modelUlid: member.ulid,
+                                    model: PRFMediaModel.memberProfilePictures,
+                                    mediaType: RequestType.image,
+                                  ),
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.primary,
                                   shape: BoxShape.circle,
                                 ),
-                                child: BlocConsumer<
-                                  ChangeProfilePictureCubit,
-                                  ChangeProfilePictureState
-                                >(
-                                  listener: (context, state) {
-                                    state.mapOrNull(
-                                      loaded: (_) {
-                                        Gaimon.success();
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              l10n.successfullyUpdated,
-                                            ),
-                                          ),
+                                child:
+                                    BlocConsumer<
+                                      ChangeProfilePictureCubit,
+                                      ChangeProfilePictureState
+                                    >(
+                                      listener: (context, state) {
+                                        state.mapOrNull(
+                                          loaded: (_) {
+                                            Gaimon.success();
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  l10n.successfullyUpdated,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          error: (error) {
+                                            Gaimon.error();
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(error.message),
+                                              ),
+                                            );
+                                          },
                                         );
                                       },
-                                      error: (error) {
-                                        Gaimon.error();
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(
-                                            content: Text(error.message),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  builder:
-                                      (context, state) => state.maybeWhen(
-                                        orElse:
-                                            () => const Icon(
+                                      builder: (context, state) =>
+                                          state.maybeWhen(
+                                            orElse: () => const Icon(
                                               Icons.edit,
                                               size: 24,
                                               color: Colors.white,
                                             ),
-                                        loading:
-                                            () => SizedBox.square(
+                                            loading: () => SizedBox.square(
                                               dimension: 24,
                                               child:
                                                   PRFCircularProgressIndicator(
-                                                    color:
-                                                        Theme.of(
-                                                          context,
-                                                        ).colorScheme.surface,
+                                                    color: Theme.of(
+                                                      context,
+                                                    ).colorScheme.surface,
                                                   ),
                                             ),
-                                      ),
-                                ),
+                                          ),
+                                    ),
                               ),
                             ),
                           );
@@ -235,10 +229,9 @@ class AccountPageTablet extends StatelessWidget {
               ),
 
               ValueListenableBuilder(
-                valueListenable:
-                    Hive.box<dynamic>(
-                      PRFSuperAppConfig.instance!.values.hiveBox,
-                    ).listenable(),
+                valueListenable: Hive.box<dynamic>(
+                  PRFSuperAppConfig.instance!.values.hiveBox,
+                ).listenable(),
                 builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
@@ -305,10 +298,9 @@ class AccountPageTablet extends StatelessWidget {
                 },
               ),
               ValueListenableBuilder(
-                valueListenable:
-                    Hive.box<dynamic>(
-                      PRFSuperAppConfig.instance!.values.hiveBox,
-                    ).listenable(),
+                valueListenable: Hive.box<dynamic>(
+                  PRFSuperAppConfig.instance!.values.hiveBox,
+                ).listenable(),
                 builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
@@ -332,10 +324,9 @@ class AccountPageTablet extends StatelessWidget {
                 },
               ),
               ValueListenableBuilder(
-                valueListenable:
-                    Hive.box<dynamic>(
-                      PRFSuperAppConfig.instance!.values.hiveBox,
-                    ).listenable(),
+                valueListenable: Hive.box<dynamic>(
+                  PRFSuperAppConfig.instance!.values.hiveBox,
+                ).listenable(),
                 builder: (context, _, _) {
                   final profile = getIt<HiveService>().retrieveProfile();
                   if (profile == null) {
@@ -348,31 +339,30 @@ class AccountPageTablet extends StatelessWidget {
 
                   return SliverList.builder(
                     itemCount: profile.member!.memberships.length,
-                    itemBuilder:
-                        (context, index) => Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: ListTile(
-                            title: Text(
-                              profile
-                                  .member!
-                                  .memberships[index]
-                                  .spiritualYear!
-                                  .name,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            subtitle: Text(
-                              PrfMembershipType.fromIndex(
-                                profile.member!.memberships[index].type,
-                              ).name,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            trailing: Icon(
-                              profile.member!.memberships[index].approved
-                                  ? Icons.check_outlined
-                                  : Icons.pending_actions,
-                            ),
-                          ),
+                    itemBuilder: (context, index) => Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: ListTile(
+                        title: Text(
+                          profile
+                              .member!
+                              .memberships[index]
+                              .spiritualYear!
+                              .name,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
+                        subtitle: Text(
+                          PrfMembershipType.fromIndex(
+                            profile.member!.memberships[index].type,
+                          ).name,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        trailing: Icon(
+                          profile.member!.memberships[index].approved
+                              ? Icons.check_outlined
+                              : Icons.pending_actions,
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),
@@ -393,22 +383,22 @@ class AccountPageTablet extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: l10n.terms,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.labelLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    final uri = Uri(
-                                      scheme: 'https',
-                                      host: 'parkroadfellowship.org',
-                                      path: '/privacy-policy',
-                                    );
-                                    await Misc.openUrl(uri);
-                                  },
+                            style:
+                                Theme.of(
+                                  context,
+                                ).textTheme.labelLarge?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                final uri = Uri(
+                                  scheme: 'https',
+                                  host: 'parkroadfellowship.org',
+                                  path: '/privacy-policy',
+                                );
+                                await Misc.openUrl(uri);
+                              },
                           ),
                           TextSpan(
                             text: l10n.and,
@@ -416,22 +406,22 @@ class AccountPageTablet extends StatelessWidget {
                           ),
                           TextSpan(
                             text: l10n.privacyPolicy,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.labelLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    final uri = Uri(
-                                      scheme: 'https',
-                                      host: 'parkroadfellowship.org',
-                                      path: 'privacy-policy',
-                                    );
-                                    await Misc.openUrl(uri);
-                                  },
+                            style:
+                                Theme.of(
+                                  context,
+                                ).textTheme.labelLarge?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                final uri = Uri(
+                                  scheme: 'https',
+                                  host: 'parkroadfellowship.org',
+                                  path: 'privacy-policy',
+                                );
+                                await Misc.openUrl(uri);
+                              },
                           ),
                         ],
                       ),

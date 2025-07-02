@@ -10,11 +10,11 @@ class MissionQuestionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => MissionQuestionsViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) =>
+          MissionQuestionsViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset:
-            (_, _) => MissionQuestionsViewHandset(missionUlid: missionUlid),
+        handset: (_, _) =>
+            MissionQuestionsViewHandset(missionUlid: missionUlid),
       ),
     );
   }

@@ -70,10 +70,9 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.lmsRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.lmsRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -81,14 +80,13 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                         stream: getIt<LocalDBService>().getCourse(
                           courseUlid: courseUlid,
                         ),
-                        widget:
-                            (context, course) => SizedBox(
-                              child: Text(
-                                course?.name ?? '',
-                                style: Theme.of(context).textTheme.displayLarge,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
+                        widget: (context, course) => SizedBox(
+                          child: Text(
+                            course?.name ?? '',
+                            style: Theme.of(context).textTheme.displayLarge,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
 
                       const Spacer(),
@@ -98,15 +96,13 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                           stream: getIt<LocalDBService>().getCourse(
                             courseUlid: courseUlid,
                           ),
-                          widget:
-                              (context, course) => Text(
-                                l10n.percentage(
-                                  course?.courseMember?.percentComplete!
-                                          .toInt() ??
-                                      0,
-                                ),
-                                style: Theme.of(context).textTheme.displaySmall,
-                              ),
+                          widget: (context, course) => Text(
+                            l10n.percentage(
+                              course?.courseMember?.percentComplete!.toInt() ??
+                                  0,
+                            ),
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
                         ),
                       ),
                     ],
@@ -121,14 +117,13 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                   stream: getIt<LocalDBService>().getCourse(
                     courseUlid: courseUlid,
                   ),
-                  widget:
-                      (context, course) => Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: Text(
-                          course?.description ?? '',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ),
+                  widget: (context, course) => Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.w),
+                    child: Text(
+                      course?.description ?? '',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
@@ -145,14 +140,12 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
               SliverToBoxAdapter(
                 child:
                     BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
-                      builder:
-                          (context, state) => state.maybeWhen(
-                            loading:
-                                () => const Center(
-                                  child: LinearProgressIndicator(),
-                                ),
-                            orElse: SizedBox.shrink,
-                          ),
+                      builder: (context, state) => state.maybeWhen(
+                        loading: () => const Center(
+                          child: LinearProgressIndicator(),
+                        ),
+                        orElse: SizedBox.shrink,
+                      ),
                     ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
@@ -180,12 +173,11 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
 
                   return SliverList.separated(
                     itemCount: courseModules!.length,
-                    itemBuilder:
-                        (context, index) => CourseDetailsActionCard(
-                          courseModule: courseModules[index],
-                        ),
-                    separatorBuilder:
-                        (context, index) => SizedBox(height: 16.h),
+                    itemBuilder: (context, index) => CourseDetailsActionCard(
+                      courseModule: courseModules[index],
+                    ),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
                   );
                 },
               ),

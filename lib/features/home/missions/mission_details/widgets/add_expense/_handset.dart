@@ -53,30 +53,27 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
                   loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded:
-                      (expenseCategories) => LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFExpenseCategory>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedExpenseCategory,
-                            hintText: l10n.expenseCategory,
-                            dropdownMenuEntries:
-                                expenseCategories
-                                    .map(
-                                      (expenseCategory) =>
-                                          DropdownMenuEntry<PRFExpenseCategory>(
-                                            value: expenseCategory,
-                                            label: expenseCategory.name,
-                                          ),
-                                    )
-                                    .toList(),
-                            onSelected:
-                                (classGroup) => setState(() {
-                                  selectedExpenseCategory = classGroup;
-                                }),
-                          );
-                        },
-                      ),
+                  loaded: (expenseCategories) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<PRFExpenseCategory>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedExpenseCategory,
+                        hintText: l10n.expenseCategory,
+                        dropdownMenuEntries: expenseCategories
+                            .map(
+                              (expenseCategory) =>
+                                  DropdownMenuEntry<PRFExpenseCategory>(
+                                    value: expenseCategory,
+                                    label: expenseCategory.name,
+                                  ),
+                            )
+                            .toList(),
+                        onSelected: (classGroup) => setState(() {
+                          selectedExpenseCategory = classGroup;
+                        }),
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -149,19 +146,17 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                   width: constraints.maxWidth,
                   initialSelection: selectedChargeType,
                   hintText: l10n.transactionType,
-                  dropdownMenuEntries:
-                      PRFChargeType.values
-                          .map(
-                            (chargeType) => DropdownMenuEntry<PRFChargeType>(
-                              value: chargeType,
-                              label: chargeType.name,
-                            ),
-                          )
-                          .toList(),
-                  onSelected:
-                      (chargeType) => setState(() {
-                        selectedChargeType = chargeType;
-                      }),
+                  dropdownMenuEntries: PRFChargeType.values
+                      .map(
+                        (chargeType) => DropdownMenuEntry<PRFChargeType>(
+                          value: chargeType,
+                          label: chargeType.name,
+                        ),
+                      )
+                      .toList(),
+                  onSelected: (chargeType) => setState(() {
+                    selectedChargeType = chargeType;
+                  }),
                 );
               },
             ),
@@ -197,87 +192,86 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (selectedExpenseCategory == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.selectExpenseCategory),
-                              ),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (selectedExpenseCategory == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.selectExpenseCategory),
+                          ),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (selectedChargeType == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.selectTransactionType),
-                              ),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (selectedChargeType == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.selectTransactionType),
+                          ),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_unitCostController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterAmount)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_unitCostController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterAmount)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_quantityController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterQuantity)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_quantityController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterQuantity)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_chargeController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterCharge)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_chargeController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterCharge)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_confirmationMessageController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.enterConfirmationMessage),
-                              ),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_confirmationMessageController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.enterConfirmationMessage),
+                          ),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_narrationController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterNarration)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_narrationController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterNarration)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context.read<AddExpenseCubit>().addExpense(
-                            missionUlid: widget.missionUlid,
-                            expenseCategoryUlid: selectedExpenseCategory!.ulid,
-                            unitCost: _unitCostController.text,
-                            quantity: _quantityController.text,
-                            chargeType: selectedChargeType!,
-                            charge: _chargeController.text,
-                            confirmationMessage:
-                                _confirmationMessageController.text,
-                            narration: _narrationController.text.trim(),
-                          );
-                        },
-                      ),
+                      await context.read<AddExpenseCubit>().addExpense(
+                        missionUlid: widget.missionUlid,
+                        expenseCategoryUlid: selectedExpenseCategory!.ulid,
+                        unitCost: _unitCostController.text,
+                        quantity: _quantityController.text,
+                        chargeType: selectedChargeType!,
+                        charge: _chargeController.text,
+                        confirmationMessage:
+                            _confirmationMessageController.text,
+                        narration: _narrationController.text.trim(),
+                      );
+                    },
+                  ),
                 );
               },
             ),

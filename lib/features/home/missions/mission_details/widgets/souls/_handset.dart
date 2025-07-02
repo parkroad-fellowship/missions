@@ -39,13 +39,12 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
-      widget:
-          (context, souls) => ListView.separated(
-            physics: const ScrollPhysics(),
-            itemCount: souls.length,
-            separatorBuilder: (context, index) => SizedBox(height: 16.h),
-            itemBuilder: (context, index) => SoulCard(soul: souls[index]),
-          ),
+      widget: (context, souls) => ListView.separated(
+        physics: const ScrollPhysics(),
+        itemCount: souls.length,
+        separatorBuilder: (context, index) => SizedBox(height: 16.h),
+        itemBuilder: (context, index) => SoulCard(soul: souls[index]),
+      ),
     );
   }
 }

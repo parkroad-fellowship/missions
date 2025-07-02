@@ -69,30 +69,26 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                 missionUlid: widget.missionUlid,
               ),
               loading: const PRFLinearProgressIndicator(),
-              widget:
-                  (context, subscribers) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFLocalMember>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedFacilitator,
-                        hintText: l10n.facilitator,
-                        dropdownMenuEntries:
-                            subscribers
-                                .map(
-                                  (subscriber) =>
-                                      DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member,
-                                        label: subscriber.member.fullName!,
-                                      ),
-                                )
-                                .toList(),
-                        onSelected:
-                            (member) => setState(() {
-                              selectedFacilitator = member;
-                            }),
-                      );
-                    },
-                  ),
+              widget: (context, subscribers) => LayoutBuilder(
+                builder: (context, constraints) {
+                  return DropdownMenu<PRFLocalMember>(
+                    width: constraints.maxWidth,
+                    initialSelection: selectedFacilitator,
+                    hintText: l10n.facilitator,
+                    dropdownMenuEntries: subscribers
+                        .map(
+                          (subscriber) => DropdownMenuEntry<PRFLocalMember>(
+                            value: subscriber.member,
+                            label: subscriber.member.fullName!,
+                          ),
+                        )
+                        .toList(),
+                    onSelected: (member) => setState(() {
+                      selectedFacilitator = member;
+                    }),
+                  );
+                },
+              ),
             ),
 
             const SizedBox(height: 16),
@@ -106,30 +102,26 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                 missionUlid: widget.missionUlid,
               ),
               loading: const PRFLinearProgressIndicator(),
-              widget:
-                  (context, subscribers) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFLocalMember>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedSpeaker,
-                        hintText: l10n.speaker,
-                        dropdownMenuEntries:
-                            subscribers
-                                .map(
-                                  (subscriber) =>
-                                      DropdownMenuEntry<PRFLocalMember>(
-                                        value: subscriber.member,
-                                        label: subscriber.member.fullName!,
-                                      ),
-                                )
-                                .toList(),
-                        onSelected:
-                            (member) => setState(() {
-                              selectedSpeaker = member;
-                            }),
-                      );
-                    },
-                  ),
+              widget: (context, subscribers) => LayoutBuilder(
+                builder: (context, constraints) {
+                  return DropdownMenu<PRFLocalMember>(
+                    width: constraints.maxWidth,
+                    initialSelection: selectedSpeaker,
+                    hintText: l10n.speaker,
+                    dropdownMenuEntries: subscribers
+                        .map(
+                          (subscriber) => DropdownMenuEntry<PRFLocalMember>(
+                            value: subscriber.member,
+                            label: subscriber.member.fullName!,
+                          ),
+                        )
+                        .toList(),
+                    onSelected: (member) => setState(() {
+                      selectedSpeaker = member;
+                    }),
+                  );
+                },
+              ),
             ),
 
             const SizedBox(height: 16),
@@ -143,30 +135,26 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
                   loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded:
-                      (classes) => LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFClassGroup>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedClassGroup,
-                            hintText: l10n.classGroup,
-                            dropdownMenuEntries:
-                                classes
-                                    .map(
-                                      (classGroup) =>
-                                          DropdownMenuEntry<PRFClassGroup>(
-                                            value: classGroup,
-                                            label: classGroup.name,
-                                          ),
-                                    )
-                                    .toList(),
-                            onSelected:
-                                (classGroup) => setState(() {
-                                  selectedClassGroup = classGroup;
-                                }),
-                          );
-                        },
-                      ),
+                  loaded: (classes) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<PRFClassGroup>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedClassGroup,
+                        hintText: l10n.classGroup,
+                        dropdownMenuEntries: classes
+                            .map(
+                              (classGroup) => DropdownMenuEntry<PRFClassGroup>(
+                                value: classGroup,
+                                label: classGroup.name,
+                              ),
+                            )
+                            .toList(),
+                        onSelected: (classGroup) => setState(() {
+                          selectedClassGroup = classGroup;
+                        }),
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -240,57 +228,54 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (selectedFacilitator == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.selectFacilitator)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (selectedFacilitator == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.selectFacilitator)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_notesController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterNotes)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_notesController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterNotes)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (startsAt == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.addStartEnd)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (startsAt == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.addStartEnd)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (endsAt == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.addStartEnd)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (endsAt == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.addStartEnd)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context
-                              .read<AddMissionSessionCubit>()
-                              .addSession(
-                                missionUlid: widget.missionUlid,
-                                facilitatorUlid: selectedFacilitator!.ulid!,
-                                startsAt: startsAt!,
-                                endsAt: endsAt!,
-                                notes: _notesController.text,
-                                speakerUlid: selectedSpeaker?.ulid,
-                                classGroupUlid: selectedClassGroup?.ulid,
-                              );
-                        },
-                      ),
+                      await context.read<AddMissionSessionCubit>().addSession(
+                        missionUlid: widget.missionUlid,
+                        facilitatorUlid: selectedFacilitator!.ulid!,
+                        startsAt: startsAt!,
+                        endsAt: endsAt!,
+                        notes: _notesController.text,
+                        speakerUlid: selectedSpeaker?.ulid,
+                        classGroupUlid: selectedClassGroup?.ulid,
+                      );
+                    },
+                  ),
                 );
               },
             ),

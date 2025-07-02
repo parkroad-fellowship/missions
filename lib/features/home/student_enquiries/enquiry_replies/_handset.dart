@@ -51,8 +51,9 @@ class _StudentEnquiryRepliesPageHandsetState
             r'App\Events\StudentEnquiryReply\Created',
           ],
         },
-        presenceChannels:
-            getIt<SocketService>().defaultConfig().presenceChannels,
+        presenceChannels: getIt<SocketService>()
+            .defaultConfig()
+            .presenceChannels,
       ),
     );
   }
@@ -93,10 +94,9 @@ class _StudentEnquiryRepliesPageHandsetState
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.studentEnquiriesRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.studentEnquiriesRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -155,13 +155,13 @@ class _StudentEnquiryRepliesPageHandsetState
                             vertical: 32.h,
                           ),
                           decoration: BoxDecoration(
-                            color:
-                                enquiryReply.isStudent
-                                    ? Theme.of(context).colorScheme.secondary
-                                        .withValues(alpha: .2)
-                                    : Theme.of(
-                                      context,
-                                    ).colorScheme.primary.withValues(alpha: .2),
+                            color: enquiryReply.isStudent
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.secondary.withValues(alpha: .2)
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: .2),
 
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -191,99 +191,93 @@ class _StudentEnquiryRepliesPageHandsetState
           ),
         ],
         child: FloatingActionButton(
-          onPressed:
-              () => WoltModalSheet.show<void>(
-                context: context,
-                pageListBuilder: (modalSheetContext) {
-                  return [
-                    WoltModalSheetPage(
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white,
-                      child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.4,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: FormFieldLabel(
-                                  label: l10n.reply,
-                                  isRequired: true,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: FormFieldLabel(
-                                  label: l10n.rules,
-                                  isRequired: true,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              PRFTextAreaInput(
-                                hintText: l10n.reply,
-                                controller: _enquiryReplyController,
-                              ),
-                              const SizedBox(height: 16),
-                              BlocConsumer<
-                                CreateEnquiryReplyCubit,
-                                CreateEnquiryReplyState
-                              >(
-                                listener: (context, state) {
-                                  state.mapOrNull(
-                                    loading: (_) {
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
-                                    },
-                                    loaded: (_) {
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
-                                      _enquiryReplyController.clear();
-                                      Navigator.of(context).pop();
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(content: Text(l10n.replySent)),
-                                      );
-                                    },
-                                  );
-                                },
-                                builder: (context, state) {
-                                  return state.maybeWhen(
-                                    orElse:
-                                        () => PRFPrimaryButton(
-                                          title:
-                                              _isLoading
-                                                  ? l10n.replying
-                                                  : l10n.reply,
-                                          disabled: _isLoading,
-                                          isLoading: _isLoading ? true : null,
-                                          onPressed: () async {
-                                            await context
-                                                .read<CreateEnquiryReplyCubit>()
-                                                .createStudentEnquiryReply(
-                                                  studentEnquiryUlid:
-                                                      enquiry.ulid,
-                                                  content:
-                                                      _enquiryReplyController
-                                                          .text,
-                                                );
-                                          },
-                                        ),
-                                  );
-                                },
-                              ),
-                            ],
+          onPressed: () => WoltModalSheet.show<void>(
+            context: context,
+            pageListBuilder: (modalSheetContext) {
+              return [
+                WoltModalSheetPage(
+                  backgroundColor: Colors.white,
+                  surfaceTintColor: Colors.white,
+                  child: SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.4,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: FormFieldLabel(
+                              label: l10n.reply,
+                              isRequired: true,
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 8),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: FormFieldLabel(
+                              label: l10n.rules,
+                              isRequired: true,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          PRFTextAreaInput(
+                            hintText: l10n.reply,
+                            controller: _enquiryReplyController,
+                          ),
+                          const SizedBox(height: 16),
+                          BlocConsumer<
+                            CreateEnquiryReplyCubit,
+                            CreateEnquiryReplyState
+                          >(
+                            listener: (context, state) {
+                              state.mapOrNull(
+                                loading: (_) {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                },
+                                loaded: (_) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  _enquiryReplyController.clear();
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(
+                                    SnackBar(content: Text(l10n.replySent)),
+                                  );
+                                },
+                              );
+                            },
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => PRFPrimaryButton(
+                                  title: _isLoading
+                                      ? l10n.replying
+                                      : l10n.reply,
+                                  disabled: _isLoading,
+                                  isLoading: _isLoading ? true : null,
+                                  onPressed: () async {
+                                    await context
+                                        .read<CreateEnquiryReplyCubit>()
+                                        .createStudentEnquiryReply(
+                                          studentEnquiryUlid: enquiry.ulid,
+                                          content: _enquiryReplyController.text,
+                                        );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                  ];
-                },
-              ),
+                  ),
+                ),
+              ];
+            },
+          ),
           backgroundColor: Theme.of(context).colorScheme.primary,
           child: const Icon(Icons.add, color: Colors.white),
         ),

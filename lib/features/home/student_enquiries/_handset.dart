@@ -63,10 +63,9 @@ class _StudentEnquiriesPageHandsetState
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.landingRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -101,14 +100,12 @@ class _StudentEnquiriesPageHandsetState
               SliverToBoxAdapter(child: SizedBox(height: 16.h)),
               SliverToBoxAdapter(
                 child: BlocBuilder<GetEnquiriesCubit, GetEnquiriesState>(
-                  builder:
-                      (context, state) => state.maybeWhen(
-                        orElse:
-                            () =>
-                                const Center(child: LinearProgressIndicator()),
-                        error: (message) => const SizedBox.shrink(),
-                        loaded: SizedBox.shrink,
-                      ),
+                  builder: (context, state) => state.maybeWhen(
+                    orElse: () =>
+                        const Center(child: LinearProgressIndicator()),
+                    error: (message) => const SizedBox.shrink(),
+                    loaded: SizedBox.shrink,
+                  ),
                 ),
               ),
 
@@ -128,11 +125,9 @@ class _StudentEnquiriesPageHandsetState
                   if (enquiries != null && enquiries.isEmpty) {
                     return SliverFillRemaining(
                       child: RefreshIndicator(
-                        onRefresh:
-                            () =>
-                                context
-                                    .read<GetEnquiriesCubit>()
-                                    .getStudentEnquiries(),
+                        onRefresh: () => context
+                            .read<GetEnquiriesCubit>()
+                            .getStudentEnquiries(),
                         child: PRFEmptyView(
                           label: l10n.noQuestions,
                           description: l10n.pleaseWait,
@@ -159,7 +154,7 @@ class _StudentEnquiriesPageHandsetState
                           enquiry.content.length > 34
                               ? enquiry.content.substring(0, 35).trim()
                               : enquiry.content +
-                                  (enquiry.content.length > 35 ? ' ...' : ''),
+                                    (enquiry.content.length > 35 ? ' ...' : ''),
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(
@@ -168,10 +163,9 @@ class _StudentEnquiriesPageHandsetState
                             timezone,
                           ),
                         ),
-                        onTap:
-                            () => context.router.push(
-                              StudentEnquiryRepliesRoute(enquiry: enquiry),
-                            ),
+                        onTap: () => context.router.push(
+                          StudentEnquiryRepliesRoute(enquiry: enquiry),
+                        ),
                       );
                     },
                   );

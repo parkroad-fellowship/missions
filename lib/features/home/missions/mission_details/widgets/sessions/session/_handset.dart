@@ -67,8 +67,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh:
-              () => context.read<GetMissionSessionCubit>().getMissionSession(
+          onRefresh: () =>
+              context.read<GetMissionSessionCubit>().getMissionSession(
                 missionSessionUlid: missionSessionUlid,
                 missionUlid: missionUlid,
                 refresh: true,
@@ -134,155 +134,142 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         },
                       );
                     },
-                    builder:
-                        (context, state) => state.maybeWhen(
-                          loading:
-                              () => const Center(
-                                child: LinearProgressIndicator(),
-                              ),
-                          error: (message) => Center(child: Text(message)),
-                          orElse: () => const SizedBox(),
-                        ),
+                    builder: (context, state) => state.maybeWhen(
+                      loading: () => const Center(
+                        child: LinearProgressIndicator(),
+                      ),
+                      error: (message) => Center(child: Text(message)),
+                      orElse: () => const SizedBox(),
+                    ),
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: BlocBuilder<
-                    GetMissionSessionCubit,
-                    GetMissionSessionState
-                  >(
-                    builder:
-                        (context, state) => state.maybeWhen(
-                          loading:
-                              () => const Center(
-                                child: LinearProgressIndicator(),
-                              ),
+                  child:
+                      BlocBuilder<
+                        GetMissionSessionCubit,
+                        GetMissionSessionState
+                      >(
+                        builder: (context, state) => state.maybeWhen(
+                          loading: () => const Center(
+                            child: LinearProgressIndicator(),
+                          ),
                           error: (message) => Center(child: Text(message)),
                           orElse: () => const SizedBox(),
                         ),
+                      ),
+                ),
+                SingleStreamWrapper(
+                  stream: _missionSessionStream,
+                  nullWidget: defaultEmptyStateWidget,
+                  loading: defaultLoadingWidget,
+                  widget: (context, missionSession) => MissionSessionDataView(
+                    missionSession: missionSession,
+                    missionUlid: widget.missionUlid,
                   ),
                 ),
                 SingleStreamWrapper(
                   stream: _missionSessionStream,
                   nullWidget: defaultEmptyStateWidget,
                   loading: defaultLoadingWidget,
-                  widget:
-                      (context, missionSession) => MissionSessionDataView(
-                        missionSession: missionSession,
-                        missionUlid: widget.missionUlid,
-                      ),
-                ),
-                SingleStreamWrapper(
-                  stream: _missionSessionStream,
-                  nullWidget: defaultEmptyStateWidget,
-                  loading: defaultLoadingWidget,
-                  widget:
-                      (context, missionSession) =>
-                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  widget: (context, missionSession) =>
+                      const SliverToBoxAdapter(child: SizedBox(height: 16)),
                 ),
 
                 SingleStreamWrapper(
                   stream: _missionSessionStream,
                   nullWidget: defaultEmptyStateWidget,
                   loading: defaultLoadingWidget,
-                  widget:
-                      (context, missionSession) => const SliverToBoxAdapter(
-                        child: Divider(thickness: 2),
-                      ),
+                  widget: (context, missionSession) => const SliverToBoxAdapter(
+                    child: Divider(thickness: 2),
+                  ),
                 ),
 
                 SingleStreamWrapper(
                   stream: _missionSessionStream,
                   nullWidget: defaultEmptyStateWidget,
                   loading: defaultLoadingWidget,
-                  widget:
-                      (context, missionSession) =>
-                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                  widget: (context, missionSession) =>
+                      const SliverToBoxAdapter(child: SizedBox(height: 16)),
                 ),
                 SingleStreamWrapper(
                   stream: _missionSessionStream,
                   nullWidget: defaultEmptyStateWidget,
                   loading: defaultLoadingWidget,
-                  widget:
-                      (context, missionSession) => SliverToBoxAdapter(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FormFieldLabel(
-                                label: l10n.recordings,
+                  widget: (context, missionSession) => SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40.w),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FormFieldLabel(
+                            label: l10n.recordings,
 
-                                isBold: true,
-                              ),
-                              SizedBox(
-                                width: 500.w,
-                                child: PRFPrimaryButton(
-                                  title: l10n.uploadRecording,
-                                  onPressed:
-                                      () => WoltModalSheet.show<void>(
-                                        context: context,
-                                        pageListBuilder: (modalSheetContext) {
-                                          return [
-                                            WoltModalSheetPage(
-                                              backgroundColor: Colors.white,
-                                              surfaceTintColor: Colors.white,
-                                              child: SizedBox(
-                                                height:
-                                                    MediaQuery.sizeOf(
-                                                      context,
-                                                    ).height *
-                                                    0.8,
-                                                child: AddAudioView(
-                                                  missionSessionUlid:
-                                                      missionSessionUlid,
-                                                ),
-                                              ),
-                                            ),
-                                          ];
-                                        },
+                            isBold: true,
+                          ),
+                          SizedBox(
+                            width: 500.w,
+                            child: PRFPrimaryButton(
+                              title: l10n.uploadRecording,
+                              onPressed: () => WoltModalSheet.show<void>(
+                                context: context,
+                                pageListBuilder: (modalSheetContext) {
+                                  return [
+                                    WoltModalSheetPage(
+                                      backgroundColor: Colors.white,
+                                      surfaceTintColor: Colors.white,
+                                      child: SizedBox(
+                                        height:
+                                            MediaQuery.sizeOf(
+                                              context,
+                                            ).height *
+                                            0.8,
+                                        child: AddAudioView(
+                                          missionSessionUlid:
+                                              missionSessionUlid,
+                                        ),
                                       ),
-                                  disabled: false,
-                                ),
+                                    ),
+                                  ];
+                                },
                               ),
-                            ],
+                              disabled: false,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SingleStreamWrapper(
+                  stream: _missionSessionStream,
+                  nullWidget: defaultEmptyStateWidget,
+                  loading: defaultLoadingWidget,
+                  widget: (context, missionSession) =>
+                      const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                ),
+                SingleStreamWrapper(
+                  stream: _missionSessionStream,
+                  nullWidget: defaultEmptyStateWidget,
+                  loading: defaultLoadingWidget,
+                  widget: (context, missionSession) =>
+                      missionSession.transcripts.isEmpty
+                      ? SliverFillRemaining(
+                          child: Center(
+                            child: Text(
+                              l10n.noRecordings,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
+                        )
+                      : SliverList.builder(
+                          itemCount: missionSession.transcripts.length,
+                          itemBuilder: (context, index) => _viewTranscripts(
+                            missionSession.transcripts[index],
+                            index,
+                            l10n,
                           ),
                         ),
-                      ),
-                ),
-                SingleStreamWrapper(
-                  stream: _missionSessionStream,
-                  nullWidget: defaultEmptyStateWidget,
-                  loading: defaultLoadingWidget,
-                  widget:
-                      (context, missionSession) =>
-                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                ),
-                SingleStreamWrapper(
-                  stream: _missionSessionStream,
-                  nullWidget: defaultEmptyStateWidget,
-                  loading: defaultLoadingWidget,
-                  widget:
-                      (context, missionSession) =>
-                          missionSession.transcripts.isEmpty
-                              ? SliverFillRemaining(
-                                child: Center(
-                                  child: Text(
-                                    l10n.noRecordings,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ),
-                              )
-                              : SliverList.builder(
-                                itemCount: missionSession.transcripts.length,
-                                itemBuilder:
-                                    (context, index) => _viewTranscripts(
-                                      missionSession.transcripts[index],
-                                      index,
-                                      l10n,
-                                    ),
-                              ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 16)),
               ],
@@ -319,16 +306,14 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 },
               );
             },
-            builder:
-                (context, state) => state.maybeWhen(
-                  orElse: () => const Icon(Icons.download),
-                  loading: PRFCircularProgressIndicator.new,
-                ),
+            builder: (context, state) => state.maybeWhen(
+              orElse: () => const Icon(Icons.download),
+              loading: PRFCircularProgressIndicator.new,
+            ),
           ),
-          onPressed:
-              () => context.read<DownloadFileCubit>().downloadFile(
-                transcript.media!.temporaryURL!,
-              ),
+          onPressed: () => context.read<DownloadFileCubit>().downloadFile(
+            transcript.media!.temporaryURL!,
+          ),
         ),
       ),
       if (transcript.content?.isEmpty ?? false)
@@ -455,25 +440,24 @@ class MissionSessionDataView extends StatelessWidget {
             Expanded(
               child: PRFPrimaryButton(
                 title: l10n.edit,
-                onPressed:
-                    () => WoltModalSheet.show<void>(
-                      context: context,
-                      pageListBuilder: (modalSheetContext) {
-                        return [
-                          WoltModalSheetPage(
-                            backgroundColor: Colors.white,
-                            surfaceTintColor: Colors.white,
-                            child: SizedBox(
-                              height: MediaQuery.sizeOf(context).height * 0.8,
-                              child: UpdateSessionView(
-                                missionUlid: missionUlid,
-                                missionSession: missionSession,
-                              ),
-                            ),
+                onPressed: () => WoltModalSheet.show<void>(
+                  context: context,
+                  pageListBuilder: (modalSheetContext) {
+                    return [
+                      WoltModalSheetPage(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
+                        child: SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.8,
+                          child: UpdateSessionView(
+                            missionUlid: missionUlid,
+                            missionSession: missionSession,
                           ),
-                        ];
-                      },
-                    ),
+                        ),
+                      ),
+                    ];
+                  },
+                ),
                 disabled: false,
               ),
             ),
@@ -482,68 +466,66 @@ class MissionSessionDataView extends StatelessWidget {
               child: PRFDestoryButton(
                 title: l10n.delete,
                 disabled: false,
-                onPressed:
-                    () async => showDialog<void>(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text(l10n.deleteSession),
-                          content: Text(l10n.confirmDelete),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: Text(l10n.cancel),
-                            ),
-                            BlocConsumer<
-                              DeleteMissionSessionCubit,
-                              DeleteMissionSessionState
-                            >(
-                              listener: (context, state) {
-                                state.mapOrNull(
-                                  loaded: (_) {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                    context
-                                        .read<GetMissionSessionsCubit>()
-                                        .getMissionSessions(
-                                          missionUlid: missionUlid,
-                                        );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(l10n.sessionDeleted),
-                                      ),
+                onPressed: () async => showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(l10n.deleteSession),
+                      content: Text(l10n.confirmDelete),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(l10n.cancel),
+                        ),
+                        BlocConsumer<
+                          DeleteMissionSessionCubit,
+                          DeleteMissionSessionState
+                        >(
+                          listener: (context, state) {
+                            state.mapOrNull(
+                              loaded: (_) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                                context
+                                    .read<GetMissionSessionsCubit>()
+                                    .getMissionSessions(
+                                      missionUlid: missionUlid,
                                     );
-                                  },
-                                  error: (e) {
-                                    Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(e.message)),
-                                    );
-                                  },
-                                );
-                              },
-                              builder: (context, state) {
-                                return TextButton(
-                                  onPressed: () {
-                                    context
-                                        .read<DeleteMissionSessionCubit>()
-                                        .deleteMissionSession(
-                                          missionSessionUlid:
-                                              missionSession.ulid,
-                                        );
-                                  },
-                                  child: state.maybeWhen(
-                                    orElse: () => Text(l10n.delete),
-                                    loading:
-                                        () => const CircularProgressIndicator(),
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(l10n.sessionDeleted),
                                   ),
                                 );
                               },
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                              error: (e) {
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.message)),
+                                );
+                              },
+                            );
+                          },
+                          builder: (context, state) {
+                            return TextButton(
+                              onPressed: () {
+                                context
+                                    .read<DeleteMissionSessionCubit>()
+                                    .deleteMissionSession(
+                                      missionSessionUlid: missionSession.ulid,
+                                    );
+                              },
+                              child: state.maybeWhen(
+                                orElse: () => Text(l10n.delete),
+                                loading: () =>
+                                    const CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ],

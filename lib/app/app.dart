@@ -21,68 +21,66 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(1290, 2796),
-      builder:
-          (context, child) => ValueListenableBuilder<dynamic>(
-            valueListenable:
-                Hive.box<dynamic>(
-                  PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
-                ).listenable(),
-            builder: (context, _, _) {
-              final isLoggedOut = getIt<HiveService>().isLoggedOut();
-              Logger().e('isLoggedOut: $isLoggedOut');
-              if (isLoggedOut) {
-                getIt<PRFSuperAppRouter>().pushNamed(
-                  PRFSuperAppRouter.decisionRoute,
-                );
-              }
+      builder: (context, child) => ValueListenableBuilder<dynamic>(
+        valueListenable: Hive.box<dynamic>(
+          PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+        ).listenable(),
+        builder: (context, _, _) {
+          final isLoggedOut = getIt<HiveService>().isLoggedOut();
+          Logger().e('isLoggedOut: $isLoggedOut');
+          if (isLoggedOut) {
+            getIt<PRFSuperAppRouter>().pushNamed(
+              PRFSuperAppRouter.decisionRoute,
+            );
+          }
 
-              final textTheme = PRFTextTheme.getLightTheme(context);
+          final textTheme = PRFTextTheme.getLightTheme(context);
 
-              return PostHogWidget(
-                child: MaterialApp.router(
-                  debugShowCheckedModeBanner: false,
-                  theme: PRFTheme.light.copyWith(
-                    textTheme: textTheme,
-                    dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme
-                        .copyWith(textStyle: textTheme.bodySmall),
-                    tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
-                      labelStyle: textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: const Color(PRFTheme.primaryColor),
-                      ),
-                      unselectedLabelStyle: textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+          return PostHogWidget(
+            child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme: PRFTheme.light.copyWith(
+                textTheme: textTheme,
+                dropdownMenuTheme: PRFTheme.light.dropdownMenuTheme.copyWith(
+                  textStyle: textTheme.bodySmall,
+                ),
+                tabBarTheme: PRFTheme.light.tabBarTheme.copyWith(
+                  labelStyle: textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: const Color(PRFTheme.primaryColor),
+                  ),
+                  unselectedLabelStyle: textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+                inputDecorationTheme: PRFTheme.light.inputDecorationTheme
+                    .copyWith(
+                      hintStyle: textTheme.bodySmall?.copyWith(
                         color: Colors.grey,
                       ),
+                      labelStyle: textTheme.bodySmall,
                     ),
-                    inputDecorationTheme: PRFTheme.light.inputDecorationTheme
-                        .copyWith(
-                          hintStyle: textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
-                          ),
-                          labelStyle: textTheme.bodySmall,
-                        ),
-                    dataTableTheme: PRFTheme.light.dataTableTheme.copyWith(
-                      dataTextStyle: textTheme.bodyMedium,
-                      headingTextStyle: textTheme.headlineMedium,
-                    ),
-                    snackBarTheme: PRFTheme.light.snackBarTheme.copyWith(
-                      contentTextStyle: textTheme.bodySmall?.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    iconTheme: PRFTheme.light.iconTheme.copyWith(
-                      size: 24 * Misc.getScaleFactor(context),
-                    ),
-                  ),
-                  localizationsDelegates:
-                      AppLocalizations.localizationsDelegates,
-                  supportedLocales: AppLocalizations.supportedLocales,
-                  routerConfig: getIt<PRFSuperAppRouter>().config(),
+                dataTableTheme: PRFTheme.light.dataTableTheme.copyWith(
+                  dataTextStyle: textTheme.bodyMedium,
+                  headingTextStyle: textTheme.headlineMedium,
                 ),
-              );
-            },
-          ),
+                snackBarTheme: PRFTheme.light.snackBarTheme.copyWith(
+                  contentTextStyle: textTheme.bodySmall?.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                iconTheme: PRFTheme.light.iconTheme.copyWith(
+                  size: 24 * Misc.getScaleFactor(context),
+                ),
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              routerConfig: getIt<PRFSuperAppRouter>().config(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

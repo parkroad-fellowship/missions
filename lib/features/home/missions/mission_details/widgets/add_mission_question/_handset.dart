@@ -71,28 +71,27 @@ class _AddMissionQuestionViewHandsetState
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (_questionController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterQuestion)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (_questionController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterQuestion)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context
-                              .read<AddMissionQuestionCubit>()
-                              .addMissionQuestion(
-                                missionUlid: widget.missionUlid,
-                                question: _questionController.text,
-                              );
-                        },
-                      ),
+                      await context
+                          .read<AddMissionQuestionCubit>()
+                          .addMissionQuestion(
+                            missionUlid: widget.missionUlid,
+                            question: _questionController.text,
+                          );
+                    },
+                  ),
                 );
               },
             ),

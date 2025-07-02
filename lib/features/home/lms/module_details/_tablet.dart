@@ -66,10 +66,9 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.courseDetailsRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.courseDetailsRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -183,14 +182,13 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
 
                   return SliverList.separated(
                     itemCount: courseModules!.length,
-                    itemBuilder:
-                        (context, index) => ModuleDetailsActionCard(
-                          lessonModule: courseModules[index],
-                          courseUlid: widget.courseUlid,
-                          moduleUlid: widget.moduleUlid,
-                        ),
-                    separatorBuilder:
-                        (context, index) => SizedBox(height: 16.h),
+                    itemBuilder: (context, index) => ModuleDetailsActionCard(
+                      lessonModule: courseModules[index],
+                      courseUlid: widget.courseUlid,
+                      moduleUlid: widget.moduleUlid,
+                    ),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
                   );
                 },
               ),

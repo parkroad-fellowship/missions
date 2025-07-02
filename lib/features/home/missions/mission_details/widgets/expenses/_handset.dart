@@ -47,20 +47,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => const Center(child: CircularProgressIndicator()),
-          empty:
-              () => Center(
-                child: Text(
-                  l10n.askMissionDeskToDisburseFunds,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
+          empty: () => Center(
+            child: Text(
+              l10n.askMissionDeskToDisburseFunds,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ),
           loaded: (missionExpense) {
             Logger().f(missionExpense.expenses);
             return RefreshIndicator(
-              onRefresh:
-                  () => context
-                      .read<GetMissionExpenseCubit>()
-                      .getMissionExpense(missionUlid: missionUlid),
+              onRefresh: () => context
+                  .read<GetMissionExpenseCubit>()
+                  .getMissionExpense(missionUlid: missionUlid),
               child: CustomScrollView(
                 slivers: [
                   // Start Navigation Bar
@@ -80,23 +78,22 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                             return IconButton(
                               icon: state.maybeWhen(
                                 orElse: () => const Icon(Icons.refresh),
-                                loading:
-                                    () => const CircularProgressIndicator(),
+                                loading: () =>
+                                    const CircularProgressIndicator(),
                                 loaded: (_) => const Icon(Icons.refresh),
                               ),
-                              onPressed:
-                                  () => context
-                                      .read<GetMissionExpenseCubit>()
-                                      .getMissionExpense(
-                                        missionUlid: missionUlid,
-                                      ),
+                              onPressed: () => context
+                                  .read<GetMissionExpenseCubit>()
+                                  .getMissionExpense(
+                                    missionUlid: missionUlid,
+                                  ),
                             );
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.mail),
-                          onPressed:
-                              () => WoltModalSheet.show<void>(
+                          onPressed: () =>
+                              WoltModalSheet.show<void>(
                                 context: context,
                                 pageListBuilder: (modalSheetContext) {
                                   return [
@@ -295,58 +292,56 @@ class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
         DataColumn(label: _title(l10n.unitCostAndQty)),
         DataColumn(label: _title(l10n.totalCost)),
       ],
-      rows:
-          expenses
-              .map(
-                (expense) => DataRow(
-                  onLongPress:
-                      () => _showExpenseDetails(
-                        context,
-                        expense,
-                        missionUlid,
-                        timezone,
-                      ),
-                  cells: [
-                    DataCell(
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              expense.expenseCategory!.name,
-                              softWrap: true,
-                              overflow: TextOverflow.visible,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            if (expense.narration.isNotEmpty)
-                              Text(
-                                '- ${expense.narration}',
-
-                                softWrap: true,
-                                overflow: TextOverflow.visible,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                          ],
+      rows: expenses
+          .map(
+            (expense) => DataRow(
+              onLongPress: () => _showExpenseDetails(
+                context,
+                expense,
+                missionUlid,
+                timezone,
+              ),
+              cells: [
+                DataCell(
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          expense.expenseCategory!.name,
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                      ),
+                        if (expense.narration.isNotEmpty)
+                          Text(
+                            '- ${expense.narration}',
+
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                      ],
                     ),
-                    DataCell(
-                      _text(
-                        '${Misc.formatCash(expense.unitCost)} x'
-                        ' ${expense.quantity}',
-                      ),
-                    ),
-                    DataCell(
-                      _text(
-                        '${Misc.formatCash(expense.lineTotal)} '
-                        '(${Misc.formatCash(expense.charge)})',
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              )
-              .toList(),
+                DataCell(
+                  _text(
+                    '${Misc.formatCash(expense.unitCost)} x'
+                    ' ${expense.quantity}',
+                  ),
+                ),
+                DataCell(
+                  _text(
+                    '${Misc.formatCash(expense.lineTotal)} '
+                    '(${Misc.formatCash(expense.charge)})',
+                  ),
+                ),
+              ],
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -399,206 +394,203 @@ Future<void> _showExpenseDetails(
   return WoltModalSheet.show<dynamic>(
     context: context,
     useSafeArea: true,
-    pageListBuilder:
-        (_) => [
-          WoltModalSheetPage(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ) +
-                  const EdgeInsets.only(bottom: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    pageListBuilder: (_) => [
+      WoltModalSheetPage(
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(
+                horizontal: 16,
+              ) +
+              const EdgeInsets.only(bottom: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.expenseDetails,
-                        style:
-                            Theme.of(
-                              context,
-                            ).textTheme.headlineMedium,
-                      ),
-                      BlocConsumer<UploadMediaCubit, UploadMediaState>(
-                        listener: (context, state) {
-                          state.maybeWhen(
-                            orElse: () {},
-                            loading: () {
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    l10n.pleaseWaitForUpload,
-                                  ),
-                                ),
-                              );
-                            },
-                            loaded: () {
-                              context
-                                  .read<GetMissionExpenseCubit>()
-                                  .getMissionExpense(
-                                    missionUlid: missionUlid,
-                                  );
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    l10n.successfulUpload,
-                                  ),
-                                ),
-                              );
-                            },
-                            error: (message) {
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            orElse:
-                                () => IconButton(
-                                  icon: const Icon(
-                                    Icons.receipt_long,
-                                  ),
-                                  onPressed:
-                                      () => context
-                                          .read<SelectMediaCubit>()
-                                          .selectMedia(
-                                            context: context,
-                                            modelUlid: expense.ulid,
-                                            model: PRFMediaModel.expenses,
-                                            mediaType: RequestType.image,
-                                          )
-                                          .then((_) {
-                                            if (context.mounted) {
-                                              context
-                                                  .read<UploadMediaCubit>()
-                                                  .uploadMedia();
-                                            }
-                                          }),
-                                ),
-                            loading: () => const PRFCircularProgressIndicator(),
-                          );
-                        },
-                      ),
-                    ],
+                  Text(
+                    l10n.expenseDetails,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 16),
-                  _buildDetailRow(
-                    context,
-                    l10n.expenseCategory,
-                    expense.expenseCategory?.name ?? 'N/A',
-                  ),
-                  _buildDetailRow(
-                    context,
-                    l10n.narration,
-                    expense.narration.isNotEmpty ? expense.narration : 'N/A',
-                  ),
-                  _buildDetailRow(
-                    context,
-                    l10n.unitCost,
-                    Misc.formatCash(expense.unitCost),
-                  ),
-                  _buildDetailRow(
-                    context,
-                    l10n.quantity,
-                    expense.quantity.toString(),
-                  ),
-                  _buildDetailRow(
-                    context,
-                    l10n.total,
-                    Misc.formatCash(expense.lineTotal),
-                  ),
-                  _buildDetailRow(
-                    context,
-                    l10n.charge,
-                    Misc.formatCash(expense.charge),
-                  ),
-                  _buildDetailRow(
-                    context,
-                    l10n.addedOn,
-                    Misc.timestamp(
-                      expense.createdAt,
-                      timezone,
-                    ),
-                  ),
-                  if (expense.confirmationMessage != null) ...[
-                    const SizedBox(height: 16),
-                    Text(
-                      l10n.confirmationMessage,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(expense.confirmationMessage ?? ''),
-                  ],
-                  if (expense.receipts.isNotEmpty) ...[
-                    const SizedBox(height: 16),
-                    Text(
-                      l10n.receipts,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: expense.receipts.length,
-                        itemBuilder: (context, index) {
-                          final receipt = expense.receipts[index];
-                          return GestureDetector(
-                            onTap:
-                                () => _viewReceipt(
-                                  context,
-                                  receipt,
-                                ),
-                            child: Container(
-                              width: 80,
-                              margin: const EdgeInsets.only(
-                                right: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  8,
-                                ),
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.receipt,
-                                  size: 40,
-                                ),
+                  BlocConsumer<UploadMediaCubit, UploadMediaState>(
+                    listener: (context, state) {
+                      state.maybeWhen(
+                        orElse: () {},
+                        loading: () {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                l10n.pleaseWaitForUpload,
                               ),
                             ),
                           );
                         },
-                      ),
-                    ),
-                  ],
+                        loaded: () {
+                          context
+                              .read<GetMissionExpenseCubit>()
+                              .getMissionExpense(
+                                missionUlid: missionUlid,
+                              );
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                l10n.successfulUpload,
+                              ),
+                            ),
+                          );
+                        },
+                        error: (message) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(
+                            SnackBar(
+                              content: Text(message),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        orElse: () => IconButton(
+                          icon: const Icon(
+                            Icons.receipt_long,
+                          ),
+                          onPressed: () => context
+                              .read<SelectMediaCubit>()
+                              .selectMedia(
+                                context: context,
+                                modelUlid: expense.ulid,
+                                model: PRFMediaModel.expenses,
+                                mediaType: RequestType.image,
+                              )
+                              .then((_) {
+                                if (context.mounted) {
+                                  context
+                                      .read<UploadMediaCubit>()
+                                      .uploadMedia();
+                                }
+                              }),
+                        ),
+                        loading: () => const PRFCircularProgressIndicator(),
+                      );
+                    },
+                  ),
                 ],
               ),
-            ),
+              const SizedBox(height: 16),
+              _buildDetailRow(
+                context,
+                l10n.expenseCategory,
+                expense.expenseCategory?.name ?? 'N/A',
+              ),
+              _buildDetailRow(
+                context,
+                l10n.narration,
+                expense.narration.isNotEmpty ? expense.narration : 'N/A',
+              ),
+              _buildDetailRow(
+                context,
+                l10n.unitCost,
+                Misc.formatCash(expense.unitCost),
+              ),
+              _buildDetailRow(
+                context,
+                l10n.quantity,
+                expense.quantity.toString(),
+              ),
+              _buildDetailRow(
+                context,
+                l10n.total,
+                Misc.formatCash(expense.lineTotal),
+              ),
+              _buildDetailRow(
+                context,
+                l10n.charge,
+                Misc.formatCash(expense.charge),
+              ),
+              _buildDetailRow(
+                context,
+                l10n.addedOn,
+                Misc.timestamp(
+                  expense.createdAt,
+                  timezone,
+                ),
+              ),
+              if (expense.confirmationMessage != null) ...[
+                const SizedBox(height: 16),
+                Text(
+                  l10n.confirmationMessage,
+                  style:
+                      Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                Text(expense.confirmationMessage ?? ''),
+              ],
+              if (expense.receipts.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Text(
+                  l10n.receipts,
+                  style:
+                      Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: expense.receipts.length,
+                    itemBuilder: (context, index) {
+                      final receipt = expense.receipts[index];
+                      return GestureDetector(
+                        onTap: () => _viewReceipt(
+                          context,
+                          receipt,
+                        ),
+                        child: Container(
+                          width: 80,
+                          margin: const EdgeInsets.only(
+                            right: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              8,
+                            ),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.receipt,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ],
           ),
-        ],
+        ),
+      ),
+    ],
   );
 }
 
@@ -677,11 +669,10 @@ Future<void> _viewReceipt(BuildContext context, PRFMedia receipt) =>
                         if (loadingProgress == null) return child;
                         return Center(
                           child: CircularProgressIndicator(
-                            value:
-                                loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                : null,
                           ),
                         );
                       },

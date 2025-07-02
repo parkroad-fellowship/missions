@@ -50,8 +50,8 @@ class NetworkUtil {
       );
     }
 
-    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
-        () => HttpClient()..badCertificateCallback = (_, _, _) => true;
+    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () =>
+        HttpClient()..badCertificateCallback = (_, _, _) => true;
     return dio;
   }
 
@@ -61,12 +61,13 @@ class NetworkUtil {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient(
-        apiVersion: apiVersion,
-      ).get<dynamic>(
-        url,
-        queryParameters: queryParameters,
-      );
+      final response =
+          await _getHttpClient(
+            apiVersion: apiVersion,
+          ).get<dynamic>(
+            url,
+            queryParameters: queryParameters,
+          );
 
       final responseBody = response.data as Map<String, dynamic>;
 
@@ -126,13 +127,14 @@ class NetworkUtil {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient(
-        apiVersion: apiVersion,
-      ).post<dynamic>(
-        url,
-        data: body,
-        queryParameters: queryParameters,
-      );
+      final response =
+          await _getHttpClient(
+            apiVersion: apiVersion,
+          ).post<dynamic>(
+            url,
+            data: body,
+            queryParameters: queryParameters,
+          );
 
       final responseBody = response.data as Map<String, dynamic>;
 
@@ -205,13 +207,14 @@ class NetworkUtil {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient(
-        apiVersion: apiVersion,
-      ).put<dynamic>(
-        url,
-        data: body,
-        queryParameters: queryParameters,
-      );
+      final response =
+          await _getHttpClient(
+            apiVersion: apiVersion,
+          ).put<dynamic>(
+            url,
+            data: body,
+            queryParameters: queryParameters,
+          );
 
       final responseBody = response.data as Map<String, dynamic>;
 
@@ -347,16 +350,17 @@ class NetworkUtil {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await _getHttpClient(
-        apiVersion: apiVersion,
-      ).post<dynamic>(
-        url,
-        data: FormData.fromMap(<String, dynamic>{
-          field: await MultipartFile.fromFile(filePath),
-          ...?body,
-        }),
-        queryParameters: queryParameters,
-      );
+      final response =
+          await _getHttpClient(
+            apiVersion: apiVersion,
+          ).post<dynamic>(
+            url,
+            data: FormData.fromMap(<String, dynamic>{
+              field: await MultipartFile.fromFile(filePath),
+              ...?body,
+            }),
+            queryParameters: queryParameters,
+          );
 
       final responseBody = response.data as Map<String, dynamic>;
 

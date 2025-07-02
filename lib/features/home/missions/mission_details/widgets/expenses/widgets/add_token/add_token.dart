@@ -10,12 +10,11 @@ class AddTokenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
+      defaultBuilder: (_, _) =>
+          AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset:
-            (_, _) =>
-                AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
+        handset: (_, _) =>
+            AddTokenViewHandset(missionExpenseUlid: missionExpenseUlid),
       ),
     );
   }

@@ -50,30 +50,27 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
                   loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded:
-                      (classes) => LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFPaymentType>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedPaymentType,
-                            hintText: l10n.reasonForGiving,
-                            dropdownMenuEntries:
-                                classes
-                                    .map(
-                                      (paymentType) =>
-                                          DropdownMenuEntry<PRFPaymentType>(
-                                            value: paymentType,
-                                            label: paymentType.name,
-                                          ),
-                                    )
-                                    .toList(),
-                            onSelected:
-                                (paymentType) => setState(() {
-                                  selectedPaymentType = paymentType;
-                                }),
-                          );
-                        },
-                      ),
+                  loaded: (classes) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<PRFPaymentType>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedPaymentType,
+                        hintText: l10n.reasonForGiving,
+                        dropdownMenuEntries: classes
+                            .map(
+                              (paymentType) =>
+                                  DropdownMenuEntry<PRFPaymentType>(
+                                    value: paymentType,
+                                    label: paymentType.name,
+                                  ),
+                            )
+                            .toList(),
+                        onSelected: (paymentType) => setState(() {
+                          selectedPaymentType = paymentType;
+                        }),
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -121,36 +118,35 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (_amountController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterAmount)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (_amountController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterAmount)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (selectedPaymentType == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.selectReasonForGiving),
-                              ),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (selectedPaymentType == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.selectReasonForGiving),
+                          ),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context.read<AddPaymentCubit>().addPayment(
-                            amount: _amountController.text.trim(),
-                            paymentTypeUlid: selectedPaymentType!.ulid,
-                          );
-                        },
-                      ),
+                      await context.read<AddPaymentCubit>().addPayment(
+                        amount: _amountController.text.trim(),
+                        paymentTypeUlid: selectedPaymentType!.ulid,
+                      );
+                    },
+                  ),
                 );
               },
             ),

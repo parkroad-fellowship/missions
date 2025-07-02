@@ -81,23 +81,20 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               padding: const EdgeInsets.only(left: 16, right: 8),
-              onPressed:
-                  () => context.router.popUntilRouteWithPath(
-                    PRFSuperAppRouter.landingRoute,
-                  ),
+              onPressed: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.landingRoute,
+              ),
             ),
           ),
           actions: [
             BlocBuilder<GetMissionsCubit, GetMissionsState>(
-              builder:
-                  (context, state) => state.maybeWhen(
-                    loading:
-                        () => const SizedBox.square(
-                          dimension: 24,
-                          child: PRFCircularProgressIndicator(),
-                        ),
-                    orElse: SizedBox.shrink,
-                  ),
+              builder: (context, state) => state.maybeWhen(
+                loading: () => const SizedBox.square(
+                  dimension: 24,
+                  child: PRFCircularProgressIndicator(),
+                ),
+                orElse: SizedBox.shrink,
+              ),
             ),
             const SizedBox(width: 8),
 
@@ -105,15 +102,13 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
               GetMemberMissionSubscriptionsCubit,
               GetMemberMissionSubscriptionsState
             >(
-              builder:
-                  (context, state) => state.maybeWhen(
-                    loading:
-                        () => const SizedBox.square(
-                          dimension: 24,
-                          child: PRFCircularProgressIndicator(),
-                        ),
-                    orElse: SizedBox.shrink,
-                  ),
+              builder: (context, state) => state.maybeWhen(
+                loading: () => const SizedBox.square(
+                  dimension: 24,
+                  child: PRFCircularProgressIndicator(),
+                ),
+                orElse: SizedBox.shrink,
+              ),
             ),
             const SizedBox(width: 16),
           ],
@@ -121,7 +116,10 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
           bottom: TabBar(
             controller: _tabController,
             isScrollable: true,
-            tabs: [Tab(text: l10n.all), Tab(text: l10n.subscribed)],
+            tabs: [
+              Tab(text: l10n.all),
+              Tab(text: l10n.subscribed),
+            ],
           ),
         ),
         body: TabBarView(
@@ -143,8 +141,8 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
                 if (missions != null && missions.isEmpty) {
                   return RefreshIndicator(
-                    onRefresh:
-                        () => context.read<GetMissionsCubit>().getMissions(),
+                    onRefresh: () =>
+                        context.read<GetMissionsCubit>().getMissions(),
                     child: Column(
                       children: [
                         const Spacer(),
@@ -175,23 +173,21 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                 }
 
                 return RefreshIndicator(
-                  onRefresh:
-                      () => context.read<GetMissionsCubit>().getMissions(),
+                  onRefresh: () =>
+                      context.read<GetMissionsCubit>().getMissions(),
                   child: ListView.separated(
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: missions!.length,
-                    separatorBuilder:
-                        (context, index) => SizedBox(height: 16.h),
-                    itemBuilder:
-                        (context, index) => MissionActionCard(
-                          mission: missions[index],
-                          onTap:
-                              () => context.router.push(
-                                MissionsDetailsRoute(
-                                  missionUlid: missions[index].ulid,
-                                ),
-                              ),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
+                    itemBuilder: (context, index) => MissionActionCard(
+                      mission: missions[index],
+                      onTap: () => context.router.push(
+                        MissionsDetailsRoute(
+                          missionUlid: missions[index].ulid,
                         ),
+                      ),
+                    ),
                   ),
                 );
               },
@@ -212,11 +208,9 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
                 if (missions != null && missions.isEmpty) {
                   return RefreshIndicator(
-                    onRefresh:
-                        () =>
-                            context
-                                .read<GetMemberMissionSubscriptionsCubit>()
-                                .getSubscriptions(),
+                    onRefresh: () => context
+                        .read<GetMemberMissionSubscriptionsCubit>()
+                        .getSubscriptions(),
                     child: Column(
                       children: [
                         const Spacer(),
@@ -247,28 +241,25 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                 }
 
                 return RefreshIndicator(
-                  onRefresh:
-                      () =>
-                          context
-                              .read<GetMemberMissionSubscriptionsCubit>()
-                              .getSubscriptions(),
+                  onRefresh: () => context
+                      .read<GetMemberMissionSubscriptionsCubit>()
+                      .getSubscriptions(),
                   child: ListView.separated(
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: missions!.length,
-                    separatorBuilder:
-                        (context, index) => SizedBox(height: 16.h),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
                     itemBuilder: (context, index) {
                       final mission = missions[index];
                       return MissionActionCard(
                         mission: mission,
                         status:
                             mission.loggedInMemberMissionSubscription!.status,
-                        onTap:
-                            () => context.router.push(
-                              MissionsDetailsRoute(
-                                missionUlid: missions[index].ulid,
-                              ),
-                            ),
+                        onTap: () => context.router.push(
+                          MissionsDetailsRoute(
+                            missionUlid: missions[index].ulid,
+                          ),
+                        ),
                       );
                     },
                   ),

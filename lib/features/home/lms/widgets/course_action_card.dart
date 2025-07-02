@@ -19,10 +19,9 @@ class CourseActionCard extends StatelessWidget {
     return Animate(
       effects: const [ScaleEffect()],
       child: GestureDetector(
-        onTap:
-            () => context.router.push(
-              CourseDetailsRoute(courseUlid: course.ulid),
-            ),
+        onTap: () => context.router.push(
+          CourseDetailsRoute(courseUlid: course.ulid),
+        ),
         child: Stack(
           children: [
             Container(

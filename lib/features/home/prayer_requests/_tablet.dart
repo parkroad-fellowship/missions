@@ -57,10 +57,9 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
                       child: IconButton(
                         icon: const Icon(Icons.arrow_back_ios),
                         padding: const EdgeInsets.only(left: 8),
-                        onPressed:
-                            () => context.router.popUntilRouteWithPath(
-                              PRFSuperAppRouter.landingRoute,
-                            ),
+                        onPressed: () => context.router.popUntilRouteWithPath(
+                          PRFSuperAppRouter.landingRoute,
+                        ),
                       ),
                     ),
                     const Spacer(),
@@ -82,23 +81,19 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
               BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse:
-                        () => const SliverFillRemaining(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                    error:
-                        (message) => SliverFillRemaining(
-                          child: Center(child: Text(message)),
-                        ),
+                    orElse: () => const SliverFillRemaining(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    error: (message) => SliverFillRemaining(
+                      child: Center(child: Text(message)),
+                    ),
                     loaded: (prayerRequests) {
                       if (prayerRequests.isEmpty) {
                         return SliverFillRemaining(
                           child: RefreshIndicator(
-                            onRefresh:
-                                () =>
-                                    context
-                                        .read<GetPrayerRequestsCubit>()
-                                        .fetchPrayerRequests(),
+                            onRefresh: () => context
+                                .read<GetPrayerRequestsCubit>()
+                                .fetchPrayerRequests(),
                             child: Center(
                               child: PRFPrimaryButton(
                                 title: l10n.submitPrayerRequest,
@@ -112,14 +107,13 @@ class _PrayerRequestState extends State<PrayerRequestTablet> {
 
                       return SliverList.separated(
                         itemCount: prayerRequests.length,
-                        separatorBuilder:
-                            (context, index) => SizedBox(height: 8.h),
-                        itemBuilder:
-                            (context, index) => GestureDetector(
-                              child: PrayerRequestCard(
-                                prayerRequest: prayerRequests[index],
-                              ),
-                            ),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 8.h),
+                        itemBuilder: (context, index) => GestureDetector(
+                          child: PrayerRequestCard(
+                            prayerRequest: prayerRequests[index],
+                          ),
+                        ),
                       );
                     },
                   );

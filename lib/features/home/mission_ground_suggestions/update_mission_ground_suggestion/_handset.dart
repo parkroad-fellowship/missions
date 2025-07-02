@@ -95,10 +95,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
             InternationalPhoneNumberInput(
               textFieldController: _contactNumberController,
               countries: const ['KE'],
-              onInputChanged:
-                  (phoneNumber) => setState(() {
-                    contactNumber = phoneNumber;
-                  }),
+              onInputChanged: (phoneNumber) => setState(() {
+                contactNumber = phoneNumber;
+              }),
               textStyle: Theme.of(context).textTheme.bodySmall,
               inputDecoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -122,18 +121,18 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   width: constraints.maxWidth,
                   initialSelection: _selectedStatus,
                   hintText: l10n.facilitator,
-                  dropdownMenuEntries:
-                      PRFMissionGroundSuggestionStatus.values
-                          .map(
-                            (status) => DropdownMenuEntry<
-                              PRFMissionGroundSuggestionStatus
-                            >(value: status, label: status.name),
-                          )
-                          .toList(),
-                  onSelected:
-                      (status) => setState(() {
-                        _selectedStatus = status;
-                      }),
+                  dropdownMenuEntries: PRFMissionGroundSuggestionStatus.values
+                      .map(
+                        (status) =>
+                            DropdownMenuEntry<PRFMissionGroundSuggestionStatus>(
+                              value: status,
+                              label: status.name,
+                            ),
+                      )
+                      .toList(),
+                  onSelected: (status) => setState(() {
+                    _selectedStatus = status;
+                  }),
                 );
               },
             ),
@@ -188,51 +187,48 @@ class _UpdateMissionGroundSuggestionViewHandsetState
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (_nameController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterMissionGround)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (_nameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterMissionGround)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_contactPersonController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterContactPerson)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_contactPersonController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterContactPerson)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_contactNumberController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterContactNumber)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_contactNumberController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterContactNumber)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context
-                              .read<UpdateMissionGroundSuggestionCubit>()
-                              .updateMissionGroundSuggestion(
-                                name: _nameController.text.trim(),
-                                contactPerson:
-                                    _contactPersonController.text.trim(),
-                                contactNumber:
-                                    _contactNumberController.text.trim(),
-                                status: _selectedStatus!,
-                                notes: _notesController.text,
-                                missionGroundSuggestionUlid:
-                                    missionGroundSuggestion.ulid,
-                              );
-                        },
-                      ),
+                      await context
+                          .read<UpdateMissionGroundSuggestionCubit>()
+                          .updateMissionGroundSuggestion(
+                            name: _nameController.text.trim(),
+                            contactPerson: _contactPersonController.text.trim(),
+                            contactNumber: _contactNumberController.text.trim(),
+                            status: _selectedStatus!,
+                            notes: _notesController.text,
+                            missionGroundSuggestionUlid:
+                                missionGroundSuggestion.ulid,
+                          );
+                    },
+                  ),
                 );
               },
             ),

@@ -123,8 +123,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                             child: IconButton(
                               icon: const Icon(Icons.arrow_back_ios),
                               padding: const EdgeInsets.only(left: 8),
-                              onPressed:
-                                  () => context.router.popUntilRouteWithPath(
+                              onPressed: () =>
+                                  context.router.popUntilRouteWithPath(
                                     PRFSuperAppRouter.missionsRoute,
                                   ),
                             ),
@@ -148,10 +148,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     color: Colors.white,
                     child: TabBar(
                       controller: _tabController,
-                      onTap:
-                          (value) => setState(() {
-                            _currentTab = value;
-                          }),
+                      onTap: (value) => setState(() {
+                        _currentTab = value;
+                      }),
                       isScrollable: true,
                       tabs: [
                         Tab(text: l10n.missionGround),
@@ -215,10 +214,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
           },
           builder: (context, state) {
             return FloatingActionButton.extended(
-              onPressed:
-                  () async => context.read<SubscribeCubit>().subscribe(
-                    missionUlid: missionUlid,
-                  ),
+              onPressed: () async => context.read<SubscribeCubit>().subscribe(
+                missionUlid: missionUlid,
+              ),
               backgroundColor: Theme.of(context).colorScheme.primary,
               label: Text(
                 l10n.sendMe,
@@ -227,21 +225,18 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 ).textTheme.bodySmall?.copyWith(color: Colors.white),
               ),
               icon: BlocBuilder<SubscribeCubit, SubscribeState>(
-                builder:
-                    (context, state) => state.maybeWhen(
-                      orElse:
-                          () => const Icon(
-                            Icons.hail_rounded,
-                            color: Colors.white,
-                          ),
-                      loading:
-                          () => const SizedBox.square(
-                            dimension: 16,
-                            child: PRFCircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
+                builder: (context, state) => state.maybeWhen(
+                  orElse: () => const Icon(
+                    Icons.hail_rounded,
+                    color: Colors.white,
+                  ),
+                  loading: () => const SizedBox.square(
+                    dimension: 16,
+                    child: PRFCircularProgressIndicator(
+                      color: Colors.white,
                     ),
+                  ),
+                ),
               ),
             );
           },

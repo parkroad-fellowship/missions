@@ -10,8 +10,8 @@ class DebriefNotesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => DebriefNotesViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) =>
+          DebriefNotesViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, _) => DebriefNotesViewHandset(missionUlid: missionUlid),
       ),

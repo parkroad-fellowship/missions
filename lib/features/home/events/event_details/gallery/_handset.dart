@@ -40,11 +40,10 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
     final l10n = context.l10n;
 
     return RefreshIndicator(
-      onRefresh:
-          () => context.read<GetEventMediaCubit>().getEventMedia(
-            eventUlid: eventUlid,
-            model: PRFMediaModel.eventPhotos,
-          ),
+      onRefresh: () => context.read<GetEventMediaCubit>().getEventMedia(
+        eventUlid: eventUlid,
+        model: PRFMediaModel.eventPhotos,
+      ),
       child: CustomScrollView(
         slivers: [
           // Progress indicator for images uploading in the background
@@ -83,39 +82,34 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
           BlocBuilder<GetEventMediaCubit, GetEventMediaState>(
             builder: (context, state) {
               return state.maybeWhen(
-                orElse:
-                    () => const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                empty:
-                    () => SliverFillRemaining(
-                      child: Center(
-                        child: PRFPrimaryButton(
-                          title: l10n.addPhotos,
-                          disabled: false,
-                          onPressed:
-                              () => WoltModalSheet.show<void>(
-                                context: context,
-                                pageListBuilder: (modalSheetContext) {
-                                  return [
-                                    WoltModalSheetPage(
-                                      backgroundColor: Colors.white,
-                                      surfaceTintColor: Colors.white,
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                            0.8,
-                                        child: AddEventMediaView(
-                                          eventUlid: eventUlid,
-                                        ),
-                                      ),
-                                    ),
-                                  ];
-                                },
+                orElse: () => const SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                empty: () => SliverFillRemaining(
+                  child: Center(
+                    child: PRFPrimaryButton(
+                      title: l10n.addPhotos,
+                      disabled: false,
+                      onPressed: () => WoltModalSheet.show<void>(
+                        context: context,
+                        pageListBuilder: (modalSheetContext) {
+                          return [
+                            WoltModalSheetPage(
+                              backgroundColor: Colors.white,
+                              surfaceTintColor: Colors.white,
+                              child: SizedBox(
+                                height: MediaQuery.sizeOf(context).height * 0.8,
+                                child: AddEventMediaView(
+                                  eventUlid: eventUlid,
+                                ),
                               ),
-                        ),
+                            ),
+                          ];
+                        },
                       ),
                     ),
+                  ),
+                ),
                 loaded: (mediaItems) {
                   return SliverPadding(
                     padding: EdgeInsets.symmetric(
@@ -144,9 +138,8 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                     ),
                   );
                 },
-                error:
-                    (error) =>
-                        SliverToBoxAdapter(child: Center(child: Text(error))),
+                error: (error) =>
+                    SliverToBoxAdapter(child: Center(child: Text(error))),
               );
             },
           ),

@@ -20,14 +20,13 @@ class ModuleDetailsActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     return GestureDetector(
-      onTap:
-          () => context.router.push(
-            LessonDetailsRoute(
-              lessonModule: lessonModule,
-              courseUlid: courseUlid,
-              moduleUlid: moduleUlid,
-            ),
-          ),
+      onTap: () => context.router.push(
+        LessonDetailsRoute(
+          lessonModule: lessonModule,
+          courseUlid: courseUlid,
+          moduleUlid: moduleUlid,
+        ),
+      ),
       child: Stack(
         children: [
           Container(

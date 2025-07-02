@@ -42,15 +42,13 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
-      widget:
-          (context, debriefNotes) => ListView.separated(
-            physics: const ScrollPhysics(),
-            itemCount: debriefNotes.length,
-            separatorBuilder: (context, index) => SizedBox(height: 8.h),
-            itemBuilder:
-                (context, index) =>
-                    DebriefNoteCard(debriefNote: debriefNotes[index]),
-          ),
+      widget: (context, debriefNotes) => ListView.separated(
+        physics: const ScrollPhysics(),
+        itemCount: debriefNotes.length,
+        separatorBuilder: (context, index) => SizedBox(height: 8.h),
+        itemBuilder: (context, index) =>
+            DebriefNoteCard(debriefNote: debriefNotes[index]),
+      ),
     );
   }
 }

@@ -96,310 +96,266 @@ class Singletons {
   static List<BlocProvider> registerCubits() {
     return <BlocProvider>[
       BlocProvider<SigninCubit>(
-        create:
-            (context) => SigninCubit(
-              authService: getIt(),
-              hiveService: getIt(),
-              socketService: getIt(),
-              analyticsService: getIt(),
-            ),
+        create: (context) => SigninCubit(
+          authService: getIt(),
+          hiveService: getIt(),
+          socketService: getIt(),
+          analyticsService: getIt(),
+        ),
       ),
       BlocProvider<GoogleSignInCubit>(
         create: (context) => GoogleSignInCubit(authService: getIt()),
       ),
       BlocProvider<SocialLoginCubit>(
-        create:
-            (context) =>
-                SocialLoginCubit(authService: getIt(), hiveService: getIt()),
+        create: (context) =>
+            SocialLoginCubit(authService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<RegisterStudentCubit>(
-        create:
-            (context) => RegisterStudentCubit(
-              authService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => RegisterStudentCubit(
+          authService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<SignOutCubit>(
-        create:
-            (context) =>
-                SignOutCubit(hiveService: getIt(), localDBService: getIt()),
+        create: (context) =>
+            SignOutCubit(hiveService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetMissionsCubit>(
-        create:
-            (context) => GetMissionsCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetMissionsCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetSubscribersCubit>(
-        create:
-            (context) => GetSubscribersCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetSubscribersCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<SubscribeCubit>(
-        create:
-            (context) => SubscribeCubit(
-              missionService: getIt(),
-              hiveService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => SubscribeCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<WithdrawCubit>(
-        create:
-            (context) =>
-                WithdrawCubit(missionService: getIt(), hiveService: getIt()),
+        create: (context) =>
+            WithdrawCubit(missionService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<GetMemberMissionSubscriptionsCubit>(
-        create:
-            (context) => GetMemberMissionSubscriptionsCubit(
-              missionService: getIt(),
-              hiveService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetMemberMissionSubscriptionsCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetSoulsCubit>(
-        create:
-            (context) =>
-                GetSoulsCubit(soulService: getIt(), localDBService: getIt()),
+        create: (context) =>
+            GetSoulsCubit(soulService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetClassGroupsCubit>(
-        create:
-            (context) => GetClassGroupsCubit(
-              soulService: getIt(),
-              hiveService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetClassGroupsCubit(
+          soulService: getIt(),
+          hiveService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<AddSoulCubit>(
-        create:
-            (context) =>
-                AddSoulCubit(soulService: getIt(), localDBService: getIt()),
+        create: (context) =>
+            AddSoulCubit(soulService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetDebriefNotesCubit>(
-        create:
-            (context) => GetDebriefNotesCubit(
-              debriefService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetDebriefNotesCubit(
+          debriefService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<AddDebriefNoteCubit>(
-        create:
-            (context) => AddDebriefNoteCubit(
-              debriefService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => AddDebriefNoteCubit(
+          debriefService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetCoursesCubit>(
-        create:
-            (context) => GetCoursesCubit(
-              lmsService: getIt(),
-              localDBService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetCoursesCubit(
+          lmsService: getIt(),
+          localDBService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<GetCourseModulesCubit>(
-        create:
-            (context) => GetCourseModulesCubit(
-              lmsService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetCourseModulesCubit(
+          lmsService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<FinishLessonCubit>(
-        create:
-            (context) =>
-                FinishLessonCubit(lmsService: getIt(), hiveService: getIt()),
+        create: (context) =>
+            FinishLessonCubit(lmsService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<GetFaqsCubit>(
-        create:
-            (context) =>
-                GetFaqsCubit(studentService: getIt(), localDBService: getIt()),
+        create: (context) =>
+            GetFaqsCubit(studentService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetFaqCategoriesCubit>(
-        create:
-            (context) => GetFaqCategoriesCubit(
-              studentService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetFaqCategoriesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetEnquiriesCubit>(
-        create:
-            (context) => GetEnquiriesCubit(
-              studentService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetEnquiriesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<CreateEnquiryReplyCubit>(
-        create:
-            (context) => CreateEnquiryReplyCubit(
-              studentService: getIt(),
-              hiveService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => CreateEnquiryReplyCubit(
+          studentService: getIt(),
+          hiveService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetEnquiryRepliesCubit>(
-        create:
-            (context) => GetEnquiryRepliesCubit(
-              studentService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetEnquiryRepliesCubit(
+          studentService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetAnnouncementsCubit>(
-        create:
-            (context) => GetAnnouncementsCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetAnnouncementsCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<GetMissionQuestionsCubit>(
-        create:
-            (context) => GetMissionQuestionsCubit(
-              debriefService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetMissionQuestionsCubit(
+          debriefService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<AddMissionQuestionCubit>(
-        create:
-            (context) => AddMissionQuestionCubit(
-              debriefService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => AddMissionQuestionCubit(
+          debriefService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetPrayerPromptsCubit>(
-        create:
-            (context) => GetPrayerPromptsCubit(
-              missionService: getIt(),
-              notificationService: getIt(),
-            ),
+        create: (context) => GetPrayerPromptsCubit(
+          missionService: getIt(),
+          notificationService: getIt(),
+        ),
       ),
       BlocProvider<SavePrayerResponseCubit>(
-        create:
-            (context) => SavePrayerResponseCubit(
-              localDBService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => SavePrayerResponseCubit(
+          localDBService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<UploadPrayerResponseCubit>(
-        create:
-            (context) => UploadPrayerResponseCubit(
-              localDBService: getIt(),
-              missionService: getIt(),
-            ),
+        create: (context) => UploadPrayerResponseCubit(
+          localDBService: getIt(),
+          missionService: getIt(),
+        ),
       ),
       BlocProvider<GetExpenseCategoriesCubit>(
-        create:
-            (context) => GetExpenseCategoriesCubit(
-              missionService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetExpenseCategoriesCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<GetMissionExpenseCubit>(
-        create:
-            (context) => GetMissionExpenseCubit(
-              missionService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetMissionExpenseCubit(
+          missionService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<AddExpenseCubit>(
-        create:
-            (context) =>
-                AddExpenseCubit(missionService: getIt(), hiveService: getIt()),
+        create: (context) =>
+            AddExpenseCubit(missionService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<AddTokenCubit>(
         create: (context) => AddTokenCubit(missionService: getIt()),
       ),
       BlocProvider<SelectMediaCubit>(
-        create:
-            (context) => SelectMediaCubit(
-              mediaService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => SelectMediaCubit(
+          mediaService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<UploadMediaCubit>(
-        create:
-            (context) => UploadMediaCubit(
-              mediaService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => UploadMediaCubit(
+          mediaService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetMissionMediaCubit>(
         create: (context) => GetMissionMediaCubit(missionService: getIt()),
       ),
       BlocProvider<GetMissionSessionsCubit>(
-        create:
-            (context) => GetMissionSessionsCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetMissionSessionsCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<AddMissionSessionCubit>(
-        create:
-            (context) => AddMissionSessionCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => AddMissionSessionCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<UpdateMissionSessionCubit>(
-        create:
-            (context) => UpdateMissionSessionCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => UpdateMissionSessionCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<DeleteMissionSessionCubit>(
-        create:
-            (context) => DeleteMissionSessionCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => DeleteMissionSessionCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<GetMissionGroundSuggestionsCubit>(
-        create:
-            (context) => GetMissionGroundSuggestionsCubit(
-              missionGroundsService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetMissionGroundSuggestionsCubit(
+          missionGroundsService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<AddMissionGroundSuggestionCubit>(
-        create:
-            (context) => AddMissionGroundSuggestionCubit(
-              missionGroundsService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => AddMissionGroundSuggestionCubit(
+          missionGroundsService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<UpdateMissionGroundSuggestionCubit>(
-        create:
-            (context) => UpdateMissionGroundSuggestionCubit(
-              missionGroundsService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => UpdateMissionGroundSuggestionCubit(
+          missionGroundsService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<GetPaymentsCubit>(
-        create:
-            (context) =>
-                GetPaymentsCubit(paymentService: getIt(), hiveService: getIt()),
+        create: (context) =>
+            GetPaymentsCubit(paymentService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<GetPaymentTypesCubit>(
-        create:
-            (context) => GetPaymentTypesCubit(
-              paymentService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetPaymentTypesCubit(
+          paymentService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<AddPaymentCubit>(
-        create:
-            (context) =>
-                AddPaymentCubit(paymentService: getIt(), hiveService: getIt()),
+        create: (context) =>
+            AddPaymentCubit(paymentService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<GetMissionSessionCubit>(
-        create:
-            (context) => GetMissionSessionCubit(
-              missionService: getIt(),
-              localDBService: getIt(),
-            ),
+        create: (context) => GetMissionSessionCubit(
+          missionService: getIt(),
+          localDBService: getIt(),
+        ),
       ),
       BlocProvider<DownloadFileCubit>(
         create: (context) => DownloadFileCubit(mediaService: getIt()),
@@ -408,55 +364,49 @@ class Singletons {
         create: (context) => GetEventsCubit(eventService: getIt()),
       ),
       BlocProvider<GetMemberEventSubscriptionsCubit>(
-        create:
-            (context) => GetMemberEventSubscriptionsCubit(
-              eventService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetMemberEventSubscriptionsCubit(
+          eventService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<GetEventMediaCubit>(
         create: (context) => GetEventMediaCubit(eventService: getIt()),
       ),
       BlocProvider<AddEventSubscriptionCubit>(
-        create:
-            (context) => AddEventSubscriptionCubit(
-              eventService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => AddEventSubscriptionCubit(
+          eventService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<UpdateEventSubscriptionCubit>(
-        create:
-            (context) => UpdateEventSubscriptionCubit(
-              eventService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => UpdateEventSubscriptionCubit(
+          eventService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<DeleteEventSubscriptionCubit>(
-        create:
-            (context) => DeleteEventSubscriptionCubit(eventService: getIt()),
+        create: (context) =>
+            DeleteEventSubscriptionCubit(eventService: getIt()),
       ),
       BlocProvider<ChangeProfilePictureCubit>(
-        create:
-            (context) => ChangeProfilePictureCubit(
-              mediaService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => ChangeProfilePictureCubit(
+          mediaService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
 
       BlocProvider<AddPrayerRequestCubit>(
-        create:
-            (context) => AddPrayerRequestCubit(
-              prayerRequestService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => AddPrayerRequestCubit(
+          prayerRequestService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
 
       BlocProvider<GetPrayerRequestsCubit>(
-        create:
-            (context) => GetPrayerRequestsCubit(
-              prayerRequestService: getIt(),
-              hiveService: getIt(),
-            ),
+        create: (context) => GetPrayerRequestsCubit(
+          prayerRequestService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
     ];
   }

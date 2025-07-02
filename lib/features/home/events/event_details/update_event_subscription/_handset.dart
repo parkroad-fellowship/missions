@@ -97,29 +97,28 @@ class _UpdateEventSubscriptionViewHandsetState
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (_ticketController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterTickets)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (_ticketController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterTickets)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context
-                              .read<UpdateEventSubscriptionCubit>()
-                              .updateEventSubscription(
-                                event: widget.event,
-                                eventSubscription: eventSubscription,
-                                tickets: _ticketController.text.trim(),
-                              );
-                        },
-                      ),
+                      await context
+                          .read<UpdateEventSubscriptionCubit>()
+                          .updateEventSubscription(
+                            event: widget.event,
+                            eventSubscription: eventSubscription,
+                            tickets: _ticketController.text.trim(),
+                          );
+                    },
+                  ),
                 );
               },
             ),
@@ -130,78 +129,75 @@ class _UpdateEventSubscriptionViewHandsetState
               child: PRFDestoryButton(
                 title: l10n.cancelRegistration,
                 disabled: false,
-                onPressed:
-                    () async => showDialog<void>(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text(l10n.cancelRegistration),
-                          content: Text(l10n.confirmCancellation),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: Text(l10n.cancel),
-                            ),
-                            BlocConsumer<
-                              DeleteEventSubscriptionCubit,
-                              DeleteEventSubscriptionState
-                            >(
-                              listener: (context, state) {
-                                state.mapOrNull(
-                                  loaded: (_) {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                    context
-                                        .read<DeleteEventSubscriptionCubit>()
-                                        .deleteSubscription(
-                                          eventSubscriptionUlid:
-                                              eventSubscription.ulid,
-                                        );
-                                    context.read<GetEventsCubit>().getEvents();
-                                    context
-                                        .read<
-                                          GetMemberEventSubscriptionsCubit
-                                        >()
-                                        .getMemberEventSubscriptions();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          l10n.subscriptionCancelled,
-                                        ),
-                                      ),
+                onPressed: () async => showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(l10n.cancelRegistration),
+                      content: Text(l10n.confirmCancellation),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(l10n.cancel),
+                        ),
+                        BlocConsumer<
+                          DeleteEventSubscriptionCubit,
+                          DeleteEventSubscriptionState
+                        >(
+                          listener: (context, state) {
+                            state.mapOrNull(
+                              loaded: (_) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                                context
+                                    .read<DeleteEventSubscriptionCubit>()
+                                    .deleteSubscription(
+                                      eventSubscriptionUlid:
+                                          eventSubscription.ulid,
                                     );
-                                  },
-                                  error: (e) {
-                                    Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(e.message)),
-                                    );
-                                  },
-                                );
-                              },
-                              builder: (context, state) {
-                                return TextButton(
-                                  onPressed: () {
-                                    context
-                                        .read<DeleteEventSubscriptionCubit>()
-                                        .deleteSubscription(
-                                          eventSubscriptionUlid:
-                                              eventSubscription.ulid,
-                                        );
-                                  },
-                                  child: state.maybeWhen(
-                                    orElse: () => Text(l10n.next),
-                                    loading:
-                                        () => const CircularProgressIndicator(),
+                                context.read<GetEventsCubit>().getEvents();
+                                context
+                                    .read<GetMemberEventSubscriptionsCubit>()
+                                    .getMemberEventSubscriptions();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      l10n.subscriptionCancelled,
+                                    ),
                                   ),
                                 );
                               },
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                              error: (e) {
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.message)),
+                                );
+                              },
+                            );
+                          },
+                          builder: (context, state) {
+                            return TextButton(
+                              onPressed: () {
+                                context
+                                    .read<DeleteEventSubscriptionCubit>()
+                                    .deleteSubscription(
+                                      eventSubscriptionUlid:
+                                          eventSubscription.ulid,
+                                    );
+                              },
+                              child: state.maybeWhen(
+                                orElse: () => Text(l10n.next),
+                                loading: () =>
+                                    const CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ],

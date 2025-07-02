@@ -33,8 +33,8 @@ class GetFaqCategoriesCubit extends Cubit<GetFaqCategoriesState> {
       if (localFaqCategories.isEmpty || forceRefresh) {
         await _networkFetch();
 
-        final localFaqCategories =
-            await _localDBService.retreiveFaqCategories();
+        final localFaqCategories = await _localDBService
+            .retreiveFaqCategories();
         emit(GetFaqCategoriesState.loaded(faqCategories: localFaqCategories));
         return;
       }

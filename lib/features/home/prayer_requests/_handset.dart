@@ -60,10 +60,9 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.landingRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -86,37 +85,31 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
               SliverToBoxAdapter(
                 child:
                     BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
-                      builder:
-                          (context, state) => state.maybeWhen(
-                            orElse:
-                                () => const Center(
-                                  child: LinearProgressIndicator(),
-                                ),
-                            error: (message) => const SizedBox.shrink(),
-                            loaded: (_) => const SizedBox.shrink(),
-                          ),
+                      builder: (context, state) => state.maybeWhen(
+                        orElse: () => const Center(
+                          child: LinearProgressIndicator(),
+                        ),
+                        error: (message) => const SizedBox.shrink(),
+                        loaded: (_) => const SizedBox.shrink(),
+                      ),
                     ),
               ),
               BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    orElse:
-                        () => const SliverFillRemaining(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                    error:
-                        (message) => SliverFillRemaining(
-                          child: Center(child: Text(message)),
-                        ),
+                    orElse: () => const SliverFillRemaining(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    error: (message) => SliverFillRemaining(
+                      child: Center(child: Text(message)),
+                    ),
                     loaded: (prayerRequests) {
                       if (prayerRequests.isEmpty) {
                         return SliverFillRemaining(
                           child: RefreshIndicator(
-                            onRefresh:
-                                () =>
-                                    context
-                                        .read<GetPrayerRequestsCubit>()
-                                        .fetchPrayerRequests(),
+                            onRefresh: () => context
+                                .read<GetPrayerRequestsCubit>()
+                                .fetchPrayerRequests(),
                             child: Center(
                               child: PRFPrimaryButton(
                                 title: l10n.submitPrayerRequest,
@@ -130,8 +123,8 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
 
                       return SliverList.separated(
                         itemCount: prayerRequests.length,
-                        separatorBuilder:
-                            (context, index) => SizedBox(height: 24.h),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 24.h),
                         itemBuilder: (context, index) {
                           final prayerRequest = prayerRequests[index];
                           return PrayerRequestCard(
@@ -163,10 +156,10 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
     );
   }
 
-  void _addPrayerRequest() => WoltModalSheet.show<void>(
-    context: context,
-    pageListBuilder:
-        (modalSheetContext) => [
+  void _addPrayerRequest() =>
+      WoltModalSheet.show<void>(
+        context: context,
+        pageListBuilder: (modalSheetContext) => [
           WoltModalSheetPage(
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -176,8 +169,8 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
             ),
           ),
         ],
-  ).then((_) {
-    if (!mounted) return;
-    context.read<GetPrayerRequestsCubit>().fetchPrayerRequests();
-  });
+      ).then((_) {
+        if (!mounted) return;
+        context.read<GetPrayerRequestsCubit>().fetchPrayerRequests();
+      });
 }

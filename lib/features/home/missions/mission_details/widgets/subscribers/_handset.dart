@@ -48,8 +48,8 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
 
         if (subscriptions != null && subscriptions.isEmpty) {
           return RefreshIndicator(
-            onRefresh:
-                () => context.read<GetSubscribersCubit>().getSubscriptions(
+            onRefresh: () =>
+                context.read<GetSubscribersCubit>().getSubscriptions(
                   missionUlid: widget.missionUlid,
                 ),
             child: PRFEmptyView(
@@ -60,18 +60,16 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
         }
 
         return RefreshIndicator(
-          onRefresh:
-              () => context.read<GetSubscribersCubit>().getSubscriptions(
-                missionUlid: widget.missionUlid,
-              ),
+          onRefresh: () => context.read<GetSubscribersCubit>().getSubscriptions(
+            missionUlid: widget.missionUlid,
+          ),
           child: ListView.separated(
             shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemCount: subscriptions!.length,
             separatorBuilder: (context, index) => SizedBox(height: 16.h),
-            itemBuilder:
-                (context, index) =>
-                    SubscriberActionCard(subscription: subscriptions[index]),
+            itemBuilder: (context, index) =>
+                SubscriberActionCard(subscription: subscriptions[index]),
           ),
         );
       },
@@ -166,8 +164,8 @@ class SubscriberActionCard extends StatelessWidget {
                       child: IconButton(
                         icon: const Icon(Icons.remove_red_eye),
                         color: Theme.of(context).colorScheme.primary,
-                        onPressed:
-                            () => _viewSubscriber(context, subscription.member),
+                        onPressed: () =>
+                            _viewSubscriber(context, subscription.member),
                       ),
                     ),
                   ],
@@ -209,23 +207,24 @@ class SubscriberActionCard extends StatelessWidget {
                     child: ClipOval(
                       child:
                           member.profilePictureUrl != null &&
-                                  member.profilePictureUrl!.isNotEmpty
-                              ? Image.network(
-                                member.profilePictureUrl!,
-                                fit: BoxFit.cover,
-                                errorBuilder:
-                                    (context, error, stackTrace) => Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                              )
-                              : Icon(
-                                Icons.person,
-                                size: 60,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                              member.profilePictureUrl!.isNotEmpty
+                          ? Image.network(
+                              member.profilePictureUrl!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(
+                                    Icons.person,
+                                    size: 60,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                  ),
+                            )
+                          : Icon(
+                              Icons.person,
+                              size: 60,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                     ),
                   ),
                   if (subscription.member.bio != null && member.bio!.isNotEmpty)

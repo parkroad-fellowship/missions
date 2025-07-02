@@ -16,17 +16,15 @@ class UpdateSessionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => UpdateSessionViewHandset(
-            missionUlid: missionUlid,
-            missionSession: missionSession,
-          ),
+      defaultBuilder: (_, _) => UpdateSessionViewHandset(
+        missionUlid: missionUlid,
+        missionSession: missionSession,
+      ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset:
-            (_, _) => UpdateSessionViewHandset(
-              missionUlid: missionUlid,
-              missionSession: missionSession,
-            ),
+        handset: (_, _) => UpdateSessionViewHandset(
+          missionUlid: missionUlid,
+          missionSession: missionSession,
+        ),
       ),
     );
   }

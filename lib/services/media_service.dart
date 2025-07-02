@@ -207,10 +207,9 @@ class MediaServiceImpl implements MediaService {
       if (Platform.isAndroid) {
         appDocDir = (await path_provider.getExternalStorageDirectory())!.path;
       } else {
-        appDocDir =
-            (await path_provider.getApplicationDocumentsDirectory())
-                .absolute
-                .path;
+        appDocDir = (await path_provider.getApplicationDocumentsDirectory())
+            .absolute
+            .path;
       }
 
       await FlutterDownloader.enqueue(

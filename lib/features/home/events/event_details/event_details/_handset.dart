@@ -88,8 +88,8 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   Text(
                     event.subscriptionsNeeded != null
                         ? l10n.subscriptionsNeeded(
-                          event.subscriptionsNeeded.toString(),
-                        )
+                            event.subscriptionsNeeded.toString(),
+                          )
                         : l10n.subscriptionsNeeded('N/A'),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),

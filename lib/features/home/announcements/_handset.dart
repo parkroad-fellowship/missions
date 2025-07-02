@@ -60,10 +60,9 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.landingRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -81,14 +80,12 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
               SliverToBoxAdapter(
                 child:
                     BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
-                      builder:
-                          (context, state) => state.maybeWhen(
-                            loading:
-                                () => const Center(
-                                  child: LinearProgressIndicator(),
-                                ),
-                            orElse: () => const SizedBox.shrink(),
-                          ),
+                      builder: (context, state) => state.maybeWhen(
+                        loading: () => const Center(
+                          child: LinearProgressIndicator(),
+                        ),
+                        orElse: () => const SizedBox.shrink(),
+                      ),
                     ),
               ),
               StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
@@ -105,11 +102,9 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                   if (groupedEntries != null && groupedEntries.isEmpty) {
                     return SliverFillRemaining(
                       child: RefreshIndicator(
-                        onRefresh:
-                            () =>
-                                context
-                                    .read<GetAnnouncementsCubit>()
-                                    .getAnnouncements(),
+                        onRefresh: () => context
+                            .read<GetAnnouncementsCubit>()
+                            .getAnnouncements(),
                         child: PRFEmptyView(
                           label: l10n.noAnnouncements,
                           description: l10n.pleaseWaitForOS,
@@ -120,8 +115,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
 
                   return SliverList.separated(
                     itemCount: groupedEntries!.length,
-                    separatorBuilder:
-                        (context, index) => SizedBox(height: 48.h),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 48.h),
                     itemBuilder: (context, index) {
                       final mapAsList = groupedEntries.keys.toList();
                       final entries = groupedEntries[mapAsList[index]];
@@ -135,8 +130,9 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Text(
                                   DateFormat.yMMMMd().format(mapAsList[index]),
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineSmall,
                                 ),
                               ),
                               SizedBox(height: 16.h),
@@ -144,8 +140,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: entries!.length,
-                                separatorBuilder:
-                                    (context, index) => SizedBox(height: 16.w),
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(height: 16.w),
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {},
@@ -171,27 +167,24 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                                         contentPadding: EdgeInsets.zero,
                                         title: Text(
                                           entries[index].title.toUpperCase(),
-                                          style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.headlineMedium,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.headlineMedium,
                                         ),
                                         subtitle: Text(
                                           entries[index].content,
-                                          style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.bodySmall,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall,
                                         ),
                                         trailing: Text(
                                           Misc.formatTimeFromDateTime(
                                             entries[index].publishedAt,
                                             timezone,
                                           ),
-                                          style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.bodySmall,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall,
                                         ),
                                       ),
                                     ),

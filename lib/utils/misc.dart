@@ -153,8 +153,9 @@ class Misc {
         screenWidth >= 600; // Material Design breakpoint for tablets
 
     // Use different base widths for tablet and phone
-    final baseWidth =
-        isTablet ? 600.0 : 375.0; // 600 for tablets, 375 for phones (iPhone SE)
+    final baseWidth = isTablet
+        ? 600.0
+        : 375.0; // 600 for tablets, 375 for phones (iPhone SE)
     final scaleFactor = screenWidth / baseWidth;
 
     // Different scale ranges for tablet and phone

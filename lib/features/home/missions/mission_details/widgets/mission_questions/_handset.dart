@@ -44,16 +44,14 @@ class _MissionQuestionsViewHandsetState
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
-      widget:
-          (context, missionQuestions) => ListView.separated(
-            physics: const ScrollPhysics(),
-            itemCount: missionQuestions.length,
-            separatorBuilder: (context, index) => SizedBox(height: 8.h),
-            itemBuilder:
-                (context, index) => MissionQuestionCard(
-                  missionQuestion: missionQuestions[index],
-                ),
-          ),
+      widget: (context, missionQuestions) => ListView.separated(
+        physics: const ScrollPhysics(),
+        itemCount: missionQuestions.length,
+        separatorBuilder: (context, index) => SizedBox(height: 8.h),
+        itemBuilder: (context, index) => MissionQuestionCard(
+          missionQuestion: missionQuestions[index],
+        ),
+      ),
     );
   }
 }

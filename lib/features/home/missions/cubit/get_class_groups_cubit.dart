@@ -73,10 +73,9 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
     required List<PRFClassGroup> classGroups,
     required PRFInstitutionType type,
   }) {
-    final filteredClassGroups =
-        classGroups
-            .where((classGroup) => classGroup.institutionType == type)
-            .toList();
+    final filteredClassGroups = classGroups
+        .where((classGroup) => classGroup.institutionType == type)
+        .toList();
     return filteredClassGroups;
   }
 }

@@ -93,29 +93,26 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                 missionUlid: widget.missionUlid,
               ),
               loading: const PRFLinearProgressIndicator(),
-              widget:
-                  (context, subscribers) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<String>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedFacilitatorUlid,
-                        hintText: l10n.facilitator,
-                        dropdownMenuEntries:
-                            subscribers
-                                .map(
-                                  (subscriber) => DropdownMenuEntry<String>(
-                                    value: subscriber.member.ulid!,
-                                    label: subscriber.member.fullName!,
-                                  ),
-                                )
-                                .toList(),
-                        onSelected:
-                            (member) => setState(() {
-                              selectedFacilitatorUlid = member;
-                            }),
-                      );
-                    },
-                  ),
+              widget: (context, subscribers) => LayoutBuilder(
+                builder: (context, constraints) {
+                  return DropdownMenu<String>(
+                    width: constraints.maxWidth,
+                    initialSelection: selectedFacilitatorUlid,
+                    hintText: l10n.facilitator,
+                    dropdownMenuEntries: subscribers
+                        .map(
+                          (subscriber) => DropdownMenuEntry<String>(
+                            value: subscriber.member.ulid!,
+                            label: subscriber.member.fullName!,
+                          ),
+                        )
+                        .toList(),
+                    onSelected: (member) => setState(() {
+                      selectedFacilitatorUlid = member;
+                    }),
+                  );
+                },
+              ),
             ),
 
             const SizedBox(height: 16),
@@ -129,29 +126,26 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                 missionUlid: widget.missionUlid,
               ),
               loading: const PRFLinearProgressIndicator(),
-              widget:
-                  (context, subscribers) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<String>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedSpeakerUlid,
-                        hintText: l10n.speaker,
-                        dropdownMenuEntries:
-                            subscribers
-                                .map(
-                                  (subscriber) => DropdownMenuEntry<String>(
-                                    value: subscriber.member.ulid!,
-                                    label: subscriber.member.fullName!,
-                                  ),
-                                )
-                                .toList(),
-                        onSelected:
-                            (member) => setState(() {
-                              selectedSpeakerUlid = member;
-                            }),
-                      );
-                    },
-                  ),
+              widget: (context, subscribers) => LayoutBuilder(
+                builder: (context, constraints) {
+                  return DropdownMenu<String>(
+                    width: constraints.maxWidth,
+                    initialSelection: selectedSpeakerUlid,
+                    hintText: l10n.speaker,
+                    dropdownMenuEntries: subscribers
+                        .map(
+                          (subscriber) => DropdownMenuEntry<String>(
+                            value: subscriber.member.ulid!,
+                            label: subscriber.member.fullName!,
+                          ),
+                        )
+                        .toList(),
+                    onSelected: (member) => setState(() {
+                      selectedSpeakerUlid = member;
+                    }),
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 16),
             Align(
@@ -164,29 +158,26 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                 return state.maybeWhen(
                   orElse: () => const SizedBox.shrink(),
                   loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded:
-                      (classes) => LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<String>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedClassGroupUlid,
-                            hintText: l10n.classGroup,
-                            dropdownMenuEntries:
-                                classes
-                                    .map(
-                                      (classGroup) => DropdownMenuEntry<String>(
-                                        value: classGroup.ulid,
-                                        label: classGroup.name,
-                                      ),
-                                    )
-                                    .toList(),
-                            onSelected:
-                                (classGroup) => setState(() {
-                                  selectedClassGroupUlid = classGroup;
-                                }),
-                          );
-                        },
-                      ),
+                  loaded: (classes) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return DropdownMenu<String>(
+                        width: constraints.maxWidth,
+                        initialSelection: selectedClassGroupUlid,
+                        hintText: l10n.classGroup,
+                        dropdownMenuEntries: classes
+                            .map(
+                              (classGroup) => DropdownMenuEntry<String>(
+                                value: classGroup.ulid,
+                                label: classGroup.name,
+                              ),
+                            )
+                            .toList(),
+                        onSelected: (classGroup) => setState(() {
+                          selectedClassGroupUlid = classGroup;
+                        }),
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -255,58 +246,57 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse:
-                      () => PRFPrimaryButton(
-                        title: _isLoading ? l10n.recording : l10n.record,
-                        disabled: _isLoading,
-                        isLoading: _isLoading ? true : null,
-                        onPressed: () async {
-                          if (selectedFacilitatorUlid == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.selectFacilitator)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                  orElse: () => PRFPrimaryButton(
+                    title: _isLoading ? l10n.recording : l10n.record,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                    onPressed: () async {
+                      if (selectedFacilitatorUlid == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.selectFacilitator)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (_notesController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.enterNotes)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (_notesController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.enterNotes)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (startsAt == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.addStartEnd)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (startsAt == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.addStartEnd)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          if (endsAt == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.addStartEnd)),
-                            );
-                            Gaimon.warning();
-                            return;
-                          }
+                      if (endsAt == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.addStartEnd)),
+                        );
+                        Gaimon.warning();
+                        return;
+                      }
 
-                          await context
-                              .read<UpdateMissionSessionCubit>()
-                              .updateMissionSession(
-                                missionUlid: widget.missionUlid,
-                                missionSessionUlid: missionSession.ulid,
-                                facilitatorUlid: selectedFacilitatorUlid!,
-                                startsAt: startsAt!,
-                                endsAt: endsAt!,
-                                notes: _notesController.text,
-                                speakerUlid: selectedSpeakerUlid,
-                                classGroupUlid: selectedClassGroupUlid,
-                              );
-                        },
-                      ),
+                      await context
+                          .read<UpdateMissionSessionCubit>()
+                          .updateMissionSession(
+                            missionUlid: widget.missionUlid,
+                            missionSessionUlid: missionSession.ulid,
+                            facilitatorUlid: selectedFacilitatorUlid!,
+                            startsAt: startsAt!,
+                            endsAt: endsAt!,
+                            notes: _notesController.text,
+                            speakerUlid: selectedSpeakerUlid,
+                            classGroupUlid: selectedClassGroupUlid,
+                          );
+                    },
+                  ),
                 );
               },
             ),

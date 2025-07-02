@@ -61,10 +61,9 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed:
-                              () => context.router.popUntilRouteWithPath(
-                                PRFSuperAppRouter.landingRoute,
-                              ),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -87,13 +86,11 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               SliverToBoxAdapter(
                 child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
-                  builder:
-                      (context, state) => state.maybeWhen(
-                        loading:
-                            () =>
-                                const Center(child: LinearProgressIndicator()),
-                        orElse: SizedBox.shrink,
-                      ),
+                  builder: (context, state) => state.maybeWhen(
+                    loading: () =>
+                        const Center(child: LinearProgressIndicator()),
+                    orElse: SizedBox.shrink,
+                  ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 32.h)),
@@ -111,8 +108,8 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                   if (courses != null && courses.isEmpty) {
                     return SliverFillRemaining(
                       child: RefreshIndicator(
-                        onRefresh:
-                            () => context.read<GetCoursesCubit>().getCourses(),
+                        onRefresh: () =>
+                            context.read<GetCoursesCubit>().getCourses(),
                         child: PRFEmptyView(
                           label: l10n.noCourses,
                           description: l10n.pleaseWait,
@@ -123,11 +120,10 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
 
                   return SliverList.separated(
                     itemCount: courses!.length,
-                    itemBuilder:
-                        (context, index) =>
-                            CourseActionCard(course: courses[index]),
-                    separatorBuilder:
-                        (context, index) => SizedBox(height: 16.h),
+                    itemBuilder: (context, index) =>
+                        CourseActionCard(course: courses[index]),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
                   );
                 },
               ),

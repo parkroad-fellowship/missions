@@ -21,19 +21,17 @@ class LessonDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => LessonDetailsTablet(
-            lessonModule: lessonModule,
-            courseUlid: courseUlid,
-            moduleUlid: moduleUlid,
-          ),
+      defaultBuilder: (_, _) => LessonDetailsTablet(
+        lessonModule: lessonModule,
+        courseUlid: courseUlid,
+        moduleUlid: moduleUlid,
+      ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset:
-            (_, _) => LessonDetailsHandset(
-              lessonModule: lessonModule,
-              courseUlid: courseUlid,
-              moduleUlid: moduleUlid,
-            ),
+        handset: (_, _) => LessonDetailsHandset(
+          lessonModule: lessonModule,
+          courseUlid: courseUlid,
+          moduleUlid: moduleUlid,
+        ),
       ),
     );
   }

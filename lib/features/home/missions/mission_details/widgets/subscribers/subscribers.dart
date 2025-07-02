@@ -10,8 +10,8 @@ class SubscribersView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder:
-          (_, _) => SubscribersViewHandset(missionUlid: missionUlid),
+      defaultBuilder: (_, _) =>
+          SubscribersViewHandset(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, _) => SubscribersViewHandset(missionUlid: missionUlid),
       ),
