@@ -1,6 +1,8 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/payment_service.dart';
+import 'package:app/services/payment_type_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +12,14 @@ part 'get_payment_types_cubit.freezed.dart';
 class GetPaymentTypesCubit extends Cubit<GetPaymentTypesState> {
   GetPaymentTypesCubit({
     required HiveService hiveService,
-    required PaymentService paymentService,
+    required PaymentTypeService paymentTypeService,
   }) : super(const GetPaymentTypesState.initial()) {
     _hiveService = hiveService;
-    _paymentService = paymentService;
+    _paymentTypeService = paymentTypeService;
   }
 
   late HiveService _hiveService;
-  late PaymentService _paymentService;
+  late PaymentTypeService _paymentTypeService;
 
   Future<void> getPaymentTypes() async {
     try {
@@ -28,7 +30,7 @@ class GetPaymentTypesCubit extends Cubit<GetPaymentTypesState> {
         return;
       }
 
-      final paymentTypes = await _paymentService.getPaymentTypes();
+      final paymentTypes = await _paymentTypeService.list();
       _hiveService.persistPaymentTypes(PRFPaymentTypeResponse(paymentTypes));
       emit(GetPaymentTypesState.loaded(paymentTypes: paymentTypes));
     } on Failure catch (e) {

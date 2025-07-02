@@ -2,6 +2,7 @@ import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_payment.dart';
 import 'package:app/models/remote/prf_payment_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/payment_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -28,12 +29,12 @@ class AddPaymentCubit extends Cubit<AddPaymentState> {
       emit(const AddPaymentState.loading());
       final member = _hiveService.retrieveMember()!;
 
-      final payment = await _paymentService.addPayment(
-        paymentDTO: PRFPaymentDTO(
+      final payment = await _paymentService.create(
+        data: PRFPaymentDTO(
           memberUlid: member.ulid,
           paymentTypeUlid: paymentTypeUlid,
           amount: int.parse(amount),
-        ),
+        ).toJson(),
       );
 
       emit(AddPaymentState.loaded(payment: payment));

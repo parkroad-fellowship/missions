@@ -1,78 +1,17 @@
-import 'dart:convert';
-
 import 'package:app/models/remote/prf_payment.dart';
-import 'package:app/models/remote/prf_payment_dto.dart';
-import 'package:app/models/remote/prf_payment_type.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/_base_api_service.dart';
 
-abstract class PaymentService {
-  Future<List<PRFPayment>> getPayments({
-    required String memberUlid,
-    required String include,
-  });
-  Future<List<PRFPaymentType>> getPaymentTypes();
-  Future<PRFPayment> addPayment({required PRFPaymentDTO paymentDTO});
-  Future<PRFPayment> checkPaymentStatus({required String paymentUlid});
-}
-
-class PaymentServiceImpl implements PaymentService {
-  final _networkUtil = NetworkUtil();
+class PaymentService extends BaseAPIService<PRFPayment>{
+  @override
+  String get endpoint => '/payments';
 
   @override
-  Future<PRFPayment> addPayment({required PRFPaymentDTO paymentDTO}) async {
-    try {
-      final res = await _networkUtil.postReq(
-        '/payments',
-        body: json.encode(paymentDTO.toJson()),
-      );
-
-      return PRFPayment.fromJson(res['data'] as Map<String, dynamic>);
-    } catch (e) {
-      rethrow;
-    }
+  PRFPayment createFromJson(Map<String, dynamic> json) {
+    return PRFPayment.fromJson(json);
   }
 
   @override
-  Future<List<PRFPayment>> getPayments({
-    required String memberUlid,
-    required String include,
-  }) async {
-    try {
-      final res = await _networkUtil.getReq(
-        '/payments',
-        queryParameters: {
-          'filter[member_ulid]': memberUlid,
-          'include': include,
-        },
-      );
-
-      return PRFPaymentResponse.fromJson(res).data;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<List<PRFPaymentType>> getPaymentTypes() async {
-    try {
-      final res = await _networkUtil.getReq('/payment-types');
-
-      return PRFPaymentTypeResponse.fromJson(res).data;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<PRFPayment> checkPaymentStatus({required String paymentUlid}) async {
-    try {
-      final res = await _networkUtil.postReq(
-        '/payments/$paymentUlid/check-status',
-      );
-
-      return PRFPayment.fromJson(res);
-    } catch (e) {
-      rethrow;
-    }
+  List<PRFPayment> createListFromResponse(Map<String, dynamic> response) {
+    return PRFPaymentResponse.fromJson(response).data;
   }
 }

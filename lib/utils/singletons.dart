@@ -64,6 +64,8 @@ import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
+import 'package:app/models/remote/prf_payment.dart';
+import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/services/_base_api_service.dart';
@@ -77,6 +79,8 @@ import 'package:app/services/mission_ground_suggestion_service.dart';
 import 'package:app/services/mission_question_service.dart';
 import 'package:app/services/mission_subscription_service.dart';
 import 'package:app/services/mission_service.dart';
+import 'package:app/services/payment_service.dart';
+import 'package:app/services/payment_type_service.dart';
 import 'package:app/services/prayer_prompt_service.dart';
 import 'package:app/services/prayer_request_service.dart';
 import 'package:app/services/prayer_response_service.dart';
@@ -121,6 +125,8 @@ class Singletons {
         DebriefNoteService(),
       )
       ..registerSingleton<BaseAPIService<PRFMissionGroundSuggestion>>(MissionGroundSuggestionService())
+      ..registerSingleton<BaseAPIService<PRFPayment>>(PaymentService())
+      ..registerSingleton<BaseAPIService<PRFPaymentType>>(PaymentTypeService())
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
@@ -130,7 +136,6 @@ class Singletons {
       )
       ..registerSingleton<StudentService>(StudentServiceImpl())
       ..registerSingleton<MediaService>(MediaServiceImpl())
-      ..registerSingleton<PaymentService>(PaymentServiceImpl())
       ..registerSingleton<EventService>(EventServiceImpl())
       ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl())
       ..registerSingleton<PrayerRequestService>(PrayerRequestServiceImpl());
@@ -392,7 +397,7 @@ class Singletons {
       ),
       BlocProvider<GetPaymentTypesCubit>(
         create: (context) => GetPaymentTypesCubit(
-          paymentService: getIt(),
+          paymentTypeService: getIt(),
           hiveService: getIt(),
         ),
       ),
