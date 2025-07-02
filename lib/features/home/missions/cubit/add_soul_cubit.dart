@@ -29,13 +29,14 @@ class AddSoulCubit extends Cubit<AddSoulState> {
   }) async {
     emit(const AddSoulState.loading());
     try {
-      final soul = await _soulService.addSoul(
-        soulDTO: PRFSoulDTO(
+      final soul = await _soulService.create(
+        data: PRFSoulDTO(
           missionUlid: missionUlid,
           classGroupUlid: classGroup.ulid,
           fullName: fullName,
           admissionNumber: admissionNumber,
-        ),
+        ).toJson(),
+        includes: 'classGroup',
       );
 
       await _localDBService.persistSouls(

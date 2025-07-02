@@ -2,6 +2,7 @@ import 'package:app/enums/prf_institution_type.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/class_group_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -11,16 +12,16 @@ part 'get_class_groups_cubit.freezed.dart';
 
 class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
   GetClassGroupsCubit({
-    required SoulService soulService,
+    required ClassGroupService classGroupService,
     required HiveService hiveService,
     required LocalDBService localDBService,
   }) : super(const GetClassGroupsState.initial()) {
-    _soulService = soulService;
+    _classGroupService = classGroupService;
     _hiveService = hiveService;
     _localDBService = localDBService;
   }
 
-  late SoulService _soulService;
+  late ClassGroupService _classGroupService;
   late HiveService _hiveService;
   late LocalDBService _localDBService;
 
@@ -47,7 +48,7 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
         return;
       }
 
-      final classGroups = await _soulService.getClassGroups();
+      final classGroups = await _classGroupService.list();
       _hiveService.persistClassGroups(PRFClassGroupResponse(classGroups));
 
       if (missionUlid != null) {

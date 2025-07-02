@@ -56,6 +56,7 @@ import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/models/remote/prf_announcement.dart';
+import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
@@ -69,9 +70,11 @@ import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/models/remote/prf_prayer_request.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
+import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/services/_base_api_service.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/announcement_service.dart';
+import 'package:app/services/class_group_service.dart';
 import 'package:app/services/debrief_note_service.dart';
 import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
@@ -129,9 +132,10 @@ class Singletons {
       ..registerSingleton<BaseAPIService<PRFPayment>>(PaymentService())
       ..registerSingleton<BaseAPIService<PRFPaymentType>>(PaymentTypeService())
       ..registerSingleton<BaseAPIService<PRFPrayerRequest>>(PrayerRequestService())
+      ..registerSingleton<BaseAPIService<PRFClassGroup>>(ClassGroupService())
+      ..registerSingleton<BaseAPIService<PRFSoul>>(SoulService())
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
-      ..registerSingleton<SoulService>(SoulServiceImpl())
       ..registerSingleton<LMSService>(LMSServiceImpl())
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
@@ -212,7 +216,7 @@ class Singletons {
       ),
       BlocProvider<GetClassGroupsCubit>(
         create: (context) => GetClassGroupsCubit(
-          soulService: getIt(),
+          classGroupService: getIt(),
           hiveService: getIt(),
           localDBService: getIt(),
         ),

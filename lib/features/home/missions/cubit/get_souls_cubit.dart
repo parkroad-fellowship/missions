@@ -29,7 +29,12 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
         return;
       }
 
-      final souls = await _soulService.getSouls(missionUlid: missionUlid);
+      final souls = await _soulService.list(
+        filters: {
+          'filter[mission_ulid]': missionUlid,
+        },
+        includes: 'classGroup',
+      );
       await _localDBService.persistSouls(
         souls: souls,
         missionUlid: missionUlid,

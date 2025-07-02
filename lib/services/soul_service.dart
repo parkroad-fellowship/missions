@@ -1,58 +1,17 @@
-import 'dart:convert';
-
-import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_soul.dart';
-import 'package:app/models/remote/prf_soul_dto.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/_base_api_service.dart';
 
-abstract class SoulService {
-  Future<List<PRFClassGroup>> getClassGroups();
-  Future<List<PRFSoul>> getSouls({required String missionUlid});
-  Future<PRFSoul> addSoul({required PRFSoulDTO soulDTO});
-}
-
-class SoulServiceImpl implements SoulService {
-  final _networkUtil = NetworkUtil();
+class SoulService extends BaseAPIService<PRFSoul> {
   @override
-  Future<List<PRFClassGroup>> getClassGroups() async {
-    try {
-      final res = await _networkUtil.getReq('/class-groups');
+  String get endpoint => '/souls';
 
-      return PRFClassGroupResponse.fromJson(res).data;
-    } catch (e) {
-      rethrow;
-    }
+  @override
+  PRFSoul createFromJson(Map<String, dynamic> json) {
+    return PRFSoul.fromJson(json);
   }
 
   @override
-  Future<List<PRFSoul>> getSouls({required String missionUlid}) async {
-    try {
-      final res = await _networkUtil.getReq(
-        '/souls',
-        queryParameters: {
-          'filter[mission_ulid]': missionUlid,
-          'include': 'classGroup',
-        },
-      );
-
-      return PRFSoulResponse.fromJson(res).data;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<PRFSoul> addSoul({required PRFSoulDTO soulDTO}) async {
-    try {
-      final res = await _networkUtil.postReq(
-        '/souls',
-        body: json.encode(soulDTO.toJson()),
-        queryParameters: {'include': 'classGroup'},
-      );
-
-      return PRFSoul.fromJson(res['data'] as Map<String, dynamic>);
-    } catch (e) {
-      rethrow;
-    }
+  List<PRFSoul> createListFromResponse(Map<String, dynamic> response) {
+    return PRFSoulResponse.fromJson(response).data;
   }
 }
