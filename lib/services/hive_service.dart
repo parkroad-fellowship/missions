@@ -50,7 +50,7 @@ abstract class HiveService {
   void persistPaymentTypes(PRFPaymentTypeResponse paymentTypes);
   List<PRFPaymentType> retrievePaymentTypes();
 
-  void disableNotifications();
+  void toggleNotifications({required bool enable});
   bool areNotificationsEnabled();
 }
 
@@ -294,10 +294,10 @@ class HiveServiceImpl implements HiveService {
   }
 
   @override
-  void disableNotifications() {
+  void toggleNotifications({required bool enable}) {
     Hive.box<dynamic>(
       PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
-    ).put('notificationsEnabled', false);
+    ).put('notificationsEnabled', enable);
   }
 
   @override

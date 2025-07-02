@@ -87,8 +87,9 @@ abstract class NotificationService {
                                 ),
                                 title: Text(
                                   l10n.prayerAlert,
-                                  style:
-                                      Theme.of(context).textTheme.displayMedium,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayMedium,
                                 ),
                               ),
                               ListTile(
@@ -229,9 +230,9 @@ class NotificationServiceImpl implements NotificationService {
 
     if (userAuthorized) {
       await AwesomeNotifications().requestPermissionToSendNotifications();
-      getIt<HiveService>().disableNotifications();
+      getIt<HiveService>().toggleNotifications(enable: true);
     } else {
-      getIt<HiveService>().disableNotifications();
+      getIt<HiveService>().toggleNotifications(enable: false);
     }
   }
 
