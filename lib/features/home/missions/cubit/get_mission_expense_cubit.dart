@@ -1,7 +1,7 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/mission_expenses_service.dart';
+import 'package:app/services/api/mission_expenses_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

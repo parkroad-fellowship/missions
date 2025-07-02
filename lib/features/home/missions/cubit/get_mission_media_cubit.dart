@@ -1,6 +1,6 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/remote/prf_media.dart';
-import 'package:app/services/mission_service.dart';
+import 'package:app/services/api/mission_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

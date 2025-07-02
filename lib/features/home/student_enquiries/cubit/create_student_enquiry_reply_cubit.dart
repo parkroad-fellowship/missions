@@ -1,7 +1,7 @@
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply_dto.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/student_enquiry_reply_service.dart';
+import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

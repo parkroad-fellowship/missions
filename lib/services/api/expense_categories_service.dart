@@ -1,5 +1,5 @@
 import 'package:app/models/remote/prf_expense_category.dart';
-import 'package:app/services/_base_api_service.dart';
+import 'package:app/services/api/_base_api_service.dart';
 
 class ExpenseCategoriesService extends BaseAPIService<PRFExpenseCategory> {
   @override

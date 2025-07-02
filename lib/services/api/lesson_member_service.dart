@@ -1,5 +1,5 @@
 import 'package:app/models/remote/prf_lesson_member.dart';
-import 'package:app/services/_base_api_service.dart';
+import 'package:app/services/api/_base_api_service.dart';
 
 class LessonMemberService extends BaseAPIService<PRFLessonMember> {
   @override

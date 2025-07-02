@@ -2,7 +2,7 @@ import 'package:app/enums/prf_institution_type.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/class_group_service.dart';
+import 'package:app/services/api/class_group_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';

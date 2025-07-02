@@ -2,7 +2,7 @@ import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_lesson_member_dto.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/lesson_member_service.dart';
+import 'package:app/services/api/lesson_member_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

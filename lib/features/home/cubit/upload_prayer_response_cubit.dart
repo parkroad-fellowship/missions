@@ -1,6 +1,6 @@
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/prayer_response_service.dart';
+import 'package:app/services/api/prayer_response_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';

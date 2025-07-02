@@ -1,7 +1,7 @@
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/mission_subscription_service.dart';
+import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

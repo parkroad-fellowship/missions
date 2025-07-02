@@ -1,6 +1,6 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/mission_session_service.dart';
+import 'package:app/services/api/mission_session_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

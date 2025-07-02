@@ -1,6 +1,6 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/debrief_note_service.dart';
+import 'package:app/services/api/debrief_note_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

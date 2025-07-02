@@ -1,5 +1,5 @@
 import 'package:app/services/_index.dart';
-import 'package:app/services/prayer_prompt_service.dart';
+import 'package:app/services/api/prayer_prompt_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
