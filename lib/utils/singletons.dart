@@ -56,19 +56,23 @@ import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/models/remote/prf_announcement.dart';
+import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
+import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/services/_base_api_service.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/announcement_service.dart';
+import 'package:app/services/debrief_note_service.dart';
 import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
 import 'package:app/services/mission_expenses_service.dart';
+import 'package:app/services/mission_question_service.dart';
 import 'package:app/services/mission_subscription_service.dart';
 import 'package:app/services/mission_service.dart';
 import 'package:app/services/prayer_prompt_service.dart';
@@ -110,10 +114,13 @@ class Singletons {
         MissionExpensesService(),
       )
       ..registerSingleton<BaseAPIService<PRFExpense>>(ExpenseService())
+      ..registerSingleton<BaseAPIService<PRFMissionQuestion>>(MissionQuestionService())
+      ..registerSingleton<BaseAPIService<PRFDebriefNote>>(
+        DebriefNoteService(),
+      )
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
-      ..registerSingleton<DebriefService>(DebriefServiceImpl())
       ..registerSingleton<LMSService>(LMSServiceImpl())
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
@@ -208,13 +215,13 @@ class Singletons {
       ),
       BlocProvider<GetDebriefNotesCubit>(
         create: (context) => GetDebriefNotesCubit(
-          debriefService: getIt(),
+          debriefNoteService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<AddDebriefNoteCubit>(
         create: (context) => AddDebriefNoteCubit(
-          debriefService: getIt(),
+          debriefNoteService: getIt(),
           localDBService: getIt(),
         ),
       ),
@@ -273,13 +280,13 @@ class Singletons {
       ),
       BlocProvider<GetMissionQuestionsCubit>(
         create: (context) => GetMissionQuestionsCubit(
-          debriefService: getIt(),
+          missionQuestionService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<AddMissionQuestionCubit>(
         create: (context) => AddMissionQuestionCubit(
-          debriefService: getIt(),
+          missionQuestionService: getIt(),
           localDBService: getIt(),
         ),
       ),
