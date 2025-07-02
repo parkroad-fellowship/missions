@@ -52,6 +52,8 @@ abstract class HiveService {
 
   void toggleNotifications({required bool enable});
   bool areNotificationsEnabled();
+  void setPermissionRequested({required bool requested});
+  bool hasPermissionBeenRequested();
 }
 
 class HiveServiceImpl implements HiveService {
@@ -306,5 +308,20 @@ class HiveServiceImpl implements HiveService {
       PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
     );
     return box.get('notificationsEnabled') as bool? ?? true;
+  }
+
+  @override
+  void setPermissionRequested({required bool requested}) {
+    Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+    ).put('permissionRequested', requested);
+  }
+
+  @override
+  bool hasPermissionBeenRequested() {
+    final box = Hive.box<dynamic>(
+      PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
+    );
+    return box.get('permissionRequested') as bool? ?? false;
   }
 }

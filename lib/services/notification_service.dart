@@ -186,8 +186,12 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   Future<void> requestPermissions() async {
-    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
-    if (!notificationsEnabled) return;
+    final hiveService = getIt<HiveService>();
+    final notificationsEnabled = hiveService.areNotificationsEnabled();
+    final hasBeenRequested = hiveService.hasPermissionBeenRequested();
+
+    // Don't show dialog if notifications are disabled or already requested
+    if (!notificationsEnabled || hasBeenRequested) return;
 
     var userAuthorized = false;
     final context = getIt<PRFSuperAppRouter>().navigatorKey.currentContext;
@@ -228,11 +232,14 @@ class NotificationServiceImpl implements NotificationService {
       },
     );
 
+    // Mark that permission has been requested
+    hiveService.setPermissionRequested(requested: true);
+
     if (userAuthorized) {
       await AwesomeNotifications().requestPermissionToSendNotifications();
-      getIt<HiveService>().toggleNotifications(enable: true);
+      hiveService.toggleNotifications(enable: true);
     } else {
-      getIt<HiveService>().toggleNotifications(enable: false);
+      hiveService.toggleNotifications(enable: false);
     }
   }
 
