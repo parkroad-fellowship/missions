@@ -11,7 +11,9 @@ class EventSubscriptionService extends BaseAPIService<PRFEventSubscription> {
   }
 
   @override
-  List<PRFEventSubscription> createListFromResponse(Map<String, dynamic> response) {
+  List<PRFEventSubscription> createListFromResponse(
+    Map<String, dynamic> response,
+  ) {
     return PRFEventSubscriptionResponse.fromJson(response).data;
   }
 }

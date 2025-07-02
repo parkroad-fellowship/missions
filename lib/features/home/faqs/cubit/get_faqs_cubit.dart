@@ -53,7 +53,7 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
   Future<void> _networkFetch() async {
     final faqs = await _missionFaqService.list(
       limit: 500,
-      includes: 'missionFaqCategory',
+      includes: ['missionFaqCategory'],
     );
     await _localDBService.persistFaqs(faqs: faqs);
   }

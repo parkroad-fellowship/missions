@@ -28,7 +28,10 @@ class GetCoursesCubit extends Cubit<GetCoursesState> {
       final memberGroupUlids = _hiveService.retrieveMemberGroupUlids();
 
       final courses = await _courseService.list(
-        includes: 'thumbnail,courseMember',
+        includes: [
+          'thumbnail',
+          'courseMember',
+        ],
         filters: {
           'filter[group_ulids]': memberGroupUlids.join(','),
         },

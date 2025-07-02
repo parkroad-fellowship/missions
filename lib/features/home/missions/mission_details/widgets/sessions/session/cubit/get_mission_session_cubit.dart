@@ -37,8 +37,12 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
 
       final missionSession = await _missionSessionService.get(
         id: missionSessionUlid,
-        includes:
-            'facilitator,speaker,classGroup,missionSessionTranscripts.media',
+        includes: [
+          'facilitator',
+          'speaker',
+          'classGroup',
+          'missionSessionTranscripts.media',
+        ],
       );
 
       await _localDBService.persistMissionSessions(

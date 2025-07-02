@@ -11,7 +11,9 @@ class StudentEnquiryService extends BaseAPIService<PRFStudentEnquiry> {
   }
 
   @override
-  List<PRFStudentEnquiry> createListFromResponse(Map<String, dynamic> response) {
+  List<PRFStudentEnquiry> createListFromResponse(
+    Map<String, dynamic> response,
+  ) {
     return PRFStudentEnquiryResponse.fromJson(response).data;
   }
 }

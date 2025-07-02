@@ -40,7 +40,7 @@ class AddMissionGroundSuggestionCubit
               contactNumber: contactNumber.parseNumber(),
               suggestorUlid: member.ulid,
             ).toJson(),
-            includes: 'suggestor'
+            includes: ['suggestor'],
           );
       emit(
         AddMissionGroundSuggestionState.loaded(

@@ -48,7 +48,7 @@ class GetMissionGroundSuggestionsCubit
                   .map((status) => status.apiKey)
                   .join(','),
             },
-            includes: 'suggestor',
+            includes: ['suggestor'],
           );
 
       emit(

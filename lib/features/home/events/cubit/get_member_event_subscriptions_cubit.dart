@@ -29,8 +29,11 @@ class GetMemberEventSubscriptionsCubit
         filters: {
           'filter[member_ulid]': member.ulid,
         },
-        includes:
-            'member,prfEvent.posters,prfEvent.loggedInMemberEventSubscription',
+        includes: [
+          'member',
+          'prfEvent.posters',
+          'prfEvent.loggedInMemberEventSubscription',
+        ],
       );
       if (subscriptions.isEmpty) {
         emit(const GetMemberEventSubscriptionsState.empty());

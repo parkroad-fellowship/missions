@@ -42,8 +42,12 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
           speakerUlid: speakerUlid,
           classGroupUlid: classGroupUlid,
         ).toJson(),
-        includes:
-            'facilitator,speaker,classGroup,missionSessionTranscripts.media',
+        includes: [
+          'facilitator',
+          'speaker',
+          'classGroup',
+          'missionSessionTranscripts.media',
+        ],
       );
       await _localDBService.persistMissionSessions(
         missionSessions: [updatedMissionSession],

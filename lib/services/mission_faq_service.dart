@@ -2,8 +2,7 @@ import 'package:app/models/remote/prf_faq.dart';
 import 'package:app/services/_base_api_service.dart';
 
 class MissionFaqService extends BaseAPIService<PRFFaq> {
-
-   @override
+  @override
   String get endpoint => '/mission-faqs';
 
   @override
@@ -15,5 +14,4 @@ class MissionFaqService extends BaseAPIService<PRFFaq> {
   List<PRFFaq> createListFromResponse(Map<String, dynamic> response) {
     return PRFFaqResponse.fromJson(response).data;
   }
-
 }

@@ -25,7 +25,10 @@ class GetMissionExpenseCubit extends Cubit<GetMissionExpenseState> {
     try {
       final missionExpense = await _missionExpensesService.get(
         id: missionUlid,
-        includes: 'expenses.expenseCategory,expenses.receipts',
+        includes: [
+          'expenses.expenseCategory',
+          'expenses.receipts',
+        ],
       );
 
       _hiveService.persistMissionExpense(missionExpense, missionUlid);

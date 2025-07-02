@@ -26,10 +26,15 @@ class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
         filters: {
           'filter[course_ulid]': courseUlid,
         },
-        includes:
-            'course.thumbnail,course.courseMember,module.thumbnail,'
-            'memberModule,module.lessonModules.lesson,'
-            'module.lessonModules.lessonMember,module.lessonModules.module',
+        includes: [
+          'course.thumbnail',
+          'course.courseMember',
+          'module.thumbnail',
+          'memberModule',
+          'module.lessonModules.lesson',
+          'module.lessonModules.lessonMember',
+          'module.lessonModules.module',
+        ],
       );
 
       await _localDBService.persistCourseModules(

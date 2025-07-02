@@ -36,10 +36,11 @@ class GetMemberMissionSubscriptionsCubit
 
       final member = _hiveService.retrieveMember()!;
       final missionSubscriptions = await _missionSubscriptionService.list(
-        includes:
-            'mission.missionType,mission.school,'
-            'mission.school.schoolContacts.contactType,'
-            'mission.weatherForecasts',
+        includes: [
+          'mission.missionType,mission.school',
+          'mission.school.schoolContacts.contactType',
+          'mission.weatherForecasts',
+        ],
         filters: {
           'filter[member_ulid]': member.ulid,
           'filter[status_keys]': [

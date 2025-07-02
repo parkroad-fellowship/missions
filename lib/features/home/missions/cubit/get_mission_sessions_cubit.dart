@@ -32,8 +32,12 @@ class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
         filters: {
           'filter[mission_ulid]': missionUlid,
         },
-        includes:
-            'facilitator,speaker,classGroup,missionSessionTranscripts.media',
+        includes: [
+          'facilitator',
+          'speaker',
+          'classGroup',
+          'missionSessionTranscripts.media',
+        ],
       );
       await _localDBService.persistMissionSessions(
         missionSessions: missionSessions,

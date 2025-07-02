@@ -23,7 +23,7 @@ class GetPrayerRequestsCubit extends Cubit<GetPrayerRequestsState> {
       emit(const GetPrayerRequestsState.loading());
       final member = _hiveService.retrieveMember()!;
       final prayerRequests = await _prayerRequestService.list(
-        includes: 'member',
+        includes: ['member'],
         filters: {
           'filter[member_ulid]': member.ulid,
         },

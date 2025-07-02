@@ -12,7 +12,7 @@ class ExpenseService extends BaseAPIService<PRFExpense> {
 
   @override
   List<PRFExpense> createListFromResponse(Map<String, dynamic> response) {
-   throw UnimplementedError(
+    throw UnimplementedError(
       'ExpenseService does not support list responses yet.',
     );
   }

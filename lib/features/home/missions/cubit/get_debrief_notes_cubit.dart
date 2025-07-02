@@ -30,7 +30,7 @@ class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
         return;
       }
       final debriefNotes = await _debriefNoteService.list(
-        filters: {'filter[mission_ulid]': missionUlid}
+        filters: {'filter[mission_ulid]': missionUlid},
       );
       await _localDBService.persistDebriefNotes(
         debriefNotes: debriefNotes,

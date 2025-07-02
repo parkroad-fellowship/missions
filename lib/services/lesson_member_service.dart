@@ -13,6 +13,7 @@ class LessonMemberService extends BaseAPIService<PRFLessonMember> {
   @override
   List<PRFLessonMember> createListFromResponse(Map<String, dynamic> response) {
     throw UnimplementedError(
-        'createListFromResponse is not implemented for LessonMemberService');
+      'createListFromResponse is not implemented for LessonMemberService',
+    );
   }
 }

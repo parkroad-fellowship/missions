@@ -46,7 +46,7 @@ class UpdateMissionGroundSuggestionCubit
               status: status,
               notes: notes,
             ).toJson(),
-            includes: 'suggestor',
+            includes: ['suggestor'],
           );
       emit(
         UpdateMissionGroundSuggestionState.loaded(

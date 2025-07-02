@@ -17,8 +17,7 @@ abstract class BaseAPIService<T> {
   // Method that uses the endpoint and type from the subclass
   Future<List<T>> list({
     Map<String, dynamic>? filters,
-    // TODO: Change to List<String> for multiple includes
-    String? includes,
+    List<String>? includes,
     int? limit,
     String? orderBy,
     String? orderDirection,
@@ -28,7 +27,7 @@ abstract class BaseAPIService<T> {
 
       // Add includes if provided
       if (includes != null) {
-        queryParameters['include'] = includes;
+        queryParameters['include'] = includes.join(',');
       }
 
       // Add filters if provided
@@ -68,14 +67,14 @@ abstract class BaseAPIService<T> {
   // Method for fetching a single item
   Future<T> get({
     required String id,
-    String? includes,
+    List<String>? includes,
   }) async {
     try {
       final queryParameters = <String, dynamic>{};
 
       // Add includes if provided
       if (includes != null) {
-        queryParameters['include'] = includes;
+        queryParameters['include'] = includes.join(',');
       }
 
       final res = await _networkUtil.getReq(
@@ -93,13 +92,13 @@ abstract class BaseAPIService<T> {
   // Method for creating a new item
   Future<T> create({
     required Map<String, dynamic> data,
-    String? includes,
+    List<String>? includes,
   }) async {
     try {
       final queryParameters = <String, dynamic>{};
       // Add includes if provided
       if (includes != null) {
-        queryParameters['include'] = includes;
+        queryParameters['include'] = includes.join(',');
       }
       final res = await _networkUtil.postReq(
         endpoint,
@@ -117,13 +116,13 @@ abstract class BaseAPIService<T> {
   Future<T> update({
     required String id,
     required Map<String, dynamic> data,
-    String? includes,
+    List<String>? includes,
   }) async {
     try {
       final queryParameters = <String, dynamic>{};
       // Add includes if provided
       if (includes != null) {
-        queryParameters['include'] = includes;
+        queryParameters['include'] = includes.join(',');
       }
       final res = await _networkUtil.putReq(
         '$endpoint/$id',

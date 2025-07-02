@@ -20,9 +20,11 @@ class GetEventsCubit extends Cubit<GetEventsState> {
     emit(const GetEventsState.loading());
     try {
       final events = await _eventService.list(
-        includes:
-            'weatherForecasts,eventSubscriptions,'
-            'loggedInMemberEventSubscription,posters',
+        includes: [
+          'weatherForecasts',
+          'eventSubscriptions',
+          'loggedInMemberEventSubscription,posters',
+        ],
         orderBy: 'start_date',
         orderDirection: 'asc',
         filters: {

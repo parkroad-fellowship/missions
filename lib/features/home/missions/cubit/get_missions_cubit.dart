@@ -29,9 +29,13 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
         return;
       }
       final missions = await _missionService.list(
-        includes:
-            'school,missionType,school.schoolContacts.contactType,'
-            'loggedInMemberMissionSubscription,weatherForecasts',
+        includes: [
+          'school',
+          'missionType',
+          'school.schoolContacts.contactType',
+          'loggedInMemberMissionSubscription',
+          'weatherForecasts',
+        ],
         filters: {
           'filter[status_keys]': [
             PRFMissionStatus.approved.apiKey,

@@ -31,7 +31,7 @@ class UploadPrayerResponseCubit extends Cubit<UploadPrayerResponseState> {
           Future<PRFPrayerResponse>(() async {
             return _prayerResponseService.create(
               data: prayerResponse.toJson(),
-              includes: 'prayerPrompt',
+              includes: ['prayerPrompt'],
             );
           }),
         );

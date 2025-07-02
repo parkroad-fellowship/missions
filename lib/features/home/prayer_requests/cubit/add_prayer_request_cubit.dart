@@ -34,7 +34,7 @@ class AddPrayerRequestCubit extends Cubit<AddPrayerRequestState> {
           description: description,
           memberUlid: member.ulid,
         ).toJson(),
-        includes: 'member',
+        includes: ['member'],
       );
       emit(AddPrayerRequestState.loaded(prayerRequests: [prayerRequest]));
     } on Failure catch (e) {

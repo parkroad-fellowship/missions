@@ -24,7 +24,7 @@ class GetEnquiryRepliesCubit extends Cubit<GetEnquiryRepliesState> {
       final replies = await _studentEnquiryService.list(
         filters: {
           'filter[student_enquiry_ulid]': enquiryUlid,
-        }
+        },
       );
 
       await _localDBService.persistStudentEnquiryReplies(

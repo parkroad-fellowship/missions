@@ -11,7 +11,9 @@ class MissionQuestionService extends BaseAPIService<PRFMissionQuestion> {
   }
 
   @override
-  List<PRFMissionQuestion> createListFromResponse(Map<String, dynamic> response) {
+  List<PRFMissionQuestion> createListFromResponse(
+    Map<String, dynamic> response,
+  ) {
     return PRFMissionQuestionResponse.fromJson(response).data;
   }
 }

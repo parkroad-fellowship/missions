@@ -36,7 +36,7 @@ class AddSoulCubit extends Cubit<AddSoulState> {
           fullName: fullName,
           admissionNumber: admissionNumber,
         ).toJson(),
-        includes: 'classGroup',
+        includes: ['classGroup'],
       );
 
       await _localDBService.persistSouls(

@@ -87,7 +87,6 @@ import 'package:app/services/class_group_service.dart';
 import 'package:app/services/course_module_service.dart';
 import 'package:app/services/course_service.dart';
 import 'package:app/services/debrief_note_service.dart';
-import 'package:app/services/event_service.dart';
 import 'package:app/services/event_subscription_service.dart';
 import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
@@ -97,9 +96,8 @@ import 'package:app/services/mission_faq_category_service.dart';
 import 'package:app/services/mission_faq_service.dart';
 import 'package:app/services/mission_ground_suggestion_service.dart';
 import 'package:app/services/mission_question_service.dart';
-import 'package:app/services/mission_subscription_service.dart';
 import 'package:app/services/mission_service.dart';
-import 'package:app/services/payment_service.dart';
+import 'package:app/services/mission_subscription_service.dart';
 import 'package:app/services/payment_type_service.dart';
 import 'package:app/services/prayer_prompt_service.dart';
 import 'package:app/services/prayer_request_service.dart';
@@ -142,26 +140,43 @@ class Singletons {
         MissionExpensesService(),
       )
       ..registerSingleton<BaseAPIService<PRFExpense>>(ExpenseService())
-      ..registerSingleton<BaseAPIService<PRFMissionQuestion>>(MissionQuestionService())
+      ..registerSingleton<BaseAPIService<PRFMissionQuestion>>(
+        MissionQuestionService(),
+      )
       ..registerSingleton<BaseAPIService<PRFDebriefNote>>(
         DebriefNoteService(),
       )
-      ..registerSingleton<BaseAPIService<PRFMissionGroundSuggestion>>(MissionGroundSuggestionService())
+      ..registerSingleton<BaseAPIService<PRFMissionGroundSuggestion>>(
+        MissionGroundSuggestionService(),
+      )
       ..registerSingleton<BaseAPIService<PRFPayment>>(PaymentService())
       ..registerSingleton<BaseAPIService<PRFPaymentType>>(PaymentTypeService())
-      ..registerSingleton<BaseAPIService<PRFPrayerRequest>>(PrayerRequestService())
+      ..registerSingleton<BaseAPIService<PRFPrayerRequest>>(
+        PrayerRequestService(),
+      )
       ..registerSingleton<BaseAPIService<PRFClassGroup>>(ClassGroupService())
       ..registerSingleton<BaseAPIService<PRFSoul>>(SoulService())
       ..registerSingleton<BaseAPIService<PRFEvent>>(EventService())
-      ..registerSingleton<BaseAPIService<PRFEventSubscription>>(EventSubscriptionService())
+      ..registerSingleton<BaseAPIService<PRFEventSubscription>>(
+        EventSubscriptionService(),
+      )
       ..registerSingleton<BaseAPIService<PRFFaq>>(MissionFaqService())
-      ..registerSingleton<BaseAPIService<PRFFaqCategory>>(MissionFaqCategoryService())
-      ..registerSingleton<BaseAPIService<PRFStudentEnquiry>>(StudentEnquiryService())
-      ..registerSingleton<BaseAPIService<PRFStudentEnquiryReply>>(StudentEnquiryReplyService())
+      ..registerSingleton<BaseAPIService<PRFFaqCategory>>(
+        MissionFaqCategoryService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFStudentEnquiry>>(
+        StudentEnquiryService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFStudentEnquiryReply>>(
+        StudentEnquiryReplyService(),
+      )
       ..registerSingleton<BaseAPIService<PRFCourse>>(CourseService())
-      ..registerSingleton<BaseAPIService<PRFCourseModule>>(CourseModuleService())
-      ..registerSingleton<BaseAPIService<PRFLessonMember>>(LessonMemberService())
-
+      ..registerSingleton<BaseAPIService<PRFCourseModule>>(
+        CourseModuleService(),
+      )
+      ..registerSingleton<BaseAPIService<PRFLessonMember>>(
+        LessonMemberService(),
+      )
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SocketService>(
@@ -276,8 +291,10 @@ class Singletons {
         ),
       ),
       BlocProvider<FinishLessonCubit>(
-        create: (context) =>
-            FinishLessonCubit(lessonMemberService: getIt(), hiveService: getIt()),
+        create: (context) => FinishLessonCubit(
+          lessonMemberService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<GetFaqsCubit>(
         create: (context) =>

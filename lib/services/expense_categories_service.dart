@@ -11,7 +11,9 @@ class ExpenseCategoriesService extends BaseAPIService<PRFExpenseCategory> {
   }
 
   @override
-  List<PRFExpenseCategory> createListFromResponse(Map<String, dynamic> response) {
+  List<PRFExpenseCategory> createListFromResponse(
+    Map<String, dynamic> response,
+  ) {
     return PRFExpenseCategoryResponse.fromJson(response).data;
   }
 }
