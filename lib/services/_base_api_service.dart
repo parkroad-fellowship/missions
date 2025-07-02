@@ -17,6 +17,7 @@ abstract class BaseAPIService<T> {
   // Method that uses the endpoint and type from the subclass
   Future<List<T>> list({
     Map<String, dynamic>? filters,
+    // TODO: Change to List<String> for multiple includes
     String? includes,
     int? limit,
     String? orderBy,

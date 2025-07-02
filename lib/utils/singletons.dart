@@ -61,6 +61,7 @@ import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
+import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
@@ -72,6 +73,7 @@ import 'package:app/services/debrief_note_service.dart';
 import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
 import 'package:app/services/mission_expenses_service.dart';
+import 'package:app/services/mission_ground_suggestion_service.dart';
 import 'package:app/services/mission_question_service.dart';
 import 'package:app/services/mission_subscription_service.dart';
 import 'package:app/services/mission_service.dart';
@@ -118,6 +120,7 @@ class Singletons {
       ..registerSingleton<BaseAPIService<PRFDebriefNote>>(
         DebriefNoteService(),
       )
+      ..registerSingleton<BaseAPIService<PRFMissionGroundSuggestion>>(MissionGroundSuggestionService())
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
@@ -127,7 +130,6 @@ class Singletons {
       )
       ..registerSingleton<StudentService>(StudentServiceImpl())
       ..registerSingleton<MediaService>(MediaServiceImpl())
-      ..registerSingleton<MissionGroundsService>(MissionGroundsServiceImpl())
       ..registerSingleton<PaymentService>(PaymentServiceImpl())
       ..registerSingleton<EventService>(EventServiceImpl())
       ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl())
@@ -368,19 +370,19 @@ class Singletons {
       ),
       BlocProvider<GetMissionGroundSuggestionsCubit>(
         create: (context) => GetMissionGroundSuggestionsCubit(
-          missionGroundsService: getIt(),
+          missionGroundSuggestionService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<AddMissionGroundSuggestionCubit>(
         create: (context) => AddMissionGroundSuggestionCubit(
-          missionGroundsService: getIt(),
+          missionGroundSuggestionService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<UpdateMissionGroundSuggestionCubit>(
         create: (context) => UpdateMissionGroundSuggestionCubit(
-          missionGroundsService: getIt(),
+          missionGroundSuggestionService: getIt(),
           hiveService: getIt(),
         ),
       ),
