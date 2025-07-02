@@ -2,7 +2,6 @@ export 'analytics_service.dart';
 export 'auth_service.dart';
 export 'event_service.dart';
 export 'hive_service.dart';
-export 'lms_service.dart';
 export 'local_db_service.dart';
 export 'media_service.dart';
 export 'notification_service.dart';

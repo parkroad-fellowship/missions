@@ -2,6 +2,7 @@ import 'package:app/enums/prf_completion_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_lesson_member_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/lesson_member_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +11,14 @@ part 'finish_lesson_cubit.freezed.dart';
 
 class FinishLessonCubit extends Cubit<FinishLessonState> {
   FinishLessonCubit({
-    required LMSService lmsService,
+    required LessonMemberService lessonMemberService,
     required HiveService hiveService,
   }) : super(const FinishLessonState.initial()) {
-    _lmsService = lmsService;
+    _lessonMemberService = lessonMemberService;
     _hiveService = hiveService;
   }
 
-  late LMSService _lmsService;
+  late LessonMemberService _lessonMemberService;
   late HiveService _hiveService;
 
   Future<void> finishLesson({
@@ -30,14 +31,14 @@ class FinishLessonCubit extends Cubit<FinishLessonState> {
     try {
       final member = _hiveService.retrieveMember()!;
 
-      await _lmsService.finishLesson(
-        lessonMemberDTO: PRFLessonMemberDTO(
+      await _lessonMemberService.create(
+        data: PRFLessonMemberDTO(
           lessonUlid: lessonUlid,
           moduleUlid: moduleUlid,
           courseUlid: courseUlid,
           memberUlid: member.ulid,
           completionStatus: PRFCompletionStatus.complete,
-        ),
+        ).toJson(),
       );
 
       emit(const FinishLessonState.loaded());

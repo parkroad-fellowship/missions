@@ -57,6 +57,8 @@ import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.da
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/models/remote/prf_announcement.dart';
 import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/prf_course.dart';
+import 'package:app/models/remote/prf_course_module.dart';
 import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
@@ -64,6 +66,7 @@ import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_faq.dart';
 import 'package:app/models/remote/prf_faq_category.dart';
+import 'package:app/models/remote/prf_lesson_member.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
@@ -81,11 +84,14 @@ import 'package:app/services/_base_api_service.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/announcement_service.dart';
 import 'package:app/services/class_group_service.dart';
+import 'package:app/services/course_module_service.dart';
+import 'package:app/services/course_service.dart';
 import 'package:app/services/debrief_note_service.dart';
 import 'package:app/services/event_service.dart';
 import 'package:app/services/event_subscription_service.dart';
 import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
+import 'package:app/services/lesson_member_service.dart';
 import 'package:app/services/mission_expenses_service.dart';
 import 'package:app/services/mission_faq_category_service.dart';
 import 'package:app/services/mission_faq_service.dart';
@@ -152,11 +158,12 @@ class Singletons {
       ..registerSingleton<BaseAPIService<PRFFaqCategory>>(MissionFaqCategoryService())
       ..registerSingleton<BaseAPIService<PRFStudentEnquiry>>(StudentEnquiryService())
       ..registerSingleton<BaseAPIService<PRFStudentEnquiryReply>>(StudentEnquiryReplyService())
-      
-    
+      ..registerSingleton<BaseAPIService<PRFCourse>>(CourseService())
+      ..registerSingleton<BaseAPIService<PRFCourseModule>>(CourseModuleService())
+      ..registerSingleton<BaseAPIService<PRFLessonMember>>(LessonMemberService())
+
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
-      ..registerSingleton<LMSService>(LMSServiceImpl())
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
       )
@@ -257,20 +264,20 @@ class Singletons {
       ),
       BlocProvider<GetCoursesCubit>(
         create: (context) => GetCoursesCubit(
-          lmsService: getIt(),
+          courseService: getIt(),
           localDBService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<GetCourseModulesCubit>(
         create: (context) => GetCourseModulesCubit(
-          lmsService: getIt(),
+          courseModuleService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<FinishLessonCubit>(
         create: (context) =>
-            FinishLessonCubit(lmsService: getIt(), hiveService: getIt()),
+            FinishLessonCubit(lessonMemberService: getIt(), hiveService: getIt()),
       ),
       BlocProvider<GetFaqsCubit>(
         create: (context) =>
