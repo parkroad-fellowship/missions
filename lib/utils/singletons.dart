@@ -62,6 +62,8 @@ import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/models/remote/prf_faq.dart';
+import 'package:app/models/remote/prf_faq_category.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
@@ -73,6 +75,8 @@ import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/models/remote/prf_prayer_request.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_soul.dart';
+import 'package:app/models/remote/prf_student_enquiry.dart';
+import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/services/_base_api_service.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/announcement_service.dart';
@@ -83,6 +87,8 @@ import 'package:app/services/event_subscription_service.dart';
 import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
 import 'package:app/services/mission_expenses_service.dart';
+import 'package:app/services/mission_faq_category_service.dart';
+import 'package:app/services/mission_faq_service.dart';
 import 'package:app/services/mission_ground_suggestion_service.dart';
 import 'package:app/services/mission_question_service.dart';
 import 'package:app/services/mission_subscription_service.dart';
@@ -92,6 +98,8 @@ import 'package:app/services/payment_type_service.dart';
 import 'package:app/services/prayer_prompt_service.dart';
 import 'package:app/services/prayer_request_service.dart';
 import 'package:app/services/prayer_response_service.dart';
+import 'package:app/services/student_enquiry_reply_service.dart';
+import 'package:app/services/student_enquiry_service.dart';
 import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -140,14 +148,18 @@ class Singletons {
       ..registerSingleton<BaseAPIService<PRFSoul>>(SoulService())
       ..registerSingleton<BaseAPIService<PRFEvent>>(EventService())
       ..registerSingleton<BaseAPIService<PRFEventSubscription>>(EventSubscriptionService())
+      ..registerSingleton<BaseAPIService<PRFFaq>>(MissionFaqService())
+      ..registerSingleton<BaseAPIService<PRFFaqCategory>>(MissionFaqCategoryService())
+      ..registerSingleton<BaseAPIService<PRFStudentEnquiry>>(StudentEnquiryService())
+      ..registerSingleton<BaseAPIService<PRFStudentEnquiryReply>>(StudentEnquiryReplyService())
       
+    
       // End V2
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<LMSService>(LMSServiceImpl())
       ..registerSingleton<SocketService>(
         SocketServiceImpl(localDBService: getIt()),
       )
-      ..registerSingleton<StudentService>(StudentServiceImpl())
       ..registerSingleton<MediaService>(MediaServiceImpl())
       ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
   }
@@ -262,30 +274,30 @@ class Singletons {
       ),
       BlocProvider<GetFaqsCubit>(
         create: (context) =>
-            GetFaqsCubit(studentService: getIt(), localDBService: getIt()),
+            GetFaqsCubit(missionFaqService: getIt(), localDBService: getIt()),
       ),
       BlocProvider<GetFaqCategoriesCubit>(
         create: (context) => GetFaqCategoriesCubit(
-          studentService: getIt(),
+          missionFaqCategoryService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<GetEnquiriesCubit>(
         create: (context) => GetEnquiriesCubit(
-          studentService: getIt(),
+          studentEnquiryService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<CreateEnquiryReplyCubit>(
         create: (context) => CreateEnquiryReplyCubit(
-          studentService: getIt(),
+          studentEnquiryService: getIt(),
           hiveService: getIt(),
           localDBService: getIt(),
         ),
       ),
       BlocProvider<GetEnquiryRepliesCubit>(
         create: (context) => GetEnquiryRepliesCubit(
-          studentService: getIt(),
+          studentEnquiryService: getIt(),
           localDBService: getIt(),
         ),
       ),

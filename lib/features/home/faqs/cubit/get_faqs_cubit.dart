@@ -1,5 +1,6 @@
 import 'package:app/models/local/prf_faq.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_faq_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,14 +9,14 @@ part 'get_faqs_cubit.freezed.dart';
 
 class GetFaqsCubit extends Cubit<GetFaqsState> {
   GetFaqsCubit({
-    required StudentService studentService,
+    required MissionFaqService missionFaqService,
     required LocalDBService localDBService,
   }) : super(const GetFaqsState.initial()) {
-    _studentService = studentService;
+    _missionFaqService = missionFaqService;
     _localDBService = localDBService;
   }
 
-  late StudentService _studentService;
+  late MissionFaqService _missionFaqService;
   late LocalDBService _localDBService;
 
   Future<void> getFaqs({
@@ -50,7 +51,10 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
   }
 
   Future<void> _networkFetch() async {
-    final faqs = await _studentService.getFaqs(include: 'missionFaqCategory');
+    final faqs = await _missionFaqService.list(
+      limit: 500,
+      includes: 'missionFaqCategory',
+    );
     await _localDBService.persistFaqs(faqs: faqs);
   }
 }

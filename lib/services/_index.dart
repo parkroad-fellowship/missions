@@ -9,4 +9,3 @@ export 'notification_service.dart';
 export 'payment_service.dart';
 export 'socket_service.dart';
 export 'soul_service.dart';
-export 'student_service.dart';
