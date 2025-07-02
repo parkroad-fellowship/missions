@@ -70,7 +70,7 @@ import 'package:app/services/expense_categories_service.dart';
 import 'package:app/services/expense_service.dart';
 import 'package:app/services/mission_expenses_service.dart';
 import 'package:app/services/mission_subscription_service.dart';
-import 'package:app/services/missions_service.dart';
+import 'package:app/services/mission_service.dart';
 import 'package:app/services/prayer_prompt_service.dart';
 import 'package:app/services/prayer_request_service.dart';
 import 'package:app/services/prayer_response_service.dart';
@@ -90,7 +90,7 @@ class Singletons {
       ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
       ..registerSingleton<AuthService>(AuthServiceImpl())
       // V2
-      ..registerSingleton<BaseAPIService<PRFMission>>(MissionsService())
+      ..registerSingleton<BaseAPIService<PRFMission>>(MissionService())
       ..registerSingleton<BaseAPIService<PRFMissionSubscription>>(
         MissionSubscriptionService(),
       )
@@ -111,7 +111,6 @@ class Singletons {
       )
       ..registerSingleton<BaseAPIService<PRFExpense>>(ExpenseService())
       // End V2
-      ..registerSingleton<MissionService>(MissionServiceImpl())
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SoulService>(SoulServiceImpl())
       ..registerSingleton<DebriefService>(DebriefServiceImpl())
@@ -161,7 +160,7 @@ class Singletons {
       ),
       BlocProvider<GetMissionsCubit>(
         create: (context) => GetMissionsCubit(
-          missionsService: getIt(),
+          missionService: getIt(),
           localDBService: getIt(),
         ),
       ),

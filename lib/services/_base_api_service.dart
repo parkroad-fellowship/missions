@@ -148,4 +148,95 @@ abstract class BaseAPIService<T> {
       rethrow;
     }
   }
+
+  Future<List<R>> listChildren<R>({
+    required String parentId,
+    required String childPath,
+    required List<R> Function(Map<String, dynamic>) fromJson,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final res = await _networkUtil.getReq(
+        '$endpoint/$parentId/$childPath',
+        queryParameters: queryParameters,
+      );
+
+      return fromJson(res);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<R> getChild<R>({
+    required String parentId,
+    required String childPath,
+    required R Function(Map<String, dynamic>) fromJson,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final res = await _networkUtil.getReq(
+        '$endpoint/$parentId/$childPath',
+        queryParameters: queryParameters,
+      );
+
+      return fromJson(res);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<R> createChild<R>({
+    required String parentId,
+    required String childPath,
+    required Map<String, dynamic> data,
+    required R Function(Map<String, dynamic>) fromJson,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final res = await _networkUtil.postReq(
+        '$endpoint/$parentId/$childPath',
+        body: json.encode(data),
+        queryParameters: queryParameters,
+      );
+
+      return fromJson(res);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<R> updateChild<R>({
+    required String parentId,
+    required String childPath,
+    required String childId,
+    required Map<String, dynamic> data,
+    required R Function(Map<String, dynamic>) fromJson,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final res = await _networkUtil.putReq(
+        '$endpoint/$parentId/$childPath/$childId',
+        body: json.encode(data),
+        queryParameters: queryParameters,
+      );
+
+      return fromJson(res);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteChild({
+    required String parentId,
+    required String childPath,
+    required String childId,
+  }) async {
+    try {
+      await _networkUtil.deleteReq(
+        '$endpoint/$parentId/$childPath/$childId',
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

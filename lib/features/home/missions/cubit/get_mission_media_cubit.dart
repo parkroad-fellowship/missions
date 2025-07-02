@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/mission_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -21,9 +22,11 @@ class GetMissionMediaCubit extends Cubit<GetMissionMediaState> {
   }) async {
     emit(const GetMissionMediaState.loading());
     try {
-      final media = await _missionService.getMissionMedia(
-        missionUlid: missionUlid,
-        model: model,
+      final media = await _missionService.listChildren<PRFMedia>(
+        parentId: missionUlid,
+        childPath: 'media',
+        queryParameters: {'collection': model.collection},
+        fromJson: (json) => PRFMediaResponse.fromJson(json).data,
       );
 
       if (media.isEmpty) {
