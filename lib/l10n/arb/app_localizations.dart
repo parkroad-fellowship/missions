@@ -1749,6 +1749,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Added on'**
   String get addedOn;
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back! Please sign in with your PRF organisation email to continue.'**
+  String get welcomeBack;
 }
 
 class _AppLocalizationsDelegate

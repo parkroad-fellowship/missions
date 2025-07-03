@@ -17,28 +17,43 @@ class PRFPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return SizedBox(
       width: double.infinity,
-
-      child: OutlinedButton(
+      height: 56,
+      child: ElevatedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.onPrimary,
+          disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.4),
+          disabledForegroundColor: theme.colorScheme.onPrimary.withValues(alpha: 0.7),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading ?? false) ...[
               const SizedBox(
-                height: 16,
-                width: 16,
-                child: PRFCircularProgressIndicator(color: Colors.white),
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
               ),
-              const SizedBox(width: 8),
-            ] else
-              const SizedBox.shrink(),
+              const SizedBox(width: 12),
+            ],
             Text(
               title,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(color: Colors.white),
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),

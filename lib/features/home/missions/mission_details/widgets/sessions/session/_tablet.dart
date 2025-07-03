@@ -462,7 +462,7 @@ class MissionSessionDataView extends StatelessWidget {
             ),
             SizedBox(width: 16.w),
             Expanded(
-              child: PRFDestoryButton(
+              child: PRFDestroyButton(
                 title: l10n.delete,
                 disabled: false,
                 onPressed: () async => showDialog<void>(

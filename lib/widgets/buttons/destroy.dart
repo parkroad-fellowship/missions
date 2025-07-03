@@ -1,8 +1,8 @@
 import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
-class PRFDestoryButton extends StatelessWidget {
-  const PRFDestoryButton({
+class PRFDestroyButton extends StatelessWidget {
+  const PRFDestroyButton({
     required this.onPressed,
     required this.title,
     required this.disabled,
@@ -17,15 +17,19 @@ class PRFDestoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return SizedBox(
       width: double.infinity,
-
-      child: OutlinedButton(
+      child: ElevatedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
-        style: Theme.of(context).outlinedButtonTheme.style?.copyWith(
-          backgroundColor: WidgetStatePropertyAll(
-            Theme.of(context).colorScheme.error,
-          ),
+        style: theme.elevatedButtonTheme.style?.copyWith(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return theme.colorScheme.error.withValues(alpha: 0.4);
+            }
+            return theme.colorScheme.error;
+          }),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -37,13 +41,13 @@ class PRFDestoryButton extends StatelessWidget {
                 child: PRFCircularProgressIndicator(color: Colors.white),
               ),
               const SizedBox(width: 8),
-            ] else
-              const SizedBox.shrink(),
+            ],
             Text(
               title,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(color: Colors.white),
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.onError,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),

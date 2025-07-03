@@ -731,5 +731,7 @@
     "receipts": "Receipts:",
     "@receipts": {},
     "addedOn": "Added on",
-    "@addedOn": {}
+    "@addedOn": {},
+    "welcomeBack": "Welcome back! Please sign in with your PRF organisation email to continue.",
+    "@welcomeBack": {}
 }

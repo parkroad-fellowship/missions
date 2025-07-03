@@ -9,6 +9,7 @@ class FormFieldLabel extends StatelessWidget {
     this.color,
     this.isBold,
   });
+  
   final String label;
   final bool? isOptional;
   final bool? isRequired;
@@ -17,31 +18,33 @@ class FormFieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return RichText(
-          text: TextSpan(
-            text: label,
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              fontWeight: isBold ?? false ? FontWeight.bold : null,
+    final theme = Theme.of(context);
+    
+    return RichText(
+      text: TextSpan(
+        text: label,
+        style: theme.textTheme.titleMedium?.copyWith(
+          fontWeight: isBold ?? false ? FontWeight.w700 : FontWeight.w600,
+          color: color ?? theme.colorScheme.onSurface,
+        ),
+        children: [
+          if (isRequired ?? false)
+            TextSpan(
+              text: ' *',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.error,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            children: [
-              if (isRequired ?? false)
-                TextSpan(
-                  text: ' *',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              if (isOptional ?? false)
-                TextSpan(
-                  text: ' (optional)',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: const Color(0xff939393),
-                  ),
-                ),
-            ],
-          ),
-        );
-      },
+          if (isOptional ?? false)
+            TextSpan(
+              text: ' (optional)',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

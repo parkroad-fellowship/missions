@@ -901,4 +901,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addedOn => 'Added on';
+
+  @override
+  String get welcomeBack =>
+      'Welcome back! Please sign in with your PRF organisation email to continue.';
 }

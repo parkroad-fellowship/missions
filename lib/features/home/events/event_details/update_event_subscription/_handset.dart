@@ -126,7 +126,7 @@ class _UpdateEventSubscriptionViewHandsetState
 
             SizedBox(
               width: double.infinity,
-              child: PRFDestoryButton(
+              child: PRFDestroyButton(
                 title: l10n.cancelRegistration,
                 disabled: false,
                 onPressed: () async => showDialog<void>(
