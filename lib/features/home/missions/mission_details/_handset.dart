@@ -339,7 +339,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             }
             if (_currentTab == 6) {
               final missionExpense = getIt<HiveService>()
-              .data
+              .data.expenses
                   .retrieveMissionExpense(missionUlid);
               if (missionExpense == null) {
                 Gaimon.error();

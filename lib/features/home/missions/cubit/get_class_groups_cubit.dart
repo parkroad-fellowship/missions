@@ -49,7 +49,7 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
       }
 
       final classGroups = await _classGroupService.list();
-      _hiveService.data.persistClassGroups(PRFClassGroupResponse(classGroups));
+      _hiveService.data.classGroups.persistClassGroups(PRFClassGroupResponse(classGroups));
 
       if (missionUlid != null) {
         final mission = await _localDBService.loadMission(

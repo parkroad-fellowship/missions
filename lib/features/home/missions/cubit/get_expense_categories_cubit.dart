@@ -36,7 +36,7 @@ class GetExpenseCategoriesCubit extends Cubit<GetExpenseCategoriesState> {
       final expenseCategories = await _expenseCategoriesService.list(
         limit: 100,
       );
-      _hiveService.data.persistExpenseCategories(
+      _hiveService.data.expenses.persistExpenseCategories(
         PRFExpenseCategoryResponse(expenseCategories),
       );
       emit(
