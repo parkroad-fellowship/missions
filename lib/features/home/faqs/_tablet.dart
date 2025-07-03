@@ -22,12 +22,18 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
   PRFLocalFaqCategory? _selectedCategory;
   String? _searchQuery;
 
-  final _searchDeboucer = Debouncer(milliseconds: 1 * 1000);
+  final _searchDebouncer = Debouncer(milliseconds: 1 * 1000);
 
   @override
   void initState() {
     context.read<GetFaqsCubit>().getFaqs();
     super.initState();
+  }
+
+   @override
+  void dispose() {
+    _searchDebouncer.dispose();
+    super.dispose();
   }
 
   @override
@@ -101,7 +107,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                       });
                       Logger().i('Search Query: $_searchQuery');
 
-                      _searchDeboucer.run(() {
+                      _searchDebouncer.run(() {
                         context.read<GetFaqsCubit>().getFaqs(
                           categoryUlid:
                               _selectedCategory?.ulid ??
