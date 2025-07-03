@@ -10,8 +10,8 @@ import 'package:app/widgets/buttons/secondary.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:logger/logger.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 abstract class NotificationService {
   Future<void> init();
@@ -281,7 +281,7 @@ class NotificationServiceImpl implements NotificationService {
           second: 0,
           repeats: true,
           allowWhileIdle: true,
-          timeZone: await _timezone,
+          timeZone: _timezone,
         ),
       );
     }
@@ -309,10 +309,11 @@ class NotificationServiceImpl implements NotificationService {
         second: 0,
         repeats: true,
         allowWhileIdle: true,
-        timeZone: await _timezone,
+        timeZone: _timezone,
       ),
     );
   }
 
-  Future<String> get _timezone => FlutterTimezone.getLocalTimezone();
+  String get _timezone => tz.local.name;
+
 }

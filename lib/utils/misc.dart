@@ -5,11 +5,11 @@ import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/slugify.dart' as slugify;
 import 'package:app/versioning/build_version.dart';
 import 'package:flutter/material.dart' show BuildContext, MediaQuery, Size;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:slugify/slugify.dart' as slugify;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 
