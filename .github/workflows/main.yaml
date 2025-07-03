@@ -64,16 +64,18 @@ jobs:
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
       - name: 🚀 Shorebird Release (Android)
-        uses: shorebirdtech/shorebird-release@v0
+        uses: shorebirdtech/shorebird-release@v1
         with:
+          flutter-version: 3.32.5
           platform: android
           args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols 
 
       - name: 🚀 Shorebird Patch
-        uses: shorebirdtech/shorebird-patch@v0
+        uses: shorebirdtech/shorebird-patch@v1
         with:
           platform: android
           args: --flavor production --target lib/main_production.dart
+          release-version: latest
 
       - name: ⚙️ Upload debug symbols to Firebase
         env:
