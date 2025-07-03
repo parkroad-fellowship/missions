@@ -1,8 +1,6 @@
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/app_theme.dart';
-import 'package:app/utils/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';

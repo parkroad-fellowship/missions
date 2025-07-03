@@ -6,3 +6,5 @@ export 'misc.dart';
 export 'router.dart';
 export 'single_stream_wrapper.dart';
 export 'singletons.dart';
+export 'theme/app_theme.dart';
+export 'theme/text_theme.dart';
