@@ -20,7 +20,7 @@ class PRFSuperAppValues {
   final String azureConnString;
 
   String get baseUrl => '$urlScheme://$baseDomain';
-  String get globalHiveAuthBox => 'prf-super-app-auth';
+  String get globalHiveAuthBox => 'prf-super-app-auth-';
 }
 
 class PRFSuperAppConfig {

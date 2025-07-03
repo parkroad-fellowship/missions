@@ -21,7 +21,6 @@ class SignInHandset extends StatefulWidget {
 }
 
 class _SignInHandsetState extends State<SignInHandset> {
-
   final _emailController = TextEditingController(
     text: kDebugMode ? 'approvals@parkroadfellowship.org' : '',
   );
@@ -35,7 +34,6 @@ class _SignInHandsetState extends State<SignInHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    
 
     return BlocListener<GoogleSignInCubit, GoogleSignInState>(
       listener: (context, state) {
@@ -95,7 +93,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                    
+
                           PRFEmailInput(
                             hintText: l10n.enterEmail,
                             emailController: _emailController,
@@ -147,7 +145,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       Gaimon.warning();
                                       return;
                                     }
-                    
+
                                     if (_passwordController.text.isEmpty) {
                                       ScaffoldMessenger.of(
                                         context,
@@ -159,13 +157,15 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       Gaimon.warning();
                                       return;
                                     }
-                    
+
                                     context.read<SigninCubit>().signIn(
                                       email: _emailController.text.trim(),
                                       password: _passwordController.text.trim(),
                                     );
                                   },
-                                  title: _isLoading ? l10n.signingIn : l10n.signIn,
+                                  title: _isLoading
+                                      ? l10n.signingIn
+                                      : l10n.signIn,
                                   disabled: _isLoading,
                                   isLoading: _isLoading ? true : null,
                                 ),
@@ -173,13 +173,16 @@ class _SignInHandsetState extends State<SignInHandset> {
                             },
                           ),
                           const SizedBox(height: 32),
-                    
+
                           const Divider(),
                           const SizedBox(height: 32),
                         ],
                         BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
                           builder: (context, signInWithGoogleState) {
-                            return BlocBuilder<SocialLoginCubit, SocialLoginState>(
+                            return BlocBuilder<
+                              SocialLoginCubit,
+                              SocialLoginState
+                            >(
                               builder: (context, socialSignUpState) {
                                 return BlocBuilder<
                                   SocialLoginCubit,
@@ -192,20 +195,22 @@ class _SignInHandsetState extends State<SignInHandset> {
                                     ) = signInWithGoogleState.maybeWhen(
                                       loading: () => (true, 'Please wait ...'),
                                       orElse: () => socialSignUpState.maybeWhen(
-                                        loading: () => (true, 'Please wait ...'),
-                                        orElse: () => socialSignInState.maybeWhen(
-                                          loading: () => (
-                                            true,
-                                            'Please wait ...',
-                                          ),
-                                          orElse: () => (
-                                            false,
-                                            'Continue with Google',
-                                          ),
-                                        ),
+                                        loading: () =>
+                                            (true, 'Please wait ...'),
+                                        orElse: () =>
+                                            socialSignInState.maybeWhen(
+                                              loading: () => (
+                                                true,
+                                                'Please wait ...',
+                                              ),
+                                              orElse: () => (
+                                                false,
+                                                'Continue with Google',
+                                              ),
+                                            ),
                                       ),
                                     );
-                    
+
                                     return GoogleAuthButton(
                                       onPressed: () => context
                                           .read<GoogleSignInCubit>()
@@ -231,7 +236,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                         const Spacer(),
                       ],
                     );
-                  }
+                  },
                 ),
               ),
             ),

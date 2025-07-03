@@ -315,5 +315,4 @@ class NotificationServiceImpl implements NotificationService {
   }
 
   String get _timezone => tz.local.name;
-
 }

@@ -33,22 +33,12 @@ class _DecisionPageState extends State<DecisionPage> {
 
     /// If both the member and student are null, then the user is lacking a
     /// profile and should be redirected to the sign-in page.
-    if (profile.member == null && profile.student == null) {
+    if (profile.member == null) {
       _redirectToPage(context, PRFSuperAppRouter.signInRoute);
       return;
     }
 
-    final result = profile.roles.where(
-      (role) => role.name == PrfRole.student.label,
-    );
-
-    if (result.isEmpty) {
-      _redirectToPage(context, PRFSuperAppRouter.landingRoute);
-      return;
-    } else {
-      _redirectToPage(context, PRFSuperAppRouter.signInRoute);
-      return;
-    }
+    _redirectToPage(context, PRFSuperAppRouter.landingRoute);
   }
 
   void _redirectToPage(BuildContext context, String routeName) {

@@ -23,7 +23,7 @@ class FirebaseServiceImpl implements FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   @override
   Future<SocialAuthDTO> signInWithGoogle() async {
@@ -32,13 +32,14 @@ class FirebaseServiceImpl implements FirebaseService {
       await _auth.signOut();
       await _googleSignIn.signOut();
 
-      final googleSignInAccount = await _googleSignIn.signIn();
-      final googleSignInAuthentication =
-          await googleSignInAccount?.authentication;
+      final googleSignInAccount = await _googleSignIn.authenticate(
+        scopeHint: ['profile', 'email'],
+      );
+
+      final googleSignInAuthentication = googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleSignInAuthentication?.idToken,
-        accessToken: googleSignInAuthentication?.accessToken,
+        idToken: googleSignInAuthentication.idToken,
       );
 
       final authResult = await _auth.signInWithCredential(credential);
@@ -51,7 +52,7 @@ class FirebaseServiceImpl implements FirebaseService {
         return Future.value(
           SocialAuthDTO(
             provider: 'google',
-            accessToken: googleSignInAuthentication?.accessToken ?? '',
+            accessToken: googleSignInAuthentication.idToken ?? '',
           ),
         );
       } else {

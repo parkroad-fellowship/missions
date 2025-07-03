@@ -3,7 +3,7 @@ export 'constants.dart';
 export 'debouncer.dart';
 export 'http/network.dart';
 export 'misc.dart';
-export 'router.dart';
+export 'router/router.dart';
 export 'single_stream_wrapper.dart';
 export 'singletons.dart';
 export 'theme/app_theme.dart';

@@ -1,4 +1,5 @@
-import 'package:app/utils/router.gr.dart';
+import 'package:app/utils/router/guards/auth_guard.dart';
+import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 
 @AutoRouterConfig()
@@ -54,76 +55,91 @@ class PRFSuperAppRouter extends RootStackRouter {
     CustomRoute<dynamic>(
       page: PrayerRequest.page,
       path: prayerRequestRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: MissionsRoute.page,
       path: missionsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: LMSRoute.page,
       path: lmsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: StudentEnquiriesRoute.page,
       path: studentEnquiriesRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: AccountRoute.page,
       path: accountRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: AnnouncementsRoute.page,
       path: announcementsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: LandingRoute.page,
       path: landingRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: MissionsDetailsRoute.page,
       path: missionDetailsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
     CustomRoute<dynamic>(
       page: StudentEnquiryRepliesRoute.page,
       path: repliesRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
     CustomRoute<dynamic>(
       page: MemberFAQRoute.page,
       path: memberLearnerFaqs,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: MissionGroundSuggestionsRoute.page,
       path: missionGroundSuggestionsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: GivingRoute.page,
       path: givingRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: SessionRoute.page,
       path: missionSessionRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
     CustomRoute<dynamic>(
       page: EventsRoute.page,
       path: eventsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
     CustomRoute<dynamic>(
       page: EventDetailsRoute.page,
       path: eventDetailsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
 
@@ -131,16 +147,19 @@ class PRFSuperAppRouter extends RootStackRouter {
     CustomRoute<dynamic>(
       page: CourseDetailsRoute.page,
       path: courseDetailsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
     CustomRoute<dynamic>(
       page: ModuleDetailsRoute.page,
       path: moduleDetailsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
     CustomRoute<dynamic>(
       page: LessonDetailsRoute.page,
       path: lessonDetailsRoute,
+      guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
   ];

@@ -211,6 +211,7 @@ class _SignInTabletState extends State<SignInTablet> {
                                         ) = signInWithGoogleState.maybeWhen(
                                           loading: () =>
                                               (true, 'Please wait ...'),
+                                          // ignore: lines_longer_than_80_chars
                                           orElse: () => socialSignUpState.maybeWhen(
                                             loading: () =>
                                                 (true, 'Please wait ...'),

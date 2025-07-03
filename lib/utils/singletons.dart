@@ -106,7 +106,7 @@ import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/services/local_auth_service.dart';
-import 'package:app/utils/router.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
@@ -118,66 +118,66 @@ class Singletons {
   static void setup() {
     getIt
       ..registerSingleton<PRFSuperAppRouter>(PRFSuperAppRouter())
-      ..registerSingleton<HiveService>(HiveService.instance!)
+      ..registerSingleton<HiveService>(HiveService())
       ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
       ..registerSingleton<LocalAuthService>(LocalAuthService())
       ..registerSingleton<FirebaseService>(FirebaseServiceImpl())
-      ..registerSingleton<BaseAPIService<PRFUser>>(AuthService())
-      ..registerSingleton<BaseAPIService<PRFMission>>(MissionService())
-      ..registerSingleton<BaseAPIService<PRFMissionSubscription>>(
+      ..registerSingleton<AuthService>(AuthService())
+      ..registerSingleton<MissionService>(MissionService())
+      ..registerSingleton<MissionSubscriptionService>(
         MissionSubscriptionService(),
       )
-      ..registerSingleton<BaseAPIService<PRFAnnouncement>>(
+      ..registerSingleton<AnnouncementService>(
         AnnouncementService(),
       )
-      ..registerSingleton<BaseAPIService<PRFPrayerPrompt>>(
+      ..registerSingleton<PrayerPromptService>(
         PrayerPromptService(),
       )
-      ..registerSingleton<BaseAPIService<PRFPrayerResponse>>(
+      ..registerSingleton<PrayerResponseService>(
         PrayerResponseService(),
       )
-      ..registerSingleton<BaseAPIService<PRFExpenseCategory>>(
+      ..registerSingleton<ExpenseCategoriesService>(
         ExpenseCategoriesService(),
       )
-      ..registerSingleton<BaseAPIService<PRFMissionExpense>>(
+      ..registerSingleton<MissionExpensesService>(
         MissionExpensesService(),
       )
-      ..registerSingleton<BaseAPIService<PRFExpense>>(ExpenseService())
-      ..registerSingleton<BaseAPIService<PRFMissionQuestion>>(
+      ..registerSingleton<ExpenseService>(ExpenseService())
+      ..registerSingleton<MissionQuestionService>(
         MissionQuestionService(),
       )
-      ..registerSingleton<BaseAPIService<PRFDebriefNote>>(
+      ..registerSingleton<DebriefNoteService>(
         DebriefNoteService(),
       )
-      ..registerSingleton<BaseAPIService<PRFMissionGroundSuggestion>>(
+      ..registerSingleton<MissionGroundSuggestionService>(
         MissionGroundSuggestionService(),
       )
-      ..registerSingleton<BaseAPIService<PRFPayment>>(PaymentService())
-      ..registerSingleton<BaseAPIService<PRFPaymentType>>(PaymentTypeService())
-      ..registerSingleton<BaseAPIService<PRFPrayerRequest>>(
+      ..registerSingleton<PaymentService>(PaymentService())
+      ..registerSingleton<PaymentTypeService>(PaymentTypeService())
+      ..registerSingleton<PrayerRequestService>(
         PrayerRequestService(),
       )
-      ..registerSingleton<BaseAPIService<PRFClassGroup>>(ClassGroupService())
-      ..registerSingleton<BaseAPIService<PRFSoul>>(SoulService())
-      ..registerSingleton<BaseAPIService<PRFEvent>>(EventService())
-      ..registerSingleton<BaseAPIService<PRFEventSubscription>>(
+      ..registerSingleton<ClassGroupService>(ClassGroupService())
+      ..registerSingleton<SoulService>(SoulService())
+      ..registerSingleton<EventService>(EventService())
+      ..registerSingleton<EventSubscriptionService>(
         EventSubscriptionService(),
       )
-      ..registerSingleton<BaseAPIService<PRFFaq>>(MissionFaqService())
-      ..registerSingleton<BaseAPIService<PRFFaqCategory>>(
+      ..registerSingleton<MissionFaqService>(MissionFaqService())
+      ..registerSingleton<MissionFaqCategoryService>(
         MissionFaqCategoryService(),
       )
-      ..registerSingleton<BaseAPIService<PRFStudentEnquiry>>(
+      ..registerSingleton<StudentEnquiryService>(
         StudentEnquiryService(),
       )
-      ..registerSingleton<BaseAPIService<PRFStudentEnquiryReply>>(
+      ..registerSingleton<StudentEnquiryReplyService>(
         StudentEnquiryReplyService(),
       )
-      ..registerSingleton<BaseAPIService<PRFCourse>>(CourseService())
-      ..registerSingleton<BaseAPIService<PRFCourseModule>>(
+      ..registerSingleton<CourseService>(CourseService())
+      ..registerSingleton<CourseModuleService>(
         CourseModuleService(),
       )
-      ..registerSingleton<BaseAPIService<PRFLessonMember>>(
+      ..registerSingleton<LessonMemberService>(
         LessonMemberService(),
       )
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
