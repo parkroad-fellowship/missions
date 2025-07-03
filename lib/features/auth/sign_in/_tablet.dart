@@ -35,7 +35,6 @@ class _SignInTabletState extends State<SignInTablet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     Misc.initDimensions(context);
-    final canShowAuth = getIt<FirebaseService>().canShowAuth();
 
     return BlocListener<GoogleSignInCubit, GoogleSignInState>(
       listener: (context, state) {
@@ -75,179 +74,192 @@ class _SignInTabletState extends State<SignInTablet> {
                 child: SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Spacer(),
-                        Center(
-                          child: ExtendedImage.asset(
-                            'assets/images/app-logo.png',
-                            height: 200,
-                            width: 232,
-                          ),
-                        ),
-                        if (canShowAuth || kDebugMode) ...[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              l10n.signIn,
-                              style: Theme.of(context).textTheme.displayLarge,
+                    child: FutureBuilder(
+                      future: getIt<FirebaseService>().canShowAuth(),
+                      builder: (context, snapshot) {
+                        final canShowAuth = snapshot.data ?? false;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            Center(
+                              child: ExtendedImage.asset(
+                                'assets/images/app-logo.png',
+                                height: 200,
+                                width: 232,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
-
-                          PRFEmailInput(
-                            hintText: l10n.enterEmail,
-                            emailController: _emailController,
-                            enabled: !_isLoading,
-                          ),
-                          const SizedBox(height: 20),
-                          ValueListenableBuilder<bool>(
-                            valueListenable: _hidePasswordNotifier,
-                            builder: (context, hidePassword, child) {
-                              return PRFPasswordInput(
-                                hintText: l10n.enterPassword,
-                                hidePasswordNotifier: _hidePasswordNotifier,
-                                passwordController: _passwordController,
-                                enabled: !_isLoading,
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          BlocConsumer<SigninCubit, SignInState>(
-                            listener: (context, state) {
-                              state.maybeWhen(
-                                loading: () => setState(() {
-                                  _isLoading = !_isLoading;
-                                }),
-                                loaded: () => context.router.pushNamed(
-                                  PRFSuperAppRouter.landingRoute,
+                            if (canShowAuth || kDebugMode) ...[
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  l10n.signIn,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge,
                                 ),
-                                error: (message) {
-                                  setState(() {
-                                    _isLoading = !_isLoading;
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(message),
-                                      backgroundColor: Colors.red,
+                              ),
+                              const SizedBox(height: 20),
+
+                              PRFEmailInput(
+                                hintText: l10n.enterEmail,
+                                emailController: _emailController,
+                                enabled: !_isLoading,
+                              ),
+                              const SizedBox(height: 20),
+                              ValueListenableBuilder<bool>(
+                                valueListenable: _hidePasswordNotifier,
+                                builder: (context, hidePassword, child) {
+                                  return PRFPasswordInput(
+                                    hintText: l10n.enterPassword,
+                                    hidePasswordNotifier: _hidePasswordNotifier,
+                                    passwordController: _passwordController,
+                                    enabled: !_isLoading,
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              BlocConsumer<SigninCubit, SignInState>(
+                                listener: (context, state) {
+                                  state.maybeWhen(
+                                    loading: () => setState(() {
+                                      _isLoading = !_isLoading;
+                                    }),
+                                    loaded: () => context.router.pushNamed(
+                                      PRFSuperAppRouter.landingRoute,
+                                    ),
+                                    error: (message) {
+                                      setState(() {
+                                        _isLoading = !_isLoading;
+                                      });
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(message),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    },
+                                    orElse: () {},
+                                  );
+                                },
+                                builder: (context, state) {
+                                  return state.maybeWhen(
+                                    orElse: () => PRFPrimaryButton(
+                                      onPressed: () {
+                                        if (_emailController.text.isEmpty) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(l10n.enterEmail),
+                                            ),
+                                          );
+                                          Gaimon.warning();
+                                          return;
+                                        }
+
+                                        if (_passwordController.text.isEmpty) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(l10n.enterPassword),
+                                            ),
+                                          );
+                                          Gaimon.warning();
+                                          return;
+                                        }
+
+                                        context.read<SigninCubit>().signIn(
+                                          email: _emailController.text.trim(),
+                                          password: _passwordController.text
+                                              .trim(),
+                                        );
+                                      },
+                                      title: _isLoading
+                                          ? l10n.signingIn
+                                          : l10n.signIn,
+                                      disabled: _isLoading,
+                                      isLoading: _isLoading ? true : null,
                                     ),
                                   );
                                 },
-                                orElse: () {},
-                              );
-                            },
-                            builder: (context, state) {
-                              return state.maybeWhen(
-                                orElse: () => PRFPrimaryButton(
-                                  onPressed: () {
-                                    if (_emailController.text.isEmpty) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(l10n.enterEmail),
-                                        ),
-                                      );
-                                      Gaimon.warning();
-                                      return;
-                                    }
+                              ),
+                              const SizedBox(height: 64),
 
-                                    if (_passwordController.text.isEmpty) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(l10n.enterPassword),
-                                        ),
-                                      );
-                                      Gaimon.warning();
-                                      return;
-                                    }
-
-                                    context.read<SigninCubit>().signIn(
-                                      email: _emailController.text.trim(),
-                                      password: _passwordController.text.trim(),
-                                    );
-                                  },
-                                  title: _isLoading
-                                      ? l10n.signingIn
-                                      : l10n.signIn,
-                                  disabled: _isLoading,
-                                  isLoading: _isLoading ? true : null,
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 64),
-
-                          const Divider(),
-                          const SizedBox(height: 64),
-                        ],
-                        BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
-                          builder: (context, signInWithGoogleState) {
-                            return BlocBuilder<
-                              SocialLoginCubit,
-                              SocialLoginState
-                            >(
-                              builder: (context, socialSignUpState) {
+                              const Divider(),
+                              const SizedBox(height: 64),
+                            ],
+                            BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
+                              builder: (context, signInWithGoogleState) {
                                 return BlocBuilder<
                                   SocialLoginCubit,
                                   SocialLoginState
                                 >(
-                                  builder: (context, socialSignInState) {
-                                    final (
-                                      isLoading,
-                                      title,
-                                    ) = signInWithGoogleState.maybeWhen(
-                                      loading: () => (true, 'Please wait ...'),
-                                      orElse: () => socialSignUpState.maybeWhen(
-                                        loading: () =>
-                                            (true, 'Please wait ...'),
-                                        orElse:
-                                            // ignore: lines_longer_than_80_chars
-                                            () => socialSignInState.maybeWhen(
-                                              loading: () => (
-                                                true,
-                                                'Please wait ...',
-                                              ),
-                                              orElse: () => (
-                                                false,
-                                                'Continue with Google',
-                                              ),
-                                            ),
-                                      ),
-                                    );
+                                  builder: (context, socialSignUpState) {
+                                    return BlocBuilder<
+                                      SocialLoginCubit,
+                                      SocialLoginState
+                                    >(
+                                      builder: (context, socialSignInState) {
+                                        final (
+                                          isLoading,
+                                          title,
+                                        ) = signInWithGoogleState.maybeWhen(
+                                          loading: () =>
+                                              (true, 'Please wait ...'),
+                                          orElse: () => socialSignUpState.maybeWhen(
+                                            loading: () =>
+                                                (true, 'Please wait ...'),
+                                            orElse:
+                                                // ignore: lines_longer_than_80_chars
+                                                () =>
+                                                    socialSignInState.maybeWhen(
+                                                      loading: () => (
+                                                        true,
+                                                        'Please wait ...',
+                                                      ),
+                                                      orElse: () => (
+                                                        false,
+                                                        'Continue with Google',
+                                                      ),
+                                                    ),
+                                          ),
+                                        );
 
-                                    return GoogleAuthButton(
-                                      onPressed: () {
-                                        if (!isLoading) {
-                                          context
-                                              .read<GoogleSignInCubit>()
-                                              .signInwithGoogle();
-                                        }
+                                        return GoogleAuthButton(
+                                          onPressed: () {
+                                            if (!isLoading) {
+                                              context
+                                                  .read<GoogleSignInCubit>()
+                                                  .signInwithGoogle();
+                                            }
+                                          },
+                                          title: title,
+                                          disabled: isLoading,
+                                          isLoading: isLoading,
+                                        );
                                       },
-                                      title: title,
-                                      disabled: isLoading,
-                                      isLoading: isLoading,
                                     );
                                   },
                                 );
                               },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 54),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                            l10n.version(Misc.getAppVersion()),
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                        ),
-                        const Spacer(),
-                      ],
+                            ),
+                            const SizedBox(height: 54),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text(
+                                l10n.version(Misc.getAppVersion()),
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
