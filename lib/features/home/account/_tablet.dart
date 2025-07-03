@@ -233,7 +233,7 @@ class AccountPageTablet extends StatelessWidget {
                   PRFSuperAppConfig.instance!.values.hiveBox,
                 ).listenable(),
                 builder: (context, _, _) {
-                  final profile = getIt<HiveService>().retrieveProfile();
+                  final profile = getIt<HiveService>().auth.retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
@@ -302,7 +302,7 @@ class AccountPageTablet extends StatelessWidget {
                   PRFSuperAppConfig.instance!.values.hiveBox,
                 ).listenable(),
                 builder: (context, _, _) {
-                  final profile = getIt<HiveService>().retrieveProfile();
+                  final profile = getIt<HiveService>().auth.retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
@@ -328,7 +328,7 @@ class AccountPageTablet extends StatelessWidget {
                   PRFSuperAppConfig.instance!.values.hiveBox,
                 ).listenable(),
                 builder: (context, _, _) {
-                  final profile = getIt<HiveService>().retrieveProfile();
+                  final profile = getIt<HiveService>().auth.retrieveProfile();
                   if (profile == null) {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }

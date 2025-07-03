@@ -26,11 +26,11 @@ class SocialLoginCubit extends Cubit<SocialLoginState> {
         socialAuthDTO: socialAuthDTO,
       );
 
-      _hiveService.persistToken(token);
+      _hiveService.auth.persistToken(token);
 
       final user = await _authService.getUser();
 
-      _hiveService.persistProfile(user);
+      _hiveService.auth.persistProfile(user);
 
       emit(const SocialLoginState.loaded());
     } on Failure catch (e) {

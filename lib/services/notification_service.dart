@@ -142,7 +142,7 @@ abstract class NotificationService {
 class NotificationServiceImpl implements NotificationService {
   @override
   Future<void> init() async {
-    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    final notificationsEnabled = getIt<HiveService>().settings.areNotificationsEnabled();
     if (!notificationsEnabled) return;
     await AwesomeNotifications().initialize(
       null,
@@ -186,7 +186,7 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   Future<void> requestPermissions() async {
-    final hiveService = getIt<HiveService>();
+    final hiveService = getIt<HiveService>().settings;
     final notificationsEnabled = hiveService.areNotificationsEnabled();
     final hasBeenRequested = hiveService.hasPermissionBeenRequested();
 
@@ -245,7 +245,7 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   void createNotification({required NotificationContent content}) {
-    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    final notificationsEnabled = getIt<HiveService>().settings.areNotificationsEnabled();
     if (!notificationsEnabled) return;
     AwesomeNotifications().createNotification(content: content);
   }
@@ -254,7 +254,7 @@ class NotificationServiceImpl implements NotificationService {
   Future<void> schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   }) async {
-    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    final notificationsEnabled = getIt<HiveService>().settings.areNotificationsEnabled();
     if (!notificationsEnabled) return;
     for (final prayerPrompt in prayerPrompts) {
       await AwesomeNotifications().createNotification(
@@ -286,7 +286,7 @@ class NotificationServiceImpl implements NotificationService {
 
   @override
   Future<void> scheduleGivingNotification() async {
-    final notificationsEnabled = getIt<HiveService>().areNotificationsEnabled();
+    final notificationsEnabled = getIt<HiveService>().settings.areNotificationsEnabled();
     if (!notificationsEnabled) return;
     await AwesomeNotifications().createNotification(
       content: NotificationContent(

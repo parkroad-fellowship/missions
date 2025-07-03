@@ -21,16 +21,6 @@ class AuthService extends BaseAPIService<PRFUser> {
     );
   }
 
-  Future<PRFUser> registerStudent() async {
-    try {
-      final response = await networkUtil.post('/auth/register-student');
-
-      return PRFUser.fromJson(response['data'] as Map<String, dynamic>);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<String> signIn({required SignInDTO signInDTO}) async {
     try {
       final response = await networkUtil.post(

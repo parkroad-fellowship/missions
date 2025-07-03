@@ -51,7 +51,7 @@ class NetworkUtil {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = getIt<HiveService>().retrieveToken();
+          final token = getIt<HiveService>().auth.retrieveToken();
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }

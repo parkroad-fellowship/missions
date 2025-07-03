@@ -31,7 +31,7 @@ class GetMissionExpenseCubit extends Cubit<GetMissionExpenseState> {
         ],
       );
 
-      _hiveService.persistMissionExpense(missionExpense, missionUlid);
+      _hiveService.data.persistMissionExpense(missionExpense, missionUlid);
 
       emit(GetMissionExpenseState.loaded(missionExpense: missionExpense));
     } on Failure catch (e) {

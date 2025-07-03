@@ -255,7 +255,7 @@ class Misc {
   /// Enhanced user permissions check with caching
   static bool userCan(String permission) {
     try {
-      final user = getIt<HiveService>().retrieveProfile();
+      final user = getIt<HiveService>().auth.retrieveProfile();
       if (user == null) return false;
 
       // Cache user permissions for better performance

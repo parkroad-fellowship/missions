@@ -18,14 +18,14 @@ class _DecisionPageState extends State<DecisionPage> {
   @override
   void initState() {
     super.initState();
-    final accessToken = getIt<HiveService>().retrieveToken();
+    final accessToken = getIt<HiveService>().auth.retrieveToken();
 
     if (accessToken == null) {
       _redirectToPage(context, PRFSuperAppRouter.signInRoute);
       return;
     }
 
-    final profile = getIt<HiveService>().retrieveProfile();
+    final profile = getIt<HiveService>().auth.retrieveProfile();
     if (profile == null) {
       _redirectToPage(context, PRFSuperAppRouter.signInRoute);
       return;

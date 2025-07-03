@@ -23,14 +23,14 @@ class GetPaymentTypesCubit extends Cubit<GetPaymentTypesState> {
   Future<void> getPaymentTypes() async {
     try {
       emit(const GetPaymentTypesState.loading());
-      final localPaymentTypes = _hiveService.retrievePaymentTypes();
+      final localPaymentTypes = _hiveService.data.retrievePaymentTypes();
       if (localPaymentTypes.isNotEmpty) {
         emit(GetPaymentTypesState.loaded(paymentTypes: localPaymentTypes));
         return;
       }
 
       final paymentTypes = await _paymentTypeService.list();
-      _hiveService.persistPaymentTypes(PRFPaymentTypeResponse(paymentTypes));
+      _hiveService.data.persistPaymentTypes(PRFPaymentTypeResponse(paymentTypes));
       emit(GetPaymentTypesState.loaded(paymentTypes: paymentTypes));
     } on Failure catch (e) {
       emit(GetPaymentTypesState.error(e.message));

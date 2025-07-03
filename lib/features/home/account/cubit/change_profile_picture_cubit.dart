@@ -46,9 +46,9 @@ class ChangeProfilePictureCubit extends Cubit<ChangeProfilePictureState> {
         imageDTO: media.first,
       );
 
-      final user = _hiveService.retrieveProfile()!;
+      final user = _hiveService.auth.retrieveProfile()!;
       final updatedUser = user.member!.copyWith(profilePicture: profilePicture);
-      _hiveService.persistProfile(user.copyWith(member: updatedUser));
+      _hiveService.auth.persistProfile(user.copyWith(member: updatedUser));
 
       emit(const ChangeProfilePictureState.loaded());
     } on Failure catch (e) {

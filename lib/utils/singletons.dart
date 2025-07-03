@@ -1,5 +1,4 @@
 import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
-import 'package:app/features/auth/cubit/register_student_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
@@ -107,6 +106,7 @@ import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/services/local_auth_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -119,7 +119,7 @@ class Singletons {
   static void setup() {
     getIt
       ..registerSingleton<PRFSuperAppRouter>(PRFSuperAppRouter())
-      ..registerSingleton<HiveService>(HiveServiceImpl())
+      ..registerSingleton<HiveService>(HiveService.instance!)
       ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
       ..registerSingleton<LocalAuthService>(LocalAuthService())
       ..registerSingleton<FirebaseService>(FirebaseServiceImpl())
@@ -190,6 +190,8 @@ class Singletons {
   }
 
   static Future<void> setupDatabase() async {
+    await getIt<HiveService>().initBoxes();
+
     prfDBInstance = await getIt<LocalDBService>().initDatabase();
   }
 
@@ -209,12 +211,6 @@ class Singletons {
       BlocProvider<SocialLoginCubit>(
         create: (context) =>
             SocialLoginCubit(authService: getIt(), hiveService: getIt()),
-      ),
-      BlocProvider<RegisterStudentCubit>(
-        create: (context) => RegisterStudentCubit(
-          authService: getIt(),
-          hiveService: getIt(),
-        ),
       ),
       BlocProvider<SignOutCubit>(
         create: (context) =>

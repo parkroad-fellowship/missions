@@ -62,7 +62,7 @@ class SocketServiceImpl implements SocketService {
     required PusherChannelsClient client,
     required String channelName,
   }) {
-    final token = getIt<HiveService>().retrieveToken();
+    final token = getIt<HiveService>().auth.retrieveToken();
 
     return client.privateChannel(
       'private-$channelName',
@@ -88,7 +88,7 @@ class SocketServiceImpl implements SocketService {
     required PusherChannelsClient client,
     required String channelName,
   }) {
-    final token = getIt<HiveService>().retrieveToken()!;
+    final token = getIt<HiveService>().auth.retrieveToken()!;
 
     return client.presenceChannel(
       'presence-$channelName',
@@ -268,7 +268,7 @@ class SocketServiceImpl implements SocketService {
 
   @override
   SocketConfig defaultConfig() {
-    final user = HiveServiceImpl().retrieveProfile()!;
+    final user = getIt<HiveService>().auth.retrieveProfile()!;
     // Register all channels and their events here
     // Assumption here is that there's only one channel for that user
     // Should more be needed, this function may need adjusting

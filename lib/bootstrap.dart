@@ -74,7 +74,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     Singletons.setup();
     await Singletons.setupDatabase();
 
-    await getIt<HiveService>().initBoxes();
 
     try {
       await getIt<FirebaseService>().initRemoteConfig();
@@ -84,7 +83,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     await getIt<AnalyticsService>().init();
 
-    final user = getIt<HiveService>().retrieveProfile();
+    final user = getIt<HiveService>().auth.retrieveProfile();
 
     if (user != null) {
       final defaultConfig = getIt<SocketService>().defaultConfig();

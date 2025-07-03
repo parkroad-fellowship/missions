@@ -32,11 +32,11 @@ class SigninCubit extends Cubit<SignInState> {
         signInDTO: SignInDTO(email: email, password: password),
       );
 
-      _hiveService.persistToken(token);
+      _hiveService.auth.persistToken(token);
 
       final user = await _authService.getUser();
 
-      _hiveService.persistProfile(user);
+      _hiveService.auth.persistProfile(user);
 
       await _socketService.init(
         socketConfig: SocketConfig(

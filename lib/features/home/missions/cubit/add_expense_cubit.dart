@@ -36,7 +36,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     emit(const AddExpenseState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
-      final missionExpense = _hiveService.retrieveMissionExpense(missionUlid);
+      final missionExpense = _hiveService.data.retrieveMissionExpense(missionUlid);
       if (missionExpense == null) {
         emit(const AddExpenseState.error('Please wait for funds to be issued'));
       }
@@ -56,7 +56,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
         ).toJson(),
       );
 
-      _hiveService.persistExpense(expense, missionUlid);
+      _hiveService.data.persistExpense(expense, missionUlid);
 
       emit(AddExpenseState.loaded(expense: expense));
     } on Failure catch (e) {

@@ -24,7 +24,7 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
           PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
         ).listenable(),
         builder: (context, _, _) {
-          final isLoggedOut = getIt<HiveService>().isLoggedOut();
+          final isLoggedOut = getIt<HiveService>().auth.isLoggedOut();
           Logger().e('isLoggedOut: $isLoggedOut');
           if (isLoggedOut) {
             getIt<PRFSuperAppRouter>().pushNamed(

@@ -116,7 +116,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                         SizedBox(width: 32.w),
                         Text(
                           l10n.hello(
-                            getIt<HiveService>()
+                            getIt<HiveService>().auth
                                     .retrieveProfile()
                                     ?.member
                                     ?.lastName ??
