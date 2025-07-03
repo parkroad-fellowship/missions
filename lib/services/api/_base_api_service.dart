@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/utils/network.dart';
+import 'package:app/utils/http/network.dart';
 
 abstract class BaseAPIService<T> {
   final _networkUtil = NetworkUtil();
@@ -54,7 +54,7 @@ abstract class BaseAPIService<T> {
         queryParameters['order_direction'] = orderDirection;
       }
 
-      final res = await _networkUtil.getReq(
+      final res = await _networkUtil.get(
         endpoint,
         queryParameters: queryParameters,
       );
@@ -79,7 +79,7 @@ abstract class BaseAPIService<T> {
         queryParameters['include'] = includes.join(',');
       }
 
-      final res = await _networkUtil.getReq(
+      final res = await _networkUtil.get(
         '$endpoint/$id',
         queryParameters: queryParameters,
       );
@@ -102,7 +102,7 @@ abstract class BaseAPIService<T> {
       if (includes != null) {
         queryParameters['include'] = includes.join(',');
       }
-      final res = await _networkUtil.postReq(
+      final res = await _networkUtil.post(
         endpoint,
         body: json.encode(data),
         queryParameters: queryParameters,
@@ -126,7 +126,7 @@ abstract class BaseAPIService<T> {
       if (includes != null) {
         queryParameters['include'] = includes.join(',');
       }
-      final res = await _networkUtil.putReq(
+      final res = await _networkUtil.put(
         '$endpoint/$id',
         body: json.encode(data),
         queryParameters: queryParameters,
@@ -143,7 +143,7 @@ abstract class BaseAPIService<T> {
     required String id,
   }) async {
     try {
-      await _networkUtil.deleteReq(
+      await _networkUtil.delete(
         '$endpoint/$id',
       );
     } catch (e) {
@@ -158,7 +158,7 @@ abstract class BaseAPIService<T> {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final res = await _networkUtil.getReq(
+      final res = await _networkUtil.get(
         '$endpoint/$parentId/$childPath',
         queryParameters: queryParameters,
       );
@@ -176,7 +176,7 @@ abstract class BaseAPIService<T> {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final res = await _networkUtil.getReq(
+      final res = await _networkUtil.get(
         '$endpoint/$parentId/$childPath',
         queryParameters: queryParameters,
       );
@@ -195,7 +195,7 @@ abstract class BaseAPIService<T> {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final res = await _networkUtil.postReq(
+      final res = await _networkUtil.post(
         '$endpoint/$parentId/$childPath',
         body: json.encode(data),
         queryParameters: queryParameters,
@@ -216,7 +216,7 @@ abstract class BaseAPIService<T> {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final res = await _networkUtil.putReq(
+      final res = await _networkUtil.put(
         '$endpoint/$parentId/$childPath/$childId',
         body: json.encode(data),
         queryParameters: queryParameters,
@@ -234,7 +234,7 @@ abstract class BaseAPIService<T> {
     required String childId,
   }) async {
     try {
-      await _networkUtil.deleteReq(
+      await _networkUtil.delete(
         '$endpoint/$parentId/$childPath/$childId',
       );
     } catch (e) {

@@ -23,7 +23,7 @@ class AuthService extends BaseAPIService<PRFUser> {
 
   Future<PRFUser> registerStudent() async {
     try {
-      final response = await networkUtil.postReq('/auth/register-student');
+      final response = await networkUtil.post('/auth/register-student');
 
       return PRFUser.fromJson(response['data'] as Map<String, dynamic>);
     } catch (e) {
@@ -33,7 +33,7 @@ class AuthService extends BaseAPIService<PRFUser> {
 
   Future<String> signIn({required SignInDTO signInDTO}) async {
     try {
-      final response = await networkUtil.postReq(
+      final response = await networkUtil.post(
         '$endpoint/login',
         body: json.encode(signInDTO.toJson()),
       );
@@ -46,7 +46,7 @@ class AuthService extends BaseAPIService<PRFUser> {
 
   Future<PRFUser> getUser() async {
     try {
-      final response = await networkUtil.getReq(
+      final response = await networkUtil.get(
         '$endpoint/me',
         queryParameters: <String, dynamic>{
           'include':
@@ -63,7 +63,7 @@ class AuthService extends BaseAPIService<PRFUser> {
 
   Future<String> socialLogin({required SocialAuthDTO socialAuthDTO}) async {
     try {
-      final response = await networkUtil.postReq(
+      final response = await networkUtil.post(
         '$endpoint/social-login',
         body: json.encode(socialAuthDTO.toJson()),
       );

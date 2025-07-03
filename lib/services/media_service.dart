@@ -72,7 +72,7 @@ class MediaServiceImpl implements MediaService {
       );
 
       // Upload the reference to our server
-      final res = await _networkUtil.postReq(
+      final res = await _networkUtil.post(
         url.toString(),
         body: json.encode({
           'media_file_storage_path': imageDTO.name,
