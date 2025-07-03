@@ -370,7 +370,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iWantTo => 'Right now, I want to';
 
   @override
-  String get goToAMission => 'Go for a mission';
+  String get goToAMission => 'View missions';
 
   @override
   String get learnSomething => 'Learn something';
@@ -905,4 +905,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get welcomeBack =>
       'Welcome back! Please sign in with your PRF organisation email to continue.';
+
+  @override
+  String get welcome => 'Welcome back!';
 }

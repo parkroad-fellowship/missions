@@ -301,7 +301,7 @@
     },
     "iWantTo": "Right now, I want to",
     "@iWantTo": {},
-    "goToAMission": "Go for a mission",
+    "goToAMission": "View missions",
     "@goToAMission": {},
     "learnSomething": "Learn something",
     "@learnSomething": {},
@@ -733,5 +733,7 @@
     "addedOn": "Added on",
     "@addedOn": {},
     "welcomeBack": "Welcome back! Please sign in with your PRF organisation email to continue.",
-    "@welcomeBack": {}
+    "@welcomeBack": {},
+    "welcome": "Welcome back!",
+    "@welcome": {}
 }

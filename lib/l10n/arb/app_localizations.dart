@@ -757,7 +757,7 @@ abstract class AppLocalizations {
   /// No description provided for @goToAMission.
   ///
   /// In en, this message translates to:
-  /// **'Go for a mission'**
+  /// **'View missions'**
   String get goToAMission;
 
   /// No description provided for @learnSomething.
@@ -1755,6 +1755,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome back! Please sign in with your PRF organisation email to continue.'**
   String get welcomeBack;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back!'**
+  String get welcome;
 }
 
 class _AppLocalizationsDelegate

@@ -19,18 +19,20 @@ class HomeActionCardHandset extends StatelessWidget {
     final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final scaleFactor = Misc.getScaleFactor(context);
-
+    
     return GestureDetector(
       onTap: onTap,
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 24 * scaleFactor,
-              vertical: 20 * scaleFactor,
+            padding: EdgeInsets.fromLTRB(
+              24 * scaleFactor,
+              20 * scaleFactor,
+              88 * scaleFactor,
+              20 * scaleFactor,
             ),
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               color: theme.colorScheme.secondary,
               borderRadius: BorderRadius.circular(24 * scaleFactor),
@@ -44,13 +46,17 @@ class HomeActionCardHandset extends StatelessWidget {
                   title,
                   style: theme.textTheme.displayMedium?.copyWith(
                     color: theme.colorScheme.onSecondary,
+                    fontWeight: FontWeight.w600,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                SizedBox(height: 16 * scaleFactor), // Add bottom spacing
               ],
             ),
           ),
           Positioned(
-            right: 0,
+            right: 4,
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
@@ -58,7 +64,7 @@ class HomeActionCardHandset extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 0,
+            right: 4,
             bottom: 0,
             child: CircleAvatar(
               backgroundColor: Colors.white,

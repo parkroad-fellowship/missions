@@ -19,18 +19,20 @@ class HomeActionCardTablet extends StatelessWidget {
     final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final scaleFactor = Misc.getScaleFactor(context);
-
+    
     return GestureDetector(
       onTap: onTap,
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(
-              horizontal: 100 * scaleFactor,
-              vertical: 80 * scaleFactor,
+            padding: EdgeInsets.fromLTRB(
+              100 * scaleFactor,
+              80 * scaleFactor,
+              300 * scaleFactor,
+              80 * scaleFactor,
             ),
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 32),
             decoration: BoxDecoration(
               color: theme.colorScheme.secondary,
               borderRadius: BorderRadius.circular(48 * scaleFactor),
@@ -42,15 +44,21 @@ class HomeActionCardTablet extends StatelessWidget {
                 SizedBox(height: 100 * scaleFactor),
                 Text(
                   title,
-                  style: theme.textTheme.displayLarge?.copyWith(
+                  style: theme.textTheme.displayMedium?.copyWith(
                     color: theme.colorScheme.onSecondary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 36,
+                    height: 1.2,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
+                SizedBox(height: 40 * scaleFactor),
               ],
             ),
           ),
           Positioned(
-            right: 0,
+            right: 32,
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
@@ -58,7 +66,7 @@ class HomeActionCardTablet extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 0,
+            right: 32,
             bottom: 0,
             child: CircleAvatar(
               backgroundColor: Colors.white,
