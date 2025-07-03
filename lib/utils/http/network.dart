@@ -196,9 +196,7 @@ class NetworkUtil {
   String? _extractErrorMessage(dynamic responseData) {
     if (responseData is Map<String, dynamic>) {
       // Try different common error message fields
-      final message =
-          responseData['message'] ??
-          responseData['error'];
+      final message = responseData['message'] ?? responseData['error'];
 
       if (message != null) return message.toString();
 
