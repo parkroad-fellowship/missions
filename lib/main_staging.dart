@@ -11,12 +11,12 @@ Future<void> main() async {
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
       hiveBox: 'prf-super-app-stg',
-      baseDomain: 'prf-missions.fly.dev',
+      baseDomain: 'stg.api.parkroadfellowship.org',
       urlScheme: 'https',
-      socketDomain: 'prf-missions.fly.dev',
+      socketDomain: 'stg.ws.parkroadfellowship.org',
       socketKey: 'yvnlkaqadqiadutrs9sa',
       socketScheme: 'wss',
-      socketPort: 9000,
+      socketPort: 443,
       azureConnString:
           'DefaultEndpointsProtocol=https;AccountName=prfcorestorage;AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0TA4TNOV4TYqU1QONfaQOrrs7+ASteXMXPA==;EndpointSuffix=core.windows.net',
     ),
