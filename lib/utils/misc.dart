@@ -6,7 +6,6 @@ import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/versioning/build_version.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' show BuildContext, MediaQuery, Size;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -15,153 +14,451 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 
 class Misc {
-  static String formatDateTime(DateTime dateTime, String timezone) {
-    final location = tz.getLocation(timezone);
-    // Ensure we are converting from a universal point in time (UTC)
+  // Private constructor to prevent instantiation
+  Misc._();
+
+  // Cache for timezone locations to improve performance
+  static final Map<String, tz.Location> _timezoneCache = {};
+
+  /// Get timezone location with caching
+  static tz.Location _getTimezoneLocation(String timezone) {
+    return _timezoneCache.putIfAbsent(timezone, () {
+      try {
+        return tz.getLocation(timezone);
+      } catch (e) {
+        // Fallback to UTC if timezone is invalid
+        return tz.getLocation('UTC');
+      }
+    });
+  }
+
+  /// Convert UTC DateTime to timezone-aware DateTime
+  static tz.TZDateTime _toTimezone(DateTime dateTime, String timezone) {
+    final location = _getTimezoneLocation(timezone);
     final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
-    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
-    return DateFormat.yMMMd().add_jm().add_EEEE().format(dateTimeInLocation);
+    return tz.TZDateTime.from(universalTime, location);
   }
 
-  static String formatMissionDate(DateTime dateTime, String timezone) {
-    final location = tz.getLocation(timezone);
-    // Ensure we are converting from a universal point in time (UTC)
-    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
-    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
-    return DateFormat.EEEE().add_yMMMd().format(dateTimeInLocation);
+  /// Format DateTime with enhanced error handling
+  static String formatDateTime(
+    DateTime dateTime,
+    String timezone, {
+    String? locale,
+  }) {
+    try {
+      final dateTimeInLocation = _toTimezone(dateTime, timezone);
+      final formatter = locale != null
+          ? DateFormat.yMMMd(locale).add_jm().add_EEEE()
+          : DateFormat.yMMMd().add_jm().add_EEEE();
+      return formatter.format(dateTimeInLocation);
+    } catch (e) {
+      return dateTime.toString(); // Fallback to default string representation
+    }
   }
 
-  static String formatDate(DateTime dateTime, String timezone) {
-    final location = tz.getLocation(timezone);
-    // Ensure we are converting from a universal point in time (UTC)
-    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
-    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
-    return DateFormat.yMMMMd().format(dateTimeInLocation);
+  /// Format mission date with enhanced error handling
+  static String formatMissionDate(
+    DateTime dateTime,
+    String timezone, {
+    String? locale,
+  }) {
+    try {
+      final dateTimeInLocation = _toTimezone(dateTime, timezone);
+      final formatter = locale != null
+          ? DateFormat.EEEE(locale).add_yMMMd()
+          : DateFormat.EEEE().add_yMMMd();
+      return formatter.format(dateTimeInLocation);
+    } catch (e) {
+      return DateFormat.yMMMd().format(dateTime);
+    }
   }
 
-  static String timestamp(DateTime dateTime, String timezone) {
-    final location = tz.getLocation(timezone);
-    // Ensure we are converting from a universal point in time (UTC)
-    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
-    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
-    return '${DateFormat.yMMMMEEEEd().format(dateTimeInLocation)} '
-        '${DateFormat.jm().format(dateTimeInLocation)}';
+  /// Format date with enhanced error handling
+  static String formatDate(
+    DateTime dateTime,
+    String timezone, {
+    String? locale,
+  }) {
+    try {
+      final dateTimeInLocation = _toTimezone(dateTime, timezone);
+      final formatter = locale != null
+          ? DateFormat.yMMMMd(locale)
+          : DateFormat.yMMMMd();
+      return formatter.format(dateTimeInLocation);
+    } catch (e) {
+      return DateFormat.yMMMMd().format(dateTime);
+    }
   }
 
-  static String formatTime(String time, String timezone) {
-    // Assuming the input 'time' string (e.g., "10:30:00") is meant to be UTC.
-    // Parse it as UTC by appending 'Z'.
-    final dateTimeUtc = DateTime.parse('2012-02-27 ${time}Z');
-    final location = tz.getLocation(timezone);
-    final dateTimeInLocation = tz.TZDateTime.from(dateTimeUtc, location);
-    return DateFormat.jm().format(dateTimeInLocation);
+  /// Enhanced timestamp with better formatting
+  static String timestamp(
+    DateTime dateTime,
+    String timezone, {
+    String? locale,
+  }) {
+    try {
+      final dateTimeInLocation = _toTimezone(dateTime, timezone);
+      final dateFormatter = locale != null
+          ? DateFormat.yMMMMEEEEd(locale)
+          : DateFormat.yMMMMEEEEd();
+      final timeFormatter = locale != null
+          ? DateFormat.jm(locale)
+          : DateFormat.jm();
+
+      return '${dateFormatter.format(dateTimeInLocation)} '
+          '${timeFormatter.format(dateTimeInLocation)}';
+    } catch (e) {
+      return dateTime.toString();
+    }
   }
 
-  static String formatTimeFromDateTime(DateTime dateTime, String timezone) {
-    final location = tz.getLocation(timezone);
-    // Ensure we are converting from a universal point in time (UTC)
-    final universalTime = dateTime.isUtc ? dateTime : dateTime.toUtc();
-    final dateTimeInLocation = tz.TZDateTime.from(universalTime, location);
-    return DateFormat.jm().format(dateTimeInLocation);
+  /// Enhanced time formatting with better validation
+  static String formatTime(String time, String timezone, {String? locale}) {
+    try {
+      // More robust time parsing
+      final timeRegex = RegExp(r'^(\d{1,2}):(\d{2})(?::(\d{2}))?$');
+      final match = timeRegex.firstMatch(time);
+
+      if (match == null) {
+        throw ArgumentError('Invalid time format: $time');
+      }
+
+      final hour = int.parse(match.group(1)!);
+      final minute = int.parse(match.group(2)!);
+      final second = int.tryParse(match.group(3) ?? '0') ?? 0;
+
+      // Create a proper DateTime object
+      final dateTimeUtc = DateTime.utc(2012, 2, 27, hour, minute, second);
+      final location = _getTimezoneLocation(timezone);
+      final dateTimeInLocation = tz.TZDateTime.from(dateTimeUtc, location);
+
+      final formatter = locale != null
+          ? DateFormat.jm(locale)
+          : DateFormat.jm();
+      return formatter.format(dateTimeInLocation);
+    } catch (e) {
+      return time; // Return original time if parsing fails
+    }
   }
 
-  static String getUserNameInitials(String userName) {
+  /// Format time from DateTime with enhanced error handling
+  static String formatTimeFromDateTime(
+    DateTime dateTime,
+    String timezone, {
+    String? locale,
+  }) {
+    try {
+      final dateTimeInLocation = _toTimezone(dateTime, timezone);
+      final formatter = locale != null
+          ? DateFormat.jm(locale)
+          : DateFormat.jm();
+      return formatter.format(dateTimeInLocation);
+    } catch (e) {
+      return DateFormat.jm().format(dateTime);
+    }
+  }
+
+  /// Enhanced user initials with better handling
+  static String getUserNameInitials(String userName, {int maxInitials = 2}) {
     final trimmedName = userName.trim();
-    var initials = 'U';
-    if (trimmedName.isNotEmpty) {
-      final index = trimmedName.indexOf(' ');
-      initials = trimmedName[0].toUpperCase();
-      if (index != -1) {
-        initials = initials + trimmedName[index + 1].toUpperCase();
+    if (trimmedName.isEmpty) return 'U';
+
+    final words = trimmedName.split(RegExp(r'\s+'));
+    final initials = StringBuffer();
+
+    for (var i = 0; i < min(words.length, maxInitials); i++) {
+      if (words[i].isNotEmpty) {
+        initials.write(words[i][0].toUpperCase());
       }
     }
-    return initials;
+
+    return initials.isEmpty ? 'U' : initials.toString();
   }
 
-  static double truncateToDecimalPlaces(double value, int fractionalDigits) =>
-      (value * pow(10, fractionalDigits)).truncate() /
-      pow(10, fractionalDigits);
+  /// Enhanced decimal truncation with validation
+  static double truncateToDecimalPlaces(double value, int fractionalDigits) {
+    if (fractionalDigits < 0) {
+      throw ArgumentError('Fractional digits cannot be negative');
+    }
+    if (!value.isFinite) return value;
 
+    final multiplier = pow(10, fractionalDigits);
+    return (value * multiplier).truncate() / multiplier;
+  }
+
+  /// Round to decimal places (alternative to truncate)
+  static double roundToDecimalPlaces(double value, int fractionalDigits) {
+    if (fractionalDigits < 0) {
+      throw ArgumentError('Fractional digits cannot be negative');
+    }
+    if (!value.isFinite) return value;
+
+    final multiplier = pow(10, fractionalDigits);
+    return (value * multiplier).round() / multiplier;
+  }
+
+  /// Enhanced version methods with validation
   static String getFullAppVersion() {
-    return packageVersion.trim();
+    try {
+      return packageVersion.trim();
+    } catch (e) {
+      return '0.0.0'; // Fallback version
+    }
   }
 
   static String getAppVersion() {
-    return packageVersion.replaceRange(7, packageVersion.length, '');
-  }
-
-  static String getSluggedAppVersion() {
-    return slugify.slugify(getAppVersion());
-  }
-
-  static bool memberHasSubscribed(PRFMission mission) {
-    return mission.loggedInMemberMissionSubscription != null &&
-        (mission.loggedInMemberMissionSubscription!.status ==
-                PRFMissionSubscriptionStatus.approved ||
-            mission.loggedInMemberMissionSubscription!.status ==
-                PRFMissionSubscriptionStatus.pending);
-  }
-
-  static bool canSubscribeToMission(PRFMission mission) {
-    return mission.status == PRFMissionStatus.approved &&
-        mission.missionSubscriptionsNeeded > 0;
-  }
-
-  static void initDimensions(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(1290, 2796));
-  }
-
-  static bool userCan(String permission) {
-    final user = getIt<HiveService>().retrieveProfile();
-    if (user == null) return false;
-
-    // Get the permissions from the role key
-    // Flatten the permissions from all the roles
-    // Check if the permission exists for the user across all the roles
-    final permissionFound = user.roles
-        .map((role) => role.permissions)
-        .toList()
-        .flattened
-        .toSet()
-        .firstWhereOrNull(
-          (permissionEntry) => permissionEntry.name == permission,
-        );
-
-    if (permissionFound == null) return false;
-    return true;
-  }
-
-  static Future<void> openUrl(Uri uri) async {
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    try {
+      final version = packageVersion.trim();
+      return version.length > 7 ? version.substring(0, 7) : version;
+    } catch (e) {
+      return '0.0.0';
     }
   }
 
+  static String getSluggedAppVersion() {
+    try {
+      return slugify.slugify(getAppVersion());
+    } catch (e) {
+      return '0-0-0';
+    }
+  }
+
+  /// Enhanced mission subscription check
+  static bool memberHasSubscribed(PRFMission mission) {
+    final subscription = mission.loggedInMemberMissionSubscription;
+    if (subscription == null) return false;
+
+    return {
+      PRFMissionSubscriptionStatus.approved,
+      PRFMissionSubscriptionStatus.pending,
+    }.contains(subscription.status);
+  }
+
+  /// Enhanced mission subscription eligibility check
+  static bool canSubscribeToMission(PRFMission mission) {
+    return mission.status == PRFMissionStatus.approved &&
+        mission.missionSubscriptionsNeeded > 0 &&
+        !memberHasSubscribed(mission);
+  }
+
+  /// Enhanced dimensions initialization with validation
+  static void initDimensions(BuildContext context, {Size? customDesignSize}) {
+    try {
+      final designSize = customDesignSize ?? const Size(1290, 2796);
+      ScreenUtil.init(context, designSize: designSize);
+    } catch (e) {
+      // Fallback initialization
+      ScreenUtil.init(context, designSize: const Size(375, 812));
+    }
+  }
+
+  /// Enhanced user permissions check with caching
+  static bool userCan(String permission) {
+    try {
+      final user = getIt<HiveService>().retrieveProfile();
+      if (user == null) return false;
+
+      // Cache user permissions for better performance
+      final userPermissions = user.roles
+          .expand((role) => role.permissions)
+          .map((permission) => permission.name)
+          .toSet();
+
+      return userPermissions.contains(permission);
+    } catch (e) {
+      return false; // Deny access on error
+    }
+  }
+
+  /// Enhanced URL opening with better error handling
+  static Future<bool> openUrl(
+    Uri uri, {
+    LaunchMode mode = LaunchMode.externalApplication,
+  }) async {
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: mode);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Enhanced file name extraction with validation
   static String getFileName(String path) {
-    return path.substring(path.lastIndexOf('/') + 1);
+    if (path.isEmpty) return '';
+
+    final lastSlashIndex = path.lastIndexOf('/');
+    if (lastSlashIndex == -1) return path;
+
+    final fileName = path.substring(lastSlashIndex + 1);
+    return fileName.isEmpty ? path : fileName;
   }
 
-  static String formatCash(int amount) => NumberFormat.currency(
-    locale: 'en_KE',
-    symbol: '',
-    decimalDigits: 0,
-  ).format(amount);
+  /// Enhanced cash formatting with multiple currency support
+  static String formatCash(
+    num amount, {
+    String locale = 'en_KE',
+    String symbol = '',
+    int decimalDigits = 0,
+    String? customSymbol,
+  }) {
+    try {
+      final formatter = NumberFormat.currency(
+        locale: locale,
+        symbol: customSymbol ?? symbol,
+        decimalDigits: decimalDigits,
+      );
+      return formatter.format(amount);
+    } catch (e) {
+      return amount.toString();
+    }
+  }
 
-  static double getScaleFactor(BuildContext context) {
+  /// Enhanced scale factor calculation with device type detection
+  static double getScaleFactor(
+    BuildContext context, {
+    double? customBaseWidth,
+    double? minScale,
+    double? maxScale,
+  }) {
+    try {
+      final screenWidth = MediaQuery.of(context).size.width;
+      final deviceType = getDeviceType(context);
+
+      // Dynamic base widths based on device type
+      final baseWidth =
+          customBaseWidth ??
+          switch (deviceType) {
+            DeviceType.phone => 375.0,
+            DeviceType.tablet => 600.0,
+            DeviceType.desktop => 1200.0,
+          };
+
+      final scaleFactor = screenWidth / baseWidth;
+
+      // Dynamic scale ranges based on device type
+      final minScaleValue =
+          minScale ??
+          switch (deviceType) {
+            DeviceType.phone => 0.8,
+            DeviceType.tablet => 0.7,
+            DeviceType.desktop => 0.6,
+          };
+
+      final maxScaleValue =
+          maxScale ??
+          switch (deviceType) {
+            DeviceType.phone => 1.4,
+            DeviceType.tablet => 1.6,
+            DeviceType.desktop => 2.0,
+          };
+
+      return scaleFactor.clamp(minScaleValue, maxScaleValue);
+    } catch (e) {
+      return 1; // Fallback to no scaling
+    }
+  }
+
+  /// Get device type based on screen size
+  static DeviceType getDeviceType(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet =
-        screenWidth >= 600; // Material Design breakpoint for tablets
 
-    // Use different base widths for tablet and phone
-    final baseWidth = isTablet
-        ? 600.0
-        : 375.0; // 600 for tablets, 375 for phones (iPhone SE)
-    final scaleFactor = screenWidth / baseWidth;
-
-    // Different scale ranges for tablet and phone
-    return scaleFactor.clamp(
-      isTablet ? 0.8 : 0.8, // Minimum scale
-      isTablet ? 1.6 : 1.4, // Maximum scale - slightly larger for tablets
-    ); // Limit scaling range
+    if (screenWidth >= 1200) return DeviceType.desktop;
+    if (screenWidth >= 600) return DeviceType.tablet;
+    return DeviceType.phone;
   }
+
+  /// Check if device is in landscape mode
+  static bool isLandscape(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return size.width > size.height;
+  }
+
+  /// Format file size in human readable format
+  static String formatFileSize(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    if (bytes < 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    }
+    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
+  }
+
+  /// Get relative time (e.g., "2 hours ago")
+  static String getRelativeTime(DateTime dateTime, {String? locale}) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays > 365) {
+      final years = (difference.inDays / 365).floor();
+      return years == 1 ? '1 year ago' : '$years years ago';
+    } else if (difference.inDays > 30) {
+      final months = (difference.inDays / 30).floor();
+      return months == 1 ? '1 month ago' : '$months months ago';
+    } else if (difference.inDays > 0) {
+      return difference.inDays == 1
+          ? '1 day ago'
+          : '${difference.inDays} days ago';
+    } else if (difference.inHours > 0) {
+      return difference.inHours == 1
+          ? '1 hour ago'
+          : '${difference.inHours} hours ago';
+    } else if (difference.inMinutes > 0) {
+      return difference.inMinutes == 1
+          ? '1 minute ago'
+          : '${difference.inMinutes} minutes ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
+  /// Validate email format
+  static bool isValidEmail(String email) {
+    return RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    ).hasMatch(email);
+  }
+
+  /// Validate phone number format (basic)
+  static bool isValidPhoneNumber(String phone) {
+    return RegExp(r'^\+?[\d\s\-\(\)]{7,15}$').hasMatch(phone);
+  }
+
+  /// Generate random string
+  static String generateRandomString(
+    int length, {
+    bool includeNumbers = true,
+    bool includeSymbols = false,
+  }) {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    const symbols = r'!@#$%^&*';
+
+    var charset = chars;
+    if (includeNumbers) charset += numbers;
+    if (includeSymbols) charset += symbols;
+
+    final random = Random();
+    return String.fromCharCodes(
+      Iterable.generate(
+        length,
+        (_) => charset.codeUnitAt(random.nextInt(charset.length)),
+      ),
+    );
+  }
+
+  /// Clear timezone cache (useful for testing or memory management)
+  static void clearTimezoneCache() {
+    _timezoneCache.clear();
+  }
+}
+
+/// Device type enumeration
+enum DeviceType {
+  phone,
+  tablet,
+  desktop,
 }

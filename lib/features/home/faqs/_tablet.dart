@@ -30,7 +30,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
     super.initState();
   }
 
-   @override
+  @override
   void dispose() {
     _searchDebouncer.dispose();
     super.dispose();
