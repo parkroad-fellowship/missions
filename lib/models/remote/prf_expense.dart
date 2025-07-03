@@ -9,7 +9,7 @@ part 'prf_expense.freezed.dart';
 part 'prf_expense.g.dart';
 
 @freezed
-class PRFExpense with _$PRFExpense {
+abstract class PRFExpense with _$PRFExpense {
   factory PRFExpense(
     String ulid,
     @JsonEnum() @JsonKey(name: 'expenseable_type') PRFMorphType expenseableType,

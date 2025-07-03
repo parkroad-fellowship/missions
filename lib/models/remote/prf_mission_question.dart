@@ -4,7 +4,7 @@ part 'prf_mission_question.freezed.dart';
 part 'prf_mission_question.g.dart';
 
 @freezed
-class PRFMissionQuestion with _$PRFMissionQuestion {
+abstract class PRFMissionQuestion with _$PRFMissionQuestion {
   factory PRFMissionQuestion(
     String ulid,
     String question,
@@ -17,7 +17,7 @@ class PRFMissionQuestion with _$PRFMissionQuestion {
 }
 
 @freezed
-class PRFMissionQuestionResponse with _$PRFMissionQuestionResponse {
+abstract class PRFMissionQuestionResponse with _$PRFMissionQuestionResponse {
   factory PRFMissionQuestionResponse({required List<PRFMissionQuestion> data}) =
       _PRFMissionQuestionResponse;
 

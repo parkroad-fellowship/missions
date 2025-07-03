@@ -6,7 +6,7 @@ part 'prf_student_enquiry_reply.freezed.dart';
 part 'prf_student_enquiry_reply.g.dart';
 
 @freezed
-class PRFStudentEnquiryReply with _$PRFStudentEnquiryReply {
+abstract class PRFStudentEnquiryReply with _$PRFStudentEnquiryReply {
   factory PRFStudentEnquiryReply(
     String ulid,
     String content,
@@ -21,7 +21,8 @@ class PRFStudentEnquiryReply with _$PRFStudentEnquiryReply {
 }
 
 @freezed
-class PRFStudentEnquiryReplyResponse with _$PRFStudentEnquiryReplyResponse {
+abstract class PRFStudentEnquiryReplyResponse
+    with _$PRFStudentEnquiryReplyResponse {
   const factory PRFStudentEnquiryReplyResponse({
     required List<PRFStudentEnquiryReply> data,
   }) = _PRFStudentEnquiryReplyResponse;

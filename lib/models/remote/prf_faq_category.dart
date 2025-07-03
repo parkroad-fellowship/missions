@@ -4,7 +4,7 @@ part 'prf_faq_category.freezed.dart';
 part 'prf_faq_category.g.dart';
 
 @freezed
-class PRFFaqCategory with _$PRFFaqCategory {
+abstract class PRFFaqCategory with _$PRFFaqCategory {
   factory PRFFaqCategory(
     String ulid,
     String name,
@@ -17,7 +17,7 @@ class PRFFaqCategory with _$PRFFaqCategory {
 }
 
 @freezed
-class PRFFaqCategoryResponse with _$PRFFaqCategoryResponse {
+abstract class PRFFaqCategoryResponse with _$PRFFaqCategoryResponse {
   const factory PRFFaqCategoryResponse({required List<PRFFaqCategory> data}) =
       _PRFFaqCategoryResponse;
 

@@ -4,7 +4,7 @@ part 'prf_church.freezed.dart';
 part 'prf_church.g.dart';
 
 @freezed
-class PRFChurch with _$PRFChurch {
+abstract class PRFChurch with _$PRFChurch {
   factory PRFChurch(
     String ulid,
     String name,

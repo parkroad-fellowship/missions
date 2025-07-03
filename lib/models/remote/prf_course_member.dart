@@ -7,7 +7,7 @@ part 'prf_course_member.freezed.dart';
 part 'prf_course_member.g.dart';
 
 @freezed
-class PRFCourseMember with _$PRFCourseMember {
+abstract class PRFCourseMember with _$PRFCourseMember {
   factory PRFCourseMember(
     String ulid,
     @JsonKey(name: 'percent_complete') double percentComplete,

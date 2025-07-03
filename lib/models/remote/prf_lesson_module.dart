@@ -7,7 +7,7 @@ part 'prf_lesson_module.freezed.dart';
 part 'prf_lesson_module.g.dart';
 
 @freezed
-class PRFLessonModule with _$PRFLessonModule {
+abstract class PRFLessonModule with _$PRFLessonModule {
   factory PRFLessonModule(
     String ulid,
     int order,

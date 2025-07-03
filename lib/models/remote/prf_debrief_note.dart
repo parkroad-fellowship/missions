@@ -5,7 +5,7 @@ part 'prf_debrief_note.freezed.dart';
 part 'prf_debrief_note.g.dart';
 
 @freezed
-class PRFDebriefNote with _$PRFDebriefNote {
+abstract class PRFDebriefNote with _$PRFDebriefNote {
   factory PRFDebriefNote(
     String ulid,
     String note,
@@ -19,7 +19,7 @@ class PRFDebriefNote with _$PRFDebriefNote {
 }
 
 @freezed
-class PRFDebriefNoteResponse with _$PRFDebriefNoteResponse {
+abstract class PRFDebriefNoteResponse with _$PRFDebriefNoteResponse {
   const factory PRFDebriefNoteResponse({required List<PRFDebriefNote> data}) =
       _PRFDebriefNoteResponse;
 

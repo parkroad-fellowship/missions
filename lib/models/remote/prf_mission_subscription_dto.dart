@@ -4,7 +4,7 @@ part 'prf_mission_subscription_dto.freezed.dart';
 part 'prf_mission_subscription_dto.g.dart';
 
 @freezed
-class PRFMissionSubscriptionDTO with _$PRFMissionSubscriptionDTO {
+abstract class PRFMissionSubscriptionDTO with _$PRFMissionSubscriptionDTO {
   factory PRFMissionSubscriptionDTO({
     @JsonKey(name: 'mission_ulid') required String missionUlid,
     @JsonKey(name: 'member_ulid') required String memberUlid,

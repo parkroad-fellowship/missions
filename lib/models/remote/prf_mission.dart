@@ -11,7 +11,7 @@ part 'prf_mission.freezed.dart';
 part 'prf_mission.g.dart';
 
 @freezed
-class PRFMission with _$PRFMission {
+abstract class PRFMission with _$PRFMission {
   factory PRFMission(
     String ulid,
     @JsonKey(name: 'start_date') DateTime startDate,
@@ -43,7 +43,7 @@ class PRFMission with _$PRFMission {
 }
 
 @freezed
-class PRFMissionsResponse with _$PRFMissionsResponse {
+abstract class PRFMissionsResponse with _$PRFMissionsResponse {
   factory PRFMissionsResponse(List<PRFMission> data) = _PRFMissionsResponse;
 
   factory PRFMissionsResponse.fromJson(Map<String, dynamic> json) =>

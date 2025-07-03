@@ -4,7 +4,7 @@ part 'prf_mission_type.freezed.dart';
 part 'prf_mission_type.g.dart';
 
 @freezed
-class PRFMissionType with _$PRFMissionType {
+abstract class PRFMissionType with _$PRFMissionType {
   factory PRFMissionType(
     String ulid,
     String name,

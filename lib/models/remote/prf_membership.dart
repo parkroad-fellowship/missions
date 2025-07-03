@@ -5,7 +5,7 @@ part 'prf_membership.freezed.dart';
 part 'prf_membership.g.dart';
 
 @freezed
-class PRFMembership with _$PRFMembership {
+abstract class PRFMembership with _$PRFMembership {
   factory PRFMembership(
     String ulid,
     int type,

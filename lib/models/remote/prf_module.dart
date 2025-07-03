@@ -7,7 +7,7 @@ part 'prf_module.freezed.dart';
 part 'prf_module.g.dart';
 
 @freezed
-class PRFModule with _$PRFModule {
+abstract class PRFModule with _$PRFModule {
   factory PRFModule(
     String ulid,
     String name,

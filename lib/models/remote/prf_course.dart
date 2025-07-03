@@ -6,7 +6,7 @@ part 'prf_course.freezed.dart';
 part 'prf_course.g.dart';
 
 @freezed
-class PRFCourse with _$PRFCourse {
+abstract class PRFCourse with _$PRFCourse {
   factory PRFCourse(
     String ulid,
     String name,
@@ -24,7 +24,7 @@ class PRFCourse with _$PRFCourse {
 }
 
 @freezed
-class PRFCourseResponse with _$PRFCourseResponse {
+abstract class PRFCourseResponse with _$PRFCourseResponse {
   factory PRFCourseResponse(List<PRFCourse> data) = _PRFCourseResponse;
 
   factory PRFCourseResponse.fromJson(Map<String, dynamic> json) =>

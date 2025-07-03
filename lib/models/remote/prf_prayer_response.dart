@@ -5,7 +5,7 @@ part 'prf_prayer_response.freezed.dart';
 part 'prf_prayer_response.g.dart';
 
 @freezed
-class PRFPrayerResponse with _$PRFPrayerResponse {
+abstract class PRFPrayerResponse with _$PRFPrayerResponse {
   factory PRFPrayerResponse(
     String entity,
     String ulid, {
@@ -17,7 +17,7 @@ class PRFPrayerResponse with _$PRFPrayerResponse {
 }
 
 @freezed
-class PRFPrayerResponseDTO with _$PRFPrayerResponseDTO {
+abstract class PRFPrayerResponseDTO with _$PRFPrayerResponseDTO {
   factory PRFPrayerResponseDTO({
     @JsonKey(name: 'prayer_prompt_ulid') required String prayerPromptUlid,
     @JsonKey(name: 'member_ulid') required String memberUlid,

@@ -12,7 +12,7 @@ part 'prf_member.freezed.dart';
 part 'prf_member.g.dart';
 
 @freezed
-class PRFMember with _$PRFMember {
+abstract class PRFMember with _$PRFMember {
   factory PRFMember(
     String ulid,
     @JsonKey(name: 'first_name') String firstName,

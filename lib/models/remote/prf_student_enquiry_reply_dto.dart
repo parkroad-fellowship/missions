@@ -5,7 +5,7 @@ part 'prf_student_enquiry_reply_dto.freezed.dart';
 part 'prf_student_enquiry_reply_dto.g.dart';
 
 @freezed
-class PRFStudentEnquiryReplyDTO with _$PRFStudentEnquiryReplyDTO {
+abstract class PRFStudentEnquiryReplyDTO with _$PRFStudentEnquiryReplyDTO {
   factory PRFStudentEnquiryReplyDTO({
     @JsonKey(name: 'student_enquiry_ulid') required String studentEnquiryUlid,
     required String content,

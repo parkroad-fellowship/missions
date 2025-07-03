@@ -4,7 +4,7 @@ part 'prf_student.freezed.dart';
 part 'prf_student.g.dart';
 
 @freezed
-class PRFStudent with _$PRFStudent {
+abstract class PRFStudent with _$PRFStudent {
   factory PRFStudent(
     String ulid,
     String name,

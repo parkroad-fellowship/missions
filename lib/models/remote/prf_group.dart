@@ -4,7 +4,7 @@ part 'prf_group.freezed.dart';
 part 'prf_group.g.dart';
 
 @freezed
-class PRFGroup with _$PRFGroup {
+abstract class PRFGroup with _$PRFGroup {
   factory PRFGroup(
     String ulid,
     String name,

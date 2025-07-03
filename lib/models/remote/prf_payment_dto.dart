@@ -4,7 +4,7 @@ part 'prf_payment_dto.freezed.dart';
 part 'prf_payment_dto.g.dart';
 
 @freezed
-class PRFPaymentDTO with _$PRFPaymentDTO {
+abstract class PRFPaymentDTO with _$PRFPaymentDTO {
   factory PRFPaymentDTO({
     @JsonKey(name: 'payment_type_ulid') required String paymentTypeUlid,
     @JsonKey(name: 'member_ulid') required String memberUlid,

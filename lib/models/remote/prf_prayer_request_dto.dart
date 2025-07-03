@@ -4,7 +4,7 @@ part 'prf_prayer_request_dto.freezed.dart';
 part 'prf_prayer_request_dto.g.dart';
 
 @freezed
-class PRFPrayerRequestDTO with _$PRFPrayerRequestDTO {
+abstract class PRFPrayerRequestDTO with _$PRFPrayerRequestDTO {
   factory PRFPrayerRequestDTO({
     @JsonKey(name: 'member_ulid') required String memberUlid,
     required String title,

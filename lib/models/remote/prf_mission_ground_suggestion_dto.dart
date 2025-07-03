@@ -5,7 +5,8 @@ part 'prf_mission_ground_suggestion_dto.freezed.dart';
 part 'prf_mission_ground_suggestion_dto.g.dart';
 
 @freezed
-class PRFMissionGroundSuggestionDTO with _$PRFMissionGroundSuggestionDTO {
+abstract class PRFMissionGroundSuggestionDTO
+    with _$PRFMissionGroundSuggestionDTO {
   factory PRFMissionGroundSuggestionDTO({
     required String name,
     @JsonKey(name: 'suggestor_ulid') required String suggestorUlid,

@@ -5,7 +5,7 @@ part 'prf_media_dto.freezed.dart';
 part 'prf_media_dto.g.dart';
 
 @freezed
-class PRFMediaDTO with _$PRFMediaDTO {
+abstract class PRFMediaDTO with _$PRFMediaDTO {
   const factory PRFMediaDTO({
     required PRFMediaModel model,
     required String modelUlid,

@@ -4,7 +4,7 @@ part 'prf_debrief_note_dto.freezed.dart';
 part 'prf_debrief_note_dto.g.dart';
 
 @freezed
-class PRFDebriefNoteDTO with _$PRFDebriefNoteDTO {
+abstract class PRFDebriefNoteDTO with _$PRFDebriefNoteDTO {
   factory PRFDebriefNoteDTO({
     @JsonKey(name: 'mission_ulid') required String missionUlid,
     required String note,

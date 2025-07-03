@@ -9,7 +9,7 @@ part 'prf_lesson_member.freezed.dart';
 part 'prf_lesson_member.g.dart';
 
 @freezed
-class PRFLessonMember with _$PRFLessonMember {
+abstract class PRFLessonMember with _$PRFLessonMember {
   factory PRFLessonMember(
     String ulid,
     @JsonKey(name: 'completion_status') PRFCompletionStatus completionStatus,

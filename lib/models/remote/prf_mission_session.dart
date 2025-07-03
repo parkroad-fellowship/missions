@@ -8,7 +8,7 @@ part 'prf_mission_session.freezed.dart';
 part 'prf_mission_session.g.dart';
 
 @freezed
-class PRFMissionSession with _$PRFMissionSession {
+abstract class PRFMissionSession with _$PRFMissionSession {
   factory PRFMissionSession(
     String entity,
     String ulid,
@@ -30,7 +30,7 @@ class PRFMissionSession with _$PRFMissionSession {
 }
 
 @freezed
-class PRFMissionSessionsResponse with _$PRFMissionSessionsResponse {
+abstract class PRFMissionSessionsResponse with _$PRFMissionSessionsResponse {
   factory PRFMissionSessionsResponse(List<PRFMissionSession> data) =
       _PRFMissionSessionsResponse;
 

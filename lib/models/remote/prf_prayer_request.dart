@@ -5,7 +5,7 @@ part 'prf_prayer_request.freezed.dart';
 part 'prf_prayer_request.g.dart';
 
 @freezed
-class PRFPrayerRequest with _$PRFPrayerRequest {
+abstract class PRFPrayerRequest with _$PRFPrayerRequest {
   factory PRFPrayerRequest({
     required String ulid,
     required String title,
@@ -18,7 +18,7 @@ class PRFPrayerRequest with _$PRFPrayerRequest {
 }
 
 @freezed
-class PRFPrayerRequestResponse with _$PRFPrayerRequestResponse {
+abstract class PRFPrayerRequestResponse with _$PRFPrayerRequestResponse {
   factory PRFPrayerRequestResponse({required List<PRFPrayerRequest> data}) =
       _PRFPrayerRequestResponse;
 

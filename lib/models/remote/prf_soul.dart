@@ -6,7 +6,7 @@ part 'prf_soul.freezed.dart';
 part 'prf_soul.g.dart';
 
 @freezed
-class PRFSoul with _$PRFSoul {
+abstract class PRFSoul with _$PRFSoul {
   factory PRFSoul(
     String ulid,
     @JsonKey(name: 'full_name') String fullName,
@@ -22,7 +22,7 @@ class PRFSoul with _$PRFSoul {
 }
 
 @freezed
-class PRFSoulResponse with _$PRFSoulResponse {
+abstract class PRFSoulResponse with _$PRFSoulResponse {
   const factory PRFSoulResponse({required List<PRFSoul> data}) =
       _PRFSoulResponse;
 

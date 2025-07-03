@@ -5,7 +5,7 @@ part 'prf_mission_expense.freezed.dart';
 part 'prf_mission_expense.g.dart';
 
 @freezed
-class PRFMissionExpense with _$PRFMissionExpense {
+abstract class PRFMissionExpense with _$PRFMissionExpense {
   factory PRFMissionExpense(
     String ulid,
     @JsonKey(name: 'amount_received') int amountReceived,

@@ -5,7 +5,7 @@ part 'prf_group_member.freezed.dart';
 part 'prf_group_member.g.dart';
 
 @freezed
-class PRFGroupMember with _$PRFGroupMember {
+abstract class PRFGroupMember with _$PRFGroupMember {
   factory PRFGroupMember(
     String ulid,
     @JsonKey(name: 'start_date') String startDate,

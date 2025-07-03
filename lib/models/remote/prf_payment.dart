@@ -6,7 +6,7 @@ part 'prf_payment.freezed.dart';
 part 'prf_payment.g.dart';
 
 @freezed
-class PRFPayment with _$PRFPayment {
+abstract class PRFPayment with _$PRFPayment {
   factory PRFPayment(
     String ulid,
     int amount,
@@ -23,7 +23,7 @@ class PRFPayment with _$PRFPayment {
 }
 
 @freezed
-class PRFPaymentResponse with _$PRFPaymentResponse {
+abstract class PRFPaymentResponse with _$PRFPaymentResponse {
   factory PRFPaymentResponse(List<PRFPayment> data) = _PRFPaymentResponse;
 
   factory PRFPaymentResponse.fromJson(Map<String, dynamic> json) =>

@@ -6,7 +6,7 @@ part 'prf_event_subscription.freezed.dart';
 part 'prf_event_subscription.g.dart';
 
 @freezed
-class PRFEventSubscription with _$PRFEventSubscription {
+abstract class PRFEventSubscription with _$PRFEventSubscription {
   factory PRFEventSubscription(
     String ulid,
     @JsonKey(name: 'number_of_attendees') int numberOfAttendees,
@@ -21,7 +21,8 @@ class PRFEventSubscription with _$PRFEventSubscription {
 }
 
 @freezed
-class PRFEventSubscriptionResponse with _$PRFEventSubscriptionResponse {
+abstract class PRFEventSubscriptionResponse
+    with _$PRFEventSubscriptionResponse {
   factory PRFEventSubscriptionResponse({
     @Default([]) List<PRFEventSubscription> data,
   }) = _PRFEventSubscriptionResponse;

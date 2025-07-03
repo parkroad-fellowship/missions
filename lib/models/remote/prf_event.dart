@@ -7,7 +7,7 @@ part 'prf_event.freezed.dart';
 part 'prf_event.g.dart';
 
 @freezed
-class PRFEvent with _$PRFEvent {
+abstract class PRFEvent with _$PRFEvent {
   factory PRFEvent(
     String ulid,
     String name,
@@ -38,7 +38,7 @@ class PRFEvent with _$PRFEvent {
 }
 
 @freezed
-class PRFEventResponse with _$PRFEventResponse {
+abstract class PRFEventResponse with _$PRFEventResponse {
   factory PRFEventResponse({@Default([]) List<PRFEvent> data}) =
       _PRFEventResponse;
   factory PRFEventResponse.fromJson(Map<String, dynamic> json) =>

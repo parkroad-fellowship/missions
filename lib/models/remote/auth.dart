@@ -7,7 +7,7 @@ part 'auth.g.dart'; // Needed for toJson, fromJson
 part 'auth.freezed.dart';
 
 @freezed
-class SignInDTO with _$SignInDTO {
+abstract class SignInDTO with _$SignInDTO {
   factory SignInDTO({required String email, required String password}) =
       _SignInDTO;
 
@@ -16,7 +16,7 @@ class SignInDTO with _$SignInDTO {
 }
 
 @freezed
-class PRFUser with _$PRFUser {
+abstract class PRFUser with _$PRFUser {
   factory PRFUser({
     required String ulid,
     required String name,
@@ -36,7 +36,7 @@ class PRFUser with _$PRFUser {
 }
 
 @freezed
-class PRFRole with _$PRFRole {
+abstract class PRFRole with _$PRFRole {
   factory PRFRole({
     required String name,
     required List<PRFPermission> permissions,
@@ -47,7 +47,7 @@ class PRFRole with _$PRFRole {
 }
 
 @freezed
-class PRFPermission with _$PRFPermission {
+abstract class PRFPermission with _$PRFPermission {
   factory PRFPermission({required String name}) = _PRFPermission;
 
   factory PRFPermission.fromJson(Map<String, dynamic> json) =>
@@ -55,7 +55,7 @@ class PRFPermission with _$PRFPermission {
 }
 
 @freezed
-class SocialAuthDTO with _$SocialAuthDTO {
+abstract class SocialAuthDTO with _$SocialAuthDTO {
   factory SocialAuthDTO({
     required String provider,
     @JsonKey(name: 'access_token') required String accessToken,

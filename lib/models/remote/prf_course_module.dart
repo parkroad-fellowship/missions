@@ -7,7 +7,7 @@ part 'prf_course_module.freezed.dart';
 part 'prf_course_module.g.dart';
 
 @freezed
-class PRFCourseModule with _$PRFCourseModule {
+abstract class PRFCourseModule with _$PRFCourseModule {
   factory PRFCourseModule(
     String ulid,
     int order,
@@ -23,7 +23,7 @@ class PRFCourseModule with _$PRFCourseModule {
 }
 
 @freezed
-class PRFCourseModuleResponse with _$PRFCourseModuleResponse {
+abstract class PRFCourseModuleResponse with _$PRFCourseModuleResponse {
   factory PRFCourseModuleResponse(List<PRFCourseModule> data) =
       _PRFCourseModuleResponse;
 

@@ -5,7 +5,7 @@ part 'prf_prayer_prompt.freezed.dart';
 part 'prf_prayer_prompt.g.dart';
 
 @freezed
-class PRFPrayerPrompt with _$PRFPrayerPrompt {
+abstract class PRFPrayerPrompt with _$PRFPrayerPrompt {
   factory PRFPrayerPrompt(
     String entity,
     String ulid,
@@ -21,7 +21,7 @@ class PRFPrayerPrompt with _$PRFPrayerPrompt {
 }
 
 @freezed
-class PRFPrayerPromptResponse with _$PRFPrayerPromptResponse {
+abstract class PRFPrayerPromptResponse with _$PRFPrayerPromptResponse {
   factory PRFPrayerPromptResponse(List<PRFPrayerPrompt> data) =
       _PRFPrayerPromptResponse;
 

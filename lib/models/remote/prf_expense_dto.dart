@@ -4,7 +4,7 @@ part 'prf_expense_dto.freezed.dart';
 part 'prf_expense_dto.g.dart';
 
 @freezed
-class PRFExpenseDTO with _$PRFExpenseDTO {
+abstract class PRFExpenseDTO with _$PRFExpenseDTO {
   factory PRFExpenseDTO({
     @JsonKey(name: 'expense_category_ulid') required String expenseCategoryUlid,
     @JsonKey(name: 'member_ulid') required String memberUlid,

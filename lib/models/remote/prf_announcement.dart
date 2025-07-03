@@ -4,7 +4,7 @@ part 'prf_announcement.freezed.dart';
 part 'prf_announcement.g.dart';
 
 @freezed
-class PRFAnnouncement with _$PRFAnnouncement {
+abstract class PRFAnnouncement with _$PRFAnnouncement {
   factory PRFAnnouncement(
     String ulid,
     String title,
@@ -19,7 +19,7 @@ class PRFAnnouncement with _$PRFAnnouncement {
 }
 
 @freezed
-class PRFAnnouncementResponse with _$PRFAnnouncementResponse {
+abstract class PRFAnnouncementResponse with _$PRFAnnouncementResponse {
   factory PRFAnnouncementResponse(List<PRFAnnouncement> data) =
       _PRFAnnouncementResponse;
 

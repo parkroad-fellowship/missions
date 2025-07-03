@@ -6,7 +6,7 @@ import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/models/remote/prf_payment_type.dart';
 import 'package:app/models/remote/prf_soul.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class PRFUserAdapter extends TypeAdapter<PRFUser> {
   @override

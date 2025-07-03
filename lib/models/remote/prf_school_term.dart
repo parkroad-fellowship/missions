@@ -4,7 +4,7 @@ part 'prf_school_term.freezed.dart';
 part 'prf_school_term.g.dart';
 
 @freezed
-class PRFSchoolTerm with _$PRFSchoolTerm {
+abstract class PRFSchoolTerm with _$PRFSchoolTerm {
   factory PRFSchoolTerm(
     String ulid,
     String name,

@@ -4,7 +4,7 @@ part 'prf_spiritual_year.freezed.dart';
 part 'prf_spiritual_year.g.dart';
 
 @freezed
-class PRFSpiritualYear with _$PRFSpiritualYear {
+abstract class PRFSpiritualYear with _$PRFSpiritualYear {
   factory PRFSpiritualYear(String ulid, String name) = _PRFSpiritualYear;
 
   factory PRFSpiritualYear.fromJson(Map<String, dynamic> json) =>

@@ -4,7 +4,7 @@ part 'prf_payment_type.freezed.dart';
 part 'prf_payment_type.g.dart';
 
 @freezed
-class PRFPaymentType with _$PRFPaymentType {
+abstract class PRFPaymentType with _$PRFPaymentType {
   factory PRFPaymentType(String ulid, String name, String description) =
       _PRFPaymentType;
 
@@ -13,7 +13,7 @@ class PRFPaymentType with _$PRFPaymentType {
 }
 
 @freezed
-class PRFPaymentTypeResponse with _$PRFPaymentTypeResponse {
+abstract class PRFPaymentTypeResponse with _$PRFPaymentTypeResponse {
   factory PRFPaymentTypeResponse(List<PRFPaymentType> data) =
       _PRFPaymentTypeResponse;
 

@@ -5,7 +5,7 @@ part 'prf_contact.freezed.dart';
 part 'prf_contact.g.dart';
 
 @freezed
-class PRFContact with _$PRFContact {
+abstract class PRFContact with _$PRFContact {
   factory PRFContact(
     String ulid,
     String name,

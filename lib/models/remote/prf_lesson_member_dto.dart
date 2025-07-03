@@ -5,7 +5,7 @@ part 'prf_lesson_member_dto.freezed.dart';
 part 'prf_lesson_member_dto.g.dart';
 
 @freezed
-class PRFLessonMemberDTO with _$PRFLessonMemberDTO {
+abstract class PRFLessonMemberDTO with _$PRFLessonMemberDTO {
   factory PRFLessonMemberDTO({
     @JsonKey(name: 'lesson_ulid') required String lessonUlid,
     @JsonKey(name: 'module_ulid') required String moduleUlid,

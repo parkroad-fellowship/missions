@@ -5,7 +5,7 @@ part 'prf_faq.freezed.dart';
 part 'prf_faq.g.dart';
 
 @freezed
-class PRFFaq with _$PRFFaq {
+abstract class PRFFaq with _$PRFFaq {
   factory PRFFaq(
     String ulid,
     String question,
@@ -19,7 +19,7 @@ class PRFFaq with _$PRFFaq {
 }
 
 @freezed
-class PRFFaqResponse with _$PRFFaqResponse {
+abstract class PRFFaqResponse with _$PRFFaqResponse {
   const factory PRFFaqResponse({required List<PRFFaq> data}) = _PRFFaqResponse;
 
   factory PRFFaqResponse.fromJson(Map<String, dynamic> json) =>

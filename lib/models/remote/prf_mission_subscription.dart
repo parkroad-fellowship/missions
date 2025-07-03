@@ -8,7 +8,7 @@ part 'prf_mission_subscription.freezed.dart';
 part 'prf_mission_subscription.g.dart';
 
 @freezed
-class PRFMissionSubscription with _$PRFMissionSubscription {
+abstract class PRFMissionSubscription with _$PRFMissionSubscription {
   factory PRFMissionSubscription(
     String ulid,
     PRFMissionSubscriptionStatus status,
@@ -24,7 +24,8 @@ class PRFMissionSubscription with _$PRFMissionSubscription {
 }
 
 @freezed
-class PRFMissionSubscriptionsResponse with _$PRFMissionSubscriptionsResponse {
+abstract class PRFMissionSubscriptionsResponse
+    with _$PRFMissionSubscriptionsResponse {
   factory PRFMissionSubscriptionsResponse(List<PRFMissionSubscription> data) =
       _PRFMissionSubscriptionsResponse;
 

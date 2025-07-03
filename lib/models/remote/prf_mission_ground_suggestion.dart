@@ -6,7 +6,7 @@ part 'prf_mission_ground_suggestion.freezed.dart';
 part 'prf_mission_ground_suggestion.g.dart';
 
 @freezed
-class PRFMissionGroundSuggestion with _$PRFMissionGroundSuggestion {
+abstract class PRFMissionGroundSuggestion with _$PRFMissionGroundSuggestion {
   factory PRFMissionGroundSuggestion(
     String ulid,
     String name,
@@ -23,7 +23,7 @@ class PRFMissionGroundSuggestion with _$PRFMissionGroundSuggestion {
 }
 
 @freezed
-class PRFMissionGroundSuggestionResponse
+abstract class PRFMissionGroundSuggestionResponse
     with _$PRFMissionGroundSuggestionResponse {
   factory PRFMissionGroundSuggestionResponse(
     List<PRFMissionGroundSuggestion> data,

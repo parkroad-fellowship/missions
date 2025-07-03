@@ -4,7 +4,7 @@ part 'prf_marital_status.freezed.dart';
 part 'prf_marital_status.g.dart';
 
 @freezed
-class PRFMaritalStatus with _$PRFMaritalStatus {
+abstract class PRFMaritalStatus with _$PRFMaritalStatus {
   factory PRFMaritalStatus(
     String ulid,
     String name,

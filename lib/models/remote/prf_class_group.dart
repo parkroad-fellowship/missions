@@ -5,7 +5,7 @@ part 'prf_class_group.freezed.dart';
 part 'prf_class_group.g.dart';
 
 @freezed
-class PRFClassGroup with _$PRFClassGroup {
+abstract class PRFClassGroup with _$PRFClassGroup {
   factory PRFClassGroup(
     String ulid,
     String name,
@@ -20,7 +20,7 @@ class PRFClassGroup with _$PRFClassGroup {
 }
 
 @freezed
-class PRFClassGroupResponse with _$PRFClassGroupResponse {
+abstract class PRFClassGroupResponse with _$PRFClassGroupResponse {
   factory PRFClassGroupResponse(List<PRFClassGroup> data) =
       _PRFClassGroupResponse;
 

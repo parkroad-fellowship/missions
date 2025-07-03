@@ -4,7 +4,7 @@ import 'package:app/services/local_storage/hive/auth_hive_service.dart';
 import 'package:app/services/local_storage/hive/data_hive_service.dart';
 import 'package:app/services/local_storage/hive/settings_hive_service.dart';
 import 'package:app/utils/_index.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class HiveService {
   factory HiveService() => instance ??= HiveService._();

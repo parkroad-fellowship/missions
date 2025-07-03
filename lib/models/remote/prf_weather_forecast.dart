@@ -4,7 +4,7 @@ part 'prf_weather_forecast.freezed.dart';
 part 'prf_weather_forecast.g.dart';
 
 @freezed
-class PRFWeatherForecast with _$PRFWeatherForecast {
+abstract class PRFWeatherForecast with _$PRFWeatherForecast {
   factory PRFWeatherForecast(
     String ulid,
     @JsonKey(name: 'forecast_date') String forecastDate,
@@ -27,7 +27,7 @@ class PRFWeatherForecast with _$PRFWeatherForecast {
 }
 
 @freezed
-class PRFTemperature with _$PRFTemperature {
+abstract class PRFTemperature with _$PRFTemperature {
   factory PRFTemperature(
     @JsonKey(name: 'apparent_avg') String apparentAvg,
     @JsonKey(name: 'apparent_max') String apparentMax,
@@ -42,7 +42,7 @@ class PRFTemperature with _$PRFTemperature {
 }
 
 @freezed
-class PRFVisibility with _$PRFVisibility {
+abstract class PRFVisibility with _$PRFVisibility {
   factory PRFVisibility(String avg, String max, String min) = _PRFVisibility;
 
   factory PRFVisibility.fromJson(Map<String, dynamic> json) =>
@@ -50,7 +50,7 @@ class PRFVisibility with _$PRFVisibility {
 }
 
 @freezed
-class PRFPrecipitationProbability with _$PRFPrecipitationProbability {
+abstract class PRFPrecipitationProbability with _$PRFPrecipitationProbability {
   factory PRFPrecipitationProbability(String avg, String max, String min) =
       _PRFPrecipitationProbability;
 
@@ -59,7 +59,7 @@ class PRFPrecipitationProbability with _$PRFPrecipitationProbability {
 }
 
 @freezed
-class PRFHumidity with _$PRFHumidity {
+abstract class PRFHumidity with _$PRFHumidity {
   factory PRFHumidity(String avg, String max, String min) = _PRFHumidity;
 
   factory PRFHumidity.fromJson(Map<String, dynamic> json) =>

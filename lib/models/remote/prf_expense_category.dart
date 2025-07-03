@@ -4,7 +4,7 @@ part 'prf_expense_category.freezed.dart';
 part 'prf_expense_category.g.dart';
 
 @freezed
-class PRFExpenseCategory with _$PRFExpenseCategory {
+abstract class PRFExpenseCategory with _$PRFExpenseCategory {
   factory PRFExpenseCategory(String ulid, String name, String description) =
       _PRFExpenseCategory;
 
@@ -13,7 +13,7 @@ class PRFExpenseCategory with _$PRFExpenseCategory {
 }
 
 @freezed
-class PRFExpenseCategoryResponse with _$PRFExpenseCategoryResponse {
+abstract class PRFExpenseCategoryResponse with _$PRFExpenseCategoryResponse {
   factory PRFExpenseCategoryResponse(List<PRFExpenseCategory> data) =
       _PRFExpenseCategoryResponse;
 
