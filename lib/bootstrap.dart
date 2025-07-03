@@ -36,8 +36,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   try {
     Bloc.observer = const AppBlocObserver();
 
-    final patch = await ShorebirdUpdater().readCurrentPatch();
-
     LicenseRegistry.addLicense(() async* {
       final license = await rootBundle.loadString(
         'assets/google_fonts/OFL.txt',
@@ -57,6 +55,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     // Report errors to Crashlytics in release mode only
     if (kReleaseMode) {
+      final patch = await ShorebirdUpdater().readCurrentPatch();
       await FirebaseCrashlytics.instance.setCustomKey(
         'shorebird_patch_number',
         '${patch?.number}',
