@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/enums/prf_event.dart';
@@ -14,6 +15,8 @@ import 'package:logger/logger.dart';
 abstract class SocketService {
   SocketConfig defaultConfig();
   Future<void> init({required SocketConfig socketConfig});
+  Future<void> dispose();
+  Stream<bool> get connectionState;
 }
 
 class SocketServiceImpl implements SocketService {
@@ -22,6 +25,12 @@ class SocketServiceImpl implements SocketService {
   }
 
   late LocalDBService _localDBService;
+  PusherChannelsClient? _client;
+  final StreamController<bool> _connectionStateController =
+      StreamController<bool>.broadcast();
+
+  @override
+  Stream<bool> get connectionState => _connectionStateController.stream;
 
   PusherChannelsClient _initClient() {
     final hostOptions = PusherChannelsOptions.fromHost(
@@ -36,7 +45,7 @@ class SocketServiceImpl implements SocketService {
       connectionErrorHandler: (exception, trace, refresh) {
         Logger().f(exception);
         Logger().f(trace);
-
+        _connectionStateController.add(false);
         refresh();
       },
       activityDurationOverride: const Duration(seconds: 120),
@@ -48,13 +57,15 @@ class SocketServiceImpl implements SocketService {
         .connect()
         .then((onValue) {
           Logger().i('Successfully connected to the socket server');
+          _connectionStateController.add(true);
         })
         .onError((error, stackTrace) {
           Logger().e(
-            'An error occured connecting to the socket server',
+            'An error occurred connecting to the socket server',
             error: error,
             stackTrace: stackTrace,
           );
+          _connectionStateController.add(false);
         });
   }
 
@@ -63,6 +74,10 @@ class SocketServiceImpl implements SocketService {
     required String channelName,
   }) {
     final token = getIt<HiveService>().auth.retrieveToken();
+
+    if (token == null) {
+      throw Exception('Authentication token is required for private channels');
+    }
 
     return client.privateChannel(
       'private-$channelName',
@@ -88,7 +103,11 @@ class SocketServiceImpl implements SocketService {
     required PusherChannelsClient client,
     required String channelName,
   }) {
-    final token = getIt<HiveService>().auth.retrieveToken()!;
+    final token = getIt<HiveService>().auth.retrieveToken();
+
+    if (token == null) {
+      throw Exception('Authentication token is required for presence channels');
+    }
 
     return client.presenceChannel(
       'presence-$channelName',
@@ -154,11 +173,20 @@ class SocketServiceImpl implements SocketService {
         );
         Logger().e(event.data);
 
-        final data = json.decode(event.data as String) as Map<String, dynamic>;
+        try {
+          final data =
+              json.decode(event.data as String) as Map<String, dynamic>;
 
-        switch (PRFPresenceEvent.fromIndex(data['event'] as int)) {
-          case PRFPresenceEvent.announcementGroupCreated:
-            Logger().f(data['data']);
+          switch (PRFPresenceEvent.fromIndex(data['event'] as int)) {
+            case PRFPresenceEvent.announcementGroupCreated:
+              Logger().f(data['data']);
+          }
+        } catch (e, stackTrace) {
+          Logger().e(
+            'Error processing presence channel event',
+            error: e,
+            stackTrace: stackTrace,
+          );
         }
       });
   }
@@ -172,48 +200,56 @@ class SocketServiceImpl implements SocketService {
       Logger().i('$eventName from the private channel ${channel.name} fired!');
       Logger().e(event.data);
 
-      final data = json.decode(event.data as String) as Map<String, dynamic>;
+      try {
+        final data = json.decode(event.data as String) as Map<String, dynamic>;
 
-      switch (PRFEvent.fromIndex(data['event'] as int)) {
-        case PRFEvent.courseMemberUpdated:
-          Logger().f(data['data']);
-          final courseData = PRFCourse.fromJson(
-            data['data'] as Map<String, dynamic>,
-          );
+        switch (PRFEvent.fromIndex(data['event'] as int)) {
+          case PRFEvent.courseMemberUpdated:
+            Logger().f(data['data']);
+            final courseData = PRFCourse.fromJson(
+              data['data'] as Map<String, dynamic>,
+            );
 
-          _localDBService.persistCourses(courses: <PRFCourse>[courseData]);
+            _localDBService.persistCourses(courses: <PRFCourse>[courseData]);
 
-        case PRFEvent.memberModuleUpdated:
-          Logger().f(data['data']);
-          final courseModuleData = PRFCourseModule.fromJson(
-            data['data'] as Map<String, dynamic>,
-          );
+          case PRFEvent.memberModuleUpdated:
+            Logger().f(data['data']);
+            final courseModuleData = PRFCourseModule.fromJson(
+              data['data'] as Map<String, dynamic>,
+            );
 
-          _localDBService.persistCourseModules(
-            courseUlid: courseModuleData.course!.ulid,
-            courseModules: [courseModuleData],
-          );
+            _localDBService.persistCourseModules(
+              courseUlid: courseModuleData.course!.ulid,
+              courseModules: [courseModuleData],
+            );
 
-        case PRFEvent.lessonMemberUpdated:
-          Logger().f(data['data']);
-          final lessonModuleData = PRFLessonModule.fromJson(
-            data['data'] as Map<String, dynamic>,
-          );
+          case PRFEvent.lessonMemberUpdated:
+            Logger().f(data['data']);
+            final lessonModuleData = PRFLessonModule.fromJson(
+              data['data'] as Map<String, dynamic>,
+            );
 
-          _localDBService.persistLessonModules(
-            lessonModules: [lessonModuleData],
-          );
+            _localDBService.persistLessonModules(
+              lessonModules: [lessonModuleData],
+            );
 
-        case PRFEvent.studentEnquiryReplyCreated:
-          Logger().f(data['data']);
-          final studentEnquiryReplyData = PRFStudentEnquiryReply.fromJson(
-            data['data'] as Map<String, dynamic>,
-          );
+          case PRFEvent.studentEnquiryReplyCreated:
+            Logger().f(data['data']);
+            final studentEnquiryReplyData = PRFStudentEnquiryReply.fromJson(
+              data['data'] as Map<String, dynamic>,
+            );
 
-          _localDBService.persistStudentEnquiryReplies(
-            studentEnquiryUlid: studentEnquiryReplyData.studentEnquiry!.ulid,
-            replies: [studentEnquiryReplyData],
-          );
+            _localDBService.persistStudentEnquiryReplies(
+              studentEnquiryUlid: studentEnquiryReplyData.studentEnquiry!.ulid,
+              replies: [studentEnquiryReplyData],
+            );
+        }
+      } catch (e, stackTrace) {
+        Logger().e(
+          'Error processing socket event',
+          error: e,
+          stackTrace: stackTrace,
+        );
       }
     });
   }
@@ -221,6 +257,7 @@ class SocketServiceImpl implements SocketService {
   @override
   Future<void> init({required SocketConfig socketConfig}) async {
     final client = _initClient();
+    _client = client;
 
     final configuredChannels = <PrivateChannel>[];
     final configuredPresenceChannels = <PresenceChannel>[];
@@ -264,6 +301,13 @@ class SocketServiceImpl implements SocketService {
     );
 
     await _connectClient(client: client);
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _client?.disconnect();
+    _client = null;
+    await _connectionStateController.close();
   }
 
   @override
