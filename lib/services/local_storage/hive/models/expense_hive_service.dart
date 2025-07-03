@@ -55,7 +55,9 @@ class ExpenseHiveService extends BaseHiveService {
 
   void clearAllExpenses() {
     deleteAll(['expenseCategories']);
-    final keys = box.keys.where((key) => key.toString().startsWith('mission-expenses-'));
+    final keys = box.keys.where(
+      (key) => key.toString().startsWith('mission-expenses-'),
+    );
     deleteAll(keys.map((key) => key.toString()).toList());
   }
 }

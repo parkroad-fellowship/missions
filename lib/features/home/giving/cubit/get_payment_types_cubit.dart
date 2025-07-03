@@ -30,7 +30,9 @@ class GetPaymentTypesCubit extends Cubit<GetPaymentTypesState> {
       }
 
       final paymentTypes = await _paymentTypeService.list();
-      _hiveService.data.payments.persistPaymentTypes(PRFPaymentTypeResponse(paymentTypes));
+      _hiveService.data.payments.persistPaymentTypes(
+        PRFPaymentTypeResponse(paymentTypes),
+      );
       emit(GetPaymentTypesState.loaded(paymentTypes: paymentTypes));
     } on Failure catch (e) {
       emit(GetPaymentTypesState.error(e.message));

@@ -74,7 +74,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     Singletons.setup();
     await Singletons.setupDatabase();
 
-
     try {
       await getIt<FirebaseService>().initRemoteConfig();
     } catch (e) {

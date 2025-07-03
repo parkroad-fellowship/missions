@@ -1,4 +1,3 @@
-import 'package:app/utils/_index.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class BaseHiveService {
@@ -79,7 +78,6 @@ abstract class BaseHiveService {
     final existing = getCollection<Map<String, dynamic>>(prefix, contextId);
     if (existing == null) return;
 
-    // This is a generic approach - you might need to adjust based on your data structure
     final data = existing['data'] as List<dynamic>?;
     if (data == null) return;
 

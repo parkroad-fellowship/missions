@@ -23,7 +23,8 @@ class GetExpenseCategoriesCubit extends Cubit<GetExpenseCategoriesState> {
   Future<void> getExpenseCategories() async {
     emit(const GetExpenseCategoriesState.loading());
     try {
-      final localExpenseCategories = _hiveService.data.retrieveExpenseCategories();
+      final localExpenseCategories = _hiveService.data
+          .retrieveExpenseCategories();
       if (localExpenseCategories.isNotEmpty) {
         emit(
           GetExpenseCategoriesState.loaded(

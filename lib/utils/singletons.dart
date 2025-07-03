@@ -106,7 +106,6 @@ import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/services/local_auth_service.dart';
-import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';

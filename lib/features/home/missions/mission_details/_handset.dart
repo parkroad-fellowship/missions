@@ -338,8 +338,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               });
             }
             if (_currentTab == 6) {
-              final missionExpense = getIt<HiveService>()
-              .data.expenses
+              final missionExpense = getIt<HiveService>().data.expenses
                   .retrieveMissionExpense(missionUlid);
               if (missionExpense == null) {
                 Gaimon.error();

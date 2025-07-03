@@ -2,13 +2,13 @@ import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
 import 'package:app/models/remote/prf_event_subscription_dto.dart';
-import 'package:app/services/api/event_subscription_service.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/api/event_subscription_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'update_event_subscription_state.dart';
 part 'update_event_subscription_cubit.freezed.dart';
+part 'update_event_subscription_state.dart';
 
 class UpdateEventSubscriptionCubit extends Cubit<UpdateEventSubscriptionState> {
   UpdateEventSubscriptionCubit({

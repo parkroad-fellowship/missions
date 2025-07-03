@@ -36,7 +36,9 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     emit(const AddExpenseState.loading());
     try {
       final member = _hiveService.retrieveMember()!;
-      final missionExpense = _hiveService.data.expenses.retrieveMissionExpense(missionUlid);
+      final missionExpense = _hiveService.data.expenses.retrieveMissionExpense(
+        missionUlid,
+      );
       if (missionExpense == null) {
         emit(const AddExpenseState.error('Please wait for funds to be issued'));
       }
