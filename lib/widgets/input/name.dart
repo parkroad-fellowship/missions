@@ -14,11 +14,13 @@ class PRFNameInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return TextFormField(
       keyboardType: TextInputType.name,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(hintText: hintText),
-      style: Theme.of(context).textTheme.bodySmall,
+      style: theme.textTheme.bodyMedium,
       controller: controller,
       enabled: enabled,
     );

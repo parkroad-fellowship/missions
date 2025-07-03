@@ -4,7 +4,6 @@ import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FaqCategoriesPreview extends StatefulWidget {
   const FaqCategoriesPreview({required this.onCategorySelected, super.key});
@@ -23,13 +22,14 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
   @override
   void initState() {
     context.read<GetFaqCategoriesCubit>().getFaqCategories();
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
@@ -60,22 +60,18 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                             },
                             child: Chip(
                               label: Text(l10n.all.toUpperCase()),
-                              side: const BorderSide(),
                               backgroundColor: _selectedCategory == null
-                                  ? Theme.of(
-                                      context,
-                                    ).colorScheme.primary
+                                  ? theme.colorScheme.primary
                                   : Colors.white,
-                              labelStyle:
-                                  Theme.of(
-                                    context,
-                                  ).textTheme.labelSmall?.copyWith(
-                                    color: _selectedCategory == null
-                                        ? Colors.white
-                                        : Theme.of(
-                                            context,
-                                          ).colorScheme.primary,
-                                  ),
+                              labelStyle: theme.textTheme.labelSmall?.copyWith(
+                                color: _selectedCategory == null
+                                    ? Colors.white
+                                    : theme.colorScheme.primary,
+                              ),
+                              side: BorderSide(
+                                color: theme.colorScheme.outline,
+                                width: 1,
+                              ),
                             ),
                           );
                         }
@@ -90,20 +86,18 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                           },
                           child: Chip(
                             label: Text(faqCategory.name.toUpperCase()),
-                            side: BorderSide(width: 1.w),
                             backgroundColor: _selectedCategory == faqCategory
-                                ? Theme.of(context).colorScheme.primary
+                                ? theme.colorScheme.primary
                                 : Colors.white,
-                            labelStyle:
-                                Theme.of(
-                                  context,
-                                ).textTheme.labelSmall?.copyWith(
-                                  color: _selectedCategory == faqCategory
-                                      ? Colors.white
-                                      : Theme.of(
-                                          context,
-                                        ).colorScheme.primary,
-                                ),
+                            labelStyle: theme.textTheme.labelSmall?.copyWith(
+                              color: _selectedCategory == faqCategory
+                                  ? Colors.white
+                                  : theme.colorScheme.primary,
+                            ),
+                            side: BorderSide(
+                              color: theme.colorScheme.outline,
+                              width: 1,
+                            ),
                           ),
                         );
                       },

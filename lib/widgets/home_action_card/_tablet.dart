@@ -1,5 +1,5 @@
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeActionCardTablet extends StatelessWidget {
@@ -16,27 +16,36 @@ class HomeActionCardTablet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
+    final scaleFactor = Misc.getScaleFactor(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Stack(
         children: [
           Container(
             width: width,
-            padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 80.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(
+              horizontal: 100 * scaleFactor,
+              vertical: 80 * scaleFactor,
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.secondary.withValues(alpha: 1),
-              borderRadius: BorderRadius.circular(48.r),
+              color: theme.colorScheme.secondary,
+              borderRadius: BorderRadius.circular(48 * scaleFactor),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(assetPath, height: 250.h),
-                SizedBox(height: 100.h),
-                Text(title, style: Theme.of(context).textTheme.displayLarge),
+                SvgPicture.asset(assetPath, height: 250 * scaleFactor),
+                SizedBox(height: 100 * scaleFactor),
+                Text(
+                  title,
+                  style: theme.textTheme.displayLarge?.copyWith(
+                    color: theme.colorScheme.onSecondary,
+                  ),
+                ),
               ],
             ),
           ),
@@ -45,7 +54,7 @@ class HomeActionCardTablet extends StatelessWidget {
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
-              child: SizedBox.square(dimension: 220.h),
+              child: SizedBox.square(dimension: 220 * scaleFactor),
             ),
           ),
           Positioned(
@@ -53,18 +62,18 @@ class HomeActionCardTablet extends StatelessWidget {
             bottom: 0,
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 140.r,
+              radius: 140 * scaleFactor,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
                 child: SizedBox.square(
-                  dimension: 230.h,
+                  dimension: 230 * scaleFactor,
                   child: Icon(
                     Icons.play_arrow_rounded,
                     color: Colors.white,
-                    size: 300.dg,
+                    size: 100 * scaleFactor,
                   ),
                 ),
               ),
