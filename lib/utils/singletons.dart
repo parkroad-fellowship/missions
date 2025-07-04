@@ -97,6 +97,7 @@ import 'package:app/services/api/mission_faq_service.dart';
 import 'package:app/services/api/mission_ground_suggestion_service.dart';
 import 'package:app/services/api/mission_question_service.dart';
 import 'package:app/services/api/mission_service.dart';
+import 'package:app/services/api/mission_session_service.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:app/services/api/payment_type_service.dart';
 import 'package:app/services/api/prayer_prompt_service.dart';
@@ -126,6 +127,8 @@ class Singletons {
       ..registerSingleton<MissionService>(MissionService())
       ..registerSingleton<MissionSubscriptionService>(
         MissionSubscriptionService(),
+      )..registerSingleton<MissionSessionService>(
+        MissionSessionService(),
       )
       ..registerSingleton<AnnouncementService>(
         AnnouncementService(),
