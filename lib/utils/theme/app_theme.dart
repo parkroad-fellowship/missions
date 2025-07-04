@@ -46,13 +46,13 @@ class PRFTheme {
 
       // App Bar Theme
       appBarTheme: AppBarTheme(
-        backgroundColor: const Color(primaryColor),
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        foregroundColor: const Color(primaryColor),
         elevation: 0,
         centerTitle: true,
         surfaceTintColor: Colors.transparent,
         titleTextStyle: textTheme.titleLarge?.copyWith(
-          color: Colors.white,
+          color: const Color(primaryColor),
           fontWeight: FontWeight.w600,
         ),
       ),
