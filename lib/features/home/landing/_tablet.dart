@@ -70,6 +70,15 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                               color: theme.colorScheme.primary,
                               width: 2,
                             ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: theme.colorScheme.primary.withValues(
+                                  alpha: 0.3,
+                                ),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: ClipOval(
                             child: ValueListenableBuilder(
@@ -121,7 +130,17 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                             ),
                           ),
                         ),
-                      ),
+                      )
+                      .animate(
+                        onPlay: (controller) =>
+                            controller.repeat(reverse: true),
+                      )
+                      .scale(
+                        duration: 2000.ms,
+                        begin: const Offset(1.0, 1.0),
+                        end: const Offset(1.05, 1.05),
+                      )
+                      .then(delay: 1000.ms),
 
                       const SizedBox(width: 24),
 

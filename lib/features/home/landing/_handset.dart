@@ -58,66 +58,95 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                     children: [
                       // Profile Picture
                       GestureDetector(
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.accountRoute,
-                        ),
-                        child: Container(
-                          width: 56,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: theme.colorScheme.primary,
-                              width: 2,
+                            onTap: () => context.router.pushNamed(
+                              PRFSuperAppRouter.accountRoute,
                             ),
-                          ),
-                          child: ClipOval(
-                            child: ValueListenableBuilder(
-                              valueListenable: Hive.box<dynamic>(
-                                PRFSuperAppConfig.instance!.values.hiveBox,
-                              ).listenable(),
-                              builder: (context, _, _) {
-                                final profilePicture = getIt<HiveService>()
-                                    .retrieveMember()
-                                    ?.profilePicture;
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: theme.colorScheme.primary,
+                                  width: 2,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.colorScheme.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: ClipOval(
+                                child: ValueListenableBuilder(
+                                  valueListenable: Hive.box<dynamic>(
+                                    PRFSuperAppConfig.instance!.values.hiveBox,
+                                  ).listenable(),
+                                  builder: (context, _, _) {
+                                    final profilePicture = getIt<HiveService>()
+                                        .retrieveMember()
+                                        ?.profilePicture;
 
-                                return profilePicture != null
-                                    ? Image.network(
-                                        profilePicture.temporaryURL,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) =>
-                                            CircleAvatar(
-                                              backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                                              child: Icon(
-                                                Icons.person,
-                                                size: 28,
-                                                color: theme.colorScheme.primary,
+                                    return profilePicture != null
+                                        ? Image.network(
+                                            profilePicture.temporaryURL,
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (
+                                                  context,
+                                                  error,
+                                                  stackTrace,
+                                                ) => CircleAvatar(
+                                                  backgroundColor: theme
+                                                      .colorScheme
+                                                      .surfaceContainerHighest,
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    size: 28,
+                                                    color: theme
+                                                        .colorScheme
+                                                        .primary,
+                                                  ),
+                                                ),
+                                          )
+                                        : CircleAvatar(
+                                            backgroundColor:
+                                                theme.colorScheme.primary,
+                                            child: Text(
+                                              Misc.getUserNameInitials(
+                                                getIt<HiveService>()
+                                                        .retrieveMember()
+                                                        ?.fullName ??
+                                                    '',
                                               ),
+                                              style: theme.textTheme.titleMedium
+                                                  ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
-                                      )
-                                    : CircleAvatar(
-                                        backgroundColor: theme.colorScheme.primary,
-                                        child: Text(
-                                          Misc.getUserNameInitials(
-                                            getIt<HiveService>()
-                                                    .retrieveMember()
-                                                    ?.fullName ??
-                                                '',
-                                          ),
-                                          style: theme.textTheme.titleMedium?.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      );
-                              },
+                                          );
+                                  },
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      
+                          )
+                          .animate(
+                            onPlay: (controller) =>
+                                controller.repeat(reverse: true),
+                          )
+                          .scale(
+                            duration: 2000.ms,
+                            begin: const Offset(1.0, 1.0),
+                            end: const Offset(1.05, 1.05),
+                          )
+                          .then(delay: 1000.ms),
+
                       const SizedBox(width: 16),
-                      
+
                       // Greeting Section
                       Expanded(
                         child: Column(
@@ -127,7 +156,6 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                               l10n.welcome,
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
-                                
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -148,7 +176,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                           ],
                         ),
                       ),
-                      
+
                       // Notification Button
                       Material(
                         color: Colors.transparent,
@@ -164,7 +192,9 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                               color: theme.colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                                color: theme.colorScheme.outline.withValues(
+                                  alpha: 0.2,
+                                ),
                               ),
                             ),
                             child: Stack(
@@ -244,7 +274,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       delay: 0,
                       slideDirection: -1,
                     ),
-                    
+
                     _buildAnimatedCard(
                       child: HomeActionCard(
                         title: l10n.learnSomething,
@@ -256,7 +286,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       delay: 100,
                       slideDirection: 1,
                     ),
-                    
+
                     _buildAnimatedCard(
                       child: HomeActionCard(
                         title: l10n.studentFaqs,
@@ -268,7 +298,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       delay: 200,
                       slideDirection: -1,
                     ),
-                    
+
                     _buildAnimatedCard(
                       child: HomeActionCard(
                         title: l10n.ministerToAStudent,
@@ -280,7 +310,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       delay: 300,
                       slideDirection: 1,
                     ),
-                    
+
                     _buildAnimatedCard(
                       child: HomeActionCard(
                         title: l10n.suggestAMission,
@@ -292,7 +322,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       delay: 400,
                       slideDirection: -1,
                     ),
-                    
+
                     _buildAnimatedCard(
                       child: HomeActionCard(
                         title: l10n.registerForEvent,
@@ -304,7 +334,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       delay: 500,
                       slideDirection: 1,
                     ),
-                    
+
                     _buildAnimatedCard(
                       child: HomeActionCard(
                         title: l10n.submitPrayerRequest,
@@ -316,7 +346,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                       delay: 600,
                       slideDirection: -1,
                     ),
-                    
+
                     const SizedBox(height: 40),
                   ]),
                 ),
