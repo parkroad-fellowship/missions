@@ -1,4 +1,3 @@
-import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -19,7 +18,7 @@ class GoogleAuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return SizedBox(
       width: double.infinity,
       height: 56,

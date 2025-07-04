@@ -19,7 +19,7 @@ class HomeActionCardHandset extends StatelessWidget {
     final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final scaleFactor = Misc.getScaleFactor(context);
-    
+
     return GestureDetector(
       onTap: onTap,
       child: Stack(

@@ -5,7 +5,6 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -98,7 +97,6 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                                 color: colorScheme.primary.withValues(
                                   alpha: 0.2,
                                 ),
-                                width: 1,
                               ),
                             ),
                             child: Text(
@@ -147,13 +145,12 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
 }
 
 class _TabletAnnouncementCard extends StatelessWidget {
-  final PRFLocalAnnouncement announcement;
-  final String timezone;
-
   const _TabletAnnouncementCard({
     required this.announcement,
     required this.timezone,
   });
+  final PRFLocalAnnouncement announcement;
+  final String timezone;
 
   @override
   Widget build(BuildContext context) {

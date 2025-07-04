@@ -54,34 +54,7 @@ import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubi
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
-import 'package:app/models/remote/auth.dart';
-import 'package:app/models/remote/prf_announcement.dart';
-import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/models/remote/prf_course.dart';
-import 'package:app/models/remote/prf_course_module.dart';
-import 'package:app/models/remote/prf_debrief_note.dart';
-import 'package:app/models/remote/prf_event.dart';
-import 'package:app/models/remote/prf_event_subscription.dart';
-import 'package:app/models/remote/prf_expense.dart';
-import 'package:app/models/remote/prf_expense_category.dart';
-import 'package:app/models/remote/prf_faq.dart';
-import 'package:app/models/remote/prf_faq_category.dart';
-import 'package:app/models/remote/prf_lesson_member.dart';
-import 'package:app/models/remote/prf_mission.dart';
-import 'package:app/models/remote/prf_mission_expense.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
-import 'package:app/models/remote/prf_mission_question.dart';
-import 'package:app/models/remote/prf_mission_subscription.dart';
-import 'package:app/models/remote/prf_payment.dart';
-import 'package:app/models/remote/prf_payment_type.dart';
-import 'package:app/models/remote/prf_prayer_prompt.dart';
-import 'package:app/models/remote/prf_prayer_request.dart';
-import 'package:app/models/remote/prf_prayer_response.dart';
-import 'package:app/models/remote/prf_soul.dart';
-import 'package:app/models/remote/prf_student_enquiry.dart';
-import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/api/_base_api_service.dart';
 import 'package:app/services/api/announcement_service.dart';
 import 'package:app/services/api/class_group_service.dart';
 import 'package:app/services/api/course_module_service.dart';
@@ -127,7 +100,8 @@ class Singletons {
       ..registerSingleton<MissionService>(MissionService())
       ..registerSingleton<MissionSubscriptionService>(
         MissionSubscriptionService(),
-      )..registerSingleton<MissionSessionService>(
+      )
+      ..registerSingleton<MissionSessionService>(
         MissionSessionService(),
       )
       ..registerSingleton<AnnouncementService>(

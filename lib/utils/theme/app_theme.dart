@@ -1,5 +1,4 @@
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 
 class PRFTheme {
@@ -19,12 +18,12 @@ class PRFTheme {
   static ThemeData light(BuildContext context) {
     final textTheme = PRFTextTheme.getLightTheme(context);
     final scaleFactor = Misc.getScaleFactor(context);
-    
+
     return ThemeData(
       useMaterial3: true,
       primaryColor: const Color(primaryColor),
       scaffoldBackgroundColor: Colors.white,
-      
+
       // Text theme
       textTheme: textTheme,
 
@@ -62,11 +61,15 @@ class PRFTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(primaryColor),
           foregroundColor: Colors.white,
-          disabledBackgroundColor: const Color(primaryColor).withValues(alpha: 0.4),
+          disabledBackgroundColor: const Color(
+            primaryColor,
+          ).withValues(alpha: 0.4),
           disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
           minimumSize: const Size(double.infinity, 56),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           elevation: 2,
           shadowColor: const Color(shadow),
           textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
@@ -79,10 +82,14 @@ class PRFTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color(primaryColor),
           side: const BorderSide(color: Color(primaryColor), width: 1.5),
-          disabledForegroundColor: const Color(primaryColor).withValues(alpha: 0.4),
+          disabledForegroundColor: const Color(
+            primaryColor,
+          ).withValues(alpha: 0.4),
           minimumSize: const Size(double.infinity, 56),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
             color: const Color(primaryColor),
           ),
@@ -128,7 +135,10 @@ class PRFTheme {
             color: const Color(outline).withValues(alpha: 0.5),
           ),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 20,
+        ),
         hintStyle: textTheme.bodyMedium?.copyWith(
           color: const Color(onSurfaceVariant),
         ),
@@ -139,7 +149,7 @@ class PRFTheme {
       ),
 
       // Card Theme
-      cardTheme:  CardThemeData(
+      cardTheme: const CardThemeData(
         surfaceTintColor: Colors.transparent,
         elevation: 4,
         shadowColor: Color(shadow),
@@ -152,8 +162,6 @@ class PRFTheme {
       ),
 
       // Tab Bar Theme
-      
-
       tabBarTheme: TabBarThemeData(
         labelStyle: textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
@@ -163,11 +171,11 @@ class PRFTheme {
           fontWeight: FontWeight.w500,
           color: const Color(onSurfaceVariant),
         ),
-      dividerColor: Colors.white,
-      tabAlignment: TabAlignment.start,
-      indicatorColor: Colors.white,
-      overlayColor: WidgetStateProperty.all(Colors.transparent),
-    ),
+        dividerColor: Colors.white,
+        tabAlignment: TabAlignment.start,
+        indicatorColor: Colors.white,
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
+      ),
 
       // Data Table Theme
       dataTableTheme: DataTableThemeData(

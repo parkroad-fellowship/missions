@@ -5,7 +5,6 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -72,9 +71,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                 }
 
                 return RefreshIndicator(
-                  onRefresh: () => context
-                      .read<GetAnnouncementsCubit>()
-                      .getAnnouncements(),
+                  onRefresh: () =>
+                      context.read<GetAnnouncementsCubit>().getAnnouncements(),
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: groupedEntries.length,
@@ -96,8 +94,9 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                               color: colorScheme.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: colorScheme.primary.withValues(alpha: 0.2),
-                                width: 1,
+                                color: colorScheme.primary.withValues(
+                                  alpha: 0.2,
+                                ),
                               ),
                             ),
                             child: Text(
@@ -110,8 +109,8 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                           ),
 
                           // Announcements for this date
-                          ...entries.map((announcement) => 
-                            _CleanAnnouncementCard(
+                          ...entries.map(
+                            (announcement) => _CleanAnnouncementCard(
                               announcement: announcement,
                               timezone: timezone,
                             ),
@@ -133,13 +132,12 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
 }
 
 class _CleanAnnouncementCard extends StatelessWidget {
-  final PRFLocalAnnouncement announcement;
-  final String timezone;
-
   const _CleanAnnouncementCard({
     required this.announcement,
     required this.timezone,
   });
+  final PRFLocalAnnouncement announcement;
+  final String timezone;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +179,7 @@ class _CleanAnnouncementCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  
+
                   // Title
                   Expanded(
                     child: Text(
@@ -191,7 +189,7 @@ class _CleanAnnouncementCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   // Time badge
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -215,9 +213,9 @@ class _CleanAnnouncementCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Content with proper spacing
               Padding(
                 padding: const EdgeInsets.only(left: 32),
@@ -226,9 +224,9 @@ class _CleanAnnouncementCard extends StatelessWidget {
                   textStyle: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               // // Tap hint similar to your button style
               // Align(
               //   alignment: Alignment.centerRight,

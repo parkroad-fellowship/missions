@@ -19,7 +19,7 @@ class PRFTextAreaInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return TextFormField(
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(hintText: hintText),

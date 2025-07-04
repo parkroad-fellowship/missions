@@ -17,7 +17,7 @@ class PRFPasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return ValueListenableBuilder<bool>(
       valueListenable: hidePasswordNotifier,
       builder: (context, hidePassword, child) => TextFormField(

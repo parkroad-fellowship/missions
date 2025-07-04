@@ -9,7 +9,7 @@ class FormFieldLabel extends StatelessWidget {
     this.color,
     this.isBold,
   });
-  
+
   final String label;
   final bool? isOptional;
   final bool? isRequired;
@@ -19,7 +19,7 @@ class FormFieldLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return RichText(
       text: TextSpan(
         text: label,

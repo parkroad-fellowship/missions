@@ -70,7 +70,6 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                               ),
                               side: BorderSide(
                                 color: theme.colorScheme.outline,
-                                width: 1,
                               ),
                             ),
                           );
@@ -96,7 +95,6 @@ class _FaqCategoriesPreviewState extends State<FaqCategoriesPreview> {
                             ),
                             side: BorderSide(
                               color: theme.colorScheme.outline,
-                              width: 1,
                             ),
                           ),
                         );

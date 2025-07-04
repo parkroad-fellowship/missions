@@ -42,8 +42,7 @@ class GetMissionGroundSuggestionsCubit
       final missionGroundSuggestions = await _missionGroundSuggestionService
           .list(
             filters: {
-              if (suggestorUlid != null)
-                'suggestor_ulid': suggestorUlid,
+              if (suggestorUlid != null) 'suggestor_ulid': suggestorUlid,
               'status_keys': statusKeys
                   .map((status) => status.apiKey)
                   .join(','),

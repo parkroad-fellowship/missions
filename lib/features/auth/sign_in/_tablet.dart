@@ -348,7 +348,6 @@ class _SignInTabletState extends State<SignInTablet> {
                                             const SizedBox(height: 32),
                                           ],
 
-                                    
                                           BlocBuilder<
                                             GoogleSignInCubit,
                                             GoogleSignInState

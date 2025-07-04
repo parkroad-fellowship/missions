@@ -1,4 +1,3 @@
-import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 class PRFPrimaryButton extends StatelessWidget {
@@ -18,7 +17,7 @@ class PRFPrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return SizedBox(
       width: double.infinity,
       height: 56,
@@ -27,8 +26,12 @@ class PRFPrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: theme.colorScheme.primary,
           foregroundColor: theme.colorScheme.onPrimary,
-          disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.4),
-          disabledForegroundColor: theme.colorScheme.onPrimary.withValues(alpha: 0.7),
+          disabledBackgroundColor: theme.colorScheme.primary.withValues(
+            alpha: 0.4,
+          ),
+          disabledForegroundColor: theme.colorScheme.onPrimary.withValues(
+            alpha: 0.7,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

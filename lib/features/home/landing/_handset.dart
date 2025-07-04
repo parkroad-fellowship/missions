@@ -140,7 +140,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                           )
                           .scale(
                             duration: 2000.ms,
-                            begin: const Offset(1.0, 1.0),
+                            begin: const Offset(1, 1),
                             end: const Offset(1.05, 1.05),
                           )
                           .then(delay: 1000.ms),

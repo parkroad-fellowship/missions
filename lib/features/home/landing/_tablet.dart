@@ -58,45 +58,48 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                     children: [
                       // Profile Picture
                       GestureDetector(
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.accountRoute,
-                        ),
-                        child: Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: theme.colorScheme.primary,
-                              width: 2,
+                            onTap: () => context.router.pushNamed(
+                              PRFSuperAppRouter.accountRoute,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: theme.colorScheme.primary.withValues(
-                                  alpha: 0.3,
+                            child: Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: theme.colorScheme.primary,
+                                  width: 2,
                                 ),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.colorScheme.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: ClipOval(
-                            child: ValueListenableBuilder(
-                              valueListenable: Hive.box<dynamic>(
-                                PRFSuperAppConfig.instance!.values.hiveBox,
-                              ).listenable(),
-                              builder: (context, _, _) {
-                                final profilePicture = getIt<HiveService>()
-                                    .retrieveMember()
-                                    ?.profilePicture;
+                              child: ClipOval(
+                                child: ValueListenableBuilder(
+                                  valueListenable: Hive.box<dynamic>(
+                                    PRFSuperAppConfig.instance!.values.hiveBox,
+                                  ).listenable(),
+                                  builder: (context, _, _) {
+                                    final profilePicture = getIt<HiveService>()
+                                        .retrieveMember()
+                                        ?.profilePicture;
 
-                                return profilePicture != null
-                                    ? Image.network(
-                                        profilePicture.temporaryURL,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                CircleAvatar(
+                                    return profilePicture != null
+                                        ? Image.network(
+                                            profilePicture.temporaryURL,
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (
+                                                  context,
+                                                  error,
+                                                  stackTrace,
+                                                ) => CircleAvatar(
                                                   backgroundColor: theme
                                                       .colorScheme
                                                       .surfaceContainerHighest,
@@ -108,39 +111,39 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                                                         .primary,
                                                   ),
                                                 ),
-                                      )
-                                    : CircleAvatar(
-                                        backgroundColor:
-                                            theme.colorScheme.primary,
-                                        child: Text(
-                                          Misc.getUserNameInitials(
-                                            getIt<HiveService>()
-                                                    .retrieveMember()
-                                                    ?.fullName ??
-                                                '',
-                                          ),
-                                          style: theme.textTheme.titleLarge
-                                              ?.copyWith(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
+                                          )
+                                        : CircleAvatar(
+                                            backgroundColor:
+                                                theme.colorScheme.primary,
+                                            child: Text(
+                                              Misc.getUserNameInitials(
+                                                getIt<HiveService>()
+                                                        .retrieveMember()
+                                                        ?.fullName ??
+                                                    '',
                                               ),
-                                        ),
-                                      );
-                              },
+                                              style: theme.textTheme.titleLarge
+                                                  ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                          );
+                                  },
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      )
-                      .animate(
-                        onPlay: (controller) =>
-                            controller.repeat(reverse: true),
-                      )
-                      .scale(
-                        duration: 2000.ms,
-                        begin: const Offset(1.0, 1.0),
-                        end: const Offset(1.05, 1.05),
-                      )
-                      .then(delay: 1000.ms),
+                          )
+                          .animate(
+                            onPlay: (controller) =>
+                                controller.repeat(reverse: true),
+                          )
+                          .scale(
+                            duration: 2000.ms,
+                            begin: const Offset(1, 1),
+                            end: const Offset(1.05, 1.05),
+                          )
+                          .then(delay: 1000.ms),
 
                       const SizedBox(width: 24),
 
