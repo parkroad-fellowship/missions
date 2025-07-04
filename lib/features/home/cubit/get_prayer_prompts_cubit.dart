@@ -25,7 +25,7 @@ class GetPrayerPromptsCubit extends Cubit<GetPrayerPromptsState> {
       final prayerPrompts = await _prayerPromptService.list(
         limit: 100,
         filters: const {
-          'filter[is_active]': 2,
+          'is_active': 2,
         },
       );
 

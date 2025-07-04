@@ -29,8 +29,8 @@ class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
 
       final announcements = await _announcementService.list(
         filters: {
-          'filter[group_ulids]': memberGroupUlids.join(','),
-          'filter[upcoming]': true,
+          'group_ulids': memberGroupUlids.join(','),
+          'upcoming': true,
         },
         orderBy: 'published_at',
         orderDirection: 'desc',

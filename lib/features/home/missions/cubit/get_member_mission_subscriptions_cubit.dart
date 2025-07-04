@@ -42,8 +42,8 @@ class GetMemberMissionSubscriptionsCubit
           'mission.weatherForecasts',
         ],
         filters: {
-          'filter[member_ulid]': member.ulid,
-          'filter[status_keys]': [
+          'member_ulid': member.ulid,
+          'status_keys': [
             PRFMissionSubscriptionStatus.approved.apiKey,
             PRFMissionSubscriptionStatus.withdrawn.apiKey,
             PRFMissionSubscriptionStatus.pending.apiKey,

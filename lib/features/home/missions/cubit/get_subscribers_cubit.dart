@@ -38,8 +38,8 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
 
       final missionSubscriptions = await _missionSubscriptionService.list(
         filters: {
-          'filter[mission_ulid]': missionUlid,
-          'filter[status_key]': PRFMissionSubscriptionStatus.approved.apiKey,
+          'mission_ulid': missionUlid,
+          'status_key': PRFMissionSubscriptionStatus.approved.apiKey,
         },
         includes: ['member.profilePicture'],
       );

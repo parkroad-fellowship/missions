@@ -27,7 +27,7 @@ class GetMemberEventSubscriptionsCubit
       final member = _hiveService.retrieveMember()!;
       final subscriptions = await _eventSubscriptionService.list(
         filters: {
-          'filter[member_ulid]': member.ulid,
+          'member_ulid': member.ulid,
         },
         includes: [
           'member',

@@ -31,7 +31,7 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
 
       final souls = await _soulService.list(
         filters: {
-          'filter[mission_ulid]': missionUlid,
+          'mission_ulid': missionUlid,
         },
         includes: ['classGroup'],
       );

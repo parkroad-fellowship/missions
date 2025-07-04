@@ -24,7 +24,7 @@ class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
     try {
       final courseModules = await _courseModuleService.list(
         filters: {
-          'filter[course_ulid]': courseUlid,
+          'course_ulid': courseUlid,
         },
         includes: [
           'course.thumbnail',

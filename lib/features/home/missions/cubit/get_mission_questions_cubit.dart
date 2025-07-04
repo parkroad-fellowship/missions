@@ -31,7 +31,7 @@ class GetMissionQuestionsCubit extends Cubit<GetMissionQuestionsState> {
       }
 
       final missionQuestions = await _missionQuestionService.list(
-        filters: {'filter[mission_ulid]': missionUlid},
+        filters: {'mission_ulid': missionUlid},
       );
       await _localDBService.persistMissionQuestions(
         missionQuestions: missionQuestions,

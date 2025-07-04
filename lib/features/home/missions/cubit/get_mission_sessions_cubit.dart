@@ -30,7 +30,7 @@ class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
       }
       final missionSessions = await _missionSessionService.list(
         filters: {
-          'filter[mission_ulid]': missionUlid,
+          'mission_ulid': missionUlid,
         },
         includes: [
           'facilitator',

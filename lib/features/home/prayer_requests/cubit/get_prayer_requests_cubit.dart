@@ -25,7 +25,7 @@ class GetPrayerRequestsCubit extends Cubit<GetPrayerRequestsState> {
       final prayerRequests = await _prayerRequestService.list(
         includes: ['member'],
         filters: {
-          'filter[member_ulid]': member.ulid,
+          'member_ulid': member.ulid,
         },
       );
       emit(GetPrayerRequestsState.loaded(prayerRequests: prayerRequests));

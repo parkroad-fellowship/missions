@@ -43,8 +43,8 @@ class GetMissionGroundSuggestionsCubit
           .list(
             filters: {
               if (suggestorUlid != null)
-                'filter[suggestor_ulid]': suggestorUlid,
-              'filter[status_keys]': statusKeys
+                'suggestor_ulid': suggestorUlid,
+              'status_keys': statusKeys
                   .map((status) => status.apiKey)
                   .join(','),
             },

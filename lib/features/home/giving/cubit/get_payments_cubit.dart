@@ -26,7 +26,7 @@ class GetPaymentsCubit extends Cubit<GetPaymentsState> {
 
       final payments = await _paymentService.list(
         filters: {
-          'filter[member_ulid]': member.ulid,
+          'member_ulid': member.ulid,
         },
         includes: ['paymentType'],
       );

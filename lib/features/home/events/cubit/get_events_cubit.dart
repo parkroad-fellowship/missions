@@ -28,7 +28,7 @@ class GetEventsCubit extends Cubit<GetEventsState> {
         orderBy: 'start_date',
         orderDirection: 'asc',
         filters: {
-          'filter[unsubscribed]': true,
+          'unsubscribed': true,
         },
       );
       if (events.isEmpty) {

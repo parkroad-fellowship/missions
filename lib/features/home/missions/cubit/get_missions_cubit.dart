@@ -37,11 +37,11 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
           'weatherForecasts',
         ],
         filters: {
-          'filter[status_keys]': [
+          'status_keys': [
             PRFMissionStatus.approved.apiKey,
             PRFMissionStatus.fullySubscribed.apiKey,
           ].join(','),
-          'filter[unsubscribed]': true,
+          'unsubscribed': true,
         },
         orderBy: 'start_date',
         orderDirection: 'asc',

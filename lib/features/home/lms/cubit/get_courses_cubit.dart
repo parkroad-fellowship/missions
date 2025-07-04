@@ -33,7 +33,7 @@ class GetCoursesCubit extends Cubit<GetCoursesState> {
           'courseMember',
         ],
         filters: {
-          'filter[group_ulids]': memberGroupUlids.join(','),
+          'group_ulids': memberGroupUlids.join(','),
         },
       );
 
