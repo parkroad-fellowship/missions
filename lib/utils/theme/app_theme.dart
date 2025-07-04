@@ -152,6 +152,8 @@ class PRFTheme {
       ),
 
       // Tab Bar Theme
+      
+
       tabBarTheme: TabBarThemeData(
         labelStyle: textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
@@ -161,10 +163,11 @@ class PRFTheme {
           fontWeight: FontWeight.w500,
           color: const Color(onSurfaceVariant),
         ),
-        indicator: const UnderlineTabIndicator(
-          borderSide: BorderSide(color: Color(primaryColor), width: 2),
-        ),
-      ),
+      dividerColor: Colors.white,
+      tabAlignment: TabAlignment.start,
+      indicatorColor: Colors.white,
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
+    ),
 
       // Data Table Theme
       dataTableTheme: DataTableThemeData(
