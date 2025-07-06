@@ -876,7 +876,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submitting => 'Submitting...';
 
   @override
-  String get prayerRequest => 'Prayer Request';
+  String get prayerRequests => 'Prayer requests';
+
+  @override
+  String get prayerRequest => 'Prayer request';
 
   @override
   String get prayerRequestSubmitted =>
@@ -932,4 +935,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pullToRefresh => 'Pull down to refresh';
+
+  @override
+  String get noPrayerRequests => 'No prayer requests';
+
+  @override
+  String get noPrayerRequestsDesc =>
+      'You have not submitted any prayer requests yet. Tap the button below to submit one.';
+
+  @override
+  String get submitPrayerRequestDesc =>
+      'Share your prayer request with the PRF community. We will pray for you.';
 }

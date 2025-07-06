@@ -1696,10 +1696,16 @@ abstract class AppLocalizations {
   /// **'Submitting...'**
   String get submitting;
 
+  /// No description provided for @prayerRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer requests'**
+  String get prayerRequests;
+
   /// No description provided for @prayerRequest.
   ///
   /// In en, this message translates to:
-  /// **'Prayer Request'**
+  /// **'Prayer request'**
   String get prayerRequest;
 
   /// No description provided for @prayerRequestSubmitted.
@@ -1803,6 +1809,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pull down to refresh'**
   String get pullToRefresh;
+
+  /// No description provided for @noPrayerRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No prayer requests'**
+  String get noPrayerRequests;
+
+  /// No description provided for @noPrayerRequestsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not submitted any prayer requests yet. Tap the button below to submit one.'**
+  String get noPrayerRequestsDesc;
+
+  /// No description provided for @submitPrayerRequestDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your prayer request with the PRF community. We will pray for you.'**
+  String get submitPrayerRequestDesc;
 }
 
 class _AppLocalizationsDelegate

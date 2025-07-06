@@ -714,10 +714,13 @@
     "@submitPrayerRequest": {},
     "submitting": "Submitting...",
     "@submitting": {},
-    "prayerRequest": "Prayer Request",
+    "prayerRequests": "Prayer requests",
+    "@prayerRequests": {},
+    "prayerRequest": "Prayer request",
     "@prayerRequest": {},
     "prayerRequestSubmitted": "Your prayer request has been submitted.",
     "@prayerRequestSubmitted": {},
+    
     "submit": "Submit",
     "@submit": {},
     "fillAllFields": "Please fill in all fields.",
@@ -749,5 +752,11 @@
     "longPressToEdit": "Long press to edit",
     "@longPressToEdit": {},
     "pullToRefresh": "Pull down to refresh",
-    "@pullToRefresh": {}
+    "@pullToRefresh": {},
+    "noPrayerRequests": "No prayer requests",
+    "@noPrayerRequests": {},
+    "noPrayerRequestsDesc": "You have not submitted any prayer requests yet. Tap the button below to submit one.",
+    "@noPrayerRequestsDesc": {},
+    "submitPrayerRequestDesc": "Share your prayer request with the PRF community. We will pray for you.",
+    "@submitPrayerRequestDesc": {}
 }

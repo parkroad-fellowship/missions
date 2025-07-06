@@ -6,6 +6,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/navbar.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -42,71 +43,11 @@ class _MissionGroundSuggestionsPageHandsetState
         child: CustomScrollView(
           slivers: [
             // Enhanced Navigation Bar
-            SliverAppBar(
-              automaticallyImplyLeading: false,
+            PRFNavBar(
+              title: l10n.suggestAMission,
+              onBack: () => context.router.back(),
               backgroundColor: theme.colorScheme.surface,
-              surfaceTintColor: Colors.transparent,
-              pinned: true,
-              elevation: 0,
-              toolbarHeight: 80,
-              flexibleSpace: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                      width: 1,
-                    ),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    // Back Button
-                    Container(
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios_new,
-                          color: theme.colorScheme.onPrimaryContainer,
-                          size: 20,
-                        ),
-                        onPressed: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.landingRoute,
-                        ),
-                      ),
-                    ),
-                    // Title
-                    Expanded(
-                      child: Text(
-                        l10n.suggestAMission,
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    // Spacer to balance the back button
-                    const SizedBox(width: 48),
-                  ],
-                ),
-              ),
             ),
-
             // Content
             SliverPadding(
               padding: const EdgeInsets.all(16),

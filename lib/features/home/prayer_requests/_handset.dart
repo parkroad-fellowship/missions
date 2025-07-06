@@ -4,11 +4,11 @@ import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.da
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PrayerRequestHandset extends StatefulWidget {
@@ -28,116 +28,70 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.white,
-                surfaceTintColor: Colors.white,
-                pinned: true,
-                flexibleSpace: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 1.w,
-                          ),
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        l10n.prayerRequest,
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.w),
-                        child: const Visibility(
-                          child: Icon(Icons.abc, color: Colors.white),
-                        ),
-                      ),
-                    ],
+        child: CustomScrollView(
+          slivers: [
+            
+            PRFNavBar(
+              title: l10n.prayerRequests,
+              onBack: () => context.router.back(),
+              backgroundColor: theme.colorScheme.surface,
+            ),
+            
+            BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => const SliverFillRemaining(
+                    child: Center(child: CircularProgressIndicator()),
                   ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 48.h)),
-              SliverToBoxAdapter(
-                child:
-                    BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
-                      builder: (context, state) => state.maybeWhen(
-                        orElse: () => const Center(
-                          child: LinearProgressIndicator(),
-                        ),
-                        error: (message) => const SizedBox.shrink(),
-                        loaded: (_) => const SizedBox.shrink(),
-                      ),
-                    ),
-              ),
-              BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse: () => const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                    error: (message) => SliverFillRemaining(
-                      child: Center(child: Text(message)),
-                    ),
-                    loaded: (prayerRequests) {
-                      if (prayerRequests.isEmpty) {
-                        return SliverFillRemaining(
-                          child: RefreshIndicator(
-                            onRefresh: () => context
-                                .read<GetPrayerRequestsCubit>()
-                                .fetchPrayerRequests(),
-                            child: Center(
-                              child: PRFPrimaryButton(
-                                title: l10n.submitPrayerRequest,
-                                disabled: false,
-                                onPressed: _addPrayerRequest,
+                  error: (message) => SliverFillRemaining(
+                    child: Center(child: Text(message)),
+                  ),
+                  loaded: (prayerRequests) {
+                    if (prayerRequests.isEmpty) {
+                      return SliverFillRemaining(
+                        child: RefreshIndicator(
+                          onRefresh: () => context
+                              .read<GetPrayerRequestsCubit>()
+                              .fetchPrayerRequests(),
+                          child: ListView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            children: [
+                              const SizedBox(height: 64),
+                              PRFEmptyView(
+                                label: l10n.noPrayerRequests,
+                                description: l10n.noPrayerRequestsDesc,
+                                icon: Icons.self_improvement_rounded,
+                                actionLabel: l10n.submitPrayerRequest,
+                                onActionPressed: _addPrayerRequest,
                               ),
-                            ),
+                            ],
                           ),
-                        );
-                      }
-
-                      return SliverList.separated(
-                        itemCount: prayerRequests.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 24.h),
-                        itemBuilder: (context, index) {
-                          final prayerRequest = prayerRequests[index];
-                          return PrayerRequestCard(
-                            prayerRequest: prayerRequest,
-                          );
-                        },
+                        ),
                       );
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
+                    }
+
+                    return SliverList.separated(
+                      itemCount: prayerRequests.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 24),
+                      itemBuilder: (context, index) {
+                        final prayerRequest = prayerRequests[index];
+                        return PrayerRequestCard(
+                          prayerRequest: prayerRequest,
+                        ).animate(delay: Duration(milliseconds: 80 * index))
+                         .fadeIn(duration: const Duration(milliseconds: 500))
+                         .slideY(begin: 0.1, end: 0);
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
       ),
       floatingActionButton: Animate(
@@ -147,10 +101,12 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
             delay: Duration(milliseconds: 500),
           ),
         ],
-        child: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+        child: FloatingActionButton.extended(
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.onPrimary,
+          icon: const Icon(Icons.add),
+          label: Text(l10n.submitPrayerRequest),
           onPressed: _addPrayerRequest,
-          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );
@@ -161,8 +117,8 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
         context: context,
         pageListBuilder: (modalSheetContext) => [
           WoltModalSheetPage(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            surfaceTintColor: Colors.transparent,
             child: SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.8,
               child: const AddPrayerRequestView(),
