@@ -13,7 +13,7 @@ class PrayerRequestCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return GestureDetector(
-      onTap: () => WoltModalSheet.show(
+      onTap: () => WoltModalSheet.show<dynamic>(
         context: context,
         pageListBuilder: (modalSheetContext) => [
           WoltModalSheetPage(
@@ -75,18 +75,15 @@ class PrayerRequestCard extends StatelessWidget {
               color: theme.colorScheme.shadow.withValues(alpha: .08),
               blurRadius: 16,
               offset: const Offset(0, 4),
-              spreadRadius: 0,
             ),
             BoxShadow(
               color: theme.colorScheme.shadow.withValues(alpha: .04),
               blurRadius: 8,
               offset: const Offset(0, 2),
-              spreadRadius: 0,
             ),
           ],
           border: Border.all(
             color: theme.colorScheme.outline.withValues(alpha: .1),
-            width: 1,
           ),
         ),
         child: Column(

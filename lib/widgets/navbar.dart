@@ -1,12 +1,11 @@
-import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 class PRFNavBar extends StatelessWidget {
   const PRFNavBar({
-    super.key,
     required this.title,
+    super.key,
     this.onBack,
     this.actions,
     this.backIcon,
@@ -39,7 +38,6 @@ class PRFNavBar extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: theme.colorScheme.outline.withValues(alpha: .2),
-              width: 1,
             ),
           ),
         ),

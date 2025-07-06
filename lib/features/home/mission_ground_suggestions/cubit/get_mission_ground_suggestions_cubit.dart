@@ -51,8 +51,8 @@ class GetMissionGroundSuggestionsCubit
           );
 
       if (missionGroundSuggestions.isEmpty) {
-        emit(GetMissionGroundSuggestionsState.empty());
-        return; 
+        emit(const GetMissionGroundSuggestionsState.empty());
+        return;
       }
 
       emit(

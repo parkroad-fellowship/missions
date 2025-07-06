@@ -2,7 +2,6 @@ import 'package:app/features/home/prayer_requests/add_prayer_request/add_prayer_
 import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/navbar.dart';
 import 'package:auto_route/auto_route.dart';
@@ -34,13 +33,12 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            
             PRFNavBar(
               title: l10n.prayerRequests,
               onBack: () => context.router.back(),
               backgroundColor: theme.colorScheme.surface,
             ),
-            
+
             BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
               builder: (context, state) {
                 return state.maybeWhen(
@@ -81,10 +79,11 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                       itemBuilder: (context, index) {
                         final prayerRequest = prayerRequests[index];
                         return PrayerRequestCard(
-                          prayerRequest: prayerRequest,
-                        ).animate(delay: Duration(milliseconds: 80 * index))
-                         .fadeIn(duration: const Duration(milliseconds: 500))
-                         .slideY(begin: 0.1, end: 0);
+                              prayerRequest: prayerRequest,
+                            )
+                            .animate(delay: Duration(milliseconds: 80 * index))
+                            .fadeIn(duration: const Duration(milliseconds: 500))
+                            .slideY(begin: 0.1, end: 0);
                       },
                     );
                   },

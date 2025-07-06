@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:app/widgets/input/name.dart';
-import 'package:app/widgets/input/text_area.dart';
 
 class UpdateMissionGroundSuggestionViewHandset extends StatefulWidget {
   const UpdateMissionGroundSuggestionViewHandset({
@@ -59,10 +57,10 @@ class _UpdateMissionGroundSuggestionViewHandsetState
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: theme.colorScheme.secondaryContainer.withOpacity(0.3),
+            color: theme.colorScheme.secondaryContainer.withValues(alpha: .3),
             border: Border(
               bottom: BorderSide(
-                color: theme.colorScheme.outline.withOpacity(0.1),
+                color: theme.colorScheme.outline.withValues(alpha: .1),
               ),
             ),
           ),
@@ -164,8 +162,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                     color: theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: theme.colorScheme.outline.withOpacity(0.2),
-                      width: 1,
+                      color: theme.colorScheme.outline.withValues(alpha: .2),
                     ),
                   ),
                   child: InternationalPhoneNumberInput(
@@ -205,8 +202,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                     color: theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: theme.colorScheme.outline.withOpacity(0.2),
-                      width: 1,
+                      color: theme.colorScheme.outline.withValues(alpha: .2),
                     ),
                   ),
                   child: DropdownButtonHideUnderline(
@@ -214,8 +210,10 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                       value: _selectedStatus,
                       isExpanded: true,
                       borderRadius: BorderRadius.circular(12),
-                      icon: Icon(Icons.arrow_drop_down_rounded,
-                          color: theme.colorScheme.onSurfaceVariant),
+                      icon: Icon(
+                        Icons.arrow_drop_down_rounded,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                       items: PRFMissionGroundSuggestionStatus.values
                           .map(
                             (status) => DropdownMenuItem(
@@ -306,15 +304,24 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                         isLoading: _isLoading ? true : null,
                         onPressed: () async {
                           if (_nameController.text.isEmpty) {
-                            _showErrorSnackBar(context, l10n.enterMissionGround);
+                            _showErrorSnackBar(
+                              context,
+                              l10n.enterMissionGround,
+                            );
                             return;
                           }
                           if (_contactPersonController.text.isEmpty) {
-                            _showErrorSnackBar(context, l10n.enterContactPerson);
+                            _showErrorSnackBar(
+                              context,
+                              l10n.enterContactPerson,
+                            );
                             return;
                           }
                           if (_contactNumberController.text.isEmpty) {
-                            _showErrorSnackBar(context, l10n.enterContactNumber);
+                            _showErrorSnackBar(
+                              context,
+                              l10n.enterContactNumber,
+                            );
                             return;
                           }
                           if (_selectedStatus == null) {
@@ -325,8 +332,10 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                               .read<UpdateMissionGroundSuggestionCubit>()
                               .updateMissionGroundSuggestion(
                                 name: _nameController.text.trim(),
-                                contactPerson: _contactPersonController.text.trim(),
-                                contactNumber: _contactNumberController.text.trim(),
+                                contactPerson: _contactPersonController.text
+                                    .trim(),
+                                contactNumber: _contactNumberController.text
+                                    .trim(),
                                 status: _selectedStatus!,
                                 notes: _notesController.text,
                                 missionGroundSuggestionUlid:

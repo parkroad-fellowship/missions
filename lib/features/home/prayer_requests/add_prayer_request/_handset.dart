@@ -4,8 +4,6 @@ import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:app/widgets/input/name.dart';
-import 'package:app/widgets/input/text_area.dart';
 
 class AddPrayerRequestViewHandset extends StatefulWidget {
   const AddPrayerRequestViewHandset({super.key});
@@ -36,7 +34,6 @@ class _AddPrayerRequestViewHandsetState
             border: Border(
               bottom: BorderSide(
                 color: theme.colorScheme.outline.withValues(alpha: .1),
-                width: 1,
               ),
             ),
           ),

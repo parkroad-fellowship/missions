@@ -66,19 +66,19 @@ class _MissionGroundSuggestionsPageHandsetState
                         ),
                         error: (message) => SliverFillRemaining(
                           child: SliverFillRemaining(
-                          child: RefreshIndicator(
-                            onRefresh: () => context
-                                .read<GetMissionGroundSuggestionsCubit>()
-                                .getMissionGroundSuggestions(),
-                            child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              child: PRFEmptyView(
-                                label: l10n.noSuggestedMissionGrounds,
-                                description: message,
+                            child: RefreshIndicator(
+                              onRefresh: () => context
+                                  .read<GetMissionGroundSuggestionsCubit>()
+                                  .getMissionGroundSuggestions(),
+                              child: SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                child: PRFEmptyView(
+                                  label: l10n.noSuggestedMissionGrounds,
+                                  description: message,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                         ),
                         empty: () => SliverFillRemaining(
                           child: RefreshIndicator(
@@ -156,7 +156,7 @@ class _MissionGroundSuggestionsPageHandsetState
                                     )
                                     .scale(
                                       begin: const Offset(0.9, 0.9),
-                                      end: const Offset(1.0, 1.0),
+                                      end: const Offset(1, 1),
                                       duration: const Duration(
                                         milliseconds: 500,
                                       ),
@@ -205,7 +205,7 @@ class _MissionGroundSuggestionsPageHandsetState
                 ),
                 const ScaleEffect(
                   begin: Offset(0.8, 0.8),
-                  end: Offset(1.0, 1.0),
+                  end: Offset(1, 1),
                   duration: Duration(milliseconds: 400),
                 ),
               ],

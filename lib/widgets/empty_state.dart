@@ -72,13 +72,11 @@ class PRFEmptyView extends StatelessWidget {
                       color: theme.colorScheme.primary.withValues(alpha: 0.15),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
-                      spreadRadius: 0,
                     ),
                     BoxShadow(
                       color: theme.colorScheme.shadow.withValues(alpha: 0.1),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
-                      spreadRadius: 0,
                     ),
                   ],
                 ),
@@ -113,20 +111,20 @@ class PRFEmptyView extends StatelessWidget {
             effects: [
               const ScaleEffect(
                 begin: Offset(0.7, 0.7),
-                end: Offset(1.0, 1.0),
+                end: Offset(1, 1),
                 duration: Duration(milliseconds: 800),
                 curve: Curves.elasticOut,
               ),
               const FadeEffect(
-                begin: 0.0,
-                end: 1.0,
+                begin: 0,
+                end: 1,
                 duration: Duration(milliseconds: 600),
               ),
-              ShakeEffect(
+              const ShakeEffect(
                 hz: 1,
-                offset: const Offset(0, 2),
-                duration: const Duration(milliseconds: 800),
-                delay: const Duration(milliseconds: 1200),
+                offset: Offset(0, 2),
+                duration: Duration(milliseconds: 800),
+                delay: Duration(milliseconds: 1200),
               ),
               const ShimmerEffect(
                 duration: Duration(seconds: 2),
