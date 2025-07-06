@@ -1773,6 +1773,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Long press to edit'**
   String get longPressToEdit;
+
+  /// No description provided for @pullToRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull down to refresh'**
+  String get pullToRefresh;
 }
 
 class _AppLocalizationsDelegate

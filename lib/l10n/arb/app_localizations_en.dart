@@ -915,4 +915,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get longPressToEdit => 'Long press to edit';
+
+  @override
+  String get pullToRefresh => 'Pull down to refresh';
 }

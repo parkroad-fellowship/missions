@@ -739,5 +739,7 @@
     "welcome": "Welcome back!",
     "@welcome": {},
     "longPressToEdit": "Long press to edit",
-    "@longPressToEdit": {}
+    "@longPressToEdit": {},
+    "pullToRefresh": "Pull down to refresh",
+    "@pullToRefresh": {}
 }

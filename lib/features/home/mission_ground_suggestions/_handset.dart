@@ -124,10 +124,20 @@ class _MissionGroundSuggestionsPageHandsetState
                           child: Center(child: PRFCircularProgressIndicator()),
                         ),
                         error: (message) => SliverFillRemaining(
-                          child: PRFEmptyView(
-                            label: 'Error',
-                            description: message,
+                          child: SliverFillRemaining(
+                          child: RefreshIndicator(
+                            onRefresh: () => context
+                                .read<GetMissionGroundSuggestionsCubit>()
+                                .getMissionGroundSuggestions(),
+                            child: SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: PRFEmptyView(
+                                label: l10n.noSuggestedMissionGrounds,
+                                description: message,
+                              ),
+                            ),
                           ),
+                        ),
                         ),
                         empty: () => SliverFillRemaining(
                           child: RefreshIndicator(
@@ -136,30 +146,12 @@ class _MissionGroundSuggestionsPageHandsetState
                                 .getMissionGroundSuggestions(),
                             child: SingleChildScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
-                              child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.6,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    PRFEmptyView(
-                                      label: l10n.suggestAMission,
-                                      description:
-                                          l10n.suggestAMissionDescription,
-                                    ),
-                                    const SizedBox(height: 24),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 32,
-                                      ),
-                                      child: PRFPrimaryButton(
-                                        title: l10n.suggestAMission,
-                                        disabled: false,
-                                        onPressed: _addMissionGroundSuggestion,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              child: PRFEmptyView(
+                                label: l10n.suggestAMission,
+                                description: l10n.suggestAMissionDescription,
+
+                                actionLabel: l10n.suggestAMission,
+                                onActionPressed: _addMissionGroundSuggestion,
                               ),
                             ),
                           ),
