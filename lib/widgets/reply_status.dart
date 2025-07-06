@@ -19,8 +19,6 @@ class ReplyStatusView extends StatefulWidget {
 }
 
 class _ReplyStatusViewState extends State<ReplyStatusView> {
-  _ReplyStatusViewState();
-
   bool? _selectedReplyStatus;
 
   @override
@@ -32,56 +30,100 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
+
+    final chips = [
+      _StatusChip(
+        label: l10n.unread.toUpperCase(),
+        selected: _selectedReplyStatus == false,
+        onTap: () {
+          widget.onReplyStatusSelected(replyStatus: false);
+          setState(() => _selectedReplyStatus = false);
+        },
+        theme: theme,
+      ),
+      _StatusChip(
+        label: l10n.replied.toUpperCase(),
+        selected: _selectedReplyStatus == true,
+        onTap: () {
+          widget.onReplyStatusSelected(replyStatus: true);
+          setState(() => _selectedReplyStatus = true);
+        },
+        theme: theme,
+      ),
+    ];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: widget.reversed
-            ? _chips(l10n).reversed.toList()
-            : _chips(l10n),
+      child: SizedBox(
+        height: 40,
+        child: Row(
+          children: widget.reversed ? chips.reversed.toList() : chips,
+        ),
       ),
     );
   }
+}
 
-  List<Widget> _chips(AppLocalizations l10n) => [
-    GestureDetector(
-      onTap: () {
-        widget.onReplyStatusSelected(replyStatus: false);
-        setState(() {
-          _selectedReplyStatus = false;
-        });
-      },
-      child: Chip(
-        label: Text(l10n.unread.toUpperCase()),
-        backgroundColor: _selectedReplyStatus == false
-            ? Theme.of(context).colorScheme.primary
-            : Colors.white,
-        labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: _selectedReplyStatus == false
-              ? Colors.white
-              : Theme.of(context).colorScheme.primary,
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    required this.theme,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedColor = theme.colorScheme.primary;
+    final unselectedColor = theme.colorScheme.surface;
+    final selectedTextColor = theme.colorScheme.onPrimary;
+    final unselectedTextColor = theme.colorScheme.primary;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+          decoration: BoxDecoration(
+            color: selected ? selectedColor : unselectedColor,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: selected
+                  ? selectedColor.withOpacity(0.5)
+                  : theme.colorScheme.outline.withOpacity(0.3),
+              width: 1.1,
+            ),
+            boxShadow: selected
+                ? [
+                    BoxShadow(
+                      color: selectedColor.withOpacity(0.13),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : [],
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: selected ? selectedTextColor : unselectedTextColor,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ),
         ),
       ),
-    ),
-    GestureDetector(
-      onTap: () {
-        widget.onReplyStatusSelected(replyStatus: true);
-        setState(() {
-          _selectedReplyStatus = true;
-        });
-      },
-      child: Chip(
-        label: Text(l10n.replied.toUpperCase()),
-        backgroundColor: _selectedReplyStatus ?? true
-            ? Theme.of(context).colorScheme.primary
-            : Colors.white,
-        labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: _selectedReplyStatus ?? true
-              ? Colors.white
-              : Theme.of(context).colorScheme.primary,
-        ),
-      ),
-    ),
-  ];
+    );
+  }
 }
