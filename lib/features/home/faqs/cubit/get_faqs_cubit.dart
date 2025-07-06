@@ -30,6 +30,12 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
         categoryUlid: categoryUlid,
         query: query,
       );
+
+      if (localFaqs.isEmpty && !forceRefresh) {
+        emit(const GetFaqsState.empty());
+        return;
+      }
+
       if (localFaqs.isNotEmpty && !forceRefresh) {
         emit(GetFaqsState.loaded(faqs: localFaqs));
         return;
@@ -42,6 +48,11 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
           categoryUlid: categoryUlid,
           query: query,
         );
+
+        if (localFaqs.isEmpty) {
+          emit(const GetFaqsState.empty());
+          return;
+        }
         emit(GetFaqsState.loaded(faqs: localFaqs));
         return;
       }

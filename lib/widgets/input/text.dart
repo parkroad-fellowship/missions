@@ -6,11 +6,13 @@ class PRFTextInput extends StatelessWidget {
     required this.controller,
     super.key,
     this.enabled = true,
+    this.onChanged,
   });
 
   final String hintText;
   final TextEditingController controller;
   final bool enabled;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class PRFTextInput extends StatelessWidget {
       keyboardType: TextInputType.text,
       controller: controller,
       enabled: enabled,
+      onChanged: onChanged,
       style: theme.textTheme.bodyMedium?.copyWith(
         color: theme.colorScheme.onSurface,
       ),

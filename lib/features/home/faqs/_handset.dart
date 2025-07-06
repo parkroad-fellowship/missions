@@ -4,11 +4,11 @@ import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 
 class MemberFAQPageHandset extends StatefulWidget {
@@ -22,7 +22,9 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
   PRFLocalFaqCategory? _selectedCategory;
   String? _searchQuery;
 
-  final _searchDebouncer = Debouncer(milliseconds: 1 * 1000);
+  final TextEditingController _searchController = TextEditingController();
+
+  final _searchDebouncer = Debouncer(milliseconds: 1000);
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
 
   @override
   void dispose() {
+    _searchController.dispose();
     _searchDebouncer.dispose();
     super.dispose();
   }
@@ -39,162 +42,107 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: CustomScrollView(
-            slivers: [
-              // Start Navigation Bar
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.white,
-                surfaceTintColor: Colors.white,
-                pinned: true,
-                flexibleSpace: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 1.w,
-                          ),
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        l10n.questions,
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.w),
-                        child: const Visibility(
-                          child: Icon(Icons.abc, color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+        child: CustomScrollView(
+          slivers: [
+            // Modern Navigation Bar
+            PRFNavBar(
+              title: l10n.questions,
+              onBack: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.landingRoute,
               ),
-              // End Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 48.h)),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: TextFormField(
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value;
-                      });
-                      Logger().i('Search Query: $_searchQuery');
-
-                      _searchDebouncer.run(() {
-                        context.read<GetFaqsCubit>().getFaqs(
-                          categoryUlid:
-                              _selectedCategory?.ulid ??
-                              _selectedCategory?.ulid,
-                          query:
-                              _searchQuery != null ||
-                                  (_searchQuery?.isNotEmpty ?? false)
-                              ? _searchQuery
-                              : null,
-                        );
-                      });
-                    },
-                    style: Theme.of(context).textTheme.bodySmall,
-                    decoration: InputDecoration(
-                      hintText: l10n.whatWouldYouLikeToKnow,
-                      suffixIconColor: Theme.of(context).colorScheme.primary,
-                      suffixIcon: Container(
-                        margin: const EdgeInsets.only(right: 8),
-                        child: const Icon(Icons.search),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-
-              SliverToBoxAdapter(
-                child: FaqCategoriesPreview(
-                  onCategorySelected: (newValue) {
+              backgroundColor: theme.colorScheme.surface,
+            ),
+            // Search Field
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: PRFTextInput(
+                  hintText: l10n.whatWouldYouLikeToKnow,
+                  controller: _searchController,
+                  onChanged: (value) {
                     setState(() {
-                      _selectedCategory = newValue;
+                      _searchQuery = value;
                     });
-                    Logger().i('Selected Category: $_selectedCategory');
-                    context.read<GetFaqsCubit>().getFaqs(
-                      categoryUlid: _selectedCategory?.ulid,
-                      query:
-                          _searchQuery != null ||
-                              (_searchQuery?.isNotEmpty ?? false)
-                          ? _searchQuery
-                          : null,
-                    );
+                    Logger().i('Search Query: $_searchQuery');
+                    _searchDebouncer.run(() {
+                      context.read<GetFaqsCubit>().getFaqs(
+                        categoryUlid: _selectedCategory?.ulid,
+                        query: (_searchQuery?.isNotEmpty ?? false)
+                            ? _searchQuery
+                            : null,
+                      );
+                    });
                   },
                 ),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              SliverToBoxAdapter(
-                child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
-                  builder: (context, state) => state.maybeWhen(
-                    loading: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    orElse: () => const SizedBox.shrink(),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 16.h)),
-              BlocBuilder<GetFaqsCubit, GetFaqsState>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse: () =>
-                        const SliverToBoxAdapter(child: SizedBox.shrink()),
-                    error: (message) => SliverFillRemaining(
-                      child: Center(child: Text(message)),
-                    ),
-                    loaded: (faqs) {
-                      if (faqs.isEmpty) {
-                        return SliverFillRemaining(
-                          child: RefreshIndicator(
-                            onRefresh: () =>
-                                context.read<GetFaqsCubit>().getFaqs(),
-                            child: PRFEmptyView(
-                              label: l10n.noFaqs,
-                              description: l10n.pleaseWait,
-                            ),
-                          ),
-                        );
-                      }
-                      return SliverList.separated(
-                        itemCount: faqs.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 8.h),
-                        itemBuilder: (context, index) =>
-                            FaqCard(faq: faqs[index]),
-                      );
-                    },
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+            // FAQ Categories
+            SliverToBoxAdapter(
+              child: FaqCategoriesPreview(
+                onCategorySelected: (newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                  });
+                  Logger().i('Selected Category: $_selectedCategory');
+                  context.read<GetFaqsCubit>().getFaqs(
+                    categoryUlid: _selectedCategory?.ulid,
+                    query: (_searchQuery?.isNotEmpty ?? false)
+                        ? _searchQuery
+                        : null,
                   );
                 },
               ),
-            ],
-          ),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+            // Loading Indicator
+            SliverToBoxAdapter(
+              child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
+                builder: (context, state) => state.maybeWhen(
+                  loading: () => const PRFLinearProgressIndicator(),
+                  orElse: () => const SizedBox.shrink(),
+                ),
+              ),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+            // FAQ List
+            BlocBuilder<GetFaqsCubit, GetFaqsState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () =>
+                      const SliverToBoxAdapter(child: SizedBox.shrink()),
+                  error: (message) => SliverFillRemaining(
+                    child: Center(child: Text(message)),
+                  ),
+                  empty: () => SliverFillRemaining(
+                    child: RefreshIndicator(
+                      onRefresh: () => context.read<GetFaqsCubit>().getFaqs(),
+                      child: PRFEmptyView(
+                        label: l10n.noFaqs,
+                        description: l10n.pleaseWait,
+                      ),
+                    ),
+                  ),
+                  loaded: (faqs) {
+                    return SliverList.separated(
+                      itemCount: faqs.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, index) =>
+                          FaqCard(faq: faqs[index]),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -208,35 +156,56 @@ class FaqCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
+    final theme = Theme.of(context);
+
     return Animate(
       effects: const [SaturateEffect()],
-      child: Stack(
-        children: [
-          Container(
-            width: width,
-            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.secondary.withValues(alpha: .3),
-              borderRadius: BorderRadius.circular(48.r),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.shadow.withValues(alpha: 0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  faq.question,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(height: 8.h),
-                Text(faq.answer, style: Theme.of(context).textTheme.bodySmall),
-                SizedBox(height: 8.h),
-              ],
+            BoxShadow(
+              color: theme.colorScheme.shadow.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+          border: Border.all(
+            color: theme.colorScheme.outline.withValues(alpha: 0.1),
+          ),
+        ),
+        child: ExpansionTile(
+          tilePadding: EdgeInsets.zero,
+          title: Text(
+            faq.question,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface,
             ),
           ),
-        ],
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8, right: 8),
+                child: Text(
+                  faq.answer,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
