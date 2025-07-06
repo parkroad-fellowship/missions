@@ -163,7 +163,6 @@ class _StudentEnquiryCard extends StatelessWidget {
           ],
           border: Border.all(
             color: theme.colorScheme.outline.withOpacity(0.1),
-            width: 1,
           ),
         ),
         child: Row(
@@ -189,7 +188,7 @@ class _StudentEnquiryCard extends StatelessWidget {
                 children: [
                   Text(
                     enquiry.content.length > 80
-                        ? enquiry.content.substring(0, 80).trim() + '...'
+                        ? '${enquiry.content.substring(0, 80).trim()}...'
                         : enquiry.content,
                     style: theme.textTheme.bodyLarge?.copyWith(
                       color: theme.colorScheme.onSurface,
