@@ -1294,6 +1294,12 @@ abstract class AppLocalizations {
   /// **'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.'**
   String get suggestAMissionDescription;
 
+  /// No description provided for @suggestMissionSubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a mission ground with us and we will take it from there'**
+  String get suggestMissionSubTitle;
+
   /// No description provided for @noSuggestedMissionGrounds.
   ///
   /// In en, this message translates to:
@@ -1347,6 +1353,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Suggesting...'**
   String get suggesting;
+
+  /// No description provided for @editMissionSuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Mission Suggestion'**
+  String get editMissionSuggestion;
+
+  /// No description provided for @editMissionSuggestionSubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit your suggested mission ground details below'**
+  String get editMissionSuggestionSubTitle;
+
+  /// No description provided for @selectStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Select status'**
+  String get selectStatus;
 
   /// No description provided for @status.
   ///

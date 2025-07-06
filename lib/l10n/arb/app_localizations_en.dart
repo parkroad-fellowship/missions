@@ -661,6 +661,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.';
 
   @override
+  String get suggestMissionSubTitle =>
+      'Share a mission ground with us and we will take it from there';
+
+  @override
   String get noSuggestedMissionGrounds => 'No suggested mission grounds';
 
   @override
@@ -688,6 +692,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suggesting => 'Suggesting...';
+
+  @override
+  String get editMissionSuggestion => 'Edit Mission Suggestion';
+
+  @override
+  String get editMissionSuggestionSubTitle =>
+      'You can edit your suggested mission ground details below';
+
+  @override
+  String get selectStatus => 'Select status';
 
   @override
   String get status => 'Status';

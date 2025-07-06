@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:app/widgets/input/name.dart';
+import 'package:app/widgets/input/text_area.dart';
 
 class UpdateMissionGroundSuggestionViewHandset extends StatefulWidget {
   const UpdateMissionGroundSuggestionViewHandset({
@@ -39,8 +41,6 @@ class _UpdateMissionGroundSuggestionViewHandsetState
   @override
   void initState() {
     super.initState();
-
-    // Initialize the fields with the current values
     _nameController.text = missionGroundSuggestion.name;
     _contactPersonController.text = missionGroundSuggestion.contactPerson;
     _contactNumberController.text = missionGroundSuggestion.contactNumber;
@@ -51,189 +51,310 @@ class _UpdateMissionGroundSuggestionViewHandsetState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.missionGround,
-                isRequired: true,
+    return Column(
+      children: [
+        // Header
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.secondaryContainer.withOpacity(0.3),
+            border: Border(
+              bottom: BorderSide(
+                color: theme.colorScheme.outline.withOpacity(0.1),
               ),
             ),
-            const SizedBox(height: 6),
-            PRFNameInput(
-              hintText: l10n.missionGround,
-              controller: _nameController,
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.contactPerson,
-                isRequired: true,
-              ),
-            ),
-            const SizedBox(height: 6),
-            PRFNameInput(
-              hintText: l10n.contactPerson,
-              controller: _contactPersonController,
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.contactNumber,
-                isRequired: true,
-              ),
-            ),
-            const SizedBox(height: 6),
-            InternationalPhoneNumberInput(
-              textFieldController: _contactNumberController,
-              countries: const ['KE'],
-              onInputChanged: (phoneNumber) => setState(() {
-                contactNumber = phoneNumber;
-              }),
-              textStyle: Theme.of(context).textTheme.bodySmall,
-              inputDecoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
+                child: Icon(
+                  Icons.edit_rounded,
+                  color: theme.colorScheme.onPrimary,
+                  size: 24,
                 ),
-                filled: false,
               ),
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.status, isRequired: true),
-            ),
-            const SizedBox(height: 6),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                return DropdownMenu<PRFMissionGroundSuggestionStatus>(
-                  width: constraints.maxWidth,
-                  initialSelection: _selectedStatus,
-                  hintText: l10n.facilitator,
-                  dropdownMenuEntries: PRFMissionGroundSuggestionStatus.values
-                      .map(
-                        (status) =>
-                            DropdownMenuEntry<PRFMissionGroundSuggestionStatus>(
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.editMissionSuggestion,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.editMissionSuggestionSubTitle,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        // Form Content
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Mission Ground
+                Text(
+                  '${l10n.missionGround} *',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                PRFNameInput(
+                  hintText: l10n.missionGround,
+                  controller: _nameController,
+                ),
+                const SizedBox(height: 24),
+
+                // Contact Person
+                Text(
+                  '${l10n.contactPerson} *',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                PRFNameInput(
+                  hintText: l10n.contactPerson,
+                  controller: _contactPersonController,
+                ),
+                const SizedBox(height: 24),
+
+                // Contact Number
+                Text(
+                  '${l10n.contactNumber} *',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: theme.colorScheme.outline.withOpacity(0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: InternationalPhoneNumberInput(
+                    textFieldController: _contactNumberController,
+                    countries: const ['KE'],
+                    onInputChanged: (phoneNumber) => setState(() {
+                      contactNumber = phoneNumber;
+                    }),
+                    textStyle: theme.textTheme.bodyMedium,
+                    inputDecoration: InputDecoration(
+                      hintText: '+254 712 345 678',
+                      hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Status Dropdown
+                Text(
+                  '${l10n.status} *',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: theme.colorScheme.outline.withOpacity(0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<PRFMissionGroundSuggestionStatus>(
+                      value: _selectedStatus,
+                      isExpanded: true,
+                      borderRadius: BorderRadius.circular(12),
+                      icon: Icon(Icons.arrow_drop_down_rounded,
+                          color: theme.colorScheme.onSurfaceVariant),
+                      items: PRFMissionGroundSuggestionStatus.values
+                          .map(
+                            (status) => DropdownMenuItem(
                               value: status,
-                              label: status.name,
+                              child: Text(status.name),
                             ),
-                      )
-                      .toList(),
-                  onSelected: (status) => setState(() {
-                    _selectedStatus = status;
-                  }),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.comments, isRequired: false),
-            ),
-            const SizedBox(height: 6),
-            PRFTextAreaInput(
-              hintText: l10n.comments,
-              controller: _notesController,
-            ),
-            const SizedBox(height: 32),
-            BlocConsumer<
-              UpdateMissionGroundSuggestionCubit,
-              UpdateMissionGroundSuggestionState
-            >(
-              listener: (context, state) {
-                state.mapOrNull(
-                  loading: (_) {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                  },
-                  loaded: (result) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    Gaimon.success();
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          l10n.missionGroundRecorded(
-                            result.missionGroundSuggestion.name,
+                          )
+                          .toList(),
+                      onChanged: (status) =>
+                          setState(() => _selectedStatus = status),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Notes
+                Text(
+                  l10n.comments,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                PRFTextAreaInput(
+                  hintText: l10n.comments,
+                  controller: _notesController,
+                ),
+                const SizedBox(height: 40),
+
+                // Submit Button
+                BlocConsumer<
+                  UpdateMissionGroundSuggestionCubit,
+                  UpdateMissionGroundSuggestionState
+                >(
+                  listener: (context, state) {
+                    state.mapOrNull(
+                      loading: (_) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                      },
+                      loaded: (result) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        Gaimon.success();
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              l10n.missionGroundRecorded(
+                                result.missionGroundSuggestion.name,
+                              ),
+                            ),
+                            backgroundColor: theme.colorScheme.primary,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                        ),
+                        );
+                      },
+                      error: (error) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        Gaimon.error();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(error.message),
+                            backgroundColor: theme.colorScheme.error,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: double.infinity,
+                      child: PRFPrimaryButton(
+                        title: _isLoading ? l10n.recording : l10n.record,
+                        disabled: _isLoading,
+                        isLoading: _isLoading ? true : null,
+                        onPressed: () async {
+                          if (_nameController.text.isEmpty) {
+                            _showErrorSnackBar(context, l10n.enterMissionGround);
+                            return;
+                          }
+                          if (_contactPersonController.text.isEmpty) {
+                            _showErrorSnackBar(context, l10n.enterContactPerson);
+                            return;
+                          }
+                          if (_contactNumberController.text.isEmpty) {
+                            _showErrorSnackBar(context, l10n.enterContactNumber);
+                            return;
+                          }
+                          if (_selectedStatus == null) {
+                            _showErrorSnackBar(context, l10n.selectStatus);
+                            return;
+                          }
+                          await context
+                              .read<UpdateMissionGroundSuggestionCubit>()
+                              .updateMissionGroundSuggestion(
+                                name: _nameController.text.trim(),
+                                contactPerson: _contactPersonController.text.trim(),
+                                contactNumber: _contactNumberController.text.trim(),
+                                status: _selectedStatus!,
+                                notes: _notesController.text,
+                                missionGroundSuggestionUlid:
+                                    missionGroundSuggestion.ulid,
+                              );
+                        },
                       ),
                     );
                   },
-                  error: (error) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    Gaimon.error();
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(error.message)));
-                  },
-                );
-              },
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => PRFPrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (_nameController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.enterMissionGround)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
-
-                      if (_contactPersonController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.enterContactPerson)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
-
-                      if (_contactNumberController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.enterContactNumber)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
-
-                      await context
-                          .read<UpdateMissionGroundSuggestionCubit>()
-                          .updateMissionGroundSuggestion(
-                            name: _nameController.text.trim(),
-                            contactPerson: _contactPersonController.text.trim(),
-                            contactNumber: _contactNumberController.text.trim(),
-                            status: _selectedStatus!,
-                            notes: _notesController.text,
-                            missionGroundSuggestionUlid:
-                                missionGroundSuggestion.ulid,
-                          );
-                    },
-                  ),
-                );
-              },
+                ),
+                const SizedBox(height: 60),
+              ],
             ),
-            const SizedBox(height: 32),
-          ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    Gaimon.warning();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
     );
