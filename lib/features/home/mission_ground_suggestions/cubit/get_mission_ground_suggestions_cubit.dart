@@ -50,6 +50,11 @@ class GetMissionGroundSuggestionsCubit
             includes: ['suggestor'],
           );
 
+      if (missionGroundSuggestions.isEmpty) {
+        emit(GetMissionGroundSuggestionsState.empty());
+        return; 
+      }
+
       emit(
         GetMissionGroundSuggestionsState.loaded(
           missionGroundSuggestions: missionGroundSuggestions,

@@ -554,6 +554,8 @@
     "@addPhotos": {},
     "suggestAMission": "Suggest a mission",
     "@suggestAMission": {},
+    "suggestAMissionDescription": "Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.",
+    "@suggestAMissionDescription": {},
     "noSuggestedMissionGrounds": "No suggested mission grounds",
     "@noSuggestedMissionGrounds": {},
     "missionGroundRecorded": "Your suggested mission to {ground} has been recorded",
@@ -735,5 +737,7 @@
     "welcomeBack": "Welcome back! Please sign in with your PRF organisation email to continue.",
     "@welcomeBack": {},
     "welcome": "Welcome back!",
-    "@welcome": {}
+    "@welcome": {},
+    "longPressToEdit": "Long press to edit",
+    "@longPressToEdit": {}
 }

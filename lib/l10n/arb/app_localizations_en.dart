@@ -657,6 +657,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get suggestAMission => 'Suggest a mission';
 
   @override
+  String get suggestAMissionDescription =>
+      'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.';
+
+  @override
   String get noSuggestedMissionGrounds => 'No suggested mission grounds';
 
   @override
@@ -908,4 +912,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcome => 'Welcome back!';
+
+  @override
+  String get longPressToEdit => 'Long press to edit';
 }

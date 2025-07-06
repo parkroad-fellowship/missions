@@ -1288,6 +1288,12 @@ abstract class AppLocalizations {
   /// **'Suggest a mission'**
   String get suggestAMission;
 
+  /// No description provided for @suggestAMissionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.'**
+  String get suggestAMissionDescription;
+
   /// No description provided for @noSuggestedMissionGrounds.
   ///
   /// In en, this message translates to:
@@ -1761,6 +1767,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome back!'**
   String get welcome;
+
+  /// No description provided for @longPressToEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Long press to edit'**
+  String get longPressToEdit;
 }
 
 class _AppLocalizationsDelegate

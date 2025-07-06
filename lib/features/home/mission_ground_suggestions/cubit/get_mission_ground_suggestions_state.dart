@@ -7,5 +7,6 @@ class GetMissionGroundSuggestionsState with _$GetMissionGroundSuggestionsState {
   const factory GetMissionGroundSuggestionsState.loaded({
     required List<PRFMissionGroundSuggestion> missionGroundSuggestions,
   }) = _Loaded;
+  const factory GetMissionGroundSuggestionsState.empty() = _Empty;
   const factory GetMissionGroundSuggestionsState.error(String message) = _Error;
 }
