@@ -214,22 +214,22 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 4,
                   children: <Widget>[
-                    Text(
-                      l10n.temperature(
-                        forecast.temperature.apparentMin,
-                        forecast.temperature.apparentMax,
-                        forecast.temperature.apparentAvg,
-                      ),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    Text(
-                      l10n.humidity(
-                        forecast.humidity.min,
-                        forecast.humidity.max,
-                        forecast.humidity.avg,
-                      ),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
+                    // Text(
+                    //   l10n.temperature(
+                    //     forecast.temperature.apparentMin,
+                    //     forecast.temperature.apparentMax,
+                    //     forecast.temperature.apparentAvg,
+                    //   ),
+                    //   style: Theme.of(context).textTheme.bodySmall,
+                    // ),
+                    // Text(
+                    //   l10n.humidity(
+                    //     forecast.humidity.min,
+                    //     forecast.humidity.max,
+                    //     forecast.humidity.avg,
+                    //   ),
+                    //   style: Theme.of(context).textTheme.bodySmall,
+                    // ),
                     Text(
                       l10n.visibility(
                         forecast.visibility.min,

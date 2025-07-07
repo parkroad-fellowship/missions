@@ -114,9 +114,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missionPrepNotes => 'Preparation Notes';
 
   @override
-  String population(int totalStudents) {
-    return 'Population: $totalStudents learners';
-  }
+  String get population => 'Population';
 
   @override
   String get upcoming => 'Upcoming';
@@ -183,14 +181,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get withdraw => 'Withdraw';
 
   @override
-  String missionariesNeeded(int missionariesNeeded) {
-    return 'Missioners Needed: $missionariesNeeded more';
-  }
+  String get missionariesNeeded => 'Still Needed';
 
   @override
-  String missionariesRequested(int missionariesRequested) {
-    return 'Missioners Requested: $missionariesRequested';
-  }
+  String get missionariesRequested => 'Requested missioners';
 
   @override
   String get learn => 'Learn';
@@ -529,19 +523,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weather => 'Weather';
 
   @override
-  String temperature(String min, String max, String avg) {
-    return 'Temperature: $min - $max ($avg)';
-  }
+  String get temperature => 'Temperature';
 
   @override
-  String humidity(String min, String max, String avg) {
-    return 'Humidity: $min - $max ($avg)';
-  }
+  String get humidity => 'Humidity';
 
   @override
   String visibility(String min, String max, String avg) {
     return 'Visibility: $min - $max ($avg)';
   }
+
+  @override
+  String get rain => 'Rain';
 
   @override
   String precipitationProbability(String min, String max, String avg) {
@@ -565,9 +558,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String estimatedDistance(String distance) {
-    return 'Estimated Distance: $distance';
-  }
+  String get estimatedDistance => 'Distance';
 
   @override
   String get estimationDisclaimer =>
@@ -851,7 +842,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSouls => 'No souls';
 
   @override
-  String get joinWhatsApp => 'Join the WhatsApp group for this mission';
+  String get joinWhatsApp => 'Join WhatsApp';
+
+  @override
+  String get navigate => 'Navigate';
 
   @override
   String get successfullyUpdated =>
@@ -958,4 +952,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String areGoing(int number) {
     return '$number going';
   }
+
+  @override
+  String get missionIntelligence => 'Mission Intelligence';
 }

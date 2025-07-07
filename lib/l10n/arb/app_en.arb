@@ -94,14 +94,8 @@
     "@address": {},
     "missionPrepNotes": "Preparation Notes",
     "@missionPrepNotes": {},
-    "population": "Population: {totalStudents} learners",
-    "@population": {
-        "placeholders": {
-            "totalStudents": {
-                "type": "int"
-            }
-        }
-    },
+    "population": "Population",
+    "@population": {},
     "upcoming": "Upcoming",
     "@upcoming": {},
     "noUpcomingMissions": "No upcoming missions",
@@ -144,22 +138,12 @@
     "@successfullyWithdrawn": {},
     "withdraw": "Withdraw",
     "@withdraw": {},
-    "missionariesNeeded": "Missioners Needed: {missionariesNeeded} more",
+    "missionariesNeeded": "Still Needed",
     "@missionariesNeeded": {
-        "placeholders": {
-            "missionariesNeeded": {
-                "type": "int"
-            }
-        }
+        
     },
-    "missionariesRequested": "Missioners Requested: {missionariesRequested}",
-    "@missionariesRequested": {
-        "placeholders": {
-            "missionariesRequested": {
-                "type": "int"
-            }
-        }
-    },
+    "missionariesRequested": "Requested missioners",
+    "@missionariesRequested": {},
     "learn": "Learn",
     "@learn": {},
     "progress": "Progress: {progress}%",
@@ -411,33 +395,13 @@
     "@studentFaqs": {},
     "weather": "Weather",
     "@weather": {},
-    "temperature": "Temperature: {min} - {max} ({avg})",
+    "temperature": "Temperature",
     "@temperature": {
-        "placeholders": {
-            "min": {
-                "type": "String"
-            },
-            "max": {
-                "type": "String"
-            },
-            "avg": {
-                "type": "String"
-            }
-        }
+        
     },
-    "humidity": "Humidity: {min} - {max} ({avg})",
+    "humidity": "Humidity",
     "@humidity": {
-        "placeholders": {
-            "min": {
-                "type": "String"
-            },
-            "max": {
-                "type": "String"
-            },
-            "avg": {
-                "type": "String"
-            }
-        }
+        
     },
     "visibility": "Visibility: {min} - {max} ({avg})",
     "@visibility": {
@@ -453,6 +417,8 @@
             }
         }
     },
+    "rain": "Rain",
+    "@rain": {},
     "precipitationProbability": "Precipitation Probability: {min} - {max} ({avg})",
     "@precipitationProbability": {
         "placeholders": {
@@ -490,13 +456,9 @@
             }
         }
     },
-    "estimatedDistance": "Estimated Distance: {distance}",
+    "estimatedDistance": "Distance",
     "@estimatedDistance": {
-        "placeholders": {
-            "distance": {
-                "type": "String"
-            }
-        }
+        
     },
     "estimationDisclaimer": "* This estimate is made from Tumaini House to the mission ground and may not be accurate. Please plan accordingly.",
     "@estimationDisclaimer": {},
@@ -698,8 +660,10 @@
     "@noLessons": {},
     "noSouls": "No souls",
     "@noSouls": {},
-    "joinWhatsApp": "Join the WhatsApp group for this mission",
+    "joinWhatsApp": "Join WhatsApp",
     "@joinWhatsApp": {},
+    "navigate": "Navigate",
+    "@navigate": {},
     "successfullyUpdated": "Your profile picture has been successfully updated",
     "@successfullyUpdated": {},
     "bio": "Bio",
@@ -720,7 +684,6 @@
     "@prayerRequest": {},
     "prayerRequestSubmitted": "Your prayer request has been submitted.",
     "@prayerRequestSubmitted": {},
-    
     "submit": "Submit",
     "@submit": {},
     "fillAllFields": "Please fill in all fields.",
@@ -770,5 +733,7 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "missionIntelligence": "Mission Intelligence",
+    "@missionIntelligence": {}
 }

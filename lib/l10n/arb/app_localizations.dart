@@ -289,8 +289,8 @@ abstract class AppLocalizations {
   /// No description provided for @population.
   ///
   /// In en, this message translates to:
-  /// **'Population: {totalStudents} learners'**
-  String population(int totalStudents);
+  /// **'Population'**
+  String get population;
 
   /// No description provided for @upcoming.
   ///
@@ -421,14 +421,14 @@ abstract class AppLocalizations {
   /// No description provided for @missionariesNeeded.
   ///
   /// In en, this message translates to:
-  /// **'Missioners Needed: {missionariesNeeded} more'**
-  String missionariesNeeded(int missionariesNeeded);
+  /// **'Still Needed'**
+  String get missionariesNeeded;
 
   /// No description provided for @missionariesRequested.
   ///
   /// In en, this message translates to:
-  /// **'Missioners Requested: {missionariesRequested}'**
-  String missionariesRequested(int missionariesRequested);
+  /// **'Requested missioners'**
+  String get missionariesRequested;
 
   /// No description provided for @learn.
   ///
@@ -1069,20 +1069,26 @@ abstract class AppLocalizations {
   /// No description provided for @temperature.
   ///
   /// In en, this message translates to:
-  /// **'Temperature: {min} - {max} ({avg})'**
-  String temperature(String min, String max, String avg);
+  /// **'Temperature'**
+  String get temperature;
 
   /// No description provided for @humidity.
   ///
   /// In en, this message translates to:
-  /// **'Humidity: {min} - {max} ({avg})'**
-  String humidity(String min, String max, String avg);
+  /// **'Humidity'**
+  String get humidity;
 
   /// No description provided for @visibility.
   ///
   /// In en, this message translates to:
   /// **'Visibility: {min} - {max} ({avg})'**
   String visibility(String min, String max, String avg);
+
+  /// No description provided for @rain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get rain;
 
   /// No description provided for @precipitationProbability.
   ///
@@ -1117,8 +1123,8 @@ abstract class AppLocalizations {
   /// No description provided for @estimatedDistance.
   ///
   /// In en, this message translates to:
-  /// **'Estimated Distance: {distance}'**
-  String estimatedDistance(String distance);
+  /// **'Distance'**
+  String get estimatedDistance;
 
   /// No description provided for @estimationDisclaimer.
   ///
@@ -1651,8 +1657,14 @@ abstract class AppLocalizations {
   /// No description provided for @joinWhatsApp.
   ///
   /// In en, this message translates to:
-  /// **'Join the WhatsApp group for this mission'**
+  /// **'Join WhatsApp'**
   String get joinWhatsApp;
+
+  /// No description provided for @navigate.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate'**
+  String get navigate;
 
   /// No description provided for @successfullyUpdated.
   ///
@@ -1845,6 +1857,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{number} going'**
   String areGoing(int number);
+
+  /// No description provided for @missionIntelligence.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Intelligence'**
+  String get missionIntelligence;
 }
 
 class _AppLocalizationsDelegate

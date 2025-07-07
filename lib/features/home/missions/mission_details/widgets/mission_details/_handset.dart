@@ -1,14 +1,15 @@
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:map_launcher/map_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
@@ -24,7 +25,6 @@ class MissionDetailsViewHandset extends StatefulWidget {
 class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
     with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
-
   String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;
 
   @override
@@ -36,415 +36,1012 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    Misc.initDimensions(context);
+    final theme = Theme.of(context);
 
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          children: [
-            SingleStreamWrapper<PRFLocalMission?>(
-              stream: getIt<LocalDBService>().getMission(
-                missionUlid: missionUlid,
+        padding: const EdgeInsets.all(16),
+        child: SingleStreamWrapper<PRFLocalMission?>(
+          stream: getIt<LocalDBService>().getMission(missionUlid: missionUlid),
+          loading: const PRFLinearProgressIndicator(),
+          widget: (context, mission) => Column(
+            children: [
+              // Hero Mission Card
+              _buildHeroCard(context, mission!, l10n, theme),
+              const SizedBox(height: 24),
+
+              // Quick Actions Row
+              _buildQuickActions(context, mission, l10n, theme),
+              const SizedBox(height: 24),
+
+              // Mission Intelligence Grid
+              _buildIntelligenceGrid(context, mission, l10n, theme),
+              const SizedBox(height: 24),
+
+              // Contact Command Center
+              _buildContactCenter(context, mission, l10n, theme),
+              const SizedBox(height: 24),
+
+              // Location & Navigation Hub
+              _buildLocationHub(context, mission, l10n, theme),
+              const SizedBox(height: 24),
+
+              // Weather Intelligence
+              if (mission.weatherForecasts?.isNotEmpty ?? false)
+                _buildWeatherIntelligence(context, mission, l10n, theme),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroCard(
+    BuildContext context,
+    PRFLocalMission mission,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                theme.colorScheme.primary,
+                theme.colorScheme.primary.withValues(alpha: 0.8),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
-              loading: const PRFLinearProgressIndicator(),
-              widget: (context, mission) => ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(
-                  mission!.school!.name!.toUpperCase(),
-                  style: Theme.of(context).textTheme.headlineMedium,
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        mission.status.name.toUpperCase(),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.school_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ],
                 ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 8),
-                    Text(
+                const SizedBox(height: 16),
+                Text(
+                  mission.school!.name!.toUpperCase(),
+                  style: theme.textTheme.headlineLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    height: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  mission.theme!,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    _buildDateTimeChip(
+                      context,
+                      Icons.play_arrow_rounded,
                       l10n.missionStart(
                         Misc.formatMissionDate(mission.startDate, timezone),
                         Misc.formatTime(mission.startTime, timezone),
                       ),
-                      style: Theme.of(context).textTheme.bodySmall,
+                      theme,
                     ),
-                    Text(
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _buildDateTimeChip(
+                      context,
+                      Icons.stop_rounded,
                       l10n.missionEnd(
                         Misc.formatMissionDate(mission.endDate, timezone),
                         Misc.formatTime(mission.endTime, timezone),
                       ),
-                      style: Theme.of(context).textTheme.bodySmall,
+                      theme,
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 32),
+                _buildPrepNotes(context, mission, l10n, theme),
+              ],
             ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.theme,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              subtitle: SingleStreamWrapper<PRFLocalMission?>(
-                stream: getIt<LocalDBService>().getMission(
-                  missionUlid: missionUlid,
+          ),
+        )
+        .animate()
+        .fadeIn(duration: const Duration(milliseconds: 600))
+        .slideY(begin: 0.3, end: 0);
+  }
+
+  Widget _buildDateTimeChip(
+    BuildContext context,
+    IconData icon,
+    String text,
+    ThemeData theme,
+  ) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 16),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickActions(
+    BuildContext context,
+    PRFLocalMission mission,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Row(
+          children: [
+            if (mission.whatsAppLink != null &&
+                mission.loggedInMemberMissionSubscription != null &&
+                mission.loggedInMemberMissionSubscription!.status ==
+                    PRFMissionSubscriptionStatus.approved)
+              Expanded(
+                child: _buildActionButton(
+                  context,
+                  Icons.chat_rounded,
+                  l10n.joinWhatsApp,
+                  theme.colorScheme.secondary,
+                  () => Misc.openUrl(Uri.parse(mission.whatsAppLink!)),
+                  theme,
                 ),
-                loading: const PRFLinearProgressIndicator(),
-                widget: (context, mission) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 8,
-                  children: <Widget>[
-                    Text(
-                      mission!.theme!,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    Text(
-                      l10n.population(mission.school!.totalStudents!),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    Text(
-                      l10n.missionariesRequested(mission.capacity),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    Text(
-                      l10n.missionariesNeeded(
-                        mission.missionSubscriptionsNeeded,
-                      ),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+              ),
+            if (mission.whatsAppLink != null &&
+                mission.loggedInMemberMissionSubscription != null &&
+                mission.loggedInMemberMissionSubscription!.status ==
+                    PRFMissionSubscriptionStatus.approved)
+              const SizedBox(width: 12),
+            Expanded(
+              child: _buildActionButton(
+                context,
+                Icons.map_rounded,
+                l10n.navigate,
+                theme.colorScheme.tertiary,
+                () => _openMap(mission),
+                theme,
               ),
             ),
-            SizedBox(height: 8.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.missionPrepNotes,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              subtitle: SingleStreamWrapper<PRFLocalMission?>(
-                stream: getIt<LocalDBService>().getMission(
-                  missionUlid: missionUlid,
-                ),
-                loading: const PRFLinearProgressIndicator(),
-                widget: (context, mission) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      mission!.missionPrepNotes ?? 'N/A',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+          ],
+        )
+        .animate(delay: const Duration(milliseconds: 200))
+        .fadeIn(duration: const Duration(milliseconds: 600))
+        .slideY(begin: 0.3, end: 0);
+  }
+
+  Widget _buildActionButton(
+    BuildContext context,
+    IconData icon,
+    String label,
+    Color color,
+    VoidCallback onTap,
+    ThemeData theme,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(height: 8.h),
-            SingleStreamWrapper(
-              stream: getIt<LocalDBService>().getMission(
-                missionUlid: missionUlid,
-              ),
-              widget: (context, mission) =>
-                  (mission!.whatsAppLink != null &&
-                      mission.loggedInMemberMissionSubscription != null &&
-                      mission.loggedInMemberMissionSubscription!.status ==
-                          PRFMissionSubscriptionStatus.approved)
-                  ? ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.link),
-                      title: Text(
-                        l10n.joinWhatsApp,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      onTap: () => Misc.openUrl(
-                        Uri.parse(mission.whatsAppLink!),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            SizedBox(height: 8.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                l10n.contactPersons,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            SingleStreamWrapper(
-              stream: getIt<LocalDBService>().getMission(
-                missionUlid: missionUlid,
-              ),
-              widget: (context, mission) => Column(
-                children: [
-                  ...mission!.school!.contacts!.map(
-                    (contact) => ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(contact.name!),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            contact.contactType!.name!,
-                            overflow: TextOverflow.clip,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                      trailing: Animate(
-                        effects: const [
-                          ShakeEffect(
-                            duration: Duration(seconds: 2),
-                            delay: Duration(milliseconds: 500),
-                          ),
-                        ],
-                        child: IconButton(
-                          onPressed: () async {
-                            if (mission.status ==
-                                    PRFMissionStatus.fullySubscribed ||
-                                mission.status == PRFMissionStatus.approved) {
-                              final uri = Uri(
-                                scheme: 'tel',
-                                path: contact.phone,
-                              );
-                              await Misc.openUrl(uri);
-                            }
-                          },
-                          icon: const Icon(Icons.phone),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 8.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Row(
-                children: [
-                  Text(
-                    l10n.address,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const Spacer(),
-                  SingleStreamWrapper<PRFLocalMission?>(
-                    stream: getIt<LocalDBService>().getMission(
-                      missionUlid: missionUlid,
-                    ),
-                    widget: (context, mission) {
-                      return Animate(
-                        effects: const [
-                          ShakeEffect(
-                            duration: Duration(seconds: 2),
-                            delay: Duration(milliseconds: 500),
-                          ),
-                        ],
-                        child: IconButton(
-                          onPressed: () async {
-                            final school = mission!.school!;
-
-                            final isGoogleMapAvaialable =
-                                await MapLauncher.isMapAvailable(
-                                  MapType.google,
-                                );
-
-                            if (isGoogleMapAvaialable ?? false) {
-                              await MapLauncher.showMarker(
-                                mapType: MapType.google,
-                                coords: Coords(
-                                  school.latitude!,
-                                  school.longitude!,
-                                ),
-                                title: school.name!,
-                              );
-                              return;
-                            }
-
-                            final isGoogleGoMapAvailable =
-                                await MapLauncher.isMapAvailable(
-                                  MapType.googleGo,
-                                );
-
-                            if (isGoogleGoMapAvailable ?? false) {
-                              await MapLauncher.showMarker(
-                                mapType: MapType.googleGo,
-                                coords: Coords(
-                                  school.latitude!,
-                                  school.longitude!,
-                                ),
-                                title: school.name!,
-                              );
-                              return;
-                            }
-
-                            final isAppleMapAvailable =
-                                await MapLauncher.isMapAvailable(MapType.apple);
-
-                            if (isAppleMapAvailable ?? false) {
-                              await MapLauncher.showMarker(
-                                mapType: MapType.apple,
-                                coords: Coords(
-                                  school.latitude!,
-                                  school.longitude!,
-                                ),
-                                title: school.name!,
-                              );
-                              return;
-                            }
-                          },
-                          icon: const Icon(Icons.map_rounded),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              subtitle: SingleStreamWrapper<PRFLocalMission?>(
-                stream: getIt<LocalDBService>().getMission(
-                  missionUlid: missionUlid,
-                ),
-                widget: (context, mission) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        mission!.school!.address!,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Text(
-                        mission.school!.directions ?? '',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 8.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Row(
-                children: [
-                  Text(
-                    l10n.depaturePlanning,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              subtitle: SingleStreamWrapper<PRFLocalMission?>(
-                stream: getIt<LocalDBService>().getMission(
-                  missionUlid: missionUlid,
-                ),
-                widget: (context, mission) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        l10n.estimatedDistance(
-                          mission!.school!.distance ?? 'N/A',
-                        ),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Text(
-                        l10n.estimatedTravelTime(
-                          mission.school!.staticDuration ?? 'N/A',
-                        ),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Text(
-                        l10n.estimationDisclaimer,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 8.h),
-            SingleStreamWrapper(
-              stream: getIt<LocalDBService>().getMission(
-                missionUlid: missionUlid,
-              ),
-              widget: (context, mission) => Column(
-                children: [
-                  if (mission!.weatherForecasts?.isNotEmpty ?? false)
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(
-                        l10n.weather,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                    ),
-                  if (mission.weatherForecasts?.isNotEmpty ?? false)
-                    ...mission.weatherForecasts!.map(
-                      (forecast) => ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(
-                          l10n.day(
-                            mission.weatherForecasts!.indexOf(forecast) + 1,
-                            forecast.weatherCodeDescription!,
-                          ),
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 4,
-                          children: <Widget>[
-                            Text(
-                              l10n.temperature(
-                                forecast.temperature!.apparentMin!,
-                                forecast.temperature!.apparentMax!,
-                                forecast.temperature!.apparentAvg!,
-                              ),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Text(
-                              l10n.humidity(
-                                forecast.humidity!.min!,
-                                forecast.humidity!.max!,
-                                forecast.humidity!.avg!,
-                              ),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Text(
-                              l10n.visibility(
-                                forecast.visibility!.min!,
-                                forecast.visibility!.max!,
-                                forecast.visibility!.avg!,
-                              ),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Text(
-                              l10n.precipitationProbability(
-                                forecast.precipitationProbability!.min!,
-                                forecast.precipitationProbability!.max!,
-                                forecast.precipitationProbability!.avg!,
-                              ),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              l10n.dressingRecommendations,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.headlineMedium,
-                            ),
-                            Text(
-                              forecast.dressingRecommendations ?? 'N/A',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 8.h),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildIntelligenceGrid(
+    BuildContext context,
+    PRFLocalMission mission,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.missionIntelligence,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 16),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 1.2,
+              children: [
+                if (mission.school!.totalStudents != 0)
+                  _buildStatCard(
+                    context,
+                    Icons.people_rounded,
+                    l10n.population,
+                    mission.school!.totalStudents!.toString(),
+                    theme.colorScheme.primary,
+                    theme,
+                  ),
+                _buildStatCard(
+                  context,
+                  Icons.person_add_rounded,
+                  l10n.missionariesRequested,
+                  mission.capacity.toString(),
+                  theme.colorScheme.secondary,
+                  theme,
+                ),
+                _buildStatCard(
+                  context,
+                  Icons.group_add_rounded,
+                  l10n.missionariesNeeded,
+                  mission.missionSubscriptionsNeeded.toString(),
+                  theme.colorScheme.tertiary,
+                  theme,
+                ),
+                _buildStatCard(
+                  context,
+                  Icons.route_rounded,
+                  l10n.estimatedDistance,
+                  mission.school!.distance ?? 'N/A',
+                  theme.colorScheme.error,
+                  theme,
+                ),
+              ],
+            ),
+          ],
+        )
+        .animate(delay: const Duration(milliseconds: 400))
+        .fadeIn(duration: const Duration(milliseconds: 600))
+        .slideY(begin: 0.3, end: 0);
+  }
+
+  Widget _buildStatCard(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+    Color color,
+    ThemeData theme,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: color.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: color, size: 20),
+          ),
+          const Spacer(),
+          Text(
+            value,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactCenter(
+    BuildContext context,
+    PRFLocalMission mission,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.1),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.contact_phone_rounded,
+                      color: theme.colorScheme.primary,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    l10n.contactPersons,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              ...mission.school!.contacts!.map(
+                (contact) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: theme.colorScheme.primary.withValues(
+                            alpha: 0.1,
+                          ),
+                          child: Text(
+                            contact.name!.substring(0, 1).toUpperCase(),
+                            style: TextStyle(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                contact.name!,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                contact.contactType!.name!,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: IconButton(
+                            onPressed: () async {
+                              if (mission.status ==
+                                      PRFMissionStatus.fullySubscribed ||
+                                  mission.status == PRFMissionStatus.approved) {
+                                final uri = Uri(
+                                  scheme: 'tel',
+                                  path: contact.phone,
+                                );
+                                await Misc.openUrl(uri);
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.phone,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ).animate(
+                          effects: const [
+                            ShakeEffect(
+                              duration: Duration(seconds: 2),
+                              delay: Duration(milliseconds: 500),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+        .animate(delay: const Duration(milliseconds: 600))
+        .fadeIn(duration: const Duration(milliseconds: 600))
+        .slideY(begin: 0.3, end: 0);
+  }
+
+  Widget _buildLocationHub(
+    BuildContext context,
+    PRFLocalMission mission,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                theme.colorScheme.tertiary.withValues(alpha: 0.1),
+                theme.colorScheme.tertiary.withValues(alpha: 0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.location_on_rounded,
+                      color: theme.colorScheme.tertiary,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      l10n.address,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.tertiary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: IconButton(
+                      onPressed: () => _openMap(mission),
+                      icon: const Icon(
+                        Icons.map_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ).animate(
+                    effects: const [
+                      ShakeEffect(
+                        duration: Duration(seconds: 2),
+                        delay: Duration(milliseconds: 500),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      mission.school!.address!,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    if (mission.school!.directions?.isNotEmpty ?? false) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        mission.school!.directions!,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTravelInfo(
+                      context,
+                      Icons.straighten_rounded,
+                      l10n.estimatedDistance,
+                      mission.school!.distance ?? 'N/A',
+                      theme,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildTravelInfo(
+                      context,
+                      Icons.schedule_rounded,
+                      'Travel Time',
+                      mission.school!.staticDuration ?? 'N/A',
+                      theme,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline_rounded,
+                      size: 16,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.estimationDisclaimer,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+        .animate(delay: const Duration(milliseconds: 800))
+        .fadeIn(duration: const Duration(milliseconds: 600))
+        .slideY(begin: 0.3, end: 0);
+  }
+
+  Widget _buildTravelInfo(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+    ThemeData theme,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: theme.colorScheme.tertiary, size: 20),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: theme.colorScheme.tertiary,
+            ),
+          ),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherIntelligence(
+    BuildContext context,
+    PRFLocalMission mission,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                theme.colorScheme.secondary.withValues(alpha: 0.1),
+                theme.colorScheme.secondary.withValues(alpha: 0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: theme.colorScheme.secondary.withValues(alpha: 0.2),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.secondary.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.wb_sunny_rounded,
+                      color: theme.colorScheme.secondary,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    l10n.weather,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              ...mission.weatherForecasts!.asMap().entries.map(
+                (entry) => Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _buildWeatherCard(
+                    context,
+                    entry.key + 1,
+                    entry.value,
+                    l10n,
+                    theme,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+        .animate(delay: const Duration(milliseconds: 1000))
+        .fadeIn(duration: const Duration(milliseconds: 600))
+        .slideY(begin: 0.3, end: 0);
+  }
+
+  Widget _buildWeatherCard(
+    BuildContext context,
+    int day,
+    PRFLocalWeatherForecast forecast,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.secondary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  'Day $day',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.secondary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  forecast.weatherCodeDescription!,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildWeatherStat(
+                  context,
+                  l10n.temperature,
+                  '${forecast.temperature!.apparentAvg!}°',
+                  theme,
+                ),
+              ),
+              Expanded(
+                child: _buildWeatherStat(
+                  context,
+                  l10n.humidity,
+                  forecast.humidity!.avg!,
+                  theme,
+                ),
+              ),
+              Expanded(
+                child: _buildWeatherStat(
+                  context,
+                  l10n.rain,
+                  forecast.precipitationProbability!.avg!,
+                  theme,
+                ),
+              ),
+            ],
+          ),
+          if (forecast.dressingRecommendations?.isNotEmpty ?? false) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.checkroom_rounded,
+                    size: 16,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      forecast.dressingRecommendations!,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherStat(
+    BuildContext context,
+    String label,
+    String value,
+    ThemeData theme,
+  ) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: theme.colorScheme.secondary,
+          ),
+        ),
+        Text(
+          label,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrepNotes(
+    BuildContext context,
+    PRFLocalMission mission,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    if (mission.missionPrepNotes?.isEmpty ?? true)
+      return const SizedBox.shrink();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.1),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.note_alt_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                l10n.missionPrepNotes,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              mission.missionPrepNotes!,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _openMap(PRFLocalMission mission) async {
+    final school = mission.school!;
+
+    final mapTypes = [MapType.google, MapType.googleGo, MapType.apple];
+
+    for (final mapType in mapTypes) {
+      final isAvailable = await MapLauncher.isMapAvailable(mapType);
+      if (isAvailable ?? false) {
+        await MapLauncher.showMarker(
+          mapType: mapType,
+          coords: Coords(school.latitude!, school.longitude!),
+          title: school.name!,
+        );
+        return;
+      }
+    }
   }
 }
