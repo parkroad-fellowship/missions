@@ -8,6 +8,7 @@ import 'package:app/features/home/events/event_details/update_event_subscription
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,6 +58,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: DefaultTabController(
@@ -66,56 +68,45 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: CustomScrollView(
               slivers: [
-                // Start Navigation Bar
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1.w),
-                          ),
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back_ios),
-                            padding: const EdgeInsets.only(left: 8),
-                            onPressed: () =>
-                                context.router.popUntilRouteWithPath(
-                                  PRFSuperAppRouter.eventsRoute,
-                                ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          l10n.eventDetails,
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                        const Spacer(),
-                        // Show an icon with the number of tickets
-                        if (event.loggedInMemberEventSubscription != null)
-                          Row(
-                            spacing: 4,
-                            children: [
-                              Text(
-                                event
-                                    .loggedInMemberEventSubscription!
-                                    .numberOfAttendees
-                                    .toString(),
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.displayMedium,
-                              ),
-                              const Icon(Icons.group),
-                            ],
-                          ),
-                      ],
-                    ),
+                PRFNavBar(
+                  title: l10n.eventDetails,
+                  onBack: () => context.router.popUntilRouteWithPath(
+                    PRFSuperAppRouter.eventsRoute,
                   ),
+                  actions: [
+                    if (event.loggedInMemberEventSubscription != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.13,
+                              ),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          l10n.areGoing(event
+                              .loggedInMemberEventSubscription!
+                              .numberOfAttendees),
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-                // End Navigation Bar
+
                 SliverToBoxAdapter(child: SizedBox(height: 16.h)),
                 SliverToBoxAdapter(
                   child: TabBar(

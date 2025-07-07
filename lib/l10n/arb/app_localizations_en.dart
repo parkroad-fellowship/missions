@@ -953,4 +953,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get addMissionPhotosDesc =>
       'Share your mission moments with beautiful photos';
+
+  @override
+  String areGoing(int number) {
+    return '$number going';
+  }
 }

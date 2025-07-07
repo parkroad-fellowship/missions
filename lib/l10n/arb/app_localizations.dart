@@ -1839,6 +1839,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share your mission moments with beautiful photos'**
   String get addMissionPhotosDesc;
+
+  /// No description provided for @areGoing.
+  ///
+  /// In en, this message translates to:
+  /// **'{number} going'**
+  String areGoing(int number);
 }
 
 class _AppLocalizationsDelegate

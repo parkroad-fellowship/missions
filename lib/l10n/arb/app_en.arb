@@ -762,5 +762,13 @@
     "addMissionPhotos": "Add Mission Photos",
     "@addMissionPhotos": {},
     "addMissionPhotosDesc": "Share your mission moments with beautiful photos",
-    "@addMissionPhotosDesc": {}
+    "@addMissionPhotosDesc": {},
+    "areGoing": "{number} going",
+    "@areGoing": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    }
 }

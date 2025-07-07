@@ -22,6 +22,7 @@ import 'package:app/features/home/missions/mission_details/widgets/subscribers/s
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/navbar.dart';
 import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -103,46 +104,13 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               physics: const ScrollPhysics(),
               slivers: [
                 // Start Navigation Bar
-                PinnedHeaderSliver(
-                  child: ColoredBox(
-                    color: Colors.white,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
-                                width: 1.w,
-                              ),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_back_ios),
-                              padding: const EdgeInsets.only(left: 8),
-                              onPressed: () =>
-                                  context.router.popUntilRouteWithPath(
-                                    PRFSuperAppRouter.missionsRoute,
-                                  ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            l10n.missionDetails,
-                            style: Theme.of(context).textTheme.displayLarge,
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
+                PRFNavBar(
+                  title: l10n.missionDetails,
+                  onBack: () => context.router.popUntilRouteWithPath(
+                    PRFSuperAppRouter.missionsRoute,
                   ),
                 ),
-
                 // End Navigation Bar
-                const SliverToBoxAdapter(child: SizedBox(height: 8)),
                 PinnedHeaderSliver(
                   child: ColoredBox(
                     color: Colors.white,
