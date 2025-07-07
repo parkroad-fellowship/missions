@@ -94,9 +94,11 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                           ],
                         ),
                         child: Text(
-                          l10n.areGoing(event
-                              .loggedInMemberEventSubscription!
-                              .numberOfAttendees),
+                          l10n.areGoing(
+                            event
+                                .loggedInMemberEventSubscription!
+                                .numberOfAttendees,
+                          ),
                           style: theme.textTheme.labelLarge?.copyWith(
                             color: theme.colorScheme.onPrimary,
                             fontWeight: FontWeight.w600,

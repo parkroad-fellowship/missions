@@ -101,7 +101,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
               ),
             ),
           ),
-          
+
           // Form content
           Expanded(
             child: Padding(
@@ -110,7 +110,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 24),
-                  
+
                   // Amount input card
                   Container(
                     padding: const EdgeInsets.all(20),
@@ -129,7 +129,9 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.secondary.withValues(alpha: 0.2),
+                                color: theme.colorScheme.secondary.withValues(
+                                  alpha: 0.2,
+                                ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(
@@ -148,16 +150,21 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        
-                        FormFieldLabel(label: 'Amount (KES)', isRequired: true),
+
+                        const FormFieldLabel(
+                          label: 'Amount (KES)',
+                          isRequired: true,
+                        ),
                         const SizedBox(height: 8),
-                        
+
                         Container(
                           decoration: BoxDecoration(
                             color: theme.colorScheme.surface,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                              color: theme.colorScheme.outline.withValues(
+                                alpha: 0.3,
+                              ),
                             ),
                           ),
                           child: Row(
@@ -168,7 +175,8 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                                   vertical: 20,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: theme.colorScheme.surfaceContainerHighest,
+                                  color:
+                                      theme.colorScheme.surfaceContainerHighest,
                                   borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(12),
                                     bottomLeft: Radius.circular(12),
@@ -205,9 +213,9 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       ],
                     ),
                   ),
-                  
+
                   const Spacer(),
-                  
+
                   // Submit button
                   BlocConsumer<AddTokenCubit, AddTokenState>(
                     listener: (context, state) {

@@ -5,9 +5,9 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class AddExpenseViewHandset extends StatefulWidget {
   const AddExpenseViewHandset({required this.missionUlid, super.key});
@@ -29,7 +29,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
   bool _isLoading = false;
   PRFExpenseCategory? selectedExpenseCategory;
   PRFChargeType? selectedChargeType;
-  double _totalAmount = 0.0;
+  double _totalAmount = 0;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     final quantity = double.tryParse(_quantityController.text) ?? 0;
     final charge = double.tryParse(_chargeController.text) ?? 0;
     final lineTotal = unitCost * quantity;
-    
+
     setState(() {
       _totalAmount = lineTotal + charge;
     });
@@ -52,12 +52,12 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
 
   bool get _isFormValid {
     return selectedExpenseCategory != null &&
-           selectedChargeType != null &&
-           _unitCostController.text.isNotEmpty &&
-           _quantityController.text.isNotEmpty &&
-           _chargeController.text.isNotEmpty &&
-           _narrationController.text.isNotEmpty &&
-           _confirmationMessageController.text.isNotEmpty;
+        selectedChargeType != null &&
+        _unitCostController.text.isNotEmpty &&
+        _quantityController.text.isNotEmpty &&
+        _chargeController.text.isNotEmpty &&
+        _narrationController.text.isNotEmpty &&
+        _confirmationMessageController.text.isNotEmpty;
   }
 
   @override
@@ -108,7 +108,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary.withValues(alpha: 0.2),
+                          color: theme.colorScheme.onPrimary.withValues(
+                            alpha: 0.2,
+                          ),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -123,184 +125,195 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                   ],
                 ),
               ).animate().fadeIn().slideY(begin: -0.3, end: 0),
-              
+
               const SizedBox(height: 24),
 
               // Main Form Card
               Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Category Selection
-                      _buildSectionHeader('Expense Details', Icons.category),
-                      const SizedBox(height: 16),
-                      BlocBuilder<GetExpenseCategoriesCubit, GetExpenseCategoriesState>(
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            orElse: () => const SizedBox.shrink(),
-                            loading: () => const LinearProgressIndicator(),
-                            loaded: (expenseCategories) => _buildCategorySelector(
-                              expenseCategories,
-                              theme,
-                            ),
-                          );
-                        },
-                      ),
-                      
-                      const SizedBox(height: 24),
-                      
-                      // Amount Section
-                      _buildSectionHeader('Amount Details', Icons.payments),
-                      const SizedBox(height: 16),
-                      Row(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: _buildNumberField(
-                              controller: _unitCostController,
-                              label: 'Unit Cost',
-                              hint: 'Enter cost per item',
-                              prefix: 'KES ',
-                            ),
+                          // Category Selection
+                          _buildSectionHeader(
+                            'Expense Details',
+                            Icons.category,
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: _buildNumberField(
-                              controller: _quantityController,
-                              label: 'Quantity',
-                              hint: 'Enter quantity',
-                              prefix: '× ',
-                            ),
+                          const SizedBox(height: 16),
+                          BlocBuilder<
+                            GetExpenseCategoriesCubit,
+                            GetExpenseCategoriesState
+                          >(
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => const SizedBox.shrink(),
+                                loading: () => const LinearProgressIndicator(),
+                                loaded: (expenseCategories) =>
+                                    _buildCategorySelector(
+                                      expenseCategories,
+                                      theme,
+                                    ),
+                              );
+                            },
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Amount Section
+                          _buildSectionHeader('Amount Details', Icons.payments),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildNumberField(
+                                  controller: _unitCostController,
+                                  label: 'Unit Cost',
+                                  hint: 'Enter cost per item',
+                                  prefix: 'KES ',
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: _buildNumberField(
+                                  controller: _quantityController,
+                                  label: 'Quantity',
+                                  hint: 'Enter quantity',
+                                  prefix: '× ',
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Manual Charge Entry
+                          _buildNumberField(
+                            controller: _chargeController,
+                            label: 'Transaction Charge',
+                            hint: 'Enter transaction cost manually',
+                            prefix: 'KES ',
+                            fullWidth: true,
+                          ),
+
+                          if (_totalAmount > 0) ...[
+                            const SizedBox(height: 16),
+                            _buildCalculationSummary(theme),
+                          ],
+
+                          const SizedBox(height: 24),
+
+                          // Transaction Type
+                          _buildSectionHeader('Payment Method', Icons.payment),
+                          const SizedBox(height: 16),
+                          _buildTransactionTypeSelector(theme),
+
+                          const SizedBox(height: 24),
+
+                          // Description Section
+                          _buildSectionHeader('Description', Icons.description),
+                          const SizedBox(height: 16),
+                          PRFTextAreaInput(
+                            hintText: 'Describe what the money was used for...',
+                            controller: _narrationController,
+                          ),
+
+                          const SizedBox(height: 16),
+                          PRFTextInput(
+                            hintText:
+                                'Enter confirmation message (SMS/Receipt)',
+                            controller: _confirmationMessageController,
                           ),
                         ],
                       ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Manual Charge Entry
-                      _buildNumberField(
-                        controller: _chargeController,
-                        label: 'Transaction Charge',
-                        hint: 'Enter transaction cost manually',
-                        prefix: 'KES ',
-                        fullWidth: true,
-                      ),
-                      
-                      if (_totalAmount > 0) ...[
-                        const SizedBox(height: 16),
-                        _buildCalculationSummary(theme),
-                      ],
-                      
-                      const SizedBox(height: 24),
-                      
-                      // Transaction Type
-                      _buildSectionHeader('Payment Method', Icons.payment),
-                      const SizedBox(height: 16),
-                      _buildTransactionTypeSelector(theme),
-                      
-                      const SizedBox(height: 24),
-                      
-                      // Description Section
-                      _buildSectionHeader('Description', Icons.description),
-                      const SizedBox(height: 16),
-                      PRFTextAreaInput(
-                        hintText: 'Describe what the money was used for...',
-                        controller: _narrationController,
-                        minLines: 3,
-                        maxLines: 5,
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      PRFTextInput(
-                        hintText: 'Enter confirmation message (SMS/Receipt)',
-                        controller: _confirmationMessageController,
-                      ),
-                    ],
-                  ),
-                ),
-              ).animate(delay: const Duration(milliseconds: 200))
-                .fadeIn()
-                .slideY(begin: 0.3, end: 0),
-              
+                    ),
+                  )
+                  .animate(delay: const Duration(milliseconds: 200))
+                  .fadeIn()
+                  .slideY(begin: 0.3, end: 0),
+
               const SizedBox(height: 24),
-              
+
               // Submit Button
               BlocConsumer<AddExpenseCubit, AddExpenseState>(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    loading: (_) => setState(() => _isLoading = true),
-                    loaded: (_) {
-                      setState(() => _isLoading = false);
-                      Gaimon.success();
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.expenseRecorded)),
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) => setState(() => _isLoading = true),
+                        loaded: (_) {
+                          setState(() => _isLoading = false);
+                          Gaimon.success();
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(l10n.expenseRecorded)),
+                          );
+                        },
+                        error: (error) {
+                          setState(() => _isLoading = false);
+                          Gaimon.error();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.message)),
+                          );
+                        },
                       );
                     },
-                    error: (error) {
-                      setState(() => _isLoading = false);
-                      Gaimon.error();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(error.message)),
-                      );
-                    },
-                  );
-                },
-                builder: (context, state) {
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: _isFormValid && !_isLoading ? _submitForm : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _isFormValid 
-                            ? theme.colorScheme.primary 
-                            : theme.colorScheme.surfaceContainerHighest,
-                        foregroundColor: _isFormValid 
-                            ? theme.colorScheme.onPrimary 
-                            : theme.colorScheme.onSurfaceVariant,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: _isFormValid ? 4 : 0,
-                      ),
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.add_circle_outline,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Record Expense',
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
+                    builder: (context, state) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          onPressed: _isFormValid && !_isLoading
+                              ? _submitForm
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _isFormValid
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.surfaceContainerHighest,
+                            foregroundColor: _isFormValid
+                                ? theme.colorScheme.onPrimary
+                                : theme.colorScheme.onSurfaceVariant,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                    ),
-                  );
-                },
-              ).animate(delay: const Duration(milliseconds: 400))
-                .fadeIn()
-                .slideY(begin: 0.5, end: 0),
+                            elevation: _isFormValid ? 4 : 0,
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.add_circle_outline,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Record Expense',
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      );
+                    },
+                  )
+                  .animate(delay: const Duration(milliseconds: 400))
+                  .fadeIn()
+                  .slideY(begin: 0.5, end: 0),
             ],
           ),
         ),
@@ -419,7 +432,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
         ),
       ],
     );
-    
+
     return fullWidth ? field : Expanded(child: field);
   }
 
@@ -428,7 +441,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     final quantity = double.tryParse(_quantityController.text) ?? 0;
     final charge = double.tryParse(_chargeController.text) ?? 0;
     final lineTotal = unitCost * quantity;
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -444,7 +457,12 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
           const SizedBox(height: 8),
           _buildCalculationRow('Transaction Charge', charge, theme),
           const Divider(),
-          _buildCalculationRow('Total Amount', _totalAmount, theme, isTotal: true),
+          _buildCalculationRow(
+            'Total Amount',
+            _totalAmount,
+            theme,
+            isTotal: true,
+          ),
         ],
       ),
     );
@@ -520,7 +538,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     color: isSelected
                         ? theme.colorScheme.onPrimary
                         : theme.colorScheme.onSurface,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
                   ),
                 ),
               ],
@@ -544,7 +564,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
 
   Future<void> _submitForm() async {
     if (!_isFormValid) return;
-    
+
     await context.read<AddExpenseCubit>().addExpense(
       missionUlid: widget.missionUlid,
       expenseCategoryUlid: selectedExpenseCategory!.ulid,

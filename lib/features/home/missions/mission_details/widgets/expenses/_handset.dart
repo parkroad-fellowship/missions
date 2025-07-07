@@ -15,9 +15,7 @@ import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -30,7 +28,8 @@ class ExpensesViewHandset extends StatefulWidget {
   State<ExpensesViewHandset> createState() => _ExpensesViewHandsetState();
 }
 
-class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with TimezoneMixin {
+class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
+    with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
   bool _showBreakdown = false;
 
@@ -92,7 +91,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                       ),
                     ),
 
-                  SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 64,
                     ),
@@ -559,7 +558,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
     );
   }
 
-    Widget _buildExpenseCard(
+  Widget _buildExpenseCard(
     BuildContext context,
     AppLocalizations l10n,
     PRFExpense expense,
@@ -647,7 +646,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                   ),
                 ],
               ),
-              
+
               // Description Row (if exists)
               if (expense.narration.isNotEmpty) ...[
                 const SizedBox(height: 8),
@@ -660,10 +659,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
-              
+
               const SizedBox(height: 12),
-              
-                            // Bottom Section with Charge Type, Receipts, and Timestamp
+
+              // Bottom Section with Charge Type, Receipts, and Timestamp
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -687,12 +686,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // Receipt Count and Timestamp Row
                   Row(
-                    
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Receipt Count (if exists)
@@ -727,10 +725,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                             ],
                           ),
                         ),
-                      
+
                       // Spacer to push timestamp to the right
                       if (expense.receipts.isEmpty) const Spacer(),
-                      
+
                       // Timestamp
                       Align(
                         alignment: Alignment.centerLeft,
@@ -739,7 +737,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
-                         
                         ),
                       ),
                     ],
@@ -1058,22 +1055,16 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                                 height: double.infinity,
                                 color:
                                     theme.colorScheme.surfaceContainerHighest,
-                                child: receipt.temporaryURL != null
-                                    ? Image.network(
-                                        receipt.temporaryURL!,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                              return const Icon(
-                                                Icons.broken_image,
-                                                size: 32,
-                                              );
-                                            },
-                                      )
-                                    : const Icon(
-                                        Icons.receipt,
-                                        size: 32,
-                                      ),
+                                child: Image.network(
+                                  receipt.temporaryURL,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(
+                                      Icons.broken_image,
+                                      size: 32,
+                                    );
+                                  },
+                                ),
                               ),
                               // Overlay with receipt info
                               Positioned(
@@ -1093,7 +1084,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                                     ),
                                   ),
                                   child: Text(
-                                    receipt.fileName ?? 'Receipt ${index + 1}',
+                                    receipt.fileName,
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       color: Colors.white,
                                       fontSize: 10,
@@ -1218,7 +1209,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
   }
 
   void _showReceiptViewer(BuildContext context, PRFMedia receipt) {
-    showDialog(
+    showDialog<dynamic>(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.black,
@@ -1227,7 +1218,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
             Center(
               child: InteractiveViewer(
                 child: Image.network(
-                  receipt.temporaryURL!,
+                  receipt.temporaryURL,
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -1267,26 +1258,25 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with Timezone
                 ),
               ),
             ),
-            if (receipt.fileName != null)
-              Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.7),
-                    borderRadius: BorderRadius.circular(8),
+            Positioned(
+              bottom: 16,
+              left: 16,
+              right: 16,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  receipt.fileName,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
                   ),
-                  child: Text(
-                    receipt.fileName!,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
+            ),
           ],
         ),
       ),

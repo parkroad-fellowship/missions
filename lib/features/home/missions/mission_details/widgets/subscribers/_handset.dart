@@ -68,10 +68,14 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
               padding: const EdgeInsets.symmetric(vertical: 16),
               itemCount: subscriptions!.length,
               separatorBuilder: (context, index) => const SizedBox(height: 0),
-              itemBuilder: (context, index) => BeautifulSubscriberCard(
-                subscription: subscriptions[index],
-                index: index,
-              ).animate(delay: (index * 100).ms).fadeIn().slideX(begin: -0.3, end: 0),
+              itemBuilder: (context, index) =>
+                  BeautifulSubscriberCard(
+                        subscription: subscriptions[index],
+                        index: index,
+                      )
+                      .animate(delay: (index * 100).ms)
+                      .fadeIn()
+                      .slideX(begin: -0.3, end: 0),
             ),
           ),
         );
@@ -94,7 +98,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isLeader = subscription.missionRole != PRFMissionRole.member;
-    
+
     return GestureDetector(
       onTap: () => _viewSubscriber(context, subscription.member),
       child: Container(
@@ -175,7 +179,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
                   theme,
                   Icons.call_outlined,
                   'Call',
-                  () => _makeCall(),
+                  _makeCall,
                 ),
                 const SizedBox(width: 12),
                 _buildActionButton(
@@ -210,7 +214,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
         ),
       );
     }
-    
+
     return Icon(
       Icons.person_rounded,
       color: theme.colorScheme.onPrimaryContainer,
@@ -251,13 +255,15 @@ class BeautifulSubscriberCard extends StatelessWidget {
   }
 
   Widget _buildStatusChip(ThemeData theme) {
-    final isApproved = subscription.status == PRFMissionSubscriptionStatus.approved;
-    final isPending = subscription.status == PRFMissionSubscriptionStatus.pending;
-    
+    final isApproved =
+        subscription.status == PRFMissionSubscriptionStatus.approved;
+    final isPending =
+        subscription.status == PRFMissionSubscriptionStatus.pending;
+
     Color backgroundColor;
     Color textColor;
     Color borderColor;
-    
+
     if (isApproved) {
       backgroundColor = theme.colorScheme.primary.withValues(alpha: 0.1);
       textColor = theme.colorScheme.primary;
@@ -271,7 +277,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
       textColor = theme.colorScheme.onSurfaceVariant;
       borderColor = theme.colorScheme.outline.withValues(alpha: 0.3);
     }
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -371,7 +377,9 @@ class BeautifulSubscriberCard extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
@@ -384,20 +392,24 @@ class BeautifulSubscriberCard extends StatelessWidget {
                         color: Colors.white,
                       ),
                       child: ClipOval(
-                        child: member.profilePictureUrl != null &&
+                        child:
+                            member.profilePictureUrl != null &&
                                 member.profilePictureUrl!.isNotEmpty
                             ? Image.network(
                                 member.profilePictureUrl!,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) =>
-                                    _buildProfileFallback(Theme.of(context), member),
+                                    _buildProfileFallback(
+                                      Theme.of(context),
+                                      member,
+                                    ),
                               )
                             : _buildProfileFallback(Theme.of(context), member),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  
+
                   // Member Name
                   Text(
                     member.fullName!,
@@ -407,7 +419,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Bio Section
                   if (member.bio != null && member.bio!.isNotEmpty) ...[
                     Container(
@@ -417,7 +429,9 @@ class BeautifulSubscriberCard extends StatelessWidget {
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.outline.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Text(
@@ -428,13 +442,13 @@ class BeautifulSubscriberCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                   ],
-                  
+
                   // Contact Actions
                   Row(
                     children: [
                       Expanded(
                         child: PRFPrimaryButton(
-                          onPressed: () => _makeCall(),
+                          onPressed: _makeCall,
                           title: 'Call Member',
                           disabled: false,
                         ),

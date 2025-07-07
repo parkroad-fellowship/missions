@@ -159,7 +159,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
         ),
       ),
       floatingActionButton: switch (_currentTab) {
-        0 || 1  => BlocConsumer<SubscribeCubit, SubscribeState>(
+        0 || 1 => BlocConsumer<SubscribeCubit, SubscribeState>(
           listener: (context, state) {
             state.mapOrNull(
               loaded: (_) {
