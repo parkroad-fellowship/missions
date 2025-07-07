@@ -724,6 +724,36 @@ abstract class AppLocalizations {
   /// **'Mission Question'**
   String get missionQuestion;
 
+  /// No description provided for @expenseTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Tracking'**
+  String get expenseTracking;
+
+  /// No description provided for @currentBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Balance'**
+  String get currentBalance;
+
+  /// No description provided for @addToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Token'**
+  String get addToken;
+
+  /// No description provided for @addExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense'**
+  String get addExpense;
+
+  /// No description provided for @expenseBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Breakdown'**
+  String get expenseBreakdown;
+
   /// No description provided for @addQuestion.
   ///
   /// In en, this message translates to:

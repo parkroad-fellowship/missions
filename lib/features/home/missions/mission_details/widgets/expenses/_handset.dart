@@ -2,10 +2,13 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/add_expense/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/widgets/add_token/add_token.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense.dart';
 import 'package:app/models/remote/prf_media.dart';
+import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/progress/circular_progress_indicator.dart';
@@ -27,15 +30,15 @@ class ExpensesViewHandset extends StatefulWidget {
   State<ExpensesViewHandset> createState() => _ExpensesViewHandsetState();
 }
 
-class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
+class _ExpensesViewHandsetState extends State<ExpensesViewHandset> with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
+  bool _showBreakdown = false;
 
   @override
   void initState() {
     context.read<GetMissionExpenseCubit>().getMissionExpense(
       missionUlid: missionUlid,
     );
-
     super.initState();
   }
 
@@ -47,216 +50,51 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => const Center(child: CircularProgressIndicator()),
-          empty: () => Center(
-            child: Text(
-              l10n.askMissionDeskToDisburseFunds,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
+          empty: () => _buildEmptyState(context, l10n),
           loaded: (missionExpense) {
-            Logger().f(missionExpense.expenses);
             return RefreshIndicator(
               onRefresh: () => context
                   .read<GetMissionExpenseCubit>()
                   .getMissionExpense(missionUlid: missionUlid),
               child: CustomScrollView(
                 slivers: [
-                  // Start Navigation Bar
+                  // Header with actions
                   SliverToBoxAdapter(
-                    child: Row(
-                      children: [
-                        Text(
-                          l10n.summary,
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                        const Spacer(),
-                        BlocBuilder<
-                          GetMissionExpenseCubit,
-                          GetMissionExpenseState
-                        >(
-                          builder: (context, state) {
-                            return IconButton(
-                              icon: state.maybeWhen(
-                                orElse: () => const Icon(Icons.refresh),
-                                loading: () =>
-                                    const CircularProgressIndicator(),
-                                loaded: (_) => const Icon(Icons.refresh),
-                              ),
-                              onPressed: () => context
-                                  .read<GetMissionExpenseCubit>()
-                                  .getMissionExpense(
-                                    missionUlid: missionUlid,
-                                  ),
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.mail),
-                          onPressed: () =>
-                              WoltModalSheet.show<void>(
-                                context: context,
-                                pageListBuilder: (modalSheetContext) {
-                                  return [
-                                    WoltModalSheetPage(
-                                      backgroundColor: Colors.white,
-                                      surfaceTintColor: Colors.white,
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                            0.8,
-                                        child: AddTokenView(
-                                          missionExpenseUlid:
-                                              missionExpense.ulid,
-                                        ),
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              ).then((_) {
-                                if (context.mounted) {
-                                  context
-                                      .read<GetMissionExpenseCubit>()
-                                      .getMissionExpense(
-                                        missionUlid: missionUlid,
-                                      );
-                                }
-                              }),
-                        ),
-                      ],
+                    child: _buildHeader(context, l10n, missionExpense),
+                  ),
+
+                  // Financial Overview Cards
+                  SliverToBoxAdapter(
+                    child: _buildFinancialOverview(
+                      context,
+                      l10n,
+                      missionExpense,
                     ),
                   ),
+
+                  // Quick Actions
                   SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32.w),
-                      child: DataTable(
-                        columnSpacing: 24,
-                        dataRowMinHeight: 48,
-                        dataRowMaxHeight: double.infinity,
-                        columns: [
-                          DataColumn(label: Text(l10n.item)),
-                          DataColumn(label: Text(l10n.figure)),
-                        ],
-                        rows: [
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.amountReceived)),
-                              DataCell(
-                                Text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.amountReceived),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.amountSpent)),
-                              DataCell(
-                                _text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.amountSpent),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.balance)),
-                              DataCell(
-                                _text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.balance),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.tokenAmount)),
-                              DataCell(
-                                _text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.tokenAmount),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.refundCharge)),
-                              DataCell(
-                                _text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.refundCharge),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.amountToRefund)),
-                              DataCell(
-                                _text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.amountToRefund),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.refundedAmount)),
-                              DataCell(
-                                _text(
-                                  NumberFormat.currency(
-                                    locale: 'en_KE',
-                                    symbol: 'KES ',
-                                  ).format(missionExpense.amountRefunded),
-                                ),
-                              ),
-                            ],
-                          ),
-                          DataRow(
-                            cells: [
-                              DataCell(Text(l10n.fullyRefunded)),
-                              DataCell(
-                                Text(
-                                  missionExpense.isRefunded
-                                      ? l10n.yes
-                                      : l10n.no,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                    child: _buildQuickActions(context, l10n, missionExpense),
+                  ),
+
+                  // Expenses Breakdown Toggle
+                  SliverToBoxAdapter(
+                    child: _buildBreakdownToggle(context, l10n),
+                  ),
+
+                  // Expenses List
+                  if (_showBreakdown)
+                    SliverToBoxAdapter(
+                      child: _buildExpensesList(
+                        context,
+                        l10n,
+                        missionExpense.expenses,
                       ),
                     ),
-                  ),
-                  // End Navigation Bar
-                  const SliverToBoxAdapter(child: Divider()),
-                  SliverToBoxAdapter(child: SizedBox(height: 48.h)),
+
                   SliverToBoxAdapter(
-                    child: Text(
-                      l10n.breakdown,
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: ExpensesDataTable(
-                      missionUlid: missionUlid,
-                      expenses: missionExpense.expenses,
+                    child: SizedBox(
+                      height: 64,
                     ),
                   ),
                 ],
@@ -267,389 +105,664 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
       },
     );
   }
-}
 
-class ExpensesDataTable extends StatelessWidget with TimezoneMixin {
-  const ExpensesDataTable({
-    required this.expenses,
-    required this.missionUlid,
-    super.key,
-  });
-  final List<PRFExpense> expenses;
-  final String missionUlid;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return DataTable(
-      columnSpacing: 24,
-      horizontalMargin: 16,
-      dataRowMinHeight: 64,
-      dataRowMaxHeight: double.infinity,
-      columns: [
-        DataColumn(label: _title(l10n.item)),
-        DataColumn(label: _title(l10n.unitCostAndQty)),
-        DataColumn(label: _title(l10n.totalCost)),
-      ],
-      rows: expenses
-          .map(
-            (expense) => DataRow(
-              onLongPress: () => _showExpenseDetails(
-                context,
-                expense,
-                missionUlid,
-                timezone,
+  Widget _buildEmptyState(BuildContext context, AppLocalizations l10n) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer.withValues(
+                  alpha: 0.1,
+                ),
+                borderRadius: BorderRadius.circular(20),
               ),
-              cells: [
-                DataCell(
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          expense.expenseCategory!.name,
-                          softWrap: true,
-                          overflow: TextOverflow.visible,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        if (expense.narration.isNotEmpty)
-                          Text(
-                            '- ${expense.narration}',
-
-                            softWrap: true,
-                            overflow: TextOverflow.visible,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-                DataCell(
-                  _text(
-                    '${Misc.formatCash(expense.unitCost)} x'
-                    ' ${expense.quantity}',
-                  ),
-                ),
-                DataCell(
-                  _text(
-                    '${Misc.formatCash(expense.lineTotal)} '
-                    '(${Misc.formatCash(expense.charge)})',
-                  ),
-                ),
-              ],
+              child: Icon(
+                Icons.account_balance_wallet_outlined,
+                size: 64,
+                color: theme.colorScheme.primary,
+              ),
             ),
-          )
-          .toList(),
-    );
-  }
-}
-
-Widget _buildDetailRow(
-  BuildContext context,
-  String label,
-  String value,
-) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 8),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 100,
-          child: Text(
-            '$label:',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
-        Expanded(
-          child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _title(String text) {
-  return SizedBox(
-    width: 120,
-    child: Text(text, softWrap: true, overflow: TextOverflow.visible),
-  );
-}
-
-Widget _text(String text) {
-  return Text(text, softWrap: true, overflow: TextOverflow.visible);
-}
-
-Future<void> _showExpenseDetails(
-  BuildContext context,
-  PRFExpense expense,
-  String missionUlid,
-  String timezone,
-) async {
-  final l10n = context.l10n;
-  return WoltModalSheet.show<dynamic>(
-    context: context,
-    useSafeArea: true,
-    pageListBuilder: (_) => [
-      WoltModalSheetPage(
-        child: Padding(
-          padding:
-              const EdgeInsets.symmetric(
-                horizontal: 16,
-              ) +
-              const EdgeInsets.only(bottom: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    l10n.expenseDetails,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.headlineMedium,
-                  ),
-                  BlocConsumer<UploadMediaCubit, UploadMediaState>(
-                    listener: (context, state) {
-                      state.maybeWhen(
-                        orElse: () {},
-                        loading: () {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                l10n.pleaseWaitForUpload,
-                              ),
-                            ),
-                          );
-                        },
-                        loaded: () {
-                          context
-                              .read<GetMissionExpenseCubit>()
-                              .getMissionExpense(
-                                missionUlid: missionUlid,
-                              );
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                l10n.successfulUpload,
-                              ),
-                            ),
-                          );
-                        },
-                        error: (message) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(
-                            SnackBar(
-                              content: Text(message),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        orElse: () => IconButton(
-                          icon: const Icon(
-                            Icons.receipt_long,
-                          ),
-                          onPressed: () => context
-                              .read<SelectMediaCubit>()
-                              .selectMedia(
-                                context: context,
-                                modelUlid: expense.ulid,
-                                model: PRFMediaModel.expenses,
-                                mediaType: RequestType.image,
-                              )
-                              .then((_) {
-                                if (context.mounted) {
-                                  context
-                                      .read<UploadMediaCubit>()
-                                      .uploadMedia();
-                                }
-                              }),
-                        ),
-                        loading: () => const PRFCircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                ],
+            const SizedBox(height: 24),
+            Text(
+              l10n.askMissionDeskToDisburseFunds,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(height: 16),
-              _buildDetailRow(
-                context,
-                l10n.expenseCategory,
-                expense.expenseCategory?.name ?? 'N/A',
-              ),
-              _buildDetailRow(
-                context,
-                l10n.narration,
-                expense.narration.isNotEmpty ? expense.narration : 'N/A',
-              ),
-              _buildDetailRow(
-                context,
-                l10n.unitCost,
-                Misc.formatCash(expense.unitCost),
-              ),
-              _buildDetailRow(
-                context,
-                l10n.quantity,
-                expense.quantity.toString(),
-              ),
-              _buildDetailRow(
-                context,
-                l10n.total,
-                Misc.formatCash(expense.lineTotal),
-              ),
-              _buildDetailRow(
-                context,
-                l10n.charge,
-                Misc.formatCash(expense.charge),
-              ),
-              _buildDetailRow(
-                context,
-                l10n.addedOn,
-                Misc.timestamp(
-                  expense.createdAt,
-                  timezone,
-                ),
-              ),
-              if (expense.confirmationMessage != null) ...[
-                const SizedBox(height: 16),
-                Text(
-                  l10n.confirmationMessage,
-                  style:
-                      Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                Text(expense.confirmationMessage ?? ''),
-              ],
-              if (expense.receipts.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Text(
-                  l10n.receipts,
-                  style:
-                      Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: expense.receipts.length,
-                    itemBuilder: (context, index) {
-                      final receipt = expense.receipts[index];
-                      return GestureDetector(
-                        onTap: () => _viewReceipt(
-                          context,
-                          receipt,
-                        ),
-                        child: Container(
-                          width: 80,
-                          margin: const EdgeInsets.only(
-                            right: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              8,
-                            ),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.receipt,
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ],
-          ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
-    ],
-  );
-}
+    );
+  }
 
-class ExpenseCard extends StatelessWidget {
-  const ExpenseCard({required this.expense, super.key});
-
-  final PRFExpense expense;
-
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    return Animate(
-      effects: const [SaturateEffect()],
-      child: Stack(
+  Widget _buildHeader(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFMissionExpense missionExpense,
+  ) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
         children: [
-          Container(
-            width: width,
-            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.secondary.withValues(alpha: .3),
-              borderRadius: BorderRadius.circular(48.r),
-            ),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  NumberFormat.currency(
-                    locale: 'en_KE',
-                    symbol: 'KES ',
-                  ).format(expense.unitCost),
-                  style: Theme.of(context).textTheme.displayLarge,
+                  l10n.expenseTracking,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(height: 16.h),
-                Text(expense.confirmationMessage.toString()),
-                SizedBox(height: 16.h),
+                const SizedBox(height: 4),
+                Text(
+                  'Mission Financial Overview',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          BlocBuilder<GetMissionExpenseCubit, GetMissionExpenseState>(
+            builder: (context, state) {
+              return IconButton.filled(
+                onPressed: () => context
+                    .read<GetMissionExpenseCubit>()
+                    .getMissionExpense(missionUlid: missionUlid),
+                icon: state.maybeWhen(
+                  orElse: () => const Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                  loading: () => const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  loaded: (_) => const Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFinancialOverview(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFMissionExpense missionExpense,
+  ) {
+    final theme = Theme.of(context);
+    final spentPercentage = missionExpense.amountReceived > 0
+        ? (missionExpense.amountSpent / missionExpense.amountReceived)
+        : 0.0;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          // Main Balance Card
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primary.withValues(alpha: 0.8),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(expense.expenseCategory!.name),
                     Text(
-                      '${DateFormat.yMMMMEEEEd().format(expense.createdAt)} '
-                      '${DateFormat.jm().format(expense.createdAt)}',
+                      l10n.currentBalance,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.9),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${(spentPercentage * 100).toStringAsFixed(1)}% spent',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 16.h),
+                const SizedBox(height: 12),
+                Text(
+                  NumberFormat.currency(
+                    locale: 'en_KE',
+                    symbol: 'KES ',
+                  ).format(missionExpense.balance),
+                  style: theme.textTheme.headlineLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Progress bar
+                Container(
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: FractionallySizedBox(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: spentPercentage.clamp(0.0, 1.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                  ),
+                ),
               ],
+            ),
+          ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.3, end: 0),
+
+          const SizedBox(height: 16),
+
+          // Financial Stats Grid
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  context,
+                  l10n.amountReceived,
+                  NumberFormat.currency(
+                    locale: 'en_KE',
+                    symbol: 'KES ',
+                  ).format(missionExpense.amountReceived),
+                  Icons.trending_up,
+                  theme.colorScheme.secondary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildStatCard(
+                  context,
+                  l10n.amountSpent,
+                  NumberFormat.currency(
+                    locale: 'en_KE',
+                    symbol: 'KES ',
+                  ).format(missionExpense.amountSpent),
+                  Icons.trending_down,
+                  theme.colorScheme.error,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  context,
+                  l10n.tokenAmount,
+                  NumberFormat.currency(
+                    locale: 'en_KE',
+                    symbol: 'KES ',
+                  ).format(missionExpense.tokenAmount),
+                  Icons.token,
+                  theme.colorScheme.tertiary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildStatCard(
+                  context,
+                  l10n.amountToRefund,
+                  NumberFormat.currency(
+                    locale: 'en_KE',
+                    symbol: 'KES ',
+                  ).format(missionExpense.amountToRefund),
+                  Icons.refresh,
+                  theme.colorScheme.outline,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(
+    BuildContext context,
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
+    final theme = Theme.of(context);
+    return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      icon,
+                      size: 16,
+                      color: color,
+                    ),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        )
+        .animate()
+        .fadeIn(delay: 200.ms, duration: 400.ms)
+        .slideX(begin: 0.3, end: 0);
+  }
+
+  Widget _buildQuickActions(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFMissionExpense missionExpense,
+  ) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: ElevatedButton.icon(
+              onPressed: () => _showAddTokenModal(context, missionExpense),
+              icon: const Icon(Icons.add_circle_outline),
+              label: Text(l10n.addToken),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.secondary,
+                foregroundColor: theme.colorScheme.onSecondary,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: OutlinedButton.icon(
+              onPressed: () => _showAddExpenseModal(context),
+              icon: const Icon(Icons.receipt_long),
+              label: Text(l10n.addExpense),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
   }
-}
 
-Future<void> _viewReceipt(BuildContext context, PRFMedia receipt) =>
+  Widget _buildBreakdownToggle(BuildContext context, AppLocalizations l10n) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: InkWell(
+        onTap: () => setState(() => _showBreakdown = !_showBreakdown),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.list_alt,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  l10n.expenseBreakdown,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              AnimatedRotation(
+                turns: _showBreakdown ? 0.5 : 0,
+                duration: const Duration(milliseconds: 200),
+                child: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExpensesList(
+    BuildContext context,
+    AppLocalizations l10n,
+    List<PRFExpense> expenses,
+  ) {
+    if (expenses.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(32),
+        child: Center(
+          child: Column(
+            children: [
+              Icon(
+                Icons.receipt_outlined,
+                size: 48,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'No expenses recorded yet',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: expenses
+            .map((expense) => _buildExpenseCard(context, l10n, expense))
+            .toList(),
+      ),
+    );
+  }
+
+    Widget _buildExpenseCard(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFExpense expense,
+  ) {
+    final theme = Theme.of(context);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: InkWell(
+        onTap: () => _showExpenseDetails(context, expense),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Row with Category and Amount
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer.withValues(
+                        alpha: 0.3,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.category,
+                      size: 16,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          expense.expenseCategory?.name ?? 'Unknown Category',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          Misc.formatCash(expense.lineTotal),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.primary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                        Text(
+                          '${Misc.formatCash(expense.unitCost)} × ${expense.quantity}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              
+              // Description Row (if exists)
+              if (expense.narration.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  expense.narration,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+              
+              const SizedBox(height: 12),
+              
+                            // Bottom Section with Charge Type, Receipts, and Timestamp
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Charge Type Badge
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _getChargeTypeColor(
+                        expense.chargeType,
+                      ).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      expense.chargeType.name.toUpperCase(),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: _getChargeTypeColor(expense.chargeType),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 8),
+                  
+                  // Receipt Count and Timestamp Row
+                  Row(
+                    
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Receipt Count (if exists)
+                      if (expense.receipts.isNotEmpty)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.secondary.withValues(
+                              alpha: 0.1,
+                            ),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.receipt,
+                                size: 12,
+                                color: theme.colorScheme.secondary,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${expense.receipts.length} receipt${expense.receipts.length > 1 ? 's' : ''}',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.secondary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      
+                      // Spacer to push timestamp to the right
+                      if (expense.receipts.isEmpty) const Spacer(),
+                      
+                      // Timestamp
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          Misc.timestamp(expense.createdAt, timezone),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                         
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0);
+  }
+
+  Color _getChargeTypeColor(dynamic chargeType) {
+    final theme = Theme.of(context);
+    // You can customize colors based on charge type
+    return theme.colorScheme.tertiary;
+  }
+
+  void _showAddTokenModal(
+    BuildContext context,
+    PRFMissionExpense missionExpense,
+  ) {
     WoltModalSheet.show<void>(
       context: context,
       pageListBuilder: (modalSheetContext) {
@@ -659,34 +772,524 @@ Future<void> _viewReceipt(BuildContext context, PRFMedia receipt) =>
             surfaceTintColor: Colors.white,
             child: SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.8,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Image.network(
-                      receipt.temporaryURL,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                          child: Icon(Icons.dangerous_outlined),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+              child: AddTokenView(
+                missionExpenseUlid: missionExpense.ulid,
               ),
             ),
           ),
         ];
       },
+    ).then((_) {
+      if (context.mounted) {
+        context.read<GetMissionExpenseCubit>().getMissionExpense(
+          missionUlid: missionUlid,
+        );
+      }
+    });
+  }
+
+  void _showAddExpenseModal(BuildContext context) {
+    WoltModalSheet.show<dynamic>(
+      context: context,
+      useSafeArea: true,
+      pageListBuilder: (_) => [
+        WoltModalSheetPage(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.8,
+            child: AddExpenseViewHandset(
+              missionUlid: widget.missionUlid,
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  void _showExpenseDetails(BuildContext context, PRFExpense expense) {
+    final l10n = context.l10n;
+    WoltModalSheet.show<dynamic>(
+      context: context,
+      useSafeArea: true,
+      pageListBuilder: (_) => [
+        WoltModalSheetPage(
+          child: _buildExpenseDetailsModal(context, l10n, expense),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExpenseDetailsModal(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFExpense expense,
+  ) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                l10n.expenseDetails,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              BlocConsumer<UploadMediaCubit, UploadMediaState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                    orElse: () {},
+                    loading: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(l10n.pleaseWaitForUpload)),
+                      );
+                    },
+                    loaded: () {
+                      context.read<GetMissionExpenseCubit>().getMissionExpense(
+                        missionUlid: missionUlid,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(l10n.successfulUpload)),
+                      );
+                    },
+                    error: (message) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(message)),
+                      );
+                    },
+                  );
+                },
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () => IconButton.filled(
+                      icon: const Icon(Icons.receipt_long, color: Colors.white),
+                      onPressed: () => context
+                          .read<SelectMediaCubit>()
+                          .selectMedia(
+                            context: context,
+                            modelUlid: expense.ulid,
+                            model: PRFMediaModel.expenses,
+                            mediaType: RequestType.image,
+                          )
+                          .then((_) {
+                            if (context.mounted) {
+                              context.read<UploadMediaCubit>().uploadMedia();
+                            }
+                          }),
+                    ),
+                    loading: () => const PRFCircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+
+          // Expense Category
+          if (expense.expenseCategory != null) ...[
+            _buildDetailRow(
+              context,
+              'Category',
+              expense.expenseCategory!.name,
+              Icons.category,
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // Charge Type
+          _buildDetailRow(
+            context,
+            'Charge Type',
+            expense.chargeType.name.toUpperCase(),
+            Icons.payment,
+            valueColor: _getChargeTypeColor(expense.chargeType),
+          ),
+          const SizedBox(height: 16),
+
+          // Amount Details
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest.withValues(
+                alpha: 0.3,
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              children: [
+                _buildAmountRow(context, 'Unit Cost', expense.unitCost),
+                const SizedBox(height: 8),
+                _buildAmountRow(
+                  context,
+                  'Quantity',
+                  expense.quantity,
+                  isQuantity: true,
+                ),
+                const SizedBox(height: 8),
+                _buildAmountRow(context, 'Total', expense.lineTotal),
+                const SizedBox(height: 8),
+                _buildAmountRow(context, 'Transaction Cost', expense.charge),
+                const Divider(height: 24),
+                _buildAmountRow(
+                  context,
+                  'Line Total',
+                  expense.lineTotal + expense.charge,
+                  isTotal: true,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Narration
+          if (expense.narration.isNotEmpty) ...[
+            _buildDetailRow(
+              context,
+              'Description',
+              expense.narration,
+              Icons.description,
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // Member
+          if (expense.member != null) ...[
+            _buildDetailRow(
+              context,
+              'Member',
+              '${expense.member!.firstName} ${expense.member!.lastName}',
+              Icons.person,
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // Confirmation Message
+          if (expense.confirmationMessage != null &&
+              expense.confirmationMessage!.isNotEmpty) ...[
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: theme.colorScheme.primary,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      expense.confirmationMessage!,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // Timestamps
+          _buildDetailRow(
+            context,
+            'Created',
+            Misc.timestamp(expense.createdAt, timezone),
+            Icons.access_time,
+          ),
+          const SizedBox(height: 8),
+          _buildDetailRow(
+            context,
+            'Updated',
+            Misc.timestamp(expense.updatedAt, timezone),
+            Icons.update,
+          ),
+          const SizedBox(height: 24),
+
+          // Receipts Section
+          if (expense.receipts.isNotEmpty) ...[
+            Text(
+              'Receipts (${expense.receipts.length})',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 120,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: expense.receipts.length,
+                itemBuilder: (context, index) {
+                  final receipt = expense.receipts[index];
+                  return Container(
+                    width: 100,
+                    margin: const EdgeInsets.only(right: 12),
+                    child: GestureDetector(
+                      onTap: () => _showReceiptViewer(context, receipt),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: theme.colorScheme.outline.withValues(
+                              alpha: 0.3,
+                            ),
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Stack(
+                            children: [
+                              // Receipt Image
+                              Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                color:
+                                    theme.colorScheme.surfaceContainerHighest,
+                                child: receipt.temporaryURL != null
+                                    ? Image.network(
+                                        receipt.temporaryURL!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                              return const Icon(
+                                                Icons.broken_image,
+                                                size: 32,
+                                              );
+                                            },
+                                      )
+                                    : const Icon(
+                                        Icons.receipt,
+                                        size: 32,
+                                      ),
+                              ),
+                              // Overlay with receipt info
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.transparent,
+                                        Colors.black.withValues(alpha: 0.7),
+                                      ],
+                                    ),
+                                  ),
+                                  child: Text(
+                                    receipt.fileName ?? 'Receipt ${index + 1}',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ] else ...[
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.3,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.receipt_long,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'No receipts attached',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon, {
+    Color? valueColor,
+  }) {
+    final theme = Theme.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          icon,
+          size: 20,
+          color: theme.colorScheme.primary,
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: valueColor ?? theme.colorScheme.onSurface,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAmountRow(
+    BuildContext context,
+    String label,
+    int amount, {
+    bool isQuantity = false,
+    bool isTotal = false,
+  }) {
+    final theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+        Text(
+          isQuantity
+              ? amount.toString()
+              : 'KES ${amount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
+            color: isTotal ? theme.colorScheme.primary : null,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showReceiptViewer(BuildContext context, PRFMedia receipt) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.black,
+        child: Stack(
+          children: [
+            Center(
+              child: InteractiveViewer(
+                child: Image.network(
+                  receipt.temporaryURL!,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.broken_image,
+                            size: 64,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Failed to load image',
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: Colors.white,
+                                ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              top: 16,
+              right: 16,
+              child: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              ),
+            ),
+            if (receipt.fileName != null)
+              Positioned(
+                bottom: 16,
+                left: 16,
+                right: 16,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.7),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    receipt.fileName!,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

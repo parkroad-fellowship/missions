@@ -347,6 +347,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missionQuestion => 'Mission Question';
 
   @override
+  String get expenseTracking => 'Expense Tracking';
+
+  @override
+  String get currentBalance => 'Current Balance';
+
+  @override
+  String get addToken => 'Add Token';
+
+  @override
+  String get addExpense => 'Add Expense';
+
+  @override
+  String get expenseBreakdown => 'Expense Breakdown';
+
+  @override
   String get addQuestion => 'Add Question';
 
   @override
