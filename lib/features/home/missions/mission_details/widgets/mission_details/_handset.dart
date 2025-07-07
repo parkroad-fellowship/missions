@@ -187,8 +187,10 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
-                _buildPrepNotes(context, mission, l10n, theme),
+                if (mission.missionPrepNotes?.isNotEmpty ?? false) ...[
+                  const SizedBox(height: 16),
+                  _buildPrepNotes(context, mission, l10n, theme),
+                ],
               ],
             ),
           ),
@@ -969,9 +971,6 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
     AppLocalizations l10n,
     ThemeData theme,
   ) {
-    if (mission.missionPrepNotes?.isEmpty ?? true)
-      return const SizedBox.shrink();
-
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
