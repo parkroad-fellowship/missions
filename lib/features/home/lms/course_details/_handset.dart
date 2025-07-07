@@ -57,7 +57,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                       borderRadius: BorderRadius.circular(14),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.13),
+                          color: theme.colorScheme.primary.withValues(
+                            alpha: 0.13,
+                          ),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),

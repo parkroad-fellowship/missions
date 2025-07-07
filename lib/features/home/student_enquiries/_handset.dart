@@ -171,7 +171,9 @@ class _StudentEnquiryCard extends StatelessWidget {
             // Avatar
             CircleAvatar(
               radius: 24,
-              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
+              backgroundColor: theme.colorScheme.primary.withValues(
+                alpha: 0.08,
+              ),
               child: Text(
                 Misc.getUserNameInitials(enquiry.content),
                 style: theme.textTheme.titleMedium?.copyWith(

@@ -104,8 +104,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: PRFEmptyView(
                       label: l10n.addPhotos,
-                      description:
-                          l10n.addMissionPhotosDesc,
+                      description: l10n.addMissionPhotosDesc,
                       icon: Icons.photo_camera_outlined,
                       actionLabel: l10n.addPhotos,
                       onActionPressed: () => _showAddMediaModal(context),

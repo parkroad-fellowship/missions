@@ -212,7 +212,6 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
               crossAxisCount: 3,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1,
             ),
             itemCount: images.length + 1,
             itemBuilder: (context, index) {
