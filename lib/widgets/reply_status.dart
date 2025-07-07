@@ -97,14 +97,14 @@ class _StatusChip extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: selected
-                  ? selectedColor.withOpacity(0.5)
-                  : theme.colorScheme.outline.withOpacity(0.3),
+                  ? selectedColor.withValues(alpha: 0.5)
+                  : theme.colorScheme.outline.withValues(alpha: 0.3),
               width: 1.1,
             ),
             boxShadow: selected
                 ? [
                     BoxShadow(
-                      color: selectedColor.withOpacity(0.13),
+                      color: selectedColor.withValues(alpha: 0.13),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),

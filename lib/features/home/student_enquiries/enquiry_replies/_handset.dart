@@ -144,7 +144,7 @@ class _StudentEnquiryRepliesPageHandsetState
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
                             final reply = enquiryReplies[index];
-                            final isStudent = reply.isStudent ?? false;
+                            final isStudent = reply.isStudent;
 
                             return Align(
                               alignment: isStudent
@@ -181,7 +181,7 @@ class _StudentEnquiryRepliesPageHandsetState
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.03),
+                                      color: Colors.black.withValues(alpha: 0.03),
                                       blurRadius: 8,
                                       offset: const Offset(0, 2),
                                     ),

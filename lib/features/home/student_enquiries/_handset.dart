@@ -151,18 +151,18 @@ class _StudentEnquiryCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.shadow.withOpacity(0.08),
+              color: theme.colorScheme.shadow.withValues(alpha: 0.08),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),
             BoxShadow(
-              color: theme.colorScheme.shadow.withOpacity(0.04),
+              color: theme.colorScheme.shadow.withValues(alpha: 0.04),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
           ],
           border: Border.all(
-            color: theme.colorScheme.outline.withOpacity(0.1),
+            color: theme.colorScheme.outline.withValues(alpha: 0.1),
           ),
         ),
         child: Row(
@@ -171,7 +171,7 @@ class _StudentEnquiryCard extends StatelessWidget {
             // Avatar
             CircleAvatar(
               radius: 24,
-              backgroundColor: theme.colorScheme.primary.withOpacity(0.08),
+              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
               child: Text(
                 Misc.getUserNameInitials(enquiry.content),
                 style: theme.textTheme.titleMedium?.copyWith(

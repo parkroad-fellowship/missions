@@ -73,9 +73,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                           padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.moduleDetailsRoute,
-                          ),
+                          onPressed: () => context.router.back(),
                         ),
                       ),
                       const Spacer(),

@@ -2,7 +2,6 @@ import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ModuleDetailsActionCard extends StatelessWidget {
   const ModuleDetailsActionCard({
@@ -18,7 +17,8 @@ class ModuleDetailsActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () => context.router.push(
         LessonDetailsRoute(
@@ -27,50 +27,56 @@ class ModuleDetailsActionCard extends StatelessWidget {
           moduleUlid: moduleUlid,
         ),
       ),
-      child: Stack(
-        children: [
-          Container(
-            width: width,
-            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 80.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: .1),
-              borderRadius: BorderRadius.circular(48.r),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.shadow.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 8,
-                      child: Text(
-                        lessonModule.lesson.name!.toUpperCase(),
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: Icon(
-                        lessonModule.lessonMember?.completionStatus?.icon ??
-                            Icons.watch_later_outlined,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ],
+                Expanded(
+                  child: Text(
+                    lessonModule.lesson.name!.toUpperCase(),
+                    style: theme.textTheme.headlineSmall,
+                  ),
                 ),
-                SizedBox(height: 16.h),
-                Text(
-                  lessonModule.lesson.description!,
-                  style: Theme.of(context).textTheme.bodySmall,
+                Container(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  child: Icon(
+                    lessonModule.lessonMember?.completionStatus?.icon ??
+                        Icons.watch_later_outlined,
+                    color: theme.colorScheme.onPrimary,
+                    size: 20,
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Text(
+              lessonModule.lesson.description ?? '',
+              style: theme.textTheme.bodyMedium,
+            ),
+          ],
+        ),
       ),
     );
   }
