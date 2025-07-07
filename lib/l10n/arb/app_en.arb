@@ -267,6 +267,8 @@
     },
     "missionQuestions": "Mission Questions",
     "@missionQuestions": {},
+    "missionQuestion": "Mission Question",
+    "@missionQuestion": {},
     "addQuestion": "Add Question",
     "@addQuestion": {},
     "questionRecorded": "This question has been recorded",

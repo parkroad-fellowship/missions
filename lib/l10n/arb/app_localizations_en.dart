@@ -344,6 +344,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missionQuestions => 'Mission Questions';
 
   @override
+  String get missionQuestion => 'Mission Question';
+
+  @override
   String get addQuestion => 'Add Question';
 
   @override

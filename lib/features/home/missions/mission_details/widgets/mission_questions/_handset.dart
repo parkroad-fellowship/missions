@@ -7,7 +7,6 @@ import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MissionQuestionsViewHandset extends StatefulWidget {
   const MissionQuestionsViewHandset({required this.missionUlid, super.key});
@@ -34,64 +33,204 @@ class _MissionQuestionsViewHandsetState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
+
     return SingleStreamWrapper(
       stream: getIt<LocalDBService>().getMissionQuestions(
         missionUlid: missionUlid,
       ),
       nullWidget: Center(
-        child: Text(
-          l10n.noQuestions,
-          style: Theme.of(context).textTheme.headlineSmall,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.help_outline_rounded,
+                size: 48,
+                color: theme.colorScheme.primary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n.noQuestions,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
         ),
       ),
-      widget: (context, missionQuestions) => ListView.separated(
-        physics: const ScrollPhysics(),
-        itemCount: missionQuestions.length,
-        separatorBuilder: (context, index) => SizedBox(height: 8.h),
-        itemBuilder: (context, index) => MissionQuestionCard(
-          missionQuestion: missionQuestions[index],
+      widget: (context, missionQuestions) => RefreshIndicator(
+        onRefresh: () =>
+            context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+              missionUlid: missionUlid,
+            ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 64),
+          child: ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            itemCount: missionQuestions.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 0),
+            itemBuilder: (context, index) =>
+                BeautifulMissionQuestionCard(
+                      missionQuestion: missionQuestions[index],
+                      index: index,
+                    )
+                    .animate(delay: (index * 100).ms)
+                    .fadeIn()
+                    .slideX(begin: -0.3, end: 0),
+          ),
         ),
       ),
     );
   }
 }
 
-class MissionQuestionCard extends StatelessWidget with TimezoneMixin {
-  const MissionQuestionCard({required this.missionQuestion, super.key});
+class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
+  const BeautifulMissionQuestionCard({
+    required this.missionQuestion,
+    required this.index,
+    super.key,
+  });
 
   final PRFLocalMissionQuestion missionQuestion;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    return Animate(
-      effects: const [SaturateEffect()],
-      child: Stack(
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.shadow.withValues(alpha: .08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: theme.colorScheme.shadow.withValues(alpha: .04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: .1),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header with question icon and type
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.quiz_outlined,
+                  color: theme.colorScheme.onPrimaryContainer,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.missionQuestion,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    _buildTimestampChip(theme),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          // Question content
           Container(
-            width: width,
-            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.secondary.withValues(alpha: .3),
-              borderRadius: BorderRadius.circular(48.r),
+              color: theme.colorScheme.surfaceContainerHighest.withValues(
+                alpha: 0.3,
+              ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              ),
             ),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  missionQuestion.question,
-                  style: Theme.of(context).textTheme.bodySmall,
+                Icon(
+                  Icons.help_outline,
+                  color: theme.colorScheme.primary,
+                  size: 20,
                 ),
-                SizedBox(height: 16.h),
-                Text(
-                  Misc.formatDateTime(missionQuestion.createdAt, timezone),
-                  style: Theme.of(context).textTheme.bodySmall,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    missionQuestion.question,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                      height: 1.5,
+                    ),
+                  ),
                 ),
-                SizedBox(height: 8.h),
               ],
+            ),
+          ),
+        ],
+      ),
+    ).animate(effects: const [SaturateEffect()]);
+  }
+
+  Widget _buildTimestampChip(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondary.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: theme.colorScheme.secondary.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.access_time,
+            size: 12,
+            color: theme.colorScheme.secondary,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            Misc.formatDateTime(missionQuestion.createdAt, timezone),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.secondary,
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
             ),
           ),
         ],

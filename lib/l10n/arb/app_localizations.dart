@@ -718,6 +718,12 @@ abstract class AppLocalizations {
   /// **'Mission Questions'**
   String get missionQuestions;
 
+  /// No description provided for @missionQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Question'**
+  String get missionQuestion;
+
   /// No description provided for @addQuestion.
   ///
   /// In en, this message translates to:
