@@ -3,12 +3,12 @@ import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/add_media/add_media.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prf_media.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -37,6 +37,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
     return RefreshIndicator(
       onRefresh: () => context.read<GetMissionMediaCubit>().getMissionMedia(
@@ -44,6 +45,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
         model: PRFMediaModel.missionPhotos,
       ),
       child: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         slivers: [
           // Progress indicator for images uploading in the background
           BlocConsumer<UploadMediaCubit, UploadMediaState>(
@@ -70,7 +72,16 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             builder: (context, state) {
               return SliverToBoxAdapter(
                 child: state.maybeWhen(
-                  loading: () => const LinearProgressIndicator(),
+                  loading: () => Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: const PRFLinearProgressIndicator(),
+                    ),
+                  ),
                   orElse: () => const SizedBox.shrink(),
                 ),
               );
@@ -81,69 +92,244 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
           BlocBuilder<GetMissionMediaCubit, GetMissionMediaState>(
             builder: (context, state) {
               return state.maybeWhen(
-                orElse: () => const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
+                orElse: () => SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
                 ),
                 empty: () => SliverFillRemaining(
-                  child: Center(
-                    child: PRFPrimaryButton(
-                      title: l10n.addPhotos,
-                      disabled: false,
-                      onPressed: () => WoltModalSheet.show<void>(
-                        context: context,
-                        pageListBuilder: (modalSheetContext) {
-                          return [
-                            WoltModalSheetPage(
-                              backgroundColor: Colors.white,
-                              surfaceTintColor: Colors.white,
-                              child: SizedBox(
-                                height: MediaQuery.sizeOf(context).height * 0.8,
-                                child: AddMediaView(
-                                  missionUlid: missionUlid,
-                                ),
-                              ),
-                            ),
-                          ];
-                        },
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: PRFEmptyView(
+                      label: l10n.addPhotos,
+                      description:
+                          l10n.addMissionPhotosDesc,
+                      icon: Icons.photo_camera_outlined,
+                      actionLabel: l10n.addPhotos,
+                      onActionPressed: () => _showAddMediaModal(context),
                     ),
                   ),
                 ),
                 loaded: (mediaItems) {
                   return SliverPadding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 16.h,
-                    ),
+                    padding: const EdgeInsets.all(16),
                     sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 16.w,
-                        mainAxisSpacing: 16.h,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => Animate(
-                          effects: const [FadeEffect(), ScaleEffect()],
-                          child: FullScreenWidget(
-                            disposeLevel: DisposeLevel.High,
-                            child: ExtendedImage.network(
-                              mediaItems[index].temporaryURL,
-                              fit: BoxFit.cover,
-                            ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
                           ),
-                        ),
-                        childCount: mediaItems.length,
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          if (index == 0) {
+                            // Add photo tile
+                            return _buildAddPhotoTile(context, theme);
+                          }
+
+                          final mediaIndex = index - 1;
+                          return _buildPhotoTile(
+                            context,
+                            mediaItems[mediaIndex],
+                            mediaIndex,
+                          );
+                        },
+                        childCount: mediaItems.length + 1,
                       ),
                     ),
                   );
                 },
-                error: (error) =>
-                    SliverToBoxAdapter(child: Center(child: Text(error))),
+                error: (error) => SliverFillRemaining(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 64,
+                          color: theme.colorScheme.error,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Error loading photos',
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: theme.colorScheme.error,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          error,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               );
             },
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAddPhotoTile(BuildContext context, ThemeData theme) {
+    return Animate(
+      effects: const [
+        FadeEffect(duration: Duration(milliseconds: 300)),
+        ScaleEffect(duration: Duration(milliseconds: 300)),
+      ],
+      child: GestureDetector(
+        onTap: () => _showAddMediaModal(context),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: theme.colorScheme.primary.withValues(alpha: 0.3),
+              width: 2,
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                theme.colorScheme.primary.withValues(alpha: 0.05),
+                theme.colorScheme.primary.withValues(alpha: 0.1),
+              ],
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                ),
+                child: Icon(
+                  Icons.add_a_photo_outlined,
+                  size: 32,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Add Photos',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhotoTile(BuildContext context, PRFMedia mediaItem, int index) {
+    final theme = Theme.of(context);
+
+    return Animate(
+      delay: Duration(milliseconds: 100 * (index + 1)),
+      effects: const [
+        FadeEffect(duration: Duration(milliseconds: 400)),
+        SlideEffect(
+          begin: Offset(0, 0.3),
+          duration: Duration(milliseconds: 400),
+        ),
+      ],
+      child: FullScreenWidget(
+        disposeLevel: DisposeLevel.High,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ExtendedImage.network(
+                  mediaItem.temporaryURL,
+                  fit: BoxFit.cover,
+
+                  loadStateChanged: (state) {
+                    switch (state.extendedImageLoadState) {
+                      case LoadState.loading:
+                        return ColoredBox(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: theme.colorScheme.primary,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        );
+                      case LoadState.failed:
+                        return ColoredBox(
+                          color: theme.colorScheme.errorContainer,
+                          child: Icon(
+                            Icons.broken_image_outlined,
+                            color: theme.colorScheme.error,
+                            size: 32,
+                          ),
+                        );
+                      case LoadState.completed:
+                        return null;
+                    }
+                  },
+                ),
+                // Gradient overlay for better visual appeal
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.1),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAddMediaModal(BuildContext context) {
+    WoltModalSheet.show<void>(
+      context: context,
+      pageListBuilder: (modalSheetContext) {
+        return [
+          WoltModalSheetPage(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.8,
+              child: AddMediaView(
+                missionUlid: missionUlid,
+              ),
+            ),
+          ),
+        ];
+      },
     );
   }
 }

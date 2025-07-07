@@ -758,5 +758,9 @@
     "noPrayerRequestsDesc": "You have not submitted any prayer requests yet. Tap the button below to submit one.",
     "@noPrayerRequestsDesc": {},
     "submitPrayerRequestDesc": "Share your prayer request with the PRF community. We will pray for you.",
-    "@submitPrayerRequestDesc": {}
+    "@submitPrayerRequestDesc": {},
+    "addMissionPhotos": "Add Mission Photos",
+    "@addMissionPhotos": {},
+    "addMissionPhotosDesc": "Share your mission moments with beautiful photos",
+    "@addMissionPhotosDesc": {}
 }

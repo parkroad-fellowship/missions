@@ -1827,6 +1827,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share your prayer request with the PRF community. We will pray for you.'**
   String get submitPrayerRequestDesc;
+
+  /// No description provided for @addMissionPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Mission Photos'**
+  String get addMissionPhotos;
+
+  /// No description provided for @addMissionPhotosDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your mission moments with beautiful photos'**
+  String get addMissionPhotosDesc;
 }
 
 class _AppLocalizationsDelegate
