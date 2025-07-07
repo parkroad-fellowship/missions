@@ -38,10 +38,12 @@ class HiveService {
       PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
     );
 
-    // Initialize services
+    // Initialize services & sub-services
     _auth = AuthHiveService();
-    _data = DataHiveService();
     _settings = SettingsHiveService();
+
+    _data = DataHiveService();
+    _data.initialize();
   }
 
   // Convenience methods that delegate to appropriate services
