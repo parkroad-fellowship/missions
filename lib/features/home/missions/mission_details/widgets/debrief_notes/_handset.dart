@@ -7,7 +7,6 @@ import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DebriefNotesViewHandset extends StatefulWidget {
   const DebriefNotesViewHandset({required this.missionUlid, super.key});
@@ -33,62 +32,187 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
     return SingleStreamWrapper(
       stream: getIt<LocalDBService>().getDebriefNotes(missionUlid: missionUlid),
       nullWidget: Center(
-        child: Text(
-          l10n.noNotes,
-          style: Theme.of(context).textTheme.headlineSmall,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.note_outlined,
+                size: 48,
+                color: theme.colorScheme.primary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n.noNotes,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
         ),
       ),
-      widget: (context, debriefNotes) => ListView.separated(
-        physics: const ScrollPhysics(),
-        itemCount: debriefNotes.length,
-        separatorBuilder: (context, index) => SizedBox(height: 8.h),
-        itemBuilder: (context, index) =>
-            DebriefNoteCard(debriefNote: debriefNotes[index]),
+      widget: (context, debriefNotes) => RefreshIndicator(
+        onRefresh: () => context.read<GetDebriefNotesCubit>().getDebriefNotes(
+          missionUlid: missionUlid,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 64),
+          child: ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            itemCount: debriefNotes.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 0),
+            itemBuilder: (context, index) =>
+                BeautifulDebriefNoteCard(
+                      debriefNote: debriefNotes[index],
+                      index: index,
+                    )
+                    .animate(delay: (index * 100).ms)
+                    .fadeIn()
+                    .slideX(begin: -0.3, end: 0),
+          ),
+        ),
       ),
     );
   }
 }
 
-class DebriefNoteCard extends StatelessWidget with TimezoneMixin {
-  const DebriefNoteCard({required this.debriefNote, super.key});
+class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
+  const BeautifulDebriefNoteCard({
+    required this.debriefNote,
+    required this.index,
+    super.key,
+  });
 
   final PRFLocalDebriefNote debriefNote;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    return Animate(
-      effects: const [SaturateEffect()],
-      child: Stack(
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.shadow.withValues(alpha: .08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: theme.colorScheme.shadow.withValues(alpha: .04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: .1),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header with note icon and timestamp
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.sticky_note_2_outlined,
+                  color: theme.colorScheme.onPrimaryContainer,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Debrief Note',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    _buildTimestampChip(theme),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          // Note content
           Container(
-            width: width,
-            padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.secondary.withValues(alpha: .3),
-              borderRadius: BorderRadius.circular(48.r),
+              color: theme.colorScheme.surfaceContainerHighest.withValues(
+                alpha: 0.3,
+              ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  debriefNote.note,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  Misc.formatDateTime(debriefNote.createdAt, timezone),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                SizedBox(height: 16.h),
-              ],
+            child: Text(
+              debriefNote.note,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ).animate(effects: const [SaturateEffect()]);
+  }
+
+  Widget _buildTimestampChip(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondary.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: theme.colorScheme.secondary.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.access_time,
+            size: 12,
+            color: theme.colorScheme.secondary,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            Misc.formatDateTime(debriefNote.createdAt, timezone),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.secondary,
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
             ),
           ),
         ],
