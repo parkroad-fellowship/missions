@@ -114,7 +114,11 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context, ThemeData theme, AppLocalizations l10n) {
+  Widget _buildEmptyState(
+    BuildContext context,
+    ThemeData theme,
+    AppLocalizations l10n,
+  ) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),

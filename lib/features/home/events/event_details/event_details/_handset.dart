@@ -520,7 +520,9 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.tertiary.withValues(alpha: 0.1),
+                        color: theme.colorScheme.tertiary.withValues(
+                          alpha: 0.1,
+                        ),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
@@ -680,8 +682,9 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
     final latitude = event.latitude!;
     final longitude = event.longitude!;
 
-    final isGoogleMapAvailable =
-        await MapLauncher.isMapAvailable(MapType.google);
+    final isGoogleMapAvailable = await MapLauncher.isMapAvailable(
+      MapType.google,
+    );
 
     if (isGoogleMapAvailable ?? false) {
       await MapLauncher.showMarker(
@@ -692,8 +695,9 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
       return;
     }
 
-    final isGoogleGoMapAvailable =
-        await MapLauncher.isMapAvailable(MapType.googleGo);
+    final isGoogleGoMapAvailable = await MapLauncher.isMapAvailable(
+      MapType.googleGo,
+    );
 
     if (isGoogleGoMapAvailable ?? false) {
       await MapLauncher.showMarker(
@@ -704,8 +708,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
       return;
     }
 
-    final isAppleMapAvailable =
-        await MapLauncher.isMapAvailable(MapType.apple);
+    final isAppleMapAvailable = await MapLauncher.isMapAvailable(MapType.apple);
 
     if (isAppleMapAvailable ?? false) {
       await MapLauncher.showMarker(
