@@ -405,22 +405,26 @@ class BeautifulSubscriberCard extends StatelessWidget {
                                         member,
                                       ),
                                 )
-                              : _buildProfileFallback(Theme.of(context), member),
+                              : _buildProfileFallback(
+                                  Theme.of(context),
+                                  member,
+                                ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
-                
+
                     // Member Name
                     Text(
                       member.fullName!,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
-                
+
                     // Bio Section
                     if (member.bio != null && member.bio!.isNotEmpty) ...[
                       Container(
@@ -443,7 +447,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                     ],
-                
+
                     // Contact Actions
                     Row(
                       children: [

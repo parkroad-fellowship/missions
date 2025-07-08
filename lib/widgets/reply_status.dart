@@ -43,7 +43,7 @@ class _ReplyStatusViewState extends State<ReplyStatusView> {
       ),
       _StatusChip(
         label: l10n.replied.toUpperCase(),
-        selected: _selectedReplyStatus == true,
+        selected: _selectedReplyStatus ?? false,
         onTap: () {
           widget.onReplyStatusSelected(replyStatus: true);
           setState(() => _selectedReplyStatus = true);

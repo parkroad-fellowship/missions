@@ -4,7 +4,6 @@ import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/session/widgets/data_card.dart';
 import 'package:app/features/home/missions/mission_details/widgets/update_session/update_session.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
@@ -18,7 +17,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class SessionPageHandset extends StatefulWidget {

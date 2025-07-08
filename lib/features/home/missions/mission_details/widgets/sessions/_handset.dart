@@ -9,7 +9,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class SessionsViewHandset extends StatefulWidget {
   const SessionsViewHandset({required this.missionUlid, super.key});
@@ -20,9 +19,10 @@ class SessionsViewHandset extends StatefulWidget {
   State<SessionsViewHandset> createState() => _SessionsViewHandsetState();
 }
 
-class _SessionsViewHandsetState extends State<SessionsViewHandset> with TimezoneMixin {
+class _SessionsViewHandsetState extends State<SessionsViewHandset>
+    with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
-  
+
   @override
   void initState() {
     context.read<GetMissionSessionsCubit>().getMissionSessions(
@@ -40,23 +40,32 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> with Timezone
         missionUlid: missionUlid,
       ),
       nullWidget: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.event_note_outlined,
-              size: 64,
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noSessions,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              ),
-            ),
-          ],
-        ).animate().fadeIn(duration: 600.ms).scale(begin: const Offset(0.8, 0.8)),
+        child:
+            Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.event_note_outlined,
+                      size: 64,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.5),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      l10n.noSessions,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.6),
+                          ),
+                    ),
+                  ],
+                )
+                .animate()
+                .fadeIn(duration: 600.ms)
+                .scale(begin: const Offset(0.8, 0.8)),
       ),
       widget: (context, missionSessions) => ListView.builder(
         physics: const ScrollPhysics(),
@@ -88,15 +97,16 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> with Timezone
                         missionSessions.keys.elementAt(index),
                         timezone,
                       ),
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                     ),
                   ],
                 ),
               ).animate(delay: (index * 100).ms).slideX(begin: -0.3).fadeIn(),
-              
+
               // Timeline Sessions
               ListView.builder(
                 shrinkWrap: true,
@@ -163,12 +173,14 @@ class TimelineSessionCard extends StatelessWidget {
                 Container(
                   width: 2,
                   height: 80,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.3),
                 ),
             ],
           ),
           const SizedBox(width: 16),
-          
+
           // Session Card
           Expanded(
             child: GestureDetector(
@@ -179,131 +191,180 @@ class TimelineSessionCard extends StatelessWidget {
                   missionSessionId: missionSession.id,
                 ),
               ),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
+              child:
+                  Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(alpha: 0.2),
                           ),
-                          child: Text(
-                            '${Misc.formatTimeFromDateTime(missionSession.startsAt, userTimezone)} - ${Misc.formatTimeFromDateTime(missionSession.endsAt, userTimezone)}',
-                            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w600,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.shadow.withValues(alpha: 0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
                             ),
-                          ),
+                          ],
                         ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.person_outline,
-                          size: 16,
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          '${l10n.facilitator}: ',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            missionSession.facilitator.fullName ?? 'N/A',
-                            style: Theme.of(context).textTheme.bodySmall,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (missionSession.speaker != null) ...[
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.mic_outlined,
-                            size: 16,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            '${l10n.speaker}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w500,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.primary.withValues(
+                                          alpha: 0.1,
+                                        ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    '${Misc.formatTimeFromDateTime(missionSession.startsAt, userTimezone)} - ${Misc.formatTimeFromDateTime(missionSession.endsAt, userTimezone)}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withValues(
+                                        alpha: 0.5,
+                                      ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              missionSession.speaker?.fullName ?? 'N/A',
-                              style: Theme.of(context).textTheme.bodySmall,
-                              overflow: TextOverflow.ellipsis,
+                            const SizedBox(height: 12),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.person_outline,
+                                  size: 16,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withValues(
+                                        alpha: 0.7,
+                                      ),
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  '${l10n.facilitator}: ',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    missionSession.facilitator.fullName ??
+                                        'N/A',
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    if (missionSession.classGroup != null) ...[
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.group_outlined,
-                            size: 16,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            '${l10n.classGroup}: ',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              missionSession.classGroup?.name ?? 'N/A',
-                              style: Theme.of(context).textTheme.bodySmall,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ],
-                ),
-              ).animate(delay: animationDelay)
-                  .slideX(begin: 0.3)
-                  .fadeIn(duration: 400.ms)
-                  .scale(begin: const Offset(0.95, 0.95)),
+                            if (missionSession.speaker != null) ...[
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.mic_outlined,
+                                    size: 16,
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface.withValues(
+                                          alpha: 0.7,
+                                        ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    '${l10n.speaker}: ',
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      missionSession.speaker?.fullName ?? 'N/A',
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                            if (missionSession.classGroup != null) ...[
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.group_outlined,
+                                    size: 16,
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface.withValues(
+                                          alpha: 0.7,
+                                        ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    '${l10n.classGroup}: ',
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      missionSession.classGroup?.name ?? 'N/A',
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        ),
+                      )
+                      .animate(delay: animationDelay)
+                      .slideX(begin: 0.3)
+                      .fadeIn(duration: 400.ms)
+                      .scale(begin: const Offset(0.95, 0.95)),
             ),
           ),
         ],

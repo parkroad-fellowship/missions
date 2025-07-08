@@ -267,7 +267,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
   Widget _buildImageTile(
     BuildContext context,
     ThemeData theme,
-    dynamic image,
+    PRFMediaDTO image,
     int index,
   ) {
     return Container(
@@ -287,7 +287,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
           fit: StackFit.expand,
           children: [
             Image.file(
-              File(image.path as String),
+              File(image.path),
               fit: BoxFit.cover,
             ),
             // Gradient overlay
