@@ -1645,8 +1645,26 @@ abstract class AppLocalizations {
   /// No description provided for @capacity.
   ///
   /// In en, this message translates to:
-  /// **'Maximum Persons: {count}'**
-  String capacity(String count);
+  /// **'Capacity'**
+  String get capacity;
+
+  /// No description provided for @capacityDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} missioners'**
+  String capacityDesc(int count);
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// No description provided for @durationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String durationDesc(int count);
 
   /// No description provided for @subscriptionsNeeded.
   ///

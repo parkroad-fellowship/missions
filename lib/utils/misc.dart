@@ -454,6 +454,24 @@ class Misc {
   static void clearTimezoneCache() {
     _timezoneCache.clear();
   }
+
+  static String getMonthAbbreviation(int month) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return months[month - 1];
+  }
 }
 
 /// Device type enumeration

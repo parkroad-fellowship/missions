@@ -831,8 +831,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get info => 'Information';
 
   @override
-  String capacity(String count) {
-    return 'Maximum Persons: $count';
+  String get capacity => 'Capacity';
+
+  @override
+  String capacityDesc(int count) {
+    return '$count missioners';
+  }
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String durationDesc(int count) {
+    return '$count days';
   }
 
   @override

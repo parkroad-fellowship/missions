@@ -303,7 +303,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 _buildStatCard(
                   context,
                   Icons.people_rounded,
-                  l10n.capacity(''),
+                  l10n.capacity,
                   event.capacity != 0 ? event.capacity.toString() : 'N/A',
                   theme.colorScheme.primary,
                   theme,

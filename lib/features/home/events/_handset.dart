@@ -10,6 +10,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 class EventsPageHandset extends StatefulWidget {
   const EventsPageHandset({super.key});
@@ -19,11 +20,13 @@ class EventsPageHandset extends StatefulWidget {
 }
 
 class _EventsPageHandsetState extends State<EventsPageHandset>
-    with TimezoneMixin, SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
+    super.initState();
+
     context.read<GetEventsCubit>().getEvents();
     context
         .read<GetMemberEventSubscriptionsCubit>()
@@ -39,7 +42,6 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
             .getMemberEventSubscriptions();
       }
     });
-    super.initState();
   }
 
   @override
@@ -171,6 +173,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
             ),
           ),
           loaded: (events) {
+            Logger().e(events);
+
             // Sort events by start date for timeline
             final sortedEvents = List<PRFEvent>.from(events)
               ..sort((a, b) => a.startDate.compareTo(b.startDate));
@@ -261,6 +265,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
             ),
           ),
           loaded: (eventSubscriptions) {
+            Logger().e(eventSubscriptions);
+
             final events =
                 eventSubscriptions
                     .map((subscription) => subscription.event!)
@@ -327,274 +333,468 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
   final bool isSubscribed;
   final VoidCallback? onTap;
 
+  bool _isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final now = DateTime.now();
-    final eventDate = event.startDate;
-    final isUpcoming = eventDate.isAfter(now);
-    final isPast = eventDate.isBefore(now.subtract(const Duration(days: 1)));
+    final startDate = event.startDate;
+    final endDate = event.endDate;
+    final isUpcoming = startDate.isAfter(now);
+    final isPast = endDate.isBefore(now.subtract(const Duration(days: 1)));
+    final isOngoing = startDate.isBefore(now) && endDate.isAfter(now);
+    final isMultiDay = !_isSameDay(startDate, endDate);
+    final duration = endDate.difference(startDate).inDays + 1;
 
-    // Use theme colors instead of hardcoded colors
+    // Premium status color system
     final statusColor = isSubscribed
-        ? const Color(PRFTheme.secondaryColor)
+        ? const Color(PRFTheme.successColor)
+        : isOngoing
+        ? const Color(PRFTheme.successColor) // Active green
         : isUpcoming
         ? theme.colorScheme.primary
         : isPast
         ? theme.colorScheme.onSurfaceVariant
         : theme.colorScheme.secondary;
 
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Timeline indicator
-          SizedBox(
-            width: 60,
-            child: Column(
-              children: [
-                // Date badge
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: statusColor.withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
+    final statusText = isSubscribed
+        ? 'Subscribed'
+        : isOngoing
+        ? 'Active'
+        : isUpcoming
+        ? 'Upcoming'
+        : isPast
+        ? 'Completed'
+        : 'Available';
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Enhanced Timeline indicator
+        SizedBox(
+          width: 60,
+          child: Column(
+            children: [
+              // Multi-day date badge
+              Container(
+                width: 50,
+                height: isMultiDay ? 90 : 50,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      statusColor,
+                      statusColor.withValues(alpha: 0.8),
                     ],
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: statusColor.withValues(alpha: 0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isMultiDay) ...[
+                      // Start date
                       Text(
-                        eventDate.day.toString(),
-                        style: theme.textTheme.titleSmall?.copyWith(
+                        startDate.day.toString(),
+                        style: theme.textTheme.labelLarge?.copyWith(
                           color: Colors.white,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 14,
                         ),
                       ),
                       Text(
-                        _getMonthAbbreviation(eventDate.month),
+                        Misc.getMonthAbbreviation(startDate.month),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 8,
+                        ),
+                      ),
+                      Container(
+                        width: 12,
+                        height: 1,
+                        color: Colors.white.withValues(alpha: 0.7),
+                        margin: const EdgeInsets.symmetric(vertical: 2),
+                      ),
+                      // End date
+                      Text(
+                        endDate.day.toString(),
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        Misc.getMonthAbbreviation(endDate.month),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 8,
+                        ),
+                      ),
+                    ] else ...[
+                      // Single day
+                      Text(
+                        startDate.day.toString(),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        Misc.getMonthAbbreviation(startDate.month),
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
-                  ),
-                ),
-                // Timeline line
-                if (!isLast)
-                  Container(
-                    width: 2,
-                    height: 60,
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    color: theme.colorScheme.outline.withValues(alpha: 0.3),
-                  ),
-              ],
-            ),
-          ),
-
-          const SizedBox(width: 16),
-
-          // Event card
-          Expanded(
-            child: GestureDetector(
-              onTap: onTap,
-              child: Container(
-                margin: EdgeInsets.only(bottom: isLast ? 0 : 20),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.shadow.withValues(alpha: 0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Header
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: statusColor.withValues(alpha: 0.1),
+              ),
+              // Timeline line with flexible height
+              if (!isLast)
+                Container(
+                  width: 2,
+                  height: 60,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        statusColor.withValues(alpha: 0.6),
+                        theme.colorScheme.outline.withValues(alpha: 0.2),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(1),
+                  ),
+                ),
+            ],
+          ),
+        ),
+
+        const SizedBox(width: 16),
+
+        // Enhanced Event card
+        Expanded(
+          child: GestureDetector(
+            onTap: onTap,
+            child: Container(
+              margin: EdgeInsets.only(bottom: isLast ? 0 : 16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: statusColor.withValues(alpha: 0.2),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: theme.colorScheme.shadow.withValues(alpha: 0.08),
+                    blurRadius: 12,
+                    offset: const Offset(0, 3),
+                  ),
+                  BoxShadow(
+                    color: statusColor.withValues(alpha: 0.05),
+                    blurRadius: 24,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Premium header with gradient
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            statusColor.withValues(alpha: 0.1),
+                            statusColor.withValues(alpha: 0.05),
+                          ],
                         ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Event name
-                                  Text(
-                                    event.name,
-                                    style: theme.textTheme.titleLarge?.copyWith(
-                                      fontWeight: FontWeight.w700,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Event name and status
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  event.name,
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: statusColor,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: statusColor.withValues(alpha: 0.3),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  statusText,
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          // Event venue with icon
+                          if (event.venue != null)
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primaryContainer,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Icon(
+                                    Icons.location_on_rounded,
+                                    size: 16,
+                                    color: theme.colorScheme.onPrimaryContainer,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    event.venue!,
+                                    style: theme.textTheme.titleSmall?.copyWith(
+                                      fontWeight: FontWeight.w600,
                                       color: theme.colorScheme.onSurface,
                                     ),
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
 
-                                  const SizedBox(height: 8),
+                    // Event details
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Duration and capacity info chips
+                          Row(
+                            children: [
+                              Flexible(
+                                child: _buildInfoChip(
+                                  context,
+                                  Icons.schedule_rounded,
+                                  'Duration',
+                                  isMultiDay ? '$duration days' : 'Single day',
+                                  theme.colorScheme.primaryContainer,
+                                  theme.colorScheme.onPrimaryContainer,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: _buildInfoChip(
+                                  context,
+                                  Icons.people_rounded,
+                                  'Capacity',
+                                  '${event.capacity} attendees',
+                                  theme.colorScheme.secondaryContainer,
+                                  theme.colorScheme.onSecondaryContainer,
+                                ),
+                              ),
+                            ],
+                          ),
 
-                                  // Time and status
-                                  Row(
+                          const SizedBox(height: 16),
+
+                          // Date range display
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: theme.colorScheme.outline.withValues(
+                                  alpha: 0.2,
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today_rounded,
+                                  size: 20,
+                                  color: theme.colorScheme.primary,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(
-                                        Icons.access_time_rounded,
-                                        size: 16,
-                                        color:
-                                            theme.colorScheme.onSurfaceVariant,
-                                      ),
-                                      const SizedBox(width: 6),
                                       Text(
-                                        Misc.formatTime(
-                                          event.startTime,
-                                          timezone,
-                                        ),
-                                        style: theme.textTheme.bodyMedium
+                                        isMultiDay
+                                            ? '${Misc.formatDate(startDate, timezone)} - ${Misc.formatDate(endDate, timezone)}'
+                                            : Misc.formatDate(
+                                                startDate,
+                                                timezone,
+                                              ),
+                                        style: theme.textTheme.titleSmall
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  theme.colorScheme.onSurface,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        '${Misc.formatTime(event.startTime, timezone)} - ${Misc.formatTime(event.endTime, timezone)} daily',
+                                        style: theme.textTheme.bodySmall
                                             ?.copyWith(
                                               color: theme
                                                   .colorScheme
                                                   .onSurfaceVariant,
                                             ),
                                       ),
-                                      const SizedBox(width: 12),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: statusColor,
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          isSubscribed
-                                              ? 'Subscribed'
-                                              : isUpcoming
-                                              ? 'Upcoming'
-                                              : isPast
-                                              ? 'Past'
-                                              : 'Today',
-                                          style: theme.textTheme.labelSmall
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white,
-                                              ),
-                                        ),
-                                      ),
                                     ],
                                   ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Description preview
+                          if (event.description.isNotEmpty)
+                            Text(
+                              event.description.split('\n').first,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                          const SizedBox(height: 16),
+
+                          // Action button
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  statusColor.withValues(alpha: 0.1),
+                                  statusColor.withValues(alpha: 0.05),
                                 ],
                               ),
-                            ),
-
-                            // Arrow icon
-                            Container(
-                              width: 32,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.primaryContainer,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                                color: theme.colorScheme.onPrimaryContainer,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: statusColor.withValues(alpha: 0.3),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-
-                      // Content
-                      if (event.description.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Description',
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: theme.colorScheme.onSurface,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'View Details',
+                                  style: theme.textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: statusColor,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                event.description,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
-                                  height: 1.5,
+                                const SizedBox(width: 8),
+                                Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 18,
+                                  color: statusColor,
                                 ),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-
-                      // Details chips
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                        child: Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            if (event.capacity > 0)
-                              _buildDetailChip(
-                                context,
-                                Icons.people_outline,
-                                '${event.capacity} spots',
-                              ),
-                            _buildDetailChip(
-                              context,
-                              Icons.calendar_today_outlined,
-                              Misc.formatDate(event.startDate, timezone),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _buildDetailChip(BuildContext context, IconData icon, String label) {
+  Widget _buildInfoChip(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+    Color backgroundColor,
+    Color textColor,
+  ) {
     final theme = Theme.of(context);
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 8,
+      ),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(20),
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          color: textColor.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -603,36 +803,35 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
           Icon(
             icon,
             size: 14,
-            color: theme.colorScheme.onSurfaceVariant,
+            color: textColor,
           ),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
+          const SizedBox(width: 6),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: textColor.withValues(alpha: 0.8),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  String _getMonthAbbreviation(int month) {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return months[month - 1];
   }
 }

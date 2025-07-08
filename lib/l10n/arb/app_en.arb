@@ -139,9 +139,7 @@
     "withdraw": "Withdraw",
     "@withdraw": {},
     "missionariesNeeded": "Still Needed",
-    "@missionariesNeeded": {
-        
-    },
+    "@missionariesNeeded": {},
     "missionariesRequested": "Requested missioners",
     "@missionariesRequested": {},
     "learn": "Learn",
@@ -422,13 +420,9 @@
     "weather": "Weather",
     "@weather": {},
     "temperature": "Temperature",
-    "@temperature": {
-        
-    },
+    "@temperature": {},
     "humidity": "Humidity",
-    "@humidity": {
-        
-    },
+    "@humidity": {},
     "visibility": "Visibility: {min} - {max} ({avg})",
     "@visibility": {
         "placeholders": {
@@ -483,9 +477,7 @@
         }
     },
     "estimatedDistance": "Distance",
-    "@estimatedDistance": {
-        
-    },
+    "@estimatedDistance": {},
     "estimationDisclaimer": "* This estimate is made from Tumaini House to the mission ground and may not be accurate. Please plan accordingly.",
     "@estimationDisclaimer": {},
     "gallery": "Gallery",
@@ -644,11 +636,23 @@
     "@eventDetails": {},
     "info": "Information",
     "@info": {},
-    "capacity": "Maximum Persons: {count}",
-    "@capacity": {
+    "capacity": "Capacity",
+    "@capacity": {},
+    "capacityDesc": "{count} missioners",
+    "@capacityDesc": {
         "placeholders": {
             "count": {
-                "type": "String"
+                "type": "int"
+            }
+        }
+    },
+    "duration": "Duration",
+    "@duration": {},
+    "durationDesc": "{count} days",
+    "@durationDesc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
             }
         }
     },
@@ -768,5 +772,4 @@
     "@addEventPhotos": {},
     "errorLoadingPhotos": "Error loading photos",
     "@errorLoadingPhotos": {}
-
 }
