@@ -11,6 +11,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:app/widgets/navbar.dart';
 import 'package:auto_route/auto_route.dart';
@@ -632,7 +633,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
       });
 }
 
-class MissionSessionDataView extends StatelessWidget {
+class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
   const MissionSessionDataView({
     required this.missionSession,
     required this.missionUlid,
@@ -677,7 +678,8 @@ class MissionSessionDataView extends StatelessWidget {
                     context,
                     Icons.access_time,
                     l10n.time,
-                    '${DateFormat.jm().format(missionSession.startsAt)} - ${DateFormat.jm().format(missionSession.endsAt)}',
+                    '${Misc.formatTimeFromDateTime(missionSession.startsAt, timezone)} '
+                    '- ${Misc.formatTimeFromDateTime(missionSession.endsAt, timezone)}',
                   ),
                   const SizedBox(height: 12),
                   _buildInfoCard(

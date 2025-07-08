@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,9 @@ class SessionsViewHandset extends StatefulWidget {
   State<SessionsViewHandset> createState() => _SessionsViewHandsetState();
 }
 
-class _SessionsViewHandsetState extends State<SessionsViewHandset> {
+class _SessionsViewHandsetState extends State<SessionsViewHandset> with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
-
+  
   @override
   void initState() {
     context.read<GetMissionSessionsCubit>().getMissionSessions(
@@ -83,8 +84,9 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      DateFormat.MMMMEEEEd().add_y().format(
+                      Misc.formatMissionDate(
                         missionSessions.keys.elementAt(index),
+                        timezone,
                       ),
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w600,
@@ -105,6 +107,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
                   missionUlid: missionUlid,
                   isLast: i == sortedDailySessions.length - 1,
                   animationDelay: (index * 100 + i * 50).ms,
+                  userTimezone: timezone,
                 ),
               ),
               const SizedBox(height: 16),
@@ -122,6 +125,7 @@ class TimelineSessionCard extends StatelessWidget {
     required this.missionUlid,
     required this.isLast,
     required this.animationDelay,
+    required this.userTimezone,
     super.key,
   });
 
@@ -129,6 +133,7 @@ class TimelineSessionCard extends StatelessWidget {
   final String missionUlid;
   final bool isLast;
   final Duration animationDelay;
+  final String userTimezone;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +208,7 @@ class TimelineSessionCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            '${DateFormat.jm().format(missionSession.startsAt)} - ${DateFormat.jm().format(missionSession.endsAt)}',
+                            '${Misc.formatTimeFromDateTime(missionSession.startsAt, userTimezone)} - ${Misc.formatTimeFromDateTime(missionSession.endsAt, userTimezone)}',
                             style: Theme.of(context).textTheme.labelMedium?.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w600,
