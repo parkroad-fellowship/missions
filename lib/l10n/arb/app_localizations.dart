@@ -1941,6 +1941,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mission Intelligence'**
   String get missionIntelligence;
+
+  /// No description provided for @eventIntelligence.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Intelligence'**
+  String get eventIntelligence;
 }
 
 class _AppLocalizationsDelegate

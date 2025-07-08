@@ -761,5 +761,8 @@
         }
     },
     "missionIntelligence": "Mission Intelligence",
-    "@missionIntelligence": {}
+    "@missionIntelligence": {},
+    "eventIntelligence": "Event Intelligence",
+    "@eventIntelligence": {}
+
 }

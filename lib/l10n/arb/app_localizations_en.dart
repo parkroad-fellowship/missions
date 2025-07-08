@@ -994,4 +994,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get missionIntelligence => 'Mission Intelligence';
+
+  @override
+  String get eventIntelligence => 'Event Intelligence';
 }
