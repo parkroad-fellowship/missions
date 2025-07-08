@@ -358,104 +358,106 @@ class BeautifulSubscriberCard extends StatelessWidget {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           child: SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.5,
+            height: MediaQuery.sizeOf(context).height * 0.6,
             child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  // Enhanced Profile Section
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.secondary,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Enhanced Profile Section
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                          ),
                         ],
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
+                      child: Container(
+                        margin: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: ClipOval(
-                        child:
-                            member.profilePictureUrl != null &&
-                                member.profilePictureUrl!.isNotEmpty
-                            ? Image.network(
-                                member.profilePictureUrl!,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    _buildProfileFallback(
-                                      Theme.of(context),
-                                      member,
-                                    ),
-                              )
-                            : _buildProfileFallback(Theme.of(context), member),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Member Name
-                  Text(
-                    member.fullName!,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Bio Section
-                  if (member.bio != null && member.bio!.isNotEmpty) ...[
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.outline.withValues(alpha: 0.2),
+                        child: ClipOval(
+                          child:
+                              member.profilePictureUrl != null &&
+                                  member.profilePictureUrl!.isNotEmpty
+                              ? Image.network(
+                                  member.profilePictureUrl!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      _buildProfileFallback(
+                                        Theme.of(context),
+                                        member,
+                                      ),
+                                )
+                              : _buildProfileFallback(Theme.of(context), member),
                         ),
-                      ),
-                      child: Text(
-                        member.bio!,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        textAlign: TextAlign.center,
                       ),
                     ),
                     const SizedBox(height: 20),
-                  ],
-
-                  // Contact Actions
-                  Row(
-                    children: [
-                      Expanded(
-                        child: PRFPrimaryButton(
-                          onPressed: _makeCall,
-                          title: 'Call Member',
-                          disabled: false,
+                
+                    // Member Name
+                    Text(
+                      member.fullName!,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                
+                    // Bio Section
+                    if (member.bio != null && member.bio!.isNotEmpty) ...[
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(alpha: 0.2),
+                          ),
+                        ),
+                        child: Text(
+                          member.bio!,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
                         ),
                       ),
+                      const SizedBox(height: 20),
                     ],
-                  ),
-                ],
+                
+                    // Contact Actions
+                    Row(
+                      children: [
+                        Expanded(
+                          child: PRFPrimaryButton(
+                            onPressed: _makeCall,
+                            title: 'Call Member',
+                            disabled: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
