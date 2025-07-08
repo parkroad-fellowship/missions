@@ -898,6 +898,12 @@ abstract class AppLocalizations {
   /// **'Expense Category'**
   String get expenseCategory;
 
+  /// No description provided for @amountDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount Details'**
+  String get amountDetails;
+
   /// No description provided for @transactionType.
   ///
   /// In en, this message translates to:
@@ -1018,6 +1024,12 @@ abstract class AppLocalizations {
   /// **'Unit Cost'**
   String get unitCost;
 
+  /// No description provided for @unitCostDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter cost per item'**
+  String get unitCostDesc;
+
   /// No description provided for @quantity.
   ///
   /// In en, this message translates to:
@@ -1027,14 +1039,44 @@ abstract class AppLocalizations {
   /// No description provided for @charge.
   ///
   /// In en, this message translates to:
-  /// **'Transaction Cost'**
+  /// **'Transaction Charge'**
   String get charge;
 
-  /// No description provided for @totalCost.
+  /// No description provided for @paymentMethod.
   ///
   /// In en, this message translates to:
-  /// **'Total (Charge)'**
-  String get totalCost;
+  /// **'Payment Method'**
+  String get paymentMethod;
+
+  /// No description provided for @paymentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe what the money was used for...'**
+  String get paymentDesc;
+
+  /// No description provided for @confirmationMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter confirmation message (SMS)'**
+  String get confirmationMsg;
+
+  /// No description provided for @recordExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Record Expense'**
+  String get recordExpense;
+
+  /// No description provided for @totalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get totalAmount;
+
+  /// No description provided for @subTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get subTotal;
 
   /// No description provided for @total.
   ///

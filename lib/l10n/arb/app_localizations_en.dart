@@ -438,6 +438,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get expenseCategory => 'Expense Category';
 
   @override
+  String get amountDetails => 'Amount Details';
+
+  @override
   String get transactionType => 'Transaction Type';
 
   @override
@@ -499,13 +502,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unitCost => 'Unit Cost';
 
   @override
+  String get unitCostDesc => 'Enter cost per item';
+
+  @override
   String get quantity => 'Quantity';
 
   @override
-  String get charge => 'Transaction Cost';
+  String get charge => 'Transaction Charge';
 
   @override
-  String get totalCost => 'Total (Charge)';
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get paymentDesc => 'Describe what the money was used for...';
+
+  @override
+  String get confirmationMsg => 'Enter confirmation message (SMS)';
+
+  @override
+  String get recordExpense => 'Record Expense';
+
+  @override
+  String get totalAmount => 'Total Amount';
+
+  @override
+  String get subTotal => 'Subtotal';
 
   @override
   String get total => 'Total';

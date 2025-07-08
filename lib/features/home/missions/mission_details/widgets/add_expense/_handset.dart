@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_charge_type.dart';
 import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
 import 'package:app/widgets/_index.dart';
@@ -37,6 +38,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     _unitCostController.addListener(_calculateTotal);
     _quantityController.addListener(_calculateTotal);
     _chargeController.addListener(_calculateTotal);
+    _confirmationMessageController.addListener(() => setState(() {}));
+    _narrationController.addListener(() => setState(() {}));
   }
 
   void _calculateTotal() {
@@ -141,7 +144,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                         children: [
                           // Category Selection
                           _buildSectionHeader(
-                            'Expense Details',
+                            l10n.expenseDetails,
                             Icons.category,
                           ),
                           const SizedBox(height: 16),
@@ -165,15 +168,18 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           const SizedBox(height: 24),
 
                           // Amount Section
-                          _buildSectionHeader('Amount Details', Icons.payments),
+                          _buildSectionHeader(
+                            l10n.amountDetails,
+                            Icons.payments,
+                          ),
                           const SizedBox(height: 16),
                           Row(
                             children: [
                               Expanded(
                                 child: _buildNumberField(
                                   controller: _unitCostController,
-                                  label: 'Unit Cost',
-                                  hint: 'Enter cost per item',
+                                  label: l10n.unitCost,
+                                  hint: l10n.unitCostDesc,
                                   prefix: 'KES ',
                                 ),
                               ),
@@ -181,9 +187,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                               Expanded(
                                 child: _buildNumberField(
                                   controller: _quantityController,
-                                  label: 'Quantity',
-                                  hint: 'Enter quantity',
-                                  prefix: '× ',
+                                  label: l10n.quantity,
+                                  hint: l10n.enterQuantity,
+                                  prefix: 'X ',
                                 ),
                               ),
                             ],
@@ -194,38 +200,43 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           // Manual Charge Entry
                           _buildNumberField(
                             controller: _chargeController,
-                            label: 'Transaction Charge',
-                            hint: 'Enter transaction cost manually',
+                            label: l10n.charge,
+                            hint: l10n.enterCharge,
                             prefix: 'KES ',
                             fullWidth: true,
                           ),
 
                           if (_totalAmount > 0) ...[
                             const SizedBox(height: 16),
-                            _buildCalculationSummary(theme),
+                            _buildCalculationSummary(theme, l10n),
                           ],
 
                           const SizedBox(height: 24),
 
                           // Transaction Type
-                          _buildSectionHeader('Payment Method', Icons.payment),
+                          _buildSectionHeader(
+                            l10n.paymentMethod,
+                            Icons.payment,
+                          ),
                           const SizedBox(height: 16),
                           _buildTransactionTypeSelector(theme),
 
                           const SizedBox(height: 24),
 
                           // Description Section
-                          _buildSectionHeader('Description', Icons.description),
+                          _buildSectionHeader(
+                            l10n.description,
+                            Icons.description,
+                          ),
                           const SizedBox(height: 16),
                           PRFTextAreaInput(
-                            hintText: 'Describe what the money was used for...',
+                            hintText: l10n.paymentDesc,
                             controller: _narrationController,
                           ),
 
                           const SizedBox(height: 16),
-                          PRFTextInput(
-                            hintText:
-                                'Enter confirmation message (SMS/Receipt)',
+                          PRFTextAreaInput(
+                            hintText: l10n.confirmationMsg,
                             controller: _confirmationMessageController,
                           ),
                         ],
@@ -285,9 +296,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                               ? const SizedBox(
                                   height: 20,
                                   width: 20,
-                                  child: CircularProgressIndicator(
+                                  child: PRFCircularProgressIndicator(
                                     color: Colors.white,
-                                    strokeWidth: 2,
                                   ),
                                 )
                               : Row(
@@ -299,10 +309,11 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      'Record Expense',
+                                      l10n.recordExpense,
                                       style: theme.textTheme.titleMedium
                                           ?.copyWith(
                                             fontWeight: FontWeight.w600,
+                                            color: theme.colorScheme.onPrimary,
                                           ),
                                     ),
                                   ],
@@ -436,7 +447,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     return fullWidth ? field : Expanded(child: field);
   }
 
-  Widget _buildCalculationSummary(ThemeData theme) {
+  Widget _buildCalculationSummary(ThemeData theme, AppLocalizations l10n) {
     final unitCost = double.tryParse(_unitCostController.text) ?? 0;
     final quantity = double.tryParse(_quantityController.text) ?? 0;
     final charge = double.tryParse(_chargeController.text) ?? 0;
@@ -453,12 +464,12 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
       ),
       child: Column(
         children: [
-          _buildCalculationRow('Subtotal', lineTotal, theme),
+          _buildCalculationRow(l10n.subTotal, lineTotal, theme),
           const SizedBox(height: 8),
-          _buildCalculationRow('Transaction Charge', charge, theme),
+          _buildCalculationRow(l10n.charge, charge, theme),
           const Divider(),
           _buildCalculationRow(
-            'Total Amount',
+            l10n.totalAmount,
             _totalAmount,
             theme,
             isTotal: true,
@@ -557,7 +568,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
         return Icons.payments;
       case PRFChargeType.mpesaATMWithdrawal:
         return Icons.atm;
-      default:
+      case PRFChargeType.mpesaAgentWithdrawal:
+      case PRFChargeType.mpesaDefault:
+      case PRFChargeType.mpesaOtherRegisteredUser:
         return Icons.phone_android;
     }
   }
@@ -571,7 +584,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
       unitCost: _unitCostController.text,
       quantity: _quantityController.text,
       chargeType: selectedChargeType!,
-      charge: _chargeController.text, // Manual charge entry preserved
+      charge: _chargeController.text,
       confirmationMessage: _confirmationMessageController.text,
       narration: _narrationController.text.trim(),
     );
