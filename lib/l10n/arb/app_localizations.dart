@@ -1947,6 +1947,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Event Intelligence'**
   String get eventIntelligence;
+
+  /// No description provided for @addEventPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos to share memories from this event'**
+  String get addEventPhotos;
+
+  /// No description provided for @errorLoadingPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading photos'**
+  String get errorLoadingPhotos;
 }
 
 class _AppLocalizationsDelegate

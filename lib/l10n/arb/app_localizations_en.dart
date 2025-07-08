@@ -997,4 +997,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventIntelligence => 'Event Intelligence';
+
+  @override
+  String get addEventPhotos => 'Add photos to share memories from this event';
+
+  @override
+  String get errorLoadingPhotos => 'Error loading photos';
 }

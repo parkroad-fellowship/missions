@@ -763,6 +763,10 @@
     "missionIntelligence": "Mission Intelligence",
     "@missionIntelligence": {},
     "eventIntelligence": "Event Intelligence",
-    "@eventIntelligence": {}
+    "@eventIntelligence": {},
+    "addEventPhotos": "Add photos to share memories from this event",
+    "@addEventPhotos": {},
+    "errorLoadingPhotos": "Error loading photos",
+    "@errorLoadingPhotos": {}
 
 }
