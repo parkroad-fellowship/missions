@@ -9,6 +9,7 @@ import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
@@ -47,9 +48,20 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
   DateTime? startsAt;
   DateTime? endsAt;
 
+  // Add form validity check
+  bool get _isFormValid {
+    return selectedFacilitatorUlid != null &&
+        _notesController.text.isNotEmpty &&
+        startsAt != null &&
+        endsAt != null;
+  }
+
   @override
   void initState() {
     super.initState();
+    // Add listeners to update form validity
+    _notesController.addListener(() => setState(() {}));
+
     context.read<GetSubscribersCubit>().getSubscriptions(
       missionUlid: widget.missionUlid,
     );
@@ -76,241 +88,442 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.facilitator, isRequired: true),
-            ),
-            const SizedBox(height: 5),
-            SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
-              stream: getIt<LocalDBService>().getMissionSubscriptions(
-                missionUlid: widget.missionUlid,
-              ),
-              loading: const PRFLinearProgressIndicator(),
-              widget: (context, subscribers) => LayoutBuilder(
-                builder: (context, constraints) {
-                  return DropdownMenu<String>(
-                    width: constraints.maxWidth,
-                    initialSelection: selectedFacilitatorUlid,
-                    hintText: l10n.facilitator,
-                    dropdownMenuEntries: subscribers
-                        .map(
-                          (subscriber) => DropdownMenuEntry<String>(
-                            value: subscriber.member.ulid!,
-                            label: subscriber.member.fullName!,
-                          ),
-                        )
-                        .toList(),
-                    onSelected: (member) => setState(() {
-                      selectedFacilitatorUlid = member;
-                    }),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.speaker),
-            ),
-            const SizedBox(height: 5),
-            SingleStreamWrapper<List<PRFLocalMissionSubscription>>(
-              stream: getIt<LocalDBService>().getMissionSubscriptions(
-                missionUlid: widget.missionUlid,
-              ),
-              loading: const PRFLinearProgressIndicator(),
-              widget: (context, subscribers) => LayoutBuilder(
-                builder: (context, constraints) {
-                  return DropdownMenu<String>(
-                    width: constraints.maxWidth,
-                    initialSelection: selectedSpeakerUlid,
-                    hintText: l10n.speaker,
-                    dropdownMenuEntries: subscribers
-                        .map(
-                          (subscriber) => DropdownMenuEntry<String>(
-                            value: subscriber.member.ulid!,
-                            label: subscriber.member.fullName!,
-                          ),
-                        )
-                        .toList(),
-                    onSelected: (member) => setState(() {
-                      selectedSpeakerUlid = member;
-                    }),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.classGroup),
-            ),
-            const SizedBox(height: 5),
-            BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded: (classes) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<String>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedClassGroupUlid,
-                        hintText: l10n.classGroup,
-                        dropdownMenuEntries: classes
-                            .map(
-                              (classGroup) => DropdownMenuEntry<String>(
-                                value: classGroup.ulid,
-                                label: classGroup.name,
-                              ),
-                            )
-                            .toList(),
-                        onSelected: (classGroup) => setState(() {
-                          selectedClassGroupUlid = classGroup;
-                        }),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.startTime, isRequired: true),
-            ),
-            const SizedBox(height: 6),
-            GestureDetector(
-              onTap: _selectStartDate,
-              child: PRFTextInput(
-                hintText: l10n.startTime,
-                controller: _startDateController,
-                enabled: false,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.endTime, isRequired: true),
-            ),
-            const SizedBox(height: 6),
-            GestureDetector(
-              onTap: _selectEndDate,
-              child: PRFTextInput(
-                hintText: l10n.endTime,
-                controller: _endDateController,
-                enabled: false,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.notes, isRequired: true),
-            ),
-            const SizedBox(height: 6),
-            PRFTextAreaInput(
-              hintText: l10n.notes,
-              controller: _notesController,
-            ),
-            const SizedBox(height: 16),
-            BlocConsumer<UpdateMissionSessionCubit, UpdateMissionSessionState>(
-              listener: (context, state) {
-                state.mapOrNull(
-                  loading: (_) {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                  },
-                  loaded: (_) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(l10n.sessionRecorded)),
-                    );
-                    context.read<GetMissionSessionCubit>().getMissionSession(
-                      missionSessionUlid: widget.missionSession.ulid,
-                      missionUlid: widget.missionUlid,
-                      refresh: true,
-                    );
-                  },
-                );
-              },
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => PRFPrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (selectedFacilitatorUlid == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.selectFacilitator)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
-
-                      if (_notesController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.enterNotes)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
-
-                      if (startsAt == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.addStartEnd)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
-
-                      if (endsAt == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.addStartEnd)),
-                        );
-                        Gaimon.warning();
-                        return;
-                      }
-
-                      await context
-                          .read<UpdateMissionSessionCubit>()
-                          .updateMissionSession(
-                            missionUlid: widget.missionUlid,
-                            missionSessionUlid: missionSession.ulid,
-                            facilitatorUlid: selectedFacilitatorUlid!,
-                            startsAt: startsAt!,
-                            endsAt: endsAt!,
-                            notes: _notesController.text,
-                            speakerUlid: selectedSpeakerUlid,
-                            classGroupUlid: selectedClassGroupUlid,
-                          );
-                    },
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 32),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(context).colorScheme.surface,
           ],
         ),
       ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+
+              // Header Card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.8),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.edit_outlined,
+                      size: 32,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Update Session',
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Modify the session details below',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
+
+              const SizedBox(height: 24),
+
+              // Form Card
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.2),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    _buildFormSection(
+                      icon: Icons.person_outline,
+                      title: l10n.facilitator,
+                      isRequired: true,
+                      child:
+                          SingleStreamWrapper<
+                            List<PRFLocalMissionSubscription>
+                          >(
+                            stream: getIt<LocalDBService>()
+                                .getMissionSubscriptions(
+                                  missionUlid: widget.missionUlid,
+                                ),
+                            loading: const PRFLinearProgressIndicator(),
+                            widget: (context, subscribers) => LayoutBuilder(
+                              builder: (context, constraints) {
+                                return DropdownMenu<String>(
+                                  width: constraints.maxWidth,
+                                  initialSelection: selectedFacilitatorUlid,
+                                  hintText: l10n.facilitator,
+                                  dropdownMenuEntries: subscribers
+                                      .map(
+                                        (subscriber) =>
+                                            DropdownMenuEntry<String>(
+                                              value: subscriber.member.ulid!,
+                                              label:
+                                                  subscriber.member.fullName!,
+                                            ),
+                                      )
+                                      .toList(),
+                                  onSelected: (member) => setState(() {
+                                    selectedFacilitatorUlid = member;
+                                  }),
+                                );
+                              },
+                            ),
+                          ),
+                    ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
+
+                    _buildFormSection(
+                      icon: Icons.mic_outlined,
+                      title: l10n.speaker,
+                      child:
+                          SingleStreamWrapper<
+                            List<PRFLocalMissionSubscription>
+                          >(
+                            stream: getIt<LocalDBService>()
+                                .getMissionSubscriptions(
+                                  missionUlid: widget.missionUlid,
+                                ),
+                            loading: const PRFLinearProgressIndicator(),
+                            widget: (context, subscribers) => LayoutBuilder(
+                              builder: (context, constraints) {
+                                return DropdownMenu<String>(
+                                  width: constraints.maxWidth,
+                                  initialSelection: selectedSpeakerUlid,
+                                  hintText: l10n.speaker,
+                                  dropdownMenuEntries: subscribers
+                                      .map(
+                                        (subscriber) =>
+                                            DropdownMenuEntry<String>(
+                                              value: subscriber.member.ulid!,
+                                              label:
+                                                  subscriber.member.fullName!,
+                                            ),
+                                      )
+                                      .toList(),
+                                  onSelected: (member) => setState(() {
+                                    selectedSpeakerUlid = member;
+                                  }),
+                                );
+                              },
+                            ),
+                          ),
+                    ).animate(delay: 200.ms).slideX(begin: -0.2).fadeIn(),
+
+                    _buildFormSection(
+                      icon: Icons.group_outlined,
+                      title: l10n.classGroup,
+                      child:
+                          BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => const SizedBox.shrink(),
+                                loading: () => const Center(
+                                  child: LinearProgressIndicator(),
+                                ),
+                                loaded: (classes) => LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    return DropdownMenu<String>(
+                                      width: constraints.maxWidth,
+                                      initialSelection: selectedClassGroupUlid,
+                                      hintText: l10n.classGroup,
+                                      dropdownMenuEntries: classes
+                                          .map(
+                                            (classGroup) =>
+                                                DropdownMenuEntry<String>(
+                                                  value: classGroup.ulid,
+                                                  label: classGroup.name,
+                                                ),
+                                          )
+                                          .toList(),
+                                      onSelected: (classGroup) => setState(() {
+                                        selectedClassGroupUlid = classGroup;
+                                      }),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                    ).animate(delay: 300.ms).slideX(begin: -0.2).fadeIn(),
+
+                    _buildFormSection(
+                      icon: Icons.schedule_outlined,
+                      title: l10n.startTime,
+                      isRequired: true,
+                      child: GestureDetector(
+                        onTap: _selectStartDate,
+                        child: PRFTextInput(
+                          hintText: l10n.startTime,
+                          controller: _startDateController,
+                          enabled: false,
+                        ),
+                      ),
+                    ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
+
+                    _buildFormSection(
+                      icon: Icons.schedule_outlined,
+                      title: l10n.endTime,
+                      isRequired: true,
+                      child: GestureDetector(
+                        onTap: _selectEndDate,
+                        child: PRFTextInput(
+                          hintText: l10n.endTime,
+                          controller: _endDateController,
+                          enabled: false,
+                        ),
+                      ),
+                    ).animate(delay: 500.ms).slideX(begin: -0.2).fadeIn(),
+
+                    _buildFormSection(
+                      icon: Icons.notes_outlined,
+                      title: l10n.notes,
+                      isRequired: true,
+                      child: PRFTextAreaInput(
+                        hintText: l10n.notes,
+                        controller: _notesController,
+                      ),
+                    ).animate(delay: 600.ms).slideX(begin: -0.2).fadeIn(),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Submit Button
+              BlocConsumer<
+                    UpdateMissionSessionCubit,
+                    UpdateMissionSessionState
+                  >(
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        },
+                        loaded: (_) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(l10n.sessionRecorded)),
+                          );
+                          context
+                              .read<GetMissionSessionCubit>()
+                              .getMissionSession(
+                                missionSessionUlid: widget.missionSession.ulid,
+                                missionUlid: widget.missionUlid,
+                                refresh: true,
+                              );
+                        },
+                      );
+                    },
+                    builder: (context, state) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          onPressed: _isFormValid && !_isLoading
+                              ? _submitForm
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _isFormValid
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.surfaceContainerHighest,
+                            foregroundColor: _isFormValid
+                                ? theme.colorScheme.onPrimary
+                                : theme.colorScheme.onSurfaceVariant,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: _isFormValid ? 4 : 0,
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: PRFCircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.save_outlined,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      _isLoading ? l10n.recording : l10n.record,
+                                      style: theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: theme.colorScheme.onPrimary,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      );
+                    },
+                  )
+                  .animate(delay: 700.ms)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
+
+              const SizedBox(height: 32),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFormSection({
+    required IconData icon,
+    required String title,
+    required Widget child,
+    bool isRequired = false,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              FormFieldLabel(label: title, isRequired: isRequired),
+            ],
+          ),
+          const SizedBox(height: 8),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submitForm() async {
+    final l10n = context.l10n;
+
+    if (selectedFacilitatorUlid == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.selectFacilitator)),
+      );
+      Gaimon.warning();
+      return;
+    }
+
+    if (_notesController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.enterNotes)),
+      );
+      Gaimon.warning();
+      return;
+    }
+
+    if (startsAt == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.addStartEnd)),
+      );
+      Gaimon.warning();
+      return;
+    }
+
+    if (endsAt == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.addStartEnd)),
+      );
+      Gaimon.warning();
+      return;
+    }
+
+    await context.read<UpdateMissionSessionCubit>().updateMissionSession(
+      missionUlid: widget.missionUlid,
+      missionSessionUlid: missionSession.ulid,
+      facilitatorUlid: selectedFacilitatorUlid!,
+      startsAt: startsAt!,
+      endsAt: endsAt!,
+      notes: _notesController.text,
+      speakerUlid: selectedSpeakerUlid,
+      classGroupUlid: selectedClassGroupUlid,
     );
   }
 
   Future<void> _selectStartDate() async {
     await DatePicker.showDateTimePicker(
       context,
-      minTime: DateTime.now(),
+      minTime: DateTime.now().subtract(const Duration(days: 7)),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         itemStyle: Theme.of(context).textTheme.headlineSmall!,
@@ -332,7 +545,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
   Future<void> _selectEndDate() async {
     await DatePicker.showDateTimePicker(
       context,
-      minTime: DateTime.now(),
+      minTime: DateTime.now().subtract(const Duration(days: 7)),
       maxTime: DateTime.now().add(const Duration(days: 30)),
       theme: picker.DatePickerTheme(
         itemStyle: Theme.of(context).textTheme.headlineSmall!,

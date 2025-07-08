@@ -8,7 +8,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class SessionsViewHandset extends StatefulWidget {
@@ -28,7 +27,6 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
     context.read<GetMissionSessionsCubit>().getMissionSessions(
       missionUlid: missionUlid,
     );
-
     super.initState();
   }
 
@@ -41,10 +39,23 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
         missionUlid: missionUlid,
       ),
       nullWidget: Center(
-        child: Text(
-          l10n.noSessions,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.event_note_outlined,
+              size: 64,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n.noSessions,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ).animate().fadeIn(duration: 600.ms).scale(begin: const Offset(0.8, 0.8)),
       ),
       widget: (context, missionSessions) => ListView.builder(
         physics: const ScrollPhysics(),
@@ -57,29 +68,43 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    DateFormat.MMMMEEEEd().add_y().format(
-                      missionSessions.keys.elementAt(index),
+              // Timeline Date Header
+              Container(
+                margin: const EdgeInsets.only(left: 32, top: 16, bottom: 8),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
+                    const SizedBox(width: 12),
+                    Text(
+                      DateFormat.MMMMEEEEd().add_y().format(
+                        missionSessions.keys.elementAt(index),
+                      ),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ).animate(delay: (index * 100).ms).slideX(begin: -0.3).fadeIn(),
+              
+              // Timeline Sessions
               ListView.builder(
                 shrinkWrap: true,
                 physics: const ScrollPhysics(),
                 itemCount: sortedDailySessions.length,
-                itemBuilder: (context, i) => Column(
-                  children: [
-                    MissionSessionCard(
-                      missionSession: sortedDailySessions[i],
-                      missionUlid: missionUlid,
-                    ),
-                    const SizedBox(height: 8),
-                  ],
+                itemBuilder: (context, i) => TimelineSessionCard(
+                  missionSession: sortedDailySessions[i],
+                  missionUlid: missionUlid,
+                  isLast: i == sortedDailySessions.length - 1,
+                  animationDelay: (index * 100 + i * 50).ms,
                 ),
               ),
               const SizedBox(height: 16),
@@ -91,70 +116,192 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset> {
   }
 }
 
-class MissionSessionCard extends StatelessWidget {
-  const MissionSessionCard({
+class TimelineSessionCard extends StatelessWidget {
+  const TimelineSessionCard({
     required this.missionSession,
     required this.missionUlid,
+    required this.isLast,
+    required this.animationDelay,
     super.key,
   });
 
   final PRFLocalMissionSession missionSession;
   final String missionUlid;
+  final bool isLast;
+  final Duration animationDelay;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Animate(
-      effects: const [SaturateEffect()],
-      child: GestureDetector(
-        onTap: () => context.router.push(
-          SessionRoute(
-            missionSessionUlid: missionSession.ulid,
-            missionUlid: missionUlid,
-            missionSessionId: missionSession.id,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
-              decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.secondary.withValues(alpha: .3),
-                borderRadius: BorderRadius.circular(48.r),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${DateFormat.jm().format(missionSession.startsAt)} -'
-                        ' ${DateFormat.jm().format(missionSession.endsAt)}',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${l10n.facilitator}: '
-                        '${missionSession.facilitator.fullName}\n'
-                        '${l10n.speaker}: '
-                        '${missionSession.speaker?.fullName}',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      SizedBox(height: 8.h),
-                    ],
+    return Container(
+      margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Timeline Line
+          Column(
+            children: [
+              Container(
+                width: 16,
+                height: 16,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.surface,
+                    width: 3,
                   ),
-                  const Icon(Icons.arrow_forward_ios),
-                ],
+                ),
               ),
+              if (!isLast)
+                Container(
+                  width: 2,
+                  height: 80,
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                ),
+            ],
+          ),
+          const SizedBox(width: 16),
+          
+          // Session Card
+          Expanded(
+            child: GestureDetector(
+              onTap: () => context.router.push(
+                SessionRoute(
+                  missionSessionUlid: missionSession.ulid,
+                  missionUlid: missionUlid,
+                  missionSessionId: missionSession.id,
+                ),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${DateFormat.jm().format(missionSession.startsAt)} - ${DateFormat.jm().format(missionSession.endsAt)}',
+                            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person_outline,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '${l10n.facilitator}: ',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            missionSession.facilitator.fullName ?? 'N/A',
+                            style: Theme.of(context).textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (missionSession.speaker != null) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.mic_outlined,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            '${l10n.speaker}: ',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              missionSession.speaker?.fullName ?? 'N/A',
+                              style: Theme.of(context).textTheme.bodySmall,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                    if (missionSession.classGroup != null) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.group_outlined,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            '${l10n.classGroup}: ',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              missionSession.classGroup?.name ?? 'N/A',
+                              style: Theme.of(context).textTheme.bodySmall,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ).animate(delay: animationDelay)
+                  .slideX(begin: 0.3)
+                  .fadeIn(duration: 400.ms)
+                  .scale(begin: const Offset(0.95, 0.95)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
