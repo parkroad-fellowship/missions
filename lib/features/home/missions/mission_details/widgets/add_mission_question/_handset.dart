@@ -138,7 +138,6 @@ class _AddMissionQuestionViewHandsetState
                         hintText: l10n.addQuestionDesc,
                         controller: _questionController,
                         enabled: !_isLoading,
-                        minLines: 3,
                         maxLines: 6,
                       ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),

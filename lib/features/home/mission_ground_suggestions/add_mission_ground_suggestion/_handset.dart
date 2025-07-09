@@ -175,9 +175,10 @@ class _AddMissionGroundSuggestionViewHandsetState
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Theme.of(context).colorScheme.outline.withValues(
-                              alpha: 0.2,
-                            ),
+                            color: Theme.of(context).colorScheme.outline
+                                .withValues(
+                                  alpha: 0.2,
+                                ),
                           ),
                         ),
                         child: InternationalPhoneNumberInput(
@@ -188,9 +189,12 @@ class _AddMissionGroundSuggestionViewHandsetState
                           textStyle: Theme.of(context).textTheme.bodyMedium,
                           inputDecoration: InputDecoration(
                             hintText: '0712345678',
-                            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
+                            hintStyle: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 16,
@@ -208,52 +212,55 @@ class _AddMissionGroundSuggestionViewHandsetState
 
               // Submit Button
               BlocConsumer<
-                AddMissionGroundSuggestionCubit,
-                AddMissionGroundSuggestionState
-              >(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    loading: (_) {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                    },
-                    loaded: (result) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.success();
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            l10n.missionGroundRecorded(
-                              result.missionGroundSuggestion.name,
+                    AddMissionGroundSuggestionCubit,
+                    AddMissionGroundSuggestionState
+                  >(
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        },
+                        loaded: (result) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.success();
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                l10n.missionGroundRecorded(
+                                  result.missionGroundSuggestion.name,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
+                        error: (error) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.error();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.message)),
+                          );
+                        },
                       );
                     },
-                    error: (error) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.error();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(error.message)),
+                    builder: (context, state) {
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: l10n.record,
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
                       );
                     },
-                  );
-                },
-                builder: (context, state) {
-                  return PRFPrimaryButton(
-                    onPressed: _submitForm,
-                    title: l10n.record,
-                    disabled: !_isFormValid,
-                    isLoading: _isLoading,
-                  );
-                },
-              ).animate(delay: 400.ms).slideY(begin: 0.3).fadeIn(),
+                  )
+                  .animate(delay: 400.ms)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: 32),
             ],
@@ -328,12 +335,10 @@ class _AddMissionGroundSuggestionViewHandsetState
       return;
     }
 
-    await context
-        .read<AddMissionGroundSuggestionCubit>()
-        .suggestMissionGround(
-          name: _nameController.text.trim(),
-          contactPerson: _contactPersonController.text.trim(),
-          contactNumber: _contactNumber!,
-        );
+    await context.read<AddMissionGroundSuggestionCubit>().suggestMissionGround(
+      name: _nameController.text.trim(),
+      contactPerson: _contactPersonController.text.trim(),
+      contactNumber: _contactNumber!,
+    );
   }
 }

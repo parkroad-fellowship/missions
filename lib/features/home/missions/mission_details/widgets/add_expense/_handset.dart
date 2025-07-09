@@ -25,7 +25,6 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
   final _chargeController = TextEditingController();
   final _narrationController = TextEditingController();
   final _confirmationMessageController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
   PRFExpenseCategory? selectedExpenseCategory;
@@ -143,17 +142,19 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary.withValues(
-                            alpha: 0.2,
-                          ),
+                          color: Theme.of(context).colorScheme.onPrimary
+                              .withValues(
+                                alpha: 0.2,
+                              ),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           'Total: KES ${_totalAmount.toStringAsFixed(2)}',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ),
                     ],
@@ -190,22 +191,24 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       icon: Icons.category,
                       title: l10n.expenseDetails,
                       isRequired: true,
-                      child: BlocBuilder<
-                        GetExpenseCategoriesCubit,
-                        GetExpenseCategoriesState
-                      >(
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            orElse: () => const SizedBox.shrink(),
-                            loading: () => const PRFLinearProgressIndicator(),
-                            loaded: (expenseCategories) =>
-                                _buildCategorySelector(
-                                  expenseCategories,
-                                  Theme.of(context),
-                                ),
-                          );
-                        },
-                      ),
+                      child:
+                          BlocBuilder<
+                            GetExpenseCategoriesCubit,
+                            GetExpenseCategoriesState
+                          >(
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => const SizedBox.shrink(),
+                                loading: () =>
+                                    const PRFLinearProgressIndicator(),
+                                loaded: (expenseCategories) =>
+                                    _buildCategorySelector(
+                                      expenseCategories,
+                                      Theme.of(context),
+                                    ),
+                              );
+                            },
+                          ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(

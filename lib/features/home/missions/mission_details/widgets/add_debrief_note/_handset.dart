@@ -139,7 +139,6 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                         hintText: l10n.addDebriefNoteDesc,
                         controller: _noteController,
                         enabled: !_isLoading,
-                        minLines: 3,
                         maxLines: 6,
                       ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),

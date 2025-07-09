@@ -162,65 +162,72 @@ class _UpdateEventSubscriptionViewHandsetState
 
               // Update Button
               BlocConsumer<
-                UpdateEventSubscriptionCubit,
-                UpdateEventSubscriptionState
-              >(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    loading: (_) {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                    },
-                    loaded: (_) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.success();
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                      context.read<GetEventsCubit>().getEvents();
-                      context
-                          .read<GetMemberEventSubscriptionsCubit>()
-                          .getMemberEventSubscriptions();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(l10n.eventRegistrationRecorded),
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
+                    UpdateEventSubscriptionCubit,
+                    UpdateEventSubscriptionState
+                  >(
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        },
+                        loaded: (_) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.success();
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          context.read<GetEventsCubit>().getEvents();
+                          context
+                              .read<GetMemberEventSubscriptionsCubit>()
+                              .getMemberEventSubscriptions();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(l10n.eventRegistrationRecorded),
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        },
+                        error: (error) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.error();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(error.message),
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.error,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
-                    error: (error) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.error();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(error.message),
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
+                    builder: (context, state) {
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: l10n.record,
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
                       );
                     },
-                  );
-                },
-                builder: (context, state) {
-                  return PRFPrimaryButton(
-                    onPressed: _submitForm,
-                    title: l10n.record,
-                    disabled: !_isFormValid,
-                    isLoading: _isLoading,
-                  );
-                },
-              ).animate(delay: 200.ms).slideY(begin: 0.3).fadeIn(),
+                  )
+                  .animate(delay: 200.ms)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: 24),
 
@@ -251,7 +258,9 @@ class _UpdateEventSubscriptionViewHandsetState
                           child: Text(
                             l10n.cancel,
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ),
@@ -272,7 +281,9 @@ class _UpdateEventSubscriptionViewHandsetState
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(l10n.subscriptionCancelled),
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    backgroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                     behavior: SnackBarBehavior.floating,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -285,7 +296,9 @@ class _UpdateEventSubscriptionViewHandsetState
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(e.message),
-                                    backgroundColor: Theme.of(context).colorScheme.error,
+                                    backgroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.error,
                                     behavior: SnackBarBehavior.floating,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -395,12 +408,10 @@ class _UpdateEventSubscriptionViewHandsetState
       return;
     }
 
-    await context
-        .read<UpdateEventSubscriptionCubit>()
-        .updateEventSubscription(
-          event: widget.event,
-          eventSubscription: eventSubscription,
-          tickets: _ticketController.text.trim(),
-        );
+    await context.read<UpdateEventSubscriptionCubit>().updateEventSubscription(
+      event: widget.event,
+      eventSubscription: eventSubscription,
+      tickets: _ticketController.text.trim(),
+    );
   }
 }

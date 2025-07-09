@@ -52,7 +52,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           orElse: () => const Center(child: CircularProgressIndicator()),
           empty: () => PRFEmptyView(
             label: l10n.noExpenses,
-            description:  l10n.askMissionDeskToDisburseFunds,
+            description: l10n.askMissionDeskToDisburseFunds,
           ),
           loaded: (missionExpense) {
             return RefreshIndicator(

@@ -53,7 +53,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     _contactNumberController.text = missionGroundSuggestion.contactNumber;
     _notesController.text = missionGroundSuggestion.notes ?? '';
     _selectedStatus = missionGroundSuggestion.status;
-    
+
     // Add listeners to update form validity
     _nameController.addListener(() => setState(() {}));
     _contactPersonController.addListener(() => setState(() {}));
@@ -190,7 +190,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(alpha: 0.2),
                           ),
                         ),
                         child: InternationalPhoneNumberInput(
@@ -202,9 +204,12 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           textStyle: Theme.of(context).textTheme.bodyMedium,
                           inputDecoration: InputDecoration(
                             hintText: '+254 712 345 678',
-                            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
+                            hintStyle: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 16,
@@ -225,14 +230,18 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             width: constraints.maxWidth,
                             initialSelection: _selectedStatus,
                             hintText: l10n.status,
-                            dropdownMenuEntries: PRFMissionGroundSuggestionStatus.values
-                                .map(
-                                  (status) => DropdownMenuEntry<PRFMissionGroundSuggestionStatus>(
-                                    value: status,
-                                    label: status.name,
-                                  ),
-                                )
-                                .toList(),
+                            dropdownMenuEntries:
+                                PRFMissionGroundSuggestionStatus.values
+                                    .map(
+                                      (status) =>
+                                          DropdownMenuEntry<
+                                            PRFMissionGroundSuggestionStatus
+                                          >(
+                                            value: status,
+                                            label: status.name,
+                                          ),
+                                    )
+                                    .toList(),
                             onSelected: (status) => setState(() {
                               _selectedStatus = status;
                             }),
@@ -257,52 +266,55 @@ class _UpdateMissionGroundSuggestionViewHandsetState
 
               // Submit Button
               BlocConsumer<
-                UpdateMissionGroundSuggestionCubit,
-                UpdateMissionGroundSuggestionState
-              >(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    loading: (_) {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                    },
-                    loaded: (result) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.success();
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            l10n.missionGroundRecorded(
-                              result.missionGroundSuggestion.name,
+                    UpdateMissionGroundSuggestionCubit,
+                    UpdateMissionGroundSuggestionState
+                  >(
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        },
+                        loaded: (result) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.success();
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                l10n.missionGroundRecorded(
+                                  result.missionGroundSuggestion.name,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
+                        error: (error) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.error();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.message)),
+                          );
+                        },
                       );
                     },
-                    error: (error) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.error();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(error.message)),
+                    builder: (context, state) {
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: l10n.record,
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
                       );
                     },
-                  );
-                },
-                builder: (context, state) {
-                  return PRFPrimaryButton(
-                    onPressed: _submitForm,
-                    title: l10n.record,
-                    disabled: !_isFormValid,
-                    isLoading: _isLoading,
-                  );
-                },
-              ).animate(delay: 600.ms).slideY(begin: 0.3).fadeIn(),
+                  )
+                  .animate(delay: 600.ms)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: 72),
             ],
@@ -360,7 +372,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
       Gaimon.warning();
       return;
     }
-    
+
     if (_contactPersonController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.enterContactPerson)),
@@ -368,7 +380,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
       Gaimon.warning();
       return;
     }
-    
+
     if (_contactNumberController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.enterContactNumber)),
@@ -376,7 +388,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
       Gaimon.warning();
       return;
     }
-    
+
     if (_selectedStatus == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.selectStatus)),

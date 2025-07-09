@@ -44,15 +44,15 @@ class _StudentEnquiryRepliesPageHandsetState
       enquiryUlid: enquiry.ulid,
     );
     _subscribeToEnquiryReplies();
-    
+
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    
+
     _enquiryReplyController.addListener(() {
       setState(() {
         _isComposing = _enquiryReplyController.text.trim().isNotEmpty;
@@ -111,7 +111,7 @@ class _StudentEnquiryRepliesPageHandsetState
   String _formatTimestamp(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays == 0) {
       return DateFormat('HH:mm').format(dateTime);
     } else if (difference.inDays == 1) {
@@ -126,10 +126,10 @@ class _StudentEnquiryRepliesPageHandsetState
   Widget _buildMessageBubble(PRFLocalStudentEnquiryReply reply, int index) {
     final theme = Theme.of(context);
     final isStudent = reply.isStudent;
-    
+
     return TweenAnimationBuilder<double>(
       duration: Duration(milliseconds: 300 + (index * 50)),
-      tween: Tween(begin: 0.0, end: 1.0),
+      tween: Tween(begin: 0, end: 1),
       curve: Curves.easeOutBack,
       builder: (context, value, child) {
         return Transform.translate(
@@ -148,8 +148,8 @@ class _StudentEnquiryRepliesPageHandsetState
           bottom: 4,
         ),
         child: Column(
-          crossAxisAlignment: isStudent 
-              ? CrossAxisAlignment.start 
+          crossAxisAlignment: isStudent
+              ? CrossAxisAlignment.start
               : CrossAxisAlignment.end,
           children: [
             Container(
@@ -165,7 +165,9 @@ class _StudentEnquiryRepliesPageHandsetState
                     ? LinearGradient(
                         colors: [
                           theme.colorScheme.secondaryContainer,
-                          theme.colorScheme.secondaryContainer.withValues(alpha: 0.8),
+                          theme.colorScheme.secondaryContainer.withValues(
+                            alpha: 0.8,
+                          ),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -186,9 +188,11 @@ class _StudentEnquiryRepliesPageHandsetState
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: (isStudent 
-                        ? theme.colorScheme.secondaryContainer 
-                        : theme.colorScheme.primary).withValues(alpha: 0.3),
+                    color:
+                        (isStudent
+                                ? theme.colorScheme.secondaryContainer
+                                : theme.colorScheme.primary)
+                            .withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -237,7 +241,7 @@ class _StudentEnquiryRepliesPageHandsetState
   Widget _buildEnhancedInputArea() {
     final theme = Theme.of(context);
     final l10n = context.l10n;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -303,7 +307,7 @@ class _StudentEnquiryRepliesPageHandsetState
                   loading: () => true,
                   orElse: () => false,
                 );
-                
+
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   decoration: BoxDecoration(
@@ -315,12 +319,16 @@ class _StudentEnquiryRepliesPageHandsetState
                             ],
                           )
                         : null,
-                    color: _isComposing ? null : theme.colorScheme.surfaceContainerHighest,
+                    color: _isComposing
+                        ? null
+                        : theme.colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: _isComposing
                         ? [
                             BoxShadow(
-                              color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.3,
+                              ),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -335,7 +343,9 @@ class _StudentEnquiryRepliesPageHandsetState
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                _isComposing ? Colors.white : theme.colorScheme.primary,
+                                _isComposing
+                                    ? Colors.white
+                                    : theme.colorScheme.primary,
                               ),
                             ),
                           )
@@ -399,7 +409,9 @@ class _StudentEnquiryRepliesPageHandsetState
 
                         if (!snapshot.hasData) {
                           return const SliverFillRemaining(
-                            child: Center(child: PRFCircularProgressIndicator()),
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
                           );
                         }
 

@@ -388,7 +388,6 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
-                          
                         ),
                       ),
                       Text(
@@ -396,7 +395,6 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
-                          
                         ),
                       ),
                       Container(
@@ -411,7 +409,6 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
-                          
                         ),
                       ),
                       Text(
@@ -419,7 +416,6 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
-                          
                         ),
                       ),
                     ] else ...[

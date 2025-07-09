@@ -6,7 +6,8 @@ class PRFNumberInput extends StatelessWidget {
     required this.hintText,
     required this.controller,
     super.key,
-    this.isLoading = false, this.prefixText,
+    this.isLoading = false,
+    this.prefixText,
   });
 
   final String hintText;
