@@ -353,9 +353,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
 
     // Premium status color system
     final statusColor = isSubscribed
-        ? const Color(PRFTheme.successColor)
+        ? const Color(PRFTheme.secondaryColor)
         : isOngoing
-        ? const Color(PRFTheme.successColor) // Active green
+        ? const Color(PRFTheme.secondaryColor) // Active green
         : isUpcoming
         ? theme.colorScheme.primary
         : isPast
