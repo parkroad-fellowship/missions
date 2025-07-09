@@ -66,42 +66,74 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
 
-    return Form(
-      key: _formKey,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(context).colorScheme.surface,
+          ],
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Header Card with Gradient
+              const SizedBox(height: 16),
+
+              // Header Card
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.8),
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.8),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
                     Icon(
                       Icons.receipt_long,
-                      color: theme.colorScheme.onPrimary,
                       size: 32,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Add New Expense',
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        color: theme.colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Fill in the details below to record a new expense',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     if (_totalAmount > 0) ...[
                       const SizedBox(height: 12),
@@ -111,15 +143,15 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary.withValues(
+                          color: Theme.of(context).colorScheme.onPrimary.withValues(
                             alpha: 0.2,
                           ),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           'Total: KES ${_totalAmount.toStringAsFixed(2)}',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onPrimary,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -127,52 +159,61 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     ],
                   ],
                 ),
-              ).animate().fadeIn().slideY(begin: -0.3, end: 0),
+              ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
 
               const SizedBox(height: 24),
 
-              // Main Form Card
-              Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+              // Form Card
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.2),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    _buildFormSection(
+                      icon: Icons.category,
+                      title: l10n.expenseDetails,
+                      isRequired: true,
+                      child: BlocBuilder<
+                        GetExpenseCategoriesCubit,
+                        GetExpenseCategoriesState
+                      >(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            orElse: () => const SizedBox.shrink(),
+                            loading: () => const PRFLinearProgressIndicator(),
+                            loaded: (expenseCategories) =>
+                                _buildCategorySelector(
+                                  expenseCategories,
+                                  Theme.of(context),
+                                ),
+                          );
+                        },
+                      ),
+                    ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
+
+                    _buildFormSection(
+                      icon: Icons.payments,
+                      title: l10n.amountDetails,
+                      isRequired: true,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Category Selection
-                          _buildSectionHeader(
-                            l10n.expenseDetails,
-                            Icons.category,
-                          ),
-                          const SizedBox(height: 16),
-                          BlocBuilder<
-                            GetExpenseCategoriesCubit,
-                            GetExpenseCategoriesState
-                          >(
-                            builder: (context, state) {
-                              return state.maybeWhen(
-                                orElse: () => const SizedBox.shrink(),
-                                loading: () => const LinearProgressIndicator(),
-                                loaded: (expenseCategories) =>
-                                    _buildCategorySelector(
-                                      expenseCategories,
-                                      theme,
-                                    ),
-                              );
-                            },
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          // Amount Section
-                          _buildSectionHeader(
-                            l10n.amountDetails,
-                            Icons.payments,
-                          ),
-                          const SizedBox(height: 16),
                           Row(
                             children: [
                               Expanded(
@@ -194,10 +235,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 16),
-
-                          // Manual Charge Entry
                           _buildNumberField(
                             controller: _chargeController,
                             label: l10n.charge,
@@ -205,35 +243,31 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             prefix: 'KES ',
                             fullWidth: true,
                           ),
-
                           if (_totalAmount > 0) ...[
                             const SizedBox(height: 16),
-                            _buildCalculationSummary(theme, l10n),
+                            _buildCalculationSummary(Theme.of(context), l10n),
                           ],
+                        ],
+                      ),
+                    ).animate(delay: 200.ms).slideX(begin: -0.2).fadeIn(),
 
-                          const SizedBox(height: 24),
+                    _buildFormSection(
+                      icon: Icons.payment,
+                      title: l10n.paymentMethod,
+                      isRequired: true,
+                      child: _buildTransactionTypeSelector(Theme.of(context)),
+                    ).animate(delay: 300.ms).slideX(begin: -0.2).fadeIn(),
 
-                          // Transaction Type
-                          _buildSectionHeader(
-                            l10n.paymentMethod,
-                            Icons.payment,
-                          ),
-                          const SizedBox(height: 16),
-                          _buildTransactionTypeSelector(theme),
-
-                          const SizedBox(height: 24),
-
-                          // Description Section
-                          _buildSectionHeader(
-                            l10n.description,
-                            Icons.description,
-                          ),
-                          const SizedBox(height: 16),
+                    _buildFormSection(
+                      icon: Icons.description,
+                      title: l10n.description,
+                      isRequired: true,
+                      child: Column(
+                        children: [
                           PRFTextAreaInput(
                             hintText: l10n.paymentDesc,
                             controller: _narrationController,
                           ),
-
                           const SizedBox(height: 16),
                           PRFTextAreaInput(
                             hintText: l10n.confirmationMsg,
@@ -241,90 +275,54 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           ),
                         ],
                       ),
-                    ),
-                  )
-                  .animate(delay: const Duration(milliseconds: 200))
-                  .fadeIn()
-                  .slideY(begin: 0.3, end: 0),
+                    ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
+                  ],
+                ),
+              ),
 
               const SizedBox(height: 24),
 
               // Submit Button
               BlocConsumer<AddExpenseCubit, AddExpenseState>(
-                    listener: (context, state) {
-                      state.mapOrNull(
-                        loading: (_) => setState(() => _isLoading = true),
-                        loaded: (_) {
-                          setState(() => _isLoading = false);
-                          Gaimon.success();
-                          Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(l10n.expenseRecorded)),
-                          );
-                        },
-                        error: (error) {
-                          setState(() => _isLoading = false);
-                          Gaimon.error();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.message)),
-                          );
-                        },
+                listener: (context, state) {
+                  state.mapOrNull(
+                    loading: (_) {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                    },
+                    loaded: (_) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      Gaimon.success();
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(l10n.expenseRecorded)),
                       );
                     },
-                    builder: (context, state) {
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: _isFormValid && !_isLoading
-                              ? _submitForm
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _isFormValid
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.surfaceContainerHighest,
-                            foregroundColor: _isFormValid
-                                ? theme.colorScheme.onPrimary
-                                : theme.colorScheme.onSurfaceVariant,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: _isFormValid ? 4 : 0,
-                          ),
-                          child: _isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: PRFCircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.add_circle_outline,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      l10n.recordExpense,
-                                      style: theme.textTheme.titleMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: theme.colorScheme.onPrimary,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                      );
+                    error: (error) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      Gaimon.error();
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(error.message)));
                     },
-                  )
-                  .animate(delay: const Duration(milliseconds: 400))
-                  .fadeIn()
-                  .slideY(begin: 0.5, end: 0),
+                  );
+                },
+                builder: (context, state) {
+                  return PRFPrimaryButton(
+                    onPressed: _submitForm,
+                    title: l10n.recordExpense,
+                    disabled: !_isFormValid,
+                    isLoading: _isLoading,
+                  );
+                },
+              ).animate(delay: 500.ms).slideY(begin: 0.3).fadeIn(),
+
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -332,31 +330,41 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon) {
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(8),
+  Widget _buildFormSection({
+    required IconData icon,
+    required String title,
+    required Widget child,
+    bool isRequired = false,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              FormFieldLabel(label: title, isRequired: isRequired),
+            ],
           ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: theme.colorScheme.onPrimaryContainer,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          title,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-      ],
+          const SizedBox(height: 8),
+          child,
+        ],
+      ),
     );
   }
 
@@ -408,7 +416,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     bool fullWidth = false,
   }) {
     final theme = Theme.of(context);
-    final field = Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -419,32 +427,13 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
           ),
         ),
         const SizedBox(height: 8),
-        TextFormField(
+        PRFNumberInput(
           controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            hintText: hint,
-            prefixText: prefix,
-            prefixStyle: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: theme.colorScheme.primary,
-                width: 2,
-              ),
-            ),
-          ),
+          hintText: hint,
+          prefixText: prefix,
         ),
       ],
     );
-
-    return fullWidth ? field : Expanded(child: field);
   }
 
   Widget _buildCalculationSummary(ThemeData theme, AppLocalizations l10n) {

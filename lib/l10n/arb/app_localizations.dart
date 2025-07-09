@@ -760,6 +760,24 @@ abstract class AppLocalizations {
   /// **'Add a question'**
   String get addQuestion;
 
+  /// No description provided for @addQuestionSubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share any questions from learners'**
+  String get addQuestionSubTitle;
+
+  /// No description provided for @addQuestionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Question Details'**
+  String get addQuestionSection;
+
+  /// No description provided for @addQuestionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'What did the students want to know?'**
+  String get addQuestionDesc;
+
   /// No description provided for @questionRecorded.
   ///
   /// In en, this message translates to:
@@ -2037,6 +2055,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No expenses yet'**
   String get noExpenses;
+
+  /// No description provided for @addDebriefNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add debrief note'**
+  String get addDebriefNote;
+
+  /// No description provided for @addDebriefNoteSubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts and observations from the mission'**
+  String get addDebriefNoteSubTitle;
+
+  /// No description provided for @addDebriefNoteSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Note Details'**
+  String get addDebriefNoteSection;
+
+  /// No description provided for @addDebriefNoteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'What are your thoughts so far?'**
+  String get addDebriefNoteDesc;
+
+  /// No description provided for @addSoulSubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a decision for Jesus made during this mission'**
+  String get addSoulSubTitle;
+
+  /// No description provided for @studentInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Student Information'**
+  String get studentInformation;
+
+  /// No description provided for @updateRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Registration'**
+  String get updateRegistration;
 }
 
 class _AppLocalizationsDelegate

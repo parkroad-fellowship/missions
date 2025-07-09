@@ -6,12 +6,13 @@ class PRFNumberInput extends StatelessWidget {
     required this.hintText,
     required this.controller,
     super.key,
-    this.isLoading = false,
+    this.isLoading = false, this.prefixText,
   });
 
   final String hintText;
   final TextEditingController controller;
   final bool isLoading;
+  final String? prefixText;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class PRFNumberInput extends StatelessWidget {
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
       textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(hintText: hintText),
+      decoration: InputDecoration(hintText: hintText, prefixText: prefixText),
       style: theme.textTheme.bodyMedium,
       controller: controller,
       enabled: !isLoading,

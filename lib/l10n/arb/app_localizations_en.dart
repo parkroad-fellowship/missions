@@ -365,6 +365,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addQuestion => 'Add a question';
 
   @override
+  String get addQuestionSubTitle => 'Share any questions from learners';
+
+  @override
+  String get addQuestionSection => 'Question Details';
+
+  @override
+  String get addQuestionDesc => 'What did the students want to know?';
+
+  @override
   String get questionRecorded => 'This question has been recorded';
 
   @override
@@ -1049,4 +1058,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noExpenses => 'No expenses yet';
+
+  @override
+  String get addDebriefNote => 'Add debrief note';
+
+  @override
+  String get addDebriefNoteSubTitle =>
+      'Share your thoughts and observations from the mission';
+
+  @override
+  String get addDebriefNoteSection => 'Note Details';
+
+  @override
+  String get addDebriefNoteDesc => 'What are your thoughts so far?';
+
+  @override
+  String get addSoulSubTitle =>
+      'Record a decision for Jesus made during this mission';
+
+  @override
+  String get studentInformation => 'Student Information';
+
+  @override
+  String get updateRegistration => 'Update Registration';
 }

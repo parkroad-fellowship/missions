@@ -63,7 +63,6 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -350,52 +349,11 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                   );
                 },
                 builder: (context, state) {
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: _isFormValid && !_isLoading
-                          ? _submitForm
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _isFormValid
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.surfaceContainerHighest,
-                        foregroundColor: _isFormValid
-                            ? theme.colorScheme.onPrimary
-                            : theme.colorScheme.onSurfaceVariant,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: _isFormValid ? 4 : 0,
-                      ),
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: PRFCircularProgressIndicator(
-                                color: Colors.white,
-                              ),
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.save_outlined,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  l10n.record,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: theme.colorScheme.onPrimary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ),
+                  return PRFPrimaryButton(
+                    onPressed: _submitForm,
+                    title: l10n.record,
+                    disabled: !_isFormValid,
+                    isLoading: _isLoading,
                   );
                 },
               ).animate(delay: 700.ms).slideY(begin: 0.3).fadeIn(),
