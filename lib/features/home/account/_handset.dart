@@ -6,12 +6,12 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
@@ -23,422 +23,716 @@ class AccountPageHandset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
     Logger().d(getIt<HiveService>().retrieveMember());
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.surfaceContainerHighest,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1.w),
+        child: CustomScrollView(
+          slivers: [
+            // Modern Navigation Bar
+            PRFNavBar(
+              title: l10n.myAccount,
+              onBack: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.landingRoute,
+              ),
+              backgroundColor: theme.colorScheme.surface,
+              actions: [
+                Animate(
+                  effects: [ShimmerEffect(duration: 1.seconds)],
+                  child: BlocListener<SignOutCubit, SignOutState>(
+                    listener: (context, state) {
+                      state.maybeWhen(
+                        orElse: () => context.router.pushNamed(
+                          PRFSuperAppRouter.decisionRoute,
                         ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.error.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: theme.colorScheme.error.withValues(alpha: 0.3),
                         ),
                       ),
-                      const Spacer(),
-                      Text(
-                        l10n.myAccount,
-                        style: Theme.of(context).textTheme.displayLarge,
+                      child: IconButton(
+                        onPressed: () => context.read<SignOutCubit>().signOut(),
+                        icon: Icon(
+                          Icons.logout_rounded,
+                          color: theme.colorScheme.error,
+                          size: 20,
+                        ),
+                        tooltip: l10n.signOut,
                       ),
-                      const Spacer(),
-                      Animate(
-                        effects: [ShimmerEffect(duration: 1.seconds)],
-                        child: BlocListener<SignOutCubit, SignOutState>(
-                          listener: (context, state) {
-                            state.maybeWhen(
-                              orElse: () => context.router.pushNamed(
-                                PRFSuperAppRouter.decisionRoute,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+            // Profile Section
+            SliverToBoxAdapter(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.shadow.withValues(alpha: 0.08),
+                      blurRadius: 16,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    // Profile Picture
+                    Stack(
+                      children: [
+                        Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [
+                                theme.colorScheme.primary.withValues(
+                                  alpha: 0.1,
+                                ),
+                                theme.colorScheme.secondary.withValues(
+                                  alpha: 0.1,
+                                ),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            border: Border.all(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.3,
+                              ),
+                              width: 3,
+                            ),
+                          ),
+                          child: ClipOval(
+                            child: ValueListenableBuilder(
+                              valueListenable: Hive.box<dynamic>(
+                                PRFSuperAppConfig.instance!.values.hiveBox,
+                              ).listenable(),
+                              builder: (context, _, _) {
+                                final profilePicture = getIt<HiveService>()
+                                    .retrieveMember()
+                                    ?.profilePicture;
+
+                                return profilePicture != null
+                                    ? Image.network(
+                                        profilePicture.temporaryURL,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Icon(
+                                                  Icons.person_rounded,
+                                                  size: 50,
+                                                  color:
+                                                      theme.colorScheme.primary,
+                                                ),
+                                      )
+                                    : Icon(
+                                        Icons.person_rounded,
+                                        size: 50,
+                                        color: theme.colorScheme.primary,
+                                      );
+                              },
+                            ),
+                          ),
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: Hive.box<dynamic>(
+                            PRFSuperAppConfig.instance!.values.hiveBox,
+                          ).listenable(),
+                          builder: (context, _, _) {
+                            final member = getIt<HiveService>()
+                                .retrieveMember();
+                            if (member == null) return const SizedBox.shrink();
+                            return Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () => context
+                                    .read<ChangeProfilePictureCubit>()
+                                    .changeProfilePicture(
+                                      context: context,
+                                      modelUlid: member.ulid,
+                                      model:
+                                          PRFMediaModel.memberProfilePictures,
+                                      mediaType: RequestType.image,
+                                    ),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primary,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(
+                                          alpha: 0.2,
+                                        ),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child:
+                                      BlocConsumer<
+                                        ChangeProfilePictureCubit,
+                                        ChangeProfilePictureState
+                                      >(
+                                        listener: (context, state) {
+                                          state.mapOrNull(
+                                            loaded: (_) {
+                                              Gaimon.success();
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    l10n.successfullyUpdated,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            error: (error) {
+                                              Gaimon.error();
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(error.message),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        builder: (context, state) =>
+                                            state.maybeWhen(
+                                              orElse: () => const Icon(
+                                                Icons.camera_alt_rounded,
+                                                size: 20,
+                                                color: Colors.white,
+                                              ),
+                                              loading: () => SizedBox.square(
+                                                dimension: 20,
+                                                child:
+                                                    PRFCircularProgressIndicator(
+                                                      color: theme
+                                                          .colorScheme
+                                                          .surface,
+                                                    ),
+                                              ),
+                                            ),
+                                      ),
+                                ),
                               ),
                             );
                           },
-                          child: GestureDetector(
-                            onTap: () => context.read<SignOutCubit>().signOut(),
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 17.w),
-                              child: Center(
-                                child: Text(
-                                  l10n.signOut,
-                                  style:
-                                      Theme.of(
-                                        context,
-                                      ).textTheme.headlineMedium?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.error,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // User Name
+                    ValueListenableBuilder(
+                      valueListenable: Hive.box<dynamic>(
+                        PRFSuperAppConfig.instance!.values.hiveBox,
+                      ).listenable(),
+                      builder: (context, _, _) {
+                        final profile = getIt<HiveService>().auth
+                            .retrieveProfile();
+                        return Text(
+                          profile?.name ?? 'User',
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 4),
+                    // User Email
+                    ValueListenableBuilder(
+                      valueListenable: Hive.box<dynamic>(
+                        PRFSuperAppConfig.instance!.values.hiveBox,
+                      ).listenable(),
+                      builder: (context, _, _) {
+                        final profile = getIt<HiveService>().auth
+                            .retrieveProfile();
+                        return Text(
+                          profile?.email ?? '',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ),
+              ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
+            ),
 
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Stack(
-                    children: [
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+            // Personal Information Section
+            ValueListenableBuilder(
+              valueListenable: Hive.box<dynamic>(
+                PRFSuperAppConfig.instance!.values.hiveBox,
+              ).listenable(),
+              builder: (context, _, _) {
+                final profile = getIt<HiveService>().auth.retrieveProfile();
+                if (profile == null) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+                return SliverToBoxAdapter(
+                  child:
                       Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 2,
-                          ),
-                        ),
-                        child: ClipOval(
-                          child: ValueListenableBuilder(
-                            valueListenable: Hive.box<dynamic>(
-                              PRFSuperAppConfig.instance!.values.hiveBox,
-                            ).listenable(),
-                            builder: (context, _, _) {
-                              final profilePicture = getIt<HiveService>()
-                                  .retrieveMember()
-                                  ?.profilePicture;
-
-                              return profilePicture != null
-                                  ? Image.network(
-                                      profilePicture.temporaryURL,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) => Icon(
-                                            Icons.person,
-                                            size: 60,
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.primary,
-                                          ),
-                                    )
-                                  : Icon(
-                                      Icons.person,
-                                      size: 60,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.primary,
-                                    );
-                            },
-                          ),
-                        ),
-                      ),
-                      ValueListenableBuilder(
-                        valueListenable: Hive.box<dynamic>(
-                          PRFSuperAppConfig.instance!.values.hiveBox,
-                        ).listenable(),
-                        builder: (context, _, _) {
-                          final member = getIt<HiveService>().retrieveMember();
-                          if (member == null) return const SizedBox.shrink();
-                          return Positioned(
-                            bottom: 10,
-                            right: 10,
-                            child: GestureDetector(
-                              onTap: () => context
-                                  .read<ChangeProfilePictureCubit>()
-                                  .changeProfilePicture(
-                                    context: context,
-                                    modelUlid: member.ulid,
-                                    model: PRFMediaModel.memberProfilePictures,
-                                    mediaType: RequestType.image,
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surface,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: theme.colorScheme.shadow.withValues(
+                                    alpha: 0.08,
                                   ),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  shape: BoxShape.circle,
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 4),
                                 ),
-                                child:
-                                    BlocConsumer<
-                                      ChangeProfilePictureCubit,
-                                      ChangeProfilePictureState
-                                    >(
-                                      listener: (context, state) {
-                                        state.mapOrNull(
-                                          loaded: (_) {
-                                            Gaimon.success();
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  l10n.successfullyUpdated,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          error: (error) {
-                                            Gaimon.error();
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(error.message),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      builder: (context, state) =>
-                                          state.maybeWhen(
-                                            orElse: () => const Icon(
-                                              Icons.edit,
-                                              size: 24,
-                                              color: Colors.white,
-                                            ),
-                                            loading: () => SizedBox.square(
-                                              dimension: 24,
-                                              child:
-                                                  PRFCircularProgressIndicator(
-                                                    color: Theme.of(
-                                                      context,
-                                                    ).colorScheme.surface,
-                                                  ),
-                                            ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person_outline_rounded,
+                                      color: theme.colorScheme.primary,
+                                      size: 24,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      'Personal Information',
+                                      style: theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: theme.colorScheme.onSurface,
                                           ),
                                     ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                _buildInfoField(
+                                  context,
+                                  label: l10n.name,
+                                  value: profile.name,
+                                  icon: Icons.badge_outlined,
+                                ),
+                                const SizedBox(height: 16),
+                                _buildInfoField(
+                                  context,
+                                  label: l10n.email,
+                                  value: profile.email,
+                                  icon: Icons.email_outlined,
+                                ),
+                                if (profile.member?.bio != null &&
+                                    profile.member!.bio!.isNotEmpty) ...[
+                                  const SizedBox(height: 16),
+                                  _buildInfoField(
+                                    context,
+                                    label: l10n.bio,
+                                    value: profile.member!.bio!,
+                                    icon: Icons.description_outlined,
+                                    maxLines: 3,
+                                  ),
+                                ],
+                              ],
+                            ),
+                          )
+                          .animate(delay: 100.ms)
+                          .fadeIn(duration: 300.ms)
+                          .slideY(begin: 0.1, end: 0),
+                );
+              },
+            ),
+
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+            // Memberships Section
+            ValueListenableBuilder(
+              valueListenable: Hive.box<dynamic>(
+                PRFSuperAppConfig.instance!.values.hiveBox,
+              ).listenable(),
+              builder: (context, _, _) {
+                final profile = getIt<HiveService>().auth.retrieveProfile();
+                if (profile?.member?.memberships.isEmpty ?? true) {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
+
+                return SliverToBoxAdapter(
+                  child:
+                      Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surface,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: theme.colorScheme.shadow.withValues(
+                                    alpha: 0.08,
+                                  ),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.groups_outlined,
+                                      color: theme.colorScheme.primary,
+                                      size: 24,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      l10n.memberships,
+                                      style: theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: theme.colorScheme.onSurface,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                ...profile!.member!.memberships
+                                    .asMap()
+                                    .entries
+                                    .map(
+                                      (entry) => Container(
+                                        margin: EdgeInsets.only(
+                                          bottom:
+                                              entry.key <
+                                                  profile
+                                                          .member!
+                                                          .memberships
+                                                          .length -
+                                                      1
+                                              ? 12
+                                              : 0,
+                                        ),
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
+                                          color: theme
+                                              .colorScheme
+                                              .surfaceContainerHighest,
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          border: Border.all(
+                                            color: theme.colorScheme.outline
+                                                .withValues(alpha: 0.2),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                color: entry.value.approved
+                                                    ? theme.colorScheme.primary
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          )
+                                                    : theme
+                                                          .colorScheme
+                                                          .secondary
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Icon(
+                                                entry.value.approved
+                                                    ? Icons.verified_outlined
+                                                    : Icons.pending_outlined,
+                                                color: entry.value.approved
+                                                    ? theme.colorScheme.primary
+                                                    : theme
+                                                          .colorScheme
+                                                          .secondary,
+                                                size: 20,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    entry
+                                                        .value
+                                                        .spiritualYear!
+                                                        .name,
+                                                    style: theme
+                                                        .textTheme
+                                                        .bodyLarge
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: theme
+                                                              .colorScheme
+                                                              .onSurface,
+                                                        ),
+                                                  ),
+                                                  const SizedBox(height: 2),
+                                                  Text(
+                                                    PrfMembershipType.fromIndex(
+                                                      entry.value.type,
+                                                    ).name,
+                                                    style: theme
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          color: theme
+                                                              .colorScheme
+                                                              .onSurfaceVariant,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 4,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: entry.value.approved
+                                                    ? theme.colorScheme.primary
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          )
+                                                    : theme
+                                                          .colorScheme
+                                                          .secondary
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Text(
+                                                entry.value.approved
+                                                    ? 'Approved'
+                                                    : 'Pending',
+                                                style: theme
+                                                    .textTheme
+                                                    .labelSmall
+                                                    ?.copyWith(
+                                                      color:
+                                                          entry.value.approved
+                                                          ? theme
+                                                                .colorScheme
+                                                                .primary
+                                                          : theme
+                                                                .colorScheme
+                                                                .secondary,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                              ],
+                            ),
+                          )
+                          .animate(delay: 200.ms)
+                          .fadeIn(duration: 300.ms)
+                          .slideY(begin: 0.1, end: 0),
+                );
+              },
+            ),
+
+            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+
+            // Footer Section
+            SliverToBoxAdapter(
+              child:
+                  Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.shadow.withValues(
+                                alpha: 0.08,
+                              ),
+                              blurRadius: 16,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                text: l10n.byUsing,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: l10n.terms,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri(
+                                          scheme: 'https',
+                                          host: 'parkroadfellowship.org',
+                                          path: '/privacy-policy',
+                                        );
+                                        await Misc.openUrl(uri);
+                                      },
+                                  ),
+                                  TextSpan(
+                                    text: l10n.and,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: l10n.privacyPolicy,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri(
+                                          scheme: 'https',
+                                          host: 'parkroadfellowship.org',
+                                          path: 'privacy-policy',
+                                        );
+                                        await Misc.openUrl(uri);
+                                      },
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              l10n.version(Misc.getAppVersion()),
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              SliverToBoxAdapter(child: SizedBox(height: 24.h)),
-
-              ValueListenableBuilder(
-                valueListenable: Hive.box<dynamic>(
-                  PRFSuperAppConfig.instance!.values.hiveBox,
-                ).listenable(),
-                builder: (context, _, _) {
-                  final profile = getIt<HiveService>().auth.retrieveProfile();
-                  if (profile == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-                  return SliverList(
-                    delegate: SliverChildListDelegate([
-                      SizedBox(height: 64.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(label: l10n.name),
-                      ),
-                      SizedBox(height: 10.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: PRFNameInput(
-                          hintText: l10n.enterName,
-                          controller: TextEditingController(text: profile.name),
-
-                          enabled: false,
+                          ],
                         ),
-                      ),
-                      SizedBox(height: 15.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: FormFieldLabel(label: l10n.email),
-                      ),
-                      SizedBox(height: 10.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40.w),
-                        child: PRFNameInput(
-                          hintText: l10n.enterEmail,
-                          controller: TextEditingController(
-                            text: profile.email,
-                          ),
+                      )
+                      .animate(delay: 300.ms)
+                      .fadeIn(duration: 300.ms)
+                      .slideY(begin: 0.1, end: 0),
+            ),
 
-                          enabled: false,
-                        ),
-                      ),
-                      SizedBox(height: 15.h),
-                      if (profile.member?.bio != null ||
-                          (profile.member?.bio?.isEmpty ?? false))
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: FormFieldLabel(label: l10n.bio),
-                        ),
-                      if (profile.member?.bio != null ||
-                          (profile.member?.bio?.isEmpty ?? false))
-                        SizedBox(height: 10.h),
-                      if (profile.member?.bio != null ||
-                          (profile.member?.bio?.isEmpty ?? false))
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.w),
-                          child: PRFTextAreaInput(
-                            hintText: l10n.enterEmail,
-                            controller: TextEditingController(
-                              text: profile.member?.bio,
-                            ),
-                            enabled: false,
-                          ),
-                        ),
-                    ]),
-                  );
-                },
-              ),
-              ValueListenableBuilder(
-                valueListenable: Hive.box<dynamic>(
-                  PRFSuperAppConfig.instance!.values.hiveBox,
-                ).listenable(),
-                builder: (context, _, _) {
-                  final profile = getIt<HiveService>().auth.retrieveProfile();
-                  if (profile == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
-                  if (profile.member == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
-                  return SliverToBoxAdapter(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 64.w),
-                      padding: EdgeInsets.symmetric(horizontal: 40.w),
-                      child: Text(
-                        l10n.memberships,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              ValueListenableBuilder(
-                valueListenable: Hive.box<dynamic>(
-                  PRFSuperAppConfig.instance!.values.hiveBox,
-                ).listenable(),
-                builder: (context, _, _) {
-                  final profile = getIt<HiveService>().auth.retrieveProfile();
-                  if (profile == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
-                  if (profile.member == null) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-
-                  return SliverList.builder(
-                    itemCount: profile.member!.memberships.length,
-                    itemBuilder: (context, index) => ListTile(
-                      title: Text(
-                        profile.member!.memberships[index].spiritualYear!.name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      subtitle: Text(
-                        PrfMembershipType.fromIndex(
-                          profile.member!.memberships[index].type,
-                        ).name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      trailing: Icon(
-                        profile.member!.memberships[index].approved
-                            ? Icons.check_outlined
-                            : Icons.pending_actions,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 40.h)),
-              SliverToBoxAdapter(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      bottom: 20,
-                      top: 30,
-                    ),
-                    child: Text.rich(
-                      TextSpan(
-                        text: l10n.byUsing,
-                        style: Theme.of(context).textTheme.labelLarge,
-                        children: [
-                          TextSpan(
-                            text: l10n.terms,
-                            style:
-                                Theme.of(
-                                  context,
-                                ).textTheme.labelLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                final uri = Uri(
-                                  scheme: 'https',
-                                  host: 'parkroadfellowship.org',
-                                  path: '/privacy-policy',
-                                );
-                                await Misc.openUrl(uri);
-                              },
-                          ),
-                          TextSpan(
-                            text: l10n.and,
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          TextSpan(
-                            text: l10n.privacyPolicy,
-                            style:
-                                Theme.of(
-                                  context,
-                                ).textTheme.labelLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                final uri = Uri(
-                                  scheme: 'https',
-                                  host: 'parkroadfellowship.org',
-                                  path: 'privacy-policy',
-                                );
-                                await Misc.openUrl(uri);
-                              },
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    l10n.version(Misc.getAppVersion()),
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoField(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required IconData icon,
+    int maxLines = 1,
+  }) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              icon,
+              color: theme.colorScheme.primary,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: maxLines,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
