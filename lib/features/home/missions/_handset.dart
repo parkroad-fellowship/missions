@@ -358,7 +358,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
               // Multi-day date badge
               Container(
                 width: 50,
-                height: isMultiDay ? 85 : 50,
+                height: isMultiDay ? 100 : 60,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -388,7 +388,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
-                          fontSize: 14,
+                          
                         ),
                       ),
                       Text(
@@ -396,7 +396,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
-                          fontSize: 8,
+                          
                         ),
                       ),
                       Container(
@@ -411,7 +411,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
-                          fontSize: 14,
+                          
                         ),
                       ),
                       Text(
@@ -419,7 +419,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
-                          fontSize: 8,
+                          
                         ),
                       ),
                     ] else ...[
