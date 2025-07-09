@@ -356,13 +356,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addToken => 'Add Token';
 
   @override
-  String get addExpense => 'Add Expense';
+  String get addExpense => 'Add an expense';
 
   @override
   String get expenseBreakdown => 'Expense Breakdown';
 
   @override
-  String get addQuestion => 'Add Question';
+  String get addQuestion => 'Add a question';
 
   @override
   String get questionRecorded => 'This question has been recorded';
@@ -995,7 +995,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Share your prayer request with the PRF community. We will pray for you.';
 
   @override
-  String get addMissionPhotos => 'Add Mission Photos';
+  String get addMissionPhotos => 'Add mission photos';
 
   @override
   String get addMissionPhotosDesc =>
@@ -1022,10 +1022,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addNote => 'Add a debrief note';
 
   @override
-  String get addSoul => 'Add Soul';
+  String get addSoul => 'Add a soul';
 
   @override
-  String get addSession => 'Add Session';
+  String get addSession => 'Add a session';
 
   @override
   String get noNotesDesc =>
@@ -1033,11 +1033,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sessionsWillAppearHere =>
-      'Sessions will appear here once they are scheduled';
+      'Please use this section to schedule speakers and facilitators';
 
   @override
   String get questionsWillAppearHere =>
-      'Questions will appear here when they are added';
+      'Please add any questions asked by students';
 
   @override
   String get soulsWillAppearHere =>

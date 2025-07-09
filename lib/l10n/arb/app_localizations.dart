@@ -745,7 +745,7 @@ abstract class AppLocalizations {
   /// No description provided for @addExpense.
   ///
   /// In en, this message translates to:
-  /// **'Add Expense'**
+  /// **'Add an expense'**
   String get addExpense;
 
   /// No description provided for @expenseBreakdown.
@@ -757,7 +757,7 @@ abstract class AppLocalizations {
   /// No description provided for @addQuestion.
   ///
   /// In en, this message translates to:
-  /// **'Add Question'**
+  /// **'Add a question'**
   String get addQuestion;
 
   /// No description provided for @questionRecorded.
@@ -1945,7 +1945,7 @@ abstract class AppLocalizations {
   /// No description provided for @addMissionPhotos.
   ///
   /// In en, this message translates to:
-  /// **'Add Mission Photos'**
+  /// **'Add mission photos'**
   String get addMissionPhotos;
 
   /// No description provided for @addMissionPhotosDesc.
@@ -1993,13 +1993,13 @@ abstract class AppLocalizations {
   /// No description provided for @addSoul.
   ///
   /// In en, this message translates to:
-  /// **'Add Soul'**
+  /// **'Add a soul'**
   String get addSoul;
 
   /// No description provided for @addSession.
   ///
   /// In en, this message translates to:
-  /// **'Add Session'**
+  /// **'Add a session'**
   String get addSession;
 
   /// No description provided for @noNotesDesc.
@@ -2011,13 +2011,13 @@ abstract class AppLocalizations {
   /// No description provided for @sessionsWillAppearHere.
   ///
   /// In en, this message translates to:
-  /// **'Sessions will appear here once they are scheduled'**
+  /// **'Please use this section to schedule speakers and facilitators'**
   String get sessionsWillAppearHere;
 
   /// No description provided for @questionsWillAppearHere.
   ///
   /// In en, this message translates to:
-  /// **'Questions will appear here when they are added'**
+  /// **'Please add any questions asked by students'**
   String get questionsWillAppearHere;
 
   /// No description provided for @soulsWillAppearHere.
