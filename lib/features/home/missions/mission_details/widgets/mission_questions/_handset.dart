@@ -4,6 +4,7 @@ import 'package:app/models/local/prf_mission_question.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
+import 'package:app/widgets/empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,37 +34,15 @@ class _MissionQuestionsViewHandsetState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
 
     return SingleStreamWrapper(
       stream: getIt<LocalDBService>().getMissionQuestions(
         missionUlid: missionUlid,
       ),
-      nullWidget: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.help_outline_rounded,
-                size: 48,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noQuestions,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
+      nullWidget: PRFEmptyView(
+        label: l10n.noQuestions,
+        description: l10n.questionsWillAppearHere,
+        icon: Icons.help_outline_rounded,
       ),
       widget: (context, missionQuestions) => RefreshIndicator(
         onRefresh: () =>

@@ -3,6 +3,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_soul.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,34 +29,14 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
 
     return SingleStreamWrapper(
       stream: getIt<LocalDBService>().getSouls(missionUlid: missionUlid),
       nullWidget: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.people_outline_rounded,
-                size: 48,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noSouls,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
+        child: PRFEmptyView(
+          label: l10n.noSouls,
+          description: l10n.noSoulsDesc,
+          icon: Icons.people_outline_rounded,
         ),
       ),
       widget: (context, souls) => RefreshIndicator(

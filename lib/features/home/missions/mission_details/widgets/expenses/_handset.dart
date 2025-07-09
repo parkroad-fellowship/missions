@@ -11,6 +11,7 @@ import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_mission_expense.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
+import 'package:app/widgets/empty_state.dart';
 import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -49,7 +50,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => const Center(child: CircularProgressIndicator()),
-          empty: () => _buildEmptyState(context, l10n),
+          empty: () => PRFEmptyView(
+            label: l10n.noExpenses,
+            description:  l10n.askMissionDeskToDisburseFunds,
+          ),
           loaded: (missionExpense) {
             return RefreshIndicator(
               onRefresh: () => context
@@ -102,42 +106,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           },
         );
       },
-    );
-  }
-
-  Widget _buildEmptyState(BuildContext context, AppLocalizations l10n) {
-    final theme = Theme.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(
-                  alpha: 0.1,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Icon(
-                Icons.account_balance_wallet_outlined,
-                size: 64,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              l10n.askMissionDeskToDisburseFunds,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
     );
   }
 

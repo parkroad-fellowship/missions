@@ -4,6 +4,7 @@ import 'package:app/models/local/prf_debrief_note.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
+import 'package:app/widgets/empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,35 +33,15 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
 
     return SingleStreamWrapper(
-      stream: getIt<LocalDBService>().getDebriefNotes(missionUlid: missionUlid),
-      nullWidget: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.note_outlined,
-                size: 48,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noNotes,
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
+      stream: getIt<LocalDBService>().getDebriefNotes(
+        missionUlid: missionUlid,
+      ),
+      nullWidget: PRFEmptyView(
+        label: l10n.noNotes,
+        description: l10n.noNotesDesc,
+        icon: Icons.note_add_outlined,
       ),
       widget: (context, debriefNotes) => RefreshIndicator(
         onRefresh: () => context.read<GetDebriefNotesCubit>().getDebriefNotes(

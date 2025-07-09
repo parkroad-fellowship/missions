@@ -687,7 +687,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get suggestAMission => 'Suggest a mission';
 
   @override
-  String get suggestAMissionDescription =>
+  String get suggestMissionDescription =>
       'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.';
 
   @override
@@ -892,6 +892,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSouls => 'No souls';
 
   @override
+  String get noSoulsDesc => 'Please record any decisions for Jesus here';
+
+  @override
   String get joinWhatsApp => 'Join WhatsApp';
 
   @override
@@ -1014,4 +1017,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorLoadingPhotos => 'Error loading photos';
+
+  @override
+  String get addNote => 'Add a debrief note';
+
+  @override
+  String get addSoul => 'Add Soul';
+
+  @override
+  String get addSession => 'Add Session';
+
+  @override
+  String get noNotesDesc =>
+      'Notes will help you remember important details from this mission';
+
+  @override
+  String get sessionsWillAppearHere =>
+      'Sessions will appear here once they are scheduled';
+
+  @override
+  String get questionsWillAppearHere =>
+      'Questions will appear here when they are added';
+
+  @override
+  String get soulsWillAppearHere =>
+      'Souls will appear here when they are recorded';
+
+  @override
+  String get trackExpensesToStayOrganized =>
+      'Track expenses to stay organized and accountable';
+
+  @override
+  String get noExpenses => 'No expenses yet';
 }

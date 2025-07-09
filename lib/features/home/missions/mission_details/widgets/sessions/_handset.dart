@@ -5,6 +5,7 @@ import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.gr.dart';
+import 'package:app/widgets/empty_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -39,92 +40,84 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
       stream: getIt<LocalDBService>().getMissionSessions(
         missionUlid: missionUlid,
       ),
-      nullWidget: Center(
-        child:
-            Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      nullWidget: PRFEmptyView(
+        label: l10n.noSessions,
+        description: l10n.sessionsWillAppearHere,
+        icon: Icons.event_note_outlined,
+      ),
+      widget: (context, missionSessions) => missionSessions.isEmpty
+          ? PRFEmptyView(
+              label: l10n.noSessions,
+              description: l10n.sessionsWillAppearHere,
+              icon: Icons.event_note_outlined,
+            )
+          : ListView.builder(
+              physics: const ScrollPhysics(),
+              itemCount: missionSessions.length,
+              itemBuilder: (context, index) {
+                final sortedDailySessions = List<PRFLocalMissionSession>.from(
+                  missionSessions.values.elementAt(index),
+                )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.event_note_outlined,
-                      size: 64,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.5),
+                    // Timeline Date Header
+                    Container(
+                          margin: const EdgeInsets.only(
+                            left: 32,
+                            top: 16,
+                            bottom: 8,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 4,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                Misc.formatMissionDate(
+                                  missionSessions.keys.elementAt(index),
+                                  timezone,
+                                ),
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .animate(delay: (index * 100).ms)
+                        .slideX(begin: -0.3)
+                        .fadeIn(),
+
+                    // Timeline Sessions
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      itemCount: sortedDailySessions.length,
+                      itemBuilder: (context, i) => TimelineSessionCard(
+                        missionSession: sortedDailySessions[i],
+                        missionUlid: missionUlid,
+                        isLast: i == sortedDailySessions.length - 1,
+                        animationDelay: (index * 100 + i * 50).ms,
+                        userTimezone: timezone,
+                      ),
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      l10n.noSessions,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withValues(alpha: 0.6),
-                          ),
-                    ),
                   ],
-                )
-                .animate()
-                .fadeIn(duration: 600.ms)
-                .scale(begin: const Offset(0.8, 0.8)),
-      ),
-      widget: (context, missionSessions) => ListView.builder(
-        physics: const ScrollPhysics(),
-        itemCount: missionSessions.length,
-        itemBuilder: (context, index) {
-          final sortedDailySessions = List<PRFLocalMissionSession>.from(
-            missionSessions.values.elementAt(index),
-          )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Timeline Date Header
-              Container(
-                margin: const EdgeInsets.only(left: 32, top: 16, bottom: 8),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 4,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      Misc.formatMissionDate(
-                        missionSessions.keys.elementAt(index),
-                        timezone,
-                      ),
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                    ),
-                  ],
-                ),
-              ).animate(delay: (index * 100).ms).slideX(begin: -0.3).fadeIn(),
-
-              // Timeline Sessions
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const ScrollPhysics(),
-                itemCount: sortedDailySessions.length,
-                itemBuilder: (context, i) => TimelineSessionCard(
-                  missionSession: sortedDailySessions[i],
-                  missionUlid: missionUlid,
-                  isLast: i == sortedDailySessions.length - 1,
-                  animationDelay: (index * 100 + i * 50).ms,
-                  userTimezone: timezone,
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
-          );
-        },
-      ),
+                );
+              },
+            ),
     );
   }
 }

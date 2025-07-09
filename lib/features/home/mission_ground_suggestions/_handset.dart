@@ -89,7 +89,7 @@ class _MissionGroundSuggestionsPageHandsetState
                               physics: const AlwaysScrollableScrollPhysics(),
                               child: PRFEmptyView(
                                 label: l10n.suggestAMission,
-                                description: l10n.suggestAMissionDescription,
+                                description: l10n.suggestMissionDescription,
 
                                 actionLabel: l10n.suggestAMission,
                                 onActionPressed: _addMissionGroundSuggestion,

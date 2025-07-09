@@ -1372,11 +1372,11 @@ abstract class AppLocalizations {
   /// **'Suggest a mission'**
   String get suggestAMission;
 
-  /// No description provided for @suggestAMissionDescription.
+  /// No description provided for @suggestMissionDescription.
   ///
   /// In en, this message translates to:
   /// **'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.'**
-  String get suggestAMissionDescription;
+  String get suggestMissionDescription;
 
   /// No description provided for @suggestMissionSubTitle.
   ///
@@ -1750,6 +1750,12 @@ abstract class AppLocalizations {
   /// **'No souls'**
   String get noSouls;
 
+  /// No description provided for @noSoulsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Please record any decisions for Jesus here'**
+  String get noSoulsDesc;
+
   /// No description provided for @joinWhatsApp.
   ///
   /// In en, this message translates to:
@@ -1977,6 +1983,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading photos'**
   String get errorLoadingPhotos;
+
+  /// No description provided for @addNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a debrief note'**
+  String get addNote;
+
+  /// No description provided for @addSoul.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Soul'**
+  String get addSoul;
+
+  /// No description provided for @addSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Session'**
+  String get addSession;
+
+  /// No description provided for @noNotesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes will help you remember important details from this mission'**
+  String get noNotesDesc;
+
+  /// No description provided for @sessionsWillAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions will appear here once they are scheduled'**
+  String get sessionsWillAppearHere;
+
+  /// No description provided for @questionsWillAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions will appear here when they are added'**
+  String get questionsWillAppearHere;
+
+  /// No description provided for @soulsWillAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Souls will appear here when they are recorded'**
+  String get soulsWillAppearHere;
+
+  /// No description provided for @trackExpensesToStayOrganized.
+  ///
+  /// In en, this message translates to:
+  /// **'Track expenses to stay organized and accountable'**
+  String get trackExpensesToStayOrganized;
+
+  /// No description provided for @noExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses yet'**
+  String get noExpenses;
 }
 
 class _AppLocalizationsDelegate
