@@ -2097,6 +2097,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update Registration'**
   String get updateRegistration;
+
+  /// No description provided for @refundInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Information'**
+  String get refundInformation;
+
+  /// No description provided for @refundDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining balance and token needs to be refunded'**
+  String get refundDesc;
+
+  /// No description provided for @refundDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Payment Details'**
+  String get refundDetails;
+
+  /// No description provided for @paybillNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Paybill Number'**
+  String get paybillNumber;
+
+  /// No description provided for @accountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Number'**
+  String get accountNumber;
+
+  /// No description provided for @refundText.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the remaining balance and token to the above M-Pesa details to complete the refund process.'**
+  String get refundText;
+
+  /// No description provided for @financialOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Financial Overview'**
+  String get financialOverview;
+
+  /// No description provided for @transactionCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Cost'**
+  String get transactionCost;
+
+  /// No description provided for @member.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get member;
 }
 
 class _AppLocalizationsDelegate

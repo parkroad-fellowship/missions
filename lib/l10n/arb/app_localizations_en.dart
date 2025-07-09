@@ -1081,4 +1081,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateRegistration => 'Update Registration';
+
+  @override
+  String get refundInformation => 'Refund Information';
+
+  @override
+  String get refundDesc => 'Remaining balance and token needs to be refunded';
+
+  @override
+  String get refundDetails => 'Refund Payment Details';
+
+  @override
+  String get paybillNumber => 'Paybill Number';
+
+  @override
+  String get accountNumber => 'Account Number';
+
+  @override
+  String get refundText =>
+      'Send the remaining balance and token to the above M-Pesa details to complete the refund process.';
+
+  @override
+  String get financialOverview => 'Mission Financial Overview';
+
+  @override
+  String get transactionCost => 'Transaction Cost';
+
+  @override
+  String get member => 'Member';
 }

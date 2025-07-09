@@ -80,6 +80,15 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     child: _buildQuickActions(context, l10n, missionExpense),
                   ),
 
+                  // Refund Information (show when balance > 0)
+                  SliverToBoxAdapter(
+                    child: _buildRefundInformation(
+                      context,
+                      l10n,
+                      missionExpense,
+                    ),
+                  ),
+
                   // Expenses Breakdown Toggle
                   SliverToBoxAdapter(
                     child: _buildBreakdownToggle(context, l10n),
@@ -131,7 +140,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Mission Financial Overview',
+                  l10n.financialOverview,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -574,7 +583,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          expense.expenseCategory?.name ?? 'Unknown Category',
+                          expense.expenseCategory!.name,
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
@@ -601,7 +610,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                           textAlign: TextAlign.end,
                         ),
                         Text(
-                          '${Misc.formatCash(expense.unitCost)} × ${expense.quantity}',
+                          '${Misc.formatCash(expense.unitCost)} '
+                          '× ${expense.quantity}',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -684,7 +694,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                '${expense.receipts.length} receipt${expense.receipts.length > 1 ? 's' : ''}',
+                                '${expense.receipts.length} receipt'
+                                '${expense.receipts.length > 1 ? 's' : ''}',
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.secondary,
                                   fontWeight: FontWeight.w600,
@@ -887,18 +898,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             ),
             child: Column(
               children: [
-                _buildAmountRow(context, 'Unit Cost', expense.unitCost),
+                _buildAmountRow(context, l10n.unitCost, expense.unitCost),
                 const SizedBox(height: 8),
                 _buildAmountRow(
                   context,
-                  'Quantity',
+                  l10n.quantity,
                   expense.quantity,
                   isQuantity: true,
                 ),
                 const SizedBox(height: 8),
-                _buildAmountRow(context, 'Total', expense.lineTotal),
+                _buildAmountRow(context, l10n.total, expense.lineTotal),
                 const SizedBox(height: 8),
-                _buildAmountRow(context, 'Transaction Cost', expense.charge),
+                _buildAmountRow(context, l10n.transactionCost, expense.charge),
                 const Divider(height: 24),
                 _buildAmountRow(
                   context,
@@ -915,7 +926,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           if (expense.narration.isNotEmpty) ...[
             _buildDetailRow(
               context,
-              'Description',
+              l10n.description,
               expense.narration,
               Icons.description,
             ),
@@ -926,7 +937,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           if (expense.member != null) ...[
             _buildDetailRow(
               context,
-              'Member',
+              l10n.member,
               '${expense.member!.firstName} ${expense.member!.lastName}',
               Icons.person,
             ),
@@ -1170,6 +1181,213 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
             color: isTotal ? theme.colorScheme.primary : null,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRefundInformation(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFMissionExpense missionExpense,
+  ) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              theme.colorScheme.tertiary.withValues(alpha: 0.1),
+              theme.colorScheme.tertiary.withValues(alpha: 0.05),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.account_balance_wallet,
+                    color: theme.colorScheme.tertiary,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.refundInformation,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.tertiary,
+                        ),
+                      ),
+                      Text(
+                        l10n.refundDesc,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    NumberFormat.currency(
+                      locale: 'en_KE',
+                      symbol: 'KES ',
+                    ).format(missionExpense.amountToRefund),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.payment,
+                        color: theme.colorScheme.primary,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.refundDetails,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _buildRefundDetailRow(
+                    context,
+                    l10n.paybillNumber,
+                    '4088159',
+                    Icons.numbers,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildRefundDetailRow(
+                    context,
+                    l10n.accountNumber,
+                    'REFUND',
+                    Icons.account_balance,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer.withValues(
+                  alpha: 0.3,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: theme.colorScheme.primary,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.refundText,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
+    );
+  }
+
+  Widget _buildRefundDetailRow(
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon,
+  ) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 16,
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            value,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontFamily: 'monospace',
+            ),
           ),
         ),
       ],
