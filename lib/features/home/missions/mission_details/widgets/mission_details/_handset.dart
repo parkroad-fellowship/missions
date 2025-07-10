@@ -58,9 +58,18 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
               _buildIntelligenceGrid(context, mission, l10n, theme),
               const SizedBox(height: 24),
 
-              // Contact Command Center
-              _buildContactCenter(context, mission, l10n, theme),
-              const SizedBox(height: 24),
+              // Hide the contact center if the person isn't subscribed
+              // and when the mission date has passed
+              if (mission.loggedInMemberMissionSubscription != null &&
+                  mission.loggedInMemberMissionSubscription!.status ==
+                      PRFMissionSubscriptionStatus.approved &&
+                  mission.endDate.isAfter(
+                    DateTime.now().subtract(const Duration(days: 1)),
+                  )) ...[
+                // Contact Command Center
+                _buildContactCenter(context, mission, l10n, theme),
+                const SizedBox(height: 24),
+              ],
 
               // Location & Navigation Hub
               _buildLocationHub(context, mission, l10n, theme),
