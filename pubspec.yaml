@@ -54,13 +54,11 @@ dependencies:
       url: https://github.com/natintosh/intl_phone_number_input
       ref: d10eb21
   isar:
+    hosted: https://pub.isar-community.dev
     version: ^3.1.8
-    hosted:
-      url: https://pub.isar-community.dev
   isar_flutter_libs:
+    hosted: https://pub.isar-community.dev
     version: ^3.1.8
-    hosted:
-      url: https://pub.isar-community.dev
   json_annotation: ^4.9.0
   local_auth: ^2.3.0
   logger: ^2.6.0
@@ -92,9 +90,8 @@ dev_dependencies:
   hive_ce_generator: ^1.8.0
   icons_launcher: ^3.0.1
   isar_generator:
+    hosted: https://pub.isar-community.dev
     version: ^3.1.8
-    hosted:
-      url: https://pub.isar-community.dev
   json_serializable: ^6.8.0
   mocktail: ^1.0.4
   very_good_analysis: ^9.0.0

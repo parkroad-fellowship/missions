@@ -353,6 +353,10 @@ class BeautifulSoulCard extends StatelessWidget {
         return theme.colorScheme.tertiary;
       case PRFSoulDecisionType.rededication:
         return theme.colorScheme.secondary;
+      case PRFSoulDecisionType.camp:
+        return theme.colorScheme.primary;
+      case PRFSoulDecisionType.prayer:
+        return theme.colorScheme.primaryContainer;
       case PRFSoulDecisionType.other:
         return theme.colorScheme.outline;
     }
@@ -364,6 +368,10 @@ class BeautifulSoulCard extends StatelessWidget {
         return Icons.favorite;
       case PRFSoulDecisionType.rededication:
         return Icons.refresh;
+        case PRFSoulDecisionType.camp:
+        return Icons.house_rounded;
+        case PRFSoulDecisionType.prayer:
+        return Icons.back_hand_rounded;
       case PRFSoulDecisionType.other:
         return Icons.more_horiz;
     }
