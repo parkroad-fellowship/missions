@@ -6,10 +6,10 @@ import 'package:app/models/local/prf_soul.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/empty_state.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class SoulsViewHandset extends StatefulWidget {
   const SoulsViewHandset({required this.missionUlid, super.key});
@@ -132,7 +132,6 @@ class BeautifulSoulCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    
                   ],
                 ),
               ),
@@ -172,10 +171,9 @@ class BeautifulSoulCard extends StatelessWidget {
     );
   }
 
-
   Widget _buildDecisionTypeBadge(ThemeData theme) {
     final decisionColor = _getDecisionTypeColor(theme);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
@@ -207,7 +205,7 @@ class BeautifulSoulCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAdditionalInfo(ThemeData theme, AppLocalizations l10n ) {
+  Widget _buildAdditionalInfo(ThemeData theme, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -224,7 +222,8 @@ class BeautifulSoulCard extends StatelessWidget {
               Icons.class_rounded,
             ),
           ),
-          if (soul.admissionNumber != null && soul.admissionNumber!.isNotEmpty) ...[
+          if (soul.admissionNumber != null &&
+              soul.admissionNumber!.isNotEmpty) ...[
             const SizedBox(width: 16),
             Expanded(
               child: _buildInfoItem(
@@ -325,8 +324,10 @@ class BeautifulSoulCard extends StatelessWidget {
   }
 
   Widget _buildDateInfo(ThemeData theme) {
-    final formattedDate = DateFormat('MMM dd, yyyy • HH:mm').format(soul.createdAt);
-    
+    final formattedDate = DateFormat(
+      'MMM dd, yyyy • HH:mm',
+    ).format(soul.createdAt);
+
     return Row(
       children: [
         Icon(

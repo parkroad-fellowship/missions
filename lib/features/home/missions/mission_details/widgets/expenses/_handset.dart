@@ -1394,7 +1394,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.3),
-                width: 1,
               ),
             ),
             child: Row(
@@ -1411,7 +1410,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 Icon(
                   Icons.copy,
                   size: 12,
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(
+                    alpha: 0.7,
+                  ),
                 ),
               ],
             ),

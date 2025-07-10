@@ -41,7 +41,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     // Add listeners to update form validity
     _fullNameController.addListener(() => setState(() {}));
     _admissionNumberController.addListener(() => setState(() {}));
-    
+
     // Have salvation selected by default
     selectedDecisionType = PRFSoulDecisionType.salvation;
 
@@ -221,7 +221,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                     _buildFormSection(
                       icon: Icons.edit_note,
                       title: l10n.note,
-                      
+
                       child: PRFTextAreaInput(
                         hintText: l10n.addDecisionNote,
                         controller: _notesController,

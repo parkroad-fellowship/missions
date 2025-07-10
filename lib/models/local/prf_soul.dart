@@ -28,5 +28,4 @@ class PRFLocalSoul {
   final PRFSoulDecisionType decisionType;
   final String? admissionNumber;
   final String? notes;
-  
 }
