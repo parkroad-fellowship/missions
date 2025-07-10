@@ -165,7 +165,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get debriefNotes => 'Debrief Notes';
 
   @override
-  String get note => 'Note';
+  String get note => 'Notes';
 
   @override
   String get noteRecorded => 'Note recorded';
@@ -1109,4 +1109,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get member => 'Member';
+
+  @override
+  String get decisionType => 'Type of Decision';
+
+  @override
+  String get selectDecisionType =>
+      'Select the decision this learner made today';
+
+  @override
+  String get addDecisionNote =>
+      'What would you like to point out concerning this soul?';
 }

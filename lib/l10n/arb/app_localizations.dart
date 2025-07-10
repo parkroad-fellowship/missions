@@ -391,7 +391,7 @@ abstract class AppLocalizations {
   /// No description provided for @note.
   ///
   /// In en, this message translates to:
-  /// **'Note'**
+  /// **'Notes'**
   String get note;
 
   /// No description provided for @noteRecorded.
@@ -2151,6 +2151,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Member'**
   String get member;
+
+  /// No description provided for @decisionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of Decision'**
+  String get decisionType;
+
+  /// No description provided for @selectDecisionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the decision this learner made today'**
+  String get selectDecisionType;
+
+  /// No description provided for @addDecisionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to point out concerning this soul?'**
+  String get addDecisionNote;
 }
 
 class _AppLocalizationsDelegate

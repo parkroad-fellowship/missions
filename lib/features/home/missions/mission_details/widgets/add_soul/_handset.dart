@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_soul_decision_type.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -20,13 +21,17 @@ class AddSoulViewHandset extends StatefulWidget {
 class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
   final _fullNameController = TextEditingController();
   final _admissionNumberController = TextEditingController();
+  final _notesController = TextEditingController();
+
   bool _isLoading = false;
 
   PRFClassGroup? selectedClassGroup;
+  PRFSoulDecisionType? selectedDecisionType;
 
   // Add form validity check
   bool get _isFormValid {
     return selectedClassGroup != null &&
+        selectedDecisionType != null &&
         _fullNameController.text.trim().isNotEmpty;
   }
 
@@ -36,6 +41,10 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     // Add listeners to update form validity
     _fullNameController.addListener(() => setState(() {}));
     _admissionNumberController.addListener(() => setState(() {}));
+    
+    // Have salvation selected by default
+    selectedDecisionType = PRFSoulDecisionType.salvation;
+
     context.read<GetClassGroupsCubit>().getClassGroups(
       missionUlid: widget.missionUlid,
     );
@@ -143,6 +152,12 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                 child: Column(
                   children: [
                     _buildFormSection(
+                      icon: Icons.category,
+                      title: l10n.decisionType,
+                      isRequired: true,
+                      child: _buildDecisionTypeSelector(Theme.of(context)),
+                    ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
+                    _buildFormSection(
                       icon: Icons.group_outlined,
                       title: l10n.classGroup,
                       isRequired: true,
@@ -202,6 +217,18 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                         enabled: !_isLoading,
                       ),
                     ).animate(delay: 300.ms).slideX(begin: -0.2).fadeIn(),
+
+                    _buildFormSection(
+                      icon: Icons.edit_note,
+                      title: l10n.note,
+                      
+                      child: PRFTextAreaInput(
+                        hintText: l10n.addDecisionNote,
+                        controller: _notesController,
+                        enabled: !_isLoading,
+                        maxLines: 6,
+                      ),
+                    ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
                   ],
                 ),
               ),
@@ -256,6 +283,45 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     );
   }
 
+  Widget _buildDecisionTypeSelector(
+    ThemeData theme,
+  ) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: PRFSoulDecisionType.values.map((decisionType) {
+        final isSelected = selectedDecisionType == decisionType;
+        return GestureDetector(
+          onTap: () => setState(() => selectedDecisionType = decisionType),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.outline.withValues(alpha: 0.3),
+              ),
+            ),
+            child: Text(
+              decisionType.name,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.onSurface,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   Widget _buildFormSection({
     required IconData icon,
     required String title,
@@ -305,6 +371,14 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
       return;
     }
 
+    if (selectedDecisionType == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.selectDecisionType)),
+      );
+      Gaimon.warning();
+      return;
+    }
+
     if (_fullNameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.enterName)),
@@ -318,6 +392,8 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
       classGroup: selectedClassGroup!,
       fullName: _fullNameController.text.trim(),
       admissionNumber: _admissionNumberController.text.trim(),
+      decisionType: selectedDecisionType!,
+      notes: _notesController.text.trim(),
     );
   }
 }

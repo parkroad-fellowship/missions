@@ -128,7 +128,7 @@
     "@selectClass": {},
     "debriefNotes": "Debrief Notes",
     "@debriefNotes": {},
-    "note": "Note",
+    "note": "Notes",
     "@note": {},
     "noteRecorded": "Note recorded",
     "@noteRecorded": {},
@@ -829,5 +829,11 @@
     "transactionCost": "Transaction Cost",
     "@transactionCost": {},
     "member": "Member",
-    "@member": {}
+    "@member": {},
+    "decisionType": "Type of Decision",
+    "@decisionType": {},
+    "selectDecisionType": "Select the decision this learner made today",
+    "@selectDecisionType": {},
+    "addDecisionNote": "What would you like to point out concerning this soul?",
+    "@addDecisionNote": {}
 }

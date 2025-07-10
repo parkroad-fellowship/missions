@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_soul_decision_type.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_soul.dart';
@@ -25,6 +26,8 @@ class AddSoulCubit extends Cubit<AddSoulState> {
     required String missionUlid,
     required PRFClassGroup classGroup,
     required String fullName,
+    required PRFSoulDecisionType decisionType,
+    String? notes,
     String? admissionNumber,
   }) async {
     emit(const AddSoulState.loading());
@@ -35,6 +38,8 @@ class AddSoulCubit extends Cubit<AddSoulState> {
           classGroupUlid: classGroup.ulid,
           fullName: fullName,
           admissionNumber: admissionNumber,
+          decisionType: decisionType.apiKey,
+          notes: notes,
         ).toJson(),
         includes: ['classGroup'],
       );

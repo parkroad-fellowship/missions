@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_soul_decision_type.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,9 +11,11 @@ abstract class PRFSoul with _$PRFSoul {
   factory PRFSoul(
     String ulid,
     @JsonKey(name: 'full_name') String fullName,
+    @JsonKey(name: 'decision_type') PRFSoulDecisionType decisionType,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
     @JsonKey(name: 'admission_number') String? admissionNumber,
+    String? notes,
     PRFMission? mission,
     @JsonKey(name: 'class_group') PRFClassGroup? classGroup,
   }) = _PRFSoul;

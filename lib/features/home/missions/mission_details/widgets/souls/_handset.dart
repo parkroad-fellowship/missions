@@ -1,9 +1,12 @@
+import 'package:app/enums/prf_soul_decision_type.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_soul.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/empty_state.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,6 +80,7 @@ class BeautifulSoulCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -128,15 +132,29 @@ class BeautifulSoulCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    _buildAcademicInfo(theme),
+                    
                   ],
                 ),
               ),
+              // Decision Type Badge
+              _buildDecisionTypeBadge(theme),
             ],
           ),
 
           const SizedBox(height: 16),
+
+          // Additional Information Section
+          _buildAdditionalInfo(theme, l10n),
+
+          // Notes Section (if available)
+          if (soul.notes != null && soul.notes!.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            _buildNotesSection(theme),
+          ],
+
+          // Date Information
+          const SizedBox(height: 12),
+          _buildDateInfo(theme),
         ],
       ),
     ).animate(effects: const [SaturateEffect()]);
@@ -154,34 +172,199 @@ class BeautifulSoulCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAcademicInfo(ThemeData theme) {
-    final academicInfo = <String>[];
 
-    if (soul.admissionNumber != null && soul.admissionNumber!.isNotEmpty) {
-      academicInfo.add('Adm: ${soul.admissionNumber!}');
-    }
-
-    academicInfo.add(soul.classGroup.name!);
-
-    final infoText = academicInfo.join(' • ');
-
+  Widget _buildDecisionTypeBadge(ThemeData theme) {
+    final decisionColor = _getDecisionTypeColor(theme);
+    
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        color: decisionColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.3),
+          color: decisionColor.withValues(alpha: 0.3),
         ),
       ),
-      child: Text(
-        infoText,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: theme.colorScheme.primary,
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            _getDecisionTypeIcon(),
+            size: 14,
+            color: decisionColor,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            soul.decisionType.name,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: decisionColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 11,
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Widget _buildAdditionalInfo(ThemeData theme, AppLocalizations l10n ) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildInfoItem(
+              theme,
+              l10n.classGroup,
+              soul.classGroup.name!,
+              Icons.class_rounded,
+            ),
+          ),
+          if (soul.admissionNumber != null && soul.admissionNumber!.isNotEmpty) ...[
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildInfoItem(
+                theme,
+                l10n.admissionNumber,
+                soul.admissionNumber!,
+                Icons.badge,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoItem(
+    ThemeData theme,
+    String label,
+    String value,
+    IconData icon,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(
+              icon,
+              size: 14,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: 11,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 2),
+        Text(
+          value,
+          style: theme.textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNotesSection(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.secondary.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.note_alt,
+                size: 14,
+                color: theme.colorScheme.secondary,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                'Notes',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.secondary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            soul.notes!,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface,
+              fontSize: 12,
+            ),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDateInfo(ThemeData theme) {
+    final formattedDate = DateFormat('MMM dd, yyyy • HH:mm').format(soul.createdAt);
+    
+    return Row(
+      children: [
+        Icon(
+          Icons.access_time,
+          size: 14,
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          'Recorded: $formattedDate',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+            fontSize: 11,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color _getDecisionTypeColor(ThemeData theme) {
+    switch (soul.decisionType) {
+      case PRFSoulDecisionType.salvation:
+        return theme.colorScheme.tertiary;
+      case PRFSoulDecisionType.rededication:
+        return theme.colorScheme.secondary;
+      case PRFSoulDecisionType.other:
+        return theme.colorScheme.outline;
+    }
+  }
+
+  IconData _getDecisionTypeIcon() {
+    switch (soul.decisionType) {
+      case PRFSoulDecisionType.salvation:
+        return Icons.favorite;
+      case PRFSoulDecisionType.rededication:
+        return Icons.refresh;
+      case PRFSoulDecisionType.other:
+        return Icons.more_horiz;
+    }
   }
 }
