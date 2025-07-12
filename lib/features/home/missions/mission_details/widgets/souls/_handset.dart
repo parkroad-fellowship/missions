@@ -368,9 +368,9 @@ class BeautifulSoulCard extends StatelessWidget {
         return Icons.favorite;
       case PRFSoulDecisionType.rededication:
         return Icons.refresh;
-        case PRFSoulDecisionType.camp:
+      case PRFSoulDecisionType.camp:
         return Icons.house_rounded;
-        case PRFSoulDecisionType.prayer:
+      case PRFSoulDecisionType.prayer:
         return Icons.back_hand_rounded;
       case PRFSoulDecisionType.other:
         return Icons.more_horiz;

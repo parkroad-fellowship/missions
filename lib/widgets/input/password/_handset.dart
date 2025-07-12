@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PRFPasswordInput extends StatelessWidget {
-  const PRFPasswordInput({
+class PRFPasswordInputHandset extends StatelessWidget {
+  const PRFPasswordInputHandset({
     required this.hintText,
     required this.hidePasswordNotifier,
     required this.passwordController,

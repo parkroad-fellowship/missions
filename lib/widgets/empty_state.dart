@@ -1,4 +1,4 @@
-import 'package:app/widgets/buttons/primary.dart';
+import 'package:app/widgets/buttons/primary/primary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 

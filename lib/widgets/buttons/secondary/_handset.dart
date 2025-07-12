@@ -1,8 +1,8 @@
 import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
-class PRFSecondaryButton extends StatelessWidget {
-  const PRFSecondaryButton({
+class PRFSecondaryButtonHandset extends StatelessWidget {
+  const PRFSecondaryButtonHandset({
     required this.onPressed,
     required this.title,
     required this.disabled,

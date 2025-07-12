@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PRFEmailInput extends StatelessWidget {
-  const PRFEmailInput({
+class PRFEmailInputHandset extends StatelessWidget {
+  const PRFEmailInputHandset({
     required this.hintText,
     required this.emailController,
     super.key,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class GoogleAuthButton extends StatelessWidget {
-  const GoogleAuthButton({
+class GoogleAuthButtonHandset extends StatelessWidget {
+  const GoogleAuthButtonHandset({
     required this.onPressed,
     required this.title,
     required this.disabled,

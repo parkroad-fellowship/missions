@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class PRFNumberInput extends StatelessWidget {
-  const PRFNumberInput({
+class PRFNumberInputHandset extends StatelessWidget {
+  const PRFNumberInputHandset({
     required this.hintText,
     required this.controller,
     super.key,

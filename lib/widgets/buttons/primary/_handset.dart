@@ -1,8 +1,7 @@
-import 'package:app/widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
-class PRFDestroyButton extends StatelessWidget {
-  const PRFDestroyButton({
+class PRFPrimaryButtonHandset extends StatelessWidget {
+  const PRFPrimaryButtonHandset({
     required this.onPressed,
     required this.title,
     required this.disabled,
@@ -21,31 +20,41 @@ class PRFDestroyButton extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
+      height: 56,
       child: ElevatedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
-        style: theme.elevatedButtonTheme.style?.copyWith(
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return theme.colorScheme.error.withValues(alpha: 0.4);
-            }
-            return theme.colorScheme.error;
-          }),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.onPrimary,
+          disabledBackgroundColor: theme.colorScheme.primary.withValues(
+            alpha: 0.4,
+          ),
+          disabledForegroundColor: theme.colorScheme.onPrimary.withValues(
+            alpha: 0.7,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading ?? false) ...[
               const SizedBox(
-                height: 16,
-                width: 16,
-                child: PRFCircularProgressIndicator(color: Colors.white),
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
             ],
             Text(
               title,
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onError,
+                color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
               ),
             ),

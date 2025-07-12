@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
 
-class PRFNameInput extends StatelessWidget {
-  const PRFNameInput({
+class PRFTextAreaInputHandset extends StatelessWidget {
+  const PRFTextAreaInputHandset({
     required this.hintText,
     required this.controller,
     super.key,
     this.enabled = true,
+    this.maxLines = 5,
+    this.minLines = 3,
   });
 
   final String hintText;
   final TextEditingController controller;
   final bool enabled;
+  final int minLines;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return TextFormField(
-      keyboardType: TextInputType.name,
-      textCapitalization: TextCapitalization.words,
+      textCapitalization: TextCapitalization.sentences,
       controller: controller,
       enabled: enabled,
+      minLines: minLines,
+      maxLines: maxLines,
       style: theme.textTheme.bodyMedium?.copyWith(
         color: theme.colorScheme.onSurface,
+        height: 1.5,
       ),
       decoration: InputDecoration(
         hintText: hintText,
@@ -60,6 +66,7 @@ class PRFNameInput extends StatelessWidget {
           horizontal: 16,
           vertical: 16,
         ),
+        alignLabelWithHint: true,
       ),
     );
   }
