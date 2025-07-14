@@ -10,7 +10,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class LandingPageHandset extends StatelessWidget {
-  const LandingPageHandset({super.key, required this.actions});
+  const LandingPageHandset({required this.actions, super.key});
 
   final List<List<Object>> actions;
 

@@ -4,7 +4,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/navbar.dart';
+import 'package:app/widgets/navbar/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

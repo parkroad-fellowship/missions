@@ -33,7 +33,7 @@ class HomeActionCard extends StatelessWidget {
           title: title,
           assetPath: assetPath,
           onTap: onTap,
-        )
+        ),
       ),
     );
   }

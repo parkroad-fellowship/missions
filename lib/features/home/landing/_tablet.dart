@@ -8,7 +8,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class LandingPageTablet extends StatelessWidget {
-  const LandingPageTablet({super.key, required this.actions});
+  const LandingPageTablet({required this.actions, super.key});
 
   final List<List<Object>> actions;
 
@@ -249,12 +249,16 @@ class LandingPageTablet extends StatelessWidget {
                     childAspectRatio: 1.4,
                   ),
                   delegate: SliverChildListDelegate(
-                    actions.map((action) => _buildTabletActionCard(
-                      title: action[0] as String,
-                      assetPath: action[1] as String,
-                      onTap: action[2] as VoidCallback,
-                      delay: action[3] as int,
-                    )).toList(),
+                    actions
+                        .map(
+                          (action) => _buildTabletActionCard(
+                            title: action[0] as String,
+                            assetPath: action[1] as String,
+                            onTap: action[2] as VoidCallback,
+                            delay: action[3] as int,
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
               ),

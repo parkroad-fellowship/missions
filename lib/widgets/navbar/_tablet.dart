@@ -1,16 +1,16 @@
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-class PRFNavBar extends StatelessWidget {
-  const PRFNavBar({
+class PRFNavBarTablet extends StatelessWidget {
+  const PRFNavBarTablet({
     required this.title,
+    required this.centerTitle,
     super.key,
     this.onBack,
     this.actions,
     this.backIcon,
     this.backgroundColor,
-    this.centerTitle = true,
   });
 
   final String title;
@@ -30,9 +30,9 @@ class PRFNavBar extends StatelessWidget {
       surfaceTintColor: Colors.transparent,
       pinned: true,
       elevation: 0,
-      toolbarHeight: 80,
+      toolbarHeight: 100,
       flexibleSpace: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         decoration: BoxDecoration(
           color: backgroundColor ?? theme.colorScheme.surface,
           border: Border(
@@ -47,7 +47,7 @@ class PRFNavBar extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: theme.colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.1),
@@ -57,10 +57,11 @@ class PRFNavBar extends StatelessWidget {
                 ],
               ),
               child: IconButton(
+                iconSize: 56,
                 icon: Icon(
                   backIcon ?? Icons.arrow_back_ios_new,
                   color: theme.colorScheme.onPrimaryContainer,
-                  size: 20,
+                  size: 24, // Increased from 20 to 24
                 ),
                 onPressed:
                     onBack ??
@@ -69,6 +70,7 @@ class PRFNavBar extends StatelessWidget {
                     ),
               ),
             ),
+            const SizedBox(width: 24),
             // Title
             Expanded(
               child: Align(
@@ -77,7 +79,7 @@ class PRFNavBar extends StatelessWidget {
                     : Alignment.centerLeft,
                 child: Text(
                   title,
-                  style: theme.textTheme.headlineMedium?.copyWith(
+                  style: theme.textTheme.headlineLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: theme.colorScheme.onSurface,
                   ),
@@ -89,7 +91,7 @@ class PRFNavBar extends StatelessWidget {
             if (actions != null && actions!.isNotEmpty)
               Row(children: actions!)
             else
-              const SizedBox(width: 48),
+              const SizedBox(width: 56),
           ],
         ),
       ),
