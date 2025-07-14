@@ -105,7 +105,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                     ),
                 ],
               ),
-          
+
               const SliverToBoxAdapter(child: SizedBox(height: 16)),
               SliverToBoxAdapter(
                 child: TabBar(

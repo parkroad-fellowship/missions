@@ -31,29 +31,26 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
         query: query,
       );
 
-      if (localFaqs.isEmpty && !forceRefresh) {
-        emit(const GetFaqsState.empty());
-        return;
-      }
-
+      // If we have local data and not forcing refresh, use cached data
       if (localFaqs.isNotEmpty && !forceRefresh) {
         emit(GetFaqsState.loaded(faqs: localFaqs));
         return;
       }
 
+      // If no local data OR forcing refresh, fetch from network
       if (localFaqs.isEmpty || forceRefresh) {
         await _networkFetch();
 
-        final localFaqs = await _localDBService.retreiveFaqs(
+        final updatedLocalFaqs = await _localDBService.retreiveFaqs(
           categoryUlid: categoryUlid,
           query: query,
         );
 
-        if (localFaqs.isEmpty) {
+        if (updatedLocalFaqs.isEmpty) {
           emit(const GetFaqsState.empty());
           return;
         }
-        emit(GetFaqsState.loaded(faqs: localFaqs));
+        emit(GetFaqsState.loaded(faqs: updatedLocalFaqs));
         return;
       }
     } catch (e) {
