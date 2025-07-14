@@ -375,15 +375,15 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Enhanced Timeline indicator - larger for tablet
+        // Enhanced Timeline indicator - scaled for tablet
         SizedBox(
-          width: 80, // Increased width for tablet
+          width: 80,
           child: Column(
             children: [
               // Multi-day date badge - larger for tablet
               Container(
-                width: 70, // Increased size for tablet
-                height: isMultiDay ? 110 : 70, // Increased height for tablet
+                width: 70,
+                height: isMultiDay ? 180 : 80,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -393,12 +393,12 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                       statusColor.withValues(alpha: 0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16), // Increased radius
+                  borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
                       color: statusColor.withValues(alpha: 0.3),
-                      blurRadius: 12, // Increased blur
-                      offset: const Offset(0, 6), // Increased offset
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
@@ -410,57 +410,51 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                       // Start date
                       Text(
                         startDate.day.toString(),
-                        style: theme.textTheme.labelLarge?.copyWith(
+                        style: theme.textTheme.titleLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
-                          fontSize: 16, // Increased font size
                         ),
                       ),
                       Text(
                         Misc.getMonthAbbreviation(startDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
-                          fontSize: 10, // Increased font size
                         ),
                       ),
                       Container(
-                        width: 16, // Increased width
-                        height: 2, // Increased height
+                        width: 16,
+                        height: 2,
                         color: Colors.white.withValues(alpha: 0.7),
                         margin: const EdgeInsets.symmetric(vertical: 4),
                       ),
                       // End date
                       Text(
                         endDate.day.toString(),
-                        style: theme.textTheme.labelLarge?.copyWith(
+                        style: theme.textTheme.titleLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
-                          fontSize: 16, // Increased font size
                         ),
                       ),
                       Text(
                         Misc.getMonthAbbreviation(endDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
-                          fontSize: 10, // Increased font size
                         ),
                       ),
                     ] else ...[
                       // Single day
                       Text(
                         startDate.day.toString(),
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          // Increased size
+                        style: theme.textTheme.headlineMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       Text(
                         Misc.getMonthAbbreviation(startDate.month),
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          // Increased size
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
                         ),
@@ -472,9 +466,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
               // Timeline line with flexible height
               if (!isLast)
                 Container(
-                  width: 3, // Increased width for tablet
-                  height: 80, // Increased height for tablet
-                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  width: 3,
+                  height: 80,
+                  margin: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -484,13 +478,12 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                         theme.colorScheme.outline.withValues(alpha: 0.2),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(1.5),
                   ),
                 ),
             ],
           ),
         ),
-
         const SizedBox(width: 24), // Increased spacing for tablet
         // Enhanced Event card - larger for tablet
         Expanded(
