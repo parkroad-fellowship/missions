@@ -63,80 +63,74 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
       body: DefaultTabController(
         length: tabCount,
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomScrollView(
-              slivers: [
-                PRFNavBar(
-                  title: l10n.eventDetails,
-                  onBack: () => context.router.popUntilRouteWithPath(
-                    PRFSuperAppRouter.eventsRoute,
-                  ),
-                  actions: [
-                    if (event.loggedInMemberEventSubscription != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: [
-                            BoxShadow(
-                              color: theme.colorScheme.primary.withValues(
-                                alpha: 0.13,
-                              ),
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
+          child: CustomScrollView(
+            slivers: [
+              PRFNavBar(
+                title: l10n.eventDetails,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.eventsRoute,
+                ),
+                actions: [
+                  if (event.loggedInMemberEventSubscription != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary,
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.13,
                             ),
-                          ],
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        l10n.areGoing(
+                          event
+                              .loggedInMemberEventSubscription!
+                              .numberOfAttendees,
                         ),
-                        child: Text(
-                          l10n.areGoing(
-                            event
-                                .loggedInMemberEventSubscription!
-                                .numberOfAttendees,
-                          ),
-                          style: theme.textTheme.labelLarge?.copyWith(
-                            color: theme.colorScheme.onPrimary,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.2,
-                          ),
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: theme.colorScheme.onPrimary,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
                         ),
                       ),
+                    ),
+                ],
+              ),
+          
+              const SliverToBoxAdapter(child: SizedBox(height: 16)),
+              SliverToBoxAdapter(
+                child: TabBar(
+                  controller: _tabController,
+                  onTap: (value) => setState(() {
+                    Logger().d(value);
+                    _currentTab = value;
+                  }),
+                  isScrollable: true,
+                  tabs: [
+                    Tab(text: l10n.info),
+                    Tab(text: l10n.gallery),
                   ],
                 ),
-
-                const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                SliverToBoxAdapter(
-                  child: TabBar(
-                    controller: _tabController,
-                    onTap: (value) => setState(() {
-                      Logger().d(value);
-                      _currentTab = value;
-                    }),
-                    isScrollable: true,
-                    tabs: [
-                      Tab(text: l10n.info),
-                      Tab(text: l10n.gallery),
-                    ],
-                  ),
+              ),
+              SliverFillRemaining(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    EventDetailsView(event: event),
+                    EventGalleryView(eventUlid: event.ulid),
+                  ],
                 ),
-                SliverFillRemaining(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        EventDetailsView(event: event),
-                        EventGalleryView(eventUlid: event.ulid),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
