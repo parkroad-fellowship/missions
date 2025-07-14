@@ -602,6 +602,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                                   l10n.duration,
                                   isMultiDay
                                       ? l10n.durationDesc(duration)
+                                      // ignore: lines_longer_than_80_chars
                                       : '${Misc.formatTime(mission.startTime, timezone)} - ${Misc.formatTime(mission.endTime, timezone)}',
                                   theme.colorScheme.primary,
                                 ),
@@ -622,92 +623,13 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                           const SizedBox(height: 12),
 
                           // Date range display
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: theme.colorScheme.outline.withValues(
-                                  alpha: 0.2,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.calendar_today_rounded,
-                                  size: 16,
-                                  color: theme.colorScheme.primary,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        isMultiDay
-                                            ? '${Misc.formatDate(startDate, timezone)} - ${Misc.formatDate(endDate, timezone)}'
-                                            : Misc.formatDate(
-                                                startDate,
-                                                timezone,
-                                              ),
-                                        style: theme.textTheme.bodySmall
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      if (isMultiDay)
-                                        Text(
-                                          '${Misc.formatTime(mission.startTime, timezone)} - ${Misc.formatTime(mission.endTime, timezone)}',
-                                          style: theme.textTheme.labelSmall
-                                              ?.copyWith(
-                                                color: theme
-                                                    .colorScheme
-                                                    .onSurfaceVariant,
-                                              ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                                // Progress indicator for ongoing missions
-                                if (isOngoing)
-                                  Container(
-                                        width: 6,
-                                        height: 6,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF10B981),
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: const Color(
-                                                0xFF10B981,
-                                              ).withValues(alpha: 0.5),
-                                              blurRadius: 6,
-                                              spreadRadius: 1,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                      .animate(
-                                        onPlay: (controller) =>
-                                            controller.repeat(),
-                                      )
-                                      .scale(
-                                        begin: const Offset(0.8, 0.8),
-                                        end: const Offset(1.2, 1.2),
-                                        duration: 1000.ms,
-                                      ),
-                              ],
-                            ),
+                          DateRangeView(
+                            isMultiDay: isMultiDay,
+                            startDate: startDate,
+                            timezone: timezone,
+                            endDate: endDate,
+                            mission: mission,
+                            isOngoing: isOngoing,
                           ),
 
                           const SizedBox(height: 12),
@@ -823,5 +745,112 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
+  }
+}
+
+class DateRangeView extends StatelessWidget {
+  const DateRangeView({
+    required this.isMultiDay,
+    required this.startDate,
+    required this.timezone,
+    required this.endDate,
+    required this.mission,
+    required this.isOngoing,
+    super.key,
+  });
+
+  final bool isMultiDay;
+  final DateTime startDate;
+  final String timezone;
+  final DateTime endDate;
+  final PRFLocalMission mission;
+  final bool isOngoing;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(
+            alpha: 0.2,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.calendar_today_rounded,
+            size: 16,
+            color: theme.colorScheme.primary,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  isMultiDay
+                      // ignore: lines_longer_than_80_chars
+                      ? '${Misc.formatDate(startDate, timezone)} - ${Misc.formatDate(endDate, timezone)}'
+                      : Misc.formatDate(
+                          startDate,
+                          timezone,
+                        ),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (isMultiDay)
+                  Text(
+                    // ignore: lines_longer_than_80_chars
+                    '${Misc.formatTime(mission.startTime, timezone)} - ${Misc.formatTime(mission.endTime, timezone)}',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
+          ),
+          // Progress indicator for ongoing missions
+          if (isOngoing)
+            Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF10B981),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(
+                          0xFF10B981,
+                        ).withValues(alpha: 0.5),
+                        blurRadius: 6,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                )
+                .animate(
+                  onPlay: (controller) => controller.repeat(),
+                )
+                .scale(
+                  begin: const Offset(0.8, 0.8),
+                  end: const Offset(1.2, 1.2),
+                  duration: 1000.ms,
+                ),
+        ],
+      ),
+    );
   }
 }

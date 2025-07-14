@@ -679,6 +679,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                     children: [
                                       Text(
                                         isMultiDay
+                                            // ignore: lines_longer_than_80_chars
                                             ? '${Misc.formatDate(startDate, timezone)} - ${Misc.formatDate(endDate, timezone)}'
                                             : Misc.formatDate(
                                                 startDate,
@@ -693,6 +694,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
+                                        // ignore: lines_longer_than_80_chars
                                         '${Misc.formatTime(event.startTime, timezone)} - ${Misc.formatTime(event.endTime, timezone)} daily',
                                         style: theme.textTheme.bodySmall
                                             ?.copyWith(

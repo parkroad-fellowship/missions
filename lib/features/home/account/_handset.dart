@@ -152,96 +152,7 @@ class AccountPageHandset extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ValueListenableBuilder(
-                          valueListenable: Hive.box<dynamic>(
-                            PRFSuperAppConfig.instance!.values.hiveBox,
-                          ).listenable(),
-                          builder: (context, _, _) {
-                            final member = getIt<HiveService>()
-                                .retrieveMember();
-                            if (member == null) return const SizedBox.shrink();
-                            return Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () => context
-                                    .read<ChangeProfilePictureCubit>()
-                                    .changeProfilePicture(
-                                      context: context,
-                                      modelUlid: member.ulid,
-                                      model:
-                                          PRFMediaModel.memberProfilePictures,
-                                      mediaType: RequestType.image,
-                                    ),
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.primary,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withValues(
-                                          alpha: 0.2,
-                                        ),
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child:
-                                      BlocConsumer<
-                                        ChangeProfilePictureCubit,
-                                        ChangeProfilePictureState
-                                      >(
-                                        listener: (context, state) {
-                                          state.mapOrNull(
-                                            loaded: (_) {
-                                              Gaimon.success();
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    l10n.successfullyUpdated,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            error: (error) {
-                                              Gaimon.error();
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(error.message),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        builder: (context, state) =>
-                                            state.maybeWhen(
-                                              orElse: () => const Icon(
-                                                Icons.camera_alt_rounded,
-                                                size: 20,
-                                                color: Colors.white,
-                                              ),
-                                              loading: () => SizedBox.square(
-                                                dimension: 20,
-                                                child:
-                                                    PRFCircularProgressIndicator(
-                                                      color: theme
-                                                          .colorScheme
-                                                          .surface,
-                                                    ),
-                                              ),
-                                            ),
-                                      ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                        const ChangeProfilePictureButton(),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -734,6 +645,101 @@ class AccountPageHandset extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ChangeProfilePictureButton extends StatelessWidget {
+  const ChangeProfilePictureButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    return ValueListenableBuilder(
+      valueListenable: Hive.box<dynamic>(
+        PRFSuperAppConfig.instance!.values.hiveBox,
+      ).listenable(),
+      builder: (context, _, _) {
+        final member = getIt<HiveService>().retrieveMember();
+        if (member == null) return const SizedBox.shrink();
+        return Positioned(
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTap: () =>
+                context.read<ChangeProfilePictureCubit>().changeProfilePicture(
+                  context: context,
+                  modelUlid: member.ulid,
+                  model: PRFMediaModel.memberProfilePictures,
+                  mediaType: RequestType.image,
+                ),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(
+                      alpha: 0.2,
+                    ),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child:
+                  BlocConsumer<
+                    ChangeProfilePictureCubit,
+                    ChangeProfilePictureState
+                  >(
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loaded: (_) {
+                          Gaimon.success();
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                l10n.successfullyUpdated,
+                              ),
+                            ),
+                          );
+                        },
+                        error: (error) {
+                          Gaimon.error();
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(
+                            SnackBar(
+                              content: Text(error.message),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    builder: (context, state) => state.maybeWhen(
+                      orElse: () => const Icon(
+                        Icons.camera_alt_rounded,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      loading: () => SizedBox.square(
+                        dimension: 20,
+                        child: PRFCircularProgressIndicator(
+                          color: theme.colorScheme.surface,
+                        ),
+                      ),
+                    ),
+                  ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

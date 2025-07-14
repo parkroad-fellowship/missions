@@ -315,61 +315,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                     ],
 
                                     // Google Sign In Button
-                                    BlocBuilder<
-                                      GoogleSignInCubit,
-                                      GoogleSignInState
-                                    >(
-                                      builder: (context, signInWithGoogleState) {
-                                        return BlocBuilder<
-                                          SocialLoginCubit,
-                                          SocialLoginState
-                                        >(
-                                          builder: (context, socialSignUpState) {
-                                            return BlocBuilder<
-                                              SocialLoginCubit,
-                                              SocialLoginState
-                                            >(
-                                              builder: (context, socialSignInState) {
-                                                final (
-                                                  isLoading,
-                                                  title,
-                                                ) = signInWithGoogleState.maybeWhen(
-                                                  loading: () =>
-                                                      (true, 'Please wait ...'),
-                                                  orElse: () => socialSignUpState
-                                                      .maybeWhen(
-                                                        loading: () => (
-                                                          true,
-                                                          'Please wait ...',
-                                                        ),
-                                                        orElse: () => socialSignInState
-                                                            .maybeWhen(
-                                                              loading: () => (
-                                                                true,
-                                                                'Please wait ...',
-                                                              ),
-                                                              orElse: () => (
-                                                                false,
-                                                                'Continue with Google',
-                                                              ),
-                                                            ),
-                                                      ),
-                                                );
-
-                                                return GoogleAuthButton(
-                                                  onPressed: () => context
-                                                      .read<GoogleSignInCubit>()
-                                                      .signInwithGoogle(),
-                                                  title: title,
-                                                  disabled: isLoading,
-                                                  isLoading: isLoading,
-                                                );
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
+                                    const GoogleSignInButton(),
                                   ],
                                 );
                               },
@@ -409,6 +355,58 @@ class _SignInHandsetState extends State<SignInHandset> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class GoogleSignInButton extends StatelessWidget {
+  const GoogleSignInButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
+      builder: (context, signInWithGoogleState) {
+        return BlocBuilder<SocialLoginCubit, SocialLoginState>(
+          builder: (context, socialSignUpState) {
+            return BlocBuilder<SocialLoginCubit, SocialLoginState>(
+              builder: (context, socialSignInState) {
+                final (
+                  isLoading,
+                  title,
+                ) = signInWithGoogleState.maybeWhen(
+                  loading: () => (true, 'Please wait ...'),
+                  orElse: () => socialSignUpState.maybeWhen(
+                    loading: () => (
+                      true,
+                      'Please wait ...',
+                    ),
+                    orElse: () => socialSignInState.maybeWhen(
+                      loading: () => (
+                        true,
+                        'Please wait ...',
+                      ),
+                      orElse: () => (
+                        false,
+                        'Continue with Google',
+                      ),
+                    ),
+                  ),
+                );
+
+                return GoogleAuthButton(
+                  onPressed: () =>
+                      context.read<GoogleSignInCubit>().signInwithGoogle(),
+                  title: title,
+                  disabled: isLoading,
+                  isLoading: isLoading,
+                );
+              },
+            );
+          },
+        );
+      },
     );
   }
 }

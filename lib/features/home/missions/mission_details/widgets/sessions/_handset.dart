@@ -226,6 +226,7 @@ class TimelineSessionCard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
+                                    // ignore: lines_longer_than_80_chars
                                     '${Misc.formatTimeFromDateTime(missionSession.startsAt, userTimezone)} - ${Misc.formatTimeFromDateTime(missionSession.endsAt, userTimezone)}',
                                     style: Theme.of(context)
                                         .textTheme

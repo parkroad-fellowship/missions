@@ -1,6 +1,7 @@
 import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/utils/_index.dart';
@@ -144,324 +145,7 @@ class _SignInTabletState extends State<SignInTablet> {
                             ),
 
                             // Right side - Sign in form
-                            Expanded(
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 500,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    // Sign In Header
-                                    Text(
-                                      l10n.signIn,
-                                      style: theme.textTheme.headlineLarge
-                                          ?.copyWith(
-                                            color: theme.colorScheme.primary,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 40,
-                                          ),
-                                      textAlign: TextAlign.center,
-                                    ),
-
-                                    const SizedBox(height: 48),
-
-                                    FutureBuilder(
-                                      future: getIt<FirebaseService>()
-                                          .canShowAuth(),
-                                      builder: (context, snapshot) {
-                                        final canShowAuth =
-                                            snapshot.data ?? false;
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            if (canShowAuth || kDebugMode) ...[
-                                              // Email Input
-                                              PRFEmailInput(
-                                                hintText: l10n.enterEmail,
-                                                emailController:
-                                                    _emailController,
-                                                enabled: !_isLoading,
-                                              ),
-                                              const SizedBox(height: 20),
-
-                                              // Password Input
-                                              PRFPasswordInput(
-                                                hintText: l10n.enterPassword,
-                                                hidePasswordNotifier:
-                                                    _hidePasswordNotifier,
-                                                passwordController:
-                                                    _passwordController,
-                                                enabled: !_isLoading,
-                                              ),
-                                              const SizedBox(height: 32),
-
-                                              // Sign In Button
-                                              BlocConsumer<
-                                                SigninCubit,
-                                                SignInState
-                                              >(
-                                                listener: (context, state) {
-                                                  state.maybeWhen(
-                                                    loading: () => setState(() {
-                                                      _isLoading = !_isLoading;
-                                                    }),
-                                                    loaded: () => context.router
-                                                        .pushNamed(
-                                                          PRFSuperAppRouter
-                                                              .landingRoute,
-                                                        ),
-                                                    error: (message) {
-                                                      setState(() {
-                                                        _isLoading =
-                                                            !_isLoading;
-                                                      });
-                                                      ScaffoldMessenger.of(
-                                                        context,
-                                                      ).showSnackBar(
-                                                        SnackBar(
-                                                          content: Text(
-                                                            message,
-                                                          ),
-                                                          backgroundColor: theme
-                                                              .colorScheme
-                                                              .error,
-                                                          behavior:
-                                                              SnackBarBehavior
-                                                                  .floating,
-                                                          shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  8,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    orElse: () {},
-                                                  );
-                                                },
-                                                builder: (context, state) {
-                                                  return PRFPrimaryButton(
-                                                    onPressed: () {
-                                                      if (_emailController
-                                                          .text
-                                                          .isEmpty) {
-                                                        ScaffoldMessenger.of(
-                                                          context,
-                                                        ).showSnackBar(
-                                                          SnackBar(
-                                                            content: Text(
-                                                              l10n.enterEmail,
-                                                            ),
-                                                            backgroundColor:
-                                                                theme
-                                                                    .colorScheme
-                                                                    .error,
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                          ),
-                                                        );
-                                                        Gaimon.warning();
-                                                        return;
-                                                      }
-
-                                                      if (_passwordController
-                                                          .text
-                                                          .isEmpty) {
-                                                        ScaffoldMessenger.of(
-                                                          context,
-                                                        ).showSnackBar(
-                                                          SnackBar(
-                                                            content: Text(
-                                                              l10n.enterPassword,
-                                                            ),
-                                                            backgroundColor:
-                                                                theme
-                                                                    .colorScheme
-                                                                    .error,
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                          ),
-                                                        );
-                                                        Gaimon.warning();
-                                                        return;
-                                                      }
-
-                                                      context
-                                                          .read<SigninCubit>()
-                                                          .signIn(
-                                                            email:
-                                                                _emailController
-                                                                    .text
-                                                                    .trim(),
-                                                            password:
-                                                                _passwordController
-                                                                    .text
-                                                                    .trim(),
-                                                          );
-                                                    },
-                                                    title: _isLoading
-                                                        ? l10n.signingIn
-                                                        : l10n.signIn,
-                                                    disabled: _isLoading,
-                                                    isLoading: _isLoading,
-                                                  );
-                                                },
-                                              ),
-                                              const SizedBox(height: 32),
-
-                                              // Divider
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Divider(
-                                                      color: theme
-                                                          .colorScheme
-                                                          .outline,
-                                                      thickness: 1,
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          horizontal: 20,
-                                                        ),
-                                                    child: Text(
-                                                      'OR',
-                                                      style: theme
-                                                          .textTheme
-                                                          .labelMedium
-                                                          ?.copyWith(
-                                                            color: theme
-                                                                .colorScheme
-                                                                .onSurfaceVariant,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 16,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Divider(
-                                                      color: theme
-                                                          .colorScheme
-                                                          .outline,
-                                                      thickness: 1,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 32),
-                                            ],
-
-                                            // Google Sign In Button
-                                            BlocBuilder<
-                                              GoogleSignInCubit,
-                                              GoogleSignInState
-                                            >(
-                                              builder: (context, signInWithGoogleState) {
-                                                return BlocBuilder<
-                                                  SocialLoginCubit,
-                                                  SocialLoginState
-                                                >(
-                                                  builder: (context, socialSignUpState) {
-                                                    return BlocBuilder<
-                                                      SocialLoginCubit,
-                                                      SocialLoginState
-                                                    >(
-                                                      builder:
-                                                          (
-                                                            context,
-                                                            socialSignInState,
-                                                          ) {
-                                                            final (
-                                                              isLoading,
-                                                              title,
-                                                            ) = signInWithGoogleState.maybeWhen(
-                                                              loading: () => (
-                                                                true,
-                                                                'Please wait ...',
-                                                              ),
-                                                              orElse: () => socialSignUpState.maybeWhen(
-                                                                loading: () => (
-                                                                  true,
-                                                                  'Please wait ...',
-                                                                ),
-                                                                orElse: () => socialSignInState.maybeWhen(
-                                                                  loading: () => (
-                                                                    true,
-                                                                    'Please wait ...',
-                                                                  ),
-                                                                  orElse: () => (
-                                                                    false,
-                                                                    'Continue with Google',
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-
-                                                            return GoogleAuthButton(
-                                                              onPressed: () => context
-                                                                  .read<
-                                                                    GoogleSignInCubit
-                                                                  >()
-                                                                  .signInwithGoogle(),
-                                                              title: title,
-                                                              disabled:
-                                                                  isLoading,
-                                                              isLoading:
-                                                                  isLoading,
-                                                            );
-                                                          },
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-
-                                    const SizedBox(height: 48),
-
-                                    // Version
-                                    Center(
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 12,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: theme
-                                              .colorScheme
-                                              .surfaceContainerHighest,
-                                          borderRadius: BorderRadius.circular(
-                                            24,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          l10n.version(Misc.getAppVersion()),
-                                          style: theme.textTheme.labelSmall
-                                              ?.copyWith(
-                                                color: theme
-                                                    .colorScheme
-                                                    .onSurfaceVariant,
-                                                fontSize: 14,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            _buildSignInForm(l10n, theme),
                           ],
                         ),
                       ),
@@ -473,6 +157,265 @@ class _SignInTabletState extends State<SignInTablet> {
           ),
         ),
       ),
+    );
+  }
+
+  Expanded _buildSignInForm(AppLocalizations l10n, ThemeData theme) {
+    return Expanded(
+      child: Container(
+        constraints: const BoxConstraints(
+          maxWidth: 500,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Sign In Header
+            Text(
+              l10n.signIn,
+              style: theme.textTheme.headlineLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.w700,
+                fontSize: 40,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 48),
+
+            FutureBuilder(
+              future: getIt<FirebaseService>().canShowAuth(),
+              builder: (context, snapshot) {
+                final canShowAuth = snapshot.data ?? false;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (canShowAuth || kDebugMode) ...[
+                      // Email Input
+                      PRFEmailInput(
+                        hintText: l10n.enterEmail,
+                        emailController: _emailController,
+                        enabled: !_isLoading,
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Password Input
+                      PRFPasswordInput(
+                        hintText: l10n.enterPassword,
+                        hidePasswordNotifier: _hidePasswordNotifier,
+                        passwordController: _passwordController,
+                        enabled: !_isLoading,
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Sign In Button
+                      BlocConsumer<SigninCubit, SignInState>(
+                        listener: (context, state) {
+                          state.maybeWhen(
+                            loading: () => setState(() {
+                              _isLoading = !_isLoading;
+                            }),
+                            loaded: () => context.router.pushNamed(
+                              PRFSuperAppRouter.landingRoute,
+                            ),
+                            error: (message) {
+                              setState(() {
+                                _isLoading = !_isLoading;
+                              });
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    message,
+                                  ),
+                                  backgroundColor: theme.colorScheme.error,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      8,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            orElse: () {},
+                          );
+                        },
+                        builder: (context, state) {
+                          return PRFPrimaryButton(
+                            onPressed: () {
+                              if (_emailController.text.isEmpty) {
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      l10n.enterEmail,
+                                    ),
+                                    backgroundColor: theme.colorScheme.error,
+                                    behavior: SnackBarBehavior.floating,
+                                  ),
+                                );
+                                Gaimon.warning();
+                                return;
+                              }
+
+                              if (_passwordController.text.isEmpty) {
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      l10n.enterPassword,
+                                    ),
+                                    backgroundColor: theme.colorScheme.error,
+                                    behavior: SnackBarBehavior.floating,
+                                  ),
+                                );
+                                Gaimon.warning();
+                                return;
+                              }
+
+                              context.read<SigninCubit>().signIn(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              );
+                            },
+                            title: _isLoading ? l10n.signingIn : l10n.signIn,
+                            disabled: _isLoading,
+                            isLoading: _isLoading,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Divider
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: theme.colorScheme.outline,
+                              thickness: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            child: Text(
+                              'OR',
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: theme.colorScheme.outline,
+                              thickness: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+
+                    // Google Sign In Button
+                    const GoogleSignIn(),
+                  ],
+                );
+              },
+            ),
+
+            const SizedBox(height: 48),
+
+            // Version
+            Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(
+                    24,
+                  ),
+                ),
+                child: Text(
+                  l10n.version(Misc.getAppVersion()),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GoogleSignIn extends StatelessWidget {
+  const GoogleSignIn({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
+      builder: (context, signInWithGoogleState) {
+        return BlocBuilder<SocialLoginCubit, SocialLoginState>(
+          builder: (context, socialSignUpState) {
+            return BlocBuilder<SocialLoginCubit, SocialLoginState>(
+              builder:
+                  (
+                    context,
+                    socialSignInState,
+                  ) {
+                    final (
+                      isLoading,
+                      title,
+                    ) = signInWithGoogleState.maybeWhen(
+                      loading: () => (
+                        true,
+                        'Please wait ...',
+                      ),
+                      orElse: () => socialSignUpState.maybeWhen(
+                        loading: () => (
+                          true,
+                          'Please wait ...',
+                        ),
+                        orElse: () => socialSignInState.maybeWhen(
+                          loading: () => (
+                            true,
+                            'Please wait ...',
+                          ),
+                          orElse: () => (
+                            false,
+                            'Continue with Google',
+                          ),
+                        ),
+                      ),
+                    );
+
+                    return GoogleAuthButton(
+                      onPressed: () =>
+                          context.read<GoogleSignInCubit>().signInwithGoogle(),
+                      title: title,
+                      disabled: isLoading,
+                      isLoading: isLoading,
+                    );
+                  },
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -1178,6 +1178,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         Text(
           isQuantity
               ? amount.toString()
+              // ignore: lines_longer_than_80_chars
               : 'KES ${amount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
           style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,

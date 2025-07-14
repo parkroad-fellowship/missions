@@ -659,70 +659,12 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                           const SizedBox(height: 20),
 
                           // Date range display
-                          Container(
-                            padding: const EdgeInsets.all(
-                              16,
-                            ), // Increased padding
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(
-                                16,
-                              ), // Increased radius
-                              border: Border.all(
-                                color: theme.colorScheme.outline.withValues(
-                                  alpha: 0.2,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.calendar_today_rounded,
-                                  size: 24, // Increased size
-                                  color: theme.colorScheme.primary,
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        isMultiDay
-                                            ? '${Misc.formatDate(startDate, timezone)} - '
-                                                  '${Misc.formatDate(endDate, timezone)}'
-                                            : Misc.formatDate(
-                                                startDate,
-                                                timezone,
-                                              ),
-                                        style: theme
-                                            .textTheme
-                                            .titleMedium // Increased size
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${Misc.formatTime(event.startTime, timezone)} -'
-                                        ' ${Misc.formatTime(event.endTime, timezone)} daily',
-                                        style: theme
-                                            .textTheme
-                                            .bodyMedium // Increased size
-                                            ?.copyWith(
-                                              color: theme
-                                                  .colorScheme
-                                                  .onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                          DateRangeView(
+                            isMultiDay: isMultiDay,
+                            startDate: startDate,
+                            timezone: timezone,
+                            endDate: endDate,
+                            event: event,
                           ),
 
                           const SizedBox(height: 20),
@@ -847,6 +789,90 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DateRangeView extends StatelessWidget {
+  const DateRangeView({
+    required this.isMultiDay,
+    required this.startDate,
+    required this.timezone,
+    required this.endDate,
+    required this.event,
+    super.key,
+  });
+
+  final bool isMultiDay;
+  final DateTime startDate;
+  final String timezone;
+  final DateTime endDate;
+  final PRFEvent event;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(
+        16,
+      ), // Increased padding
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(
+          16,
+        ), // Increased radius
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(
+            alpha: 0.2,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.calendar_today_rounded,
+            size: 24, // Increased size
+            color: theme.colorScheme.primary,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  isMultiDay
+                      ? '${Misc.formatDate(startDate, timezone)} - '
+                            '${Misc.formatDate(endDate, timezone)}'
+                      : Misc.formatDate(
+                          startDate,
+                          timezone,
+                        ),
+                  style: theme
+                      .textTheme
+                      .titleMedium // Increased size
+                      ?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${Misc.formatTime(event.startTime, timezone)} -'
+                  ' ${Misc.formatTime(event.endTime, timezone)} daily',
+                  style: theme
+                      .textTheme
+                      .bodyMedium // Increased size
+                      ?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),

@@ -603,6 +603,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                   l10n.duration,
                                   isMultiDay
                                       ? l10n.durationDesc(duration)
+                                      // ignore: lines_longer_than_80_chars
                                       : '${Misc.formatTime(mission.startTime, timezone)} - ${Misc.formatTime(mission.endTime, timezone)}',
                                   theme.colorScheme.primary,
                                 ),
@@ -663,6 +664,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                     children: [
                                       Text(
                                         isMultiDay
+                                            // ignore: lines_longer_than_80_chars
                                             ? '${Misc.formatDate(startDate, timezone)} - ${Misc.formatDate(endDate, timezone)}'
                                             : Misc.formatDate(
                                                 startDate,
@@ -679,6 +681,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                       ),
                                       if (isMultiDay)
                                         Text(
+                                          // ignore: lines_longer_than_80_chars
                                           '${Misc.formatTime(mission.startTime, timezone)} - ${Misc.formatTime(mission.endTime, timezone)}',
                                           style: theme.textTheme.bodySmall
                                               ?.copyWith(

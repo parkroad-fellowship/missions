@@ -674,7 +674,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     context,
                     Icons.access_time,
                     l10n.time,
+                    // ignore: lines_longer_than_80_chars
                     '${Misc.formatTimeFromDateTime(missionSession.startsAt, timezone)} '
+                    // ignore: lines_longer_than_80_chars
                     '- ${Misc.formatTimeFromDateTime(missionSession.endsAt, timezone)}',
                   ),
                   const SizedBox(height: 12),
