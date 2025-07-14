@@ -123,7 +123,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                   ),
                   empty: () => SliverFillRemaining(
                     child: RefreshIndicator(
-                      onRefresh: () => context.read<GetFaqsCubit>().getFaqs(),
+                      onRefresh: () => context.read<GetFaqsCubit>().getFaqs(
+                        forceRefresh: true,
+                      ),
                       child: PRFEmptyView(
                         label: l10n.noFaqs,
                         description: l10n.pleaseWait,
