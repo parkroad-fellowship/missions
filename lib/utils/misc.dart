@@ -7,7 +7,9 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/slugify.dart' as slugify;
 import 'package:app/versioning/build_version.dart';
-import 'package:flutter/material.dart' show BuildContext, MediaQuery, Size;
+import 'package:flutter/material.dart'
+    show BuildContext, MediaQuery, ScaffoldMessenger, Size, SnackBar, Text;
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -471,6 +473,36 @@ class Misc {
       'Dec',
     ];
     return months[month - 1];
+  }
+
+  // Static variable to track last back press across all instances
+  static DateTime? _lastBackPressed;
+
+  static void exitApp({
+    required BuildContext context,
+    required bool didPop,
+    required Object? result,
+    String? exitMessage,
+    Duration? timeWindow,
+  }) {
+    if (didPop) return;
+
+    final now = DateTime.now();
+    final window = timeWindow ?? const Duration(seconds: 2);
+    final message = exitMessage ?? 'Press back again to exit';
+
+    if (_lastBackPressed == null ||
+        now.difference(_lastBackPressed!) > window) {
+      _lastBackPressed = now;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: window,
+        ),
+      );
+    } else {
+      SystemNavigator.pop();
+    }
   }
 }
 

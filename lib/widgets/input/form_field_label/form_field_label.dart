@@ -22,7 +22,7 @@ class FormFieldLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, __) => FormFieldLabelTablet(
+      defaultBuilder: (_, _) => FormFieldLabelTablet(
         label: label,
         isOptional: isOptional,
         isRequired: isRequired,

@@ -45,6 +45,11 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
 
     return PopScope(
       canPop: false,
+      onPopInvokedWithResult: (didPop, result) => Misc.exitApp(
+        context: context,
+        didPop: didPop,
+        result: result,
+      ),
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
         body: SafeArea(

@@ -50,6 +50,11 @@ class _DecisionPageState extends State<DecisionPage> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
+      onPopInvokedWithResult: (didPop, result) => Misc.exitApp(
+        context: context,
+        didPop: didPop,
+        result: result,
+      ),
       child: UpgradeAlert(
         child: Scaffold(
           body: Center(
