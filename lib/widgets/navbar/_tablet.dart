@@ -61,7 +61,7 @@ class PRFNavBarTablet extends StatelessWidget {
                 icon: Icon(
                   backIcon ?? Icons.arrow_back_ios_new,
                   color: theme.colorScheme.onPrimaryContainer,
-                  size: 24, // Increased from 20 to 24
+                  size: 24,
                 ),
                 onPressed:
                     onBack ??

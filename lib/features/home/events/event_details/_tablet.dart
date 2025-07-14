@@ -84,14 +84,14 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                           color: theme.colorScheme.primary,
                           borderRadius: BorderRadius.circular(
                             16,
-                          ), // Increased radius
+                          ),
                           boxShadow: [
                             BoxShadow(
                               color: theme.colorScheme.primary.withValues(
                                 alpha: 0.13,
                               ),
-                              blurRadius: 8, // Increased blur
-                              offset: const Offset(0, 3), // Increased offset
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
@@ -113,7 +113,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
 
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 20),
-                ), // Increased spacing
+                ),
                 SliverToBoxAdapter(
                   child: TabBar(
                     controller: _tabController,

@@ -20,7 +20,7 @@ class PRFPrimaryButtonTablet extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: 72, // Increased height for better text accommodation
+      height: 72,
       child: ElevatedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
         style: ElevatedButton.styleFrom(

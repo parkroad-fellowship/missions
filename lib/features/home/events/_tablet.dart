@@ -490,24 +490,24 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
             child: Container(
               margin: EdgeInsets.only(
                 bottom: isLast ? 0 : 24,
-              ), // Increased margin
+              ),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(20), // Increased radius
+                borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: statusColor.withValues(alpha: 0.2),
-                  width: 1.5, // Increased border width
+                  width: 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-                    blurRadius: 16, // Increased blur
-                    offset: const Offset(0, 4), // Increased offset
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
                   ),
                   BoxShadow(
                     color: statusColor.withValues(alpha: 0.05),
-                    blurRadius: 32, // Increased blur
-                    offset: const Offset(0, 8), // Increased offset
+                    blurRadius: 32,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
@@ -517,9 +517,8 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Premium header with gradient
                     Container(
-                      padding: const EdgeInsets.all(20), // Increased padding
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
@@ -541,7 +540,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                 child: Text(
                                   event.name,
                                   style: theme.textTheme.titleLarge?.copyWith(
-                                    // Increased size
                                     fontWeight: FontWeight.w700,
                                     color: theme.colorScheme.onSurface,
                                   ),
@@ -552,14 +550,14 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                               const SizedBox(width: 12),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, // Increased padding
-                                  vertical: 6, // Increased padding
+                                  horizontal: 12,
+                                  vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
                                   color: statusColor,
                                   borderRadius: BorderRadius.circular(
                                     16,
-                                  ), // Increased radius
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: statusColor.withValues(alpha: 0.3),
@@ -571,7 +569,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                 child: Text(
                                   statusText,
                                   style: theme.textTheme.labelMedium?.copyWith(
-                                    // Increased size
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -589,16 +586,16 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                 Container(
                                   padding: const EdgeInsets.all(
                                     8,
-                                  ), // Increased padding
+                                  ),
                                   decoration: BoxDecoration(
                                     color: theme.colorScheme.primaryContainer,
                                     borderRadius: BorderRadius.circular(
                                       12,
-                                    ), // Increased radius
+                                    ),
                                   ),
                                   child: Icon(
                                     Icons.location_on_rounded,
-                                    size: 20, // Increased size
+                                    size: 20,
                                     color: theme.colorScheme.onPrimaryContainer,
                                   ),
                                 ),
@@ -608,7 +605,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                     event.venue!,
                                     style: theme.textTheme.titleMedium
                                         ?.copyWith(
-                                          // Increased size
                                           fontWeight: FontWeight.w600,
                                           color: theme.colorScheme.onSurface,
                                         ),
@@ -624,7 +620,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
 
                     // Event details
                     Padding(
-                      padding: const EdgeInsets.all(20), // Increased padding
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -674,7 +670,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                             Text(
                               event.description.split('\n').first,
                               style: theme.textTheme.bodyLarge?.copyWith(
-                                // Increased size
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
                               maxLines: 2,
@@ -687,8 +682,8 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 20, // Increased padding
-                              vertical: 16, // Increased padding
+                              horizontal: 20,
+                              vertical: 16,
                             ),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -699,7 +694,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                               ),
                               borderRadius: BorderRadius.circular(
                                 16,
-                              ), // Increased radius
+                              ),
                               border: Border.all(
                                 color: statusColor.withValues(alpha: 0.3),
                               ),
@@ -710,7 +705,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                 Text(
                                   'View Details',
                                   style: theme.textTheme.titleMedium?.copyWith(
-                                    // Increased size
                                     fontWeight: FontWeight.w600,
                                     color: statusColor,
                                   ),
@@ -718,7 +712,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                 const SizedBox(width: 12),
                                 Icon(
                                   Icons.arrow_forward_rounded,
-                                  size: 22, // Increased size
+                                  size: 22,
                                   color: statusColor,
                                 ),
                               ],
@@ -748,12 +742,12 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16, // Increased padding
-        vertical: 12, // Increased padding
+        horizontal: 16,
+        vertical: 12,
       ),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(12), // Increased radius
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: textColor.withValues(alpha: 0.2),
         ),
@@ -763,7 +757,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
         children: [
           Icon(
             icon,
-            size: 18, // Increased size
+            size: 18,
             color: textColor,
           ),
           const SizedBox(width: 8),
@@ -775,7 +769,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 Text(
                   label,
                   style: theme.textTheme.labelMedium?.copyWith(
-                    // Increased size
                     color: textColor.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w500,
                   ),
@@ -783,7 +776,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 Text(
                   value,
                   style: theme.textTheme.labelMedium?.copyWith(
-                    // Increased size
                     color: textColor,
                     fontWeight: FontWeight.w600,
                   ),
@@ -822,12 +814,12 @@ class DateRangeView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(
         16,
-      ), // Increased padding
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(
           16,
-        ), // Increased radius
+        ),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(
             alpha: 0.2,
@@ -838,7 +830,7 @@ class DateRangeView extends StatelessWidget {
         children: [
           Icon(
             Icons.calendar_today_rounded,
-            size: 24, // Increased size
+            size: 24,
             color: theme.colorScheme.primary,
           ),
           const SizedBox(width: 16),
@@ -855,24 +847,18 @@ class DateRangeView extends StatelessWidget {
                           startDate,
                           timezone,
                         ),
-                  style: theme
-                      .textTheme
-                      .titleMedium // Increased size
-                      ?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onSurface,
-                      ),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '${Misc.formatTime(event.startTime, timezone)} -'
                   ' ${Misc.formatTime(event.endTime, timezone)} daily',
-                  style: theme
-                      .textTheme
-                      .bodyMedium // Increased size
-                      ?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
