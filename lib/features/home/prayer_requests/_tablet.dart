@@ -1,4 +1,4 @@
-import 'package:app/features/home/prayer_requests/add_prayer_request/add_prayer_request.dart';
+import 'package:app/features/home/prayer_requests/actions/add_prayer_request/add_prayer_request.dart';
 import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
 import 'package:app/l10n/l10n.dart';

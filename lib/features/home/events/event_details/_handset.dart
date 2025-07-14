@@ -1,10 +1,10 @@
 import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
-import 'package:app/features/home/events/event_details/add_event_subscription/add_event_subscription.dart';
-import 'package:app/features/home/events/event_details/add_media/add_media.dart';
+import 'package:app/features/home/events/event_details/actions/add_event_subscription/add_event_subscription.dart';
+import 'package:app/features/home/events/event_details/actions/add_media/add_media.dart';
+import 'package:app/features/home/events/event_details/actions/update_event_subscription/update_event_subscription.dart';
 import 'package:app/features/home/events/event_details/event_details/event_details.dart';
 import 'package:app/features/home/events/event_details/gallery/gallery.dart';
-import 'package:app/features/home/events/event_details/update_event_subscription/update_event_subscription.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';

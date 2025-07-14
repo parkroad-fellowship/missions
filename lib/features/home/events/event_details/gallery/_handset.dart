@@ -1,6 +1,6 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
-import 'package:app/features/home/events/event_details/add_media/add_media.dart';
+import 'package:app/features/home/events/event_details/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_media.dart';

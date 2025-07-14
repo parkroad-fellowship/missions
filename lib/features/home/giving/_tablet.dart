@@ -1,4 +1,4 @@
-import 'package:app/features/home/giving/add_payment/add_payment.dart';
+import 'package:app/features/home/giving/actions/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_payment.dart';
