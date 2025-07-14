@@ -195,48 +195,49 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                   ),
                 ],
               ),
-              child: FloatingActionButton.extended(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
-                onPressed: () async =>
-                    context.read<SubscribeCubit>().subscribe(
-                      missionUlid: missionUlid,
-                    ),
-                label: Text(
-                  l10n.sendMe,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                icon: BlocBuilder<SubscribeCubit, SubscribeState>(
-                  builder: (context, state) => state.maybeWhen(
-                    orElse: () => const Icon(
-                      Icons.hail_rounded,
-                      size: 20,
-                    ),
-                    loading: () => const SizedBox.square(
-                      dimension: 20,
-                      child: PRFCircularProgressIndicator(
-                        color: Colors.white,
+              child:
+                  FloatingActionButton.extended(
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
+                    onPressed: () async =>
+                        context.read<SubscribeCubit>().subscribe(
+                          missionUlid: missionUlid,
+                        ),
+                    label: Text(
+                      l10n.sendMe,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
+                    icon: BlocBuilder<SubscribeCubit, SubscribeState>(
+                      builder: (context, state) => state.maybeWhen(
+                        orElse: () => const Icon(
+                          Icons.hail_rounded,
+                          size: 20,
+                        ),
+                        loading: () => const SizedBox.square(
+                          dimension: 20,
+                          child: PRFCircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ).animate(
+                    effects: [
+                      const ShimmerEffect(
+                        duration: Duration(seconds: 2),
+                        delay: Duration(milliseconds: 500),
+                      ),
+                      const ScaleEffect(
+                        begin: Offset(0.8, 0.8),
+                        end: Offset(1, 1),
+                        duration: Duration(milliseconds: 400),
+                      ),
+                    ],
                   ),
-                ),
-              ).animate(
-                effects: [
-                  const ShimmerEffect(
-                    duration: Duration(seconds: 2),
-                    delay: Duration(milliseconds: 500),
-                  ),
-                  const ScaleEffect(
-                    begin: Offset(0.8, 0.8),
-                    end: Offset(1, 1),
-                    duration: Duration(milliseconds: 400),
-                  ),
-                ],
-              ),
             );
           },
         ),

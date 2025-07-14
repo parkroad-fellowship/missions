@@ -1,7 +1,6 @@
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 
 class PRFSuperApp extends StatefulWidget {
@@ -14,16 +13,13 @@ class PRFSuperApp extends StatefulWidget {
 class _PRFSuperAppState extends State<PRFSuperApp> {
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(1290, 2796),
-      builder: (context, child) => PostHogWidget(
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: PRFTheme.light(context),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          routerConfig: getIt<PRFSuperAppRouter>().config(),
-        ),
+    return PostHogWidget(
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: PRFTheme.light(context),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: getIt<PRFSuperAppRouter>().config(),
       ),
     );
   }

@@ -63,7 +63,9 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
         length: tabCount,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24), // Increased padding for tablet
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+            ), // Increased padding for tablet
             child: CustomScrollView(
               slivers: [
                 PRFNavBar(
@@ -80,7 +82,9 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                         ),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primary,
-                          borderRadius: BorderRadius.circular(16), // Increased radius
+                          borderRadius: BorderRadius.circular(
+                            16,
+                          ), // Increased radius
                           boxShadow: [
                             BoxShadow(
                               color: theme.colorScheme.primary.withValues(
@@ -107,7 +111,9 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                   ],
                 ),
 
-                const SliverToBoxAdapter(child: SizedBox(height: 20)), // Increased spacing
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 20),
+                ), // Increased spacing
                 SliverToBoxAdapter(
                   child: TabBar(
                     controller: _tabController,
@@ -124,7 +130,9 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                 ),
                 SliverFillRemaining(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24), // Increased padding for tablet
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ), // Increased padding for tablet
                     child: TabBarView(
                       controller: _tabController,
                       children: [

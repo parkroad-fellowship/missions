@@ -30,7 +30,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -102,7 +101,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
         length: tabCount,
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomScrollView(
               physics: const ScrollPhysics(),
               slivers: [
@@ -140,7 +139,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 SliverFillRemaining(
                   fillOverscroll: true,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TabBarView(
                       controller: _tabController,
                       children: [

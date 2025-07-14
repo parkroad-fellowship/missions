@@ -12,7 +12,6 @@ import 'package:app/widgets/navbar/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -65,7 +64,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
         length: tabCount,
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomScrollView(
               slivers: [
                 PRFNavBar(
@@ -109,7 +108,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                   ],
                 ),
 
-                SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+                const SliverToBoxAdapter(child: SizedBox(height: 16)),
                 SliverToBoxAdapter(
                   child: TabBar(
                     controller: _tabController,
@@ -126,7 +125,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                 ),
                 SliverFillRemaining(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TabBarView(
                       controller: _tabController,
                       children: [

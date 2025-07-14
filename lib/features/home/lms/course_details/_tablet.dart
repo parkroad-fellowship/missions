@@ -36,7 +36,6 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(

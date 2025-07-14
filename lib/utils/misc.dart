@@ -8,9 +8,8 @@ import 'package:app/utils/_index.dart';
 import 'package:app/utils/slugify.dart' as slugify;
 import 'package:app/versioning/build_version.dart';
 import 'package:flutter/material.dart'
-    show BuildContext, MediaQuery, ScaffoldMessenger, Size, SnackBar, Text;
+    show BuildContext, MediaQuery, ScaffoldMessenger, SnackBar, Text;
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
@@ -241,17 +240,6 @@ class Misc {
     return mission.status == PRFMissionStatus.approved &&
         mission.missionSubscriptionsNeeded > 0 &&
         !memberHasSubscribed(mission);
-  }
-
-  /// Enhanced dimensions initialization with validation
-  static void initDimensions(BuildContext context, {Size? customDesignSize}) {
-    try {
-      final designSize = customDesignSize ?? const Size(1290, 2796);
-      ScreenUtil.init(context, designSize: designSize);
-    } catch (e) {
-      // Fallback initialization
-      ScreenUtil.init(context, designSize: const Size(375, 812));
-    }
   }
 
   /// Enhanced user permissions check with caching

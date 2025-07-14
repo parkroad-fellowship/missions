@@ -145,7 +145,6 @@ class _SignInTabletState extends State<SignInTablet> {
 
                             // Right side - Sign in form
                             Expanded(
-                              flex: 1,
                               child: Container(
                                 constraints: const BoxConstraints(
                                   maxWidth: 500,
@@ -166,7 +165,7 @@ class _SignInTabletState extends State<SignInTablet> {
                                           ),
                                       textAlign: TextAlign.center,
                                     ),
-                                    
+
                                     const SizedBox(height: 48),
 
                                     FutureBuilder(

@@ -426,8 +426,11 @@ class AccountPageTablet extends StatelessWidget {
                                     .map(
                                       (entry) => Padding(
                                         padding: EdgeInsets.only(
-                                          bottom: entry.key <
-                                                  profile.member!.memberships
+                                          bottom:
+                                              entry.key <
+                                                  profile
+                                                          .member!
+                                                          .memberships
                                                           .length -
                                                       1
                                               ? 16
@@ -435,11 +438,12 @@ class AccountPageTablet extends StatelessWidget {
                                         ),
                                         child: _buildMembershipCard(
                                           context,
-                                          spiritualYear: entry.value
-                                              .spiritualYear!.name,
-                                          membershipType: PrfMembershipType
-                                              .fromIndex(entry.value.type)
-                                              .name,
+                                          spiritualYear:
+                                              entry.value.spiritualYear!.name,
+                                          membershipType:
+                                              PrfMembershipType.fromIndex(
+                                                entry.value.type,
+                                              ).name,
                                           isApproved: entry.value.approved,
                                         ),
                                       ),
@@ -458,87 +462,93 @@ class AccountPageTablet extends StatelessWidget {
 
             // Footer Section
             SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        text: l10n.byUsing,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+              child:
+                  Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.shadow.withValues(
+                                alpha: 0.08,
+                              ),
+                              blurRadius: 20,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
                         ),
-                        children: [
-                          TextSpan(
-                            text: l10n.terms,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
+                        child: Column(
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                text: l10n.byUsing,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: l10n.terms,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri(
+                                          scheme: 'https',
+                                          host: 'parkroadfellowship.org',
+                                          path: '/privacy-policy',
+                                        );
+                                        await Misc.openUrl(uri);
+                                      },
+                                  ),
+                                  TextSpan(
+                                    text: l10n.and,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: l10n.privacyPolicy,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri(
+                                          scheme: 'https',
+                                          host: 'parkroadfellowship.org',
+                                          path: 'privacy-policy',
+                                        );
+                                        await Misc.openUrl(uri);
+                                      },
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                final uri = Uri(
-                                  scheme: 'https',
-                                  host: 'parkroadfellowship.org',
-                                  path: '/privacy-policy',
-                                );
-                                await Misc.openUrl(uri);
-                              },
-                          ),
-                          TextSpan(
-                            text: l10n.and,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                            const SizedBox(height: 16),
+                            Text(
+                              l10n.version(Misc.getAppVersion()),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          TextSpan(
-                            text: l10n.privacyPolicy,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                final uri = Uri(
-                                  scheme: 'https',
-                                  host: 'parkroadfellowship.org',
-                                  path: 'privacy-policy',
-                                );
-                                await Misc.openUrl(uri);
-                              },
-                          ),
-                        ],
+                          ],
+                        ),
+                      )
+                      .animate(delay: 300.ms)
+                      .fadeIn(duration: 300.ms)
+                      .slideY(
+                        begin: 0.1,
+                        end: 0,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      l10n.version(Misc.getAppVersion()),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ).animate(delay: 300.ms).fadeIn(duration: 300.ms).slideY(
-                    begin: 0.1,
-                    end: 0,
-                  ),
             ),
 
             const SliverToBoxAdapter(child: SizedBox(height: 32)),

@@ -116,6 +116,14 @@ class _LandingPageState extends State<LandingPage> {
         ),
         600,
       ],
+      [
+        l10n.give,
+        'assets/svgs/giving.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.givingRoute,
+        ),
+        700,
+      ],
     ];
 
     return AdaptiveBuilder(

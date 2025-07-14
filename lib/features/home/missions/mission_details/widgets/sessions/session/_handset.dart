@@ -56,8 +56,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    Misc.initDimensions(context);
-
     const defaultLoadingWidget = SliverToBoxAdapter(
       child: PRFCircularProgressIndicator(),
     );

@@ -334,7 +334,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                 const SizedBox(height: 20),
                 Expanded(
                   child: Text(
-                    announcement.content.replaceAll(RegExp(r'<[^>]*>'), ''),
+                    announcement.content.replaceAll(RegExp('<[^>]*>'), ''),
                     style: textTheme.bodyMedium?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                       height: 1.5,

@@ -8,7 +8,6 @@ import 'package:app/widgets/navbar/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LMSPageTablet extends StatefulWidget {
   const LMSPageTablet({super.key});
@@ -28,12 +27,11 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    Misc.initDimensions(context);
 
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: CustomScrollView(
             slivers: [
               PRFNavBar(
@@ -81,7 +79,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                     itemBuilder: (context, index) =>
                         CourseActionCard(course: courses[index]),
                     separatorBuilder: (context, index) =>
-                        SizedBox(height: 16.h),
+                        const SizedBox(height: 16),
                   );
                 },
               ),
