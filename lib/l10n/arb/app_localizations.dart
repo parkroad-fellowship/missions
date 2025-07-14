@@ -2169,6 +2169,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What would you like to point out concerning this soul?'**
   String get addDecisionNote;
+
+  /// No description provided for @welcomeIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to PRF Missions'**
+  String get welcomeIntro;
 }
 
 class _AppLocalizationsDelegate

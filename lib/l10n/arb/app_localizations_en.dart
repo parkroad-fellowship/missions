@@ -1120,4 +1120,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get addDecisionNote =>
       'What would you like to point out concerning this soul?';
+
+  @override
+  String get welcomeIntro => 'Welcome to PRF Missions';
 }

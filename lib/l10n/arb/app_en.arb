@@ -835,5 +835,7 @@
     "selectDecisionType": "Select the decision this learner made today",
     "@selectDecisionType": {},
     "addDecisionNote": "What would you like to point out concerning this soul?",
-    "@addDecisionNote": {}
+    "@addDecisionNote": {},
+    "welcomeIntro": "Welcome to PRF Missions",
+    "@welcomeIntro": {}
 }
