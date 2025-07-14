@@ -29,6 +29,11 @@ class HomeActionCard extends StatelessWidget {
           assetPath: assetPath,
           onTap: onTap,
         ),
+        tablet: (_, _) => HomeActionCardTablet(
+          title: title,
+          assetPath: assetPath,
+          onTap: onTap,
+        )
       ),
     );
   }

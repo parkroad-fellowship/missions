@@ -1,5 +1,6 @@
 import 'package:app/features/home/landing/_handset.dart';
 import 'package:app/features/home/landing/_tablet.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -56,10 +57,72 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    final actions = [
+      [
+        l10n.goToAMission,
+        'assets/svgs/missions.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.missionsRoute,
+        ),
+        0,
+      ],
+      [
+        l10n.learnSomething,
+        'assets/svgs/lms.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.lmsRoute,
+        ),
+        100,
+      ],
+      [
+        l10n.studentFaqs,
+        'assets/svgs/explore.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.memberLearnerFaqs,
+        ),
+        200,
+      ],
+      [
+        l10n.ministerToAStudent,
+        'assets/svgs/student_ministry.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.studentEnquiriesRoute,
+        ),
+        300,
+      ],
+      [
+        l10n.suggestAMission,
+        'assets/svgs/chatting.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.missionGroundSuggestionsRoute,
+        ),
+        400,
+      ],
+      [
+        l10n.registerForEvent,
+        'assets/svgs/events.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.eventsRoute,
+        ),
+        500,
+      ],
+      [
+        l10n.submitPrayerRequest,
+        'assets/svgs/texting.svg',
+        () => context.router.pushNamed(
+          PRFSuperAppRouter.prayerRequestRoute,
+        ),
+        600,
+      ],
+    ];
+
     return AdaptiveBuilder(
-      defaultBuilder: (_, _) => const LandingPageTablet(),
+      defaultBuilder: (_, _) =>  LandingPageTablet(actions: actions),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => const LandingPageHandset(),
+        handset: (_, _) =>  LandingPageHandset(actions: actions),
+        tablet: (_, _) =>  LandingPageTablet(actions: actions),
       ),
     );
   }

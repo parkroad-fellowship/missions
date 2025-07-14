@@ -1,22 +1,16 @@
-
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/home_action_card/home_action_card.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
-class LandingPageTablet extends StatefulWidget {
-  const LandingPageTablet({super.key});
+class LandingPageTablet extends StatelessWidget {
+  const LandingPageTablet({super.key, required this.actions});
 
-  @override
-  State<LandingPageTablet> createState() => _LandingPageTabletState();
-}
-
-class _LandingPageTabletState extends State<LandingPageTablet> {
+  final List<List<Object>> actions;
 
   @override
   Widget build(BuildContext context) {
@@ -244,98 +238,30 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                 ),
               ),
 
-              // Action Cards
+              // Action Cards Grid
               SliverPadding(
-                padding: EdgeInsets.zero,
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                    _buildAnimatedCard(
-                      child: HomeActionCard(
-                        title: l10n.goToAMission,
-                        assetPath: 'assets/svgs/missions.svg',
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.missionsRoute,
-                        ),
-                      ),
-                      delay: 0,
-                      slideDirection: -1,
-                    ),
-
-                    _buildAnimatedCard(
-                      child: HomeActionCard(
-                        title: l10n.learnSomething,
-                        assetPath: 'assets/svgs/lms.svg',
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.lmsRoute,
-                        ),
-                      ),
-                      delay: 100,
-                      slideDirection: 1,
-                    ),
-
-                    _buildAnimatedCard(
-                      child: HomeActionCard(
-                        title: l10n.studentFaqs,
-                        assetPath: 'assets/svgs/explore.svg',
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.memberLearnerFaqs,
-                        ),
-                      ),
-                      delay: 200,
-                      slideDirection: -1,
-                    ),
-
-                    _buildAnimatedCard(
-                      child: HomeActionCard(
-                        title: l10n.ministerToAStudent,
-                        assetPath: 'assets/svgs/student_ministry.svg',
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.studentEnquiriesRoute,
-                        ),
-                      ),
-                      delay: 300,
-                      slideDirection: 1,
-                    ),
-
-                    _buildAnimatedCard(
-                      child: HomeActionCard(
-                        title: l10n.suggestAMission,
-                        assetPath: 'assets/svgs/chatting.svg',
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.missionGroundSuggestionsRoute,
-                        ),
-                      ),
-                      delay: 400,
-                      slideDirection: -1,
-                    ),
-
-                    _buildAnimatedCard(
-                      child: HomeActionCard(
-                        title: l10n.registerForEvent,
-                        assetPath: 'assets/svgs/events.svg',
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.eventsRoute,
-                        ),
-                      ),
-                      delay: 500,
-                      slideDirection: 1,
-                    ),
-
-                    _buildAnimatedCard(
-                      child: HomeActionCard(
-                        title: l10n.submitPrayerRequest,
-                        assetPath: 'assets/svgs/texting.svg',
-                        onTap: () => context.router.pushNamed(
-                          PRFSuperAppRouter.prayerRequestRoute,
-                        ),
-                      ),
-                      delay: 600,
-                      slideDirection: -1,
-                    ),
-
-                    const SizedBox(height: 60),
-                  ]),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 24,
+                    mainAxisSpacing: 24,
+                    childAspectRatio: 1.4,
+                  ),
+                  delegate: SliverChildListDelegate(
+                    actions.map((action) => _buildTabletActionCard(
+                      title: action[0] as String,
+                      assetPath: action[1] as String,
+                      onTap: action[2] as VoidCallback,
+                      delay: action[3] as int,
+                    )).toList(),
+                  ),
                 ),
+              ),
+
+              // Bottom spacing
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 60),
               ),
             ],
           ),
@@ -344,27 +270,29 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
     );
   }
 
-  Widget _buildAnimatedCard({
-    required Widget child,
+  Widget _buildTabletActionCard({
+    required String title,
+    required String assetPath,
+    required VoidCallback onTap,
     required int delay,
-    required int slideDirection,
   }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Animate(
-        effects: [
-          FadeEffect(
-            duration: 400.ms,
-            delay: Duration(milliseconds: delay),
-          ),
-          SlideEffect(
-            duration: 500.ms,
-            delay: Duration(milliseconds: delay),
-            begin: Offset(slideDirection * 0.2, 0),
-            curve: Curves.easeOut,
-          ),
-        ],
-        child: child,
+    return Animate(
+      effects: [
+        FadeEffect(
+          duration: 400.ms,
+          delay: Duration(milliseconds: delay),
+        ),
+        SlideEffect(
+          duration: 500.ms,
+          delay: Duration(milliseconds: delay),
+          begin: const Offset(0, 0.2),
+          curve: Curves.easeOut,
+        ),
+      ],
+      child: HomeActionCard(
+        title: title,
+        assetPath: assetPath,
+        onTap: onTap,
       ),
     );
   }

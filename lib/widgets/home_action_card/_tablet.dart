@@ -27,61 +27,60 @@ class HomeActionCardTablet extends StatelessWidget {
           Container(
             width: width,
             padding: EdgeInsets.fromLTRB(
-              100 * scaleFactor,
-              80 * scaleFactor,
-              300 * scaleFactor,
-              80 * scaleFactor,
+              24 * scaleFactor,
+              20 * scaleFactor,
+              88 * scaleFactor,
+              20 * scaleFactor,
             ),
-            margin: const EdgeInsets.symmetric(horizontal: 32),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               color: theme.colorScheme.secondary,
-              borderRadius: BorderRadius.circular(48 * scaleFactor),
+              borderRadius: BorderRadius.circular(24 * scaleFactor),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(assetPath, height: 250 * scaleFactor),
-                SizedBox(height: 100 * scaleFactor),
+                SvgPicture.asset(assetPath, height: 70 * scaleFactor),
+                SizedBox(height: 24 * scaleFactor),
                 Text(
                   title,
                   style: theme.textTheme.displayMedium?.copyWith(
                     color: theme.colorScheme.onSecondary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 36,
-                    height: 1.2,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25 * scaleFactor,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 40 * scaleFactor),
+                SizedBox(height: 16 * scaleFactor), // Add bottom spacing
               ],
             ),
           ),
           Positioned(
-            right: 32,
+            right: 4,
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
-              child: SizedBox.square(dimension: 220 * scaleFactor),
+              child: SizedBox.square(dimension: 60 * scaleFactor),
             ),
           ),
           Positioned(
-            right: 32,
+            right: 4,
             bottom: 0,
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 140 * scaleFactor,
+              radius: 40 * scaleFactor,
               child: Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
                 child: SizedBox.square(
-                  dimension: 230 * scaleFactor,
+                  dimension: 70 * scaleFactor,
                   child: Icon(
                     Icons.play_arrow_rounded,
                     color: Colors.white,
-                    size: 100 * scaleFactor,
+                    size: 40 * scaleFactor,
                   ),
                 ),
               ),
@@ -91,4 +90,5 @@ class HomeActionCardTablet extends StatelessWidget {
       ),
     );
   }
+
 }
