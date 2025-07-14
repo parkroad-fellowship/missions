@@ -1,5 +1,5 @@
 import 'package:app/shared_widgets/buttons/destroy/_handset.dart';
-import 'package:app/shared_widgets/buttons/primary/_tablet.dart';
+import 'package:app/shared_widgets/buttons/destroy/_tablet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
@@ -20,7 +20,7 @@ class PRFDestroyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, _) => PRFPrimaryButtonTablet(
+      defaultBuilder: (_, _) => PRFDestroyButtonTablet(
         onPressed: onPressed,
         title: title,
         disabled: disabled,
@@ -33,7 +33,7 @@ class PRFDestroyButton extends StatelessWidget {
           disabled: disabled,
           isLoading: isLoading,
         ),
-        tablet: (_, _) => PRFPrimaryButtonTablet(
+        tablet: (_, _) => PRFDestroyButtonTablet(
           onPressed: onPressed,
           title: title,
           disabled: disabled,

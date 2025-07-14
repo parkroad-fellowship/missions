@@ -1,5 +1,5 @@
-import 'package:app/shared_widgets/buttons/google_auth/_tablet.dart';
 import 'package:app/shared_widgets/buttons/secondary/_handset.dart';
+import 'package:app/shared_widgets/buttons/secondary/_tablet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
@@ -20,7 +20,7 @@ class PRFSecondaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
-      defaultBuilder: (_, _) => GoogleAuthButtonTablet(
+      defaultBuilder: (_, _) => PRFSecondaryButtonTablet(
         onPressed: onPressed,
         title: title,
         disabled: disabled,
@@ -33,7 +33,7 @@ class PRFSecondaryButton extends StatelessWidget {
           disabled: disabled,
           isLoading: isLoading,
         ),
-        tablet: (_, _) => GoogleAuthButtonTablet(
+        tablet: (_, _) => PRFSecondaryButtonTablet(
           onPressed: onPressed,
           title: title,
           disabled: disabled,

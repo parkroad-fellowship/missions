@@ -9,10 +9,10 @@ import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
 import 'package:app/services/local_db_service.dart';
-import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
+import 'package:app/utils/_index.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -273,11 +273,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                                     backgroundColor: Colors.white,
                                     surfaceTintColor: Colors.white,
                                     child: SizedBox(
-                                      height:
-                                          MediaQuery.sizeOf(
-                                            context,
-                                          ).height *
-                                          0.8,
+                                      height: MediaQuery.sizeOf(
+                                        context,
+                                      ).height,
                                       child: AddAudioView(
                                         missionSessionUlid: missionSessionUlid,
                                       ),
@@ -796,7 +794,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                               ),
                             ],
                           ),
-                          child: ElevatedButton.icon(
+                          child: PRFPrimaryButton(
                             onPressed: () => WoltModalSheet.show<void>(
                               context: context,
                               pageListBuilder: (modalSheetContext) {
@@ -817,25 +815,8 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                 ];
                               },
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              shadowColor: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            icon: Icon(
-                              Icons.edit_outlined,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                            label: Text(
-                              l10n.edit,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            title: l10n.edit,
+                            disabled: false,
                           ),
                         ),
                       ),
@@ -849,7 +830,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: ElevatedButton.icon(
+                          child: PRFDestroyButton(
                             onPressed: () async => showDialog<void>(
                               context: context,
                               builder: (context) {
@@ -857,10 +838,11 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                   title: Text(l10n.deleteSession),
                                   content: Text(l10n.confirmDelete),
                                   actions: [
-                                    TextButton(
+                                    PRFSecondaryButton(
                                       onPressed: () =>
                                           Navigator.of(context).pop(),
-                                      child: Text(l10n.cancel),
+                                      title: l10n.cancel,
+                                      disabled: false,
                                     ),
                                     BlocConsumer<
                                       DeleteMissionSessionCubit,
@@ -899,7 +881,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                         );
                                       },
                                       builder: (context, state) {
-                                        return TextButton(
+                                        return PRFDestroyButton(
                                           onPressed: () {
                                             context
                                                 .read<
@@ -910,7 +892,12 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                                       missionSession.ulid,
                                                 );
                                           },
-                                          child: Text(l10n.delete),
+                                          title: l10n.delete,
+                                          disabled: false,
+                                          isLoading: state.maybeWhen(
+                                            loading: () => true,
+                                            orElse: () => false,
+                                          ),
                                         );
                                       },
                                     ),
@@ -918,25 +905,8 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                 );
                               },
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              shadowColor: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            icon: Icon(
-                              Icons.delete_outline,
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                            label: Text(
-                              l10n.delete,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.error,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            title: l10n.delete,
+                            disabled: false,
                           ),
                         ),
                       ),

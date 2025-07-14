@@ -6,14 +6,14 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/local/prf_mission_session.dart';
 import 'package:app/services/local_db_service.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/shared_widgets/_index.dart';
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
     as picker;
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -88,7 +88,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -358,6 +357,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           setState(() {
                             _isLoading = false;
                           });
+                          Gaimon.success();
                           Navigator.of(context).pop();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(l10n.sessionRecorded)),
@@ -370,56 +370,23 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                 refresh: true,
                               );
                         },
+                        error: (error) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.error();
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(error.error)));
+                        },
                       );
                     },
                     builder: (context, state) {
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: _isFormValid && !_isLoading
-                              ? _submitForm
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: _isFormValid
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.surfaceContainerHighest,
-                            foregroundColor: _isFormValid
-                                ? theme.colorScheme.onPrimary
-                                : theme.colorScheme.onSurfaceVariant,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: _isFormValid ? 4 : 0,
-                          ),
-                          child: _isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: PRFCircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.save_outlined,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      _isLoading ? l10n.recording : l10n.record,
-                                      style: theme.textTheme.titleMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: theme.colorScheme.onPrimary,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                        ),
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: l10n.record,
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
                       );
                     },
                   )
