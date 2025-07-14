@@ -1,4 +1,4 @@
-import 'package:app/widgets/progress/circular_progress_indicator.dart';
+import 'package:app/shared_widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 class SingleStreamWrapper<T> extends StatelessWidget {

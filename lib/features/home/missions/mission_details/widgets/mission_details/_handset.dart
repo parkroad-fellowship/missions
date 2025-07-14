@@ -7,7 +7,7 @@ import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
-import 'package:app/widgets/progress/linear_progress_indicator.dart';
+import 'package:app/shared_widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:map_launcher/map_launcher.dart';

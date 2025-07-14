@@ -3,7 +3,7 @@ import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/widgets/_index.dart';
+import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

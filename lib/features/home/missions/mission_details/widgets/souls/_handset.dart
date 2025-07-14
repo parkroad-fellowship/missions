@@ -5,7 +5,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_soul.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/empty_state.dart';
+import 'package:app/shared_widgets/empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

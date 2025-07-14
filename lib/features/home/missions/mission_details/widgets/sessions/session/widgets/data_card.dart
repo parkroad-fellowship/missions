@@ -1,4 +1,4 @@
-import 'package:app/widgets/_index.dart';
+import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 
 class DataCard extends StatelessWidget {

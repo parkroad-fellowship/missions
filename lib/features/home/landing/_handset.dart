@@ -1,8 +1,8 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/home_action_card/home_action_card.dart';
+import 'package:app/shared_widgets/_index.dart';
+import 'package:app/shared_widgets/home_action_card/home_action_card.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';

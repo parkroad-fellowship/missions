@@ -5,7 +5,7 @@ import 'package:app/features/home/events/cubit/update_event_subscription_cubit.d
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/models/remote/prf_event_subscription.dart';
-import 'package:app/widgets/_index.dart';
+import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

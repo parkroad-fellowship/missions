@@ -5,8 +5,8 @@ import 'package:app/features/home/mission_ground_suggestions/widgets/mission_gro
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/_index.dart';
-import 'package:app/widgets/navbar/navbar.dart';
+import 'package:app/shared_widgets/_index.dart';
+import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

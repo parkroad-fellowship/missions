@@ -4,7 +4,7 @@ import 'package:app/models/local/prf_debrief_note.dart';
 import 'package:app/services/local_db_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
-import 'package:app/widgets/empty_state.dart';
+import 'package:app/shared_widgets/empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

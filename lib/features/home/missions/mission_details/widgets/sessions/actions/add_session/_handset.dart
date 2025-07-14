@@ -7,7 +7,7 @@ import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/widgets/_index.dart';
+import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
