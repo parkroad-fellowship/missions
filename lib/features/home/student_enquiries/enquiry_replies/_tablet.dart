@@ -8,12 +8,11 @@ import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/navbar/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:intl/intl.dart';
 
 class StudentEnquiryRepliesPageTablet extends StatefulWidget {
   const StudentEnquiryRepliesPageTablet({required this.enquiry, super.key});
@@ -26,20 +25,62 @@ class StudentEnquiryRepliesPageTablet extends StatefulWidget {
 }
 
 class _StudentEnquiryRepliesPageTabletState
-    extends State<StudentEnquiryRepliesPageTablet> {
+    extends State<StudentEnquiryRepliesPageTablet>
+    with TickerProviderStateMixin {
   PRFLocalStudentEnquiry get enquiry => widget.enquiry;
 
   final _enquiryReplyController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
   bool _isLoading = false;
+  bool _isComposing = false;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
+    super.initState();
     context.read<GetEnquiryRepliesCubit>().getStudentEnquiryReplies(
       enquiryUlid: enquiry.ulid,
     );
-
     _subscribeToEnquiryReplies();
-    super.initState();
+
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
+    _enquiryReplyController.addListener(() {
+      setState(() {
+        _isComposing = _enquiryReplyController.text.trim().isNotEmpty;
+      });
+    });
+
+    // Scroll to bottom after first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+      _animationController.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutCubic,
+      );
+    }
   }
 
   Future<void> _subscribeToEnquiryReplies() async {
@@ -58,222 +99,364 @@ class _StudentEnquiryRepliesPageTabletState
     );
   }
 
+  Future<void> _sendReply(BuildContext context, String text) async {
+    if (text.trim().isEmpty) return;
+
+    await context.read<CreateEnquiryReplyCubit>().createStudentEnquiryReply(
+      studentEnquiryUlid: enquiry.ulid,
+      content: text.trim(),
+    );
+  }
+
+  String _formatTimestamp(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays == 0) {
+      return DateFormat('HH:mm').format(dateTime);
+    } else if (difference.inDays == 1) {
+      return 'Yesterday ${DateFormat('HH:mm').format(dateTime)}';
+    } else if (difference.inDays < 7) {
+      return DateFormat('EEE HH:mm').format(dateTime);
+    } else {
+      return DateFormat('MMM d, HH:mm').format(dateTime);
+    }
+  }
+
+  Widget _buildMessageBubble(PRFLocalStudentEnquiryReply reply, int index) {
+    final theme = Theme.of(context);
+    final isStudent = reply.isStudent;
+
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 300 + (index * 50)),
+      tween: Tween(begin: 0, end: 1),
+      curve: Curves.easeOutBack,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - value)),
+          child: Opacity(
+            opacity: value.clamp(0.0, 1.0),
+            child: child,
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(
+          left: isStudent ? 16 : 80,
+          right: isStudent ? 80 : 16,
+          top: 4,
+          bottom: 4,
+        ),
+        child: Column(
+          crossAxisAlignment: isStudent
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.end,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.sizeOf(context).width * 0.75,
+              ),
+              decoration: BoxDecoration(
+                gradient: isStudent
+                    ? LinearGradient(
+                        colors: [
+                          theme.colorScheme.secondaryContainer,
+                          theme.colorScheme.secondaryContainer.withValues(
+                            alpha: 0.8,
+                          ),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                    : LinearGradient(
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.primary.withValues(alpha: 0.9),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
+                  bottomLeft: Radius.circular(isStudent ? 4 : 20),
+                  bottomRight: Radius.circular(isStudent ? 20 : 4),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        (isStudent
+                                ? theme.colorScheme.secondaryContainer
+                                : theme.colorScheme.primary)
+                            .withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                reply.content,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: isStudent
+                      ? theme.colorScheme.onSecondaryContainer
+                      : Colors.white,
+                  height: 1.4,
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _formatTimestamp(reply.createdAt),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: 11,
+                    ),
+                  ),
+                  if (!isStudent) ...[
+                    const SizedBox(width: 4),
+                    Icon(
+                      Icons.check_circle,
+                      size: 12,
+                      color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEnhancedInputArea() {
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        border: Border(
+          top: BorderSide(
+            color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          top: 12,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: _focusNode.hasFocus
+                        ? theme.colorScheme.primary.withValues(alpha: 0.5)
+                        : theme.colorScheme.outline.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: PRFTextAreaInput(
+                  hintText: l10n.reply,
+                  controller: _enquiryReplyController,
+                  minLines: 1,
+                  maxLines: 4,
+                  enabled: !_isLoading,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            BlocConsumer<CreateEnquiryReplyCubit, CreateEnquiryReplyState>(
+              listener: (context, state) {
+                state.mapOrNull(
+                  loading: (_) {
+                    setState(() => _isLoading = true);
+                  },
+                  loaded: (_) {
+                    setState(() => _isLoading = false);
+                    _enquiryReplyController.clear();
+                    FocusScope.of(context).unfocus();
+                  },
+                );
+              },
+              builder: (context, state) {
+                final loading = state.maybeWhen(
+                  loading: () => true,
+                  orElse: () => false,
+                );
+
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    gradient: _isComposing
+                        ? LinearGradient(
+                            colors: [
+                              theme.colorScheme.primary,
+                              theme.colorScheme.primary.withValues(alpha: 0.8),
+                            ],
+                          )
+                        : null,
+                    color: _isComposing
+                        ? null
+                        : theme.colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: _isComposing
+                        ? [
+                            BoxShadow(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.3,
+                              ),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: IconButton(
+                    icon: loading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                _isComposing
+                                    ? Colors.white
+                                    : theme.colorScheme.primary,
+                              ),
+                            ),
+                          )
+                        : Icon(
+                            Icons.send_rounded,
+                            color: _isComposing
+                                ? Colors.white
+                                : theme.colorScheme.onSurfaceVariant,
+                            size: 20,
+                          ),
+                    onPressed: loading || !_isComposing
+                        ? null
+                        : () => _sendReply(
+                            context,
+                            _enquiryReplyController.text,
+                          ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    Misc.initDimensions(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: CustomScrollView(
-            slivers: [
-              // Start Navigation Bar
-              const SliverToBoxAdapter(child: SizedBox(height: 36)),
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.white,
-                surfaceTintColor: Colors.white,
-                pinned: true,
-                flexibleSpace: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 1.w,
-                        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    PRFNavBar(
+                      title: l10n.studentQuestions,
+                      onBack: () => context.router.popUntilRouteWithPath(
+                        PRFSuperAppRouter.studentEnquiriesRoute,
                       ),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        padding: const EdgeInsets.only(left: 8),
-                        onPressed: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.studentEnquiriesRoute,
-                        ),
+                      backgroundColor: theme.colorScheme.surface,
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                    StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
+                      stream: getIt<LocalDBService>().getStudentEnquiryReplies(
+                        studentEnquiryUlid: enquiry.ulid,
                       ),
+                      builder: (context, snapshot) {
+                        // Scroll to bottom when new data arrives
+                        WidgetsBinding.instance.addPostFrameCallback(
+                          (_) => _scrollToBottom(),
+                        );
+
+                        if (!snapshot.hasData) {
+                          return const SliverFillRemaining(
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        final enquiryReplies = [
+                          PRFLocalStudentEnquiryReply(
+                            ulid: enquiry.ulid,
+                            studentEnquiryUlid: enquiry.ulid,
+                            content: enquiry.content,
+                            createdAt: enquiry.createdAt,
+                            commentorableType: PRFMorphType.student,
+                            isStudent: true,
+                          ),
+                          if (snapshot.data != null) ...snapshot.data!,
+                        ];
+
+                        if (enquiryReplies.isEmpty) {
+                          return SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: PRFEmptyView(
+                                label: l10n.noQuestions,
+                                description: l10n.pleaseWait,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final reply = enquiryReplies[index];
+                              return _buildMessageBubble(reply, index);
+                            },
+                            childCount: enquiryReplies.length,
+                          ),
+                        );
+                      },
                     ),
-                    const Spacer(),
-                    Text(
-                      l10n.studentQuestions,
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                    const Spacer(),
+                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
                   ],
                 ),
               ),
-              // End Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 48.h)),
-              StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
-                stream: getIt<LocalDBService>().getStudentEnquiryReplies(
-                  studentEnquiryUlid: enquiry.ulid,
-                ),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-
-                  final enquiryReplies = [
-                    // Add the enquiry as the first item
-                    PRFLocalStudentEnquiryReply(
-                      ulid: enquiry.ulid,
-                      studentEnquiryUlid: enquiry.ulid,
-                      content: enquiry.content,
-                      createdAt: enquiry.createdAt,
-                      commentorableType: PRFMorphType.student,
-                      isStudent: true,
-                    ),
-                    if (snapshot.data != null) ...snapshot.data!,
-                  ];
-
-                  return SliverList.builder(
-                    itemCount: enquiryReplies.length,
-                    itemBuilder: (context, index) {
-                      final enquiryReply = enquiryReplies[index];
-
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 32.w),
-                        child: Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: 16.h) +
-                              EdgeInsets.only(
-                                left: enquiryReply.isStudent ? 0 : 88.w,
-                                right: enquiryReply.isStudent ? 88.w : 0,
-                              ),
-                          width: MediaQuery.sizeOf(context).width * 0.5,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 48.w,
-                            vertical: 32.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: enquiryReply.isStudent
-                                ? Theme.of(
-                                    context,
-                                  ).colorScheme.secondary.withValues(alpha: .2)
-                                : Theme.of(
-                                    context,
-                                  ).colorScheme.primary.withValues(alpha: .2),
-
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(enquiryReply.content),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: Animate(
-        effects: const [
-          FadeEffect(
-            duration: Duration(milliseconds: 500),
-            delay: Duration(milliseconds: 500),
-          ),
-          ShakeEffect(
-            duration: Duration(milliseconds: 500),
-            delay: Duration(milliseconds: 500),
-          ),
-        ],
-        child: FloatingActionButton(
-          onPressed: () => WoltModalSheet.show<void>(
-            context: context,
-            pageListBuilder: (modalSheetContext) {
-              return [
-                WoltModalSheetPage(
-                  backgroundColor: Colors.white,
-                  surfaceTintColor: Colors.white,
-                  child: SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.3,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 16),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: FormFieldLabel(
-                              label: l10n.reply,
-                              isRequired: true,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: FormFieldLabel(
-                              label: l10n.rules,
-                              isRequired: true,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          PRFTextAreaInput(
-                            hintText: l10n.reply,
-                            controller: _enquiryReplyController,
-                          ),
-                          const SizedBox(height: 16),
-                          BlocConsumer<
-                            CreateEnquiryReplyCubit,
-                            CreateEnquiryReplyState
-                          >(
-                            listener: (context, state) {
-                              state.mapOrNull(
-                                loading: (_) {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                },
-                                loaded: (_) {
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                  _enquiryReplyController.clear();
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(
-                                    context,
-                                  ).showSnackBar(
-                                    SnackBar(content: Text(l10n.replySent)),
-                                  );
-                                },
-                              );
-                            },
-                            builder: (context, state) {
-                              return state.maybeWhen(
-                                orElse: () => PRFPrimaryButton(
-                                  title: _isLoading
-                                      ? l10n.replying
-                                      : l10n.reply,
-                                  disabled: _isLoading,
-                                  isLoading: _isLoading ? true : null,
-                                  onPressed: () async {
-                                    await context
-                                        .read<CreateEnquiryReplyCubit>()
-                                        .createStudentEnquiryReply(
-                                          studentEnquiryUlid: enquiry.ulid,
-                                          content: _enquiryReplyController.text,
-                                        );
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ];
-            },
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          child: const Icon(Icons.add, color: Colors.white),
+            ),
+            _buildEnhancedInputArea(),
+          ],
         ),
       ),
     );
