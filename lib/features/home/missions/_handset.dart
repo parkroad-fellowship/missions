@@ -330,7 +330,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
     final statusColor = isSubscribed
         ? const Color(PRFTheme.secondaryColor)
         : isOngoing
-        ? const Color(0xFF10B981) // Active green
+        ? const Color(PRFTheme.secondaryColor)
         : isUpcoming
         ? theme.colorScheme.primary
         : isPast
