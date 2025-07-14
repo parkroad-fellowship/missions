@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/remote_config.dart';
 import 'package:app/utils/misc.dart';
@@ -31,6 +32,12 @@ class FirebaseServiceImpl implements FirebaseService {
       // Clear any existing session
       await _auth.signOut();
       await _googleSignIn.signOut();
+
+      await _googleSignIn.initialize(
+        clientId: Platform.isAndroid
+            ? DefaultFirebaseOptions.currentPlatform.androidClientId
+            : null,
+      );
 
       final googleSignInAccount = await _googleSignIn.authenticate(
         scopeHint: ['profile', 'email'],
