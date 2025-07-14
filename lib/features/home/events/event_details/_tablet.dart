@@ -8,10 +8,10 @@ import 'package:app/features/home/events/event_details/update_event_subscription
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/widgets/navbar/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
@@ -56,65 +56,58 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    Misc.initDimensions(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: DefaultTabController(
         length: tabCount,
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: const EdgeInsets.symmetric(horizontal: 24), // Increased padding for tablet
             child: CustomScrollView(
               slivers: [
-                // Start Navigation Bar
-                const SliverToBoxAdapter(child: SizedBox(height: 36)),
-                SliverToBoxAdapter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                PRFNavBar(
+                  title: l10n.eventDetails,
+                  onBack: () => context.router.popUntilRouteWithPath(
+                    PRFSuperAppRouter.eventsRoute,
+                  ),
+                  actions: [
+                    if (event.loggedInMemberEventSubscription != null)
                       Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16, // Increased padding for tablet
+                          vertical: 8, // Increased padding for tablet
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1.w),
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.eventsRoute,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        l10n.eventDetails,
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                      const Spacer(),
-                      // Show an icon with the number of tickets
-                      if (event.loggedInMemberEventSubscription != null)
-                        Row(
-                          spacing: 4,
-                          children: [
-                            Text(
-                              event
-                                  .loggedInMemberEventSubscription!
-                                  .numberOfAttendees
-                                  .toString(),
-                              style: Theme.of(context).textTheme.displayMedium,
+                          color: theme.colorScheme.primary,
+                          borderRadius: BorderRadius.circular(16), // Increased radius
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.13,
+                              ),
+                              blurRadius: 8, // Increased blur
+                              offset: const Offset(0, 3), // Increased offset
                             ),
-                            const Icon(Icons.group),
                           ],
                         ),
-                    ],
-                  ),
+                        child: Text(
+                          l10n.areGoing(
+                            event
+                                .loggedInMemberEventSubscription!
+                                .numberOfAttendees,
+                          ),
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-                // End Navigation Bar
-                SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+
+                const SliverToBoxAdapter(child: SizedBox(height: 20)), // Increased spacing
                 SliverToBoxAdapter(
                   child: TabBar(
                     controller: _tabController,
@@ -122,6 +115,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                       Logger().d(value);
                       _currentTab = value;
                     }),
+                    isScrollable: true,
                     tabs: [
                       Tab(text: l10n.info),
                       Tab(text: l10n.gallery),
@@ -130,7 +124,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                 ),
                 SliverFillRemaining(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 24), // Increased padding for tablet
                     child: TabBarView(
                       controller: _tabController,
                       children: [
@@ -146,7 +140,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
         ),
       ),
       floatingActionButton: switch (_currentTab) {
-        0 => FloatingActionButton(
+        0 => FloatingActionButton.extended(
           onPressed: () {
             if (event.loggedInMemberEventSubscription == null) {
               WoltModalSheet.show<void>(
@@ -192,14 +186,20 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
               });
             }
           },
-          child: Icon(
+          icon: Icon(
             event.loggedInMemberEventSubscription == null
                 ? Icons.add
                 : Icons.edit,
             color: Colors.white,
           ),
+          label: Text(
+            event.loggedInMemberEventSubscription == null
+                ? 'Subscribe'
+                : 'Edit Subscription',
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
-        1 => FloatingActionButton(
+        1 => FloatingActionButton.extended(
           onPressed: () {
             if (_currentTab == 1) {
               WoltModalSheet.show<void>(
@@ -219,7 +219,11 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
               );
             }
           },
-          child: const Icon(Icons.add, color: Colors.white),
+          icon: const Icon(Icons.add, color: Colors.white),
+          label: const Text(
+            'Add Media',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         _ => null,
       },

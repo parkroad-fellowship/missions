@@ -1,6 +1,5 @@
 import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/utils/_index.dart';
@@ -11,7 +10,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 
 class EventsPageTablet extends StatefulWidget {
   const EventsPageTablet({super.key});
@@ -27,18 +26,28 @@ class _EventsPageTabletState extends State<EventsPageTablet>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
 
     context.read<GetEventsCubit>().getEvents();
     context
         .read<GetMemberEventSubscriptionsCubit>()
         .getMemberEventSubscriptions();
-    super.initState();
+
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.index == 0) {
+        context.read<GetEventsCubit>().getEvents();
+      } else {
+        context
+            .read<GetMemberEventSubscriptionsCubit>()
+            .getMemberEventSubscriptions();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
     return DefaultTabController(
       length: 2,
@@ -47,26 +56,61 @@ class _EventsPageTabletState extends State<EventsPageTablet>
           centerTitle: true,
           title: Text(
             l10n.events,
-            style: Theme.of(context).textTheme.displayLarge,
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: theme.colorScheme.onSurface,
+            ),
+            textAlign: TextAlign.center,
           ),
           leading: Container(
-            margin: const EdgeInsets.only(left: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 1.w),
+              color: theme.colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
+            margin: const EdgeInsets.only(left: 8),
             child: IconButton(
               icon: Icon(
-                Icons.arrow_back_ios,
-                color: Theme.of(context).colorScheme.onSurface,
+                Icons.arrow_back_ios_new,
+                color: theme.colorScheme.onPrimaryContainer,
+                size: 20,
               ),
-              padding: const EdgeInsets.only(left: 16, right: 8),
               onPressed: () => context.router.popUntilRouteWithPath(
                 PRFSuperAppRouter.landingRoute,
               ),
             ),
           ),
+          actions: [
+            BlocBuilder<GetEventsCubit, GetEventsState>(
+              builder: (context, state) => state.maybeWhen(
+                loading: () => const SizedBox.square(
+                  dimension: 24,
+                  child: PRFCircularProgressIndicator(),
+                ),
+                orElse: SizedBox.shrink,
+              ),
+            ),
+            const SizedBox(width: 8),
+            BlocBuilder<
+              GetMemberEventSubscriptionsCubit,
+              GetMemberEventSubscriptionsState
+            >(
+              builder: (context, state) => state.maybeWhen(
+                loading: () => const SizedBox.square(
+                  dimension: 24,
+                  child: PRFCircularProgressIndicator(),
+                ),
+                orElse: SizedBox.shrink,
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
           backgroundColor: Colors.transparent,
           bottom: TabBar(
             controller: _tabController,
@@ -78,148 +122,745 @@ class _EventsPageTabletState extends State<EventsPageTablet>
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: BlocBuilder<GetEventsCubit, GetEventsState>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    error: (message) => Center(child: Text(message)),
-                    empty: () => RefreshIndicator(
-                      onRefresh: () =>
-                          context.read<GetEventsCubit>().getEvents(),
-                      child: PRFEmptyView(
-                        label: l10n.noEvents,
-                        description: l10n.pleaseWaitOS,
-                      ),
-                    ),
-                    loaded: (events) => RefreshIndicator(
-                      onRefresh: () =>
-                          context.read<GetEventsCubit>().getEvents(),
-                      child: ListView.separated(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: events.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 16.h),
-                        itemBuilder: (context, index) => EventActionCard(
-                          event: events[index],
-                          onTap: () => context.router.push(
-                            EventDetailsRoute(event: events[index]),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child:
-                  BlocBuilder<
-                    GetMemberEventSubscriptionsCubit,
-                    GetMemberEventSubscriptionsState
-                  >(
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        orElse: () =>
-                            const Center(child: CircularProgressIndicator()),
-                        error: (message) => Center(child: Text(message)),
-                        empty: () => RefreshIndicator(
-                          onRefresh: () => context
-                              .read<GetMemberMissionSubscriptionsCubit>()
-                              .getSubscriptions(),
-                          child: PRFEmptyView(
-                            label: l10n.noEvents,
-                            description: l10n.pleaseWaitOS,
-                          ),
-                        ),
-                        loaded: (events) {
-                          return RefreshIndicator(
-                            onRefresh: () =>
-                                context.read<GetEventsCubit>().getEvents(),
-                            child: ListView.separated(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              itemCount: events.length,
-                              separatorBuilder: (context, index) =>
-                                  SizedBox(height: 16.h),
-                              itemBuilder: (context, index) {
-                                final event = events[index].event;
-                                return EventActionCard(
-                                  event: event!,
-                                  onTap: () => context.router.push(
-                                    EventDetailsRoute(event: event),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-            ),
+            _buildEventsTimeline(context),
+            _buildSubscribedEventsTimeline(context),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildEventsTimeline(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+
+    return BlocBuilder<GetEventsCubit, GetEventsState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          orElse: () => Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                theme.colorScheme.primary,
+              ),
+            ),
+          ),
+          error: (message) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: theme.colorScheme.error,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  message,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          empty: () => RefreshIndicator(
+            onRefresh: () => context.read<GetEventsCubit>().getEvents(),
+            child: PRFEmptyView(
+              label: l10n.noEvents,
+              description: l10n.pleaseWaitOS,
+            ),
+          ),
+          loaded: (events) {
+            Logger().e(events);
+
+            // Sort events by start date for timeline
+            final sortedEvents = List<PRFEvent>.from(events)
+              ..sort((a, b) => a.startDate.compareTo(b.startDate));
+
+            return RefreshIndicator(
+              onRefresh: () => context.read<GetEventsCubit>().getEvents(),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24, // Increased padding for tablet
+                  vertical: 20,
+                ),
+                itemCount: sortedEvents.length,
+                itemBuilder: (context, index) {
+                  final event = sortedEvents[index];
+                  final isLast = index == sortedEvents.length - 1;
+
+                  return TimelineEventCard(
+                        event: event,
+                        isLast: isLast,
+                        index: index,
+                        onTap: () => context.router.push(
+                          EventDetailsRoute(event: event),
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(
+                        delay: Duration(milliseconds: index * 100),
+                        duration: 600.ms,
+                      )
+                      .slideX(
+                        begin: 0.3,
+                        end: 0,
+                        curve: Curves.easeOutCubic,
+                      );
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSubscribedEventsTimeline(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+
+    return BlocBuilder<
+      GetMemberEventSubscriptionsCubit,
+      GetMemberEventSubscriptionsState
+    >(
+      builder: (context, state) {
+        return state.maybeWhen(
+          orElse: () => Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                theme.colorScheme.primary,
+              ),
+            ),
+          ),
+          error: (message) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: theme.colorScheme.error,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  message,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          empty: () => RefreshIndicator(
+            onRefresh: () => context
+                .read<GetMemberEventSubscriptionsCubit>()
+                .getMemberEventSubscriptions(),
+            child: PRFEmptyView(
+              label: l10n.noEvents,
+              description: l10n.pleaseWaitForOS,
+            ),
+          ),
+          loaded: (eventSubscriptions) {
+            Logger().e(eventSubscriptions);
+
+            final events =
+                eventSubscriptions
+                    .map((subscription) => subscription.event!)
+                    .toList()
+                  ..sort((a, b) => a.startDate.compareTo(b.startDate));
+
+            return RefreshIndicator(
+              onRefresh: () => context
+                  .read<GetMemberEventSubscriptionsCubit>()
+                  .getMemberEventSubscriptions(),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24, // Increased padding for tablet
+                  vertical: 20,
+                ),
+                itemCount: events.length,
+                itemBuilder: (context, index) {
+                  final event = events[index];
+                  final isLast = index == events.length - 1;
+
+                  return TimelineEventCard(
+                        event: event,
+                        isLast: isLast,
+                        index: index,
+                        isSubscribed: true,
+                        onTap: () => context.router.push(
+                          EventDetailsRoute(event: event),
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(
+                        delay: Duration(milliseconds: index * 100),
+                        duration: 600.ms,
+                      )
+                      .slideX(
+                        begin: 0.3,
+                        end: 0,
+                        curve: Curves.easeOutCubic,
+                      );
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
-class EventActionCard extends StatelessWidget with TimezoneMixin {
-  const EventActionCard({required this.event, this.onTap, super.key});
+class TimelineEventCard extends StatelessWidget with TimezoneMixin {
+  const TimelineEventCard({
+    required this.event,
+    required this.isLast,
+    required this.index,
+    this.isSubscribed = false,
+    this.onTap,
+    super.key,
+  });
 
   final PRFEvent event;
+  final bool isLast;
+  final int index;
+  final bool isSubscribed;
+  final VoidCallback? onTap;
 
-  final void Function()? onTap;
+  bool _isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final now = DateTime.now();
+    final startDate = event.startDate;
+    final endDate = event.endDate;
+    final isUpcoming = startDate.isAfter(now);
+    final isPast = endDate.isBefore(now.subtract(const Duration(days: 1)));
+    final isOngoing = startDate.isBefore(now) && endDate.isAfter(now);
+    final isMultiDay = !_isSameDay(startDate, endDate);
+    final duration = endDate.difference(startDate).inDays + 1;
 
-    final width = MediaQuery.sizeOf(context).width;
-    return Animate(
-      effects: const [SaturateEffect()],
-      child: GestureDetector(
-        onTap: onTap,
-        child: Stack(
-          children: [
-            Container(
-              width: width,
-              padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 60.h),
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
-              decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.secondary.withValues(alpha: .3),
-                borderRadius: BorderRadius.circular(48.r),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    event.name,
-                    style: Theme.of(context).textTheme.displayLarge,
+    // Premium status color system
+    final statusColor = isSubscribed
+        ? const Color(PRFTheme.secondaryColor)
+        : isOngoing
+        ? const Color(PRFTheme.secondaryColor) // Active green
+        : isUpcoming
+        ? theme.colorScheme.primary
+        : isPast
+        ? theme.colorScheme.onSurfaceVariant
+        : theme.colorScheme.secondary;
+
+    final statusText = isSubscribed
+        ? 'Subscribed'
+        : isOngoing
+        ? 'Active'
+        : isUpcoming
+        ? 'Upcoming'
+        : isPast
+        ? 'Completed'
+        : 'Available';
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Enhanced Timeline indicator - larger for tablet
+        SizedBox(
+          width: 80, // Increased width for tablet
+          child: Column(
+            children: [
+              // Multi-day date badge - larger for tablet
+              Container(
+                width: 70, // Increased size for tablet
+                height: isMultiDay ? 110 : 70, // Increased height for tablet
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      statusColor,
+                      statusColor.withValues(alpha: 0.8),
+                    ],
                   ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    l10n.missionStart(
-                      Misc.formatDate(event.startDate, timezone),
-                      Misc.formatTime(event.startTime, timezone),
+                  borderRadius: BorderRadius.circular(16), // Increased radius
+                  boxShadow: [
+                    BoxShadow(
+                      color: statusColor.withValues(alpha: 0.3),
+                      blurRadius: 12, // Increased blur
+                      offset: const Offset(0, 6), // Increased offset
                     ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isMultiDay) ...[
+                      // Start date
+                      Text(
+                        startDate.day.toString(),
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16, // Increased font size
+                        ),
+                      ),
+                      Text(
+                        Misc.getMonthAbbreviation(startDate.month),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10, // Increased font size
+                        ),
+                      ),
+                      Container(
+                        width: 16, // Increased width
+                        height: 2, // Increased height
+                        color: Colors.white.withValues(alpha: 0.7),
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                      ),
+                      // End date
+                      Text(
+                        endDate.day.toString(),
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16, // Increased font size
+                        ),
+                      ),
+                      Text(
+                        Misc.getMonthAbbreviation(endDate.month),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10, // Increased font size
+                        ),
+                      ),
+                    ] else ...[
+                      // Single day
+                      Text(
+                        startDate.day.toString(),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          // Increased size
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        Misc.getMonthAbbreviation(startDate.month),
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          // Increased size
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              // Timeline line with flexible height
+              if (!isLast)
+                Container(
+                  width: 3, // Increased width for tablet
+                  height: 80, // Increased height for tablet
+                  margin: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        statusColor.withValues(alpha: 0.6),
+                        theme.colorScheme.outline.withValues(alpha: 0.2),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(2),
                   ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    event.description.split('\n').first,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                ),
+            ],
+          ),
+        ),
+
+        const SizedBox(width: 24), // Increased spacing for tablet
+        // Enhanced Event card - larger for tablet
+        Expanded(
+          child: GestureDetector(
+            onTap: onTap,
+            child: Container(
+              margin: EdgeInsets.only(
+                bottom: isLast ? 0 : 24,
+              ), // Increased margin
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(20), // Increased radius
+                border: Border.all(
+                  color: statusColor.withValues(alpha: 0.2),
+                  width: 1.5, // Increased border width
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: theme.colorScheme.shadow.withValues(alpha: 0.08),
+                    blurRadius: 16, // Increased blur
+                    offset: const Offset(0, 4), // Increased offset
+                  ),
+                  BoxShadow(
+                    color: statusColor.withValues(alpha: 0.05),
+                    blurRadius: 32, // Increased blur
+                    offset: const Offset(0, 8), // Increased offset
                   ),
                 ],
               ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Premium header with gradient
+                    Container(
+                      padding: const EdgeInsets.all(20), // Increased padding
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            statusColor.withValues(alpha: 0.1),
+                            statusColor.withValues(alpha: 0.05),
+                          ],
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Event name and status
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  event.name,
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    // Increased size
+                                    fontWeight: FontWeight.w700,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, // Increased padding
+                                  vertical: 6, // Increased padding
+                                ),
+                                decoration: BoxDecoration(
+                                  color: statusColor,
+                                  borderRadius: BorderRadius.circular(
+                                    16,
+                                  ), // Increased radius
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: statusColor.withValues(alpha: 0.3),
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  statusText,
+                                  style: theme.textTheme.labelMedium?.copyWith(
+                                    // Increased size
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Event venue with icon
+                          if (event.venue != null)
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(
+                                    8,
+                                  ), // Increased padding
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primaryContainer,
+                                    borderRadius: BorderRadius.circular(
+                                      12,
+                                    ), // Increased radius
+                                  ),
+                                  child: Icon(
+                                    Icons.location_on_rounded,
+                                    size: 20, // Increased size
+                                    color: theme.colorScheme.onPrimaryContainer,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    event.venue!,
+                                    style: theme.textTheme.titleMedium
+                                        ?.copyWith(
+                                          // Increased size
+                                          fontWeight: FontWeight.w600,
+                                          color: theme.colorScheme.onSurface,
+                                        ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+
+                    // Event details
+                    Padding(
+                      padding: const EdgeInsets.all(20), // Increased padding
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Duration and capacity info chips
+                          Row(
+                            children: [
+                              Flexible(
+                                child: _buildInfoChip(
+                                  context,
+                                  Icons.schedule_rounded,
+                                  'Duration',
+                                  isMultiDay ? '$duration days' : 'Single day',
+                                  theme.colorScheme.primaryContainer,
+                                  theme.colorScheme.onPrimaryContainer,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Flexible(
+                                child: _buildInfoChip(
+                                  context,
+                                  Icons.people_rounded,
+                                  'Capacity',
+                                  '${event.capacity} attendees',
+                                  theme.colorScheme.secondaryContainer,
+                                  theme.colorScheme.onSecondaryContainer,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Date range display
+                          Container(
+                            padding: const EdgeInsets.all(
+                              16,
+                            ), // Increased padding
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(
+                                16,
+                              ), // Increased radius
+                              border: Border.all(
+                                color: theme.colorScheme.outline.withValues(
+                                  alpha: 0.2,
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today_rounded,
+                                  size: 24, // Increased size
+                                  color: theme.colorScheme.primary,
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        isMultiDay
+                                            ? '${Misc.formatDate(startDate, timezone)} - '
+                                                  '${Misc.formatDate(endDate, timezone)}'
+                                            : Misc.formatDate(
+                                                startDate,
+                                                timezone,
+                                              ),
+                                        style: theme
+                                            .textTheme
+                                            .titleMedium // Increased size
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  theme.colorScheme.onSurface,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        '${Misc.formatTime(event.startTime, timezone)} -'
+                                        ' ${Misc.formatTime(event.endTime, timezone)} daily',
+                                        style: theme
+                                            .textTheme
+                                            .bodyMedium // Increased size
+                                            ?.copyWith(
+                                              color: theme
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Description preview
+                          if (event.description.isNotEmpty)
+                            Text(
+                              event.description.split('\n').first,
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                // Increased size
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                          const SizedBox(height: 20),
+
+                          // Action button
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20, // Increased padding
+                              vertical: 16, // Increased padding
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  statusColor.withValues(alpha: 0.1),
+                                  statusColor.withValues(alpha: 0.05),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                16,
+                              ), // Increased radius
+                              border: Border.all(
+                                color: statusColor.withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'View Details',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    // Increased size
+                                    fontWeight: FontWeight.w600,
+                                    color: statusColor,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 22, // Increased size
+                                  color: statusColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildInfoChip(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+    Color backgroundColor,
+    Color textColor,
+  ) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16, // Increased padding
+        vertical: 12, // Increased padding
+      ),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12), // Increased radius
+        border: Border.all(
+          color: textColor.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 18, // Increased size
+            color: textColor,
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    // Increased size
+                    color: textColor.withValues(alpha: 0.8),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    // Increased size
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
