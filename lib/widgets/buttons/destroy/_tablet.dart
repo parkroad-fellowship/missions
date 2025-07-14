@@ -21,7 +21,7 @@ class PRFDestroyButtonTablet extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: 72, // Increased height for tablet
+      height: 72,
       child: ElevatedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
         style: ElevatedButton.styleFrom(
@@ -36,25 +36,24 @@ class PRFDestroyButtonTablet extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               16,
-            ), // Larger border radius for tablet
+            ),
           ),
-          elevation: 3, // Slightly more elevation for tablet
+          elevation: 3,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading ?? false) ...[
               const SizedBox(
-                height: 20, // Larger loading indicator for tablet
+                height: 20,
                 width: 20,
                 child: PRFCircularProgressIndicator(color: Colors.white),
               ),
-              const SizedBox(width: 12), // More spacing for tablet
+              const SizedBox(width: 12),
             ],
             Text(
               title,
               style: theme.textTheme.titleLarge?.copyWith(
-                // Larger text style for tablet
                 color: theme.colorScheme.onError,
                 fontWeight: FontWeight.w600,
               ),

@@ -42,7 +42,6 @@ class _MissionGroundSuggestionsPageHandsetState
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // Enhanced Navigation Bar
             PRFNavBar(
               title: l10n.suggestAMission,
               onBack: () => context.router.back(),

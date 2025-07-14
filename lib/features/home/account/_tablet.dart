@@ -72,7 +72,7 @@ class AccountPageTablet extends StatelessWidget {
 
             const SliverToBoxAdapter(child: SizedBox(height: 32)),
 
-            // Profile Section - Enhanced for tablet
+            // Profile Section
             SliverToBoxAdapter(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -90,7 +90,7 @@ class AccountPageTablet extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    // Profile Picture - Larger for tablet
+                    // Profile Picture
                     Stack(
                       children: [
                         Container(

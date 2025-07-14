@@ -6,8 +6,8 @@ class PRFTextAreaInputTablet extends StatelessWidget {
     required this.controller,
     super.key,
     this.enabled = true,
-    this.maxLines = 6, // Increased for tablet
-    this.minLines = 4, // Increased for tablet
+    this.maxLines = 6,
+    this.minLines = 4,
   });
 
   final String hintText;
@@ -27,14 +27,12 @@ class PRFTextAreaInputTablet extends StatelessWidget {
       minLines: minLines,
       maxLines: maxLines,
       style: theme.textTheme.titleMedium?.copyWith(
-        // Larger text for tablet
         color: theme.colorScheme.onSurface,
         height: 1.5,
       ),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: theme.textTheme.titleMedium?.copyWith(
-          // Larger hint text
           color: theme.colorScheme.onSurfaceVariant,
         ),
         filled: true,
@@ -42,7 +40,7 @@ class PRFTextAreaInputTablet extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             16,
-          ), // Larger border radius for tablet
+          ),
           borderSide: BorderSide(
             color: theme.colorScheme.outline.withValues(alpha: .2),
           ),
@@ -67,8 +65,8 @@ class PRFTextAreaInputTablet extends StatelessWidget {
           ),
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20, // Increased horizontal padding for tablet
-          vertical: 20, // Increased vertical padding for tablet
+          horizontal: 20,
+          vertical: 20,
         ),
         alignLabelWithHint: true,
       ),

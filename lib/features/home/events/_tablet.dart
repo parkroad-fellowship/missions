@@ -184,7 +184,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24, // Increased padding for tablet
+                  horizontal: 24,
                   vertical: 20,
                 ),
                 itemCount: sortedEvents.length,
@@ -280,7 +280,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24, // Increased padding for tablet
+                  horizontal: 24,
                   vertical: 20,
                 ),
                 itemCount: events.length,
@@ -375,12 +375,11 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Enhanced Timeline indicator - scaled for tablet
         SizedBox(
           width: 80,
           child: Column(
             children: [
-              // Multi-day date badge - larger for tablet
+              // Multi-day date badge
               Container(
                 width: 70,
                 height: isMultiDay ? 180 : 80,
@@ -484,8 +483,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
             ],
           ),
         ),
-        const SizedBox(width: 24), // Increased spacing for tablet
-        // Enhanced Event card - larger for tablet
+        const SizedBox(width: 24),
         Expanded(
           child: GestureDetector(
             onTap: onTap,

@@ -65,7 +65,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 24,
-            ), // Increased padding for tablet
+            ),
             child: CustomScrollView(
               slivers: [
                 PRFNavBar(
@@ -77,8 +77,8 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                     if (event.loggedInMemberEventSubscription != null)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16, // Increased padding for tablet
-                          vertical: 8, // Increased padding for tablet
+                          horizontal: 16,
+                          vertical: 8,
                         ),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primary,
@@ -132,7 +132,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
-                    ), // Increased padding for tablet
+                    ),
                     child: TabBarView(
                       controller: _tabController,
                       children: [

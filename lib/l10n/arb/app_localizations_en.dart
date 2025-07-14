@@ -1123,4 +1123,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeIntro => 'Welcome to PRF Missions';
+
+  @override
+  String get paymentActions => 'Payment Actions';
+
+  @override
+  String get completePayment => 'Complete Payment';
+
+  @override
+  String get openPaymentLink => 'Open payment link';
+
+  @override
+  String get refreshStatus => 'Refresh Status';
+
+  @override
+  String get checkPaymentStatus => 'Check payment status';
+
+  @override
+  String get longPressForActions => 'Long press for actions';
 }

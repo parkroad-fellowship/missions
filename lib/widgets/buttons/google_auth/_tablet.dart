@@ -21,7 +21,7 @@ class GoogleAuthButtonTablet extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: 72, // Increased height for tablet
+      height: 72,
       child: OutlinedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
         style: OutlinedButton.styleFrom(
@@ -34,16 +34,16 @@ class GoogleAuthButtonTablet extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               16,
-            ), // Larger border radius for tablet
+            ),
           ),
-          elevation: 2, // Slightly more elevation for tablet
+          elevation: 2,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading ?? false)
               SizedBox(
-                height: 24, // Larger loading indicator for tablet
+                height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
                   color: theme.colorScheme.primary,
@@ -53,14 +53,13 @@ class GoogleAuthButtonTablet extends StatelessWidget {
             else
               SvgPicture.asset(
                 'assets/images/authentication/google_logo.svg',
-                height: 24, // Larger icon for tablet
+                height: 24,
                 width: 24,
               ),
-            const SizedBox(width: 16), // More spacing for tablet
+            const SizedBox(width: 16),
             Text(
               title,
               style: theme.textTheme.titleLarge?.copyWith(
-                // Larger text style for tablet
                 color: theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
               ),

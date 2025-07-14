@@ -837,5 +837,17 @@
     "addDecisionNote": "What would you like to point out concerning this soul?",
     "@addDecisionNote": {},
     "welcomeIntro": "Welcome to PRF Missions",
-    "@welcomeIntro": {}
+    "@welcomeIntro": {},
+    "paymentActions": "Payment Actions",
+    "@paymentActions": {},
+    "completePayment": "Complete Payment",
+    "@completePayment": {},
+    "openPaymentLink": "Open payment link",
+    "@openPaymentLink": {},
+    "refreshStatus": "Refresh Status",
+    "@refreshStatus": {},
+    "checkPaymentStatus": "Check payment status",
+    "@checkPaymentStatus": {},
+    "longPressForActions": "Long press for actions",
+    "@longPressForActions": {}
 }

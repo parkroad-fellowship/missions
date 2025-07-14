@@ -364,7 +364,6 @@ class BeautifulSubscriberCard extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Enhanced Profile Section
                     Container(
                       width: 120,
                       height: 120,

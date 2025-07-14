@@ -21,7 +21,7 @@ class PRFSecondaryButtonTablet extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: 72, // Increased height for tablet
+      height: 72,
       child: OutlinedButton(
         onPressed: (disabled || (isLoading ?? false)) ? null : onPressed,
         style: OutlinedButton.styleFrom(
@@ -36,27 +36,26 @@ class PRFSecondaryButtonTablet extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               16,
-            ), // Larger border radius for tablet
+            ),
           ),
-          elevation: 1, // Slight elevation for tablet
+          elevation: 1,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading ?? false) ...[
               SizedBox(
-                height: 20, // Larger loading indicator for tablet
+                height: 20,
                 width: 20,
                 child: PRFCircularProgressIndicator(
                   color: theme.colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: 12), // More spacing for tablet
+              const SizedBox(width: 12),
             ],
             Text(
               title,
               style: theme.textTheme.titleLarge?.copyWith(
-                // Larger text style for tablet
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),

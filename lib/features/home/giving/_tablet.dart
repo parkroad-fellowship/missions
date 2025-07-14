@@ -36,7 +36,6 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // Enhanced Navigation Bar
             PRFNavBar(
               title: l10n.give,
               onBack: () => context.router.popUntilRouteWithPath(
@@ -82,7 +81,6 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
               ),
             ),
 
-            // Enhanced Payments List
             BlocBuilder<GetPaymentsCubit, GetPaymentsState>(
               builder: (context, state) {
                 return state.maybeWhen(
@@ -141,15 +139,15 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                     padding: const EdgeInsets.only(
                       left: 24,
                       right: 24,
-                      bottom: 120, // More space for tablet FAB
+                      bottom: 120,
                     ),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, // Two columns for tablet
+                            crossAxisCount: 2,
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
-                            childAspectRatio: 1.8, // Wider cards for tablet
+                            childAspectRatio: 1.8,
                           ),
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
@@ -202,7 +200,6 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
           ],
         ),
       ),
-      // Enhanced Floating Action Button for Tablet
       floatingActionButton: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -274,88 +271,93 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
     final theme = Theme.of(context);
     final l10n = context.l10n;
 
-    showModalBottomSheet(
+    WoltModalSheet.show<void>(
       context: context,
-      backgroundColor: theme.colorScheme.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 50,
-              height: 5,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.outline.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(3),
-              ),
-            ),
-            const SizedBox(height: 32),
-            Text(
-              'Payment Actions',
-              style: theme.textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 32),
-            if (payment.authorizationUrl != null)
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
+      pageListBuilder: (modalSheetContext) => [
+        WoltModalSheetPage(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          surfaceTintColor: Colors.transparent,
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.8,
+            child: Container(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
                   ),
-                  child: Icon(
-                    Icons.open_in_browser_rounded,
-                    color: theme.colorScheme.onPrimaryContainer,
+                  const SizedBox(height: 32),
+                  Text(
+                    l10n.paymentActions,
+                    style: theme.textTheme.headlineMedium,
                   ),
-                ),
-                title: Text(
-                  'Complete Payment',
-                  style: theme.textTheme.titleMedium,
-                ),
-                subtitle: Text(
-                  'Open payment link',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final uri = Uri.parse(payment.authorizationUrl!);
-                  await Misc.openUrl(uri);
-                },
+                  const SizedBox(height: 32),
+                  if (payment.authorizationUrl != null)
+                    ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          Icons.open_in_browser_rounded,
+                          color: theme.colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      title: Text(
+                        l10n.completePayment,
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      subtitle: Text(
+                        l10n.openPaymentLink,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final uri = Uri.parse(payment.authorizationUrl!);
+                        await Misc.openUrl(uri);
+                      },
+                    ),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    leading: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.refresh_rounded,
+                        color: theme.colorScheme.onSecondaryContainer,
+                      ),
+                    ),
+                    title: Text(
+                      l10n.refreshStatus,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    subtitle: Text(
+                      l10n.checkPaymentStatus,
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.read<GetPaymentsCubit>().getPayments();
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
-            const SizedBox(height: 16),
-            ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.secondaryContainer,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.refresh_rounded,
-                  color: theme.colorScheme.onSecondaryContainer,
-                ),
-              ),
-              title: Text(
-                'Refresh Status',
-                style: theme.textTheme.titleMedium,
-              ),
-              subtitle: Text(
-                'Check payment status',
-                style: theme.textTheme.bodyMedium,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                context.read<GetPaymentsCubit>().getPayments();
-              },
             ),
-            const SizedBox(height: 24),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -369,6 +371,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final statusColor = _getStatusColor(theme);
+    final l10n = context.l10n;
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -477,7 +480,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Long press for actions',
+                        l10n.longPressForActions,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.primary,
                           fontStyle: FontStyle.italic,

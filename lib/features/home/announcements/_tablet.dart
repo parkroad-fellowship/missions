@@ -114,7 +114,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                             ),
                           ),
 
-                          // Announcements for this date in grid layout for tablet
+                          // Announcements for this date in grid layout
                           GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,

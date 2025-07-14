@@ -25,16 +25,15 @@ class PRFPasswordInputTablet extends StatelessWidget {
         enabled: enabled,
         obscureText: hidePassword,
         keyboardType: TextInputType.visiblePassword,
-        style: theme.textTheme.titleMedium, // Larger text for tablet
+        style: theme.textTheme.titleMedium,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: theme.textTheme.titleMedium?.copyWith(
-            // Larger hint text
             color: theme.colorScheme.onSurfaceVariant,
           ),
           prefixIcon: const Icon(
             Icons.lock_outline,
-            size: 24, // Larger icon for tablet
+            size: 24,
           ),
           suffixIcon: IconButton(
             onPressed: () {
@@ -44,17 +43,17 @@ class PRFPasswordInputTablet extends StatelessWidget {
               hidePassword
                   ? Icons.visibility_outlined
                   : Icons.visibility_off_outlined,
-              size: 24, // Larger icon for tablet
+              size: 24,
             ),
           ),
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20, // Increased horizontal padding for tablet
-            vertical: 20, // Increased vertical padding for tablet
+            horizontal: 20,
+            vertical: 20,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(
               16,
-            ), // Larger border radius for tablet
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),

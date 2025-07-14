@@ -375,7 +375,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Enhanced Timeline indicator
         SizedBox(
           width: 60,
           child: Column(
@@ -491,7 +490,6 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
 
         const SizedBox(width: 16),
 
-        // Enhanced Event card
         Expanded(
           child: GestureDetector(
             onTap: onTap,

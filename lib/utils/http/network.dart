@@ -72,7 +72,6 @@ class NetworkUtil {
           return handler.next(response);
         },
         onError: (error, handler) {
-          // Enhanced error logging
           _logger.e(
             'Request failed: ${error.requestOptions.uri} '
             '- ${error.response?.statusCode}',
@@ -109,7 +108,6 @@ class NetworkUtil {
     return dio;
   }
 
-  /// Enhanced error handling with better context
   Never _handleError(DioException error, String method, String url) {
     final statusCode = error.response?.statusCode;
     final responseData = error.response?.data;
@@ -386,7 +384,6 @@ class NetworkUtil {
     }
   }
 
-  /// Enhanced file upload with progress tracking
   Future<Map<String, dynamic>> postWithUpload(
     String url, {
     required String filePath,

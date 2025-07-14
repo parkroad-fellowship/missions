@@ -2175,6 +2175,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to PRF Missions'**
   String get welcomeIntro;
+
+  /// No description provided for @paymentActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Actions'**
+  String get paymentActions;
+
+  /// No description provided for @completePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Payment'**
+  String get completePayment;
+
+  /// No description provided for @openPaymentLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open payment link'**
+  String get openPaymentLink;
+
+  /// No description provided for @refreshStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Status'**
+  String get refreshStatus;
+
+  /// No description provided for @checkPaymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Check payment status'**
+  String get checkPaymentStatus;
+
+  /// No description provided for @longPressForActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Long press for actions'**
+  String get longPressForActions;
 }
 
 class _AppLocalizationsDelegate

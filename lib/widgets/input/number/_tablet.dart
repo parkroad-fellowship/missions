@@ -27,17 +27,16 @@ class PRFNumberInputTablet extends StatelessWidget {
         hintText: hintText,
         prefixText: prefixText,
         hintStyle: theme.textTheme.titleMedium?.copyWith(
-          // Larger hint text for tablet
           color: theme.colorScheme.onSurfaceVariant,
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20, // Increased horizontal padding for tablet
-          vertical: 20, // Increased vertical padding for tablet
+          horizontal: 20,
+          vertical: 20,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             16,
-          ), // Larger border radius for tablet
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -50,7 +49,7 @@ class PRFNumberInputTablet extends StatelessWidget {
           ),
         ),
       ),
-      style: theme.textTheme.titleMedium, // Larger text for tablet
+      style: theme.textTheme.titleMedium,
       controller: controller,
       enabled: !isLoading,
     );

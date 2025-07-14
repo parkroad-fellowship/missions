@@ -36,7 +36,6 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // Enhanced Navigation Bar
             PRFNavBar(
               title: l10n.give,
               onBack: () => context.router.popUntilRouteWithPath(
@@ -82,7 +81,6 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
               ),
             ),
 
-            // Enhanced Payments List
             BlocBuilder<GetPaymentsCubit, GetPaymentsState>(
               builder: (context, state) {
                 return state.maybeWhen(
@@ -189,7 +187,6 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
           ],
         ),
       ),
-      // Enhanced Floating Action Button
       floatingActionButton: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
@@ -256,61 +253,93 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
     final theme = Theme.of(context);
     final l10n = context.l10n;
 
-    showModalBottomSheet(
+    WoltModalSheet.show<void>(
       context: context,
-      backgroundColor: theme.colorScheme.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.outline.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2),
+      pageListBuilder: (modalSheetContext) => [
+        WoltModalSheetPage(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          surfaceTintColor: Colors.transparent,
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.8,
+            child: Container(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Text(
+                    l10n.paymentActions,
+                    style: theme.textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 32),
+                  if (payment.authorizationUrl != null)
+                    ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          Icons.open_in_browser_rounded,
+                          color: theme.colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      title: Text(
+                        l10n.completePayment,
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      subtitle: Text(
+                        l10n.openPaymentLink,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        final uri = Uri.parse(payment.authorizationUrl!);
+                        await Misc.openUrl(uri);
+                      },
+                    ),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    leading: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.refresh_rounded,
+                        color: theme.colorScheme.onSecondaryContainer,
+                      ),
+                    ),
+                    title: Text(
+                      l10n.refreshStatus,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    subtitle: Text(
+                      l10n.checkPaymentStatus,
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.read<GetPaymentsCubit>().getPayments();
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Payment Actions',
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 24),
-            if (payment.authorizationUrl != null)
-              ListTile(
-                leading: Icon(
-                  Icons.open_in_browser_rounded,
-                  color: theme.colorScheme.primary,
-                ),
-                title: const Text('Complete Payment'),
-                subtitle: const Text('Open payment link'),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final uri = Uri.parse(payment.authorizationUrl!);
-                  await Misc.openUrl(uri);
-                },
-              ),
-            ListTile(
-              leading: Icon(
-                Icons.refresh_rounded,
-                color: theme.colorScheme.primary,
-              ),
-              title: const Text('Refresh Status'),
-              subtitle: const Text('Check payment status'),
-              onTap: () {
-                Navigator.pop(context);
-                context.read<GetPaymentsCubit>().getPayments();
-              },
-            ),
-            const SizedBox(height: 16),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

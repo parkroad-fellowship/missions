@@ -91,7 +91,6 @@ class Misc {
     }
   }
 
-  /// Enhanced timestamp with better formatting
   static String timestamp(
     DateTime dateTime,
     String timezone, {
@@ -113,7 +112,6 @@ class Misc {
     }
   }
 
-  /// Enhanced time formatting with better validation
   static String formatTime(String time, String timezone, {String? locale}) {
     try {
       // More robust time parsing
@@ -159,7 +157,6 @@ class Misc {
     }
   }
 
-  /// Enhanced user initials with better handling
   static String getUserNameInitials(String userName, {int maxInitials = 2}) {
     final trimmedName = userName.trim();
     if (trimmedName.isEmpty) return 'U';
@@ -176,7 +173,6 @@ class Misc {
     return initials.isEmpty ? 'U' : initials.toString();
   }
 
-  /// Enhanced decimal truncation with validation
   static double truncateToDecimalPlaces(double value, int fractionalDigits) {
     if (fractionalDigits < 0) {
       throw ArgumentError('Fractional digits cannot be negative');
@@ -198,7 +194,6 @@ class Misc {
     return (value * multiplier).round() / multiplier;
   }
 
-  /// Enhanced version methods with validation
   static String getFullAppVersion() {
     try {
       return packageVersion.trim();
@@ -224,7 +219,6 @@ class Misc {
     }
   }
 
-  /// Enhanced mission subscription check
   static bool memberHasSubscribed(PRFMission mission) {
     final subscription = mission.loggedInMemberMissionSubscription;
     if (subscription == null) return false;
@@ -235,14 +229,12 @@ class Misc {
     }.contains(subscription.status);
   }
 
-  /// Enhanced mission subscription eligibility check
   static bool canSubscribeToMission(PRFMission mission) {
     return mission.status == PRFMissionStatus.approved &&
         mission.missionSubscriptionsNeeded > 0 &&
         !memberHasSubscribed(mission);
   }
 
-  /// Enhanced user permissions check with caching
   static bool userCan(String permission) {
     try {
       final user = getIt<HiveService>().auth.retrieveProfile();
@@ -260,7 +252,6 @@ class Misc {
     }
   }
 
-  /// Enhanced URL opening with better error handling
   static Future<bool> openUrl(
     Uri uri, {
     LaunchMode mode = LaunchMode.externalApplication,
@@ -276,7 +267,6 @@ class Misc {
     }
   }
 
-  /// Enhanced file name extraction with validation
   static String getFileName(String path) {
     if (path.isEmpty) return '';
 
@@ -287,7 +277,6 @@ class Misc {
     return fileName.isEmpty ? path : fileName;
   }
 
-  /// Enhanced cash formatting with multiple currency support
   static String formatCash(
     num amount, {
     String locale = 'en_KE',
@@ -307,7 +296,6 @@ class Misc {
     }
   }
 
-  /// Enhanced scale factor calculation with device type detection
   static double getScaleFactor(
     BuildContext context, {
     double? customBaseWidth,

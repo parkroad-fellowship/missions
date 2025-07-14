@@ -350,12 +350,11 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Enhanced Timeline indicator - scaled for tablet
         SizedBox(
           width: 80,
           child: Column(
             children: [
-              // Multi-day date badge - larger for tablet
+              // Multi-day date badge
               Container(
                 width: 70,
                 height: isMultiDay ? 180 : 80,
@@ -462,7 +461,6 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
 
         const SizedBox(width: 24),
 
-        // Enhanced Mission card - scaled for tablet
         Expanded(
           child: GestureDetector(
             onTap: onTap,

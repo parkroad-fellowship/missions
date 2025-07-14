@@ -20,16 +20,16 @@ class PRFEmailInputTablet extends StatelessWidget {
       controller: emailController,
       enabled: enabled,
       keyboardType: TextInputType.emailAddress,
-      style: theme.textTheme.titleMedium, // Larger text for tablet
+      style: theme.textTheme.titleMedium,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: const Icon(
           Icons.email_outlined,
-          size: 24, // Larger icon for tablet
+          size: 24,
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
-          vertical: 20, // Increased padding for tablet
+          vertical: 20,
         ),
       ),
     );

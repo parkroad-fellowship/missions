@@ -35,16 +35,16 @@ class PRFPrimaryButtonTablet extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               16,
-            ), // Larger border radius for tablet
+            ),
           ),
-          elevation: 3, // Slightly more elevation for tablet
+          elevation: 3,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading ?? false) ...[
               const SizedBox(
-                height: 24, // Larger loading indicator
+                height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
                   color: Colors.white,
@@ -56,7 +56,6 @@ class PRFPrimaryButtonTablet extends StatelessWidget {
             Text(
               title,
               style: theme.textTheme.titleLarge?.copyWith(
-                // Larger text style for tablet
                 color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
               ),
