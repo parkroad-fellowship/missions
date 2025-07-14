@@ -100,63 +100,57 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       body: DefaultTabController(
         length: tabCount,
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomScrollView(
-              physics: const ScrollPhysics(),
-              slivers: [
-                // Start Navigation Bar
-                PRFNavBar(
-                  title: l10n.missionDetails,
-                  onBack: () => context.router.popUntilRouteWithPath(
-                    PRFSuperAppRouter.missionsRoute,
+          child: CustomScrollView(
+            physics: const ScrollPhysics(),
+            slivers: [
+              // Start Navigation Bar
+              PRFNavBar(
+                title: l10n.missionDetails,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.missionsRoute,
+                ),
+              ),
+              // End Navigation Bar
+              PinnedHeaderSliver(
+                child: ColoredBox(
+                  color: Colors.white,
+                  child: TabBar(
+                    controller: _tabController,
+                    onTap: (value) => setState(() {
+                      _currentTab = value;
+                    }),
+                    isScrollable: true,
+                    tabs: [
+                      Tab(text: l10n.missionGround),
+                      Tab(text: l10n.going),
+                      Tab(text: l10n.sessions),
+                      Tab(text: l10n.souls),
+                      Tab(text: l10n.debriefNotes),
+                      Tab(text: l10n.missionQuestions),
+                      Tab(text: l10n.expenses),
+                      Tab(text: l10n.gallery),
+                    ],
                   ),
                 ),
-                // End Navigation Bar
-                PinnedHeaderSliver(
-                  child: ColoredBox(
-                    color: Colors.white,
-                    child: TabBar(
-                      controller: _tabController,
-                      onTap: (value) => setState(() {
-                        _currentTab = value;
-                      }),
-                      isScrollable: true,
-                      tabs: [
-                        Tab(text: l10n.missionGround),
-                        Tab(text: l10n.going),
-                        Tab(text: l10n.sessions),
-                        Tab(text: l10n.souls),
-                        Tab(text: l10n.debriefNotes),
-                        Tab(text: l10n.missionQuestions),
-                        Tab(text: l10n.expenses),
-                        Tab(text: l10n.gallery),
-                      ],
-                    ),
-                  ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 16)),
+              SliverFillRemaining(
+                fillOverscroll: true,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    MissionDetailsView(missionUlid: missionUlid),
+                    SubscribersView(missionUlid: missionUlid),
+                    SessionsView(missionUlid: missionUlid),
+                    SoulsView(missionUlid: missionUlid),
+                    DebriefNotesView(missionUlid: missionUlid),
+                    MissionQuestionsView(missionUlid: missionUlid),
+                    ExpensesView(missionUlid: missionUlid),
+                    GalleryView(missionUlid: missionUlid),
+                  ],
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                SliverFillRemaining(
-                  fillOverscroll: true,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        MissionDetailsView(missionUlid: missionUlid),
-                        SubscribersView(missionUlid: missionUlid),
-                        SessionsView(missionUlid: missionUlid),
-                        SoulsView(missionUlid: missionUlid),
-                        DebriefNotesView(missionUlid: missionUlid),
-                        MissionQuestionsView(missionUlid: missionUlid),
-                        ExpensesView(missionUlid: missionUlid),
-                        GalleryView(missionUlid: missionUlid),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

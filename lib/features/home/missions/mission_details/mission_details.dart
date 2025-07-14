@@ -20,6 +20,7 @@ class MissionsDetailsPage extends StatelessWidget {
           MissionsDetailsPageTablet(missionUlid: missionUlid),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, _) => MissionsDetailsPageHandset(missionUlid: missionUlid),
+        tablet: (_,_) => MissionsDetailsPageTablet(missionUlid: missionUlid),
       ),
     );
   }
