@@ -1,11 +1,4 @@
-import 'package:app/features/home/cubit/get_announcements_cubit.dart';
-import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
-import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -14,7 +7,6 @@ import 'package:app/widgets/home_action_card/home_action_card.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class LandingPageTablet extends StatefulWidget {
@@ -25,18 +17,6 @@ class LandingPageTablet extends StatefulWidget {
 }
 
 class _LandingPageTabletState extends State<LandingPageTablet> {
-  @override
-  void initState() {
-    context.read<GetClassGroupsCubit>().getClassGroups();
-    context.read<GetPaymentTypesCubit>().getPaymentTypes();
-    context.read<GetExpenseCategoriesCubit>().getExpenseCategories();
-    context.read<GetAnnouncementsCubit>().getAnnouncements();
-    context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
-    context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();
-    context.read<GetFaqCategoriesCubit>().getFaqCategories();
-    context.read<GetFaqsCubit>().getFaqs();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
