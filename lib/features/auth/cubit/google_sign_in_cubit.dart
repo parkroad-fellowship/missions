@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:app/models/remote/auth.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'google_sign_in_cubit.freezed.dart';
@@ -23,6 +24,7 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
 
       emit(GoogleSignInState.loaded(socialAuthDTO: result));
     } catch (e) {
+      await FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
       log(e.toString(), error: e);
       emit(const GoogleSignInState.error('Google Sign in failed'));
     }
