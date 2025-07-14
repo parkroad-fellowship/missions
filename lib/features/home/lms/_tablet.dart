@@ -4,6 +4,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/widgets/_index.dart';
+import 'package:app/widgets/navbar/navbar.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
     Misc.initDimensions(context);
 
     return Scaffold(
@@ -34,72 +36,27 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: CustomScrollView(
             slivers: [
-              // Start Navigation Bar
-              const SliverToBoxAdapter(child: SizedBox(height: 36)),
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.white,
-                surfaceTintColor: Colors.white,
-                pinned: true,
-                flexibleSpace: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 1.w,
-                          ),
-                        ),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          padding: const EdgeInsets.only(left: 8),
-                          onPressed: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.landingRoute,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        l10n.learn,
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.w),
-                        child: const Visibility(
-                          child: Icon(Icons.abc, color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
+              PRFNavBar(
+                title: l10n.learn,
+                backgroundColor: theme.colorScheme.surface,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.landingRoute,
                 ),
               ),
-              // End Navigation Bar
-              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               SliverToBoxAdapter(
                 child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
                   builder: (context, state) => state.maybeWhen(
-                    loading: () =>
-                        const Center(child: LinearProgressIndicator()),
+                    loading: () => const PRFLinearProgressIndicator(),
                     orElse: SizedBox.shrink,
                   ),
                 ),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 32.h)),
               StreamBuilder(
                 stream: getIt<LocalDBService>().getCourses(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
+                      child: Center(child: PRFCircularProgressIndicator()),
                     );
                   }
 
@@ -107,6 +64,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
 
                   if (courses != null && courses.isEmpty) {
                     return SliverFillRemaining(
+                      hasScrollBody: false,
                       child: RefreshIndicator(
                         onRefresh: () =>
                             context.read<GetCoursesCubit>().getCourses(),
