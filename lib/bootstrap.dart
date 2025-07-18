@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:app/firebase_options.dart';
+import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/firebase_service.dart';
@@ -77,6 +78,19 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       await getIt<FirebaseService>().initRemoteConfig();
     } catch (e) {
       Logger().e(e);
+    }
+
+    try {
+      final fcmToken = await getIt<FirebaseService>().retrieveFCMToken();
+      if (fcmToken.isNotEmpty) {
+        await getIt<AuthService>().updateProfile(
+          updateDTO: UserUpdateDTO(
+            fcmTokens: [fcmToken],
+          ),
+        );
+      }
+    } catch (e) {
+      Logger().e('Firebase Messaging init error: $e');
     }
 
     await getIt<AnalyticsService>().init();

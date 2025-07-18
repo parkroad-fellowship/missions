@@ -64,3 +64,14 @@ abstract class SocialAuthDTO with _$SocialAuthDTO {
   factory SocialAuthDTO.fromJson(Map<String, dynamic> json) =>
       _$SocialAuthDTOFromJson(json);
 }
+
+@freezed
+abstract class UserUpdateDTO with _$UserUpdateDTO {
+  factory UserUpdateDTO({
+    @JsonKey(includeIfNull: false) String? timezone,
+    @JsonKey(name: 'fcm_tokens', includeIfNull: false) List<String>? fcmTokens,
+  }) = _UserUpdateDTO;
+
+  factory UserUpdateDTO.fromJson(Map<String, dynamic> json) =>
+      _$UserUpdateDTOFromJson(json);
+}

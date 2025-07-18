@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/remote_config.dart';
 import 'package:app/utils/misc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
@@ -16,6 +18,7 @@ abstract class FirebaseService {
   Future<void> initRemoteConfig();
   RemoteConfig getReviewConfig();
   Future<bool> canShowAuth();
+  Future<String> retrieveFCMToken();
 }
 
 class FirebaseServiceImpl implements FirebaseService {
@@ -24,6 +27,7 @@ class FirebaseServiceImpl implements FirebaseService {
   final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['profile', 'email']);
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   Future<SocialAuthDTO> signInWithGoogle() async {
@@ -139,6 +143,22 @@ class FirebaseServiceImpl implements FirebaseService {
           });
     } catch (e) {
       return false;
+    }
+  }
+
+  @override
+  Future<String> retrieveFCMToken() async {
+    try {
+      final token = await _firebaseMessaging.getToken();
+      if (token != null) {
+        Logger().i('FCM Token: $token');
+        return token;
+      } else {
+        throw Exception('Failed to retrieve FCM token');
+      }
+    } catch (error) {
+      Logger().e('Error retrieving FCM token: $error');
+      throw Failure(message: error.toString());
     }
   }
 }
