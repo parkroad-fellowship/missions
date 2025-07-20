@@ -2,8 +2,10 @@ import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/firebase_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'sign_in_state.dart';
 part 'sign_in_cubit.freezed.dart';
@@ -14,16 +16,19 @@ class SigninCubit extends Cubit<SignInState> {
     required HiveService hiveService,
     required SocketService socketService,
     required AnalyticsService analyticsService,
+    required FirebaseService firebaseService,
   }) : super(const SignInState.initial()) {
     _authService = authService;
     _hiveService = hiveService;
     _socketService = socketService;
     _analyticsService = analyticsService;
+    _firebaseService = firebaseService;
   }
   late HiveService _hiveService;
   late AuthService _authService;
   late SocketService _socketService;
   late AnalyticsService _analyticsService;
+  late FirebaseService _firebaseService;
 
   Future<void> signIn({required String email, required String password}) async {
     emit(const SignInState.loading());
@@ -47,10 +52,20 @@ class SigninCubit extends Cubit<SignInState> {
 
       await _analyticsService.identifyUser(user: user);
 
+      final fcmToken = await _firebaseService.retrieveFCMToken();
+      if (fcmToken.isNotEmpty) {
+        await _authService.updateProfile(
+          updateDTO: UserUpdateDTO(
+            fcmTokens: [fcmToken],
+          ),
+        );
+      }
+
       emit(const SignInState.loaded());
     } on Failure catch (e) {
       emit(SignInState.error(e.message));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      Logger().e('SignInCubit signIn error: $e', stackTrace: stackTrace);
       emit(const SignInState.error('An unknown error occurred'));
     }
   }

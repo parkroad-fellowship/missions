@@ -149,6 +149,31 @@ class FirebaseServiceImpl implements FirebaseService {
   @override
   Future<String> retrieveFCMToken() async {
     try {
+      final platform = await _getCurrentPlatform();
+      Logger().i('Platform: $platform');
+
+      if (platform == 'ios') {
+        final settings = await _firebaseMessaging.requestPermission();
+        Logger().i(
+          'Notification permission status: ${settings.authorizationStatus}',
+        );
+        if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+          throw Exception('Notification permissions not granted');
+        }
+
+        // Retry APNS token up to 3 times with delay
+        String? apnsToken;
+        for (var i = 0; i < 3; i++) {
+          apnsToken = await _firebaseMessaging.getAPNSToken();
+          Logger().d('APNS Token (attempt ${i + 1}): $apnsToken');
+          if (apnsToken != null) break;
+          await Future<dynamic>.delayed(const Duration(seconds: 2));
+        }
+        if (apnsToken == null) {
+          throw Exception('APNS token not set yet. Try again later.');
+        }
+      }
+
       final token = await _firebaseMessaging.getToken();
       if (token != null) {
         Logger().i('FCM Token: $token');

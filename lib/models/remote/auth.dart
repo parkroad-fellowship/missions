@@ -24,7 +24,7 @@ abstract class PRFUser with _$PRFUser {
     required String timezone,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
-    required List<PRFRole> roles,
+    @Default([]) List<PRFRole> roles,
     PRFMember? member,
     int? password,
     String? token,

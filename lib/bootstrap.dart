@@ -80,19 +80,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       Logger().e(e);
     }
 
-    try {
-      final fcmToken = await getIt<FirebaseService>().retrieveFCMToken();
-      if (fcmToken.isNotEmpty) {
-        await getIt<AuthService>().updateProfile(
-          updateDTO: UserUpdateDTO(
-            fcmTokens: [fcmToken],
-          ),
-        );
-      }
-    } catch (e) {
-      Logger().e('Firebase Messaging init error: $e');
-    }
-
     await getIt<AnalyticsService>().init();
 
     final user = getIt<HiveService>().auth.retrieveProfile();
@@ -112,6 +99,19 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       }
 
       await getIt<AnalyticsService>().identifyUser(user: user);
+
+      try {
+        final fcmToken = await getIt<FirebaseService>().retrieveFCMToken();
+        if (fcmToken.isNotEmpty) {
+          await getIt<AuthService>().updateProfile(
+            updateDTO: UserUpdateDTO(
+              fcmTokens: [fcmToken],
+            ),
+          );
+        }
+      } catch (e) {
+        Logger().e('Firebase Messaging init error: $e');
+      }
     }
 
     await getIt<MediaService>().initDownloader();

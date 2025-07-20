@@ -179,6 +179,7 @@ class Singletons {
           hiveService: getIt(),
           socketService: getIt(),
           analyticsService: getIt(),
+          firebaseService: getIt(),
         ),
       ),
       BlocProvider<GoogleSignInCubit>(
