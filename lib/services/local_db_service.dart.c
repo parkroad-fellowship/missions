@@ -81,10 +81,7 @@ abstract class LocalDBService {
   Stream<List<PRFLocalStudentEnquiryReply>> getStudentEnquiryReplies({
     required String studentEnquiryUlid,
   });
-  Future<void> persistAnnouncements({
-    required List<PRFAnnouncement> announcements,
-  });
-  Stream<Map<DateTime, List<PRFLocalAnnouncement>>> getAnnouncements();
+
   Future<void> persistPrayerResponses({
     required List<PRFPrayerResponseDTO> prayerResponses,
   });
@@ -140,11 +137,6 @@ abstract class LocalDBService {
     required String missionUlid,
   });
 
-  Future<void> persistSouls({
-    required List<PRFSoul> souls,
-    required String missionUlid,
-  });
-  Stream<List<PRFLocalSoul>> getSouls({required String missionUlid});
   Future<void> persistMissionSessions({
     required List<PRFMissionSession> missionSessions,
     required String missionUlid,
@@ -531,44 +523,7 @@ class LocalDBServiceImpl implements LocalDBService {
     }
   }
 
-  @override
-  Future<void> persistAnnouncements({
-    required List<PRFAnnouncement> announcements,
-  }) async {
-    await prfDBInstance.writeTxn(() async {
-      for (final announcement in announcements) {
-        await prfDBInstance.pRFLocalAnnouncements.put(
-          PRFLocalAnnouncement(
-            ulid: announcement.ulid,
-            title: announcement.title,
-            content: announcement.content,
-            createdAt: announcement.createdAt,
-            updatedAt: announcement.updatedAt,
-            publishedAt: announcement.publishedAt,
-          ),
-        );
-      }
-    });
-  }
-
-  @override
-  Stream<Map<DateTime, List<PRFLocalAnnouncement>>> getAnnouncements() async* {
-    await for (final localAnnouncement
-        in prfDBInstance.pRFLocalAnnouncements
-            .filter()
-            .idGreaterThan(0)
-            .sortByPublishedAt()
-            .build()
-            .watch(fireImmediately: true)
-            .asBroadcastStream()) {
-      final groupedEntries = collection.groupBy<PRFLocalAnnouncement, DateTime>(
-        localAnnouncement.toList(),
-        (PRFLocalAnnouncement entry) => entry.publishedAt,
-      );
-
-      yield groupedEntries;
-    }
-  }
+  
 
   @override
   Future<void> persistPrayerResponses({

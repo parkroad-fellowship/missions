@@ -8,6 +8,7 @@ import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
@@ -20,11 +21,11 @@ abstract class SocketService {
 }
 
 class SocketServiceImpl implements SocketService {
-  SocketServiceImpl({required LocalDBService localDBService}) {
-    _localDBService = localDBService;
+  SocketServiceImpl({required IsarService isarService}) {
+    _isarService = isarService;
   }
 
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
   PusherChannelsClient? _client;
   final StreamController<bool> _connectionStateController =
       StreamController<bool>.broadcast();
@@ -210,7 +211,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _localDBService.persistCourses(courses: <PRFCourse>[courseData]);
+            _isarService.courses.persistEntities(<PRFCourse>[courseData]);
 
           case PRFEvent.memberModuleUpdated:
             Logger().f(data['data']);
@@ -218,10 +219,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _localDBService.persistCourseModules(
-              courseUlid: courseModuleData.course!.ulid,
-              courseModules: [courseModuleData],
-            );
+            _isarService.courseModules.persistEntity(courseModuleData);
 
           case PRFEvent.lessonMemberUpdated:
             Logger().f(data['data']);
@@ -229,9 +227,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _localDBService.persistLessonModules(
-              lessonModules: [lessonModuleData],
-            );
+            _isarService.lessonModules.persistEntity(lessonModuleData);
 
           case PRFEvent.studentEnquiryReplyCreated:
             Logger().f(data['data']);
@@ -239,9 +235,8 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _localDBService.persistStudentEnquiryReplies(
-              studentEnquiryUlid: studentEnquiryReplyData.studentEnquiry!.ulid,
-              replies: [studentEnquiryReplyData],
+            _isarService.studentEnquiryReplies.persistEntity(
+              studentEnquiryReplyData,
             );
         }
       } catch (e, stackTrace) {

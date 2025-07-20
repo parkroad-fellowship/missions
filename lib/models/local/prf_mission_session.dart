@@ -28,6 +28,7 @@ class PRFLocalMissionSession {
   final PRFLocalMember facilitator;
   final PRFLocalMember? speaker;
   final PRFLocalClassGroup? classGroup;
+  @Index()
   final String missionUlid;
   final List<PRFLocalMissionSessionTranscript> transcripts;
 }

@@ -14,6 +14,7 @@ class PRFLocalFaq {
   Id id = Isar.autoIncrement;
   @Index(unique: true, replace: true)
   final String ulid;
+  @Index()
   final String categoryUlid;
 
   final String question;

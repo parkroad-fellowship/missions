@@ -16,5 +16,6 @@ class PRFLocalMissionQuestion {
   final String ulid;
   final String question;
   final DateTime createdAt;
+  @Index()
   final String missionUlid;
 }

@@ -1,7 +1,6 @@
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/lms/widgets/course_action_card.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';

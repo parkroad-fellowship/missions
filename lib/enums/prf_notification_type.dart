@@ -21,17 +21,17 @@ enum PRFNotificationType {
         return PRFNotificationType.newMission;
       case 'cancelled_mission':
         return PRFNotificationType.cancelledMission;
-        case 'postponed_mission':
+      case 'postponed_mission':
         return PRFNotificationType.postponedMission;
-        case 'mission_thank_you':
+      case 'mission_thank_you':
         return PRFNotificationType.missionThankYou;
-        case 'mission_whatsapp_group_created':
+      case 'mission_whatsapp_group_created':
         return PRFNotificationType.missionWhatsappGroupCreated;
-        case 'mission_subscription':
+      case 'mission_subscription':
         return PRFNotificationType.missionSubscription;
-        case 'new_event':
+      case 'new_event':
         return PRFNotificationType.newEvent;
-        case 'student_enquiry':
+      case 'student_enquiry':
         return PRFNotificationType.studentEnquiry;
       default:
         return PRFNotificationType.defaultPrompt;

@@ -1,7 +1,7 @@
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_announcement.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -50,7 +50,8 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
           ),
           SliverFillRemaining(
             child: StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
-              stream: getIt<LocalDBService>().getAnnouncements(),
+              stream: getIt<IsarService>().announcements
+                  .getAnnouncementsGrouped(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const PRFCircularProgressIndicator();

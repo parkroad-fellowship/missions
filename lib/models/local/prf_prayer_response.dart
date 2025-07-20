@@ -10,6 +10,7 @@ class PRFLocalPrayerResponse {
   });
 
   Id id = Isar.autoIncrement;
+  @Index(unique: true)
   final String prayerPromptUlid;
   final String memberUlid;
 }

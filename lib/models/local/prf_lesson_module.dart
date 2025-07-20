@@ -22,6 +22,7 @@ class PRFLocalLessonModule {
   final String ulid;
   final int order;
   final String lessonUlid;
+  @Index()
   final String moduleUlid;
   final DateTime createdAt;
   final PRFLocalLesson lesson;

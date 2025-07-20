@@ -6,6 +6,7 @@ import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -398,9 +399,8 @@ class _StudentEnquiryRepliesPageTabletState
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 16)),
                     StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
-                      stream: getIt<LocalDBService>().getStudentEnquiryReplies(
-                        studentEnquiryUlid: enquiry.ulid,
-                      ),
+                      stream: getIt<IsarService>().studentEnquiryReplies
+                          .getByParentKey(enquiry.ulid),
                       builder: (context, snapshot) {
                         // Scroll to bottom when new data arrives
                         WidgetsBinding.instance.addPostFrameCallback(

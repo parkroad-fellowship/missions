@@ -4,6 +4,7 @@ import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_soul.dart';
 import 'package:app/services/local_db_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/empty_state.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
     final l10n = context.l10n;
 
     return SingleStreamWrapper(
-      stream: getIt<LocalDBService>().getSouls(missionUlid: missionUlid),
+      stream: getIt<IsarService>().souls.getByParentKey(missionUlid),
       nullWidget: Center(
         child: PRFEmptyView(
           label: l10n.noSouls,

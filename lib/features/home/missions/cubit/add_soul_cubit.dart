@@ -4,6 +4,7 @@ import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/models/remote/prf_soul.dart';
 import 'package:app/models/remote/prf_soul_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,14 +14,14 @@ part 'add_soul_cubit.freezed.dart';
 class AddSoulCubit extends Cubit<AddSoulState> {
   AddSoulCubit({
     required SoulService soulService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const AddSoulState.initial()) {
     _soulService = soulService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late SoulService _soulService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> addSoul({
     required String missionUlid,
@@ -41,13 +42,10 @@ class AddSoulCubit extends Cubit<AddSoulState> {
           decisionType: decisionType.apiKey,
           notes: notes,
         ).toJson(),
-        includes: ['classGroup'],
+        includes: ['classGroup', 'mission'],
       );
 
-      await _localDBService.persistSouls(
-        souls: [soul],
-        missionUlid: missionUlid,
-      );
+      await _isarService.souls.persistEntities([soul]);
       emit(AddSoulState.loaded(soul: soul));
     } on Failure catch (e) {
       emit(AddSoulState.error(e.message));

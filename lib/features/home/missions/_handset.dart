@@ -2,7 +2,6 @@ import 'package:app/features/home/missions/cubit/get_member_mission_subscription
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';

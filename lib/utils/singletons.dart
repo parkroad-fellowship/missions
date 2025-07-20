@@ -80,20 +80,19 @@ import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/services/local_auth_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:isar/isar.dart';
 
 final GetIt getIt = GetIt.instance;
-late Isar prfDBInstance;
 
 class Singletons {
   static void setup() {
     getIt
       ..registerSingleton<PRFSuperAppRouter>(PRFSuperAppRouter())
       ..registerSingleton<HiveService>(HiveService())
-      ..registerSingleton<LocalDBService>(LocalDBServiceImpl())
+      ..registerSingleton<IsarService>(IsarService())
       ..registerSingleton<LocalAuthService>(LocalAuthService())
       ..registerSingleton<FirebaseService>(FirebaseServiceImpl())
       ..registerSingleton<AuthService>(AuthService())
@@ -159,16 +158,15 @@ class Singletons {
       )
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SocketService>(
-        SocketServiceImpl(localDBService: getIt()),
+        SocketServiceImpl(isarService: getIt()),
       )
       ..registerSingleton<MediaService>(MediaServiceImpl())
       ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
   }
 
-  static Future<void> setupDatabase() async {
+  static Future<void> setupDatabases() async {
     await getIt<HiveService>().initBoxes();
-
-    prfDBInstance = await getIt<LocalDBService>().initDatabase();
+    await getIt<IsarService>().initDatabase();
   }
 
   static List<BlocProvider> registerCubits() {
@@ -191,7 +189,7 @@ class Singletons {
       ),
       BlocProvider<SignOutCubit>(
         create: (context) =>
-            SignOutCubit(hiveService: getIt(), localDBService: getIt()),
+            SignOutCubit(hiveService: getIt(), isarService: getIt()),
       ),
       BlocProvider<GetMissionsCubit>(
         create: (context) => GetMissionsCubit(
@@ -228,7 +226,7 @@ class Singletons {
       ),
       BlocProvider<GetSoulsCubit>(
         create: (context) =>
-            GetSoulsCubit(soulService: getIt(), localDBService: getIt()),
+            GetSoulsCubit(soulService: getIt(), isarService: getIt()),
       ),
       BlocProvider<GetClassGroupsCubit>(
         create: (context) => GetClassGroupsCubit(
@@ -239,7 +237,7 @@ class Singletons {
       ),
       BlocProvider<AddSoulCubit>(
         create: (context) =>
-            AddSoulCubit(soulService: getIt(), localDBService: getIt()),
+            AddSoulCubit(soulService: getIt(), isarService: getIt()),
       ),
       BlocProvider<GetDebriefNotesCubit>(
         create: (context) => GetDebriefNotesCubit(
@@ -274,37 +272,37 @@ class Singletons {
       ),
       BlocProvider<GetFaqsCubit>(
         create: (context) =>
-            GetFaqsCubit(missionFaqService: getIt(), localDBService: getIt()),
+            GetFaqsCubit(missionFaqService: getIt(), isarService: getIt()),
       ),
       BlocProvider<GetFaqCategoriesCubit>(
         create: (context) => GetFaqCategoriesCubit(
           missionFaqCategoryService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetEnquiriesCubit>(
         create: (context) => GetEnquiriesCubit(
           studentEnquiryService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<CreateEnquiryReplyCubit>(
         create: (context) => CreateEnquiryReplyCubit(
           studentEnquiryService: getIt(),
           hiveService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetEnquiryRepliesCubit>(
         create: (context) => GetEnquiryRepliesCubit(
           studentEnquiryService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetAnnouncementsCubit>(
         create: (context) => GetAnnouncementsCubit(
           announcementService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
           hiveService: getIt(),
         ),
       ),
@@ -328,13 +326,13 @@ class Singletons {
       ),
       BlocProvider<SavePrayerResponseCubit>(
         create: (context) => SavePrayerResponseCubit(
-          localDBService: getIt(),
+          isarService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<UploadPrayerResponseCubit>(
         create: (context) => UploadPrayerResponseCubit(
-          localDBService: getIt(),
+          isarService: getIt(),
           prayerResponseService: getIt(),
         ),
       ),

@@ -3,7 +3,6 @@ import 'package:app/features/home/lms/widgets/course_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';

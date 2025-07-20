@@ -1,7 +1,6 @@
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
