@@ -50,18 +50,33 @@ abstract class NotificationService {
     Logger().f(receivedAction);
 
     final payload = receivedAction.payload;
+    final context = getIt<PRFSuperAppRouter>().navigatorKey.currentContext;
+
+    if (payload == null) {
+      Logger().w('Notification payload is null');
+    }
+
+    if (context == null) {
+      Logger().w('No context available for notification action');
+      return;
+    }
+
+    if (payload != null && payload['type'] == null) {
+      Logger().w('Notification payload type is null');
+      return;
+    }
 
     if (payload != null) {
       switch (PRFNotificationType.fromType(payload['type']!)) {
         case PRFNotificationType.defaultPrompt:
+          Logger().i('Default prompt received');
           return;
 
         case PRFNotificationType.prayerPrompt:
           await showDialog<dynamic>(
-            context: getIt<PRFSuperAppRouter>().navigatorKey.currentContext!,
+            context: context,
             builder: (context) {
               final l10n = context.l10n;
-
               return Center(
                 child: Material(
                   color: Colors.transparent,
@@ -129,9 +144,28 @@ abstract class NotificationService {
               );
             },
           );
+
         case PRFNotificationType.givingPrompt:
           await getIt<PRFSuperAppRouter>().pushNamed(
             PRFSuperAppRouter.givingRoute,
+          );
+
+        case PRFNotificationType.cancelledMission:
+        case PRFNotificationType.postponedMission:
+        case PRFNotificationType.missionThankYou:
+        case PRFNotificationType.missionWhatsappGroupCreated:
+        case PRFNotificationType.missionSubscription:
+        case PRFNotificationType.newMission:
+          await getIt<PRFSuperAppRouter>().pushNamed(
+            PRFSuperAppRouter.missionsRoute,
+          );
+
+        // Gracefully handle unimplemented cases
+
+        case PRFNotificationType.newEvent:
+        case PRFNotificationType.studentEnquiry:
+          Logger().w(
+            'Notification type not yet implemented: ${payload['type']}',
           );
       }
     }
