@@ -23,8 +23,10 @@ import 'package:app/services/local_storage/isar/faq_category_db_service.dart';
 import 'package:app/services/local_storage/isar/faq_db_service.dart';
 import 'package:app/services/local_storage/isar/lesson_module_db_service.dart';
 import 'package:app/services/local_storage/isar/media_dto_db_service.dart';
+import 'package:app/services/local_storage/isar/member_mission_db_service.dart';
 import 'package:app/services/local_storage/isar/mission_db_service.dart';
 import 'package:app/services/local_storage/isar/mission_question_db_service.dart';
+import 'package:app/services/local_storage/isar/mission_session_db_service.dart';
 import 'package:app/services/local_storage/isar/mission_subscription_db_service.dart';
 import 'package:app/services/local_storage/isar/prayer_response_db_service.dart';
 import 'package:app/services/local_storage/isar/soul_db_service.dart';
@@ -65,11 +67,17 @@ class IsarService {
   late final MediaDTODbService _mediaUploads;
   MediaDTODbService get mediaUploads => _mediaUploads;
 
+  late final MemberMissionDbService _memberMissions;
+  MemberMissionDbService get memberMissions => _memberMissions;
+
   late final MissionDbService _missions;
   MissionDbService get missions => _missions;
 
   late final MissionQuestionDbService _missionQuestions;
   MissionQuestionDbService get missionQuestions => _missionQuestions;
+
+  late final MissionSessionDbService _missionSessions;
+  MissionSessionDbService get missionSessions => _missionSessions;
 
   late final MissionSubscriptionDbService _missionSubscriptions;
   MissionSubscriptionDbService get missionSubscriptions =>
@@ -120,8 +128,11 @@ class IsarService {
     _faqs = FaqDbService(prfDBInstance: prfDBInstance);
     _lessonModules = LessonModuleDbService(prfDBInstance: prfDBInstance);
     _mediaUploads = MediaDTODbService(prfDBInstance: prfDBInstance);
+
+    _memberMissions = MemberMissionDbService(prfDBInstance: prfDBInstance);
     _missions = MissionDbService(prfDBInstance: prfDBInstance);
     _missionQuestions = MissionQuestionDbService(prfDBInstance: prfDBInstance);
+    _missionSessions = MissionSessionDbService(prfDBInstance: prfDBInstance);
     _missionSubscriptions = MissionSubscriptionDbService(
       prfDBInstance: prfDBInstance,
     );

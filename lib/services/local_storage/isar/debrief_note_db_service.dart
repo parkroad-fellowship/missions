@@ -22,10 +22,11 @@ class DebriefNoteDbService
   }
 
   @override
-  Stream<List<PRFLocalDebriefNote>> getByParentKey(String missionUlid) {
+  Stream<List<PRFLocalDebriefNote>> getByParentKey(String parentKey) {
     return collection
         .where()
-        .missionUlidEqualTo(missionUlid)
-        .watch(fireImmediately: true);
+        .missionUlidEqualTo(parentKey)
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 }

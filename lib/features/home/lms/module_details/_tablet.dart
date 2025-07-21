@@ -2,6 +2,7 @@ import 'package:app/features/home/lms/widgets/module_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -45,8 +46,8 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
               ),
               actions: [
                 StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<LocalDBService>().getCourseModule(
-                    courseModuleUlid: courseModuleUlid,
+                  stream: getIt<IsarService>().courseModules.getByKey(
+                    courseModuleUlid,
                   ),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -99,8 +100,8 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<LocalDBService>().getCourseModule(
-                    courseModuleUlid: courseModuleUlid,
+                  stream: getIt<IsarService>().courseModules.getByKey(
+                    courseModuleUlid,
                   ),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -122,8 +123,8 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<LocalDBService>().getCourseModule(
-                    courseModuleUlid: courseModuleUlid,
+                  stream: getIt<IsarService>().courseModules.getByKey(
+                    courseModuleUlid,
                   ),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -156,8 +157,8 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
             // Lessons list
             StreamBuilder<List<PRFLocalLessonModule>>(
-              stream: getIt<LocalDBService>().getLessonModules(
-                moduleUlid: widget.moduleUlid,
+              stream: getIt<IsarService>().lessonModules.getByParentKey(
+                widget.moduleUlid,
               ),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {

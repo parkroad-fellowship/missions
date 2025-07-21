@@ -20,10 +20,51 @@ class FaqDbService extends BaseLocalDBService<PRFFaq, PRFLocalFaq> {
   }
 
   @override
-  Stream<List<PRFLocalFaq>> getByParentKey(String categoryUlid) {
+  Stream<List<PRFLocalFaq>> getByParentKey(String parentKey) {
     return collection
         .where()
-        .categoryUlidEqualTo(categoryUlid)
-        .watch(fireImmediately: true);
+        .categoryUlidEqualTo(parentKey)
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
+  }
+
+  @override
+  Future<List<PRFLocalFaq>> getAllFuture({
+    String? categoryUlid,
+    String? query,
+  }) async {
+    return collection
+        .where()
+        .filter()
+        .optional(
+          categoryUlid != null,
+          (q) => q.categoryUlidEqualTo(categoryUlid!),
+        )
+        .optional(
+          query != null,
+          (q) => q
+              .questionWordsElementContains(query!)
+              .answerWordsElementContains(query),
+        )
+        .findAll();
+  }
+
+  @override
+  Stream<List<PRFLocalFaq>> getAll({String? categoryUlid, String? query}) {
+    return collection
+        .where()
+        .filter()
+        .optional(
+          categoryUlid != null,
+          (q) => q.categoryUlidEqualTo(categoryUlid!),
+        )
+        .optional(
+          query != null,
+          (q) => q
+              .questionWordsElementContains(query!)
+              .answerWordsElementContains(query),
+        )
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 }

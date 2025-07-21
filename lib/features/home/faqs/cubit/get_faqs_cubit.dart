@@ -1,5 +1,4 @@
 import 'package:app/models/local/prf_faq.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_faq_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
@@ -42,7 +41,7 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
       if (localFaqs.isEmpty || forceRefresh) {
         await _networkFetch();
 
-        final updatedLocalFaqs = await _localDBService.retreiveFaqs(
+        final updatedLocalFaqs = await _isarService.faqs.getAllFuture(
           categoryUlid: categoryUlid,
           query: query,
         );
@@ -64,6 +63,7 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
       limit: 500,
       includes: ['missionFaqCategory'],
     );
-    await _localDBService.persistFaqs(faqs: faqs);
+
+    await _isarService.faqs.persistEntities(faqs);
   }
 }

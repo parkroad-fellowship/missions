@@ -3,6 +3,7 @@ import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar/isar.dart';
+import 'package:logger/logger.dart';
 
 class LessonModuleDbService
     extends BaseLocalDBService<PRFLessonModule, PRFLocalLessonModule> {
@@ -88,11 +89,15 @@ class LessonModuleDbService
   }
 
   @override
-  Stream<List<PRFLocalLessonModule>> getByParentKey(String moduleUlid) {
+  Stream<List<PRFLocalLessonModule>> getByParentKey(String parentKey) {
+    Logger().i(
+      'Fetching LessonModules by parent key: $parentKey',
+    );
     return collection
         .where()
-        .moduleUlidEqualTo(moduleUlid)
+        .moduleUlidEqualTo(parentKey)
         .sortByOrder()
-        .watch(fireImmediately: true);
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 }

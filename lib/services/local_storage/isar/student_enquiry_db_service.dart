@@ -20,4 +20,18 @@ class StudentEnquiryDbService
       createdAt: remote.createdAt,
     );
   }
+
+  @override
+  Stream<List<PRFLocalStudentEnquiry>> getAll({
+    bool replyStatus = false,
+  }) {
+    return collection
+        .filter()
+        .hasRepliesEqualTo(replyStatus)
+        .idGreaterThan(0)
+        .sortByCreatedAtDesc()
+        .build()
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
+  }
 }

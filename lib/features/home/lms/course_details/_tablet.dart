@@ -3,6 +3,7 @@ import 'package:app/features/home/lms/widgets/course_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -50,8 +51,8 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                 ),
                 actions: [
                   SingleStreamWrapper<PRFLocalCourse?>(
-                    stream: getIt<LocalDBService>().getCourse(
-                      courseUlid: courseUlid,
+                    stream: getIt<IsarService>().courses.getByKey(
+                      courseUlid,
                     ),
                     widget: (context, course) => Container(
                       padding: const EdgeInsets.symmetric(
@@ -89,14 +90,18 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                 child:
                     BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
                       builder: (context, state) => state.maybeWhen(
-                        loading: () => const PRFLinearProgressIndicator(),
+                        loading: () => const Padding(
+                          padding: EdgeInsets.only(bottom: 16),
+
+                          child: PRFLinearProgressIndicator(),
+                        ),
                         orElse: SizedBox.shrink,
                       ),
                     ),
               ),
               StreamBuilder<List<PRFLocalCourseModule>>(
-                stream: getIt<LocalDBService>().getCourseModules(
-                  courseUlid: courseUlid,
+                stream: getIt<IsarService>().courseModules.getByParentKey(
+                  courseUlid,
                 ),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {

@@ -2,6 +2,7 @@ import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -14,22 +15,22 @@ class GetMemberMissionSubscriptionsCubit
   GetMemberMissionSubscriptionsCubit({
     required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetMemberMissionSubscriptionsState.initial()) {
     _missionSubscriptionService = missionSubscriptionService;
     _hiveService = hiveService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionSubscriptionService _missionSubscriptionService;
   late HiveService _hiveService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getSubscriptions({bool refresh = false}) async {
     emit(const GetMemberMissionSubscriptionsState.loading());
     try {
       if (!refresh) {
-        await _localDBService.refreshMemberMissions();
+        // await _isarService.refreshMemberMissions();
         emit(const GetMemberMissionSubscriptionsState.loaded());
         return;
       }
@@ -53,10 +54,8 @@ class GetMemberMissionSubscriptionsCubit
         },
       );
 
-      await _localDBService.persistMemberMissions(
-        missionSubscriptions: missionSubscriptions,
-      );
-      await _localDBService.refreshMemberMissions();
+      await _isarService.memberMissions.persistEntities(missionSubscriptions);
+
       emit(const GetMemberMissionSubscriptionsState.loaded());
     } on Failure catch (e) {
       emit(GetMemberMissionSubscriptionsState.error(e.message));

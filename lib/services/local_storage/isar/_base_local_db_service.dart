@@ -39,7 +39,7 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
 
   /// Get all entities as a stream
   Stream<List<TLocal>> getAll() {
-    return collection.where().watch(fireImmediately: true);
+    return collection.where().watch(fireImmediately: true).asBroadcastStream();
   }
 
   /// Get all entities as a future
@@ -62,7 +62,23 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// ```
   Stream<TLocal?> getByKey(String key) {
     throw UnimplementedError(
-      'getByKey must be implemented in subclasses with the correct entity query',
+      'getByKey must be implemented in subclasses',
+    );
+  }
+
+  /// Get entity by primary key as a future - Example implementation.
+  /// You should override this in your subclass with the correct entity query.
+  /// Example:
+  /// ```dart
+  /// @override
+  /// Future<MyLocalEntity?> getByKeyFuture(String key) async {
+  ///  final results = await collection.where().ulidEqualTo(key).findAll();
+  /// return results.isEmpty ? null : results.first;
+  /// }
+  /// ```
+  Future<TLocal?> getByKeyFuture(String key) async {
+    throw UnimplementedError(
+      'getByKeyFuture must be implemented in subclasses',
     );
   }
 
@@ -79,7 +95,7 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// ```
   Future<void> deleteByKey(String key) async {
     throw UnimplementedError(
-      'deleteByKey must be implemented in subclasses with the correct entity query',
+      'deleteByKey must be implemented in subclasses',
     );
   }
 
@@ -131,11 +147,12 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
     final query = queryBuilder(collection.where());
     return query
         .watch(fireImmediately: true)
+        .asBroadcastStream()
         .map((results) => results.isEmpty ? <TLocal>[] : results.first);
   }
 
   /// Get entities by parent/foreign key - Example implementation.
-  /// You should override this in your subclass with the correct field and query.
+  /// You should override this in your subclass with the correct field and query
   /// Example:
   /// ```dart
   /// @override
@@ -148,18 +165,27 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// ```
   Stream<List<TLocal>> getByParentKey(String parentKey) {
     throw UnimplementedError(
-      'getByParentKey must be implemented in subclasses with the correct field and query.',
+      'getByParentKey must be implemented in subclasses',
     );
   }
 
   /// Group entities by a field and return as a stream.
   /// Example usage:
-  ///   getGroupedBy<DateTime>((entity) => entity.publishedAt)
+  ///   getGroupedBy&lt;DateTime&gt;((entity) => entity.publishedAt)
   Stream<Map<K, List<TLocal>>> getGroupedBy<K>(
     K Function(TLocal entity) groupByField,
   ) {
     return getAll().map((entities) {
       return col.groupBy(entities, groupByField);
     });
+  }
+
+  Stream<Map<K, List<TLocal>>> getByParentKeyGrouped<K>(
+    String missionUlid,
+    K Function(TLocal session) groupByField,
+  ) {
+    return getByParentKey(missionUlid).map(
+      (sessions) => col.groupBy(sessions, groupByField),
+    );
   }
 }

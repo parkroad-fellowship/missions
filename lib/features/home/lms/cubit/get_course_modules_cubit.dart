@@ -1,5 +1,5 @@
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/course_module_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,14 +9,14 @@ part 'get_course_modules_cubit.freezed.dart';
 class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
   GetCourseModulesCubit({
     required CourseModuleService courseModuleService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetCourseModulesState.initial()) {
     _courseModuleService = courseModuleService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late CourseModuleService _courseModuleService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getCourseModules({required String courseUlid}) async {
     emit(const GetCourseModulesState.loading());
@@ -37,10 +37,12 @@ class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
         ],
       );
 
-      await _localDBService.persistCourseModules(
-        courseModules: courseModules,
-        courseUlid: courseUlid,
-      );
+      await _isarService.courseModules.persistEntities(courseModules);
+      for (final courseModule in courseModules) {
+        await _isarService.lessonModules.persistEntities(
+          courseModule.module!.lessonModules!,
+        );
+      }
 
       emit(const GetCourseModulesState.loaded());
     } catch (e) {

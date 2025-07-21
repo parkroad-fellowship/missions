@@ -1,6 +1,6 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/debrief_note_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +10,14 @@ part 'get_debrief_notes_cubit.freezed.dart';
 class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
   GetDebriefNotesCubit({
     required DebriefNoteService debriefNoteService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetDebriefNotesState.initial()) {
     _debriefNoteService = debriefNoteService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late DebriefNoteService _debriefNoteService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getDebriefNotes({
     required String missionUlid,
@@ -31,11 +31,13 @@ class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
       }
       final debriefNotes = await _debriefNoteService.list(
         filters: {'mission_ulid': missionUlid},
+        includes: const ['mission'],
       );
-      await _localDBService.persistDebriefNotes(
-        debriefNotes: debriefNotes,
-        missionUlid: missionUlid,
+
+      await _isarService.debriefNotes.persistEntities(
+        debriefNotes,
       );
+
       emit(const GetDebriefNotesState.loaded());
     } on Failure catch (e) {
       emit(GetDebriefNotesState.error(e.message));

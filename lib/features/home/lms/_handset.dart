@@ -1,6 +1,7 @@
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
 import 'package:app/features/home/lms/widgets/course_action_card.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -37,13 +38,16 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
             SliverToBoxAdapter(
               child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
                 builder: (context, state) => state.maybeWhen(
-                  loading: () => const PRFLinearProgressIndicator(),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: PRFLinearProgressIndicator(),
+                  ),
                   orElse: SizedBox.shrink,
                 ),
               ),
             ),
             StreamBuilder(
-              stream: getIt<LocalDBService>().getCourses(),
+              stream: getIt<IsarService>().courses.getAll(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SliverToBoxAdapter(

@@ -5,7 +5,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/local/prf_mission_session.dart';
-import 'package:app/services/local_db_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -194,10 +194,8 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           SingleStreamWrapper<
                             List<PRFLocalMissionSubscription>
                           >(
-                            stream: getIt<LocalDBService>()
-                                .getMissionSubscriptions(
-                                  missionUlid: widget.missionUlid,
-                                ),
+                            stream: getIt<IsarService>().missionSubscriptions
+                                .getByParentKey(widget.missionUlid),
                             loading: const PRFLinearProgressIndicator(),
                             widget: (context, subscribers) => LayoutBuilder(
                               builder: (context, constraints) {
@@ -231,10 +229,8 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           SingleStreamWrapper<
                             List<PRFLocalMissionSubscription>
                           >(
-                            stream: getIt<LocalDBService>()
-                                .getMissionSubscriptions(
-                                  missionUlid: widget.missionUlid,
-                                ),
+                            stream: getIt<IsarService>().missionSubscriptions
+                                .getByParentKey(widget.missionUlid),
                             loading: const PRFLinearProgressIndicator(),
                             widget: (context, subscribers) => LayoutBuilder(
                               builder: (context, constraints) {

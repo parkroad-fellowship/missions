@@ -1,6 +1,6 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_question_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +10,14 @@ part 'get_mission_questions_cubit.freezed.dart';
 class GetMissionQuestionsCubit extends Cubit<GetMissionQuestionsState> {
   GetMissionQuestionsCubit({
     required MissionQuestionService missionQuestionService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetMissionQuestionsState.initial()) {
     _missionQuestionService = missionQuestionService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionQuestionService _missionQuestionService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getMissionQuestions({
     required String missionUlid,
@@ -32,10 +32,10 @@ class GetMissionQuestionsCubit extends Cubit<GetMissionQuestionsState> {
 
       final missionQuestions = await _missionQuestionService.list(
         filters: {'mission_ulid': missionUlid},
+        includes: const ['mission'],
       );
-      await _localDBService.persistMissionQuestions(
-        missionQuestions: missionQuestions,
-        missionUlid: missionUlid,
+      await _isarService.missionQuestions.persistEntities(
+        missionQuestions,
       );
       emit(const GetMissionQuestionsState.loaded());
     } on Failure catch (e) {

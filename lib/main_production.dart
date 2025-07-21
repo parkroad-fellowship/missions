@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // TODO: Revert to production values
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
       hiveBox: '----prf-super-app-${Misc.getSluggedAppVersion()}',

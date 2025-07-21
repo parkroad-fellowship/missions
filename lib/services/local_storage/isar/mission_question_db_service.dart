@@ -22,10 +22,11 @@ class MissionQuestionDbService
   }
 
   @override
-  Stream<List<PRFLocalMissionQuestion>> getByParentKey(String missionUlid) {
+  Stream<List<PRFLocalMissionQuestion>> getByParentKey(String parentKey) {
     return collection
         .where()
-        .missionUlidEqualTo(missionUlid)
-        .watch(fireImmediately: true);
+        .missionUlidEqualTo(parentKey)
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 }

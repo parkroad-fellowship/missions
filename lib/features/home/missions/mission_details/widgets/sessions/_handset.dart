@@ -1,7 +1,7 @@
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
-import 'package:app/services/local_db_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/empty_state.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -37,8 +37,9 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     final l10n = context.l10n;
 
     return SingleStreamWrapper(
-      stream: getIt<LocalDBService>().getMissionSessions(
-        missionUlid: missionUlid,
+      stream: getIt<IsarService>().missionSessions.getByParentKeyGrouped(
+        missionUlid,
+        (session) => session.startsAt,
       ),
       nullWidget: PRFEmptyView(
         label: l10n.noSessions,

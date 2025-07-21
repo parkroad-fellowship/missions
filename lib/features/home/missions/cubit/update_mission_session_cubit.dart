@@ -1,6 +1,6 @@
 import 'package:app/models/remote/prf_mission_session_dto.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_session_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +10,14 @@ part 'update_mission_session_cubit.freezed.dart';
 class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
   UpdateMissionSessionCubit({
     required MissionSessionService missionSessionService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const UpdateMissionSessionState.initial()) {
     _missionSessionService = missionSessionService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionSessionService _missionSessionService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> updateMissionSession({
     required String missionSessionUlid,
@@ -47,15 +47,12 @@ class UpdateMissionSessionCubit extends Cubit<UpdateMissionSessionState> {
           'speaker',
           'classGroup',
           'missionSessionTranscripts.media',
+          'mission',
         ],
       );
-      await _localDBService.persistMissionSessions(
-        missionSessions: [updatedMissionSession],
-        missionUlid: missionUlid,
-      );
-      await _localDBService.getMissionSession(
-        missionSessionUlid: missionSessionUlid,
-      );
+
+      await _isarService.missionSessions.persistEntity(updatedMissionSession);
+
       emit(const UpdateMissionSessionState.loaded());
     } catch (e) {
       emit(UpdateMissionSessionState.error(e.toString()));

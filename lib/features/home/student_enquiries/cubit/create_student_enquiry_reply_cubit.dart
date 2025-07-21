@@ -38,6 +38,7 @@ class CreateEnquiryReplyCubit extends Cubit<CreateEnquiryReplyState> {
           commentorableType: PRFMorphType.member,
           commentorableUlid: member.ulid,
         ).toJson(),
+        includes: ['studentEnquiry'],
       );
 
       await _isarService.studentEnquiryReplies.persistEntity(reply);

@@ -2,6 +2,7 @@ import 'package:app/features/home/missions/cubit/get_member_mission_subscription
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -22,10 +23,10 @@ class MissionsPageTablet extends StatefulWidget {
 class _MissionsPageTabletState extends State<MissionsPageTablet>
     with SingleTickerProviderStateMixin {
   Stream<List<PRFLocalMission>> get _missionsStream =>
-      getIt<LocalDBService>().missions;
+      getIt<IsarService>().missions.getAll();
 
   Stream<List<PRFLocalMission>> get _memberMissionsStream =>
-      getIt<LocalDBService>().memberMissions;
+      getIt<IsarService>().memberMissions.getAllParents();
 
   late TabController _tabController;
 

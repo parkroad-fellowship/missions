@@ -30,11 +30,12 @@ class StudentEnquiryReplyDbService
 
   @override
   Stream<List<PRFLocalStudentEnquiryReply>> getByParentKey(
-    String studentEnquiryUlid,
+    String parentKey,
   ) {
     return collection
         .where()
-        .studentEnquiryUlidEqualTo(studentEnquiryUlid)
-        .watch(fireImmediately: true);
+        .studentEnquiryUlidEqualTo(parentKey)
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 }

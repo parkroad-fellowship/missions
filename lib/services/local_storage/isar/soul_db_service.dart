@@ -32,6 +32,7 @@ class SoulDbService extends BaseLocalDBService<PRFSoul, PRFLocalSoul> {
     return collection
         .where()
         .missionUlidEqualTo(parentKey)
-        .watch(fireImmediately: true);
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 }

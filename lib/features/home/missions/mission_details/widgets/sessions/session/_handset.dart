@@ -8,7 +8,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
-import 'package:app/services/local_db_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -40,8 +40,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
   String get missionSessionUlid => widget.missionSessionUlid;
   String get missionUlid => widget.missionUlid;
 
-  Stream<PRFLocalMissionSession> get _missionSessionStream =>
-      getIt<LocalDBService>().missionSession;
+  Stream<PRFLocalMissionSession?> get _missionSessionStream =>
+      getIt<IsarService>().missionSessions.getByKey(missionSessionUlid);
 
   @override
   void initState() {
@@ -189,7 +189,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 nullWidget: defaultEmptyStateWidget,
                 loading: defaultLoadingWidget,
                 widget: (context, missionSession) => MissionSessionDataView(
-                  missionSession: missionSession,
+                  missionSession: missionSession!,
                   missionUlid: widget.missionUlid,
                 ),
               ),
@@ -308,7 +308,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 nullWidget: defaultEmptyStateWidget,
                 loading: defaultLoadingWidget,
                 widget: (context, missionSession) =>
-                    missionSession.transcripts.isEmpty
+                    missionSession!.transcripts.isEmpty
                     ? SliverFillRemaining(
                         child: Center(
                           child:

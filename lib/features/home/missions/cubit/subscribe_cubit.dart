@@ -3,6 +3,7 @@ import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_subscription_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -14,16 +15,16 @@ class SubscribeCubit extends Cubit<SubscribeState> {
   SubscribeCubit({
     required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const SubscribeState.initial()) {
     _missionSubscriptionService = missionSubscriptionService;
     _hiveService = hiveService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionSubscriptionService _missionSubscriptionService;
   late HiveService _hiveService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> subscribe({required String missionUlid}) async {
     emit(const SubscribeState.loading());
@@ -34,12 +35,12 @@ class SubscribeCubit extends Cubit<SubscribeState> {
           missionUlid: missionUlid,
           memberUlid: member.ulid,
         ).toJson(),
+        includes: ['mission', 'member.profilePicture'],
       );
-      await _localDBService.persistMissionSubscriptions(
-        missionSubscriptions: [missionSubscription],
-        missionUlid: missionUlid,
-        memberUlid: member.ulid,
+      await _isarService.missionSubscriptions.persistEntity(
+        missionSubscription,
       );
+
       emit(SubscribeState.loaded(subscription: missionSubscription));
     } on Failure catch (e) {
       emit(SubscribeState.error(e.message));

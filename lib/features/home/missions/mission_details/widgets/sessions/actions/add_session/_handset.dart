@@ -5,6 +5,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_local_mission_subscription.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -168,10 +169,8 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                           SingleStreamWrapper<
                             List<PRFLocalMissionSubscription>
                           >(
-                            stream: getIt<LocalDBService>()
-                                .getMissionSubscriptions(
-                                  missionUlid: widget.missionUlid,
-                                ),
+                            stream: getIt<IsarService>().missionSubscriptions
+                                .getByParentKey(widget.missionUlid),
                             loading: const PRFLinearProgressIndicator(),
                             widget: (context, subscribers) => LayoutBuilder(
                               builder: (context, constraints) {
@@ -205,10 +204,8 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                           SingleStreamWrapper<
                             List<PRFLocalMissionSubscription>
                           >(
-                            stream: getIt<LocalDBService>()
-                                .getMissionSubscriptions(
-                                  missionUlid: widget.missionUlid,
-                                ),
+                            stream: getIt<IsarService>().missionSubscriptions
+                                .getByParentKey(widget.missionUlid),
                             loading: const PRFLinearProgressIndicator(),
                             widget: (context, subscribers) => LayoutBuilder(
                               builder: (context, constraints) {

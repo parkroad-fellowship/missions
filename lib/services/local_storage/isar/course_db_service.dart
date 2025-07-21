@@ -42,4 +42,14 @@ class CourseDbService extends BaseLocalDBService<PRFCourse, PRFLocalCourse> {
           : null,
     );
   }
+
+  @override
+  Stream<PRFLocalCourse?> getByKey(String key) {
+    return collection
+        .where()
+        .ulidEqualTo(key)
+        .watch(fireImmediately: true)
+        .asBroadcastStream()
+        .map((results) => results.isEmpty ? null : results.first);
+  }
 }

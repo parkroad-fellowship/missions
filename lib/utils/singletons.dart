@@ -194,21 +194,20 @@ class Singletons {
       BlocProvider<GetMissionsCubit>(
         create: (context) => GetMissionsCubit(
           missionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetSubscribersCubit>(
         create: (context) => GetSubscribersCubit(
           missionSubscriptionService: getIt(),
-          localDBService: getIt(),
-          hiveService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<SubscribeCubit>(
         create: (context) => SubscribeCubit(
           missionSubscriptionService: getIt(),
           hiveService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<WithdrawCubit>(
@@ -221,7 +220,7 @@ class Singletons {
         create: (context) => GetMemberMissionSubscriptionsCubit(
           missionSubscriptionService: getIt(),
           hiveService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetSoulsCubit>(
@@ -232,7 +231,7 @@ class Singletons {
         create: (context) => GetClassGroupsCubit(
           classGroupService: getIt(),
           hiveService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<AddSoulCubit>(
@@ -242,26 +241,26 @@ class Singletons {
       BlocProvider<GetDebriefNotesCubit>(
         create: (context) => GetDebriefNotesCubit(
           debriefNoteService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<AddDebriefNoteCubit>(
         create: (context) => AddDebriefNoteCubit(
           debriefNoteService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetCoursesCubit>(
         create: (context) => GetCoursesCubit(
           courseService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<GetCourseModulesCubit>(
         create: (context) => GetCourseModulesCubit(
           courseModuleService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<FinishLessonCubit>(
@@ -309,13 +308,13 @@ class Singletons {
       BlocProvider<GetMissionQuestionsCubit>(
         create: (context) => GetMissionQuestionsCubit(
           missionQuestionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<AddMissionQuestionCubit>(
         create: (context) => AddMissionQuestionCubit(
           missionQuestionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetPrayerPromptsCubit>(
@@ -358,13 +357,13 @@ class Singletons {
       BlocProvider<SelectMediaCubit>(
         create: (context) => SelectMediaCubit(
           mediaService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<UploadMediaCubit>(
         create: (context) => UploadMediaCubit(
           mediaService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetMissionMediaCubit>(
@@ -373,25 +372,25 @@ class Singletons {
       BlocProvider<GetMissionSessionsCubit>(
         create: (context) => GetMissionSessionsCubit(
           missionSessionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<AddMissionSessionCubit>(
         create: (context) => AddMissionSessionCubit(
           missionSessionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<UpdateMissionSessionCubit>(
         create: (context) => UpdateMissionSessionCubit(
           missionSessionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<DeleteMissionSessionCubit>(
         create: (context) => DeleteMissionSessionCubit(
           missionSessionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetMissionGroundSuggestionsCubit>(
@@ -429,7 +428,7 @@ class Singletons {
       BlocProvider<GetMissionSessionCubit>(
         create: (context) => GetMissionSessionCubit(
           missionSessionService: getIt(),
-          localDBService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<DownloadFileCubit>(

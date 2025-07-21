@@ -60,11 +60,22 @@ class MissionSessionDbService
 
   /// Stream all sessions for a mission
   @override
-  Stream<List<PRFLocalMissionSession>> getByParentKey(String missionUlid) {
+  Stream<List<PRFLocalMissionSession>> getByParentKey(String parentKey) {
     return collection
         .where()
-        .missionUlidEqualTo(missionUlid)
+        .missionUlidEqualTo(parentKey)
         .sortByStartsAt()
-        .watch(fireImmediately: true);
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
+  }
+
+  @override
+  Stream<PRFLocalMissionSession?> getByKey(String key) {
+    return collection
+        .where()
+        .ulidEqualTo(key)
+        .watch(fireImmediately: true)
+        .asBroadcastStream()
+        .map((results) => results.isEmpty ? null : results.first);
   }
 }

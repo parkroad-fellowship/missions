@@ -54,11 +54,22 @@ class CourseModuleDbService
   }
 
   @override
-  Stream<List<PRFLocalCourseModule>> getByParentKey(String courseUlid) {
+  Stream<List<PRFLocalCourseModule>> getByParentKey(String parentKey) {
     return collection
         .where()
-        .courseUlidEqualTo(courseUlid)
+        .courseUlidEqualTo(parentKey)
         .sortByOrder()
-        .watch(fireImmediately: true);
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
+  }
+
+  @override
+  Stream<PRFLocalCourseModule?> getByKey(String key) {
+    return collection
+        .where()
+        .ulidEqualTo(key)
+        .watch(fireImmediately: true)
+        .asBroadcastStream()
+        .map((results) => results.isEmpty ? null : results.first);
   }
 }

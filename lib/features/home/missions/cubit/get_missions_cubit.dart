@@ -1,7 +1,7 @@
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/models/remote/failure.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,20 +11,20 @@ part 'get_missions_cubit.freezed.dart';
 class GetMissionsCubit extends Cubit<GetMissionsState> {
   GetMissionsCubit({
     required MissionService missionService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetMissionsState.initial()) {
     _missionService = missionService;
-    _localDbService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionService _missionService;
-  late LocalDBService _localDbService;
+  late IsarService _isarService;
 
   Future<void> getMissions({bool refresh = false}) async {
     emit(const GetMissionsState.loading());
     try {
       if (!refresh) {
-        await _localDbService.refreshMissions();
+        // await _localDbService.refreshMissions();
         emit(const GetMissionsState.loaded());
         return;
       }
@@ -47,8 +47,11 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
         orderDirection: 'asc',
       );
 
-      await _localDbService.persistMissions(missions: missions);
-      await _localDbService.refreshMissions();
+      await _isarService.missions.persistEntities(
+        missions,
+      );
+
+      // await _localDbService.refreshMissions();
       emit(const GetMissionsState.loaded());
     } on Failure catch (e) {
       emit(GetMissionsState.error(e.message));

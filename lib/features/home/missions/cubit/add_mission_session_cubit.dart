@@ -1,7 +1,7 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_session_dto.dart';
 import 'package:app/services/api/mission_session_service.dart';
-import 'package:app/services/local_db_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,14 +11,14 @@ part 'add_mission_session_state.dart';
 class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
   AddMissionSessionCubit({
     required MissionSessionService missionSessionService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const AddMissionSessionState.initial()) {
     _missionSessionService = missionSessionService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionSessionService _missionSessionService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> addSession({
     required String missionUlid,
@@ -46,12 +46,11 @@ class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
           'speaker',
           'classGroup',
           'missionSessionTranscripts.media',
+          'mission',
         ],
       );
-      await _localDBService.persistMissionSessions(
-        missionSessions: [missionSession],
-        missionUlid: missionUlid,
-      );
+      await _isarService.missionSessions.persistEntity(missionSession);
+
       emit(const AddMissionSessionState.loaded());
     } on Failure catch (e) {
       emit(AddMissionSessionState.error(e.message));

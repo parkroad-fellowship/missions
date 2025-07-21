@@ -5,6 +5,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/progress/linear_progress_indicator.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -30,7 +31,6 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
   @override
   void initState() {
     super.initState();
-    getIt<LocalDBService>().getMission(missionUlid: missionUlid);
   }
 
   @override
@@ -42,7 +42,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleStreamWrapper<PRFLocalMission?>(
-          stream: getIt<LocalDBService>().getMission(missionUlid: missionUlid),
+          stream: getIt<IsarService>().missions.getByKey(missionUlid),
           loading: const PRFLinearProgressIndicator(),
           widget: (context, mission) => Column(
             children: [

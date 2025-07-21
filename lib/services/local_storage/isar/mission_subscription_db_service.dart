@@ -34,10 +34,11 @@ class MissionSubscriptionDbService
   }
 
   @override
-  Stream<List<PRFLocalMissionSubscription>> getByParentKey(String missionUlid) {
+  Stream<List<PRFLocalMissionSubscription>> getByParentKey(String parentKey) {
     return collection
         .where()
-        .missionUlidEqualTo(missionUlid)
-        .watch(fireImmediately: true);
+        .missionUlidEqualTo(parentKey)
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
   }
 }
