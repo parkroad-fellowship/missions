@@ -194,7 +194,14 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                       MissionsDetailsRoute(
                         missionUlid: mission.ulid,
                       ),
-                    ),
+                    ).then((_) {
+                      // ignore: use_build_context_synchronously
+                      context.read<GetMissionsCubit>().getMissions();
+                      // ignore: use_build_context_synchronously
+                      context
+                          .read<GetMemberMissionSubscriptionsCubit>()
+                          .getSubscriptions();
+                    }),
                   )
                   .animate()
                   .fadeIn(

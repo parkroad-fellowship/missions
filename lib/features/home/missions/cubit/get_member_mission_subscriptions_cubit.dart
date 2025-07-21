@@ -30,7 +30,7 @@ class GetMemberMissionSubscriptionsCubit
     emit(const GetMemberMissionSubscriptionsState.loading());
     try {
       if (!refresh) {
-        // await _isarService.refreshMemberMissions();
+        await _isarService.memberMissions.refreshMemberMissions();
         emit(const GetMemberMissionSubscriptionsState.loaded());
         return;
       }
@@ -55,6 +55,7 @@ class GetMemberMissionSubscriptionsCubit
       );
 
       await _isarService.memberMissions.persistEntities(missionSubscriptions);
+      await _isarService.memberMissions.refreshMemberMissions();
 
       emit(const GetMemberMissionSubscriptionsState.loaded());
     } on Failure catch (e) {

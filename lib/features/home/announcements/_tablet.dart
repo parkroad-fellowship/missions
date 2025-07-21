@@ -122,6 +122,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               gridDelegate:
+                                  // ignore: lines_longer_than_80_chars
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 20,

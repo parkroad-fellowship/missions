@@ -126,6 +126,10 @@ class MemberMissionDbService
         );
   }
 
+  Future<void> refreshMemberMissions() async {
+    getAllParents();
+  }
+
   PRFLocalMission _transformLocalMemberMissionToLocalMission(
     PRFLocalMemberMission localMemberMission,
   ) {

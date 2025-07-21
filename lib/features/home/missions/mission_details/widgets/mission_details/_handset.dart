@@ -31,6 +31,7 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
   @override
   void initState() {
     super.initState();
+    getIt<IsarService>().missions.getByKey(missionUlid);
   }
 
   @override

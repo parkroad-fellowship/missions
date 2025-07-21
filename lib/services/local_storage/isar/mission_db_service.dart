@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_mission.dart';
@@ -117,5 +119,9 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
         .map((results) => results.isEmpty ? null : results.first);
 
     return v;
+  }
+
+  Future<void> refreshMissions() async {
+    getAll();
   }
 }
