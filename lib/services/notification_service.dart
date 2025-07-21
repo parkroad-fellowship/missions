@@ -175,14 +175,14 @@ abstract class NotificationService {
             const LandingRoute(),
             const EventsRoute(),
 
-            // TODO: Update this to use the event ulid when available
+            // TODO(MillerAdulu): Update this to use the event ulid
           ]);
         case PRFNotificationType.studentEnquiry:
           await getIt<PRFSuperAppRouter>().replaceAll([
             const LandingRoute(),
             const StudentEnquiriesRoute(),
 
-            // TODO: Update this to use the student enquiry ulid when available
+            // TODO(MillerAdulu): Update this to use the student enquiry ulid
           ]);
       }
     }

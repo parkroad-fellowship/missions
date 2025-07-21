@@ -190,18 +190,20 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                     mission: mission,
                     isLast: isLast,
                     index: index,
-                    onTap: () => context.router.push(
-                      MissionsDetailsRoute(
-                        missionUlid: mission.ulid,
-                      ),
-                    ).then((_) {
-                      // ignore: use_build_context_synchronously
-                      context.read<GetMissionsCubit>().getMissions();
-                      // ignore: use_build_context_synchronously
-                      context
-                          .read<GetMemberMissionSubscriptionsCubit>()
-                          .getSubscriptions();
-                    }),
+                    onTap: () => context.router
+                        .push(
+                          MissionsDetailsRoute(
+                            missionUlid: mission.ulid,
+                          ),
+                        )
+                        .then((_) {
+                          // ignore: use_build_context_synchronously
+                          context.read<GetMissionsCubit>().getMissions();
+                          // ignore: use_build_context_synchronously
+                          context
+                              .read<GetMemberMissionSubscriptionsCubit>()
+                              .getSubscriptions();
+                        }),
                   )
                   .animate()
                   .fadeIn(
