@@ -6,6 +6,7 @@ import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/buttons/secondary/secondary.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/router/router.gr.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,7 +74,11 @@ abstract class NotificationService {
           return;
 
         case PRFNotificationType.prayerPrompt:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+          ]);
           await showDialog<dynamic>(
+            // ignore: use_build_context_synchronously
             context: context,
             builder: (context) {
               final l10n = context.l10n;
@@ -146,9 +151,10 @@ abstract class NotificationService {
           );
 
         case PRFNotificationType.givingPrompt:
-          await getIt<PRFSuperAppRouter>().pushNamed(
-            PRFSuperAppRouter.givingRoute,
-          );
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            // const GivingRoute(),
+          ]);
 
         case PRFNotificationType.cancelledMission:
         case PRFNotificationType.postponedMission:
@@ -156,17 +162,28 @@ abstract class NotificationService {
         case PRFNotificationType.missionWhatsappGroupCreated:
         case PRFNotificationType.missionSubscription:
         case PRFNotificationType.newMission:
-          await getIt<PRFSuperAppRouter>().pushNamed(
-            PRFSuperAppRouter.missionsRoute,
-          );
-
-        // Gracefully handle unimplemented cases
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const MissionsRoute(),
+            MissionsDetailsRoute(
+              missionUlid: payload['mission_ulid']!,
+            ),
+          ]);
 
         case PRFNotificationType.newEvent:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const EventsRoute(),
+
+            // TODO: Update this to use the event ulid when available
+          ]);
         case PRFNotificationType.studentEnquiry:
-          Logger().w(
-            'Notification type not yet implemented: ${payload['type']}',
-          );
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const StudentEnquiriesRoute(),
+
+            // TODO: Update this to use the student enquiry ulid when available
+          ]);
       }
     }
   }
