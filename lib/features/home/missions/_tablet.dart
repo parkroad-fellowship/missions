@@ -2,7 +2,7 @@ import 'package:app/features/home/missions/cubit/get_member_mission_subscription
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -23,10 +23,10 @@ class MissionsPageTablet extends StatefulWidget {
 class _MissionsPageTabletState extends State<MissionsPageTablet>
     with SingleTickerProviderStateMixin {
   Stream<List<PRFLocalMission>> get _missionsStream =>
-      getIt<LocalDBService>().missions;
+      getIt<IsarService>().missions.stream;
 
   Stream<List<PRFLocalMission>> get _memberMissionsStream =>
-      getIt<LocalDBService>().memberMissions;
+      getIt<IsarService>().memberMissions.parentStream;
 
   late TabController _tabController;
 
@@ -143,7 +143,6 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
     return StreamBuilder<List<PRFLocalMission>>(
       key: PageStorageKey('missions_stream_${_tabController.index}'),
-      initialData: const [],
       stream: _missionsStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -221,7 +220,6 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
       key: PageStorageKey(
         'member_missions_stream_${_tabController.index}',
       ),
-      initialData: const [],
       stream: _memberMissionsStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

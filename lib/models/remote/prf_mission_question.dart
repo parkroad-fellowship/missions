@@ -1,3 +1,4 @@
+import 'package:app/models/remote/prf_mission.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_mission_question.freezed.dart';
@@ -9,8 +10,9 @@ abstract class PRFMissionQuestion with _$PRFMissionQuestion {
     String ulid,
     String question,
     @JsonKey(name: 'created_at') DateTime createdAt,
-    @JsonKey(name: 'updated_at') DateTime updatedAt,
-  ) = _PRFMissionQuestion;
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    PRFMission? mission,
+  }) = _PRFMissionQuestion;
 
   factory PRFMissionQuestion.fromJson(Map<String, dynamic> json) =>
       _$PRFMissionQuestionFromJson(json);

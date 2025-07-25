@@ -4,14 +4,12 @@ class FormFieldLabelTablet extends StatelessWidget {
   const FormFieldLabelTablet({
     required this.label,
     super.key,
-    this.isOptional,
     this.isRequired,
     this.color,
     this.isBold,
   });
 
   final String label;
-  final bool? isOptional;
   final bool? isRequired;
   final Color? color;
   final bool? isBold;
@@ -36,7 +34,7 @@ class FormFieldLabelTablet extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          if (isOptional ?? false)
+          if (isRequired == null)
             TextSpan(
               text: ' (optional)',
               style: theme.textTheme.titleMedium?.copyWith(

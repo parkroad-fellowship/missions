@@ -34,7 +34,7 @@ class PrayerRequestCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
-                          Icons.self_improvement_rounded,
+                          Icons.hail_rounded,
                           color: theme.colorScheme.onPrimaryContainer,
                           size: 24,
                         ),
@@ -99,7 +99,7 @@ class PrayerRequestCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
-                    Icons.self_improvement_rounded,
+                    Icons.hail_rounded,
                     color: theme.colorScheme.onPrimaryContainer,
                     size: 24,
                   ),

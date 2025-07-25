@@ -64,7 +64,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                               child: PRFEmptyView(
                                 label: l10n.noPrayerRequests,
                                 description: message,
-                                icon: Icons.self_improvement_rounded,
+                                icon: Icons.hail_rounded,
                               ),
                             ),
                           ),
@@ -82,7 +82,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                                   child: PRFEmptyView(
                                     label: l10n.noPrayerRequests,
                                     description: l10n.noPrayerRequestsDesc,
-                                    icon: Icons.self_improvement_rounded,
+                                    icon: Icons.hail_rounded,
                                     actionLabel: l10n.submitPrayerRequest,
                                     onActionPressed: _addPrayerRequest,
                                   ),

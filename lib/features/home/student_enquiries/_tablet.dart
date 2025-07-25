@@ -1,7 +1,7 @@
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_student_enquiry.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -73,7 +73,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
 
             // Enquiries List
             StreamBuilder<List<PRFLocalStudentEnquiry>>(
-              stream: getIt<LocalDBService>().getStudentEnquiries(
+              stream: getIt<IsarService>().studentEnquiries.filter(
                 replyStatus: _selectedReplyStatus,
               ),
               builder: (context, snapshot) {
@@ -109,7 +109,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                       enquiry: enquiry,
                       timezone: timezone,
                       onTap: () => context.router.push(
-                        StudentEnquiryRepliesRoute(enquiry: enquiry),
+                        StudentEnquiryRepliesRoute(enquiryUlid: enquiry.ulid),
                       ),
                     );
                   },

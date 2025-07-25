@@ -63,4 +63,17 @@ class AuthService extends BaseAPIService<PRFUser> {
       rethrow;
     }
   }
+
+  Future<PRFUser> updateProfile({required UserUpdateDTO updateDTO}) async {
+    try {
+      final response = await networkUtil.post(
+        '$endpoint/update-profile',
+        body: json.encode(updateDTO.toJson()),
+      );
+
+      return PRFUser.fromJson(response['data'] as Map<String, dynamic>);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,14 +13,14 @@ part 'select_media_cubit.freezed.dart';
 class SelectMediaCubit extends Cubit<SelectMediaState> {
   SelectMediaCubit({
     required MediaService mediaService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const SelectMediaState.initial()) {
     _mediaService = mediaService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MediaService _mediaService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> selectMedia({
     required BuildContext context,
@@ -35,7 +36,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
       mediaType: mediaType,
     );
 
-    await _localDBService.persistMediaUploads(mediaDTOs: media);
+    await _isarService.mediaUploads.persistEntities(media);
 
     final items = [...previousMedia, ...media];
 
@@ -55,7 +56,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
       modelUlid: modelUlid,
       model: model,
     );
-    await _localDBService.persistMediaUploads(mediaDTOs: media);
+    await _isarService.mediaUploads.persistEntities(media);
 
     final items = [...previousMedia, ...media];
 

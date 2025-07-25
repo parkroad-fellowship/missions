@@ -3,6 +3,7 @@ import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_class_group.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/class_group_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -14,16 +15,16 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
   GetClassGroupsCubit({
     required ClassGroupService classGroupService,
     required HiveService hiveService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetClassGroupsState.initial()) {
     _classGroupService = classGroupService;
     _hiveService = hiveService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late ClassGroupService _classGroupService;
   late HiveService _hiveService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getClassGroups({
     String? missionUlid,
@@ -33,13 +34,11 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
       final localClassGroups = _hiveService.data.retrieveClassGroups();
       if (localClassGroups.isNotEmpty) {
         if (missionUlid != null) {
-          final mission = await _localDBService.loadMission(
-            missionUlid: missionUlid,
-          );
-          Logger().d(mission.school);
+          final mission = await _isarService.missions.get(missionUlid);
+          Logger().d(mission?.school);
           final filteredClassGroups = _filterClassGroupsByType(
             classGroups: localClassGroups,
-            type: mission.school!.institutionType!,
+            type: mission!.school!.institutionType!,
           );
           emit(GetClassGroupsState.loaded(classGroups: filteredClassGroups));
           return;
@@ -54,12 +53,10 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
       );
 
       if (missionUlid != null) {
-        final mission = await _localDBService.loadMission(
-          missionUlid: missionUlid,
-        );
+        final mission = await _isarService.missions.get(missionUlid);
         final filteredClassGroups = _filterClassGroupsByType(
           classGroups: localClassGroups,
-          type: mission.school!.institutionType!,
+          type: mission!.school!.institutionType!,
         );
         emit(GetClassGroupsState.loaded(classGroups: filteredClassGroups));
         return;

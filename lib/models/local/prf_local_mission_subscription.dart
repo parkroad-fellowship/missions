@@ -28,5 +28,6 @@ class PRFLocalMissionSubscription {
 
   final PRFLocalMember member;
 
+  @Index()
   final String missionUlid;
 }

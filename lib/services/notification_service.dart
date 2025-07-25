@@ -6,6 +6,7 @@ import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/buttons/secondary/secondary.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/router/router.gr.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,18 +51,37 @@ abstract class NotificationService {
     Logger().f(receivedAction);
 
     final payload = receivedAction.payload;
+    final context = getIt<PRFSuperAppRouter>().navigatorKey.currentContext;
+
+    if (payload == null) {
+      Logger().w('Notification payload is null');
+    }
+
+    if (context == null) {
+      Logger().w('No context available for notification action');
+      return;
+    }
+
+    if (payload != null && payload['type'] == null) {
+      Logger().w('Notification payload type is null');
+      return;
+    }
 
     if (payload != null) {
       switch (PRFNotificationType.fromType(payload['type']!)) {
         case PRFNotificationType.defaultPrompt:
+          Logger().i('Default prompt received');
           return;
 
         case PRFNotificationType.prayerPrompt:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+          ]);
           await showDialog<dynamic>(
-            context: getIt<PRFSuperAppRouter>().navigatorKey.currentContext!,
+            // ignore: use_build_context_synchronously
+            context: context,
             builder: (context) {
               final l10n = context.l10n;
-
               return Center(
                 child: Material(
                   color: Colors.transparent,
@@ -129,10 +149,45 @@ abstract class NotificationService {
               );
             },
           );
+
         case PRFNotificationType.givingPrompt:
-          await getIt<PRFSuperAppRouter>().pushNamed(
-            PRFSuperAppRouter.givingRoute,
-          );
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            // const GivingRoute(),
+          ]);
+
+        case PRFNotificationType.cancelledMission:
+        case PRFNotificationType.postponedMission:
+        case PRFNotificationType.missionThankYou:
+        case PRFNotificationType.missionWhatsappGroupCreated:
+        case PRFNotificationType.missionSubscription:
+        case PRFNotificationType.newMission:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const MissionsRoute(),
+            MissionsDetailsRoute(
+              missionUlid: payload['mission_ulid']!,
+            ),
+          ]);
+
+        case PRFNotificationType.newEvent:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const EventsRoute(),
+          ]);
+        case PRFNotificationType.studentEnquiry:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const StudentEnquiriesRoute(),
+          ]);
+        case PRFNotificationType.studentEnquiryReply:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const StudentEnquiriesRoute(),
+            StudentEnquiryRepliesRoute(
+              enquiryUlid: payload['student_enquiry_ulid']!,
+            ),
+          ]);
       }
     }
   }

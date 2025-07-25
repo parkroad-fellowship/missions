@@ -1,28 +1,31 @@
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/progress/linear_progress_indicator.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_launcher/map_launcher.dart';
 
-class MissionDetailsViewHandset extends StatefulWidget {
-  const MissionDetailsViewHandset({required this.missionUlid, super.key});
+class MissionGroundViewHandset extends StatefulWidget {
+  const MissionGroundViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
   @override
-  State<MissionDetailsViewHandset> createState() =>
-      _MissionDetailsViewHandsetState();
+  State<MissionGroundViewHandset> createState() =>
+      _MissionGroundViewHandsetState();
 }
 
-class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
+class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
   String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;
@@ -30,7 +33,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
   @override
   void initState() {
     super.initState();
-    getIt<LocalDBService>().getMission(missionUlid: missionUlid);
+
+    context.read<GetMissionCubit>().getMission(missionUlid: missionUlid);
   }
 
   @override
@@ -40,9 +44,9 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: SingleStreamWrapper<PRFLocalMission?>(
-          stream: getIt<LocalDBService>().getMission(missionUlid: missionUlid),
+          stream: getIt<IsarService>().missions.itemStream,
           loading: const PRFLinearProgressIndicator(),
           widget: (context, mission) => Column(
             children: [

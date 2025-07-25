@@ -1,12 +1,14 @@
+import 'package:app/features/home/lms/cubit/get_course_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/widgets/course_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,6 +26,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 
   @override
   void initState() {
+    context.read<GetCourseCubit>().getCourse(
+      courseUlid: courseUlid,
+    );
     context.read<GetCourseModulesCubit>().getCourseModules(
       courseUlid: courseUlid,
     );
@@ -40,13 +45,14 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
         child: CustomScrollView(
           slivers: [
             PRFNavBar(
+              onBack: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.lmsRoute,
+              ),
               title: l10n.courseDetails,
               backgroundColor: theme.colorScheme.surface,
               actions: [
                 SingleStreamWrapper<PRFLocalCourse?>(
-                  stream: getIt<LocalDBService>().getCourse(
-                    courseUlid: courseUlid,
-                  ),
+                  stream: getIt<IsarService>().courses.itemStream,
                   widget: (context, course) => Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 14,
@@ -82,15 +88,16 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
             SliverToBoxAdapter(
               child: BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
                 builder: (context, state) => state.maybeWhen(
-                  loading: () => const PRFLinearProgressIndicator(),
+                  loading: () => const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: PRFLinearProgressIndicator(),
+                  ),
                   orElse: SizedBox.shrink,
                 ),
               ),
             ),
             StreamBuilder<List<PRFLocalCourseModule>>(
-              stream: getIt<LocalDBService>().getCourseModules(
-                courseUlid: courseUlid,
-              ),
+              stream: getIt<IsarService>().courseModules.parentStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SliverToBoxAdapter(

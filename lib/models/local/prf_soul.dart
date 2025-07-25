@@ -22,6 +22,8 @@ class PRFLocalSoul {
   final String ulid;
   final String fullName;
   final DateTime createdAt;
+
+  @Index()
   final String missionUlid;
   final PRFLocalClassGroup classGroup;
   @Enumerated(EnumType.ordinal32)

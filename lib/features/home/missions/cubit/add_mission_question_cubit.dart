@@ -1,7 +1,7 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_mission_question_dto.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_question_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,14 +11,14 @@ part 'add_mission_question_cubit.freezed.dart';
 class AddMissionQuestionCubit extends Cubit<AddMissionQuestionState> {
   AddMissionQuestionCubit({
     required MissionQuestionService missionQuestionService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const AddMissionQuestionState.initial()) {
     _missionQuestionService = missionQuestionService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionQuestionService _missionQuestionService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> addMissionQuestion({
     required String missionUlid,
@@ -31,10 +31,11 @@ class AddMissionQuestionCubit extends Cubit<AddMissionQuestionState> {
           question: question,
           missionUlid: missionUlid,
         ).toJson(),
+        includes: const ['mission'],
       );
-      await _localDBService.persistMissionQuestions(
-        missionQuestions: [missionQuestion],
-        missionUlid: missionUlid,
+
+      await _isarService.missionQuestions.persistEntity(
+        missionQuestion,
       );
       emit(const AddMissionQuestionState.loaded());
     } on Failure catch (e) {

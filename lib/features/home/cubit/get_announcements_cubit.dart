@@ -1,5 +1,6 @@
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/announcement_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,17 +10,17 @@ part 'get_announcements_cubit.freezed.dart';
 class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
   GetAnnouncementsCubit({
     required AnnouncementService announcementService,
-    required LocalDBService localDBService,
     required HiveService hiveService,
+    required IsarService isarService,
   }) : super(const GetAnnouncementsState.initial()) {
     _announcementService = announcementService;
-    _localDBService = localDBService;
     _hiveService = hiveService;
+    _isarService = isarService;
   }
 
   late AnnouncementService _announcementService;
-  late LocalDBService _localDBService;
   late HiveService _hiveService;
+  late IsarService _isarService;
 
   Future<void> getAnnouncements() async {
     emit(const GetAnnouncementsState.loading());
@@ -36,7 +37,8 @@ class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
         orderDirection: 'desc',
       );
 
-      await _localDBService.persistAnnouncements(announcements: announcements);
+      await _isarService.announcements.persistEntities(announcements);
+      await _isarService.announcements.refreshStream();
 
       emit(GetAnnouncementsState.loaded(isEmpty: announcements.isEmpty));
     } catch (e) {

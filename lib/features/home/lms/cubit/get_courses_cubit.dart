@@ -1,5 +1,6 @@
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/course_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,16 +10,16 @@ part 'get_courses_cubit.freezed.dart';
 class GetCoursesCubit extends Cubit<GetCoursesState> {
   GetCoursesCubit({
     required CourseService courseService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
     required HiveService hiveService,
   }) : super(const GetCoursesState.initial()) {
     _courseService = courseService;
-    _localDBService = localDBService;
+    _isarService = isarService;
     _hiveService = hiveService;
   }
 
   late CourseService _courseService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
   late HiveService _hiveService;
 
   Future<void> getCourses() async {
@@ -37,7 +38,8 @@ class GetCoursesCubit extends Cubit<GetCoursesState> {
         },
       );
 
-      await _localDBService.persistCourses(courses: courses);
+      await _isarService.courses.persistEntities(courses);
+      await _isarService.courses.refreshStream();
 
       emit(GetCoursesState.loaded(isEmpty: courses.isEmpty));
     } catch (e) {

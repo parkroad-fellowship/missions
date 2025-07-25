@@ -24,7 +24,7 @@ class GetMissionExpenseCubit extends Cubit<GetMissionExpenseState> {
     emit(const GetMissionExpenseState.loading());
     try {
       final missionExpense = await _missionExpensesService.get(
-        id: missionUlid,
+        ulid: missionUlid,
         includes: [
           'expenses.expenseCategory',
           'expenses.receipts',

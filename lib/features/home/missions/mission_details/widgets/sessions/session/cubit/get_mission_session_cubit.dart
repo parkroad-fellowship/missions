@@ -1,6 +1,6 @@
 import 'package:app/models/remote/failure.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_session_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +10,14 @@ part 'get_mission_session_cubit.freezed.dart';
 class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
   GetMissionSessionCubit({
     required MissionSessionService missionSessionService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetMissionSessionState.initial()) {
     _missionSessionService = missionSessionService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionSessionService _missionSessionService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getMissionSession({
     required String missionSessionUlid,
@@ -27,31 +27,24 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
     try {
       emit(const GetMissionSessionState.loading());
 
-      if (!refresh) {
-        emit(const GetMissionSessionState.loaded());
-        await _localDBService.getMissionSession(
-          missionSessionUlid: missionSessionUlid,
+      final localMissionSession = await _isarService.missionSessions.get(
+        missionSessionUlid,
+      );
+      if (localMissionSession == null || refresh) {
+        final missionSession = await _missionSessionService.get(
+          ulid: missionSessionUlid,
+          includes: [
+            'facilitator',
+            'speaker',
+            'classGroup',
+            'missionSessionTranscripts.media',
+            'mission',
+          ],
         );
-        return;
+        await _isarService.missionSessions.persistEntity(missionSession);
       }
 
-      final missionSession = await _missionSessionService.get(
-        id: missionSessionUlid,
-        includes: [
-          'facilitator',
-          'speaker',
-          'classGroup',
-          'missionSessionTranscripts.media',
-        ],
-      );
-
-      await _localDBService.persistMissionSessions(
-        missionSessions: [missionSession],
-        missionUlid: missionUlid,
-      );
-      await _localDBService.getMissionSession(
-        missionSessionUlid: missionSessionUlid,
-      );
+      await _isarService.missionSessions.refreshItemStream(missionSessionUlid);
 
       emit(const GetMissionSessionState.loaded());
     } on Failure catch (e) {

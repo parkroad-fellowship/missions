@@ -29,7 +29,7 @@ class PRFLocalMission {
 
   Id id = Isar.autoIncrement;
 
-  @Index(unique: true, replace: true)
+  @Index(unique: true, replace: true, type: IndexType.hash)
   final String ulid;
   final DateTime startDate;
   final String startTime;

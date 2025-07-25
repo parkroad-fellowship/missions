@@ -1,7 +1,7 @@
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_question.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/empty_state.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -36,9 +36,7 @@ class _MissionQuestionsViewHandsetState
     final l10n = context.l10n;
 
     return SingleStreamWrapper(
-      stream: getIt<LocalDBService>().getMissionQuestions(
-        missionUlid: missionUlid,
-      ),
+      stream: getIt<IsarService>().missionQuestions.parentStream,
       nullWidget: PRFEmptyView(
         label: l10n.noQuestions,
         description: l10n.questionsWillAppearHere,

@@ -21,6 +21,7 @@ class PRFLocalCourseModule {
 
   @Index(unique: true, replace: true)
   late String ulid;
+  @Index()
   late String courseUlid;
   late String moduleUlid;
   late int order;

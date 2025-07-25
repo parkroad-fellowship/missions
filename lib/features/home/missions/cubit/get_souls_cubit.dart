@@ -1,5 +1,6 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,14 +10,14 @@ part 'get_souls_cubit.freezed.dart';
 class GetSoulsCubit extends Cubit<GetSoulsState> {
   GetSoulsCubit({
     required SoulService soulService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetSoulsState.initial()) {
     _soulService = soulService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late SoulService _soulService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getSouls({
     required String missionUlid,
@@ -25,6 +26,7 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
     emit(const GetSoulsState.loading());
     try {
       if (!refresh) {
+        await _isarService.souls.refreshParentStream(missionUlid);
         emit(const GetSoulsState.loaded());
         return;
       }
@@ -33,12 +35,10 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
         filters: {
           'mission_ulid': missionUlid,
         },
-        includes: ['classGroup'],
+        includes: ['classGroup', 'mission'],
       );
-      await _localDBService.persistSouls(
-        souls: souls,
-        missionUlid: missionUlid,
-      );
+      await _isarService.souls.persistEntities(souls);
+      await _isarService.souls.refreshParentStream(missionUlid);
       emit(const GetSoulsState.loaded());
     } on Failure catch (e) {
       emit(GetSoulsState.error(e.message));

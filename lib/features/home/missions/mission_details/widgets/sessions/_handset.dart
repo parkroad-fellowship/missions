@@ -1,7 +1,7 @@
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission_session.dart';
-import 'package:app/services/local_db_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/empty_state.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -36,88 +36,96 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleStreamWrapper(
-      stream: getIt<LocalDBService>().getMissionSessions(
-        missionUlid: missionUlid,
-      ),
-      nullWidget: PRFEmptyView(
-        label: l10n.noSessions,
-        description: l10n.sessionsWillAppearHere,
-        icon: Icons.event_note_outlined,
-      ),
-      widget: (context, missionSessions) => missionSessions.isEmpty
-          ? PRFEmptyView(
-              label: l10n.noSessions,
-              description: l10n.sessionsWillAppearHere,
-              icon: Icons.event_note_outlined,
-            )
-          : ListView.builder(
-              physics: const ScrollPhysics(),
-              itemCount: missionSessions.length,
-              itemBuilder: (context, index) {
-                final sortedDailySessions = List<PRFLocalMissionSession>.from(
-                  missionSessions.values.elementAt(index),
-                )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: SingleStreamWrapper(
+        stream: getIt<IsarService>().missionSessions.getByParentKeyGrouped(
+          missionUlid,
+          (session) => session.startsAt,
+        ),
+        nullWidget: PRFEmptyView(
+          label: l10n.noSessions,
+          description: l10n.sessionsWillAppearHere,
+          icon: Icons.event_note_outlined,
+        ),
+        widget: (context, missionSessions) => missionSessions.isEmpty
+            ? PRFEmptyView(
+                label: l10n.noSessions,
+                description: l10n.sessionsWillAppearHere,
+                icon: Icons.event_note_outlined,
+              )
+            : ListView.builder(
+                physics: const ScrollPhysics(),
+                itemCount: missionSessions.length,
+                itemBuilder: (context, index) {
+                  final sortedDailySessions = List<PRFLocalMissionSession>.from(
+                    missionSessions.values.elementAt(index),
+                  )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Timeline Date Header
-                    Container(
-                          margin: const EdgeInsets.only(
-                            left: 32,
-                            top: 16,
-                            bottom: 8,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 4,
-                                height: 24,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(2),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Timeline Date Header
+                      Container(
+                            margin: const EdgeInsets.only(
+                              left: 32,
+                              top: 16,
+                              bottom: 8,
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 4,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                Misc.formatMissionDate(
-                                  missionSessions.keys.elementAt(index),
-                                  timezone,
+                                const SizedBox(width: 12),
+                                Text(
+                                  Misc.formatMissionDate(
+                                    missionSessions.keys.elementAt(index),
+                                    timezone,
+                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
                                 ),
-                                style: Theme.of(context).textTheme.headlineSmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.primary,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        )
-                        .animate(delay: (index * 100).ms)
-                        .slideX(begin: -0.3)
-                        .fadeIn(),
+                              ],
+                            ),
+                          )
+                          .animate(delay: (index * 100).ms)
+                          .slideX(begin: -0.3)
+                          .fadeIn(),
 
-                    // Timeline Sessions
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      itemCount: sortedDailySessions.length,
-                      itemBuilder: (context, i) => TimelineSessionCard(
-                        missionSession: sortedDailySessions[i],
-                        missionUlid: missionUlid,
-                        isLast: i == sortedDailySessions.length - 1,
-                        animationDelay: (index * 100 + i * 50).ms,
-                        userTimezone: timezone,
+                      // Timeline Sessions
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const ScrollPhysics(),
+                        itemCount: sortedDailySessions.length,
+                        itemBuilder: (context, i) => TimelineSessionCard(
+                          missionSession: sortedDailySessions[i],
+                          missionUlid: missionUlid,
+                          isLast: i == sortedDailySessions.length - 1,
+                          animationDelay: (index * 100 + i * 50).ms,
+                          userTimezone: timezone,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                );
-              },
-            ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
+              ),
+      ),
     );
   }
 }

@@ -18,6 +18,7 @@ class PRFLocalStudentEnquiryReply {
 
   @Index(unique: true, replace: true)
   final String ulid;
+  @Index()
   final String studentEnquiryUlid;
   final String content;
   final DateTime createdAt;

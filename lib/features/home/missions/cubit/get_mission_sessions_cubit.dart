@@ -1,5 +1,5 @@
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_session_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,14 +9,14 @@ part 'get_mission_sessions_state.dart';
 class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
   GetMissionSessionsCubit({
     required MissionSessionService missionSessionService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetMissionSessionsState.initial()) {
     _missionSessionService = missionSessionService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionSessionService _missionSessionService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getMissionSessions({
     required String missionUlid,
@@ -24,10 +24,11 @@ class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
   }) async {
     emit(const GetMissionSessionsState.loading());
     try {
-      if (!refresh) {
-        emit(const GetMissionSessionsState.loaded());
-        return;
-      }
+      // if (!refresh) {
+      //   await _isarService.missionSessions.refreshParentStream(missionUlid);
+      //   emit(const GetMissionSessionsState.loaded());
+      //   return;
+      // }
       final missionSessions = await _missionSessionService.list(
         filters: {
           'mission_ulid': missionUlid,
@@ -37,12 +38,14 @@ class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
           'speaker',
           'classGroup',
           'missionSessionTranscripts.media',
+          'mission',
         ],
       );
-      await _localDBService.persistMissionSessions(
-        missionSessions: missionSessions,
-        missionUlid: missionUlid,
+
+      await _isarService.missionSessions.persistEntities(
+        missionSessions,
       );
+      await _isarService.missionSessions.refreshParentStream(missionUlid);
 
       emit(const GetMissionSessionsState.loaded());
     } catch (e) {

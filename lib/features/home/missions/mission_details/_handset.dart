@@ -13,7 +13,7 @@ import 'package:app/features/home/missions/mission_details/widgets/expenses/acti
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
-import 'package:app/features/home/missions/mission_details/widgets/mission_details/mission_details.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_ground/mission_ground.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/add_mission_question/add_mission_question.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/add_session/add_session.dart';
@@ -68,11 +68,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       missionUlid: widget.missionUlid,
       refresh: true,
     );
-    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
-      missionUlid: missionUlid,
-      refresh: true,
-    );
-    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+    context.read<GetMissionSessionsCubit>().getMissionSessions(
       missionUlid: missionUlid,
       refresh: true,
     );
@@ -80,7 +76,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       missionUlid: missionUlid,
       refresh: true,
     );
-    context.read<GetMissionSessionsCubit>().getMissionSessions(
+    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
+    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
       missionUlid: missionUlid,
       refresh: true,
     );
@@ -139,7 +139,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    MissionDetailsView(missionUlid: missionUlid),
+                    MissionGroundView(missionUlid: missionUlid),
                     SubscribersView(missionUlid: missionUlid),
                     SessionsView(missionUlid: missionUlid),
                     SoulsView(missionUlid: missionUlid),

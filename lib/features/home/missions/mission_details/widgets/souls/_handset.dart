@@ -3,7 +3,7 @@ import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_soul.dart';
-import 'package:app/services/local_db_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/empty_state.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
     final l10n = context.l10n;
 
     return SingleStreamWrapper(
-      stream: getIt<LocalDBService>().getSouls(missionUlid: missionUlid),
+      stream: getIt<IsarService>().souls.parentStream,
       nullWidget: Center(
         child: PRFEmptyView(
           label: l10n.noSouls,
@@ -197,7 +197,6 @@ class BeautifulSoulCard extends StatelessWidget {
             style: theme.textTheme.bodySmall?.copyWith(
               color: decisionColor,
               fontWeight: FontWeight.w600,
-              fontSize: 11,
             ),
           ),
         ],
@@ -260,7 +259,6 @@ class BeautifulSoulCard extends StatelessWidget {
               label,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
-                fontSize: 11,
               ),
             ),
           ],
@@ -270,7 +268,6 @@ class BeautifulSoulCard extends StatelessWidget {
           value,
           style: theme.textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.w600,
-            fontSize: 12,
           ),
         ),
       ],
@@ -303,7 +300,6 @@ class BeautifulSoulCard extends StatelessWidget {
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.secondary,
                   fontWeight: FontWeight.w600,
-                  fontSize: 11,
                 ),
               ),
             ],
@@ -313,7 +309,6 @@ class BeautifulSoulCard extends StatelessWidget {
             soul.notes!,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurface,
-              fontSize: 12,
             ),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
@@ -340,7 +335,6 @@ class BeautifulSoulCard extends StatelessWidget {
           'Recorded: $formattedDate',
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
-            fontSize: 11,
           ),
         ),
       ],

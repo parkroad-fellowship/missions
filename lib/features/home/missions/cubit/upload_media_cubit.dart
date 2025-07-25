@@ -1,5 +1,6 @@
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,25 +12,25 @@ part 'upload_media_cubit.freezed.dart';
 class UploadMediaCubit extends Cubit<UploadMediaState> {
   UploadMediaCubit({
     required MediaService mediaService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const UploadMediaState.initial()) {
     _mediaService = mediaService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MediaService _mediaService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> uploadMedia() async {
     emit(const UploadMediaState.loading());
     try {
-      final imageDTOs = _localDBService.retrieveMediaUploads();
+      final imageDTOs = await _isarService.mediaUploads.getAllFuture();
       Logger().d(imageDTOs);
       for (final imageDTO in imageDTOs) {
         await _mediaService.uploadFile(imageDTO: imageDTO);
-        _localDBService.deleteMediaUpload(
-          modelUlid: imageDTO.modelUlid,
-          path: imageDTO.path,
+        await _isarService.mediaUploads.deleteByKeys(
+          imageDTO.modelUlid,
+          imageDTO.path,
         );
       }
       emit(const UploadMediaState.loaded());

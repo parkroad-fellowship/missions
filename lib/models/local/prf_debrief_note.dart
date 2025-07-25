@@ -16,5 +16,6 @@ class PRFLocalDebriefNote {
   final String ulid;
   final String note;
   final DateTime createdAt;
+  @Index()
   final String missionUlid;
 }

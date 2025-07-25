@@ -1,5 +1,6 @@
 import 'package:app/shared_widgets/progress/circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class SingleStreamWrapper<T> extends StatelessWidget {
   const SingleStreamWrapper({
@@ -20,6 +21,7 @@ class SingleStreamWrapper<T> extends StatelessWidget {
     return StreamBuilder<T>(
       stream: stream,
       builder: (context, snapshot) {
+        Logger().e(snapshot);
         if (!snapshot.hasData) {
           return loading;
         }

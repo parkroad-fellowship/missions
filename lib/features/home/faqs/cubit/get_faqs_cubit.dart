@@ -1,6 +1,6 @@
 import 'package:app/models/local/prf_faq.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_faq_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,14 +10,14 @@ part 'get_faqs_cubit.freezed.dart';
 class GetFaqsCubit extends Cubit<GetFaqsState> {
   GetFaqsCubit({
     required MissionFaqService missionFaqService,
-    required LocalDBService localDBService,
+    required IsarService isarService,
   }) : super(const GetFaqsState.initial()) {
     _missionFaqService = missionFaqService;
-    _localDBService = localDBService;
+    _isarService = isarService;
   }
 
   late MissionFaqService _missionFaqService;
-  late LocalDBService _localDBService;
+  late IsarService _isarService;
 
   Future<void> getFaqs({
     bool forceRefresh = false,
@@ -26,7 +26,7 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
   }) async {
     emit(const GetFaqsState.loading());
     try {
-      final localFaqs = await _localDBService.retreiveFaqs(
+      final localFaqs = await _isarService.faqs.list(
         categoryUlid: categoryUlid,
         query: query,
       );
@@ -41,7 +41,7 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
       if (localFaqs.isEmpty || forceRefresh) {
         await _networkFetch();
 
-        final updatedLocalFaqs = await _localDBService.retreiveFaqs(
+        final updatedLocalFaqs = await _isarService.faqs.list(
           categoryUlid: categoryUlid,
           query: query,
         );
@@ -63,6 +63,7 @@ class GetFaqsCubit extends Cubit<GetFaqsState> {
       limit: 500,
       includes: ['missionFaqCategory'],
     );
-    await _localDBService.persistFaqs(faqs: faqs);
+
+    await _isarService.faqs.persistEntities(faqs);
   }
 }
