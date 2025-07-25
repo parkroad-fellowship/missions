@@ -21,7 +21,7 @@ class GetEnquiriesCubit extends Cubit<GetEnquiriesState> {
   Future<void> getStudentEnquiries() async {
     emit(const GetEnquiriesState.loading());
     try {
-      final enquiries = await _studentEnquiryService.list();
+      final enquiries = await _studentEnquiryService.list(limit: 100);
 
       await _isarService.studentEnquiries.persistEntities(enquiries);
       emit(const GetEnquiriesState.loaded());

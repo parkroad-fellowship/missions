@@ -33,7 +33,11 @@ class StudentEnquiryReplyDbService
   Future<List<PRFLocalStudentEnquiryReply>> listParentStudentEnquiryReplies(
     String parentKey,
   ) async {
-    return collection.where().studentEnquiryUlidEqualTo(parentKey).findAll();
+    return collection
+        .where()
+        .studentEnquiryUlidEqualTo(parentKey)
+        .sortByCreatedAt()
+        .findAll();
   }
 
   StreamController<List<PRFLocalStudentEnquiryReply>>? _parentStreamController;

@@ -11,13 +11,13 @@ Future<void> main() async {
   // TODO(MillerAdulu): Revert to production values
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
-      hiveBox: '----prf-super-app-${Misc.getSluggedAppVersion()}',
-      baseDomain: 'prf-sockets.test',
-      urlScheme: 'http',
-      socketDomain: 'prf-sockets.test',
+      hiveBox: 'prf-super-app-stg',
+      baseDomain: 'dev.api.parkroadfellowship.org',
+      urlScheme: 'https',
+      socketDomain: 'dev.ws.parkroadfellowship.org',
       socketKey: 'yvnlkaqadqiadutrs9sa',
-      socketScheme: 'ws',
-      socketPort: 9000,
+      socketScheme: 'wss',
+      socketPort: 443,
       azureConnString:
           'DefaultEndpointsProtocol=https;AccountName=prfcorestorage;AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0TA4TNOV4TYqU1QONfaQOrrs7+ASteXMXPA==;EndpointSuffix=core.windows.net',
     ),

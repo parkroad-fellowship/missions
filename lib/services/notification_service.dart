@@ -179,8 +179,14 @@ abstract class NotificationService {
           await getIt<PRFSuperAppRouter>().replaceAll([
             const LandingRoute(),
             const StudentEnquiriesRoute(),
-
-            // TODO(MillerAdulu): Update this to use the student enquiry ulid
+          ]);
+        case PRFNotificationType.studentEnquiryReply:
+          await getIt<PRFSuperAppRouter>().replaceAll([
+            const LandingRoute(),
+            const StudentEnquiriesRoute(),
+            StudentEnquiryRepliesRoute(
+              enquiryUlid: payload['student_enquiry_ulid']!,
+            ),
           ]);
       }
     }

@@ -58,6 +58,7 @@ import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit
 import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/announcement_service.dart';
@@ -318,6 +319,12 @@ class Singletons {
       ),
       BlocProvider<GetEnquiriesCubit>(
         create: (context) => GetEnquiriesCubit(
+          studentEnquiryService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<GetStudentEnquiryCubit>(
+        create: (context) => GetStudentEnquiryCubit(
           studentEnquiryService: getIt(),
           isarService: getIt(),
         ),

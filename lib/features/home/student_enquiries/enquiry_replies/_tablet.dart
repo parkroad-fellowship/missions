@@ -1,8 +1,8 @@
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_student_enquiry.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
@@ -16,9 +16,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class StudentEnquiryRepliesPageTablet extends StatefulWidget {
-  const StudentEnquiryRepliesPageTablet({required this.enquiry, super.key});
+  const StudentEnquiryRepliesPageTablet({required this.enquiryUlid, super.key});
 
-  final PRFLocalStudentEnquiry enquiry;
+  final String enquiryUlid;
 
   @override
   State<StudentEnquiryRepliesPageTablet> createState() =>
@@ -28,7 +28,7 @@ class StudentEnquiryRepliesPageTablet extends StatefulWidget {
 class _StudentEnquiryRepliesPageTabletState
     extends State<StudentEnquiryRepliesPageTablet>
     with TickerProviderStateMixin {
-  PRFLocalStudentEnquiry get enquiry => widget.enquiry;
+  String get enquiryUlid => widget.enquiryUlid;
 
   final _enquiryReplyController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -41,8 +41,12 @@ class _StudentEnquiryRepliesPageTabletState
   @override
   void initState() {
     super.initState();
+
+    context.read<GetStudentEnquiryCubit>().getStudentEnquiry(
+      studentEnquiryUlid: enquiryUlid,
+    );
     context.read<GetEnquiryRepliesCubit>().getStudentEnquiryReplies(
-      enquiryUlid: enquiry.ulid,
+      enquiryUlid: enquiryUlid,
     );
     _subscribeToEnquiryReplies();
 
@@ -89,7 +93,7 @@ class _StudentEnquiryRepliesPageTabletState
       socketConfig: SocketConfig(
         privateChannels: {
           ...getIt<SocketService>().defaultConfig().privateChannels,
-          'App.Models.StudentEnquiry.${enquiry.ulid}': <String>[
+          'App.Models.StudentEnquiry.$enquiryUlid': <String>[
             r'App\Events\StudentEnquiryReply\Created',
           ],
         },
@@ -104,7 +108,7 @@ class _StudentEnquiryRepliesPageTabletState
     if (text.trim().isEmpty) return;
 
     await context.read<CreateEnquiryReplyCubit>().createStudentEnquiryReply(
-      studentEnquiryUlid: enquiry.ulid,
+      studentEnquiryUlid: enquiryUlid,
       content: text.trim(),
     );
   }
@@ -386,73 +390,92 @@ class _StudentEnquiryRepliesPageTabletState
             Expanded(
               child: FadeTransition(
                 opacity: _fadeAnimation,
-                child: CustomScrollView(
-                  controller: _scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    PRFNavBar(
-                      title: l10n.studentQuestions,
-                      onBack: () => context.router.popUntilRouteWithPath(
-                        PRFSuperAppRouter.studentEnquiriesRoute,
-                      ),
-                      backgroundColor: theme.colorScheme.surface,
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                    StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
-                      stream: getIt<IsarService>()
-                          .studentEnquiryReplies
-                          .parentStream,
-                      builder: (context, snapshot) {
-                        // Scroll to bottom when new data arrives
-                        WidgetsBinding.instance.addPostFrameCallback(
-                          (_) => _scrollToBottom(),
-                        );
-
-                        if (!snapshot.hasData) {
-                          return const SliverFillRemaining(
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          );
-                        }
-
-                        final enquiryReplies = [
-                          PRFLocalStudentEnquiryReply(
-                            ulid: enquiry.ulid,
-                            studentEnquiryUlid: enquiry.ulid,
-                            content: enquiry.content,
-                            createdAt: enquiry.createdAt,
-                            commentorableType: PRFMorphType.student,
-                            isStudent: true,
+                child: StreamBuilder(
+                  stream: getIt<IsarService>().studentEnquiries.itemStream,
+                  builder: (context, asyncSnapshot) {
+                    if (!asyncSnapshot.hasData) {
+                      return const Center(
+                        child: PRFCircularProgressIndicator(),
+                      );
+                    }
+                    final enquiry = asyncSnapshot.data;
+                    if (enquiry == null) {
+                      return Center(
+                        child: PRFEmptyView(
+                          label: l10n.noQuestions,
+                          description: l10n.pleaseWait,
+                        ),
+                      );
+                    }
+                    return CustomScrollView(
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      slivers: [
+                        PRFNavBar(
+                          title: l10n.studentQuestions,
+                          onBack: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.studentEnquiriesRoute,
                           ),
-                          if (snapshot.data != null) ...snapshot.data!,
-                        ];
+                          backgroundColor: theme.colorScheme.surface,
+                        ),
+                        const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                        StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
+                          stream: getIt<IsarService>()
+                              .studentEnquiryReplies
+                              .parentStream,
+                          builder: (context, snapshot) {
+                            // Scroll to bottom when new data arrives
+                            WidgetsBinding.instance.addPostFrameCallback(
+                              (_) => _scrollToBottom(),
+                            );
 
-                        if (enquiryReplies.isEmpty) {
-                          return SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFEmptyView(
-                                label: l10n.noQuestions,
-                                description: l10n.pleaseWait,
+                            if (!snapshot.hasData) {
+                              return const SliverFillRemaining(
+                                child: Center(
+                                  child: PRFCircularProgressIndicator(),
+                                ),
+                              );
+                            }
+
+                            final enquiryReplies = [
+                              PRFLocalStudentEnquiryReply(
+                                ulid: enquiryUlid,
+                                studentEnquiryUlid: enquiryUlid,
+                                content: enquiry.content,
+                                createdAt: enquiry.createdAt,
+                                commentorableType: PRFMorphType.student,
+                                isStudent: true,
                               ),
-                            ),
-                          );
-                        }
+                              if (snapshot.data != null) ...snapshot.data!,
+                            ];
 
-                        return SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final reply = enquiryReplies[index];
-                              return _buildMessageBubble(reply, index);
-                            },
-                            childCount: enquiryReplies.length,
-                          ),
-                        );
-                      },
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
-                  ],
+                            if (enquiryReplies.isEmpty) {
+                              return SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: Center(
+                                  child: PRFEmptyView(
+                                    label: l10n.noQuestions,
+                                    description: l10n.pleaseWait,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  final reply = enquiryReplies[index];
+                                  return _buildMessageBubble(reply, index);
+                                },
+                                childCount: enquiryReplies.length,
+                              ),
+                            );
+                          },
+                        ),
+                        const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),

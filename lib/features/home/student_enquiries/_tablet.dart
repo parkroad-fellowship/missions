@@ -109,7 +109,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                       enquiry: enquiry,
                       timezone: timezone,
                       onTap: () => context.router.push(
-                        StudentEnquiryRepliesRoute(enquiry: enquiry),
+                        StudentEnquiryRepliesRoute(enquiryUlid: enquiry.ulid),
                       ),
                     );
                   },

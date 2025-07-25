@@ -110,7 +110,7 @@ class _StudentEnquiriesPageHandsetState
                       enquiry: enquiry,
                       timezone: timezone,
                       onTap: () => context.router.push(
-                        StudentEnquiryRepliesRoute(enquiry: enquiry),
+                        StudentEnquiryRepliesRoute(enquiryUlid: enquiry.ulid),
                       ),
                     );
                   },

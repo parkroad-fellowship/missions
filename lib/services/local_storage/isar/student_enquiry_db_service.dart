@@ -33,4 +33,11 @@ class StudentEnquiryDbService
         .watch(fireImmediately: true)
         .asBroadcastStream();
   }
+
+  @override
+  Future<PRFLocalStudentEnquiry?> get(
+    String key,
+  ) async {
+    return collection.where().ulidEqualTo(key).findFirst();
+  }
 }

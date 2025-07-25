@@ -26,6 +26,7 @@ class GetEnquiryRepliesCubit extends Cubit<GetEnquiryRepliesState> {
           'student_enquiry_ulid': enquiryUlid,
         },
         includes: const ['studentEnquiry'],
+        limit: 1000,
       );
       if (replies.isNotEmpty) {
         await _isarService.studentEnquiryReplies.persistEntities(replies);
