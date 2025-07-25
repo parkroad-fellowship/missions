@@ -15,17 +15,17 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_launcher/map_launcher.dart';
 
-class MissionDetailsViewHandset extends StatefulWidget {
-  const MissionDetailsViewHandset({required this.missionUlid, super.key});
+class MissionGroundViewHandset extends StatefulWidget {
+  const MissionGroundViewHandset({required this.missionUlid, super.key});
 
   final String missionUlid;
 
   @override
-  State<MissionDetailsViewHandset> createState() =>
-      _MissionDetailsViewHandsetState();
+  State<MissionGroundViewHandset> createState() =>
+      _MissionGroundViewHandsetState();
 }
 
-class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
+class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
   String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;

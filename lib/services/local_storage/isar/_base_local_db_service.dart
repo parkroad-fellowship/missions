@@ -198,6 +198,4 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
       return col.groupBy(entities, groupByField);
     });
   }
-
-  
 }

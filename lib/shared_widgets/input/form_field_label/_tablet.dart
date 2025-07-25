@@ -34,7 +34,7 @@ class FormFieldLabelTablet extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          if (isRequired == null )
+          if (isRequired == null)
             TextSpan(
               text: ' (optional)',
               style: theme.textTheme.titleMedium?.copyWith(

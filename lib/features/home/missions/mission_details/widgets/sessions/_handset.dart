@@ -61,7 +61,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                   final sortedDailySessions = List<PRFLocalMissionSession>.from(
                     missionSessions.values.elementAt(index),
                   )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
-      
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -78,7 +78,9 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                                   width: 4,
                                   height: 24,
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 ),
@@ -88,7 +90,9 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                                     missionSessions.keys.elementAt(index),
                                     timezone,
                                   ),
-                                  style: Theme.of(context).textTheme.headlineSmall
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
                                       ?.copyWith(
                                         fontWeight: FontWeight.w600,
                                         color: Theme.of(
@@ -102,7 +106,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                           .animate(delay: (index * 100).ms)
                           .slideX(begin: -0.3)
                           .fadeIn(),
-      
+
                       // Timeline Sessions
                       ListView.builder(
                         shrinkWrap: true,
