@@ -221,7 +221,11 @@ class SocketServiceImpl implements SocketService {
             );
 
             _isarService.courseModules.persistEntity(courseModuleData);
-            _isarService.courseModules.refreshStream();
+            if(courseModuleData.course != null) {
+              _isarService.courseModules.refreshParentStream(
+                courseModuleData.course!.ulid,
+              );
+            }
 
           case PRFEvent.lessonMemberUpdated:
             Logger().f(data['data']);
@@ -230,6 +234,11 @@ class SocketServiceImpl implements SocketService {
             );
 
             _isarService.lessonModules.persistEntity(lessonModuleData);
+            if (lessonModuleData.module != null) {
+              _isarService.lessonModules.refreshParentStream(
+                lessonModuleData.module!.ulid,
+              );
+            }
 
           case PRFEvent.studentEnquiryReplyCreated:
             Logger().f(data['data']);
@@ -240,6 +249,11 @@ class SocketServiceImpl implements SocketService {
             _isarService.studentEnquiryReplies.persistEntity(
               studentEnquiryReplyData,
             );
+            if (studentEnquiryReplyData.studentEnquiry != null) {
+              _isarService.studentEnquiryReplies.refreshParentStream(
+                studentEnquiryReplyData.studentEnquiry!.ulid,
+              );
+            }
         }
       } catch (e, stackTrace) {
         Logger().e(
