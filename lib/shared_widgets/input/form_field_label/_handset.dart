@@ -4,14 +4,12 @@ class FormFieldLabelHandset extends StatelessWidget {
   const FormFieldLabelHandset({
     required this.label,
     super.key,
-    this.isOptional,
     this.isRequired,
     this.color,
     this.isBold,
   });
 
   final String label;
-  final bool? isOptional;
   final bool? isRequired;
   final Color? color;
   final bool? isBold;
@@ -36,11 +34,11 @@ class FormFieldLabelHandset extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-          if (isOptional ?? false)
+          if (isRequired == null || isRequired == false)
             TextSpan(
               text: ' (optional)',
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+                color: theme.colorScheme.primary,
               ),
             ),
         ],

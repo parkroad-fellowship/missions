@@ -35,7 +35,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
     final l10n = context.l10n;
 
     return SingleStreamWrapper(
-      stream: getIt<IsarService>().debriefNotes.getByParentKey(missionUlid),
+      stream: getIt<IsarService>().debriefNotes.parentStream,
       nullWidget: PRFEmptyView(
         label: l10n.noNotes,
         description: l10n.noNotesDesc,

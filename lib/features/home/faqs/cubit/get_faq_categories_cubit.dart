@@ -25,8 +25,7 @@ class GetFaqCategoriesCubit extends Cubit<GetFaqCategoriesState> {
   }) async {
     emit(const GetFaqCategoriesState.loading());
     try {
-      final localFaqCategories = await _isarService.faqCategories
-          .getAllFuture();
+      final localFaqCategories = await _isarService.faqCategories.list();
       if (localFaqCategories.isNotEmpty && !forceRefresh) {
         emit(GetFaqCategoriesState.loaded(faqCategories: localFaqCategories));
         return;
@@ -35,8 +34,7 @@ class GetFaqCategoriesCubit extends Cubit<GetFaqCategoriesState> {
       if (localFaqCategories.isEmpty || forceRefresh) {
         await _networkFetch();
 
-        final localFaqCategories = await _isarService.faqCategories
-            .getAllFuture();
+        final localFaqCategories = await _isarService.faqCategories.list();
         emit(GetFaqCategoriesState.loaded(faqCategories: localFaqCategories));
         return;
       }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart' as col;
 import 'package:isar/isar.dart';
 
@@ -19,6 +21,46 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// Get the Isar collection for this entity type
   IsarCollection<TLocal> get collection;
 
+  StreamController<List<TLocal>>? _streamController;
+  Stream<List<TLocal>> get stream {
+    _streamController ??= StreamController<List<TLocal>>.broadcast();
+    return _streamController!.stream;
+  }
+
+  Future<void> refreshStream() async {
+    _streamController ??= StreamController<List<TLocal>>.broadcast();
+    final entities = await list();
+    _streamController!.add(entities);
+  }
+
+  Future<void> closeStream() async {
+    await _streamController?.close();
+    _streamController = null;
+  }
+
+  StreamController<TLocal?>? _itemStreamController;
+  Stream<TLocal?> get itemStream {
+    _itemStreamController ??= StreamController<TLocal?>.broadcast();
+    return _itemStreamController!.stream;
+  }
+
+  Future<void> refreshItemStream(String itemKey) async {
+    _itemStreamController ??= StreamController<TLocal?>.broadcast();
+    final entity = await get(itemKey);
+    _itemStreamController!.add(entity);
+  }
+
+  Future<void> closeItemStream() async {
+    await _itemStreamController?.close();
+    _itemStreamController = null;
+  }
+
+  Future<TLocal?> get(String key) async {
+    throw UnimplementedError(
+      'get must be implemented in subclasses',
+    );
+  }
+
   // Common database operations
 
   /// Persist a list of remote entities to local database
@@ -37,13 +79,8 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
     });
   }
 
-  /// Get all entities as a stream
-  Stream<List<TLocal>> getAll() {
-    return collection.where().watch(fireImmediately: true).asBroadcastStream();
-  }
-
   /// Get all entities as a future
-  Future<List<TLocal>> getAllFuture() async {
+  Future<List<TLocal>> list() async {
     return collection.where().findAll();
   }
 
@@ -60,11 +97,11 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   ///     .map((results) => results.isEmpty ? null : results.first);
   /// }
   /// ```
-  Stream<TLocal?> getByKey(String key) {
-    throw UnimplementedError(
-      'getByKey must be implemented in subclasses',
-    );
-  }
+  // Stream<TLocal?> getByKey(String key) {
+  //   throw UnimplementedError(
+  //     'getByKey must be implemented in subclasses',
+  //   );
+  // }
 
   /// Get entity by primary key as a future - Example implementation.
   /// You should override this in your subclass with the correct entity query.
@@ -76,11 +113,11 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// return results.isEmpty ? null : results.first;
   /// }
   /// ```
-  Future<TLocal?> getByKeyFuture(String key) async {
-    throw UnimplementedError(
-      'getByKeyFuture must be implemented in subclasses',
-    );
-  }
+  // Future<TLocal?> getByKeyFuture(String key) async {
+  //   throw UnimplementedError(
+  //     'getByKeyFuture must be implemented in subclasses',
+  //   );
+  // }
 
   /// Delete entity by primary key - Example implementation.
   /// You should override this in your subclass with the correct entity query.
@@ -151,41 +188,16 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
         .map((results) => results.isEmpty ? <TLocal>[] : results.first);
   }
 
-  /// Get entities by parent/foreign key - Example implementation.
-  /// You should override this in your subclass with the correct field and query
-  /// Example:
-  /// ```dart
-  /// @override
-  /// Stream<List<MyLocalEntity>> getByParentKey(String parentKey) {
-  ///   return collection
-  ///     .where()
-  ///     .missionUlidEqualTo(parentKey) // Replace with your actual field
-  ///     .watch(fireImmediately: true);
-  /// }
-  /// ```
-  Stream<List<TLocal>> getByParentKey(String parentKey) {
-    throw UnimplementedError(
-      'getByParentKey must be implemented in subclasses',
-    );
-  }
-
   /// Group entities by a field and return as a stream.
   /// Example usage:
   ///   getGroupedBy&lt;DateTime&gt;((entity) => entity.publishedAt)
   Stream<Map<K, List<TLocal>>> getGroupedBy<K>(
     K Function(TLocal entity) groupByField,
   ) {
-    return getAll().map((entities) {
+    return stream.map((entities) {
       return col.groupBy(entities, groupByField);
     });
   }
 
-  Stream<Map<K, List<TLocal>>> getByParentKeyGrouped<K>(
-    String missionUlid,
-    K Function(TLocal session) groupByField,
-  ) {
-    return getByParentKey(missionUlid).map(
-      (sessions) => col.groupBy(sessions, groupByField),
-    );
-  }
+  
 }

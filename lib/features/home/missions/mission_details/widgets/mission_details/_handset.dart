@@ -1,5 +1,6 @@
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_mission.dart';
@@ -11,6 +12,7 @@ import 'package:app/utils/_index.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_launcher/map_launcher.dart';
 
 class MissionDetailsViewHandset extends StatefulWidget {
@@ -31,7 +33,8 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
   @override
   void initState() {
     super.initState();
-    getIt<IsarService>().missions.getByKey(missionUlid);
+
+    context.read<GetMissionCubit>().getMission(missionUlid: missionUlid);
   }
 
   @override
@@ -41,9 +44,9 @@ class _MissionDetailsViewHandsetState extends State<MissionDetailsViewHandset>
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: SingleStreamWrapper<PRFLocalMission?>(
-          stream: getIt<IsarService>().missions.getByKey(missionUlid),
+          stream: getIt<IsarService>().missions.itemStream,
           loading: const PRFLinearProgressIndicator(),
           widget: (context, mission) => Column(
             children: [

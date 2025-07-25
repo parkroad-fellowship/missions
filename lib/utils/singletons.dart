@@ -19,8 +19,12 @@ import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
+import 'package:app/features/home/lms/cubit/get_course_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
+import 'package:app/features/home/lms/cubit/get_lesson_cubit.dart';
+import 'package:app/features/home/lms/cubit/get_lesson_modules_cubit.dart';
+import 'package:app/features/home/lms/cubit/get_module_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
@@ -35,6 +39,7 @@ import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
+import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
@@ -64,6 +69,7 @@ import 'package:app/services/api/event_subscription_service.dart';
 import 'package:app/services/api/expense_categories_service.dart';
 import 'package:app/services/api/expense_service.dart';
 import 'package:app/services/api/lesson_member_service.dart';
+import 'package:app/services/api/lesson_module_service.dart';
 import 'package:app/services/api/mission_expenses_service.dart';
 import 'package:app/services/api/mission_faq_category_service.dart';
 import 'package:app/services/api/mission_faq_service.dart';
@@ -153,6 +159,7 @@ class Singletons {
       ..registerSingleton<CourseModuleService>(
         CourseModuleService(),
       )
+      ..registerSingleton<LessonModuleService>(LessonModuleService())
       ..registerSingleton<LessonMemberService>(
         LessonMemberService(),
       )
@@ -193,6 +200,12 @@ class Singletons {
       ),
       BlocProvider<GetMissionsCubit>(
         create: (context) => GetMissionsCubit(
+          missionService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<GetMissionCubit>(
+        create: (context) => GetMissionCubit(
           missionService: getIt(),
           isarService: getIt(),
         ),
@@ -257,16 +270,40 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
+      BlocProvider<GetCourseCubit>(
+        create: (context) => GetCourseCubit(
+          courseService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
       BlocProvider<GetCourseModulesCubit>(
         create: (context) => GetCourseModulesCubit(
           courseModuleService: getIt(),
           isarService: getIt(),
         ),
       ),
+      BlocProvider<GetModuleCubit>(
+        create: (context) => GetModuleCubit(
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<GetLessonModulesCubit>(
+        create: (context) => GetLessonModulesCubit(
+          lessonModuleService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<GetLessonCubit>(
+        create: (context) => GetLessonCubit(
+          isarService: getIt(),
+        ),
+      ),
+
       BlocProvider<FinishLessonCubit>(
         create: (context) => FinishLessonCubit(
           lessonMemberService: getIt(),
           hiveService: getIt(),
+          isarService: getIt(),
         ),
       ),
       BlocProvider<GetFaqsCubit>(

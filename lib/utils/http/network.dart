@@ -243,6 +243,10 @@ class NetworkUtil {
       throw Failure(message: 'Empty response from server');
     }
 
+    Logger().d(
+      'Response data: ${response.data}',
+    );
+
     if (response.data is! Map<String, dynamic>) {
       throw Failure(message: 'Invalid response format');
     }
@@ -372,7 +376,10 @@ class NetworkUtil {
           );
 
       // DELETE requests might return empty responses
-      if (response.data == null) return null;
+      if (response.data == null ||
+          (response.data is String && (response.data as String).isEmpty)) {
+        return null;
+      }
 
       return _validateResponse(response);
     } on SocketException catch (_) {

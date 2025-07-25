@@ -68,7 +68,7 @@ abstract class BaseAPIService<T> {
 
   // Method for fetching a single item
   Future<T> get({
-    required String id,
+    required String ulid,
     List<String>? includes,
   }) async {
     try {
@@ -80,7 +80,7 @@ abstract class BaseAPIService<T> {
       }
 
       final res = await _networkUtil.get(
-        '$endpoint/$id',
+        '$endpoint/$ulid',
         queryParameters: queryParameters,
       );
 
@@ -140,11 +140,11 @@ abstract class BaseAPIService<T> {
 
   // Method for deleting an item
   Future<void> delete({
-    required String id,
+    required String ulid,
   }) async {
     try {
       await _networkUtil.delete(
-        '$endpoint/$id',
+        '$endpoint/$ulid',
       );
     } catch (e) {
       rethrow;

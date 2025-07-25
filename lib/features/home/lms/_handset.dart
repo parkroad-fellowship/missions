@@ -47,7 +47,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
               ),
             ),
             StreamBuilder(
-              stream: getIt<IsarService>().courses.getAll(),
+              stream: getIt<IsarService>().courses.stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SliverToBoxAdapter(

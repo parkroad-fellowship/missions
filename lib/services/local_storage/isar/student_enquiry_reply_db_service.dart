@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/enums/prf_morph_types.dart';
 import 'package:app/models/local/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
@@ -28,14 +30,28 @@ class StudentEnquiryReplyDbService
     );
   }
 
-  @override
-  Stream<List<PRFLocalStudentEnquiryReply>> getByParentKey(
+  Future<List<PRFLocalStudentEnquiryReply>> listParentStudentEnquiryReplies(
     String parentKey,
-  ) {
-    return collection
-        .where()
-        .studentEnquiryUlidEqualTo(parentKey)
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
+  ) async {
+    return collection.where().studentEnquiryUlidEqualTo(parentKey).findAll();
+  }
+
+  StreamController<List<PRFLocalStudentEnquiryReply>>? _parentStreamController;
+  Stream<List<PRFLocalStudentEnquiryReply>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalStudentEnquiryReply>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream(String parentKey) async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalStudentEnquiryReply>>.broadcast();
+    final entities = await listParentStudentEnquiryReplies(parentKey);
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
   }
 }

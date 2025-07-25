@@ -212,6 +212,7 @@ class SocketServiceImpl implements SocketService {
             );
 
             _isarService.courses.persistEntities(<PRFCourse>[courseData]);
+            _isarService.courseModules.refreshStream();
 
           case PRFEvent.memberModuleUpdated:
             Logger().f(data['data']);
@@ -220,6 +221,7 @@ class SocketServiceImpl implements SocketService {
             );
 
             _isarService.courseModules.persistEntity(courseModuleData);
+            _isarService.courseModules.refreshStream();
 
           case PRFEvent.lessonMemberUpdated:
             Logger().f(data['data']);

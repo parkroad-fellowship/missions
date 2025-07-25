@@ -27,30 +27,24 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
     try {
       emit(const GetMissionSessionState.loading());
 
-      if (!refresh) {
-        emit(const GetMissionSessionState.loaded());
-        // await _isarService.getMissionSession(
-        //   missionSessionUlid: missionSessionUlid,
-        // );
-        return;
+      final localMissionSession = await _isarService.missionSessions.get(
+        missionSessionUlid,
+      );
+      if (localMissionSession == null || refresh) {
+        final missionSession = await _missionSessionService.get(
+          ulid: missionSessionUlid,
+          includes: [
+            'facilitator',
+            'speaker',
+            'classGroup',
+            'missionSessionTranscripts.media',
+            'mission',
+          ],
+        );
+        await _isarService.missionSessions.persistEntity(missionSession);
       }
 
-      final missionSession = await _missionSessionService.get(
-        id: missionSessionUlid,
-        includes: [
-          'facilitator',
-          'speaker',
-          'classGroup',
-          'missionSessionTranscripts.media',
-          'mission',
-        ],
-      );
-
-      await _isarService.missionSessions.persistEntity(missionSession);
-
-      // await _localDBService.getMissionSession(
-      //   missionSessionUlid: missionSessionUlid,
-      // );
+      await _isarService.missionSessions.refreshItemStream(missionSessionUlid);
 
       emit(const GetMissionSessionState.loaded());
     } on Failure catch (e) {

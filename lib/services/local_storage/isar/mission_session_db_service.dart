@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_mission_session.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar/isar.dart';
-
+import 'package:collection/collection.dart' as col;
 class MissionSessionDbService
     extends BaseLocalDBService<PRFMissionSession, PRFLocalMissionSession> {
   MissionSessionDbService({required super.prfDBInstance});
@@ -58,24 +60,56 @@ class MissionSessionDbService
     );
   }
 
-  /// Stream all sessions for a mission
-  @override
-  Stream<List<PRFLocalMissionSession>> getByParentKey(String parentKey) {
+  Future<List<PRFLocalMissionSession>> listParentMissionSessions(
+    String parentKey,
+  ) async {
     return collection
         .where()
         .missionUlidEqualTo(parentKey)
         .sortByStartsAt()
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
+        .findAll();
+  }
+
+  StreamController<List<PRFLocalMissionSession>>? _parentStreamController;
+  Stream<List<PRFLocalMissionSession>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalMissionSession>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream(String parentKey) async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalMissionSession>>.broadcast();
+    final entities = await listParentMissionSessions(parentKey);
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
   }
 
   @override
-  Stream<PRFLocalMissionSession?> getByKey(String key) {
-    return collection
-        .where()
-        .ulidEqualTo(key)
-        .watch(fireImmediately: true)
-        .asBroadcastStream()
-        .map((results) => results.isEmpty ? null : results.first);
+  Future<PRFLocalMissionSession?> get(
+    String key,
+  ) async {
+    return collection.where().ulidEqualTo(key).findFirst();
+  }
+
+  Stream<Map<K, List<PRFLocalMissionSession>>> getByParentKeyGrouped<K>(
+    String missionUlid,
+    K Function(PRFLocalMissionSession session) groupByField,
+  ) {
+    return parentStream.map(
+      (sessions) => col.groupBy(sessions, groupByField),
+    );
+  }
+
+  @override
+  Future<void> deleteByKey(String key) async {
+    await dbInstance.writeTxn(() async {
+      await collection.where().ulidEqualTo(key).deleteFirst();
+    });
+    await refreshStream();
   }
 }

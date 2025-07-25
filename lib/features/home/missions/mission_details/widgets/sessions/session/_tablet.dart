@@ -41,7 +41,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
   String get missionUlid => widget.missionUlid;
 
   Stream<PRFLocalMissionSession?> get _missionSessionStream =>
-      getIt<IsarService>().missionSessions.getByKey(missionSessionUlid);
+      getIt<IsarService>().missionSessions.itemStream;
 
   @override
   void initState() {

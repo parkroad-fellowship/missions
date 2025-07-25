@@ -1,6 +1,5 @@
 import 'package:app/features/home/lms/lesson_details/_handset.dart';
 import 'package:app/features/home/lms/lesson_details/_tablet.dart';
-import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
@@ -8,29 +7,25 @@ import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 @RoutePage()
 class LessonDetailsPage extends StatelessWidget {
   const LessonDetailsPage({
-    required this.lessonModule,
-    required this.courseUlid,
-    required this.moduleUlid,
+    required this.lessonModuleUlid,
+    required this.courseModuleUlid,
     super.key,
   });
 
-  final PRFLocalLessonModule lessonModule;
-  final String courseUlid;
-  final String moduleUlid;
+  final String lessonModuleUlid;
+  final String courseModuleUlid;
 
   @override
   Widget build(BuildContext context) {
     return AdaptiveBuilder(
       defaultBuilder: (_, _) => LessonDetailsTablet(
-        lessonModule: lessonModule,
-        courseUlid: courseUlid,
-        moduleUlid: moduleUlid,
+        lessonModuleUlid: lessonModuleUlid,
+        courseModuleUlid: courseModuleUlid,
       ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, _) => LessonDetailsHandset(
-          lessonModule: lessonModule,
-          courseUlid: courseUlid,
-          moduleUlid: moduleUlid,
+          lessonModuleUlid: lessonModuleUlid,
+          courseModuleUlid: courseModuleUlid,
         ),
       ),
     );

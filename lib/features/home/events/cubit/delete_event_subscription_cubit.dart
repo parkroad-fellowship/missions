@@ -21,7 +21,7 @@ class DeleteEventSubscriptionCubit extends Cubit<DeleteEventSubscriptionState> {
     try {
       emit(const DeleteEventSubscriptionState.loading());
       await _eventSubscriptionService.delete(
-        id: eventSubscriptionUlid,
+        ulid: eventSubscriptionUlid,
       );
       emit(const DeleteEventSubscriptionState.loaded());
     } on Failure catch (e) {

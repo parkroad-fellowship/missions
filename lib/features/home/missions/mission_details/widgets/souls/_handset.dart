@@ -34,7 +34,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
     final l10n = context.l10n;
 
     return SingleStreamWrapper(
-      stream: getIt<IsarService>().souls.getByParentKey(missionUlid),
+      stream: getIt<IsarService>().souls.parentStream,
       nullWidget: Center(
         child: PRFEmptyView(
           label: l10n.noSouls,

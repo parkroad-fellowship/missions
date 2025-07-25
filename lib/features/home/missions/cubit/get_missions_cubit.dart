@@ -24,7 +24,7 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
     emit(const GetMissionsState.loading());
     try {
       if (!refresh) {
-        await _isarService.missions.refreshMissions();
+        await _isarService.missions.refreshStream();
         emit(const GetMissionsState.loaded());
         return;
       }
@@ -47,11 +47,8 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
         orderDirection: 'asc',
       );
 
-      await _isarService.missions.persistEntities(
-        missions,
-      );
-
-      await _isarService.missions.refreshMissions();
+      await _isarService.missions.persistEntities(missions);
+      await _isarService.missions.refreshStream();
       emit(const GetMissionsState.loaded());
     } on Failure catch (e) {
       emit(GetMissionsState.error(e.message));

@@ -35,9 +35,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
     final l10n = context.l10n;
 
     return StreamBuilder<List<PRFLocalMissionSubscription>>(
-      stream: getIt<IsarService>().missionSubscriptions.getByParentKey(
-        widget.missionUlid,
-      ),
+      stream: getIt<IsarService>().missionSubscriptions.parentStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const PRFCircularProgressIndicator();

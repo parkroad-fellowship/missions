@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 class ModuleDetailsActionCard extends StatelessWidget {
   const ModuleDetailsActionCard({
     required this.lessonModule,
-    required this.courseUlid,
-    required this.moduleUlid,
+    required this.courseModuleUlid,
     super.key,
   });
 
   final PRFLocalLessonModule lessonModule;
-  final String courseUlid;
-  final String moduleUlid;
+  final String courseModuleUlid;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +20,8 @@ class ModuleDetailsActionCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.router.push(
         LessonDetailsRoute(
-          lessonModule: lessonModule,
-          courseUlid: courseUlid,
-          moduleUlid: moduleUlid,
+          lessonModuleUlid: lessonModule.ulid,
+          courseModuleUlid: courseModuleUlid,
         ),
       ),
       child: Container(

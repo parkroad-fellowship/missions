@@ -399,8 +399,9 @@ class _StudentEnquiryRepliesPageTabletState
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 16)),
                     StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
-                      stream: getIt<IsarService>().studentEnquiryReplies
-                          .getByParentKey(enquiry.ulid),
+                      stream: getIt<IsarService>()
+                          .studentEnquiryReplies
+                          .parentStream,
                       builder: (context, snapshot) {
                         // Scroll to bottom when new data arrives
                         WidgetsBinding.instance.addPostFrameCallback(

@@ -16,7 +16,7 @@ class CourseDetailsActionCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => context.router.push(
-        ModuleDetailsRoute(courseModule: courseModule),
+        ModuleDetailsRoute(courseModuleUlid: courseModule.ulid),
       ),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),

@@ -174,8 +174,6 @@ abstract class NotificationService {
           await getIt<PRFSuperAppRouter>().replaceAll([
             const LandingRoute(),
             const EventsRoute(),
-
-            // TODO(MillerAdulu): Update this to use the event ulid
           ]);
         case PRFNotificationType.studentEnquiry:
           await getIt<PRFSuperAppRouter>().replaceAll([

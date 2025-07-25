@@ -23,10 +23,10 @@ class MissionsPageTablet extends StatefulWidget {
 class _MissionsPageTabletState extends State<MissionsPageTablet>
     with SingleTickerProviderStateMixin {
   Stream<List<PRFLocalMission>> get _missionsStream =>
-      getIt<IsarService>().missions.getAll();
+      getIt<IsarService>().missions.stream;
 
   Stream<List<PRFLocalMission>> get _memberMissionsStream =>
-      getIt<IsarService>().memberMissions.getAllParents();
+      getIt<IsarService>().memberMissions.parentStream;
 
   late TabController _tabController;
 
@@ -143,7 +143,6 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
     return StreamBuilder<List<PRFLocalMission>>(
       key: PageStorageKey('missions_stream_${_tabController.index}'),
-      initialData: const [],
       stream: _missionsStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -221,7 +220,6 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
       key: PageStorageKey(
         'member_missions_stream_${_tabController.index}',
       ),
-      initialData: const [],
       stream: _memberMissionsStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

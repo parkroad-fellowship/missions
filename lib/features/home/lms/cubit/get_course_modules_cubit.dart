@@ -22,27 +22,32 @@ class GetCourseModulesCubit extends Cubit<GetCourseModulesState> {
     emit(const GetCourseModulesState.loading());
 
     try {
-      final courseModules = await _courseModuleService.list(
-        filters: {
-          'course_ulid': courseUlid,
-        },
-        includes: [
-          'course.thumbnail',
-          'course.courseMember',
-          'module.thumbnail',
-          'memberModule',
-          'module.lessonModules.lesson',
-          'module.lessonModules.lessonMember',
-          'module.lessonModules.module',
-        ],
-      );
-
-      await _isarService.courseModules.persistEntities(courseModules);
-      for (final courseModule in courseModules) {
-        await _isarService.lessonModules.persistEntities(
-          courseModule.module!.lessonModules!,
+      final localCourseModules = await _isarService.courseModules
+          .listParentModules(courseUlid);
+      if (localCourseModules.isEmpty) {
+        final courseModules = await _courseModuleService.list(
+          filters: {
+            'course_ulid': courseUlid,
+          },
+          includes: [
+            'course.thumbnail',
+            'course.courseMember',
+            'module.thumbnail',
+            'memberModule',
+            'module.lessonModules.lesson',
+            'module.lessonModules.lessonMember',
+            'module.lessonModules.module',
+          ],
         );
+
+        await _isarService.courseModules.persistEntities(courseModules);
+        for (final courseModule in courseModules) {
+          await _isarService.lessonModules.persistEntities(
+            courseModule.module!.lessonModules!,
+          );
+        }
       }
+      await _isarService.courseModules.refreshParentStream(courseUlid);
 
       emit(const GetCourseModulesState.loaded());
     } catch (e) {

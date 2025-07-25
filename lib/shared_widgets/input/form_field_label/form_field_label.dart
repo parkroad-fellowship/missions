@@ -7,14 +7,12 @@ class FormFieldLabel extends StatelessWidget {
   const FormFieldLabel({
     required this.label,
     super.key,
-    this.isOptional,
     this.isRequired,
     this.color,
     this.isBold,
   });
 
   final String label;
-  final bool? isOptional;
   final bool? isRequired;
   final Color? color;
   final bool? isBold;
@@ -24,7 +22,6 @@ class FormFieldLabel extends StatelessWidget {
     return AdaptiveBuilder(
       defaultBuilder: (_, _) => FormFieldLabelTablet(
         label: label,
-        isOptional: isOptional,
         isRequired: isRequired,
         color: color,
         isBold: isBold,
@@ -32,14 +29,12 @@ class FormFieldLabel extends StatelessWidget {
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, _) => FormFieldLabelHandset(
           label: label,
-          isOptional: isOptional,
           isRequired: isRequired,
           color: color,
           isBold: isBold,
         ),
         tablet: (_, _) => FormFieldLabelTablet(
           label: label,
-          isOptional: isOptional,
           isRequired: isRequired,
           color: color,
           isBold: isBold,

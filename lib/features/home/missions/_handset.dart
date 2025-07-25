@@ -21,18 +21,23 @@ class MissionsPageHandset extends StatefulWidget {
 }
 
 class _MissionsPageHandsetState extends State<MissionsPageHandset>
-    with SingleTickerProviderStateMixin {
-  Stream<List<PRFLocalMission>> get _missionsStream =>
-      getIt<IsarService>().missions.getAll();
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+  late final Stream<List<PRFLocalMission>> _missionsStream;
 
-  Stream<List<PRFLocalMission>> get _memberMissionsStream =>
-      getIt<IsarService>().memberMissions.getAllParents();
+  late final Stream<List<PRFLocalMission>> _memberMissionsStream;
 
   late TabController _tabController;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     super.initState();
+
+    // Initialize streams once
+    _missionsStream = getIt<IsarService>().missions.stream;
+    _memberMissionsStream = getIt<IsarService>().memberMissions.parentStream;
 
     context.read<GetMissionsCubit>().getMissions(refresh: true);
     context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions(
@@ -51,6 +56,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
@@ -143,7 +149,6 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
     return StreamBuilder<List<PRFLocalMission>>(
       key: PageStorageKey('missions_stream_${_tabController.index}'),
-      initialData: const [],
       stream: _missionsStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -192,9 +197,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                     index: index,
                     onTap: () => context.router
                         .push(
-                          MissionsDetailsRoute(
-                            missionUlid: mission.ulid,
-                          ),
+                          MissionsDetailsRoute(missionUlid: mission.ulid),
                         )
                         .then((_) {
                           // ignore: use_build_context_synchronously
@@ -230,7 +233,6 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       key: PageStorageKey(
         'member_missions_stream_${_tabController.index}',
       ),
-      initialData: const [],
       stream: _memberMissionsStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

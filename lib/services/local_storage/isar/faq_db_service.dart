@@ -20,16 +20,7 @@ class FaqDbService extends BaseLocalDBService<PRFFaq, PRFLocalFaq> {
   }
 
   @override
-  Stream<List<PRFLocalFaq>> getByParentKey(String parentKey) {
-    return collection
-        .where()
-        .categoryUlidEqualTo(parentKey)
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
-  }
-
-  @override
-  Future<List<PRFLocalFaq>> getAllFuture({
+  Future<List<PRFLocalFaq>> list({
     String? categoryUlid,
     String? query,
   }) async {
@@ -49,8 +40,7 @@ class FaqDbService extends BaseLocalDBService<PRFFaq, PRFLocalFaq> {
         .findAll();
   }
 
-  @override
-  Stream<List<PRFLocalFaq>> getAll({String? categoryUlid, String? query}) {
+  Stream<List<PRFLocalFaq>> filter({String? categoryUlid, String? query}) {
     return collection
         .where()
         .filter()

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_soul.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_soul.dart';
@@ -27,12 +29,28 @@ class SoulDbService extends BaseLocalDBService<PRFSoul, PRFLocalSoul> {
     );
   }
 
-  @override
-  Stream<List<PRFLocalSoul>> getByParentKey(String parentKey) {
-    return collection
-        .where()
-        .missionUlidEqualTo(parentKey)
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
+  Future<List<PRFLocalSoul>> listParentSouls(
+    String parentKey,
+  ) async {
+    return collection.where().missionUlidEqualTo(parentKey).findAll();
+  }
+
+  StreamController<List<PRFLocalSoul>>? _parentStreamController;
+  Stream<List<PRFLocalSoul>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalSoul>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream(String parentKey) async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalSoul>>.broadcast();
+    final entities = await listParentSouls(parentKey);
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
   }
 }

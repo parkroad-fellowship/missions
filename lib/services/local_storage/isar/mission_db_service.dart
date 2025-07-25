@@ -105,23 +105,9 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
   }
 
   @override
-  Future<PRFLocalMission?> getByKeyFuture(String key) async {
+  Future<PRFLocalMission?> get(
+    String key,
+  ) async {
     return collection.where().ulidEqualTo(key).findFirst();
-  }
-
-  @override
-  Stream<PRFLocalMission?> getByKey(String key) {
-    final v = collection
-        .where()
-        .ulidEqualTo(key)
-        .watch(fireImmediately: true)
-        .asBroadcastStream()
-        .map((results) => results.isEmpty ? null : results.first);
-
-    return v;
-  }
-
-  Future<void> refreshMissions() async {
-    getAll();
   }
 }

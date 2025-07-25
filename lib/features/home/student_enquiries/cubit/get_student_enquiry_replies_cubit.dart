@@ -25,10 +25,12 @@ class GetEnquiryRepliesCubit extends Cubit<GetEnquiryRepliesState> {
         filters: {
           'student_enquiry_ulid': enquiryUlid,
         },
+        includes: const ['studentEnquiry'],
       );
       if (replies.isNotEmpty) {
-        await _isarService.studentEnquiryReplies.persistEntities(
-          replies,
+        await _isarService.studentEnquiryReplies.persistEntities(replies);
+        await _isarService.studentEnquiryReplies.refreshParentStream(
+          enquiryUlid,
         );
       }
 

@@ -39,6 +39,7 @@ class GetCoursesCubit extends Cubit<GetCoursesState> {
       );
 
       await _isarService.courses.persistEntities(courses);
+      await _isarService.courses.refreshStream();
 
       emit(GetCoursesState.loaded(isEmpty: courses.isEmpty));
     } catch (e) {

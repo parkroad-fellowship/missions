@@ -34,9 +34,7 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
       final localClassGroups = _hiveService.data.retrieveClassGroups();
       if (localClassGroups.isNotEmpty) {
         if (missionUlid != null) {
-          final mission = await _isarService.missions.getByKeyFuture(
-            missionUlid,
-          );
+          final mission = await _isarService.missions.get(missionUlid);
           Logger().d(mission?.school);
           final filteredClassGroups = _filterClassGroupsByType(
             classGroups: localClassGroups,
@@ -55,7 +53,7 @@ class GetClassGroupsCubit extends Cubit<GetClassGroupsState> {
       );
 
       if (missionUlid != null) {
-        final mission = await _isarService.missions.getByKeyFuture(missionUlid);
+        final mission = await _isarService.missions.get(missionUlid);
         final filteredClassGroups = _filterClassGroupsByType(
           classGroups: localClassGroups,
           type: mission!.school!.institutionType!,

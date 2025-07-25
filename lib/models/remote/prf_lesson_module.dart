@@ -21,3 +21,12 @@ abstract class PRFLessonModule with _$PRFLessonModule {
   factory PRFLessonModule.fromJson(Map<String, dynamic> json) =>
       _$PRFLessonModuleFromJson(json);
 }
+
+@freezed
+abstract class PRFLessonModuleResponse with _$PRFLessonModuleResponse {
+  factory PRFLessonModuleResponse(List<PRFLessonModule> data) =
+      _PRFLessonModuleResponse;
+
+  factory PRFLessonModuleResponse.fromJson(Map<String, dynamic> json) =>
+      _$PRFLessonModuleResponseFromJson(json);
+}

@@ -68,11 +68,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       missionUlid: widget.missionUlid,
       refresh: true,
     );
-    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
-      missionUlid: missionUlid,
-      refresh: true,
-    );
-    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+    context.read<GetMissionSessionsCubit>().getMissionSessions(
       missionUlid: missionUlid,
       refresh: true,
     );
@@ -80,10 +76,17 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       missionUlid: missionUlid,
       refresh: true,
     );
-    context.read<GetMissionSessionsCubit>().getMissionSessions(
+    context.read<GetDebriefNotesCubit>().getDebriefNotes(
       missionUlid: missionUlid,
       refresh: true,
     );
+    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+      missionUlid: missionUlid,
+      refresh: true,
+    );
+    
+    
+    
   }
 
   @override

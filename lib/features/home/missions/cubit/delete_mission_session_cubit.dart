@@ -24,7 +24,7 @@ class DeleteMissionSessionCubit extends Cubit<DeleteMissionSessionState> {
   }) async {
     emit(const DeleteMissionSessionState.loading());
     try {
-      await _missionSessionService.delete(id: missionSessionUlid);
+      await _missionSessionService.delete(ulid: missionSessionUlid);
       await _isarService.missionSessions.deleteByKey(missionSessionUlid);
       emit(const DeleteMissionSessionState.loaded());
     } on Failure catch (e) {

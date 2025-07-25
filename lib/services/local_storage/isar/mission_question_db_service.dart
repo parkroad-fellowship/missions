@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_mission_question.dart';
 import 'package:app/models/remote/prf_mission_question.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
@@ -21,12 +23,28 @@ class MissionQuestionDbService
     );
   }
 
-  @override
-  Stream<List<PRFLocalMissionQuestion>> getByParentKey(String parentKey) {
-    return collection
-        .where()
-        .missionUlidEqualTo(parentKey)
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
+  Future<List<PRFLocalMissionQuestion>> listParentMissionQuestions(
+    String parentKey,
+  ) async {
+    return collection.where().missionUlidEqualTo(parentKey).findAll();
+  }
+
+  StreamController<List<PRFLocalMissionQuestion>>? _parentStreamController;
+  Stream<List<PRFLocalMissionQuestion>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalMissionQuestion>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream(String parentKey) async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalMissionQuestion>>.broadcast();
+    final entities = await listParentMissionQuestions(parentKey);
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
   }
 }

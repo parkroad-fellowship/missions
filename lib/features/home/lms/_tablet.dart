@@ -53,7 +53,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                 ),
               ),
               StreamBuilder(
-                stream: getIt<IsarService>().courses.getAll(),
+                stream: getIt<IsarService>().courses.stream,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SliverToBoxAdapter(

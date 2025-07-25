@@ -74,7 +74,7 @@ class _StudentEnquiriesPageHandsetState
 
             // Enquiries List
             StreamBuilder<List<PRFLocalStudentEnquiry>>(
-              stream: getIt<IsarService>().studentEnquiries.getAll(
+              stream: getIt<IsarService>().studentEnquiries.filter(
                 replyStatus: _selectedReplyStatus,
               ),
               builder: (context, snapshot) {

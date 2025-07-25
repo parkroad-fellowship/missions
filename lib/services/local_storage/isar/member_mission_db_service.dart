@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_member_mission.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
@@ -114,6 +116,14 @@ class MemberMissionDbService
     );
   }
 
+  Future<List<PRFLocalMission>> listParentMissions() async {
+    return collection.where().findAll().then(
+      (localMemberMissions) => localMemberMissions
+          .map(_transformLocalMemberMissionToLocalMission)
+          .toList(),
+    );
+  }
+
   Stream<List<PRFLocalMission>> getAllParents() {
     return collection
         .where()
@@ -126,8 +136,23 @@ class MemberMissionDbService
         );
   }
 
-  Future<void> refreshMemberMissions() async {
-    getAllParents();
+  StreamController<List<PRFLocalMission>>? _parentStreamController;
+  Stream<List<PRFLocalMission>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalMission>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream() async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalMission>>.broadcast();
+    final entities = await listParentMissions();
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
   }
 
   PRFLocalMission _transformLocalMemberMissionToLocalMission(

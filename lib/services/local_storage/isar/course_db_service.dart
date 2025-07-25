@@ -44,12 +44,9 @@ class CourseDbService extends BaseLocalDBService<PRFCourse, PRFLocalCourse> {
   }
 
   @override
-  Stream<PRFLocalCourse?> getByKey(String key) {
-    return collection
-        .where()
-        .ulidEqualTo(key)
-        .watch(fireImmediately: true)
-        .asBroadcastStream()
-        .map((results) => results.isEmpty ? null : results.first);
+  Future<PRFLocalCourse?> get(
+    String key,
+  ) async {
+    return collection.where().ulidEqualTo(key).findFirst();
   }
 }

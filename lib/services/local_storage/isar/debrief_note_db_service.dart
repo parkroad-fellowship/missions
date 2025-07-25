@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_debrief_note.dart';
 import 'package:app/models/remote/prf_debrief_note.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
@@ -21,12 +23,28 @@ class DebriefNoteDbService
     );
   }
 
-  @override
-  Stream<List<PRFLocalDebriefNote>> getByParentKey(String parentKey) {
-    return collection
-        .where()
-        .missionUlidEqualTo(parentKey)
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
+  Future<List<PRFLocalDebriefNote>> listParentNotes(
+    String parentKey,
+  ) async {
+    return collection.where().missionUlidEqualTo(parentKey).findAll();
+  }
+
+  StreamController<List<PRFLocalDebriefNote>>? _parentStreamController;
+  Stream<List<PRFLocalDebriefNote>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalDebriefNote>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream(String parentKey) async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalDebriefNote>>.broadcast();
+    final entities = await listParentNotes(parentKey);
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
   }
 }

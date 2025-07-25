@@ -26,6 +26,7 @@ class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
     emit(const GetDebriefNotesState.loading());
     try {
       if (!refresh) {
+        await _isarService.debriefNotes.refreshParentStream(missionUlid);
         emit(const GetDebriefNotesState.loaded());
         return;
       }
@@ -37,6 +38,7 @@ class GetDebriefNotesCubit extends Cubit<GetDebriefNotesState> {
       await _isarService.debriefNotes.persistEntities(
         debriefNotes,
       );
+      await _isarService.debriefNotes.refreshParentStream(missionUlid);
 
       emit(const GetDebriefNotesState.loaded());
     } on Failure catch (e) {

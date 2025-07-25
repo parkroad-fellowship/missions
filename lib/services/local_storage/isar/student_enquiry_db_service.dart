@@ -21,8 +21,7 @@ class StudentEnquiryDbService
     );
   }
 
-  @override
-  Stream<List<PRFLocalStudentEnquiry>> getAll({
+  Stream<List<PRFLocalStudentEnquiry>> filter({
     bool replyStatus = false,
   }) {
     return collection

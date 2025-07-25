@@ -1,3 +1,4 @@
+import 'package:app/features/home/lms/cubit/get_course_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
 import 'package:app/features/home/lms/widgets/course_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
@@ -26,6 +27,9 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
 
   @override
   void initState() {
+    context.read<GetCourseCubit>().getCourse(
+      courseUlid: courseUlid,
+    );
     context.read<GetCourseModulesCubit>().getCourseModules(
       courseUlid: courseUlid,
     );
@@ -51,9 +55,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                 ),
                 actions: [
                   SingleStreamWrapper<PRFLocalCourse?>(
-                    stream: getIt<IsarService>().courses.getByKey(
-                      courseUlid,
-                    ),
+                    stream: getIt<IsarService>().courses.itemStream,
                     widget: (context, course) => Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
@@ -100,9 +102,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                     ),
               ),
               StreamBuilder<List<PRFLocalCourseModule>>(
-                stream: getIt<IsarService>().courseModules.getByParentKey(
-                  courseUlid,
-                ),
+                stream: getIt<IsarService>().courseModules.parentStream,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SliverToBoxAdapter(

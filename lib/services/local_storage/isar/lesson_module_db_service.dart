@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_lesson_module.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_lesson_module.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar/isar.dart';
-import 'package:logger/logger.dart';
 
 class LessonModuleDbService
     extends BaseLocalDBService<PRFLessonModule, PRFLocalLessonModule> {
@@ -88,16 +89,39 @@ class LessonModuleDbService
     );
   }
 
-  @override
-  Stream<List<PRFLocalLessonModule>> getByParentKey(String parentKey) {
-    Logger().i(
-      'Fetching LessonModules by parent key: $parentKey',
-    );
+  Future<List<PRFLocalLessonModule>> listParentLessons(
+    String parentKey,
+  ) async {
     return collection
         .where()
         .moduleUlidEqualTo(parentKey)
         .sortByOrder()
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
+        .findAll();
+  }
+
+  StreamController<List<PRFLocalLessonModule>>? _parentStreamController;
+  Stream<List<PRFLocalLessonModule>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalLessonModule>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream(String parentKey) async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalLessonModule>>.broadcast();
+    final entities = await listParentLessons(parentKey);
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
+  }
+
+  @override
+  Future<PRFLocalLessonModule?> get(
+    String key,
+  ) async {
+    return collection.where().ulidEqualTo(key).findFirst();
   }
 }

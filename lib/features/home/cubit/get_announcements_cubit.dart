@@ -38,6 +38,7 @@ class GetAnnouncementsCubit extends Cubit<GetAnnouncementsState> {
       );
 
       await _isarService.announcements.persistEntities(announcements);
+      await _isarService.announcements.refreshStream();
 
       emit(GetAnnouncementsState.loaded(isEmpty: announcements.isEmpty));
     } catch (e) {

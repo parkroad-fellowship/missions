@@ -42,6 +42,9 @@ class CreateEnquiryReplyCubit extends Cubit<CreateEnquiryReplyState> {
       );
 
       await _isarService.studentEnquiryReplies.persistEntity(reply);
+      await _isarService.studentEnquiryReplies.refreshParentStream(
+        studentEnquiryUlid,
+      );
 
       emit(const CreateEnquiryReplyState.loaded());
     } catch (e) {

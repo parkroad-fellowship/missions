@@ -1,3 +1,5 @@
+import 'package:app/features/home/lms/cubit/get_lesson_modules_cubit.dart';
+import 'package:app/features/home/lms/cubit/get_module_cubit.dart';
 import 'package:app/features/home/lms/widgets/module_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_course_module.dart';
@@ -8,18 +10,15 @@ import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ModuleDetailsPageTablet extends StatefulWidget {
   const ModuleDetailsPageTablet({
     required this.courseModuleUlid,
-    required this.moduleUlid,
-    required this.courseUlid,
     super.key,
   });
 
   final String courseModuleUlid;
-  final String moduleUlid;
-  final String courseUlid;
 
   @override
   State<ModuleDetailsPageTablet> createState() =>
@@ -28,6 +27,17 @@ class ModuleDetailsPageTablet extends StatefulWidget {
 
 class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
   String get courseModuleUlid => widget.courseModuleUlid;
+
+  @override
+  void initState() {
+    context.read<GetModuleCubit>().getModule(
+      courseModuleUlid: courseModuleUlid,
+    );
+    context.read<GetLessonModulesCubit>().getLessonModules(
+      courseModuleUlid: courseModuleUlid,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +56,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
               ),
               actions: [
                 StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<IsarService>().courseModules.getByKey(
-                    courseModuleUlid,
-                  ),
+                  stream: getIt<IsarService>().courseModules.itemStream,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const SizedBox(
@@ -100,9 +108,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<IsarService>().courseModules.getByKey(
-                    courseModuleUlid,
-                  ),
+                  stream: getIt<IsarService>().courseModules.itemStream,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(
@@ -123,9 +129,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<IsarService>().courseModules.getByKey(
-                    courseModuleUlid,
-                  ),
+                  stream: getIt<IsarService>().courseModules.itemStream,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(
@@ -157,9 +161,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
             // Lessons list
             StreamBuilder<List<PRFLocalLessonModule>>(
-              stream: getIt<IsarService>().lessonModules.getByParentKey(
-                widget.moduleUlid,
-              ),
+              stream: getIt<IsarService>().lessonModules.parentStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SliverToBoxAdapter(
@@ -182,8 +184,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                   itemCount: lessonModules!.length,
                   itemBuilder: (context, index) => ModuleDetailsActionCard(
                     lessonModule: lessonModules[index],
-                    courseUlid: widget.courseUlid,
-                    moduleUlid: widget.moduleUlid,
+                    courseModuleUlid: courseModuleUlid,
                   ),
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 16),

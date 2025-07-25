@@ -26,6 +26,7 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
     emit(const GetSoulsState.loading());
     try {
       if (!refresh) {
+        await _isarService.souls.refreshParentStream(missionUlid);
         emit(const GetSoulsState.loaded());
         return;
       }
@@ -37,6 +38,7 @@ class GetSoulsCubit extends Cubit<GetSoulsState> {
         includes: ['classGroup', 'mission'],
       );
       await _isarService.souls.persistEntities(souls);
+      await _isarService.souls.refreshParentStream(missionUlid);
       emit(const GetSoulsState.loaded());
     } on Failure catch (e) {
       emit(GetSoulsState.error(e.message));

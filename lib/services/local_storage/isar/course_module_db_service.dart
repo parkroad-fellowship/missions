@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_course_module.dart';
@@ -53,23 +55,35 @@ class CourseModuleDbService
     );
   }
 
-  @override
-  Stream<List<PRFLocalCourseModule>> getByParentKey(String parentKey) {
-    return collection
-        .where()
-        .courseUlidEqualTo(parentKey)
-        .sortByOrder()
-        .watch(fireImmediately: true)
-        .asBroadcastStream();
+  Future<List<PRFLocalCourseModule>> listParentModules(
+    String parentKey,
+  ) async {
+    return collection.where().courseUlidEqualTo(parentKey).findAll();
+  }
+
+  StreamController<List<PRFLocalCourseModule>>? _parentStreamController;
+  Stream<List<PRFLocalCourseModule>> get parentStream {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalCourseModule>>.broadcast();
+    return _parentStreamController!.stream;
+  }
+
+  Future<void> refreshParentStream(String parentKey) async {
+    _parentStreamController ??=
+        StreamController<List<PRFLocalCourseModule>>.broadcast();
+    final entities = await listParentModules(parentKey);
+    _parentStreamController!.add(entities);
+  }
+
+  Future<void> closeParentStream() async {
+    await _parentStreamController?.close();
+    _parentStreamController = null;
   }
 
   @override
-  Stream<PRFLocalCourseModule?> getByKey(String key) {
-    return collection
-        .where()
-        .ulidEqualTo(key)
-        .watch(fireImmediately: true)
-        .asBroadcastStream()
-        .map((results) => results.isEmpty ? null : results.first);
+  Future<PRFLocalCourseModule?> get(
+    String key,
+  ) async {
+    return collection.where().ulidEqualTo(key).findFirst();
   }
 }

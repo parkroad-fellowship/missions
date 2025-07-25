@@ -169,8 +169,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                           SingleStreamWrapper<
                             List<PRFLocalMissionSubscription>
                           >(
-                            stream: getIt<IsarService>().missionSubscriptions
-                                .getByParentKey(widget.missionUlid),
+                            stream: getIt<IsarService>()
+                                .missionSubscriptions
+                                .parentStream,
                             loading: const PRFLinearProgressIndicator(),
                             widget: (context, subscribers) => LayoutBuilder(
                               builder: (context, constraints) {
@@ -204,8 +205,9 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                           SingleStreamWrapper<
                             List<PRFLocalMissionSubscription>
                           >(
-                            stream: getIt<IsarService>().missionSubscriptions
-                                .getByParentKey(widget.missionUlid),
+                            stream: getIt<IsarService>()
+                                .missionSubscriptions
+                                .parentStream,
                             loading: const PRFLinearProgressIndicator(),
                             widget: (context, subscribers) => LayoutBuilder(
                               builder: (context, constraints) {

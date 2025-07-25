@@ -27,6 +27,9 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
     emit(const GetSubscribersState.loading());
     try {
       if (!refresh) {
+        await _isarService.missionSubscriptions.refreshParentStream(
+          missionUlid,
+        );
         emit(const GetSubscribersState.loaded());
         return;
       }
@@ -42,6 +45,7 @@ class GetSubscribersCubit extends Cubit<GetSubscribersState> {
       await _isarService.missionSubscriptions.persistEntities(
         missionSubscriptions,
       );
+      await _isarService.missionSubscriptions.refreshParentStream(missionUlid);
 
       emit(const GetSubscribersState.loaded());
     } on Failure catch (e) {

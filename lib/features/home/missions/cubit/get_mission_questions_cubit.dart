@@ -26,6 +26,7 @@ class GetMissionQuestionsCubit extends Cubit<GetMissionQuestionsState> {
     emit(const GetMissionQuestionsState.loading());
     try {
       if (!refresh) {
+        await _isarService.missionQuestions.refreshParentStream(missionUlid);
         emit(const GetMissionQuestionsState.loaded());
         return;
       }
@@ -37,6 +38,7 @@ class GetMissionQuestionsCubit extends Cubit<GetMissionQuestionsState> {
       await _isarService.missionQuestions.persistEntities(
         missionQuestions,
       );
+      await _isarService.missionQuestions.refreshParentStream(missionUlid);
       emit(const GetMissionQuestionsState.loaded());
     } on Failure catch (e) {
       emit(GetMissionQuestionsState.error(e.message));

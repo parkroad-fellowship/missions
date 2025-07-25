@@ -36,9 +36,7 @@ class _MissionQuestionsViewHandsetState
     final l10n = context.l10n;
 
     return SingleStreamWrapper(
-      stream: getIt<IsarService>().missionQuestions.getByParentKey(
-        missionUlid,
-      ),
+      stream: getIt<IsarService>().missionQuestions.parentStream,
       nullWidget: PRFEmptyView(
         label: l10n.noQuestions,
         description: l10n.questionsWillAppearHere,
