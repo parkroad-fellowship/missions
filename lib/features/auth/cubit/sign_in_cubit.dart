@@ -52,21 +52,21 @@ class SigninCubit extends Cubit<SignInState> {
 
       await _analyticsService.identifyUser(user: user);
 
-      final fcmToken = await _firebaseService.retrieveFCMToken();
-      if (fcmToken.isNotEmpty) {
-        await _authService.updateProfile(
-          updateDTO: UserUpdateDTO(
-            fcmTokens: [fcmToken],
-          ),
-        );
-      }
-
       emit(const SignInState.loaded());
     } on Failure catch (e) {
       emit(SignInState.error(e.message));
     } catch (e, stackTrace) {
       Logger().e('SignInCubit signIn error: $e', stackTrace: stackTrace);
       emit(const SignInState.error('An unknown error occurred'));
+    }
+
+    final fcmToken = await _firebaseService.retrieveFCMToken();
+    if (fcmToken.isNotEmpty) {
+      await _authService.updateProfile(
+        updateDTO: UserUpdateDTO(
+          fcmTokens: [fcmToken],
+        ),
+      );
     }
   }
 }
