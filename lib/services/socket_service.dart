@@ -221,7 +221,7 @@ class SocketServiceImpl implements SocketService {
             );
 
             _isarService.courseModules.persistEntity(courseModuleData);
-            if(courseModuleData.course != null) {
+            if (courseModuleData.course != null) {
               _isarService.courseModules.refreshParentStream(
                 courseModuleData.course!.ulid,
               );
