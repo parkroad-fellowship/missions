@@ -211,8 +211,11 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.courses.persistEntities(<PRFCourse>[courseData]);
-            _isarService.courseModules.refreshStream();
+            _isarService.courses.persistEntities(<PRFCourse>[courseData]).then((
+              _,
+            ) {
+              _isarService.courseModules.refreshStream();
+            });
 
           case PRFEvent.memberModuleUpdated:
             Logger().f(data['data']);
@@ -220,12 +223,15 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.courseModules.persistEntity(courseModuleData);
-            if (courseModuleData.course != null) {
-              _isarService.courseModules.refreshParentStream(
-                courseModuleData.course!.ulid,
-              );
-            }
+            _isarService.courseModules.persistEntity(courseModuleData).then((
+              _,
+            ) {
+              if (courseModuleData.course != null) {
+                _isarService.courseModules.refreshParentStream(
+                  courseModuleData.course!.ulid,
+                );
+              }
+            });
 
           case PRFEvent.lessonMemberUpdated:
             Logger().f(data['data']);
@@ -233,12 +239,15 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.lessonModules.persistEntity(lessonModuleData);
-            if (lessonModuleData.module != null) {
-              _isarService.lessonModules.refreshParentStream(
-                lessonModuleData.module!.ulid,
-              );
-            }
+            _isarService.lessonModules.persistEntity(lessonModuleData).then((
+              _,
+            ) {
+              if (lessonModuleData.module != null) {
+                _isarService.lessonModules.refreshParentStream(
+                  lessonModuleData.module!.ulid,
+                );
+              }
+            });
 
           case PRFEvent.studentEnquiryReplyCreated:
             Logger().f(data['data']);
@@ -246,14 +255,17 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.studentEnquiryReplies.persistEntity(
-              studentEnquiryReplyData,
-            );
-            if (studentEnquiryReplyData.studentEnquiry != null) {
-              _isarService.studentEnquiryReplies.refreshParentStream(
-                studentEnquiryReplyData.studentEnquiry!.ulid,
-              );
-            }
+            _isarService.studentEnquiryReplies
+                .persistEntity(
+                  studentEnquiryReplyData,
+                )
+                .then((_) {
+                  if (studentEnquiryReplyData.studentEnquiry != null) {
+                    _isarService.studentEnquiryReplies.refreshParentStream(
+                      studentEnquiryReplyData.studentEnquiry!.ulid,
+                    );
+                  }
+                });
         }
       } catch (e, stackTrace) {
         Logger().e(
