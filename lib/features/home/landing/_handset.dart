@@ -187,18 +187,18 @@ class LandingPageHandset extends StatelessWidget {
                                     size: 22,
                                   ),
                                 ),
-                                Positioned(
-                                  top: 8,
-                                  right: 8,
-                                  child: Container(
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      color: theme.colorScheme.error,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                ),
+                                // Positioned(
+                                //   top: 8,
+                                //   right: 8,
+                                //   child: Container(
+                                //     width: 8,
+                                //     height: 8,
+                                //     decoration: BoxDecoration(
+                                //       color: theme.colorScheme.error,
+                                //       shape: BoxShape.circle,
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

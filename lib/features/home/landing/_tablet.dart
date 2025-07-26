@@ -186,23 +186,24 @@ class LandingPageTablet extends StatelessWidget {
                                     size: 28,
                                   ),
                                 ),
-                                Positioned(
-                                  top: 12,
-                                  right: 12,
-                                  child: Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                      color: theme.colorScheme.error,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                ),
+                                // Positioned(
+                                //   top: 12,
+                                //   right: 12,
+                                //   child: Container(
+                                //     width: 10,
+                                //     height: 10,
+                                //     decoration: BoxDecoration(
+                                //       color: theme.colorScheme.error,
+                                //       shape: BoxShape.circle,
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
                         ),
                       ),
+                   
                     ],
                   ),
                 ),
