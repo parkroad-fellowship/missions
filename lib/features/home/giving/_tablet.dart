@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_payment_status.dart';
 import 'package:app/features/home/giving/actions/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -93,6 +94,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                           context.read<GetPaymentsCubit>().getPayments(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Container(
                           height: MediaQuery.sizeOf(context).height * 0.6,
                           alignment: Alignment.center,
@@ -122,11 +124,12 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                           context.read<GetPaymentsCubit>().getPayments(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.6,
                           child: PRFEmptyView(
                             label: l10n.considerGiving,
-                            description: 'Start your giving journey today',
+                            description: l10n.startGiving,
                             icon: Icons.volunteer_activism_rounded,
                             actionLabel: l10n.give,
                             onActionPressed: _addPayment,
@@ -160,8 +163,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(24),
                                   child: InkWell(
-                                    onLongPress: () =>
-                                        _showPaymentActions(payment),
+                                    onTap: () => _showPaymentActions(payment),
                                     borderRadius: BorderRadius.circular(24),
                                     splashColor: theme.colorScheme.primary
                                         .withValues(alpha: 0.1),
@@ -278,21 +280,12 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           surfaceTintColor: Colors.transparent,
           child: SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.8,
+            height: MediaQuery.sizeOf(context).height * 0.4,
             child: Container(
               padding: const EdgeInsets.all(32),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 50,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
                   Text(
                     l10n.paymentActions,
                     style: theme.textTheme.headlineMedium,
@@ -322,7 +315,10 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                       onTap: () async {
                         Navigator.pop(context);
                         final uri = Uri.parse(payment.authorizationUrl!);
-                        await Misc.openUrl(uri);
+                        await Misc.openUrl(uri).then((_) {
+                          // ignore: use_build_context_synchronously
+                          context.read<GetPaymentsCubit>().getPayments();
+                        });
                       },
                     ),
                   const SizedBox(height: 16),
@@ -468,7 +464,9 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                   ),
                 ],
               ),
-              if (payment.authorizationUrl != null) ...[
+              if (payment.authorizationUrl != null &&
+                  (payment.paymentStatus != PRFPaymentStatus.success ||
+                      payment.paymentStatus != PRFPaymentStatus.success)) ...[
                 const SizedBox(height: 8),
                 Row(
                   children: [

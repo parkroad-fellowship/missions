@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.70.05+27005
+version: 2.71.00+27100
 publish_to: none
 
 environment:
@@ -18,7 +18,7 @@ dependencies:
   device_info_plus: ^11.5.0
   dio: ^5.8.0+1
   extended_image: ^10.0.1
-  file_picker: ^10.2.0
+  file_picker: ^10.2.1
   firebase_analytics: ^11.6.0
   firebase_auth: ^5.6.2
   firebase_core: ^3.15.1
@@ -35,11 +35,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.2.0
-  flutter_widget_from_html: ^0.16.0
+  flutter_widget_from_html: ^0.17.0
   freezed_annotation: ^2.4.4
   full_screen_image: ^2.0.0
   gaimon: ^1.4.1
-  get_it: ^8.0.3
+  get_it: ^8.2.0
   google_fonts: ^6.2.1
   google_sign_in: ^6.3.0
   google_sign_in_ios: ^5.9.0
@@ -66,7 +66,7 @@ dependencies:
   mime: ^2.0.0
   path_provider: ^2.1.5
   permission_handler: ^12.0.1
-  posthog_flutter: ^5.0.0
+  posthog_flutter: ^5.1.0
   pretty_dio_logger: ^1.4.0
   shorebird_code_push: ^2.0.4
   timezone: ^0.10.1
