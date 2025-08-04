@@ -2211,6 +2211,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Long press for actions'**
   String get longPressForActions;
+
+  /// No description provided for @startGiving.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your giving journey today'**
+  String get startGiving;
+
+  /// No description provided for @tapForActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Press for payment actions'**
+  String get tapForActions;
 }
 
 class _AppLocalizationsDelegate

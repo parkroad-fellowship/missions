@@ -155,13 +155,6 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               l10n.directed,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(),
             ),
-            const SizedBox(height: 32),
-            Text(
-              l10n.testing,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: Theme.of(context).colorScheme.error,
-              ),
-            ),
           ],
         ),
       ),

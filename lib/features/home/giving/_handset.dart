@@ -122,11 +122,14 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                           context.read<GetPaymentsCubit>().getPayments(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.6,
                           child: PRFEmptyView(
                             label: l10n.considerGiving,
-                            description: 'Start your giving journey today',
+                            description: l10n.startGiving,
                             icon: Icons.volunteer_activism_rounded,
                             actionLabel: l10n.give,
                             onActionPressed: _addPayment,
@@ -153,7 +156,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(24),
                                 child: InkWell(
-                                  onLongPress: () =>
+                                  onTap: () =>
                                       _showPaymentActions(payment),
                                   borderRadius: BorderRadius.circular(24),
                                   splashColor: theme.colorScheme.primary
@@ -260,26 +263,17 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           surfaceTintColor: Colors.transparent,
           child: SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.8,
+            height: MediaQuery.sizeOf(context).height * 0.3,
             child: Container(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 50,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.outline.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
                   Text(
                     l10n.paymentActions,
                     style: theme.textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   if (payment.authorizationUrl != null)
                     ListTile(
                       leading: Container(
@@ -304,7 +298,10 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       onTap: () async {
                         Navigator.pop(context);
                         final uri = Uri.parse(payment.authorizationUrl!);
-                        await Misc.openUrl(uri);
+                        await Misc.openUrl(uri).then((_) {
+                          // ignore: use_build_context_synchronously
+                          context.read<GetPaymentsCubit>().getPayments();
+                        });
                       },
                     ),
                   const SizedBox(height: 16),
@@ -353,6 +350,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final statusColor = _getStatusColor(theme);
+    final l10n = context.l10n;
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -445,7 +443,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Long press for payment actions',
+                    l10n.tapForActions,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.primary,
                       fontStyle: FontStyle.italic,

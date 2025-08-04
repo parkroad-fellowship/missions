@@ -1141,4 +1141,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get longPressForActions => 'Long press for actions';
+
+  @override
+  String get startGiving => 'Start your giving journey today';
+
+  @override
+  String get tapForActions => 'Press for payment actions';
 }

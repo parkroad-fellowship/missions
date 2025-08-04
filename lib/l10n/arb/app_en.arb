@@ -849,5 +849,9 @@
     "checkPaymentStatus": "Check payment status",
     "@checkPaymentStatus": {},
     "longPressForActions": "Long press for actions",
-    "@longPressForActions": {}
+    "@longPressForActions": {},
+    "startGiving": "Start your giving journey today",
+    "@startGiving": {},
+    "tapForActions": "Press for payment actions",
+    "@tapForActions": {}
 }
