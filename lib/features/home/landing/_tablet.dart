@@ -203,7 +203,6 @@ class LandingPageTablet extends StatelessWidget {
                           ),
                         ),
                       ),
-                   
                     ],
                   ),
                 ),

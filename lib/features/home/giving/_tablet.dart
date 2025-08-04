@@ -163,8 +163,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(24),
                                   child: InkWell(
-                                    onTap: () =>
-                                        _showPaymentActions(payment),
+                                    onTap: () => _showPaymentActions(payment),
                                     borderRadius: BorderRadius.circular(24),
                                     splashColor: theme.colorScheme.primary
                                         .withValues(alpha: 0.1),
@@ -465,9 +464,9 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                   ),
                 ],
               ),
-               if (payment.authorizationUrl != null &&
-              (payment.paymentStatus != PRFPaymentStatus.success ||
-                  payment.paymentStatus != PRFPaymentStatus.success)) ...[
+              if (payment.authorizationUrl != null &&
+                  (payment.paymentStatus != PRFPaymentStatus.success ||
+                      payment.paymentStatus != PRFPaymentStatus.success)) ...[
                 const SizedBox(height: 8),
                 Row(
                   children: [
