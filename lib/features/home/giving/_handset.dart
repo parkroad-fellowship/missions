@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_payment_status.dart';
 import 'package:app/features/home/giving/actions/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -156,8 +157,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(24),
                                 child: InkWell(
-                                  onTap: () =>
-                                      _showPaymentActions(payment),
+                                  onTap: () => _showPaymentActions(payment),
                                   borderRadius: BorderRadius.circular(24),
                                   splashColor: theme.colorScheme.primary
                                       .withValues(alpha: 0.1),
@@ -431,7 +431,9 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
               ),
             ],
           ),
-          if (payment.authorizationUrl != null) ...[
+          if (payment.authorizationUrl != null &&
+              (payment.paymentStatus != PRFPaymentStatus.success ||
+                  payment.paymentStatus != PRFPaymentStatus.success)) ...[
             const SizedBox(height: 12),
             Row(
               children: [
