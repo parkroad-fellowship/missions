@@ -30,7 +30,7 @@ class HomeActionCardTablet extends StatelessWidget {
               24 * scaleFactor,
               20 * scaleFactor,
               88 * scaleFactor,
-              20 * scaleFactor,
+              0
             ),
             margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
