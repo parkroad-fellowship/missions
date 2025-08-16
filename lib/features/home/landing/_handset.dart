@@ -247,10 +247,15 @@ class LandingPageHandset extends StatelessWidget {
                     actions
                         .map(
                           (action) => _buildAnimatedCard(
-                            child: HomeActionCard(
-                              title: action[0] as String,
-                              assetPath: action[1] as String,
-                              onTap: action[2] as VoidCallback,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: HomeActionCard(
+                                title: action[0] as String,
+                                assetPath: action[1] as String,
+                                onTap: action[2] as VoidCallback,
+                              ),
                             ),
                             delay: action[3] as int,
                           ),
