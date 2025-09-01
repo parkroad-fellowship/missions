@@ -2,6 +2,7 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/video_player_widget.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/shared_widgets/_index.dart';
@@ -112,10 +113,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: PRFEmptyView(
-                      label: l10n.addPhotos,
+                      label: l10n.addMissionPhotos,
                       description: l10n.addMissionPhotosDesc,
                       icon: Icons.photo_camera_outlined,
-                      actionLabel: 'Add Media',
+                      actionLabel: l10n.addMissionPhotos,
                       onActionPressed: () => _showAddMediaModal(context),
                     ),
                   ),
@@ -133,7 +134,6 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           if (index == 0) {
-                            // Add photo tile
                             return _buildAddPhotoTile(context, theme);
                           }
 
@@ -161,7 +161,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Error loading photos',
+                          'Error loading media',
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.error,
                           ),
@@ -242,10 +242,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
   Widget _buildPhotoTile(BuildContext context, PRFMedia mediaItem, int index) {
     final theme = Theme.of(context);
-    final isVideo =
-        mediaItem.temporaryURL.toLowerCase().contains('.mp4') ||
-        mediaItem.temporaryURL.toLowerCase().contains('.mov') ||
-        mediaItem.temporaryURL.toLowerCase().contains('.avi');
+    final isVideo = _isVideoFile(mediaItem.temporaryURL);
 
     return Animate(
       delay: Duration(milliseconds: 100 * (index + 1)),
@@ -256,90 +253,219 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
           duration: Duration(milliseconds: 400),
         ),
       ],
-      child: FullScreenWidget(
-        disposeLevel: DisposeLevel.High,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ExtendedImage.network(
-                  mediaItem.temporaryURL,
-                  fit: BoxFit.cover,
-                  loadStateChanged: (state) {
-                    switch (state.extendedImageLoadState) {
-                      case LoadState.loading:
-                        return ColoredBox(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: theme.colorScheme.primary,
-                              strokeWidth: 2,
-                            ),
+      child: isVideo
+          ? GestureDetector(
+              onTap: () => _openVideoPlayer(context, mediaItem.temporaryURL),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      _buildVideoPlaceholder(theme),
+                      // Gradient overlay for better visual appeal
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.2),
+                            ],
                           ),
-                        );
-                      case LoadState.failed:
-                        return ColoredBox(
-                          color: theme.colorScheme.errorContainer,
-                          child: Icon(
-                            isVideo
-                                ? Icons.videocam_off_outlined
-                                : Icons.broken_image_outlined,
-                            color: theme.colorScheme.error,
+                        ),
+                      ),
+                      // Video indicator
+                      Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.8),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.play_arrow,
+                                color: Colors.white,
+                                size: 14,
+                              ),
+                              SizedBox(width: 2),
+                              Text(
+                                'Video',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Tap indicator for videos
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.9,
+                            ),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(12),
+                          child: const Icon(
+                            Icons.play_arrow,
+                            color: Colors.white,
                             size: 32,
                           ),
-                        );
-                      case LoadState.completed:
-                        return null;
-                    }
-                  },
-                ),
-                // Gradient overlay for better visual appeal
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withValues(alpha: 0.1),
-                      ],
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                // Video indicator
-                if (isVideo)
-                  Positioned(
-                    bottom: 8,
-                    right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.7),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Icon(
-                        Icons.play_arrow,
-                        color: Colors.white,
-                        size: 16,
-                      ),
+              ),
+            )
+          : FullScreenWidget(
+              disposeLevel: DisposeLevel.High,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
                     ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      ExtendedImage.network(
+                        mediaItem.temporaryURL,
+                        fit: BoxFit.cover,
+                        loadStateChanged: (state) {
+                          switch (state.extendedImageLoadState) {
+                            case LoadState.loading:
+                              return ColoredBox(
+                                color:
+                                    theme.colorScheme.surfaceContainerHighest,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: theme.colorScheme.primary,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              );
+                            case LoadState.failed:
+                              return ColoredBox(
+                                color: theme.colorScheme.errorContainer,
+                                child: Icon(
+                                  Icons.broken_image_outlined,
+                                  color: theme.colorScheme.error,
+                                  size: 32,
+                                ),
+                              );
+                            case LoadState.completed:
+                              return null;
+                          }
+                        },
+                      ),
+                      // Gradient overlay for better visual appeal
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.2),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-              ],
+                ),
+              ),
             ),
-          ),
+    );
+  }
+
+  Widget _buildVideoPlaceholder(ThemeData theme) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            theme.colorScheme.surfaceContainerHigh,
+            theme.colorScheme.surfaceContainer,
+          ],
         ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.videocam,
+              size: 32,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Video File',
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool _isVideoFile(String url) {
+    final lowercaseUrl = url.toLowerCase();
+    return lowercaseUrl.contains('.mp4') ||
+        lowercaseUrl.contains('.mov') ||
+        lowercaseUrl.contains('.avi') ||
+        lowercaseUrl.contains('.mkv') ||
+        lowercaseUrl.contains('.webm') ||
+        lowercaseUrl.contains('.m4v');
+  }
+
+  void _openVideoPlayer(BuildContext context, String videoUrl) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => VideoPlayerWidget(videoUrl: videoUrl),
       ),
     );
   }
