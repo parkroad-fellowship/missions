@@ -72,7 +72,7 @@ dependencies:
   timezone: ^0.10.1
   upgrader: ^11.4.0
   url_launcher: ^6.3.2
-  video_player: ^2.8.1
+  video_player: ^2.10.0
   wechat_assets_picker: ^9.6.0
   wolt_modal_sheet: ^0.11.0
 
