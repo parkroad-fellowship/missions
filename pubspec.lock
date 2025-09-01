@@ -1450,10 +1450,10 @@ packages:
     dependency: "direct main"
     description:
       name: posthog_flutter
-      sha256: a74ab752f3c4057239555ea46f401490507d23a0331479e879ef445a7b561c14
+      sha256: fe371bf8be9df3e8d8b1e78c52b3eb179c8db18a0ac86e9f3f74ad5beb0048e0
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.0"
+    version: "5.4.1"
   pretty_dio_logger:
     dependency: "direct main"
     description:
