@@ -44,7 +44,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
         children: [
           // Header
           Text(
-            'Add Mission Media',
+            l10n.addMissionPhotos,
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w700,
               color: theme.colorScheme.onSurface,
@@ -53,7 +53,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Choose photos or videos to share with your team',
+            l10n.addMissionPhotosDesc,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
