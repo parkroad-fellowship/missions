@@ -16,9 +16,9 @@ dependencies:
   crypto: ^3.0.6
   dart_pusher_channels: ^1.2.3
   device_info_plus: ^11.5.0
-  dio: ^5.8.0+1
+  dio: ^5.9.0
   extended_image: ^10.0.1
-  file_picker: ^10.2.1
+  file_picker: ^10.2.4
   firebase_analytics: ^12.0.0
   firebase_auth: ^6.0.0
   firebase_core: ^4.0.0
@@ -46,7 +46,7 @@ dependencies:
   google_sign_in_web: ^0.12.4+4
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1
-  http: ^1.4.0
+  http: ^1.5.0
   http_parser: ^4.1.2
   intl: ^0.20.2
   intl_phone_number_input:
@@ -62,7 +62,7 @@ dependencies:
   json_annotation: ^4.9.0
   local_auth: ^2.3.0
   logger: ^2.6.1
-  map_launcher: ^3.5.0
+  map_launcher: ^4.0.0
   mime: ^2.0.0
   path_provider: ^2.1.5
   permission_handler: ^12.0.1
@@ -72,19 +72,19 @@ dependencies:
   timezone: ^0.10.1
   upgrader: ^11.4.0
   url_launcher: ^6.3.2
-  wechat_assets_picker: ^9.5.1
+  wechat_assets_picker: ^9.6.0
   wolt_modal_sheet: ^0.11.0
 
 dev_dependencies:
   auto_route_generator: ^9.0.0
   bloc_test: ^10.0.0
-  build_runner: ^2.5.4
+  build_runner: ^2.2.0
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
   flutter_test:
     sdk: flutter
   freezed: ^2.5.2
-  hive_ce_generator: ^1.8.0
+  hive_ce_generator: ^1.4.0
   icons_launcher: ^3.0.1
   isar_generator:
     hosted: https://pub.isar-community.dev
