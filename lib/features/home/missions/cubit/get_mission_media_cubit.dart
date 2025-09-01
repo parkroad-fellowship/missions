@@ -17,14 +17,19 @@ class GetMissionMediaCubit extends Cubit<GetMissionMediaState> {
 
   Future<void> getMissionMedia({
     required String missionUlid,
-    required PRFMediaModel model,
+    required List<PRFMediaModel> collections,
   }) async {
     emit(const GetMissionMediaState.loading());
     try {
       final media = await _missionService.listChildren<PRFMedia>(
         parentId: missionUlid,
         childPath: 'media',
-        queryParameters: {'collection': model.collection},
+        queryParameters: {
+          'collections': collections
+              .map((e) => e.collection)
+              .toList()
+              .join(','),
+        },
         fromJson: (json) => PRFMediaResponse.fromJson(json).data,
       );
 

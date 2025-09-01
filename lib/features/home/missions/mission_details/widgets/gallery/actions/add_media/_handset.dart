@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
+enum MediaType { photos, videos }
+
 class AddMediaViewHandset extends StatefulWidget {
   const AddMediaViewHandset({required this.missionUlid, super.key});
 
@@ -21,6 +23,9 @@ class AddMediaViewHandset extends StatefulWidget {
 }
 
 class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
+  // Track the current media type selection
+  MediaType _selectedMediaType = MediaType.photos;
+
   @override
   void initState() {
     context.read<SelectMediaCubit>().clearMedia();
@@ -53,6 +58,39 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
               color: theme.colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.left,
+          ),
+          const SizedBox(height: 24),
+
+          // Media Type Selection
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildMediaTypeButton(
+                    context,
+                    theme,
+                    'Photos',
+                    Icons.photo_outlined,
+                    MediaType.photos,
+                  ),
+                ),
+                Expanded(
+                  child: _buildMediaTypeButton(
+                    context,
+                    theme,
+                    'Videos',
+                    Icons.videocam_outlined,
+                    MediaType.videos,
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 32),
 
@@ -113,6 +151,18 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
   }
 
   Widget _buildEmptyState(BuildContext context, ThemeData theme) {
+    final mediaTypeText = _selectedMediaType == MediaType.photos
+        ? 'photos'
+        : _selectedMediaType == MediaType.videos
+        ? 'videos'
+        : 'media';
+
+    final emptyIcon = _selectedMediaType == MediaType.photos
+        ? Icons.add_a_photo_outlined
+        : _selectedMediaType == MediaType.videos
+        ? Icons.videocam_outlined
+        : Icons.perm_media_outlined;
+
     return Center(
       child: GestureDetector(
         onTap: () => _selectMedia(context, previousMedia: []),
@@ -143,14 +193,14 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   color: theme.colorScheme.primary.withValues(alpha: 0.1),
                 ),
                 child: Icon(
-                  Icons.add_a_photo_outlined,
+                  emptyIcon,
                   size: 48,
                   color: theme.colorScheme.primary,
                 ),
               ),
               const SizedBox(height: 24),
               Text(
-                'Tap to select photos',
+                'Tap to select $mediaTypeText',
                 style: theme.textTheme.titleLarge?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
@@ -158,7 +208,8 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Choose multiple photos to share',
+                'Choose multiple ${mediaTypeText == 'media' ? 'fi'
+                          'les' : mediaTypeText} to share',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -175,13 +226,19 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
     ThemeData theme,
     List<PRFMediaDTO> images,
   ) {
+    final mediaTypeText = _selectedMediaType == MediaType.photos
+        ? 'Photos'
+        : _selectedMediaType == MediaType.videos
+        ? 'Videos'
+        : 'Media';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             Text(
-              'Selected Photos',
+              'Selected $mediaTypeText',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: theme.colorScheme.onSurface,
@@ -267,9 +324,14 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
   Widget _buildImageTile(
     BuildContext context,
     ThemeData theme,
-    PRFMediaDTO image,
+    PRFMediaDTO media,
     int index,
   ) {
+    final isVideo =
+        media.path.toLowerCase().endsWith('.mp4') ||
+        media.path.toLowerCase().endsWith('.mov') ||
+        media.path.toLowerCase().endsWith('.avi');
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -287,8 +349,19 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
           fit: StackFit.expand,
           children: [
             Image.file(
-              File(image.path),
+              File(media.path),
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                // For videos, show a placeholder
+                return ColoredBox(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  child: Icon(
+                    isVideo ? Icons.videocam : Icons.broken_image,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    size: 32,
+                  ),
+                );
+              },
             ),
             // Gradient overlay
             Container(
@@ -303,6 +376,41 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                 ),
               ),
             ),
+            // Video indicator
+            if (isVideo)
+              Positioned(
+                bottom: 8,
+                left: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.7),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                      SizedBox(width: 2),
+                      Text(
+                        'Video',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             // Remove button
             Positioned(
               top: 8,
@@ -342,12 +450,76 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
     BuildContext context, {
     required List<PRFMediaDTO> previousMedia,
   }) {
+    // Determine the correct RequestType based on selected media type
+    RequestType requestType;
+    PRFMediaModel model;
+
+    switch (_selectedMediaType) {
+      case MediaType.photos:
+        requestType = RequestType.image;
+        model = PRFMediaModel.missionPhotos;
+      case MediaType.videos:
+        requestType = RequestType.video;
+        model = PRFMediaModel.missionVideos;
+    }
+
     context.read<SelectMediaCubit>().selectMedia(
       context: context,
-      model: PRFMediaModel.missionPhotos,
+      model: model,
       modelUlid: widget.missionUlid,
       previousMedia: previousMedia.cast(),
-      mediaType: RequestType.image,
+      mediaType: requestType,
+    );
+  }
+
+  Widget _buildMediaTypeButton(
+    BuildContext context,
+    ThemeData theme,
+    String label,
+    IconData icon,
+    MediaType type,
+  ) {
+    final isSelected = _selectedMediaType == type;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedMediaType = type;
+        });
+        // Clear previously selected media when switching types
+        context.read<SelectMediaCubit>().clearMedia();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.colorScheme.primary.withValues(alpha: 0.1)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.onSurfaceVariant,
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurfaceVariant,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

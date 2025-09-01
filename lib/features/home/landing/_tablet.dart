@@ -293,10 +293,13 @@ class LandingPageTablet extends StatelessWidget {
           curve: Curves.easeOut,
         ),
       ],
-      child: HomeActionCard(
-        title: title,
-        assetPath: assetPath,
-        onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: HomeActionCard(
+          title: title,
+          assetPath: assetPath,
+          onTap: onTap,
+        ),
       ),
     );
   }

@@ -46,6 +46,7 @@ class MediaServiceImpl implements MediaService {
     switch (imageDTO.model) {
       case PRFMediaModel.missionPhotos:
       case PRFMediaModel.missionFitChecks:
+      case PRFMediaModel.missionVideos:
         url.write('missions');
       case PRFMediaModel.missionSessionAudios:
         url.write('mission-sessions');

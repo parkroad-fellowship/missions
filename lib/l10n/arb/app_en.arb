@@ -760,9 +760,9 @@
     "@noPrayerRequestsDesc": {},
     "submitPrayerRequestDesc": "Share your prayer request with the PRF community. We will pray for you.",
     "@submitPrayerRequestDesc": {},
-    "addMissionPhotos": "Add mission photos",
+    "addMissionPhotos": "Add mission media",
     "@addMissionPhotos": {},
-    "addMissionPhotosDesc": "Share your mission moments with beautiful photos",
+    "addMissionPhotosDesc": "Share your mission moments with beautiful photos and videos",
     "@addMissionPhotosDesc": {},
     "areGoing": "{number} going",
     "@areGoing": {

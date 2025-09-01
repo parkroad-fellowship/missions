@@ -1,5 +1,6 @@
 enum PRFMediaModel {
   missionPhotos,
+  missionVideos,
   missionFitChecks,
   missionSessionAudios,
   eventPhotos,
@@ -10,6 +11,8 @@ enum PRFMediaModel {
     switch (this) {
       case PRFMediaModel.missionPhotos:
         return 'mission-photos';
+      case PRFMediaModel.missionVideos:
+        return 'mission-videos';
       case PRFMediaModel.missionFitChecks:
         return 'mission-fit-checks';
       case PRFMediaModel.missionSessionAudios:

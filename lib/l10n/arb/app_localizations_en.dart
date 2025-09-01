@@ -1004,11 +1004,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Share your prayer request with the PRF community. We will pray for you.';
 
   @override
-  String get addMissionPhotos => 'Add mission photos';
+  String get addMissionPhotos => 'Add mission media';
 
   @override
   String get addMissionPhotosDesc =>
-      'Share your mission moments with beautiful photos';
+      'Share your mission moments with beautiful photos and videos';
 
   @override
   String areGoing(int number) {

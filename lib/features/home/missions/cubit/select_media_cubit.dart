@@ -34,6 +34,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
       modelUlid: modelUlid,
       model: model,
       mediaType: mediaType,
+      count: 30,
     );
 
     await _isarService.mediaUploads.persistEntities(media);
