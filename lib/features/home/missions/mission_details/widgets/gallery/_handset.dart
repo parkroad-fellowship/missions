@@ -29,7 +29,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   void initState() {
     context.read<GetMissionMediaCubit>().getMissionMedia(
       missionUlid: missionUlid,
-      model: PRFMediaModel.missionPhotos,
+      collections: [
+        PRFMediaModel.missionPhotos,
+        PRFMediaModel.missionVideos,
+      ],
     );
     super.initState();
   }
@@ -42,7 +45,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     return RefreshIndicator(
       onRefresh: () => context.read<GetMissionMediaCubit>().getMissionMedia(
         missionUlid: missionUlid,
-        model: PRFMediaModel.missionPhotos,
+        collections: [
+          PRFMediaModel.missionPhotos,
+          PRFMediaModel.missionVideos,
+        ],
       ),
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
@@ -54,7 +60,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                 loaded: (_) {
                   context.read<GetMissionMediaCubit>().getMissionMedia(
                     missionUlid: missionUlid,
-                    model: PRFMediaModel.missionPhotos,
+                    collections: [
+                      PRFMediaModel.missionPhotos,
+                      PRFMediaModel.missionVideos,
+                    ],
                   );
                   Gaimon.success();
                   ScaffoldMessenger.of(
@@ -104,9 +113,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: PRFEmptyView(
                       label: l10n.addPhotos,
-                      description: l10n.addMissionPhotosDesc,
+                      description:
+                          l10n.addMissionPhotosDesc,
                       icon: Icons.photo_camera_outlined,
-                      actionLabel: l10n.addPhotos,
+                      actionLabel: 'Add Media',
                       onActionPressed: () => _showAddMediaModal(context),
                     ),
                   ),
@@ -218,7 +228,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
               ),
               const SizedBox(height: 12),
               Text(
-                'Add Photos',
+                'Add Media',
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
@@ -233,6 +243,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
   Widget _buildPhotoTile(BuildContext context, PRFMedia mediaItem, int index) {
     final theme = Theme.of(context);
+    final isVideo =
+        mediaItem.temporaryURL.toLowerCase().contains('.mp4') ||
+        mediaItem.temporaryURL.toLowerCase().contains('.mov') ||
+        mediaItem.temporaryURL.toLowerCase().contains('.avi');
 
     return Animate(
       delay: Duration(milliseconds: 100 * (index + 1)),
@@ -264,7 +278,6 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                 ExtendedImage.network(
                   mediaItem.temporaryURL,
                   fit: BoxFit.cover,
-
                   loadStateChanged: (state) {
                     switch (state.extendedImageLoadState) {
                       case LoadState.loading:
@@ -281,7 +294,9 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         return ColoredBox(
                           color: theme.colorScheme.errorContainer,
                           child: Icon(
-                            Icons.broken_image_outlined,
+                            isVideo
+                                ? Icons.videocam_off_outlined
+                                : Icons.broken_image_outlined,
                             color: theme.colorScheme.error,
                             size: 32,
                           ),
@@ -304,6 +319,24 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     ),
                   ),
                 ),
+                // Video indicator
+                if (isVideo)
+                  Positioned(
+                    bottom: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.7),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

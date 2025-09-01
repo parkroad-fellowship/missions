@@ -24,7 +24,7 @@ class GetEventsCubit extends Cubit<GetEventsState> {
           'weatherForecasts',
           'eventSubscriptions',
           'loggedInMemberEventSubscription',
-          'posters'
+          'posters',
         ],
         orderBy: 'start_date',
         orderDirection: 'asc',

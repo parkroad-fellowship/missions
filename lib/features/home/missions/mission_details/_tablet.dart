@@ -425,7 +425,10 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                   if (context.mounted) {
                     context.read<GetMissionMediaCubit>().getMissionMedia(
                       missionUlid: missionUlid,
-                      model: PRFMediaModel.missionPhotos,
+                      collections: [
+                        PRFMediaModel.missionPhotos,
+                        PRFMediaModel.missionVideos,
+                      ],
                     );
                   }
                 });
