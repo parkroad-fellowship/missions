@@ -1963,13 +1963,13 @@ abstract class AppLocalizations {
   /// No description provided for @addMissionPhotos.
   ///
   /// In en, this message translates to:
-  /// **'Add mission photos'**
+  /// **'Add mission media'**
   String get addMissionPhotos;
 
   /// No description provided for @addMissionPhotosDesc.
   ///
   /// In en, this message translates to:
-  /// **'Share your mission moments with beautiful photos'**
+  /// **'Share your mission moments with beautiful photos and videos'**
   String get addMissionPhotosDesc;
 
   /// No description provided for @areGoing.
