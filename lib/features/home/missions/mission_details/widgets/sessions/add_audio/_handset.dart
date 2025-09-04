@@ -227,7 +227,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               loaded: (uploadedFile) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${l10n.upload} ${l10n.recordingCompleted}'),
+                    content:
+                        Text('${l10n.upload} ${l10n.recordingCompleted}'),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                 );
@@ -289,19 +290,36 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: LiveRecordingWidget(
-              onRecordingCompleted: (filePath, duration) async {
-                final file = File(filePath);
-                if (file.existsSync()) {
-                  await context.read<RecordingUploadCubit>().uploadRecording(
-                    PRFMediaDTO(
-                      model: PRFMediaModel.missionSessionLiveRecordings,
-                      modelUlid: widget.missionSessionUlid,
-                      path: file.path,
-                      name: Misc.getFileName(file.path),
-                    ),
-                  );
-                }
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: constraints.maxWidth.isFinite 
+                        ? constraints.maxWidth 
+                        : MediaQuery.of(context).size.width - 32,
+                    maxHeight: constraints.maxHeight.isFinite 
+                        ? constraints.maxHeight 
+                        : MediaQuery.of(context).size.height * 0.6,
+                  ),
+                  child: LiveRecordingWidget(
+                    onRecordingCompleted: (filePath, duration) async {
+                      final file = File(filePath);
+                      if (file.existsSync()) {
+                        await context
+                            .read<RecordingUploadCubit>()
+                            .uploadRecording(
+                              PRFMediaDTO(
+                                model:
+                                    PRFMediaModel.missionSessionLiveRecordings,
+                                modelUlid: widget.missionSessionUlid,
+                                path: file.path,
+                                name: Misc.getFileName(file.path),
+                              ),
+                            );
+                      }
+                    },
+                  ),
+                );
               },
             ),
           ),

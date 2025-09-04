@@ -21,9 +21,7 @@ class LiveRecordingWidget extends StatefulWidget {
 
 class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
     with TickerProviderStateMixin {
-  late AnimationController _pulseController;
   late AnimationController _waveController;
-  late Animation<double> _pulseAnimation;
   late Animation<double> _waveAnimation;
 
   @override
@@ -31,20 +29,6 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
     super.initState();
 
     // Initialize pulse animation for recording button
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-    _pulseAnimation =
-        Tween<double>(
-          begin: 1,
-          end: 1.2,
-        ).animate(
-          CurvedAnimation(
-            parent: _pulseController,
-            curve: Curves.easeInOut,
-          ),
-        );
 
     // Initialize wave animation for active recording
     _waveController = AnimationController(
@@ -65,7 +49,6 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
 
   @override
   void dispose() {
-    _pulseController.dispose();
     _waveController.dispose();
     super.dispose();
   }
@@ -90,28 +73,22 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
       listener: (context, state) {
         state.when(
           initial: () {
-            _pulseController.stop();
             _waveController.stop();
           },
           ready: () {
-            _pulseController.stop();
             _waveController.stop();
           },
           recording: (duration) {
-            _pulseController.repeat(reverse: true);
             _waveController.repeat(reverse: true);
           },
           paused: (duration) {
-            _pulseController.stop();
             _waveController.stop();
           },
           completed: (filePath, duration) {
-            _pulseController.stop();
             _waveController.stop();
             widget.onRecordingCompleted(filePath, duration);
           },
           error: (message) {
-            _pulseController.stop();
             _waveController.stop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -123,17 +100,20 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         );
       },
       builder: (context, state) {
-        return state.when(
-          initial: () => const Center(
-            child: PRFCircularProgressIndicator(),
+        return SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.4,
+          child: state.when(
+            initial: () => const Center(
+              child: PRFCircularProgressIndicator(),
+            ),
+            ready: () => _buildReadyState(context, l10n),
+            recording: (duration) =>
+                _buildRecordingState(context, l10n, duration),
+            paused: (duration) => _buildPausedState(context, l10n, duration),
+            completed: (filePath, duration) =>
+                _buildCompletedState(context, l10n, filePath, duration),
+            error: (message) => _buildErrorState(context, l10n, message),
           ),
-          ready: () => _buildReadyState(context, l10n),
-          recording: (duration) =>
-              _buildRecordingState(context, l10n, duration),
-          paused: (duration) => _buildPausedState(context, l10n, duration),
-          completed: (filePath, duration) =>
-              _buildCompletedState(context, l10n, filePath, duration),
-          error: (message) => _buildErrorState(context, l10n, message),
         );
       },
     );
@@ -199,41 +179,6 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Animated recording indicator
-        AnimatedBuilder(
-          animation: _pulseAnimation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _pulseAnimation.value,
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.error.withValues(alpha: 0.2),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.error.withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  Icons.fiber_manual_record,
-                  size: 64,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ),
-            );
-          },
-        ),
-
-        const SizedBox(height: 24),
-
         // Wave animation
         AnimatedBuilder(
           animation: _waveAnimation,
@@ -286,33 +231,39 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Pause button
-            ElevatedButton.icon(
-              onPressed: () =>
-                  context.read<AudioRecordingCubit>().pauseRecording(),
-              icon: const Icon(Icons.pause),
-              label: Text(l10n.pause),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () =>
+                    context.read<AudioRecordingCubit>().pauseRecording(),
+                icon: const Icon(Icons.pause),
+                label: Text(l10n.pause),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ),
 
+            SizedBox(width: 16),
+
             // Stop button
-            ElevatedButton.icon(
-              onPressed: () =>
-                  context.read<AudioRecordingCubit>().stopRecording(),
-              icon: const Icon(Icons.stop),
-              label: Text(l10n.stop),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () =>
+                    context.read<AudioRecordingCubit>().stopRecording(),
+                icon: const Icon(Icons.stop),
+                label: Text(l10n.stop),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ),
@@ -373,33 +324,37 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Resume button
-            ElevatedButton.icon(
-              onPressed: () =>
-                  context.read<AudioRecordingCubit>().resumeRecording(),
-              icon: const Icon(Icons.play_arrow),
-              label: Text(l10n.resume),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () =>
+                    context.read<AudioRecordingCubit>().resumeRecording(),
+                icon: const Icon(Icons.play_arrow),
+                label: Text(l10n.resume),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ),
-
+            SizedBox(width: 16),
             // Stop button
-            ElevatedButton.icon(
-              onPressed: () =>
-                  context.read<AudioRecordingCubit>().stopRecording(),
-              icon: const Icon(Icons.stop),
-              label: Text(l10n.stop),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () =>
+                    context.read<AudioRecordingCubit>().stopRecording(),
+                icon: const Icon(Icons.stop),
+                label: Text(l10n.stop),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ),

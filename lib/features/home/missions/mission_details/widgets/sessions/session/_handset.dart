@@ -451,25 +451,33 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                     );
                   },
                   builder: (context, state) => state.maybeWhen(
-                    orElse: () => Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.download,
-                          color: Theme.of(context).colorScheme.primary,
+                    orElse: () => SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        onPressed: () =>
-                            context.read<DownloadFileCubit>().downloadFile(
-                              transcript.media!.temporaryURL!,
-                            ),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.download,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          onPressed: () =>
+                              context.read<DownloadFileCubit>().downloadFile(
+                                transcript.media!.temporaryURL!,
+                              ),
+                        ),
                       ),
                     ),
-                    loading: () => const PRFCircularProgressIndicator(),
+                    loading: () => const SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: PRFCircularProgressIndicator(),
+                    ),
                   ),
                 ),
               ),
