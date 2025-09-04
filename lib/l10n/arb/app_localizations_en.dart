@@ -1147,4 +1147,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapForActions => 'Press for payment actions';
+
+  @override
+  String get tapToStartRecording => 'Tap to start recording';
+
+  @override
+  String get recordingWillContinueInBackground =>
+      'Recording will continue even when the app goes to background';
+
+  @override
+  String get startRecording => 'Start Recording';
+
+  @override
+  String get liveRecording => 'Recording...';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get stop => 'Stop';
+
+  @override
+  String get recordingPaused => 'Recording Paused';
+
+  @override
+  String get resume => 'Resume';
+
+  @override
+  String get recordingCompleted => 'Recording Completed';
+
+  @override
+  String get recordAnother => 'Record Another';
+
+  @override
+  String get recordingError => 'Recording Error';
+
+  @override
+  String get tryAgain => 'Try Again';
 }

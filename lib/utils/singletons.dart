@@ -34,6 +34,7 @@ import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart
 import 'package:app/features/home/missions/cubit/add_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_token_cubit.dart';
+import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
@@ -47,6 +48,7 @@ import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
+import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
@@ -85,6 +87,7 @@ import 'package:app/services/api/prayer_request_service.dart';
 import 'package:app/services/api/prayer_response_service.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
+import 'package:app/services/audio_recording_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/services/local_auth_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -169,7 +172,8 @@ class Singletons {
         SocketServiceImpl(isarService: getIt()),
       )
       ..registerSingleton<MediaService>(MediaServiceImpl())
-      ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl());
+      ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl())
+      ..registerSingleton<AudioRecordingService>(AudioRecordingService());
   }
 
   static Future<void> setupDatabases() async {
@@ -524,6 +528,16 @@ class Singletons {
         create: (context) => GetPrayerRequestsCubit(
           prayerRequestService: getIt(),
           hiveService: getIt(),
+        ),
+      ),
+      BlocProvider<AudioRecordingCubit>(
+        create: (context) => AudioRecordingCubit(
+          recordingService: getIt(),
+        ),
+      ),
+      BlocProvider<RecordingUploadCubit>(
+        create: (context) => RecordingUploadCubit(
+          mediaService: getIt(),
         ),
       ),
     ];

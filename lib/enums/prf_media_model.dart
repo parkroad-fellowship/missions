@@ -3,6 +3,7 @@ enum PRFMediaModel {
   missionVideos,
   missionFitChecks,
   missionSessionAudios,
+  missionSessionLiveRecordings,
   eventPhotos,
   memberProfilePictures,
   expenses;
@@ -17,6 +18,8 @@ enum PRFMediaModel {
         return 'mission-fit-checks';
       case PRFMediaModel.missionSessionAudios:
         return 'session-audios';
+      case PRFMediaModel.missionSessionLiveRecordings:
+        return 'session-live-recordings';
       case PRFMediaModel.eventPhotos:
         return 'event-photos';
       case PRFMediaModel.memberProfilePictures:
