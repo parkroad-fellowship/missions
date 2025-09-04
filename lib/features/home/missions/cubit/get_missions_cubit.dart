@@ -42,6 +42,7 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
             PRFMissionStatus.fullySubscribed.apiKey,
           ].join(','),
           'unsubscribed': true,
+          'upcoming': true,
         },
         orderBy: 'start_date',
         orderDirection: 'asc',
