@@ -310,10 +310,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 widget: (context, missionSession) =>
                     missionSession!.transcripts.isEmpty
                     ? SliverFillRemaining(
+                        hasScrollBody: false,
                         child: Center(
                           child:
                               Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(
                                         Icons.music_off_outlined,
