@@ -1159,7 +1159,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startRecording => 'Start Recording';
 
   @override
-  String get liveRecording => 'Recording...';
+  String get liveRecording => 'Live recording';
 
   @override
   String get pause => 'Pause';

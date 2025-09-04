@@ -2245,7 +2245,7 @@ abstract class AppLocalizations {
   /// No description provided for @liveRecording.
   ///
   /// In en, this message translates to:
-  /// **'Recording...'**
+  /// **'Live recording'**
   String get liveRecording;
 
   /// No description provided for @pause.

@@ -860,7 +860,7 @@
     "@recordingWillContinueInBackground": {},
     "startRecording": "Start Recording",
     "@startRecording": {},
-    "liveRecording": "Recording...",
+    "liveRecording": "Live recording",
     "@liveRecording": {},
     "pause": "Pause",
     "@pause": {},
