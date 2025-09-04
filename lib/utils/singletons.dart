@@ -88,6 +88,7 @@ import 'package:app/services/api/prayer_response_service.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
 import 'package:app/services/audio_recording_service.dart';
+import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/services/local_auth_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -173,7 +174,13 @@ class Singletons {
       )
       ..registerSingleton<MediaService>(MediaServiceImpl())
       ..registerSingleton<AnalyticsService>(AnalyticsServiceImpl())
-      ..registerSingleton<AudioRecordingService>(AudioRecordingService());
+      ..registerSingleton<AudioRecordingService>(AudioRecordingService())
+      ..registerSingleton<FailedRecordingUploadService>(
+        FailedRecordingUploadService(
+          isarService: getIt(),
+          mediaService: getIt(),
+        ),
+      );
   }
 
   static Future<void> setupDatabases() async {
@@ -538,6 +545,7 @@ class Singletons {
       BlocProvider<RecordingUploadCubit>(
         create: (context) => RecordingUploadCubit(
           mediaService: getIt(),
+          failedUploadService: getIt(),
         ),
       ),
     ];

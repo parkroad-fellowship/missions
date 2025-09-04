@@ -284,7 +284,7 @@ class AudioRecordingService {
     _recordingStartTime = DateTime.now();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      // Calculate total elapsed time: 
+      // Calculate total elapsed time:
       // current session + any previous paused duration
       final currentSessionDuration = DateTime.now().difference(
         _recordingStartTime!,

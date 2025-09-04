@@ -5,14 +5,17 @@ import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/pending_uploads_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/misc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class AddAudioViewHandset extends StatefulWidget {
   const AddAudioViewHandset({required this.missionSessionUlid, super.key});
@@ -220,6 +223,11 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
   Widget _buildLiveRecordingTab(BuildContext context, AppLocalizations l10n) {
     return Column(
       children: [
+        // Pending uploads widget
+        PendingUploadsWidget(
+          failedUploadService: GetIt.instance<FailedRecordingUploadService>(),
+        ),
+
         BlocConsumer<RecordingUploadCubit, RecordingUploadState>(
           listener: (context, state) {
             state.when(

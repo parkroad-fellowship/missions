@@ -2,6 +2,7 @@ import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_debrief_note.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
@@ -107,6 +108,7 @@ class IsarService {
       PRFLocalAnnouncementSchema,
       PRFLocalPrayerResponseSchema,
       PRFLocalMediaUploadSchema,
+      PRFFailedRecordingUploadSchema,
       PRFLocalFaqSchema,
       PRFLocalFaqCategorySchema,
       PRFLocalMissionSchema,

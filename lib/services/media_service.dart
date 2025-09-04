@@ -86,7 +86,7 @@ class MediaServiceImpl implements MediaService {
       return PRFMedia.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       Logger().e(e.toString());
-      return null;
+      rethrow;
     }
   }
 
