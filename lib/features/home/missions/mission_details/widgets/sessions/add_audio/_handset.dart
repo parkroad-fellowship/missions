@@ -5,6 +5,7 @@ import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
@@ -227,10 +228,13 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               loaded: (uploadedFile) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content:
-                        Text('${l10n.upload} ${l10n.recordingCompleted}'),
+                    content: Text('${l10n.upload} ${l10n.recordingCompleted}'),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
+                );
+                context.read<GetMissionSessionCubit>().getMissionSession(
+                  missionSessionUlid: widget.missionSessionUlid,
+                  refresh: true,
                 );
                 Navigator.of(context).pop();
               },
@@ -294,11 +298,11 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               builder: (context, constraints) {
                 return ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxWidth: constraints.maxWidth.isFinite 
-                        ? constraints.maxWidth 
+                    maxWidth: constraints.maxWidth.isFinite
+                        ? constraints.maxWidth
                         : MediaQuery.of(context).size.width - 32,
-                    maxHeight: constraints.maxHeight.isFinite 
-                        ? constraints.maxHeight 
+                    maxHeight: constraints.maxHeight.isFinite
+                        ? constraints.maxHeight
                         : MediaQuery.of(context).size.height * 0.6,
                   ),
                   child: LiveRecordingWidget(

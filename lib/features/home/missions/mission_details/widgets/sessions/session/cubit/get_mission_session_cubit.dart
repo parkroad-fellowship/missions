@@ -21,7 +21,6 @@ class GetMissionSessionCubit extends Cubit<GetMissionSessionState> {
 
   Future<void> getMissionSession({
     required String missionSessionUlid,
-    required String missionUlid,
     bool refresh = false,
   }) async {
     try {

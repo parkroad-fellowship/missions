@@ -251,7 +251,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
               ),
             ),
 
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
 
             // Stop button
             Flexible(
@@ -343,7 +343,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                 ),
               ),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             // Stop button
             Flexible(
               child: ElevatedButton.icon(

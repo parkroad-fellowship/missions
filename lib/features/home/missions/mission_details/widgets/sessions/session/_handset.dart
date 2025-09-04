@@ -48,7 +48,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
     super.initState();
     context.read<GetMissionSessionCubit>().getMissionSession(
       missionSessionUlid: missionSessionUlid,
-      missionUlid: missionUlid,
     );
   }
 
@@ -69,7 +68,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
           onRefresh: () =>
               context.read<GetMissionSessionCubit>().getMissionSession(
                 missionSessionUlid: missionSessionUlid,
-                missionUlid: missionUlid,
                 refresh: true,
               ),
           child: CustomScrollView(
@@ -89,7 +87,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                             .read<GetMissionSessionCubit>()
                             .getMissionSession(
                               missionSessionUlid: missionSessionUlid,
-                              missionUlid: missionUlid,
                               refresh: true,
                             );
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -634,7 +631,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
         // ignore: use_build_context_synchronously
         context.read<GetMissionSessionCubit>().getMissionSession(
           missionSessionUlid: missionSessionUlid,
-          missionUlid: missionUlid,
         );
       });
 }

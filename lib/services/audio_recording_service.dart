@@ -24,6 +24,8 @@ class AudioRecordingService {
   Timer? _timer;
   Duration _recordingDuration = Duration.zero;
   String? _currentRecordingPath;
+  DateTime? _recordingStartTime;
+  Duration _pausedDuration = Duration.zero;
 
   // Getters
   Stream<RecordingState> get stateStream => _stateController.stream;
@@ -130,6 +132,11 @@ class AudioRecordingService {
 
       // Start recording
       await _audioRecorder.start(config, path: _currentRecordingPath!);
+
+      // Reset timing for new recording
+      _recordingDuration = Duration.zero;
+      _pausedDuration = Duration.zero;
+      _recordingStartTime = null;
 
       _updateState(RecordingState.recording);
       _startTimer();
@@ -272,21 +279,42 @@ class AudioRecordingService {
   /// Start the duration timer
   void _startTimer() {
     _timer?.cancel();
+
+    // Record when we start/resume recording
+    _recordingStartTime = DateTime.now();
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _recordingDuration = Duration(seconds: timer.tick);
+      // Calculate total elapsed time: 
+      // current session + any previous paused duration
+      final currentSessionDuration = DateTime.now().difference(
+        _recordingStartTime!,
+      );
+      _recordingDuration = _pausedDuration + currentSessionDuration;
       _durationController.add(_recordingDuration);
     });
   }
 
   /// Stop the duration timer
   void _stopTimer() {
+    if (_timer != null && _recordingStartTime != null) {
+      // When stopping/pausing, accumulate the elapsed time
+      final currentSessionDuration = DateTime.now().difference(
+        _recordingStartTime!,
+      );
+      _pausedDuration = _pausedDuration + currentSessionDuration;
+      _recordingDuration = _pausedDuration;
+    }
+
     _timer?.cancel();
     _timer = null;
+    _recordingStartTime = null;
   }
 
   /// Reset recording state
   void _resetRecording() {
     _recordingDuration = Duration.zero;
+    _pausedDuration = Duration.zero;
+    _recordingStartTime = null;
     _currentRecordingPath = null;
     _durationController.add(_recordingDuration);
   }
