@@ -180,26 +180,29 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Wave animation
-        AnimatedBuilder(
-          animation: _waveAnimation,
-          builder: (context, child) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (index) {
-                final delay = index * 0.2;
-                final animationValue = (_waveAnimation.value + delay) % 1.0;
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 2),
-                  height: 20 + (animationValue * 40),
-                  width: 4,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                );
-              }),
-            );
-          },
+        SizedBox(
+          height: 60,
+          child: AnimatedBuilder(
+            animation: _waveAnimation,
+            builder: (context, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(5, (index) {
+                  final delay = index * 0.2;
+                  final animationValue = (_waveAnimation.value + delay) % 1.0;
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    height: 20 + (animationValue * 40),
+                    width: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  );
+                }),
+              );
+            },
+          ),
         ),
 
         const SizedBox(height: 24),
