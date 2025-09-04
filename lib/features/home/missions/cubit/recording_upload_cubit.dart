@@ -32,16 +32,27 @@ class RecordingUploadCubit extends Cubit<RecordingUploadState> {
         emit(RecordingUploadState.loaded(mediaDTO));
       } else {
         Logger().w('Recording upload returned null: ${mediaDTO.name}');
-        await _failedUploadService.storeFailedUpload(mediaDTO, 'Upload failed - no result returned');
-        emit(const RecordingUploadState.error('Upload failed - no result returned'));
+        await _failedUploadService.storeFailedUpload(
+          mediaDTO,
+          'Upload failed - no result returned',
+        );
+        emit(
+          const RecordingUploadState.error(
+            'Upload failed - no result returned',
+          ),
+        );
       }
     } on Failure catch (e) {
-      Logger().e('Recording upload failed with Failure: ${mediaDTO.name} - ${e.message}');
+      Logger().e(
+        'Recording upload failed with Failure: ${mediaDTO.name} - ${e.message}',
+      );
       // Store failed upload for retry later
       await _failedUploadService.storeFailedUpload(mediaDTO, e.message);
       emit(RecordingUploadState.error(e.message));
     } catch (e) {
-      Logger().e('Recording upload failed with Exception: ${mediaDTO.name} - $e');
+      Logger().e(
+        'Recording upload failed with Exception: ${mediaDTO.name} - $e',
+      );
       // Store failed upload for retry later
       await _failedUploadService.storeFailedUpload(mediaDTO, e.toString());
       emit(RecordingUploadState.error(e.toString()));

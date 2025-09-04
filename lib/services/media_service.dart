@@ -35,6 +35,7 @@ abstract class MediaService {
   Future<void> downloadFile(String downloadURL);
 }
 
+@pragma('vm:entry-point')
 class MediaServiceImpl implements MediaService {
   final _networkUtil = NetworkUtil();
 
@@ -197,6 +198,7 @@ class MediaServiceImpl implements MediaService {
     await FlutterDownloader.registerCallback(callback);
   }
 
+  @pragma('vm:entry-point')
   static void callback(String id, int status, int progress) {
     Logger().d('$id: $status ($progress)');
   }

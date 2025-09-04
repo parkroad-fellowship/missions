@@ -41,8 +41,10 @@ class FailedRecordingUploadService {
     PRFMediaDTO mediaDTO,
     String errorMessage,
   ) async {
-    Logger().w('🔄 Storing failed upload: ${mediaDTO.name} - Error: $errorMessage');
-    
+    Logger().w(
+      '🔄 Storing failed upload: ${mediaDTO.name} - Error: $errorMessage',
+    );
+
     final failedUpload = PRFFailedRecordingUpload(
       model: mediaDTO.model,
       modelUlid: mediaDTO.modelUlid,
@@ -197,7 +199,9 @@ class FailedRecordingUploadService {
 
   void _notifyPendingUploadsChanged() {
     getPendingUploads().then((uploads) {
-      Logger().d('📢 Notifying pending uploads changed: ${uploads.length} uploads');
+      Logger().d(
+        '📢 Notifying pending uploads changed: ${uploads.length} uploads',
+      );
       _pendingUploadsController.add(uploads);
     });
   }
