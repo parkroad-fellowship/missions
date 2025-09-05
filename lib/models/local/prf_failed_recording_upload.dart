@@ -19,6 +19,8 @@ class PRFFailedRecordingUpload {
 
   @Enumerated(EnumType.ordinal32)
   final PRFMediaModel model;
+
+  @Index()
   final String modelUlid;
   final String path;
   final String name;

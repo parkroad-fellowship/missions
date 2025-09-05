@@ -70,6 +70,15 @@ class FailedRecordingUploadService {
         .findAll();
   }
 
+  Future<List<PRFFailedRecordingUpload>> getPendingUploadsForSession(
+    String missionSessionUlid,
+  ) async {
+    return _isarService.prfDBInstance.pRFFailedRecordingUploads
+        .filter()
+        .modelUlidEqualTo(missionSessionUlid)
+        .findAll();
+  }
+
   Future<void> _checkAndRetryFailedUploads() async {
     if (_isRetrying) return;
 
@@ -185,9 +194,35 @@ class FailedRecordingUploadService {
     }
   }
 
+  Future<void> retryAllUploadsForSession(String missionSessionUlid) async {
+    final failedUploads = await getPendingUploadsForSession(missionSessionUlid);
+    
+    for (final failedUpload in failedUploads) {
+      try {
+        await retrySpecificUpload(failedUpload);
+      } catch (e) {
+        Logger().e('Failed to retry upload for ${failedUpload.name}: $e');
+        // Continue with other uploads even if one fails
+      }
+    }
+  }
+
   Future<void> removeAllFailedUploads() async {
     await _isarService.prfDBInstance.writeTxn(() async {
       await _isarService.prfDBInstance.pRFFailedRecordingUploads.clear();
+    });
+    _notifyPendingUploadsChanged();
+  }
+
+  Future<void> removeAllFailedUploadsForSession(
+    String missionSessionUlid,
+  ) async {
+    final uploadsToDelete = await getPendingUploadsForSession(missionSessionUlid);
+    
+    await _isarService.prfDBInstance.writeTxn(() async {
+      for (final upload in uploadsToDelete) {
+        await _isarService.prfDBInstance.pRFFailedRecordingUploads.delete(upload.id);
+      }
     });
     _notifyPendingUploadsChanged();
   }

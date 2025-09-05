@@ -6,10 +6,12 @@ import 'package:intl/intl.dart';
 class PendingUploadsWidget extends StatefulWidget {
   const PendingUploadsWidget({
     required this.failedUploadService,
+    required this.missionSessionUlid,
     super.key,
   });
 
   final FailedRecordingUploadService failedUploadService;
+  final String missionSessionUlid;
 
   @override
   State<PendingUploadsWidget> createState() => _PendingUploadsWidgetState();
@@ -21,11 +23,51 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     return StreamBuilder<List<PRFFailedRecordingUpload>>(
       stream: widget.failedUploadService.pendingUploadsStream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox.shrink(); // Don't show anything while loading
+        }
+        
+        if (!snapshot.hasData) {
           return const SizedBox.shrink();
         }
 
-        final pendingUploads = snapshot.data!;
+        // Filter pending uploads by this mission session ULID
+        final allPendingUploads = snapshot.data!;
+        final pendingUploads = allPendingUploads
+            .where((upload) => upload.modelUlid == widget.missionSessionUlid)
+            .toList();
+
+        if (pendingUploads.isEmpty) {
+          return Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainer,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.cloud_done,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'No pending uploads for this session',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
 
         return Container(
           margin: const EdgeInsets.all(16),
@@ -130,13 +172,13 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
   Future<void> _retryAllUploads(BuildContext context) async {
     try {
-      // Get current pending uploads
+      // Get current pending uploads for this session
       final pendingUploads = await widget.failedUploadService
-          .getPendingUploads();
+          .getPendingUploadsForSession(widget.missionSessionUlid);
 
       if (pendingUploads.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No pending uploads')),
+          const SnackBar(content: Text('No pending uploads for this session')),
         );
         return;
       }
@@ -157,41 +199,27 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
         ),
       );
 
-      var successCount = 0;
-      for (final upload in pendingUploads) {
-        try {
-          await widget.failedUploadService.retrySpecificUpload(upload);
-          successCount++;
-        } catch (e) {
-          // Individual retry failed, will be handled by the service
-        }
-      }
+      await widget.failedUploadService.retryAllUploadsForSession(widget.missionSessionUlid);
 
-      Navigator.of(context).pop(); // Close progress dialog
-
-      if (successCount > 0) {
+      if (mounted) {
+        Navigator.of(context).pop(); // Close progress dialog
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('$successCount uploads successful'),
+            content: const Text('Successfully retried all uploads for this session'),
             backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('All retry attempts failed'),
-            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
     } catch (e) {
-      Navigator.of(context).pop(); // Close progress dialog if still open
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Retry error: $e'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
+      if (mounted) {
+        Navigator.of(context).pop(); // Close progress dialog if still open
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Some uploads failed to retry. Please try again.'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
     }
   }
 
