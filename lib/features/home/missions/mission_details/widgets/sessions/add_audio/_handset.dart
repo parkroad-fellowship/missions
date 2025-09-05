@@ -3,19 +3,19 @@ import 'dart:io';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
-import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/pending_uploads_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
-import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/misc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 class AddAudioViewHandset extends StatefulWidget {
   const AddAudioViewHandset({required this.missionSessionUlid, super.key});
@@ -78,8 +78,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                 text: l10n.liveRecording,
               ),
               Tab(
-                icon: const Icon(Icons.upload_file),
-                text: l10n.uploadRecording,
+                icon: const Icon(Icons.cloud_off),
+                text: l10n.recordings,
               ),
             ],
           ),
@@ -93,8 +93,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               // Live Recording Tab
               _buildLiveRecordingTab(context, l10n),
 
-              // Upload Files Tab
-              _buildUploadFilesTab(context, l10n),
+              // Pending Uploads Tab
+              _buildPendingUploadsTab(context, l10n),
             ],
           ),
         ),
@@ -102,120 +102,169 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
     );
   }
 
-  Widget _buildUploadFilesTab(BuildContext context, AppLocalizations l10n) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              BlocBuilder<SelectMediaCubit, SelectMediaState>(
-                builder: (context, state) => state.when(
-                  initial: () => ListTile(
-                    title: Text(
-                      l10n.tapToAdd,
-                      style: Theme.of(context).textTheme.displayLarge,
+  Widget _buildPendingUploadsTab(BuildContext context, AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // Header with information
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Theme.of(
+                  context,
+                ).colorScheme.outline.withValues(alpha: 0.2),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    leading: const Icon(
-                      Icons.speaker,
-                      size: 32,
-                      color: Color(0xffc4c4c4),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.recordings,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
                     ),
-                    onTap: () =>
-                        context.read<SelectMediaCubit>().selectAudioFiles(
-                          model: PRFMediaModel.missionSessionAudios,
-                          modelUlid: widget.missionSessionUlid,
-                        ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Recordings that failed to upload will appear here. '
+                  "They will retry automatically when you're online.",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
-                  empty: () => ListTile(
-                    title: Text(
-                      l10n.tapToAdd,
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                    leading: const Icon(
-                      Icons.speaker,
-                      size: 32,
-                      color: Color(0xffc4c4c4),
-                    ),
-                    onTap: () =>
-                        context.read<SelectMediaCubit>().selectAudioFiles(
-                          model: PRFMediaModel.missionSessionAudios,
-                          modelUlid: widget.missionSessionUlid,
-                        ),
-                  ),
-                  loaded: (files) {
-                    return Column(
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Pending uploads content
+          Expanded(
+            child: StreamBuilder<List<PRFFailedRecordingUpload>>(
+              stream: GetIt.instance<FailedRecordingUploadService>()
+                  .pendingUploadsStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final pendingUploads = snapshot.data!;
+
+                if (pendingUploads.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: files.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: const Icon(
-                                Icons.audio_file,
-                                color: Color(0xffc4c4c4),
-                              ),
-                              title: Text(
-                                files[index].name,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            );
-                          },
+                        Icon(
+                          Icons.cloud_done,
+                          size: 64,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.outline.withValues(alpha: 0.5),
                         ),
                         const SizedBox(height: 16),
-                        PRFSecondaryButton(
-                          onPressed: () =>
-                              context.read<SelectMediaCubit>().selectAudioFiles(
-                                model: PRFMediaModel.missionSessionAudios,
-                                modelUlid: widget.missionSessionUlid,
-                                previousMedia: files,
+                        Text(
+                          l10n.noRecordings,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.7),
                               ),
-                          title: l10n.addMore,
-                          disabled: false,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'All recordings have been uploaded successfully',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.5),
+                              ),
+                          textAlign: TextAlign.center,
                         ),
                       ],
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 32),
-              BlocBuilder<SelectMediaCubit, SelectMediaState>(
-                builder: (context, state) {
-                  final isDisabled = state.maybeWhen(
-                    loaded: (media) => media.isEmpty,
-                    orElse: () => true,
+                    ),
                   );
+                }
 
-                  return PRFPrimaryButton(
-                    title: l10n.upload,
-                    disabled: isDisabled,
-                    onPressed: isDisabled
-                        ? () {}
-                        : () async {
-                            Navigator.of(context).pop(); // Close the dialog
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.willUpload)),
-                            );
-                            await context
-                                .read<UploadMediaCubit>()
-                                .uploadMedia();
-                          },
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              PRFSecondaryButton(
-                title: l10n.cancel,
-                disabled: false,
-                onPressed: () async {
-                  Navigator.of(context).pop(); // Close the dialog
-                  context.read<SelectMediaCubit>().clearMedia();
-                },
-              ),
-              const SizedBox(height: 32),
-            ],
+                return Column(
+                  children: [
+                    // Action buttons at the top
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () =>
+                                _retryAllUploads(context, pendingUploads),
+                            icon: const Icon(Icons.refresh, size: 18),
+                            label: const Text('Retry All'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () =>
+                                _clearAllFailedUploads(context, pendingUploads),
+                            icon: const Icon(Icons.clear_all, size: 18),
+                            label: const Text('Clear All'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Theme.of(
+                                context,
+                              ).colorScheme.error,
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // List of pending uploads
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: pendingUploads.length,
+                        itemBuilder: (context, index) {
+                          final upload = pendingUploads[index];
+                          return _buildPendingUploadItem(context, upload, l10n);
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -314,22 +363,23 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         : MediaQuery.of(context).size.height * 0.6,
                   ),
                   child: LiveRecordingWidget(
-                    onRecordingCompleted: (filePath, duration) async {
-                      final file = File(filePath);
-                      if (file.existsSync()) {
-                        await context
-                            .read<RecordingUploadCubit>()
-                            .uploadRecording(
-                              PRFMediaDTO(
-                                model:
-                                    PRFMediaModel.missionSessionLiveRecordings,
-                                modelUlid: widget.missionSessionUlid,
-                                path: file.path,
-                                name: Misc.getFileName(file.path),
-                              ),
-                            );
-                      }
-                    },
+                    onRecordingCompleted:
+                        (String filePath, Duration duration) async {
+                          final file = File(filePath);
+                          if (file.existsSync()) {
+                            await context
+                                .read<RecordingUploadCubit>()
+                                .uploadRecording(
+                                  PRFMediaDTO(
+                                    model: PRFMediaModel
+                                        .missionSessionLiveRecordings,
+                                    modelUlid: widget.missionSessionUlid,
+                                    path: file.path,
+                                    name: Misc.getFileName(file.path),
+                                  ),
+                                );
+                          }
+                        },
                   ),
                 );
               },
@@ -338,5 +388,256 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
         ),
       ],
     );
+  }
+
+  Widget _buildPendingUploadItem(
+    BuildContext context,
+    PRFFailedRecordingUpload upload,
+    AppLocalizations l10n,
+  ) {
+    final dateFormat = DateFormat('MMM dd, yyyy HH:mm');
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.audiotrack,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    upload.name,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => _retrySpecificUpload(context, upload),
+                  icon: const Icon(Icons.refresh),
+                  iconSize: 20,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+                const SizedBox(width: 8),
+                IconButton(
+                  onPressed: () => _removeUpload(context, upload),
+                  icon: const Icon(Icons.delete),
+                  iconSize: 20,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Failed at: ${dateFormat.format(upload.failedAt)}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+            ),
+            Text(
+              'Retry attempts: ${upload.retryCount}/5',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              upload.errorMessage,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.error,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _retryAllUploads(
+    BuildContext context,
+    List<PRFFailedRecordingUpload> pendingUploads,
+  ) async {
+    final failedUploadService = GetIt.instance<FailedRecordingUploadService>();
+
+    try {
+      if (pendingUploads.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No pending uploads')),
+        );
+        return;
+      }
+
+      // Show progress indicator
+      await showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Retrying uploads...'),
+            ],
+          ),
+        ),
+      );
+
+      var successCount = 0;
+      for (final upload in pendingUploads) {
+        try {
+          await failedUploadService.retrySpecificUpload(upload);
+          successCount++;
+        } catch (e) {
+          // Individual retry failed, will be handled by the service
+        }
+      }
+
+      Navigator.of(context).pop(); // Close progress dialog
+
+      if (successCount > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$successCount uploads successful'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('All retry attempts failed'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    } catch (e) {
+      Navigator.of(context).pop(); // Close progress dialog if still open
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Retry error: $e'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _clearAllFailedUploads(
+    BuildContext context,
+    List<PRFFailedRecordingUpload> pendingUploads,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Clear All Uploads'),
+        content: Text(
+          'Remove all ${pendingUploads.length} pending uploads? This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: const Text('Clear All'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed ?? false) {
+      final failedUploadService =
+          GetIt.instance<FailedRecordingUploadService>();
+
+      for (final upload in pendingUploads) {
+        await failedUploadService.removeFailedUpload(upload.id);
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Cleared ${pendingUploads.length} pending uploads'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _retrySpecificUpload(
+    BuildContext context,
+    PRFFailedRecordingUpload upload,
+  ) async {
+    final failedUploadService = GetIt.instance<FailedRecordingUploadService>();
+
+    try {
+      await failedUploadService.retrySpecificUpload(upload);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${upload.name} uploaded successfully'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Retry failed: $e'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _removeUpload(
+    BuildContext context,
+    PRFFailedRecordingUpload upload,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Remove Upload'),
+        content: Text('Remove "${upload.name}" from pending uploads?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed ?? false) {
+      final failedUploadService =
+          GetIt.instance<FailedRecordingUploadService>();
+      await failedUploadService.removeFailedUpload(upload.id);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${upload.name} removed')),
+      );
+    }
   }
 }

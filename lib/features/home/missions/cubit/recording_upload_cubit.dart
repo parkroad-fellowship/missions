@@ -85,7 +85,8 @@ class RecordingUploadCubit extends Cubit<RecordingUploadState> {
       } else {
         emit(
           const RecordingUploadState.error(
-            'All uploads failed. They will be retried when you come back online.',
+            'All uploads failed. '
+            'They will be retried when you come back online.',
           ),
         );
       }

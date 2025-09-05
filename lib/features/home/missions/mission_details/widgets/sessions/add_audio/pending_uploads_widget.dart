@@ -142,7 +142,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
       }
 
       // Show progress indicator
-      showDialog<void>(
+      await showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (context) => const AlertDialog(
