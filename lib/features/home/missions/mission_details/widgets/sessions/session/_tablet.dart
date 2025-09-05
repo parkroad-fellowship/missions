@@ -924,7 +924,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
     String value,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
