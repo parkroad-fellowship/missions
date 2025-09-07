@@ -4,6 +4,7 @@ export 'buttons/primary/primary.dart';
 export 'buttons/secondary/secondary.dart';
 export 'categories.dart';
 export 'empty_state.dart';
+export 'global_failed_uploads_banner.dart';
 export 'home_action_card/home_action_card.dart';
 export 'input/email_address/email_address.dart';
 export 'input/form_field_label/form_field_label.dart';
