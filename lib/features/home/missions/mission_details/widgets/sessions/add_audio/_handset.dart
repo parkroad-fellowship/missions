@@ -67,6 +67,24 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset> {
                           modelUlid: widget.missionSessionUlid,
                         ),
                   ),
+                  error: (message) => ListTile(
+                    title: Text(
+                      message,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                    leading: Icon(
+                      Icons.error,
+                      size: 32,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                    onTap: () =>
+                        context.read<SelectMediaCubit>().selectAudioFiles(
+                          model: PRFMediaModel.missionSessionAudios,
+                          modelUlid: widget.missionSessionUlid,
+                        ),
+                  ),
                   loaded: (files) {
                     return Column(
                       children: [
