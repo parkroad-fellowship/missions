@@ -6,4 +6,5 @@ class SelectMediaState with _$SelectMediaState {
   const factory SelectMediaState.empty() = _Empty;
   const factory SelectMediaState.loaded({required List<PRFMediaDTO> media}) =
       _Loaded;
+  const factory SelectMediaState.error(String message) = _Error;
 }

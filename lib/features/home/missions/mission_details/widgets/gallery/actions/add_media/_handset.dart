@@ -101,6 +101,32 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                 initial: () => _buildEmptyState(context, theme),
                 empty: () => _buildEmptyState(context, theme),
                 loaded: (images) => _buildImageGrid(context, theme, images),
+                error: (message) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error,
+                        size: 64,
+                        color: theme.colorScheme.error,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        message,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: theme.colorScheme.error,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () =>
+                            _selectMedia(context, previousMedia: []),
+                        child: const Text('Try Again'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),

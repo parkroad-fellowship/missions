@@ -98,10 +98,12 @@ class MediaServiceImpl implements MediaService {
     int count = 9,
   }) async {
     try {
+      final themeColor = Theme.of(context).colorScheme.primary;
+
       final assets = await AssetPicker.pickAssets(
         context,
         pickerConfig: AssetPickerConfig(
-          themeColor: Theme.of(context).colorScheme.primary,
+          themeColor: themeColor,
           textDelegate: const EnglishAssetPickerTextDelegate(),
           requestType: mediaType,
           maxAssets: count,
@@ -136,6 +138,22 @@ class MediaServiceImpl implements MediaService {
     required PRFMediaModel model,
   }) async {
     try {
+      // Request storage permission for accessing audio files
+      final permissionStatus = await Permission.storage.request();
+
+      if (!permissionStatus.isGranted) {
+        // If permission is permanently denied, open app settings
+        if (permissionStatus.isPermanentlyDenied) {
+          await openAppSettings();
+          throw Failure(
+            message:
+                'Please grant storage access permission in Settings '
+                'and try again',
+          );
+        }
+        throw Failure(message: 'Storage access permission denied');
+      }
+
       final result = await FilePicker.platform
           .pickFiles(
             allowMultiple: true,

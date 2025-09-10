@@ -1,4 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -29,23 +30,30 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     required RequestType mediaType,
     List<PRFMediaDTO> previousMedia = const [],
   }) async {
-    final media = await _mediaService.getAssets(
-      context,
-      modelUlid: modelUlid,
-      model: model,
-      mediaType: mediaType,
-      count: 30,
-    );
+    try {
+      final media = await _mediaService.getAssets(
+        context,
+        modelUlid: modelUlid,
+        model: model,
+        mediaType: mediaType,
+        count: 30,
+      );
 
-    await _isarService.mediaUploads.persistEntities(media);
+      await _isarService.mediaUploads.persistEntities(media);
 
-    final items = [...previousMedia, ...media];
+      final items = [...previousMedia, ...media];
 
-    if (items.isEmpty) {
-      emit(const SelectMediaState.empty());
+      if (items.isEmpty) {
+        emit(const SelectMediaState.empty());
+        return;
+      }
+
+      emit(SelectMediaState.loaded(media: items));
+    } on Failure catch (e) {
+      emit(SelectMediaState.error(e.message));
+    } catch (e) {
+      emit(SelectMediaState.error('Failed to select media: $e'));
     }
-
-    emit(SelectMediaState.loaded(media: items));
   }
 
   Future<void> selectAudioFiles({
@@ -53,19 +61,26 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     required PRFMediaModel model,
     List<PRFMediaDTO> previousMedia = const [],
   }) async {
-    final media = await _mediaService.getAudioFiles(
-      modelUlid: modelUlid,
-      model: model,
-    );
-    await _isarService.mediaUploads.persistEntities(media);
+    try {
+      final media = await _mediaService.getAudioFiles(
+        modelUlid: modelUlid,
+        model: model,
+      );
+      await _isarService.mediaUploads.persistEntities(media);
 
-    final items = [...previousMedia, ...media];
+      final items = [...previousMedia, ...media];
 
-    if (items.isEmpty) {
-      emit(const SelectMediaState.empty());
+      if (items.isEmpty) {
+        emit(const SelectMediaState.empty());
+        return;
+      }
+
+      emit(SelectMediaState.loaded(media: items));
+    } on Failure catch (e) {
+      emit(SelectMediaState.error(e.message));
+    } catch (e) {
+      emit(SelectMediaState.error('Failed to select audio files: $e'));
     }
-
-    emit(SelectMediaState.loaded(media: items));
   }
 
   void clearMedia() {
