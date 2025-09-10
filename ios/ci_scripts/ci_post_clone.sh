@@ -38,6 +38,9 @@ flutter precache --ios
 # Install Flutter dependencies.
 flutter pub get
 
+# Configure Flutter project for release mode
+flutter build ios --config-only --release
+
 # # Check for any formatting issues
 # dart format --set-exit-if-changed lib test
 
