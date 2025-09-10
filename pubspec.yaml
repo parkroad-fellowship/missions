@@ -4,7 +4,7 @@ version: 2.72.01+27201
 publish_to: none
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.9.0
 
 dependencies:
   auto_route: ^9.3.0+1
@@ -24,7 +24,7 @@ dependencies:
   firebase_core: ^4.0.0
   firebase_crashlytics: ^5.0.00
   firebase_messaging: ^16.0.0
-  firebase_remote_config: ^6.0.0
+  firebase_remote_config: ^6.0.1
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
@@ -35,7 +35,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.2.0
-  flutter_widget_from_html: ^0.17.0
+  flutter_widget_from_html: ^0.17.1
   freezed_annotation: ^2.4.4
   full_screen_image: ^2.0.0
   gaimon: ^1.4.1
@@ -45,7 +45,7 @@ dependencies:
   google_sign_in_ios: ^5.9.0
   google_sign_in_web: ^0.12.4+4
   hive_ce: ^2.11.3
-  hive_ce_flutter: ^2.3.1
+  hive_ce_flutter: ^2.3.2
   http: ^1.5.0
   http_parser: ^4.1.2
   intl: ^0.20.2
@@ -66,11 +66,11 @@ dependencies:
   mime: ^2.0.0
   path_provider: ^2.1.5
   permission_handler: ^12.0.1
-  posthog_flutter: ^5.2.0
+  posthog_flutter: ^5.4.2
   pretty_dio_logger: ^1.4.0
   shorebird_code_push: ^2.0.4
   timezone: ^0.10.1
-  upgrader: ^11.4.0
+  upgrader: ^11.5.0
   url_launcher: ^6.3.2
   video_player: ^2.10.0
   wechat_assets_picker: ^9.8.0
