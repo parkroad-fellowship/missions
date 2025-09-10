@@ -34,7 +34,7 @@ dependencies:
   flutter_downloader: ^1.12.0
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.2.0
+  flutter_svg: ^2.2.1
   flutter_widget_from_html: ^0.17.1
   freezed_annotation: ^2.4.4
   full_screen_image: ^2.0.0
@@ -44,7 +44,7 @@ dependencies:
   google_sign_in: ^6.3.0
   google_sign_in_ios: ^5.9.0
   google_sign_in_web: ^0.12.4+4
-  hive_ce: ^2.11.3
+  hive_ce: ^2.12.0
   hive_ce_flutter: ^2.3.2
   http: ^1.5.0
   http_parser: ^4.1.2
