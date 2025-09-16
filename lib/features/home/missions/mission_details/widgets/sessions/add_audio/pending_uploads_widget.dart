@@ -1,16 +1,15 @@
 import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class PendingUploadsWidget extends StatefulWidget {
   const PendingUploadsWidget({
-    required this.failedUploadService,
     required this.missionSessionUlid,
     super.key,
   });
 
-  final FailedRecordingUploadService failedUploadService;
   final String missionSessionUlid;
 
   @override
@@ -21,7 +20,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<PRFFailedRecordingUpload>>(
-      stream: widget.failedUploadService.pendingUploadsStream,
+      stream: getIt<FailedRecordingUploadService>().pendingUploadsStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox.shrink(); // Don't show anything while loading
@@ -177,7 +176,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
   Future<void> _retryAllUploads(BuildContext context) async {
     try {
       // Get current pending uploads for this session
-      final pendingUploads = await widget.failedUploadService
+      final pendingUploads = await getIt<FailedRecordingUploadService>()
           .getPendingUploadsForSession(widget.missionSessionUlid);
 
       if (pendingUploads.isEmpty) {
@@ -203,7 +202,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
         ),
       );
 
-      await widget.failedUploadService.retryAllUploadsForSession(
+      await getIt<FailedRecordingUploadService>().retryAllUploadsForSession(
         widget.missionSessionUlid,
       );
 
@@ -352,21 +351,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
               ),
             ),
             Text(
-              'Retry attempts: ${upload.retryCount}/5',
+              'Retry attempts: ${upload.retryCount}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(
                   context,
                 ).colorScheme.onSurface.withValues(alpha: 0.6),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              upload.errorMessage,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.error,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
@@ -379,7 +369,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     PRFFailedRecordingUpload upload,
   ) async {
     try {
-      await widget.failedUploadService.retrySpecificUpload(upload);
+      await getIt<FailedRecordingUploadService>().retrySpecificUpload(upload);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${upload.name} uploaded successfully'),
@@ -422,7 +412,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     );
 
     if (confirmed ?? false) {
-      await widget.failedUploadService.removeFailedUpload(upload.id);
+      await getIt<FailedRecordingUploadService>().removeFailedUpload(upload.id);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${upload.name} removed')),
       );

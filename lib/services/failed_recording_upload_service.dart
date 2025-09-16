@@ -51,7 +51,6 @@ class FailedRecordingUploadService {
       path: mediaDTO.path,
       name: mediaDTO.name,
       failedAt: DateTime.now(),
-      errorMessage: errorMessage,
     );
 
     await _isarService.prfDBInstance.writeTxn(() async {
@@ -102,12 +101,6 @@ class FailedRecordingUploadService {
         if (!file.existsSync()) {
           // File doesn't exist anymore, remove from failed uploads
           await _removeFailedUpload(failedUpload.id);
-          continue;
-        }
-
-        // Skip if we've retried too many times (max 5 retries)
-        if (failedUpload.retryCount >= 5) {
-          Logger().w('Max retry attempts reached for: ${failedUpload.name}');
           continue;
         }
 
@@ -234,6 +227,10 @@ class FailedRecordingUploadService {
   Future<void> removeFailedUpload(Id id) async {
     await _removeFailedUpload(id);
     _notifyPendingUploadsChanged();
+  }
+
+  void streamPendingUploads() {
+    getPendingUploads().then(_pendingUploadsController.add);
   }
 
   void _notifyPendingUploadsChanged() {

@@ -11,7 +11,6 @@ class PRFFailedRecordingUpload {
     required this.path,
     required this.name,
     required this.failedAt,
-    required this.errorMessage,
     this.retryCount = 0,
   });
 
@@ -25,7 +24,6 @@ class PRFFailedRecordingUpload {
   final String path;
   final String name;
   final DateTime failedAt;
-  final String errorMessage;
   final int retryCount;
 
   PRFFailedRecordingUpload copyWith({
@@ -43,7 +41,6 @@ class PRFFailedRecordingUpload {
       path: path ?? this.path,
       name: name ?? this.name,
       failedAt: failedAt ?? this.failedAt,
-      errorMessage: errorMessage ?? this.errorMessage,
       retryCount: retryCount ?? this.retryCount,
     );
   }

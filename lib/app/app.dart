@@ -1,5 +1,4 @@
 import 'package:app/l10n/arb/app_localizations.dart';
-import 'package:app/shared_widgets/global_failed_uploads_banner.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
@@ -15,14 +14,12 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
   @override
   Widget build(BuildContext context) {
     return PostHogWidget(
-      child: GlobalFailedUploadsBanner(
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: PRFTheme.light(context),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          routerConfig: getIt<PRFSuperAppRouter>().config(),
-        ),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: PRFTheme.light(context),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: getIt<PRFSuperAppRouter>().config(),
       ),
     );
   }
