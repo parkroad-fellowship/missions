@@ -18,12 +18,12 @@ dependencies:
   device_info_plus: ^11.5.0
   dio: ^5.9.0
   extended_image: ^10.0.1
-  file_picker: ^10.2.4
-  firebase_analytics: ^12.0.0
-  firebase_auth: ^6.0.0
-  firebase_core: ^4.0.0
-  firebase_crashlytics: ^5.0.00
-  firebase_messaging: ^16.0.0
+  file_picker: ^10.3.3
+  firebase_analytics: ^12.0.1
+  firebase_auth: ^6.0.2
+  firebase_core: ^4.1.0
+  firebase_crashlytics: ^5.0.1
+  firebase_messaging: ^16.0.1
   firebase_remote_config: ^6.0.1
   flutter:
     sdk: flutter
@@ -40,7 +40,7 @@ dependencies:
   full_screen_image: ^2.0.0
   gaimon: ^1.4.1
   get_it: ^8.2.0
-  google_fonts: ^6.3.0
+  google_fonts: ^6.3.1
   google_sign_in: ^6.3.0
   google_sign_in_ios: ^5.9.0
   google_sign_in_web: ^0.12.4+4
@@ -68,9 +68,9 @@ dependencies:
   permission_handler: ^12.0.1
   posthog_flutter: ^5.4.2
   pretty_dio_logger: ^1.4.0
-  shorebird_code_push: ^2.0.4
+  shorebird_code_push: ^2.0.5
   timezone: ^0.10.1
-  upgrader: ^11.5.0
+  upgrader: ^12.0.0
   url_launcher: ^6.3.2
   video_player: ^2.10.0
   wechat_assets_picker: ^9.8.0
@@ -86,7 +86,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.5.2
   hive_ce_generator: ^1.4.0
-  icons_launcher: ^3.0.1
+  icons_launcher: ^3.0.2
   isar_generator:
     hosted: https://pub.isar-community.dev
     version: ^3.1.8
