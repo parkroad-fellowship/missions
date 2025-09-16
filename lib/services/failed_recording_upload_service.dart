@@ -24,9 +24,9 @@ class FailedRecordingUploadService {
   Timer? _connectivityTimer;
   bool _isRetrying = false;
 
-  final _retryProgressController = 
+  final _retryProgressController =
       StreamController<UploadRetryProgress>.broadcast();
-  Stream<UploadRetryProgress> get retryProgressStream => 
+  Stream<UploadRetryProgress> get retryProgressStream =>
       _retryProgressController.stream;
 
   final _pendingUploadsController =
@@ -96,7 +96,7 @@ class FailedRecordingUploadService {
       if (failedUploads.isEmpty) return;
 
       Logger().d('Found ${failedUploads.length} failed uploads to retry');
-      
+
       // Emit initial progress
       _retryProgressController.add(
         UploadRetryProgress(
@@ -106,9 +106,9 @@ class FailedRecordingUploadService {
         ),
       );
 
-      for (int i = 0; i < failedUploads.length; i++) {
+      for (var i = 0; i < failedUploads.length; i++) {
         final failedUpload = failedUploads[i];
-        
+
         // Update progress with current file
         _retryProgressController.add(
           UploadRetryProgress(
@@ -149,7 +149,7 @@ class FailedRecordingUploadService {
 
       // Emit completion
       _retryProgressController.add(UploadRetryProgress.complete);
-      
+
       _notifyPendingUploadsChanged();
     } finally {
       _isRetrying = false;
@@ -220,7 +220,7 @@ class FailedRecordingUploadService {
 
   Future<void> retryAllUploadsForSession(String missionSessionUlid) async {
     final failedUploads = await getPendingUploadsForSession(missionSessionUlid);
-    
+
     if (failedUploads.isEmpty) return;
 
     // Emit initial progress
@@ -232,9 +232,9 @@ class FailedRecordingUploadService {
       ),
     );
 
-    for (int i = 0; i < failedUploads.length; i++) {
+    for (var i = 0; i < failedUploads.length; i++) {
       final failedUpload = failedUploads[i];
-      
+
       // Update progress with current file
       _retryProgressController.add(
         UploadRetryProgress(
@@ -244,7 +244,7 @@ class FailedRecordingUploadService {
           currentFileName: failedUpload.name,
         ),
       );
-      
+
       try {
         await retrySpecificUpload(failedUpload);
       } catch (e) {
@@ -255,7 +255,7 @@ class FailedRecordingUploadService {
 
     // Emit completion
     _retryProgressController.add(UploadRetryProgress.complete);
-    
+
     // Reset to idle after a short delay
     Timer(const Duration(seconds: 2), () {
       _retryProgressController.add(UploadRetryProgress.idle);

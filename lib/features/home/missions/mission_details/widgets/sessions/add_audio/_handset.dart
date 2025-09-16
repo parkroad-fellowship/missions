@@ -6,15 +6,12 @@ import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/pending_uploads_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
-import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class AddAudioViewHandset extends StatefulWidget {
   const AddAudioViewHandset({required this.missionSessionUlid, super.key});
@@ -88,7 +85,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               error: (message) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(
+                    content: const Text(
                       'You are offline. '
                       'The app will retry when you are back online. '
                       'You can continue using the app.',

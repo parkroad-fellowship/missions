@@ -28,9 +28,9 @@ class UploadRetryProgress {
 
   double get progress => totalCount > 0 ? currentIndex / totalCount : 0.0;
 
-  String get progressText => totalCount > 0 
-    ? 'Uploading $currentIndex of $totalCount'
-    : 'Preparing uploads...';
+  String get progressText => totalCount > 0
+      ? 'Uploading $currentIndex of $totalCount'
+      : 'Preparing uploads...';
 
   UploadRetryProgress copyWith({
     bool? isRetrying,

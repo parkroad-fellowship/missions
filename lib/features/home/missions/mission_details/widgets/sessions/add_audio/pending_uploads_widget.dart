@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, lines_longer_than_80_chars
+
 import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
@@ -39,12 +41,13 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
           return StreamBuilder<UploadRetryProgress>(
             stream: getIt<FailedRecordingUploadService>().retryProgressStream,
             builder: (context, progressSnapshot) {
-              final progress = progressSnapshot.data ?? UploadRetryProgress.idle;
-              
+              final progress =
+                  progressSnapshot.data ?? UploadRetryProgress.idle;
+
               if (progress.isComplete) {
                 return _buildSuccessMessage(context);
               }
-              
+
               return Container(
                 margin: const EdgeInsets.all(16),
                 padding: const EdgeInsets.all(16),
@@ -86,7 +89,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
           stream: getIt<FailedRecordingUploadService>().retryProgressStream,
           builder: (context, progressSnapshot) {
             final progress = progressSnapshot.data ?? UploadRetryProgress.idle;
-            
+
             return Container(
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(16),
@@ -96,7 +99,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                 ).colorScheme.errorContainer.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: Theme.of(context).colorScheme.error.withValues(alpha: 0.3),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.error.withValues(alpha: 0.3),
                 ),
               ),
               child: Column(
@@ -114,15 +119,18 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       Expanded(
                         child: Text(
                           'Pending Uploads',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                         ),
                       ),
                       TextButton(
-                        onPressed: () =>
-                            _showPendingUploadsDetails(context, allPendingUploads),
+                        onPressed: () => _showPendingUploadsDetails(
+                          context,
+                          allPendingUploads,
+                        ),
                         child: Text(
                           '${allPendingUploads.length} '
                           '${allPendingUploads.length == 1 ? 'recording' : 'record'
@@ -136,14 +144,15 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  
+
                   // Progress indicator
                   if (progress.isRetrying) ...[
                     _buildProgressIndicator(context, progress),
                     const SizedBox(height: 12),
                   ] else ...[
                     Text(
-                      'Recordings will retry automatically when you come online',
+                      'Recordings will retry automatically '
+                      'when you come online',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(
                           context,
@@ -152,13 +161,15 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                     ),
                     const SizedBox(height: 12),
                   ],
-                  
+
                   Row(
                     children: [
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: progress.isRetrying ? null : () => _retryAllUploads(context),
-                          icon: progress.isRetrying 
+                          onPressed: progress.isRetrying
+                              ? null
+                              : () => _retryAllUploads(context),
+                          icon: progress.isRetrying
                               ? const SizedBox(
                                   width: 16,
                                   height: 16,
@@ -168,9 +179,13 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                   ),
                                 )
                               : const Icon(Icons.refresh, size: 16),
-                          label: Text(progress.isRetrying ? 'Uploading...' : 'Retry Now'),
+                          label: Text(
+                            progress.isRetrying ? 'Uploading...' : 'Retry Now',
+                          ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16,
@@ -182,9 +197,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       ),
                       const SizedBox(width: 8),
                       OutlinedButton.icon(
-                        onPressed: progress.isRetrying 
-                            ? null 
-                            : () => _showPendingUploadsDetails(context, allPendingUploads),
+                        onPressed: progress.isRetrying
+                            ? null
+                            : () => _showPendingUploadsDetails(
+                                context,
+                                allPendingUploads,
+                              ),
                         icon: const Icon(Icons.list, size: 16),
                         label: const Text('View All'),
                         style: OutlinedButton.styleFrom(
@@ -230,7 +248,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Some uploads failed to retry. Please try again.'),
+            content: const Text(
+              'Some uploads failed to retry. Please try again.',
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -238,7 +258,10 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     }
   }
 
-  Widget _buildProgressIndicator(BuildContext context, UploadRetryProgress progress) {
+  Widget _buildProgressIndicator(
+    BuildContext context,
+    UploadRetryProgress progress,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -275,7 +298,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
           Text(
             'Uploading: ${progress.currentFileName}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
               fontStyle: FontStyle.italic,
             ),
             overflow: TextOverflow.ellipsis,
@@ -290,7 +315,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.primaryContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
@@ -325,7 +352,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     WoltModalSheet.show<void>(
       context: context,
       pageListBuilder: (modalSheetContext) {
-        
         return [
           WoltModalSheetPage(
             navBarHeight: 8,
@@ -353,13 +379,16 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                           ),
                         ),
                         StreamBuilder<UploadRetryProgress>(
-                          stream: getIt<FailedRecordingUploadService>().retryProgressStream,
+                          stream: getIt<FailedRecordingUploadService>()
+                              .retryProgressStream,
                           builder: (context, progressSnapshot) {
-                            final progress = progressSnapshot.data ?? UploadRetryProgress.idle;
-                            
+                            final progress =
+                                progressSnapshot.data ??
+                                UploadRetryProgress.idle;
+
                             return TextButton.icon(
-                              onPressed: progress.isRetrying 
-                                  ? null 
+                              onPressed: progress.isRetrying
+                                  ? null
                                   : () {
                                       Navigator.of(context).pop();
                                       _retryAllUploads(context);
@@ -368,22 +397,30 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                   ? const SizedBox(
                                       width: 16,
                                       height: 16,
-                                      child: CircularProgressIndicator(strokeWidth: 2),
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
                                     )
                                   : const Icon(Icons.refresh),
-                              label: Text(progress.isRetrying ? 'Uploading...' : 'Retry All'),
+                              label: Text(
+                                progress.isRetrying
+                                    ? 'Uploading...'
+                                    : 'Retry All',
+                              ),
                             );
                           },
                         ),
                       ],
                     ),
-                    
+
                     // Progress indicator in modal
                     StreamBuilder<UploadRetryProgress>(
-                      stream: getIt<FailedRecordingUploadService>().retryProgressStream,
+                      stream: getIt<FailedRecordingUploadService>()
+                          .retryProgressStream,
                       builder: (context, progressSnapshot) {
-                        final progress = progressSnapshot.data ?? UploadRetryProgress.idle;
-                        
+                        final progress =
+                            progressSnapshot.data ?? UploadRetryProgress.idle;
+
                         if (progress.isRetrying) {
                           return Column(
                             children: [
@@ -396,7 +433,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         return const SizedBox(height: 16);
                       },
                     ),
-                    
+
                     Expanded(
                       child: ListView.builder(
                         itemCount: pendingUploads.length,
@@ -426,26 +463,32 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
       stream: getIt<FailedRecordingUploadService>().retryProgressStream,
       builder: (context, progressSnapshot) {
         final progress = progressSnapshot.data ?? UploadRetryProgress.idle;
-        final isCurrentlyUploading = progress.isRetrying && 
-            progress.currentFileName == upload.name;
+        final isCurrentlyUploading =
+            progress.isRetrying && progress.currentFileName == upload.name;
 
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isCurrentlyUploading 
+              color: isCurrentlyUploading
                   ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)
-                  : Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                  : Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.2),
               width: isCurrentlyUploading ? 1.5 : 1,
             ),
-            color: isCurrentlyUploading 
-                ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1)
+            color: isCurrentlyUploading
+                ? Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer.withValues(alpha: 0.1)
                 : Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
-                color: isCurrentlyUploading 
-                    ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
+                color: isCurrentlyUploading
+                    ? Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.1)
                     : Colors.black.withValues(alpha: 0.03),
                 blurRadius: isCurrentlyUploading ? 8 : 4,
                 offset: const Offset(0, 2),
@@ -462,15 +505,20 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: isCurrentlyUploading 
-                            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15)
-                            : Theme.of(context).colorScheme.surfaceContainer.withValues(alpha: 0.7),
+                        color: isCurrentlyUploading
+                            ? Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.15)
+                            : Theme.of(context).colorScheme.surfaceContainer
+                                  .withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
-                        isCurrentlyUploading ? Icons.cloud_upload_outlined : Icons.audiotrack_outlined,
+                        isCurrentlyUploading
+                            ? Icons.cloud_upload_outlined
+                            : Icons.audiotrack_outlined,
                         size: 18,
-                        color: isCurrentlyUploading 
+                        color: isCurrentlyUploading
                             ? Theme.of(context).colorScheme.primary
                             : Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -482,25 +530,31 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         children: [
                           Text(
                             upload.name,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: isCurrentlyUploading 
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).textTheme.bodyMedium?.color,
-                              letterSpacing: -0.2,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: isCurrentlyUploading
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium?.color,
+                                  letterSpacing: -0.2,
+                                ),
                             overflow: TextOverflow.ellipsis,
                           ),
                           if (isCurrentlyUploading) ...[
                             const SizedBox(height: 2),
                             Text(
                               'Uploading now...',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.italic,
-                                fontSize: 11,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 11,
+                                  ),
                             ),
                           ],
                         ],
@@ -511,7 +565,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: SizedBox(
@@ -532,13 +588,15 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: IconButton(
-                          onPressed: progress.isRetrying 
-                              ? null 
+                          onPressed: progress.isRetrying
+                              ? null
                               : () => _retrySpecificUpload(context, upload),
                           icon: Icon(
                             Icons.refresh_rounded,
                             color: progress.isRetrying
-                                ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4)
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withValues(alpha: 0.4)
                                 : Theme.of(context).colorScheme.primary,
                           ),
                           iconSize: 18,
@@ -551,9 +609,14 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                 ),
                 const SizedBox(height: 12),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer.withValues(alpha: 0.5),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainer.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -561,36 +624,49 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       Icon(
                         Icons.schedule_outlined,
                         size: 14,
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           'Failed on ${dateFormat.format(upload.failedAt)}',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.7),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
-                          color: upload.retryCount > 3 
-                              ? Theme.of(context).colorScheme.error.withValues(alpha: 0.1)
-                              : Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                          color: upload.retryCount > 3
+                              ? Theme.of(
+                                  context,
+                                ).colorScheme.error.withValues(alpha: 0.1)
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           '${upload.retryCount} ${upload.retryCount == 1 ? 'retry' : 'retries'}',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: upload.retryCount > 3 
-                                ? Theme.of(context).colorScheme.error
-                                : Theme.of(context).colorScheme.primary,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: upload.retryCount > 3
+                                    ? Theme.of(context).colorScheme.error
+                                    : Theme.of(context).colorScheme.primary,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ),
                     ],
@@ -619,7 +695,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Retry failed'),
+          content: const Text('Retry failed'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
