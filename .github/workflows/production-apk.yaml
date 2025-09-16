@@ -53,7 +53,7 @@ jobs:
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
       - name: ⚙️ Build APK
-        run: flutter build apk  --flavor production --target lib/main_production.dart --release
+        run: flutter build apk  --flavor development --target lib/main_development.dart --release
 
       - name: ☁ Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -61,7 +61,7 @@ jobs:
           appId: ${{ secrets.FIREBASE_PROD_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: dev-team
-          file: build/app/outputs/flutter-apk/app-production-release.apk
+          file: build/app/outputs/flutter-apk/app-development-release.apk
 
       - name: Status
         if: failure()
