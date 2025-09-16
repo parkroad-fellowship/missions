@@ -38,6 +38,18 @@ flutter precache --ios
 # Install Flutter dependencies.
 flutter pub get
 
+# Configure Flutter project for release mode
+if [ "$app_env" = "production" ]; then
+  flutter build ios --config-only --release --flavor production -t lib/main.dart
+elif [ "$app_env" = "staging" ]; then
+  flutter build ios --config-only --release --flavor staging -t lib/main.dart
+elif [ "$app_env" = "development" ]; then
+  flutter build ios --config-only --release --flavor development -t lib/main.dart
+else
+  echo "Unknown APP_ENV: $app_env"
+  exit 1
+fi
+
 # # Check for any formatting issues
 # dart format --set-exit-if-changed lib test
 
