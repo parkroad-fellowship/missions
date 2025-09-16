@@ -35,6 +35,9 @@ jobs:
       - name: 🚀 Use Shorebird
         run: shorebird --version
 
+      - name: Accept Android licenses
+        run: yes | flutter doctor --android-licenses
+
       - name: 📦 Install Dependencies
         run: flutter packages get
 
