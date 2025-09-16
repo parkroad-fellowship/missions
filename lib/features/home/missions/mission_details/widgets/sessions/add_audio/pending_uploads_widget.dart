@@ -26,7 +26,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox.shrink(); // Don't show anything while loading
         }
-        
+
         if (!snapshot.hasData) {
           return const SizedBox.shrink();
         }
@@ -45,7 +45,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
               color: Theme.of(context).colorScheme.surfaceContainer,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outline.withValues(alpha: 0.3),
               ),
             ),
             child: Row(
@@ -60,7 +62,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   child: Text(
                     'No pending uploads for this session',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                 ),
@@ -199,13 +203,17 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
         ),
       );
 
-      await widget.failedUploadService.retryAllUploadsForSession(widget.missionSessionUlid);
+      await widget.failedUploadService.retryAllUploadsForSession(
+        widget.missionSessionUlid,
+      );
 
       if (mounted) {
         Navigator.of(context).pop(); // Close progress dialog
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Successfully retried all uploads for this session'),
+            content: const Text(
+              'Successfully retried all uploads for this session',
+            ),
             backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );

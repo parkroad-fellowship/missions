@@ -171,7 +171,9 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                 // Filter pending uploads by this mission session ULID
                 final allPendingUploads = snapshot.data!;
                 final pendingUploads = allPendingUploads
-                    .where((upload) => upload.modelUlid == widget.missionSessionUlid)
+                    .where(
+                      (upload) => upload.modelUlid == widget.missionSessionUlid,
+                    )
                     .toList();
 
                 if (pendingUploads.isEmpty) {
@@ -506,13 +508,17 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
         ),
       );
 
-      await failedUploadService.retryAllUploadsForSession(widget.missionSessionUlid);
+      await failedUploadService.retryAllUploadsForSession(
+        widget.missionSessionUlid,
+      );
 
       Navigator.of(context).pop(); // Close progress dialog
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Successfully retried all uploads for this session'),
+          content: const Text(
+            'Successfully retried all uploads for this session',
+          ),
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
       );
@@ -558,7 +564,9 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
       final failedUploadService =
           GetIt.instance<FailedRecordingUploadService>();
 
-      await failedUploadService.removeAllFailedUploadsForSession(widget.missionSessionUlid);
+      await failedUploadService.removeAllFailedUploadsForSession(
+        widget.missionSessionUlid,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -37,7 +37,7 @@ class LandingPageTablet extends StatelessWidget {
                     children: [
                       // Profile Picture
                       GestureDetector(
-                            onTap: () => context.router.pushNamed(
+                            onTap: () => context.router.pushPath(
                               PRFSuperAppRouter.accountRoute,
                             ),
                             child: Container(
@@ -161,7 +161,7 @@ class LandingPageTablet extends StatelessWidget {
                       Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () => context.router.pushNamed(
+                          onTap: () => context.router.pushPath(
                             PRFSuperAppRouter.announcementsRoute,
                           ),
                           borderRadius: BorderRadius.circular(16),

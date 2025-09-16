@@ -1,5 +1,6 @@
 import 'package:app/enums/prf_institution_type.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
+import 'package:isar_community/isar.dart';
 
 part 'shared_embeds.g.dart';
 

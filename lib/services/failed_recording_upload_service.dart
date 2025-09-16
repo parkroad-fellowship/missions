@@ -5,7 +5,7 @@ import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:logger/logger.dart';
 
 class FailedRecordingUploadService {
@@ -196,7 +196,7 @@ class FailedRecordingUploadService {
 
   Future<void> retryAllUploadsForSession(String missionSessionUlid) async {
     final failedUploads = await getPendingUploadsForSession(missionSessionUlid);
-    
+
     for (final failedUpload in failedUploads) {
       try {
         await retrySpecificUpload(failedUpload);
@@ -217,11 +217,15 @@ class FailedRecordingUploadService {
   Future<void> removeAllFailedUploadsForSession(
     String missionSessionUlid,
   ) async {
-    final uploadsToDelete = await getPendingUploadsForSession(missionSessionUlid);
-    
+    final uploadsToDelete = await getPendingUploadsForSession(
+      missionSessionUlid,
+    );
+
     await _isarService.prfDBInstance.writeTxn(() async {
       for (final upload in uploadsToDelete) {
-        await _isarService.prfDBInstance.pRFFailedRecordingUploads.delete(upload.id);
+        await _isarService.prfDBInstance.pRFFailedRecordingUploads.delete(
+          upload.id,
+        );
       }
     });
     _notifyPendingUploadsChanged();

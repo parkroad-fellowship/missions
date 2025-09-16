@@ -38,7 +38,7 @@ import 'package:app/models/remote/prf_student_enquiry.dart';
 import 'package:app/models/remote/prf_student_enquiry_reply.dart';
 import 'package:app/utils/_index.dart';
 import 'package:collection/collection.dart' as collection;
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 

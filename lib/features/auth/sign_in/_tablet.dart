@@ -62,7 +62,7 @@ class _SignInTabletState extends State<SignInTablet> {
           state.maybeWhen(
             orElse: () {},
             loaded: () =>
-                context.router.pushNamed(PRFSuperAppRouter.decisionRoute),
+                context.router.pushPath(PRFSuperAppRouter.decisionRoute),
             error: (message) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -214,7 +214,7 @@ class _SignInTabletState extends State<SignInTablet> {
                             loading: () => setState(() {
                               _isLoading = !_isLoading;
                             }),
-                            loaded: () => context.router.pushNamed(
+                            loaded: () => context.router.pushPath(
                               PRFSuperAppRouter.landingRoute,
                             ),
                             error: (message) {

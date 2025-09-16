@@ -63,7 +63,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.goToAMission,
         'assets/svgs/missions.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.missionsRoute,
         ),
         0,
@@ -71,7 +71,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.learnSomething,
         'assets/svgs/lms.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.lmsRoute,
         ),
         100,
@@ -79,7 +79,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.studentFaqs,
         'assets/svgs/explore.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.memberLearnerFaqs,
         ),
         200,
@@ -87,7 +87,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.ministerToAStudent,
         'assets/svgs/student_ministry.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.studentEnquiriesRoute,
         ),
         300,
@@ -95,7 +95,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.suggestAMission,
         'assets/svgs/chatting.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.missionGroundSuggestionsRoute,
         ),
         400,
@@ -103,7 +103,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.registerForEvent,
         'assets/svgs/events.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.eventsRoute,
         ),
         500,
@@ -111,7 +111,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.submitPrayerRequest,
         'assets/svgs/texting.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.prayerRequestRoute,
         ),
         600,
@@ -119,7 +119,7 @@ class _LandingPageState extends State<LandingPage> {
       [
         l10n.give,
         'assets/svgs/giving.svg',
-        () => context.router.pushNamed(
+        () => context.router.pushPath(
           PRFSuperAppRouter.givingRoute,
         ),
         700,

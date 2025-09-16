@@ -33,7 +33,7 @@ import 'package:app/services/local_storage/isar/prayer_response_db_service.dart'
 import 'package:app/services/local_storage/isar/soul_db_service.dart';
 import 'package:app/services/local_storage/isar/student_enquiry_db_service.dart';
 import 'package:app/services/local_storage/isar/student_enquiry_reply_db_service.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 class IsarService {

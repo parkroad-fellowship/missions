@@ -61,7 +61,7 @@ class _SignInHandsetState extends State<SignInHandset> {
           state.maybeWhen(
             orElse: () {},
             loaded: () =>
-                context.router.pushNamed(PRFSuperAppRouter.decisionRoute),
+                context.router.pushPath(PRFSuperAppRouter.decisionRoute),
             error: (message) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -183,7 +183,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                               _isLoading = !_isLoading;
                                             }),
                                             loaded: () =>
-                                                context.router.pushNamed(
+                                                context.router.pushPath(
                                                   PRFSuperAppRouter
                                                       .landingRoute,
                                                 ),

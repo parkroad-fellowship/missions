@@ -1,5 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 part 'prf_failed_recording_upload.g.dart';
 

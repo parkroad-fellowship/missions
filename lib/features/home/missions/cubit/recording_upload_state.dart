@@ -1,7 +1,7 @@
 part of 'recording_upload_cubit.dart';
 
 @freezed
-class RecordingUploadState with _$RecordingUploadState {
+abstract class RecordingUploadState with _$RecordingUploadState {
   const factory RecordingUploadState.initial() = _Initial;
   const factory RecordingUploadState.loading() = _Loading;
   const factory RecordingUploadState.loaded(PRFMediaDTO uploadedFile) = _Loaded;
