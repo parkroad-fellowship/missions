@@ -27,6 +27,7 @@ class PRFFailedRecordingUpload {
   final int retryCount;
 
   PRFFailedRecordingUpload copyWith({
+    Id? id,
     PRFMediaModel? model,
     String? modelUlid,
     String? path,
@@ -42,6 +43,6 @@ class PRFFailedRecordingUpload {
       name: name ?? this.name,
       failedAt: failedAt ?? this.failedAt,
       retryCount: retryCount ?? this.retryCount,
-    );
+    )..id = id ?? this.id;
   }
 }

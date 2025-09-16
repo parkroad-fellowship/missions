@@ -149,6 +149,7 @@ class FailedRecordingUploadService {
     PRFFailedRecordingUpload failedUpload,
   ) async {
     final updatedUpload = failedUpload.copyWith(
+      id: failedUpload.id,
       retryCount: failedUpload.retryCount + 1,
     );
 

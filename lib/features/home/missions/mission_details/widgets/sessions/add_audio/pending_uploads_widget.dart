@@ -3,6 +3,7 @@ import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PendingUploadsWidget extends StatefulWidget {
   const PendingUploadsWidget({
@@ -23,7 +24,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
       stream: getIt<FailedRecordingUploadService>().pendingUploadsStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox.shrink(); // Don't show anything while loading
+          return const SizedBox.shrink();
         }
 
         if (!snapshot.hasData) {
@@ -32,11 +33,8 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
         // Filter pending uploads by this mission session ULID
         final allPendingUploads = snapshot.data!;
-        final pendingUploads = allPendingUploads
-            .where((upload) => upload.modelUlid == widget.missionSessionUlid)
-            .toList();
 
-        if (pendingUploads.isEmpty) {
+        if (allPendingUploads.isEmpty) {
           return Container(
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(16),
@@ -107,9 +105,11 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   ),
                   TextButton(
                     onPressed: () =>
-                        _showPendingUploadsDetails(context, pendingUploads),
+                        _showPendingUploadsDetails(context, allPendingUploads),
                     child: Text(
-                      '${pendingUploads.length} ${pendingUploads.length == 1 ? 'recording' : 'recordings'}',
+                      '${allPendingUploads.length} '
+                      '${allPendingUploads.length == 1 ? 'recording' : 'record'
+                                'ings'}',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                         fontWeight: FontWeight.w500,
@@ -149,7 +149,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   const SizedBox(width: 8),
                   OutlinedButton.icon(
                     onPressed: () =>
-                        _showPendingUploadsDetails(context, pendingUploads),
+                        _showPendingUploadsDetails(context, allPendingUploads),
                     icon: const Icon(Icons.list, size: 16),
                     label: const Text('View All'),
                     style: OutlinedButton.styleFrom(
@@ -234,62 +234,63 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     BuildContext context,
     List<PRFFailedRecordingUpload> pendingUploads,
   ) {
-    showModalBottomSheet<void>(
+    WoltModalSheet.show<void>(
       context: context,
-      isScrollControlled: true,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        maxChildSize: 0.9,
-        minChildSize: 0.5,
-        builder: (context, scrollController) => Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Pending Uploads',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            fontWeight: FontWeight.w600,
+      pageListBuilder: (modalSheetContext) {
+        
+        return [
+          WoltModalSheetPage(
+            navBarHeight: 8,
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            child: SizedBox(
+              height:
+                  MediaQuery.sizeOf(
+                    context,
+                  ).height *
+                  0.6,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Pending Uploads',
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _retryAllUploads(context);
+                          },
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('Retry All'),
+                        ),
+                      ],
                     ),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _retryAllUploads(context);
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Retry All'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: pendingUploads.length,
-                  itemBuilder: (context, index) {
-                    final upload = pendingUploads[index];
-                    return _buildUploadItem(context, upload);
-                  },
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: pendingUploads.length,
+                        itemBuilder: (context, index) {
+                          final upload = pendingUploads[index];
+                          return _buildUploadItem(context, upload);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        ];
+      },
     );
   }
 
@@ -330,20 +331,11 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: () => _removeUpload(context, upload),
-                  icon: const Icon(Icons.delete),
-                  iconSize: 20,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  color: Theme.of(context).colorScheme.error,
-                ),
               ],
             ),
             const SizedBox(height: 8),
             Text(
-              'Failed at: ${dateFormat.format(upload.failedAt)}',
+              'Failed on: ${dateFormat.format(upload.failedAt)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(
                   context,
@@ -382,39 +374,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
           content: Text('Retry failed: $e'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
-      );
-    }
-  }
-
-  Future<void> _removeUpload(
-    BuildContext context,
-    PRFFailedRecordingUpload upload,
-  ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Remove Upload'),
-        content: Text('Remove "${upload.name}" from pending uploads?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.error,
-            ),
-            child: const Text('Remove'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed ?? false) {
-      await getIt<FailedRecordingUploadService>().removeFailedUpload(upload.id);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${upload.name} removed')),
       );
     }
   }
