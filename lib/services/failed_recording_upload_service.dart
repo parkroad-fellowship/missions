@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/models/local/prf_failed_recording_upload.dart';
+import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -23,8 +24,10 @@ class FailedRecordingUploadService {
   Timer? _connectivityTimer;
   bool _isRetrying = false;
 
-  final _retryStreamController = StreamController<int>.broadcast();
-  Stream<int> get retryStream => _retryStreamController.stream;
+  final _retryProgressController = 
+      StreamController<UploadRetryProgress>.broadcast();
+  Stream<UploadRetryProgress> get retryProgressStream => 
+      _retryProgressController.stream;
 
   final _pendingUploadsController =
       StreamController<List<PRFFailedRecordingUpload>>.broadcast();
@@ -93,9 +96,29 @@ class FailedRecordingUploadService {
       if (failedUploads.isEmpty) return;
 
       Logger().d('Found ${failedUploads.length} failed uploads to retry');
-      _retryStreamController.add(failedUploads.length);
+      
+      // Emit initial progress
+      _retryProgressController.add(
+        UploadRetryProgress(
+          isRetrying: true,
+          currentIndex: 0,
+          totalCount: failedUploads.length,
+        ),
+      );
 
-      for (final failedUpload in failedUploads) {
+      for (int i = 0; i < failedUploads.length; i++) {
+        final failedUpload = failedUploads[i];
+        
+        // Update progress with current file
+        _retryProgressController.add(
+          UploadRetryProgress(
+            isRetrying: true,
+            currentIndex: i + 1,
+            totalCount: failedUploads.length,
+            currentFileName: failedUpload.name,
+          ),
+        );
+
         // Check if file still exists
         final file = File(failedUpload.path);
         if (!file.existsSync()) {
@@ -124,9 +147,16 @@ class FailedRecordingUploadService {
         }
       }
 
+      // Emit completion
+      _retryProgressController.add(UploadRetryProgress.complete);
+      
       _notifyPendingUploadsChanged();
     } finally {
       _isRetrying = false;
+      // Reset to idle after a short delay
+      Timer(const Duration(seconds: 2), () {
+        _retryProgressController.add(UploadRetryProgress.idle);
+      });
     }
   }
 
@@ -190,8 +220,31 @@ class FailedRecordingUploadService {
 
   Future<void> retryAllUploadsForSession(String missionSessionUlid) async {
     final failedUploads = await getPendingUploadsForSession(missionSessionUlid);
+    
+    if (failedUploads.isEmpty) return;
 
-    for (final failedUpload in failedUploads) {
+    // Emit initial progress
+    _retryProgressController.add(
+      UploadRetryProgress(
+        isRetrying: true,
+        currentIndex: 0,
+        totalCount: failedUploads.length,
+      ),
+    );
+
+    for (int i = 0; i < failedUploads.length; i++) {
+      final failedUpload = failedUploads[i];
+      
+      // Update progress with current file
+      _retryProgressController.add(
+        UploadRetryProgress(
+          isRetrying: true,
+          currentIndex: i + 1,
+          totalCount: failedUploads.length,
+          currentFileName: failedUpload.name,
+        ),
+      );
+      
       try {
         await retrySpecificUpload(failedUpload);
       } catch (e) {
@@ -199,6 +252,14 @@ class FailedRecordingUploadService {
         // Continue with other uploads even if one fails
       }
     }
+
+    // Emit completion
+    _retryProgressController.add(UploadRetryProgress.complete);
+    
+    // Reset to idle after a short delay
+    Timer(const Duration(seconds: 2), () {
+      _retryProgressController.add(UploadRetryProgress.idle);
+    });
   }
 
   Future<void> removeAllFailedUploads() async {
@@ -245,7 +306,7 @@ class FailedRecordingUploadService {
 
   void dispose() {
     _connectivityTimer?.cancel();
-    _retryStreamController.close();
+    _retryProgressController.close();
     _pendingUploadsController.close();
   }
 }
