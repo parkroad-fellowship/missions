@@ -429,84 +429,173 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
         final isCurrentlyUploading = progress.isRetrying && 
             progress.currentFileName == upload.name;
 
-        return Card(
-          margin: const EdgeInsets.only(bottom: 8),
-          elevation: isCurrentlyUploading ? 2 : 1,
+        return Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isCurrentlyUploading 
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)
+                  : Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+              width: isCurrentlyUploading ? 1.5 : 1,
+            ),
+            color: isCurrentlyUploading 
+                ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1)
+                : Theme.of(context).colorScheme.surface,
+            boxShadow: [
+              BoxShadow(
+                color: isCurrentlyUploading 
+                    ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
+                    : Colors.black.withValues(alpha: 0.03),
+                blurRadius: isCurrentlyUploading ? 8 : 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Icon(
-                      isCurrentlyUploading ? Icons.cloud_upload : Icons.audiotrack,
-                      size: 20,
-                      color: isCurrentlyUploading 
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        upload.name,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: isCurrentlyUploading 
-                              ? FontWeight.w600 
-                              : FontWeight.w500,
-                          color: isCurrentlyUploading 
-                              ? Theme.of(context).colorScheme.primary
-                              : null,
-                        ),
-                        overflow: TextOverflow.ellipsis,
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: isCurrentlyUploading 
+                            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15)
+                            : Theme.of(context).colorScheme.surfaceContainer.withValues(alpha: 0.7),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        isCurrentlyUploading ? Icons.cloud_upload_outlined : Icons.audiotrack_outlined,
+                        size: 18,
+                        color: isCurrentlyUploading 
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            upload.name,
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: isCurrentlyUploading 
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context).textTheme.bodyMedium?.color,
+                              letterSpacing: -0.2,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          if (isCurrentlyUploading) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              'Uploading now...',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
                     if (isCurrentlyUploading)
-                      const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
                       )
                     else
-                      IconButton(
-                        onPressed: progress.isRetrying 
-                            ? null 
-                            : () => _retrySpecificUpload(context, upload),
-                        icon: const Icon(Icons.refresh),
-                        iconSize: 20,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: IconButton(
+                          onPressed: progress.isRetrying 
+                              ? null 
+                              : () => _retrySpecificUpload(context, upload),
+                          icon: Icon(
+                            Icons.refresh_rounded,
+                            color: progress.isRetrying
+                                ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4)
+                                : Theme.of(context).colorScheme.primary,
+                          ),
+                          iconSize: 18,
+                          padding: const EdgeInsets.all(8),
+                          constraints: const BoxConstraints(),
+                          tooltip: 'Retry upload',
+                        ),
                       ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Failed on: ${dateFormat.format(upload.failedAt)}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer.withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.schedule_outlined,
+                        size: 14,
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          'Failed on ${dateFormat.format(upload.failedAt)}',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: upload.retryCount > 3 
+                              ? Theme.of(context).colorScheme.error.withValues(alpha: 0.1)
+                              : Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          '${upload.retryCount} ${upload.retryCount == 1 ? 'retry' : 'retries'}',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: upload.retryCount > 3 
+                                ? Theme.of(context).colorScheme.error
+                                : Theme.of(context).colorScheme.primary,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Text(
-                  'Retry attempts: ${upload.retryCount}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
-                ),
-                if (isCurrentlyUploading) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    'Uploading now...',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
