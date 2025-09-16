@@ -619,7 +619,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Retry failed: $e'),
+          content: Text('Retry failed'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );

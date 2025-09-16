@@ -88,7 +88,11 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               error: (message) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('${l10n.recordingError}: $message'),
+                    content: Text(
+                      'You are offline. '
+                      'The app will retry when you are back online. '
+                      'You can continue using the app.',
+                    ),
                     backgroundColor: Theme.of(context).colorScheme.error,
                   ),
                 );
