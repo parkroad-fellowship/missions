@@ -45,3 +45,14 @@
 -dontwarn javax.annotation.**
 -dontwarn kotlin.Unit
 -dontwarn retrofit2.-KotlinExtensions
+
+# Google Play Core - Fix for Flutter deferred components
+-keep class com.google.android.play.core.** { *; }
+-dontwarn com.google.android.play.core.**
+-keep interface com.google.android.play.core.** { *; }
+
+# Keep specific classes that were missing
+-keep class com.google.android.play.core.splitinstall.** { *; }
+-keep class com.google.android.play.core.tasks.** { *; }
+-keep interface com.google.android.play.core.splitinstall.** { *; }
+-keep interface com.google.android.play.core.tasks.** { *; }
