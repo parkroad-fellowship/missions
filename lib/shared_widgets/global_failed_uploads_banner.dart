@@ -28,22 +28,22 @@ class _GlobalFailedUploadsBannerState extends State<GlobalFailedUploadsBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        StreamBuilder<List<PRFFailedRecordingUpload>>(
-          stream: _failedUploadService.pendingUploadsStream,
-          builder: (context, snapshot) {
-            final pendingUploads = snapshot.data ?? [];
+    return StreamBuilder<List<PRFFailedRecordingUpload>>(
+      stream: _failedUploadService.pendingUploadsStream,
+      builder: (context, snapshot) {
+        final pendingUploads = snapshot.data ?? [];
 
-            if (pendingUploads.isEmpty) {
-              return const SizedBox.shrink();
-            }
+        if (pendingUploads.isEmpty) {
+          return widget.child;
+        }
 
-            return _buildBanner(context, pendingUploads);
-          },
-        ),
-        Expanded(child: widget.child),
-      ],
+        return Column(
+          children: [
+            _buildBanner(context, pendingUploads),
+            Expanded(child: widget.child),
+          ],
+        );
+      },
     );
   }
 

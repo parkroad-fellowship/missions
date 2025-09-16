@@ -15,14 +15,17 @@ class _PRFSuperAppState extends State<PRFSuperApp> {
   @override
   Widget build(BuildContext context) {
     return PostHogWidget(
-      child: GlobalFailedUploadsBanner(
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: PRFTheme.light(context),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          routerConfig: getIt<PRFSuperAppRouter>().config(),
-        ),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: PRFTheme.light(context),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerConfig: getIt<PRFSuperAppRouter>().config(),
+        builder: (context, child) {
+          return GlobalFailedUploadsBanner(
+            child: child ?? const SizedBox.shrink(),
+          );
+        },
       ),
     );
   }
