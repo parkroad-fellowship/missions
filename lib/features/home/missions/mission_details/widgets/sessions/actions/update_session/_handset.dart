@@ -364,7 +364,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                               .read<GetMissionSessionCubit>()
                               .getMissionSession(
                                 missionSessionUlid: widget.missionSession.ulid,
-                                missionUlid: widget.missionUlid,
                                 refresh: true,
                               );
                         },

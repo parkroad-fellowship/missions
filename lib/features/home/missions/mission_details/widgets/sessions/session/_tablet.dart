@@ -48,7 +48,6 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
     super.initState();
     context.read<GetMissionSessionCubit>().getMissionSession(
       missionSessionUlid: missionSessionUlid,
-      missionUlid: missionUlid,
     );
   }
 
@@ -69,7 +68,6 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
           onRefresh: () =>
               context.read<GetMissionSessionCubit>().getMissionSession(
                 missionSessionUlid: missionSessionUlid,
-                missionUlid: missionUlid,
                 refresh: true,
               ),
           child: CustomScrollView(
@@ -89,7 +87,6 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                             .read<GetMissionSessionCubit>()
                             .getMissionSession(
                               missionSessionUlid: missionSessionUlid,
-                              missionUlid: missionUlid,
                               refresh: true,
                             );
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -622,7 +619,6 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
         // ignore: use_build_context_synchronously
         context.read<GetMissionSessionCubit>().getMissionSession(
           missionSessionUlid: missionSessionUlid,
-          missionUlid: missionUlid,
         );
       });
 }
@@ -928,7 +924,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
     String value,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),

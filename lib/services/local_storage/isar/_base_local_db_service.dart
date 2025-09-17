@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart' as col;
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 abstract class BaseLocalDBService<TRemote, TLocal> {
   BaseLocalDBService({

@@ -2223,6 +2223,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Press for payment actions'**
   String get tapForActions;
+
+  /// No description provided for @tapToStartRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to start recording'**
+  String get tapToStartRecording;
+
+  /// No description provided for @recordingWillContinueInBackground.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording will continue even when the app goes to background'**
+  String get recordingWillContinueInBackground;
+
+  /// No description provided for @startRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Recording'**
+  String get startRecording;
+
+  /// No description provided for @liveRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Live recording'**
+  String get liveRecording;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stop;
+
+  /// No description provided for @recordingPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording Paused'**
+  String get recordingPaused;
+
+  /// No description provided for @resume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resume;
+
+  /// No description provided for @recordingCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording Completed'**
+  String get recordingCompleted;
+
+  /// No description provided for @recordAnother.
+  ///
+  /// In en, this message translates to:
+  /// **'Record Another'**
+  String get recordAnother;
+
+  /// No description provided for @recordingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording Error'**
+  String get recordingError;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
 }
 
 class _AppLocalizationsDelegate

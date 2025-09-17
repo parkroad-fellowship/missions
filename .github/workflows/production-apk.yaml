@@ -13,7 +13,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
-          java-version: "17"
+          java-version: "21"
           distribution: "adopt"
 
       - name: 📚 Git Checkout
@@ -23,6 +23,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3"
+
+      - name: Accept Android licenses
+        run: yes | flutter doctor --android-licenses
 
       - name: 📦 Install Dependencies
         run: flutter packages get
@@ -53,15 +56,15 @@ jobs:
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
       - name: ⚙️ Build APK
-        run: flutter build apk  --flavor production --target lib/main_production.dart --release
+        run: flutter build apk  --flavor development --target lib/main_development.dart --release
 
       - name: ☁ Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{ secrets.FIREBASE_PROD_APP_ID }}
+          appId: ${{ secrets.FIREBASE_DEV_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: dev-team
-          file: build/app/outputs/flutter-apk/app-production-release.apk
+          file: build/app/outputs/flutter-apk/app-development-release.apk
 
       - name: Status
         if: failure()

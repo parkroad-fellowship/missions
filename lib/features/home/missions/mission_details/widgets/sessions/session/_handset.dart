@@ -48,7 +48,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
     super.initState();
     context.read<GetMissionSessionCubit>().getMissionSession(
       missionSessionUlid: missionSessionUlid,
-      missionUlid: missionUlid,
     );
   }
 
@@ -69,7 +68,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
           onRefresh: () =>
               context.read<GetMissionSessionCubit>().getMissionSession(
                 missionSessionUlid: missionSessionUlid,
-                missionUlid: missionUlid,
                 refresh: true,
               ),
           child: CustomScrollView(
@@ -89,7 +87,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                             .read<GetMissionSessionCubit>()
                             .getMissionSession(
                               missionSessionUlid: missionSessionUlid,
-                              missionUlid: missionUlid,
                               refresh: true,
                             );
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -310,10 +307,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 widget: (context, missionSession) =>
                     missionSession!.transcripts.isEmpty
                     ? SliverFillRemaining(
+                        hasScrollBody: false,
                         child: Center(
                           child:
                               Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(
                                         Icons.music_off_outlined,
@@ -449,25 +448,33 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                     );
                   },
                   builder: (context, state) => state.maybeWhen(
-                    orElse: () => Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.download,
-                          color: Theme.of(context).colorScheme.primary,
+                    orElse: () => SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        onPressed: () =>
-                            context.read<DownloadFileCubit>().downloadFile(
-                              transcript.media!.temporaryURL!,
-                            ),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.download,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          onPressed: () =>
+                              context.read<DownloadFileCubit>().downloadFile(
+                                transcript.media!.temporaryURL!,
+                              ),
+                        ),
                       ),
                     ),
-                    loading: () => const PRFCircularProgressIndicator(),
+                    loading: () => const SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: PRFCircularProgressIndicator(),
+                    ),
                   ),
                 ),
               ),
@@ -624,7 +631,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
         // ignore: use_build_context_synchronously
         context.read<GetMissionSessionCubit>().getMissionSession(
           missionSessionUlid: missionSessionUlid,
-          missionUlid: missionUlid,
         );
       });
 }
@@ -958,7 +964,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
     String value,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),

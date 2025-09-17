@@ -24,11 +24,11 @@ class GetMissionSessionsCubit extends Cubit<GetMissionSessionsState> {
   }) async {
     emit(const GetMissionSessionsState.loading());
     try {
-      // if (!refresh) {
-      //   await _isarService.missionSessions.refreshParentStream(missionUlid);
-      //   emit(const GetMissionSessionsState.loaded());
-      //   return;
-      // }
+      if (!refresh) {
+        await _isarService.missionSessions.refreshParentStream(missionUlid);
+        emit(const GetMissionSessionsState.loaded());
+        return;
+      }
       final missionSessions = await _missionSessionService.list(
         filters: {
           'mission_ulid': missionUlid,

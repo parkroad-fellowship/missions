@@ -42,7 +42,7 @@ class _DecisionPageState extends State<DecisionPage> {
 
   void _redirectToPage(BuildContext context, String routeName) {
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => context.router.pushNamed(routeName),
+      (_) => context.router.pushPath(routeName),
     );
   }
 

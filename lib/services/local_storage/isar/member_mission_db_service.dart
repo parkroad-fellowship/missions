@@ -5,7 +5,7 @@ import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 class MemberMissionDbService
     extends BaseLocalDBService<PRFMissionSubscription, PRFLocalMemberMission> {

@@ -35,6 +35,7 @@ abstract class MediaService {
   Future<void> downloadFile(String downloadURL);
 }
 
+@pragma('vm:entry-point')
 class MediaServiceImpl implements MediaService {
   final _networkUtil = NetworkUtil();
 
@@ -49,6 +50,7 @@ class MediaServiceImpl implements MediaService {
       case PRFMediaModel.missionVideos:
         url.write('missions');
       case PRFMediaModel.missionSessionAudios:
+      case PRFMediaModel.missionSessionLiveRecordings:
         url.write('mission-sessions');
       case PRFMediaModel.eventPhotos:
         url.write('events');
@@ -85,7 +87,7 @@ class MediaServiceImpl implements MediaService {
       return PRFMedia.fromJson(res['data'] as Map<String, dynamic>);
     } catch (e) {
       Logger().e(e.toString());
-      return null;
+      rethrow;
     }
   }
 
@@ -214,6 +216,7 @@ class MediaServiceImpl implements MediaService {
     await FlutterDownloader.registerCallback(callback);
   }
 
+  @pragma('vm:entry-point')
   static void callback(String id, int status, int progress) {
     Logger().d('$id: $status ($progress)');
   }

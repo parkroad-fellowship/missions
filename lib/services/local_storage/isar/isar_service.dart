@@ -2,6 +2,7 @@ import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/models/local/prf_course.dart';
 import 'package:app/models/local/prf_course_module.dart';
 import 'package:app/models/local/prf_debrief_note.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/prf_faq.dart';
 import 'package:app/models/local/prf_faq_category.dart';
 import 'package:app/models/local/prf_lesson_module.dart';
@@ -32,7 +33,7 @@ import 'package:app/services/local_storage/isar/prayer_response_db_service.dart'
 import 'package:app/services/local_storage/isar/soul_db_service.dart';
 import 'package:app/services/local_storage/isar/student_enquiry_db_service.dart';
 import 'package:app/services/local_storage/isar/student_enquiry_reply_db_service.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 class IsarService {
@@ -107,6 +108,7 @@ class IsarService {
       PRFLocalAnnouncementSchema,
       PRFLocalPrayerResponseSchema,
       PRFLocalMediaUploadSchema,
+      PRFFailedRecordingUploadSchema,
       PRFLocalFaqSchema,
       PRFLocalFaqCategorySchema,
       PRFLocalMissionSchema,

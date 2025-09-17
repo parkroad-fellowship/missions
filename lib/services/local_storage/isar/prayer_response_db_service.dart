@@ -1,7 +1,7 @@
 import 'package:app/models/local/prf_prayer_response.dart';
 import 'package:app/models/remote/prf_prayer_response.dart';
 import 'package:app/services/local_storage/isar/_base_min_local_db_service.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 class PrayerResponseDbService
     extends
