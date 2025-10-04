@@ -37,6 +37,9 @@ class PRFSuperAppRouter extends RootStackRouter {
   static const String moduleDetailsRoute = '/module-details';
   static const String lessonDetailsRoute = '/lesson-details';
 
+  // Wrapped
+  static const String wrappedRoute = '/wrapped';
+
   @override
   List<AutoRoute> get routes => [
     // Auth
@@ -161,6 +164,13 @@ class PRFSuperAppRouter extends RootStackRouter {
       path: lessonDetailsRoute,
       guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+    ),
+    // Wrapped
+    CustomRoute<dynamic>(
+      page: MissionsWrappedRoute.page,
+      path: wrappedRoute,
+      guards: [AuthGuard()],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
   ];
 }

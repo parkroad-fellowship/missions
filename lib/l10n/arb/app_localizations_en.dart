@@ -1184,4 +1184,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tryAgain => 'Try Again';
+
+  @override
+  String get wrapped => 'view my impact';
+
+  @override
+  String impact(int year) {
+    return '$year Review';
+  }
 }

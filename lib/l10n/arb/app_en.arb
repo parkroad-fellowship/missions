@@ -877,5 +877,15 @@
     "recordingError": "Recording Error",
     "@recordingError": {},
     "tryAgain": "Try Again",
-    "@tryAgain": {}
+    "@tryAgain": {},
+    "wrapped": "view my impact",
+    "@wrapped": {},
+    "impact": "{year} Review",
+    "@impact": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            }
+        }
+    }
 }

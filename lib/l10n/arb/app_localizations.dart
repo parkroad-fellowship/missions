@@ -2295,6 +2295,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try Again'**
   String get tryAgain;
+
+  /// No description provided for @wrapped.
+  ///
+  /// In en, this message translates to:
+  /// **'view my impact'**
+  String get wrapped;
+
+  /// No description provided for @impact.
+  ///
+  /// In en, this message translates to:
+  /// **'{year} Review'**
+  String impact(int year);
 }
 
 class _AppLocalizationsDelegate
