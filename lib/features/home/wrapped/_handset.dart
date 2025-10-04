@@ -38,7 +38,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
         return state.when(
           initial: () => _buildLoadingState(theme),
           loading: () => _buildLoadingState(theme),
-          empty: () => _buildEmptyState(),
+          empty: _buildEmptyState,
           loaded: (memberEngagement) {
             final year = DateTime.now().year;
             final pages = <Widget>[
@@ -100,40 +100,42 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                     top: 60,
                     left: 0,
                     right: 0,
-                    child: WrappedPageIndicator(
-                      currentPage: _currentPage,
-                      pageCount: pages.length,
-                    )
-                        .animate()
-                        .fadeIn(delay: 2000.ms, duration: 600.ms)
-                        .slideY(begin: -0.5, end: 0),
+                    child:
+                        WrappedPageIndicator(
+                              currentPage: _currentPage,
+                              pageCount: pages.length,
+                            )
+                            .animate()
+                            .fadeIn(delay: 2000.ms, duration: 600.ms)
+                            .slideY(begin: -0.5, end: 0),
                   ),
                   Positioned(
                     top: 60,
                     left: 16,
-                    child: IconButton(
-                      icon: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.3),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () => context.router.maybePop(),
-                    )
-                        .animate()
-                        .fadeIn(delay: 2000.ms, duration: 600.ms)
-                        .scale(delay: 200.ms),
+                    child:
+                        IconButton(
+                              icon: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () => context.router.maybePop(),
+                            )
+                            .animate()
+                            .fadeIn(delay: 2000.ms, duration: 600.ms)
+                            .scale(delay: 200.ms),
                   ),
                 ],
               ),
             );
           },
-          error: (message) => _buildErrorState(message),
+          error: _buildErrorState,
         );
       },
     );
@@ -179,7 +181,8 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               child: PRFEmptyView(
                 label: 'No Impact Data Yet',
                 description:
-                    'Start participating in missions and activities to see your impact wrapped!',
+                    'Start participating in missions and '
+                    'activities to see your impact wrapped!',
                 icon: Icons.insights_rounded,
                 actionLabel: 'Go Back',
                 onActionPressed: () => context.router.maybePop(),
@@ -215,8 +218,8 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                 actionLabel: 'Try Again',
                 onActionPressed: () {
                   context.read<GetMemberEngagementCubit>().getMemberEngagement(
-                        year: DateTime.now().year,
-                      );
+                    year: DateTime.now().year,
+                  );
                 },
               ),
             ),
