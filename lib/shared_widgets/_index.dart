@@ -15,3 +15,6 @@ export 'input/text_area/text_area.dart';
 export 'progress/circular_progress_indicator.dart';
 export 'progress/linear_progress_indicator.dart';
 export 'reply_status.dart';
+export 'wrapped/animated_stat_card.dart';
+export 'wrapped/stat_highlight_card.dart';
+export 'wrapped/wrapped_page_indicator.dart';
