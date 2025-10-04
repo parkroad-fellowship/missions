@@ -22,15 +22,17 @@ class MemberService extends BaseAPIService<PRFMember> {
     String memberUlid,
     int year,
   ) async {
-    return getChild(
+    final response = await getChild(
       parentId: memberUlid,
       childPath: 'engagement',
-      fromJson: PRFMemberEngagement.fromJson,
+      fromJson: PRFMemberEngagementResponse.fromJson,
       queryParameters: {
         'include_badges': true,
         'include_comparative_stats': true,
         'year': year,
       },
     );
+
+    return response.data;
   }
 }
