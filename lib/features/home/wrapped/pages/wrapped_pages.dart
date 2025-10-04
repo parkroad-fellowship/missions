@@ -35,11 +35,11 @@ class IntroWrappedPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.celebration_rounded,
-                size: 80,
-                color: Colors.white,
-              )
+              const Icon(
+                    Icons.celebration_rounded,
+                    size: 80,
+                    color: Colors.white,
+                  )
                   .animate()
                   .scale(
                     duration: 800.ms,
@@ -48,59 +48,59 @@ class IntroWrappedPage extends StatelessWidget {
                   .fadeIn(),
               const SizedBox(height: 32),
               Text(
-                memberName,
-                style: theme.textTheme.displayMedium?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w800,
-                ),
-                textAlign: TextAlign.center,
-              )
+                    memberName,
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                   .animate(delay: 300.ms)
                   .fadeIn(duration: 800.ms)
                   .slideY(begin: 0.3, end: 0),
               const SizedBox(height: 16),
               Text(
-                'Your $year',
-                style: theme.textTheme.headlineLarge?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              )
+                    'Your $year',
+                    style: theme.textTheme.headlineLarge?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                   .animate(delay: 600.ms)
                   .fadeIn(duration: 800.ms)
                   .slideY(begin: 0.3, end: 0),
               const SizedBox(height: 8),
               Text(
-                'Impact Wrapped',
-                style: theme.textTheme.displayLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 48,
-                ),
-                textAlign: TextAlign.center,
-              )
+                    'Impact Wrapped',
+                    style: theme.textTheme.displayLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 48,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                   .animate(delay: 900.ms)
                   .fadeIn(duration: 1000.ms)
                   .scale(curve: Curves.easeOut),
               const SizedBox(height: 48),
               Text(
-                'Swipe to see your journey',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.8),
-                ),
-                textAlign: TextAlign.center,
-              )
+                    'Swipe to see your journey',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.8),
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                   .animate(delay: 1500.ms)
                   .fadeIn()
                   .then(delay: 500.ms)
                   .shimmer(duration: 2000.ms, color: Colors.white),
               const SizedBox(height: 16),
               Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Colors.white.withValues(alpha: 0.8),
-                size: 24,
-              )
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.white.withValues(alpha: 0.8),
+                    size: 24,
+                  )
                   .animate(
                     onPlay: (controller) => controller.repeat(),
                   )
@@ -161,10 +161,7 @@ class MissionsWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: missionStats.totalMissions.toString(),
@@ -187,7 +184,8 @@ class MissionsWrappedPage extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: AnimatedStatCard(
-                      value: '${missionStats.completionRate.toStringAsFixed(0)}%',
+                      value:
+                          '${missionStats.completionRate.toStringAsFixed(0)}%',
                       label: 'Completion',
                       icon: Icons.check_circle_rounded,
                       color: theme.colorScheme.secondary,
@@ -252,10 +250,7 @@ class ImpactWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: impactStats.soulsTouched.toString(),
@@ -268,7 +263,9 @@ class ImpactWrappedPage extends StatelessWidget {
                 StatHighlightCard(
                   title: impactStats.mostImpactfulMission!.name,
                   subtitle:
-                      'Your most impactful mission with ${impactStats.mostImpactfulMission!.soulsCount} souls',
+                      'Your most impactful mission '
+                      'with ${impactStats.mostImpactfulMission!.soulsCount} '
+                      'souls',
                   icon: Icons.star_rounded,
                   gradient: [
                     theme.colorScheme.secondary,
@@ -280,52 +277,60 @@ class ImpactWrappedPage extends StatelessWidget {
               if (impactStats.decisionTypes.isNotEmpty) ...[
                 const SizedBox(height: 24),
                 Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.3),
-                      width: 2,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Decision Types',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.3),
+                          width: 2,
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      ...impactStats.decisionTypes.take(3).map(
-                            (dt) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    dt.type,
-                                    style: theme.textTheme.bodyLarge?.copyWith(
-                                      color: Colors.white.withValues(alpha: 0.9),
-                                    ),
-                                  ),
-                                  Text(
-                                    dt.count.toString(),
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Decision Types',
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                    ],
-                  ),
-                )
+                          const SizedBox(height: 12),
+                          ...impactStats.decisionTypes
+                              .take(3)
+                              .map(
+                                (dt) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        dt.type,
+                                        style: theme.textTheme.bodyLarge
+                                            ?.copyWith(
+                                              color: Colors.white.withValues(
+                                                alpha: 0.9,
+                                              ),
+                                            ),
+                                      ),
+                                      Text(
+                                        dt.count.toString(),
+                                        style: theme.textTheme.titleMedium
+                                            ?.copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                        ],
+                      ),
+                    )
                     .animate(delay: 600.ms)
                     .fadeIn(duration: 600.ms)
                     .slideY(begin: 0.3, end: 0),
@@ -374,10 +379,7 @@ class LearningWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               Row(
                 children: [
@@ -404,6 +406,7 @@ class LearningWrappedPage extends StatelessWidget {
               const SizedBox(height: 24),
               AnimatedStatCard(
                 value:
+                    // ignore: lines_longer_than_80_chars
                     '${learningStats.learningProgressPercentage.toStringAsFixed(0)}%',
                 label: 'Overall Progress',
                 icon: Icons.trending_up_rounded,
@@ -466,10 +469,7 @@ class PrayerWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: prayerStats.prayerResponses.toString(),
@@ -480,7 +480,8 @@ class PrayerWrappedPage extends StatelessWidget {
               if (prayerStats.prayerConsistencyDays > 0) ...[
                 const SizedBox(height: 24),
                 StatHighlightCard(
-                  title: '🙏 ${prayerStats.prayerConsistencyDays} Days of Prayer',
+                  title:
+                      '🙏 ${prayerStats.prayerConsistencyDays} Days of Prayer',
                   subtitle: 'Your faith journey continues',
                   gradient: [
                     theme.colorScheme.secondary,
@@ -533,10 +534,7 @@ class EventsWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               Row(
                 children: [
@@ -619,76 +617,75 @@ class SummaryWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w900,
                 ),
                 textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms)
-                  .scale(curve: Curves.easeOut),
+              ).animate().fadeIn(duration: 600.ms).scale(curve: Curves.easeOut),
               const SizedBox(height: 48),
               Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    width: 2,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    _buildSummaryRow(
-                      context,
-                      Icons.explore_rounded,
-                      'Missions',
-                      memberEngagement.missionStats.totalMissions.toString(),
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        width: 2,
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    _buildSummaryRow(
-                      context,
-                      Icons.favorite_rounded,
-                      'Souls Touched',
-                      memberEngagement.impactStats.soulsTouched.toString(),
+                    child: Column(
+                      children: [
+                        _buildSummaryRow(
+                          context,
+                          Icons.explore_rounded,
+                          'Missions',
+                          memberEngagement.missionStats.totalMissions
+                              .toString(),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildSummaryRow(
+                          context,
+                          Icons.favorite_rounded,
+                          'Souls Touched',
+                          memberEngagement.impactStats.soulsTouched.toString(),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildSummaryRow(
+                          context,
+                          Icons.workspace_premium_rounded,
+                          'Courses',
+                          memberEngagement.learningStats.coursesCompleted
+                              .toString(),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildSummaryRow(
+                          context,
+                          Icons.event_rounded,
+                          'Events',
+                          memberEngagement.eventStats.eventsAttended.toString(),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    _buildSummaryRow(
-                      context,
-                      Icons.workspace_premium_rounded,
-                      'Courses',
-                      memberEngagement.learningStats.coursesCompleted.toString(),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildSummaryRow(
-                      context,
-                      Icons.event_rounded,
-                      'Events',
-                      memberEngagement.eventStats.eventsAttended.toString(),
-                    ),
-                  ],
-                ),
-              )
+                  )
                   .animate(delay: 300.ms)
                   .fadeIn(duration: 800.ms)
                   .slideY(begin: 0.3, end: 0),
               const SizedBox(height: 48),
               Text(
-                'Thank you for making\nan impact in $year!',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              )
+                    'Thank you for making\nan impact in $year!',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                   .animate(delay: 800.ms)
                   .fadeIn(duration: 1000.ms)
                   .slideY(begin: 0.3, end: 0),
               const SizedBox(height: 24),
               Text(
-                "Let's make next year even better! 🚀",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.9),
-                ),
-                textAlign: TextAlign.center,
-              )
+                    "Let's make next year even better! 🚀",
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.9),
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                   .animate(delay: 1200.ms)
                   .fadeIn(duration: 800.ms)
                   .then(delay: 500.ms)

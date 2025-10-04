@@ -36,8 +36,9 @@ class StatHighlightCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: (gradient?.first ?? theme.colorScheme.primary)
-                .withValues(alpha: 0.3),
+            color: (gradient?.first ?? theme.colorScheme.primary).withValues(
+              alpha: 0.3,
+            ),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -47,17 +48,17 @@ class StatHighlightCard extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                icon,
-                size: 32,
-                color: Colors.white,
-              ),
-            )
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 32,
+                    color: Colors.white,
+                  ),
+                )
                 .animate(delay: delay)
                 .scale(duration: 600.ms, curve: Curves.elasticOut)
                 .fadeIn(),
@@ -69,22 +70,22 @@ class StatHighlightCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  title,
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
+                      title,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    )
                     .animate(delay: delay + 200.ms)
                     .fadeIn(duration: 600.ms)
                     .slideX(begin: -0.2, end: 0),
                 const SizedBox(height: 4),
                 Text(
-                  subtitle,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.9),
-                  ),
-                )
+                      subtitle,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.9),
+                      ),
+                    )
                     .animate(delay: delay + 400.ms)
                     .fadeIn(duration: 600.ms)
                     .slideX(begin: -0.2, end: 0),
