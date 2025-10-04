@@ -430,6 +430,156 @@ class LearningWrappedPage extends StatelessWidget {
   }
 }
 
+class PrayerWrappedPage extends StatelessWidget {
+  const PrayerWrappedPage({
+    required this.prayerStats,
+    super.key,
+  });
+
+  final PrayerStats prayerStats;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            const Color(0xFFE65100),
+            const Color(0xFFFF6F00),
+          ],
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Your Prayer Journey',
+                style: theme.textTheme.displaySmall?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                ),
+                textAlign: TextAlign.center,
+              )
+                  .animate()
+                  .fadeIn(duration: 600.ms)
+                  .slideY(begin: -0.3, end: 0),
+              const SizedBox(height: 48),
+              AnimatedStatCard(
+                value: prayerStats.prayerResponses.toString(),
+                label: 'Prayer Responses',
+                icon: Icons.volunteer_activism_rounded,
+                color: Colors.white,
+              ),
+              if (prayerStats.prayerConsistencyDays > 0) ...[
+                const SizedBox(height: 24),
+                StatHighlightCard(
+                  title: '🙏 ${prayerStats.prayerConsistencyDays} Days of Prayer',
+                  subtitle: 'Your faith journey continues',
+                  gradient: const [
+                    Color(0xFFFFD700),
+                    Color(0xFFFFA000),
+                  ],
+                  delay: 400.ms,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EventsWrappedPage extends StatelessWidget {
+  const EventsWrappedPage({
+    required this.eventStats,
+    super.key,
+  });
+
+  final EventStats eventStats;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            const Color(0xFFD32F2F),
+            const Color(0xFFC62828),
+          ],
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Your Event Participation',
+                style: theme.textTheme.displaySmall?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                ),
+                textAlign: TextAlign.center,
+              )
+                  .animate()
+                  .fadeIn(duration: 600.ms)
+                  .slideY(begin: -0.3, end: 0),
+              const SizedBox(height: 48),
+              Row(
+                children: [
+                  Expanded(
+                    child: AnimatedStatCard(
+                      value: eventStats.eventsAttended.toString(),
+                      label: 'Events\nAttended',
+                      icon: Icons.event_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: AnimatedStatCard(
+                      value: eventStats.upcomingEvents.toString(),
+                      label: 'Upcoming\nEvents',
+                      icon: Icons.event_available_rounded,
+                      color: theme.colorScheme.secondary,
+                      delay: 200.ms,
+                    ),
+                  ),
+                ],
+              ),
+              if (eventStats.eventsAttended > 0) ...[
+                const SizedBox(height: 24),
+                StatHighlightCard(
+                  title: '🎉 Active Participant!',
+                  subtitle: 'Thank you for being part of our community',
+                  gradient: const [
+                    Color(0xFFFF6B6B),
+                    Color(0xFFFF8E53),
+                  ],
+                  delay: 400.ms,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class SummaryWrappedPage extends StatelessWidget {
   const SummaryWrappedPage({
     required this.memberEngagement,

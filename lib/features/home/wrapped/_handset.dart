@@ -41,7 +41,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
           empty: () => _buildEmptyState(),
           loaded: (memberEngagement) {
             final year = DateTime.now().year;
-            final pages = [
+            final pages = <Widget>[
               IntroWrappedPage(
                 memberName: memberEngagement.memberName,
                 year: year,
@@ -55,11 +55,34 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               LearningWrappedPage(
                 learningStats: memberEngagement.learningStats,
               ),
+            ];
+
+            // Add prayer page if there are prayer responses
+            if (memberEngagement.prayerStats.prayerResponses > 0 ||
+                memberEngagement.prayerStats.prayerConsistencyDays > 0) {
+              pages.add(
+                PrayerWrappedPage(
+                  prayerStats: memberEngagement.prayerStats,
+                ),
+              );
+            }
+
+            // Add events page if there are events attended
+            if (memberEngagement.eventStats.eventsAttended > 0) {
+              pages.add(
+                EventsWrappedPage(
+                  eventStats: memberEngagement.eventStats,
+                ),
+              );
+            }
+
+            // Always add summary as the last page
+            pages.add(
               SummaryWrappedPage(
                 memberEngagement: memberEngagement,
                 year: year,
               ),
-            ];
+            );
 
             return Scaffold(
               body: Stack(
