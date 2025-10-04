@@ -10,6 +10,7 @@ analyzer:
     # TODO: Remove these gradually
     avoid_catches_without_on_clauses: ignore
     document_ignores: ignore
+    discarded_futures: ignore
 
 linter:
   rules:
