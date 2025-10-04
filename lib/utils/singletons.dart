@@ -4,6 +4,7 @@ import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/cubit/get_announcements_cubit.dart';
+import 'package:app/features/home/cubit/get_member_engagement_cubit.dart';
 import 'package:app/features/home/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/features/home/cubit/upload_prayer_response_cubit.dart';
@@ -73,6 +74,7 @@ import 'package:app/services/api/expense_categories_service.dart';
 import 'package:app/services/api/expense_service.dart';
 import 'package:app/services/api/lesson_member_service.dart';
 import 'package:app/services/api/lesson_module_service.dart';
+import 'package:app/services/api/member_service.dart';
 import 'package:app/services/api/mission_expenses_service.dart';
 import 'package:app/services/api/mission_faq_category_service.dart';
 import 'package:app/services/api/mission_faq_service.dart';
@@ -180,7 +182,8 @@ class Singletons {
           isarService: getIt(),
           mediaService: getIt(),
         ),
-      );
+      )
+      ..registerSingleton<MemberService>(MemberService());
   }
 
   static Future<void> setupDatabases() async {
@@ -548,6 +551,12 @@ class Singletons {
           failedUploadService: getIt(),
         ),
       ),
+      BlocProvider<GetMemberEngagementCubit>(
+        create: (context) => GetMemberEngagementCubit(
+          memberService: getIt(),
+          hiveService: getIt(),
+        ),
+      )
     ];
   }
 }

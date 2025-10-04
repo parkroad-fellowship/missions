@@ -124,6 +124,14 @@ class _LandingPageState extends State<LandingPage> {
         ),
         700,
       ],
+      [
+        l10n.wrapped,
+        'assets/svgs/wrapped.svg',
+        () => context.router.pushPath(
+          PRFSuperAppRouter.wrappedRoute,
+        ),
+        0,
+      ],
     ];
 
     return AdaptiveBuilder(
