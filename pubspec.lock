@@ -101,10 +101,10 @@ packages:
     dependency: "direct main"
     description:
       name: bloc
-      sha256: "52c10575f4445c61dd9e0cafcc6356fdd827c4c64dd7945ef3c4105f6b6ac189"
+      sha256: e18b8e7825e9921d67a6d256dba0b6015ece8a577eb0a411845c46a352994d78
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.0.1"
   bloc_test:
     dependency: "direct dev"
     description:
@@ -1018,26 +1018,26 @@ packages:
     dependency: "direct main"
     description:
       name: isar_community
-      sha256: eae4a7e659bec0f92fc953afb8738512062df6a2ff99fe838cb53f9ed4fa6e97
+      sha256: "28f59e54636c45ba0bb1b3b7f2656f1c50325f740cea6efcd101900be3fba546"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0-dev.2"
+    version: "3.3.0-dev.3"
   isar_community_flutter_libs:
     dependency: "direct main"
     description:
       name: isar_community_flutter_libs
-      sha256: e8e6668d2c20ed61af9422bddc0bc3d1f6db91e3a5dae4406379a1426c06fbff
+      sha256: c2934fe755bb3181cb67602fd5df0d080b3d3eb52799f98623aa4fc5acbea010
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0-dev.2"
+    version: "3.3.0-dev.3"
   isar_community_generator:
     dependency: "direct dev"
     description:
       name: isar_community_generator
-      sha256: "9da90eafaecf2ec482f50854373e37f3d9e33387830dbc0265bcdb74d9036e74"
+      sha256: "1d760de09ffbc837ad65476f14b6ad17381f0fb485e01bf77d76d825ef734bec"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0-dev.2"
+    version: "3.3.0-dev.3"
   isolate_channel:
     dependency: transitive
     description:
@@ -2015,10 +2015,10 @@ packages:
     dependency: "direct dev"
     description:
       name: very_good_analysis
-      sha256: e479fbc0941009262343db308133e121bf8660c2c81d48dd8e952df7b7e1e382
+      sha256: "96245839dbcc45dfab1af5fa551603b5c7a282028a64746c19c547d21a7f1e3a"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "10.0.0"
   video_player:
     dependency: "direct main"
     description:

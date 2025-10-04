@@ -6,13 +6,13 @@ publish_to: none
 environment:
   sdk: ^3.9.0
 
-isar_version: &isar_version 3.3.0-dev.2
+isar_version: &isar_version 3.3.0-dev.3
 
 dependencies:
   auto_route: ^10.1.2
   awesome_notifications: ^0.10.1
   awesome_notifications_core: ^0.10.1
-  bloc: ^9.0.0
+  bloc: ^9.0.1
   build_version: ^2.1.1
   collection: ^1.19.1
   crypto: ^3.0.6
@@ -95,7 +95,7 @@ dev_dependencies:
     hosted: https://pub.dev
   json_serializable: ^6.8.0
   mocktail: ^1.0.4
-  very_good_analysis: ^9.0.0
+  very_good_analysis: ^10.0.0
 
 flutter:
   uses-material-design: true
