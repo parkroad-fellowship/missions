@@ -143,8 +143,8 @@ class MissionsWrappedPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            const Color(0xFF4A148C),
-            const Color(0xFF6A1B9A),
+            theme.colorScheme.primary,
+            theme.colorScheme.primary.withValues(alpha: 0.8),
           ],
         ),
       ),
@@ -201,9 +201,9 @@ class MissionsWrappedPage extends StatelessWidget {
                 StatHighlightCard(
                   title: '🔥 ${missionStats.missionStreak} Mission Streak!',
                   subtitle: 'Keep up the amazing work',
-                  gradient: const [
-                    Color(0xFFFF6B6B),
-                    Color(0xFFFF8E53),
+                  gradient: [
+                    theme.colorScheme.secondary,
+                    theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
                   delay: 800.ms,
                 ),
@@ -234,8 +234,8 @@ class ImpactWrappedPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            const Color(0xFF1976D2),
-            const Color(0xFF1565C0),
+            theme.colorScheme.primary,
+            theme.colorScheme.primary.withValues(alpha: 0.85),
           ],
         ),
       ),
@@ -270,9 +270,9 @@ class ImpactWrappedPage extends StatelessWidget {
                   subtitle:
                       'Your most impactful mission with ${impactStats.mostImpactfulMission!.soulsCount} souls',
                   icon: Icons.star_rounded,
-                  gradient: const [
-                    Color(0xFFFFD700),
-                    Color(0xFFFFA000),
+                  gradient: [
+                    theme.colorScheme.secondary,
+                    theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
                   delay: 400.ms,
                 ),
@@ -356,8 +356,8 @@ class LearningWrappedPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            const Color(0xFF388E3C),
-            const Color(0xFF2E7D32),
+            theme.colorScheme.primary,
+            theme.colorScheme.primary.withValues(alpha: 0.9),
           ],
         ),
       ),
@@ -415,9 +415,9 @@ class LearningWrappedPage extends StatelessWidget {
                 StatHighlightCard(
                   title: '📚 ${learningStats.learningStreak} Day Streak!',
                   subtitle: "You're on fire! Keep learning",
-                  gradient: const [
-                    Color(0xFFFF6B6B),
-                    Color(0xFFFF8E53),
+                  gradient: [
+                    theme.colorScheme.secondary,
+                    theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
                   delay: 600.ms,
                 ),
@@ -448,8 +448,8 @@ class PrayerWrappedPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            const Color(0xFFE65100),
-            const Color(0xFFFF6F00),
+            theme.colorScheme.primary,
+            theme.colorScheme.primary.withValues(alpha: 0.85),
           ],
         ),
       ),
@@ -482,9 +482,9 @@ class PrayerWrappedPage extends StatelessWidget {
                 StatHighlightCard(
                   title: '🙏 ${prayerStats.prayerConsistencyDays} Days of Prayer',
                   subtitle: 'Your faith journey continues',
-                  gradient: const [
-                    Color(0xFFFFD700),
-                    Color(0xFFFFA000),
+                  gradient: [
+                    theme.colorScheme.secondary,
+                    theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
                   delay: 400.ms,
                 ),
@@ -515,8 +515,8 @@ class EventsWrappedPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            const Color(0xFFD32F2F),
-            const Color(0xFFC62828),
+            theme.colorScheme.primary,
+            theme.colorScheme.primary.withValues(alpha: 0.85),
           ],
         ),
       ),
@@ -565,9 +565,9 @@ class EventsWrappedPage extends StatelessWidget {
                 StatHighlightCard(
                   title: '🎉 Active Participant!',
                   subtitle: 'Thank you for being part of our community',
-                  gradient: const [
-                    Color(0xFFFF6B6B),
-                    Color(0xFFFF8E53),
+                  gradient: [
+                    theme.colorScheme.secondary,
+                    theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
                   delay: 400.ms,
                 ),
@@ -601,7 +601,7 @@ class SummaryWrappedPage extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             theme.colorScheme.primary,
-            const Color(0xFF6A1B9A),
+            theme.colorScheme.primary.withValues(alpha: 0.85),
             theme.colorScheme.secondary.withValues(alpha: 0.7),
           ],
         ),

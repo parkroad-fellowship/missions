@@ -83,7 +83,7 @@ class AnimatedStatCard extends StatelessWidget {
           Text(
             label,
             style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              color: Colors.white.withValues(alpha: 0.9),
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
