@@ -169,12 +169,18 @@ abstract class ComparativeStats with _$ComparativeStats {
     @JsonKey(name: 'avg_courses_per_member')
     required double avgCoursesPerMember,
     @JsonKey(name: 'above_average') required List<String> aboveAverage,
-    @JsonKey(name: 'percentile_rank_missions')
-    required double percentileRankMissions,
-    @JsonKey(name: 'percentile_rank_learning')
-    required double percentileRankLearning,
   }) = _ComparativeStats;
 
   factory ComparativeStats.fromJson(Map<String, dynamic> json) =>
       _$ComparativeStatsFromJson(json);
+}
+
+@freezed
+abstract class PRFMemberEngagementResponse with _$PRFMemberEngagementResponse {
+  factory PRFMemberEngagementResponse({
+    required PRFMemberEngagement data,
+  }) = _PRFMemberEngagementResponse;
+
+  factory PRFMemberEngagementResponse.fromJson(Map<String, dynamic> json) =>
+      _$PRFMemberEngagementResponseFromJson(json);
 }

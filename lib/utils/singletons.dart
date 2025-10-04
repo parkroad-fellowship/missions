@@ -556,7 +556,7 @@ class Singletons {
           memberService: getIt(),
           hiveService: getIt(),
         ),
-      )
+      ),
     ];
   }
 }
