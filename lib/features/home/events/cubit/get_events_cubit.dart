@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_event_type.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_event.dart';
 import 'package:app/services/_index.dart';
@@ -30,6 +31,7 @@ class GetEventsCubit extends Cubit<GetEventsState> {
         orderDirection: 'asc',
         filters: {
           'unsubscribed': true,
+          'event_type': PRFEventType.member.apiKey,
         },
       );
       if (events.isEmpty) {
