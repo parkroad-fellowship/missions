@@ -72,7 +72,7 @@ class IntroWrappedPage extends StatelessWidget {
                   .slideY(begin: 0.3, end: 0),
               const SizedBox(height: 8),
               Text(
-                    'Impact Wrapped',
+                    'Missions Wrapped',
                     style: theme.textTheme.displayLarge?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w900,
