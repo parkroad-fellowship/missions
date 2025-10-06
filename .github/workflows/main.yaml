@@ -80,32 +80,77 @@ jobs:
           args: --flavor production --target lib/main_production.dart
           release-version: latest
 
+      - name: 📦 Upload debug symbols artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-symbols
+          path: debug-symbols/
+          retention-days: 7
+        continue-on-error: true
+
+      - name: 📦 Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-production-release
+          path: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          retention-days: 1
+
+      - name: 💾 Save AAB path
+        id: save_aab_path
+        run: echo "aab_path=build/app/outputs/bundle/productionRelease/app-production-release.aab" >> $GITHUB_OUTPUT
+
+      - name: Status
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: https://hooks.slack.com/services/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
+
+  upload_debug_symbols:
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true # Don't fail the entire workflow if this job fails
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v5
+
+      - name: ⬇️ Download debug symbols artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: debug-symbols
+          path: debug-symbols/
+
       - name: 📦 Prepare debug symbols
         run: |
           if [ -d "debug-symbols" ]; then
             echo "Debug symbols found, creating archive..."
             zip -r debug-symbols.zip debug-symbols
             ls -lh debug-symbols.zip
+            echo "Contents:"
+            unzip -l debug-symbols.zip
           else
             echo "Warning: debug-symbols directory not found"
             exit 1
           fi
+        continue-on-error: true
 
       - name: 🔧 Setup Firebase CLI
         run: |
           curl -sL https://firebase.tools | bash
           firebase --version
+        continue-on-error: true
 
       - name: 🔐 Setup Firebase credentials
         run: |
           echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > $HOME/firebase-service-account.json
           echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-service-account.json" >> $GITHUB_ENV
+        continue-on-error: true
 
       - name: ⚙️ Upload debug symbols to Firebase Crashlytics
         run: |
           max_attempts=3
           attempt=1
-          
+
           while [ $attempt -le $max_attempts ]; do
             echo "Upload attempt $attempt of $max_attempts..."
             
@@ -124,31 +169,24 @@ jobs:
             
             attempt=$((attempt + 1))
           done
-          
+
           echo "❌ Failed to upload debug symbols after $max_attempts attempts"
           exit 1
+        continue-on-error: true
 
       - name: 🧹 Cleanup Firebase credentials
         if: always()
         run: |
           rm -f $HOME/firebase-service-account.json
 
-      - name: 📦 Upload AAB artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-production-release
-          path: build/app/outputs/bundle/productionRelease/app-production-release.aab
-          retention-days: 1
-
-      - name: 💾 Save AAB path
-        id: save_aab_path
-        run: echo "aab_path=build/app/outputs/bundle/productionRelease/app-production-release.aab" >> $GITHUB_OUTPUT
-
       - name: Status
         if: failure()
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: https://hooks.slack.com/services/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
+          SLACK_TITLE: "Debug Symbols Upload Failed"
+          SLACK_MESSAGE: "Failed to upload debug symbols to Firebase Crashlytics"
+          SLACK_COLOR: warning
 
   release_google_play:
     needs: build
