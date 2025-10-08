@@ -1186,7 +1186,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tryAgain => 'Try Again';
 
   @override
-  String get wrapped => 'view my impact';
+  String get wrapped => 'View my impact';
 
   @override
   String impact(int year) {
