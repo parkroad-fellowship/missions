@@ -1,5 +1,6 @@
 import 'package:app/enums/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -56,6 +57,25 @@ class GetMemberMissionSubscriptionsCubit
 
       await _isarService.memberMissions.persistEntities(missionSubscriptions);
       await _isarService.memberMissions.refreshParentStream();
+
+      // Update the missions entries with the loggedInMemberMissionSubscription
+      // This is to ensure that when we access to the contacts and extra details
+      for (final subscription in missionSubscriptions) {
+        final mission = subscription.mission;
+        if (mission != null) {
+          await _isarService.missions.persistEntity(
+            mission.copyWith(
+              loggedInMemberMissionSubscription: PRFMissionSubscription(
+                subscription.ulid,
+                subscription.status,
+                subscription.missionRole,
+                subscription.createdAt,
+                subscription.updatedAt,
+              ),
+            ),
+          );
+        }
+      }
 
       emit(const GetMemberMissionSubscriptionsState.loaded());
     } on Failure catch (e) {

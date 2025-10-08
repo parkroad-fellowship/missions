@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/models/local/prf_member_mission.dart';
 import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/prf_mission.dart';
@@ -18,6 +19,7 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
     final school = remote.school!;
     final contacts = remote.school!.contacts!;
     final weatherForecasts = remote.weatherForecasts;
+    final loggedInMemberMissionSubscription = remote.loggedInMemberMissionSubscription;
 
     return PRFLocalMission(
       ulid: remote.ulid,
@@ -67,6 +69,13 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
             )
             .toList(),
       ),
+      loggedInMemberMissionSubscription: PRFLocalMissionMemberSubscription(
+        ulid: loggedInMemberMissionSubscription?.ulid,
+        status: loggedInMemberMissionSubscription?.status,
+        missionRole: loggedInMemberMissionSubscription?.missionRole,
+        createdAt: loggedInMemberMissionSubscription?.createdAt,
+        updatedAt: loggedInMemberMissionSubscription?.updatedAt,
+      ),
       weatherForecasts: weatherForecasts
           .map(
             (weatherForecast) => PRFLocalWeatherForecast(
@@ -99,6 +108,7 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
               dressingRecommendations: weatherForecast.dressingRecommendations,
               activityRecommendations: weatherForecast.activityRecommendations,
             ),
+            
           )
           .toList(),
     );
