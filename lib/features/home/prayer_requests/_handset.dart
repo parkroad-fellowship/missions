@@ -59,12 +59,17 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                             physics: const AlwaysScrollableScrollPhysics(),
                             children: [
                               const SizedBox(height: 64),
-                              PRFEmptyView(
-                                label: l10n.noPrayerRequests,
-                                description: l10n.noPrayerRequestsDesc,
-                                icon: Icons.hail_rounded,
-                                actionLabel: l10n.submitPrayerRequest,
-                                onActionPressed: _addPrayerRequest,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: PRFEmptyView(
+                                  label: l10n.noPrayerRequests,
+                                  description: l10n.noPrayerRequestsDesc,
+                                  icon: Icons.hail_rounded,
+                                  actionLabel: l10n.submitPrayerRequest,
+                                  onActionPressed: _addPrayerRequest,
+                                ),
                               ),
                             ],
                           ),
