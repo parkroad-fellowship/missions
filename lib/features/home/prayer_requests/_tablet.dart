@@ -79,6 +79,9 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                                 child: SingleChildScrollView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 32,
+                                  ),
                                   child: PRFEmptyView(
                                     label: l10n.noPrayerRequests,
                                     description: l10n.noPrayerRequestsDesc,

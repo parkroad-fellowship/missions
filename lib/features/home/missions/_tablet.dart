@@ -247,10 +247,6 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
           );
         }
 
-        // Sort missions by start date for timeline
-        final sortedMissions = List<PRFLocalMission>.from(missions!)
-          ..sort((a, b) => a.startDate.compareTo(b.startDate));
-
         return RefreshIndicator(
           onRefresh: () => context
               .read<GetMemberMissionSubscriptionsCubit>()
@@ -261,10 +257,10 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
               horizontal: 24,
               vertical: 32,
             ),
-            itemCount: sortedMissions.length,
+            itemCount: missions!.length,
             itemBuilder: (context, index) {
-              final mission = sortedMissions[index];
-              final isLast = index == sortedMissions.length - 1;
+              final mission = missions[index];
+              final isLast = index == missions.length - 1;
 
               return TimelineMissionCardTablet(
                     mission: mission,

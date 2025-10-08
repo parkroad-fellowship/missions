@@ -2299,7 +2299,7 @@ abstract class AppLocalizations {
   /// No description provided for @wrapped.
   ///
   /// In en, this message translates to:
-  /// **'view my impact'**
+  /// **'View my impact'**
   String get wrapped;
 
   /// No description provided for @impact.
