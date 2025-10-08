@@ -117,7 +117,7 @@ class MemberMissionDbService
   }
 
   Future<List<PRFLocalMission>> listParentMissions() async {
-    return collection.where().findAll().then(
+    return collection.where().sortByStartDateDesc().findAll().then(
       (localMemberMissions) => localMemberMissions
           .map(_transformLocalMemberMissionToLocalMission)
           .toList(),
@@ -127,6 +127,7 @@ class MemberMissionDbService
   Stream<List<PRFLocalMission>> getAllParents() {
     return collection
         .where()
+        .sortByStartDateDesc()
         .watch(fireImmediately: true)
         .asBroadcastStream()
         .map(
@@ -256,5 +257,17 @@ class MemberMissionDbService
           )
           .toList(),
     );
+  }
+
+  @override
+  Future<void> persistEntities(
+    List<PRFMissionSubscription> remoteEntities,
+  ) async {
+    await dbInstance.writeTxn(() async {
+      final localEntities = remoteEntities.map(remoteToLocal).toList()
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt))
+        ..reversed;
+      await collection.putAll(localEntities);
+    });
   }
 }
