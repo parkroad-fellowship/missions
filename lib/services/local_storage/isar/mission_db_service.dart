@@ -19,7 +19,8 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
     final school = remote.school!;
     final contacts = remote.school!.contacts!;
     final weatherForecasts = remote.weatherForecasts;
-    final loggedInMemberMissionSubscription = remote.loggedInMemberMissionSubscription;
+    final loggedInMemberMissionSubscription =
+        remote.loggedInMemberMissionSubscription;
 
     return PRFLocalMission(
       ulid: remote.ulid,
@@ -108,7 +109,6 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
               dressingRecommendations: weatherForecast.dressingRecommendations,
               activityRecommendations: weatherForecast.activityRecommendations,
             ),
-            
           )
           .toList(),
     );
