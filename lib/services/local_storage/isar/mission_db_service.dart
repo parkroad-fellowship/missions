@@ -120,4 +120,16 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
   ) async {
     return collection.where().ulidEqualTo(key).findFirst();
   }
+
+  @override
+  Future<void> refreshStream() async {
+    streamController ??= StreamController<List<PRFLocalMission>>.broadcast();
+    final entities = await list();
+    entities.removeWhere(
+      (element) => element.startDate.isBefore(
+        DateTime.now(),
+      ),
+    );
+    streamController!.add(entities);
+  }
 }
