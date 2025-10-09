@@ -21,21 +21,21 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// Get the Isar collection for this entity type
   IsarCollection<TLocal> get collection;
 
-  StreamController<List<TLocal>>? _streamController;
+  StreamController<List<TLocal>>? streamController;
   Stream<List<TLocal>> get stream {
-    _streamController ??= StreamController<List<TLocal>>.broadcast();
-    return _streamController!.stream;
+    streamController ??= StreamController<List<TLocal>>.broadcast();
+    return streamController!.stream;
   }
 
   Future<void> refreshStream() async {
-    _streamController ??= StreamController<List<TLocal>>.broadcast();
+    streamController ??= StreamController<List<TLocal>>.broadcast();
     final entities = await list();
-    _streamController!.add(entities);
+    streamController!.add(entities);
   }
 
   Future<void> closeStream() async {
-    await _streamController?.close();
-    _streamController = null;
+    await streamController?.close();
+    streamController = null;
   }
 
   StreamController<TLocal?>? _itemStreamController;

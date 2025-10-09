@@ -35,8 +35,8 @@ class AddMissionSessionCubit extends Cubit<AddMissionSessionState> {
         data: PRFMissionSessionDTO(
           missionUlid: missionUlid,
           facilitatorUlid: facilitatorUlid,
-          startsAt: startsAt.toIso8601String(),
-          endsAt: endsAt.toIso8601String(),
+          startsAt: startsAt.toUtc().toIso8601String(),
+          endsAt: endsAt.toUtc().toIso8601String(),
           notes: notes,
           speakerUlid: speakerUlid,
           classGroupUlid: classGroupUlid,
