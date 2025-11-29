@@ -99,12 +99,6 @@ jobs:
         id: save_aab_path
         run: echo "aab_path=build/app/outputs/bundle/productionRelease/app-production-release.aab" >> $GITHUB_OUTPUT
 
-      - name: Status
-        if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: https://hooks.slack.com/services/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
-
   upload_debug_symbols:
     needs: build
     runs-on: ubuntu-latest

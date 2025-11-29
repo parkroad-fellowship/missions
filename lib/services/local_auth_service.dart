@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 
 class LocalAuthService {
@@ -9,23 +7,23 @@ class LocalAuthService {
     try {
       final result = await localAuth.authenticate(
         localizedReason: 'We need to protect your giving history.',
-        options: const AuthenticationOptions(useErrorDialogs: false),
       );
 
       return (result, null);
-    } on PlatformException catch (e) {
-      if (e.code == auth_error.notAvailable) {
+    } on LocalAuthException catch (e) {
+      if (e.code == LocalAuthExceptionCode.noBiometricHardware) {
         return (
           false,
-          'Biometric authentication is not available on this device.',
+          e.description ??
+              'Biometric authentication is not available on this device.',
         );
-      } else if (e.code == auth_error.notEnrolled) {
+      } else if (e.code == LocalAuthExceptionCode.noBiometricsEnrolled) {
         return (
           false,
-          'Biometric authentication is not enrolled on this device.',
+          e.description ?? 'No biometrics are enrolled on this device.',
         );
       } else {
-        return (false, e.message);
+        return (false, e.description ?? 'Authentication failed.');
       }
     }
   }

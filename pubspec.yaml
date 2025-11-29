@@ -1,32 +1,32 @@
 name: app
 description: The PRF Super App
-version: 2.74.07+27407
+version: 2.74.08+27408
 publish_to: none
 
 environment:
   sdk: ^3.9.0
 
-isar_version: &isar_version 3.3.0-dev.3
+isar_version: &isar_version 3.3.0
 
 dependencies:
-  auto_route: ^10.1.2
+  auto_route: ^10.3.0
   awesome_notifications: ^0.10.1
   awesome_notifications_core: ^0.10.1
-  bloc: ^9.0.1
+  bloc: ^9.1.0
   build_version: ^2.1.1
   collection: ^1.19.1
-  crypto: ^3.0.6
+  crypto: ^3.0.7
   dart_pusher_channels: ^1.2.3
-  device_info_plus: ^11.5.0
+  device_info_plus: ^12.3.0
   dio: ^5.9.0
   extended_image: ^10.0.1
-  file_picker: ^10.3.3
-  firebase_analytics: ^12.0.2
-  firebase_auth: ^6.1.0
-  firebase_core: ^4.1.1
-  firebase_crashlytics: ^5.0.2
-  firebase_messaging: ^16.0.2
-  firebase_remote_config: ^6.0.2
+  file_picker: ^10.3.7
+  firebase_analytics: ^12.0.4
+  firebase_auth: ^6.1.2
+  firebase_core: ^4.2.1
+  firebase_crashlytics: ^5.0.5
+  firebase_messaging: ^16.0.4
+  firebase_remote_config: ^6.1.2
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
@@ -36,19 +36,19 @@ dependencies:
   flutter_downloader: ^1.12.0
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.2.1
+  flutter_svg: ^2.2.3
   flutter_widget_from_html: ^0.17.1
   freezed_annotation: ^3.1.0
   full_screen_image: ^2.0.0
   gaimon: ^1.4.1
-  get_it: ^8.2.0
-  google_fonts: ^6.3.1
+  get_it: ^9.1.1
+  google_fonts: ^6.3.2
   google_sign_in: ^6.3.0
   google_sign_in_ios: ^5.9.0
   google_sign_in_web: ^0.12.4+4
-  hive_ce: ^2.12.0
-  hive_ce_flutter: ^2.3.2
-  http: ^1.5.0
+  hive_ce: ^2.15.1
+  hive_ce_flutter: ^2.3.3
+  http: ^1.6.0
   http_parser: ^4.1.2
   intl: ^0.20.2
   intl_phone_number_input:
@@ -62,38 +62,38 @@ dependencies:
     version: *isar_version
     hosted: https://pub.dev
   json_annotation: ^4.9.0
-  local_auth: ^2.3.0
-  logger: ^2.6.1
+  local_auth: ^3.0.0
+  logger: ^2.6.2
   map_launcher: ^4.0.0
   mime: ^2.0.0
   path_provider: ^2.1.5
   permission_handler: ^12.0.1
-  posthog_flutter: ^5.5.0
+  posthog_flutter: ^5.9.0
   pretty_dio_logger: ^1.4.0
-  record: ^6.1.1
+  record: ^6.1.2
   shorebird_code_push: ^2.0.5
   timezone: ^0.10.1
-  upgrader: ^12.0.0
+  upgrader: ^12.3.0
   url_launcher: ^6.3.2
-  video_player: ^2.10.0
-  wechat_assets_picker: ^9.8.0
+  video_player: ^2.10.1
+  wechat_assets_picker: ^10.0.0
   wolt_modal_sheet: ^0.11.0
 
 dev_dependencies:
-  auto_route_generator: ^10.2.4
+  auto_route_generator: ^10.2.6
   bloc_test: ^10.0.0
   build_runner: ^2.7.1
   flutter_launcher_icons: ^0.14.4
-  flutter_native_splash: ^2.4.6
+  flutter_native_splash: ^2.4.7
   flutter_test:
     sdk: flutter
   freezed: ^3.2.3
-  hive_ce_generator: ^1.4.0
-  icons_launcher: ^3.0.2
+  hive_ce_generator: ^1.9.3
+  icons_launcher: ^3.0.3
   isar_community_generator: 
     version: *isar_version
     hosted: https://pub.dev
-  json_serializable: ^6.8.0
+  json_serializable: ^6.11.2
   mocktail: ^1.0.4
   very_good_analysis: ^10.0.0
 
