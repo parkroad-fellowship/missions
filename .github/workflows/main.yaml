@@ -69,7 +69,7 @@ jobs:
       - name: 🚀 Shorebird Release (Android)
         uses: shorebirdtech/shorebird-release@v1
         with:
-          flutter-version: 3.35.1
+          flutter-version: 3.38.3
           platform: android
           args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols
 
