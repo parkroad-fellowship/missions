@@ -56,3 +56,24 @@
 -keep class com.google.android.play.core.tasks.** { *; }
 -keep interface com.google.android.play.core.splitinstall.** { *; }
 -keep interface com.google.android.play.core.tasks.** { *; }
+
+# Google J2ObjC annotations - Fix for R8 missing classes
+-dontwarn com.google.j2objc.annotations.**
+-keep class com.google.j2objc.annotations.** { *; }
+-keepclassmembers class * {
+    @com.google.j2objc.annotations.** *;
+}
+
+# Google Common (Guava) - Required by Firebase and other Google libraries
+-dontwarn com.google.common.**
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn javax.annotation.**
+-dontwarn org.checkerframework.**
+-keep class com.google.common.** { *; }
+
+# Keep annotations for Google libraries
+-keepattributes RuntimeVisibleAnnotations
+-keepattributes RuntimeInvisibleAnnotations
+-keepattributes RuntimeVisibleParameterAnnotations
+-keepattributes RuntimeInvisibleParameterAnnotations
+-keepattributes AnnotationDefault
