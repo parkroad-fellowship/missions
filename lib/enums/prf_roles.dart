@@ -9,7 +9,8 @@ enum PrfRole {
   treasurer,
   member,
   student,
-  missionsCommitteeMember;
+  missionsCommitteeMember
+  ;
 
   String get label {
     switch (this) {

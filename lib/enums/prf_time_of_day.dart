@@ -1,6 +1,7 @@
 enum PRFTimeOfDay {
   morning,
-  evening;
+  evening
+  ;
 
   static PRFTimeOfDay fromIndex(int index) {
     switch (index) {

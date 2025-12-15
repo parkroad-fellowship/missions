@@ -10,7 +10,8 @@ enum PRFSoulDecisionType {
   @JsonValue(4)
   prayer,
   @JsonValue(5)
-  other;
+  other
+  ;
 
   String get name {
     switch (this) {

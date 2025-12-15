@@ -10,7 +10,8 @@ enum PRFPaymentStatus {
   @JsonValue(4)
   cancelled,
   @JsonValue(5)
-  failed;
+  failed
+  ;
 
   String get name {
     switch (this) {

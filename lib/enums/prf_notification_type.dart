@@ -10,7 +10,8 @@ enum PRFNotificationType {
   missionSubscription,
   newEvent,
   studentEnquiry,
-  studentEnquiryReply;
+  studentEnquiryReply
+  ;
 
   static PRFNotificationType fromType(String type) {
     switch (type) {

@@ -12,7 +12,8 @@ enum PRFMissionRole {
   @JsonValue(5)
   musicInstruments,
   @JsonValue(6)
-  transportation;
+  transportation
+  ;
 
   String get name {
     switch (this) {

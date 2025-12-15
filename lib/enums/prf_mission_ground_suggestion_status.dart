@@ -12,7 +12,8 @@ enum PRFMissionGroundSuggestionStatus {
   @JsonValue(5)
   completed,
   @JsonValue(6)
-  ignore;
+  ignore
+  ;
 
   String get name {
     switch (this) {

@@ -8,7 +8,8 @@ enum PRFEvent {
   @JsonValue(3)
   lessonMemberUpdated,
   @JsonValue(4)
-  studentEnquiryReplyCreated;
+  studentEnquiryReplyCreated
+  ;
 
   String get name {
     switch (this) {
@@ -41,7 +42,8 @@ enum PRFEvent {
 
 enum PRFPresenceEvent {
   @JsonValue(5)
-  announcementGroupCreated;
+  announcementGroupCreated
+  ;
 
   String get name {
     switch (this) {

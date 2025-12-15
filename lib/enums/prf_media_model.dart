@@ -6,7 +6,8 @@ enum PRFMediaModel {
   missionSessionLiveRecordings,
   eventPhotos,
   memberProfilePictures,
-  expenses;
+  expenses
+  ;
 
   String get collection {
     switch (this) {

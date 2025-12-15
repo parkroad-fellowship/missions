@@ -5,7 +5,8 @@ enum PRFCompletionStatus {
   @JsonValue(1)
   incomplete,
   @JsonValue(2)
-  complete;
+  complete
+  ;
 
   String get name {
     switch (this) {

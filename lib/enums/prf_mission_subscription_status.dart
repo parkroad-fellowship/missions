@@ -10,7 +10,8 @@ enum PRFMissionSubscriptionStatus {
   @JsonValue(4)
   fullySubscribed,
   @JsonValue(5)
-  conflict;
+  conflict
+  ;
 
   String get name {
     switch (this) {
