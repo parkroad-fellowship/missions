@@ -33,6 +33,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+          
 
       - name: 🗄️ Cache Pub (Dart/Flutter)
         uses: actions/cache@v5
@@ -65,6 +66,12 @@ jobs:
 
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
+
+      - name: 🧹 Clean build cache
+        run: |
+          flutter clean
+          rm -rf build
+          rm -rf .dart_tool
 
       - name: 📦 Install Dependencies
         run: flutter packages get
@@ -107,6 +114,12 @@ jobs:
           platform: android
           args: --flavor production --target lib/main_production.dart
           release-version: latest
+
+      - name: 🧹 Clean intermediate build files
+        run: |
+          find build -type f -name "*.gradle" -delete
+          find build -type f -name "*.so" -delete
+          du -sh build/ || true
 
       - name: 📦 Upload debug symbols artifact
         uses: actions/upload-artifact@v6
