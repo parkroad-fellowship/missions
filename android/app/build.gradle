@@ -35,7 +35,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "org.parkroadfellowship.app"
     compileSdkVersion 36
-    ndkVersion "28.0.12433566"
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
