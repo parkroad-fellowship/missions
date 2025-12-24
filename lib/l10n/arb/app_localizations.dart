@@ -1597,8 +1597,8 @@ abstract class AppLocalizations {
   /// No description provided for @downloadTeaching.
   ///
   /// In en, this message translates to:
-  /// **'Download teaching'**
-  String get downloadTeaching;
+  /// **'Download teaching: {size}'**
+  String downloadTeaching(String size);
 
   /// No description provided for @downloaded.
   ///

@@ -34,6 +34,45 @@ class FailedRecordingUploadService {
   Stream<List<PRFFailedRecordingUpload>> get pendingUploadsStream =>
       _pendingUploadsController.stream;
 
+  Future<void> _removeUploadByPath(String path) async {
+    final existing = await _isarService.prfDBInstance.pRFFailedRecordingUploads
+        .filter()
+        .pathEqualTo(path)
+        .findAll();
+
+    if (existing.isEmpty) return;
+
+    await _isarService.prfDBInstance.writeTxn(() async {
+      for (final upload in existing) {
+        await _isarService.prfDBInstance.pRFFailedRecordingUploads.delete(
+          upload.id,
+        );
+      }
+    });
+  }
+
+  Future<void> _putUpload(PRFFailedRecordingUpload upload) async {
+    // Ensure we do not accumulate duplicates for the same file path.
+    await _removeUploadByPath(upload.path);
+
+    await _isarService.prfDBInstance.writeTxn(() async {
+      await _isarService.prfDBInstance.pRFFailedRecordingUploads.put(upload);
+    });
+  }
+
+  Future<void> storePendingUpload(PRFMediaDTO mediaDTO) async {
+    final pendingUpload = PRFFailedRecordingUpload(
+      model: mediaDTO.model,
+      modelUlid: mediaDTO.modelUlid,
+      path: mediaDTO.path,
+      name: mediaDTO.name,
+      failedAt: DateTime.now(),
+    );
+
+    await _putUpload(pendingUpload);
+    _notifyPendingUploadsChanged();
+  }
+
   void _startConnectivityMonitoring() {
     _connectivityTimer = Timer.periodic(const Duration(seconds: 30), (_) {
       _checkAndRetryFailedUploads();
@@ -56,11 +95,7 @@ class FailedRecordingUploadService {
       failedAt: DateTime.now(),
     );
 
-    await _isarService.prfDBInstance.writeTxn(() async {
-      await _isarService.prfDBInstance.pRFFailedRecordingUploads.put(
-        failedUpload,
-      );
-    });
+    await _putUpload(failedUpload);
 
     Logger().d('✅ Stored failed upload for: ${mediaDTO.name}');
     _notifyPendingUploadsChanged();
@@ -288,6 +323,11 @@ class FailedRecordingUploadService {
 
   Future<void> removeFailedUpload(Id id) async {
     await _removeFailedUpload(id);
+    _notifyPendingUploadsChanged();
+  }
+
+  Future<void> removeFailedUploadByPath(String path) async {
+    await _removeUploadByPath(path);
     _notifyPendingUploadsChanged();
   }
 

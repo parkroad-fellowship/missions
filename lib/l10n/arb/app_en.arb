@@ -620,8 +620,14 @@
     "@transcriptProcessing": {},
     "inTesting": "In testing",
     "@inTesting": {},
-    "downloadTeaching": "Download teaching",
-    "@downloadTeaching": {},
+    "downloadTeaching": "Download teaching: {size}",
+    "@downloadTeaching": {
+        "placeholders": {
+            "size": {
+                "type": "String"
+            }
+        }
+    },
     "downloaded": "Your download has started. Check your download folder once it's complete.",
     "@downloaded": {},
     "enterDebriefNote": "Enter debrief notes",

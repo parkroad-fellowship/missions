@@ -1,4 +1,5 @@
 import 'package:app/models/remote/auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 
 abstract class AnalyticsService {
@@ -10,7 +11,7 @@ abstract class AnalyticsService {
 class AnalyticsServiceImpl implements AnalyticsService {
   @override
   Future<void> init() async {
-    // if(kDebugMode) return;
+    if (kDebugMode) return;
     final config =
         PostHogConfig('phc_qMm6StosFNCMhAkrmcoJAOlX5kOhvVTR6dsCFCIkE3g')
           ..host = 'https://eu.i.posthog.com'
@@ -29,7 +30,7 @@ class AnalyticsServiceImpl implements AnalyticsService {
     String eventName, [
     Map<String, Object>? props,
   ]) async {
-    //  if(kDebugMode) return;
+    if (kDebugMode) return;
     if (props != null) {
       await Posthog().capture(eventName: eventName, properties: props);
     } else {
