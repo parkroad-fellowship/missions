@@ -428,7 +428,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 title: Text(
-                  l10n.downloadTeaching,
+                  l10n.downloadTeaching(transcript.media!.humanReadableSize!),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),

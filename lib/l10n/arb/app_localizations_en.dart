@@ -805,7 +805,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inTesting => 'In testing';
 
   @override
-  String get downloadTeaching => 'Download teaching';
+  String downloadTeaching(String size) {
+    return 'Download teaching: $size';
+  }
 
   @override
   String get downloaded =>

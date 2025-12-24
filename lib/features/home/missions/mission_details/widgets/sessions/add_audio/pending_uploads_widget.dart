@@ -36,8 +36,11 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
         // Filter pending uploads by this mission session ULID
         final allPendingUploads = snapshot.data!;
+        final sessionUploads = allPendingUploads
+            .where((upload) => upload.modelUlid == widget.missionSessionUlid)
+            .toList();
 
-        if (allPendingUploads.isEmpty) {
+        if (sessionUploads.isEmpty) {
           return StreamBuilder<UploadRetryProgress>(
             stream: getIt<FailedRecordingUploadService>().retryProgressStream,
             builder: (context, progressSnapshot) {
@@ -129,11 +132,11 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       TextButton(
                         onPressed: () => _showPendingUploadsDetails(
                           context,
-                          allPendingUploads,
+                          sessionUploads,
                         ),
                         child: Text(
-                          '${allPendingUploads.length} '
-                          '${allPendingUploads.length == 1 ? 'recording' : 'record'
+                          '${sessionUploads.length} '
+                          '${sessionUploads.length == 1 ? 'recording' : 'record'
                                     'ings'}',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.error,
@@ -201,7 +204,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                             ? null
                             : () => _showPendingUploadsDetails(
                                 context,
-                                allPendingUploads,
+                                sessionUploads,
                               ),
                         icon: const Icon(Icons.list, size: 16),
                         label: const Text('View All'),
@@ -552,6 +555,22 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                       context,
                                     ).colorScheme.primary,
                                     fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 11,
+                                  ),
+                            ),
+                          ] else ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              'Queued for upload',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface.withValues(
+                                          alpha: 0.6,
+                                        ),
                                     fontStyle: FontStyle.italic,
                                     fontSize: 11,
                                   ),

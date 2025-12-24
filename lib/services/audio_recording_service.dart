@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -251,8 +252,10 @@ class AudioRecordingService {
   /// Generate a unique recording file path
   Future<String> _generateRecordingPath() async {
     final directory = await getApplicationDocumentsDirectory();
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    return '${directory.path}/recording_$timestamp.m4a';
+    final now = DateTime.now();
+    final randomSuffix = Random().nextInt(1000000);
+    final timestamp = now.microsecondsSinceEpoch;
+    return '${directory.path}/recording_${timestamp}_$randomSuffix.m4a';
   }
 
   /// Configure audio session for background recording (iOS)

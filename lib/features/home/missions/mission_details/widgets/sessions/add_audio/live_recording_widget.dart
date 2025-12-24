@@ -100,20 +100,32 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         );
       },
       builder: (context, state) {
-        return SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.4,
-          child: state.when(
-            initial: () => const Center(
-              child: PRFCircularProgressIndicator(),
-            ),
-            ready: () => _buildReadyState(context, l10n),
-            recording: (duration) =>
-                _buildRecordingState(context, l10n, duration),
-            paused: (duration) => _buildPausedState(context, l10n, duration),
-            completed: (filePath, duration) =>
-                _buildCompletedState(context, l10n, filePath, duration),
-            error: (message) => _buildErrorState(context, l10n, message),
-          ),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: state.when(
+                  initial: () => const Center(
+                    child: PRFCircularProgressIndicator(),
+                  ),
+                  ready: () => _buildReadyState(context, l10n),
+                  recording: (duration) =>
+                      _buildRecordingState(context, l10n, duration),
+                  paused: (duration) =>
+                      _buildPausedState(context, l10n, duration),
+                  completed: (filePath, duration) => _buildCompletedState(
+                    context,
+                    l10n,
+                    filePath,
+                    duration,
+                  ),
+                  error: (message) => _buildErrorState(context, l10n, message),
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -150,6 +162,16 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
             color: Theme.of(
               context,
             ).colorScheme.onSurface.withValues(alpha: 0.6),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Recordings are saved locally and will upload when you are online.',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.5),
           ),
           textAlign: TextAlign.center,
         ),

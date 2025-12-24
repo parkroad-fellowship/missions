@@ -7,6 +7,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/add_
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/pending_uploads_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/utils/_index.dart';
@@ -49,6 +50,110 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
         // Pending uploads widget
         PendingUploadsWidget(
           missionSessionUlid: widget.missionSessionUlid,
+        ),
+
+        // Local queued recordings preview
+        StreamBuilder<List<PRFFailedRecordingUpload>>(
+          stream: getIt<FailedRecordingUploadService>().pendingUploadsStream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const SizedBox.shrink();
+            }
+
+            final sessionUploads = snapshot.data!
+                .where(
+                  (upload) => upload.modelUlid == widget.missionSessionUlid,
+                )
+                .toList();
+
+            if (sessionUploads.isEmpty) return const SizedBox.shrink();
+
+            final uploadsToShow = sessionUploads.take(3).toList();
+
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.outline.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.library_music_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Queued recordings',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      if (sessionUploads.length > uploadsToShow.length)
+                        Text(
+                          '+${sessionUploads.length - uploadsToShow.length} '
+                          'more',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.6),
+                              ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  ...uploadsToShow.map(
+                    (upload) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.audiotrack,
+                              size: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              upload.name,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w500),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Chip(
+                            label: Text('Queued'),
+                            padding: EdgeInsets.zero,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
 
         BlocConsumer<RecordingUploadCubit, RecordingUploadState>(

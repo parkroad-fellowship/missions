@@ -7,7 +7,9 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/prf_mission_session.dart';
+import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
@@ -35,7 +37,8 @@ class SessionPageHandset extends StatefulWidget {
   State<SessionPageHandset> createState() => _SessionPageHandsetState();
 }
 
-class _SessionPageHandsetState extends State<SessionPageHandset> {
+class _SessionPageHandsetState extends State<SessionPageHandset>
+    with TimezoneMixin {
   int get missionSessionId => widget.missionSessionId;
   String get missionSessionUlid => widget.missionSessionUlid;
   String get missionUlid => widget.missionUlid;
@@ -291,6 +294,156 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                 ),
               ),
 
+              // Pending / queued recordings for this session
+              SingleStreamWrapper(
+                stream: _missionSessionStream,
+                nullWidget: defaultEmptyStateWidget,
+                loading: defaultLoadingWidget,
+                widget: (context, missionSession) =>
+                    StreamBuilder<List<PRFFailedRecordingUpload>>(
+                      stream: getIt<FailedRecordingUploadService>()
+                          .pendingUploadsStream,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return const SliverToBoxAdapter(child: SizedBox());
+                        }
+
+                        final sessionUploads = snapshot.data!
+                            .where(
+                              (upload) =>
+                                  upload.modelUlid == missionSessionUlid,
+                            )
+                            .toList();
+
+                        if (sessionUploads.isEmpty) {
+                          return const SliverToBoxAdapter(child: SizedBox());
+                        }
+
+                        return SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.outline.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.cloud_upload_outlined,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        'Queued recordings for this session',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          getIt<FailedRecordingUploadService>()
+                                              .retryAllUploadsForSession(
+                                                missionSessionUlid,
+                                              ),
+                                      child: const Text('Retry all'),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                ...sessionUploads.map(
+                                  (upload) => Container(
+                                    margin: const EdgeInsets.only(bottom: 8),
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.surfaceContainerHighest,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.audiotrack,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                upload.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'Queued • Will upload when '
+                                                'online',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall
+                                                    ?.copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurface
+                                                          .withValues(
+                                                            alpha: 0.6,
+                                                          ),
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              getIt<
+                                                    FailedRecordingUploadService
+                                                  >()
+                                                  .retrySpecificUpload(upload),
+                                          child: const Text('Retry'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+              ),
+
               SingleStreamWrapper(
                 stream: _missionSessionStream,
                 nullWidget: defaultEmptyStateWidget,
@@ -346,7 +499,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                         itemCount: missionSession.transcripts.length,
                         itemBuilder: (context, index) =>
                             _viewTranscripts(
-                                  missionSession.transcripts[index],
+                                  missionSession.transcripts.reversed
+                                      .toList()[index],
                                   index,
                                   l10n,
                                 )
@@ -432,10 +586,14 @@ class _SessionPageHandsetState extends State<SessionPageHandset> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 title: Text(
-                  l10n.downloadTeaching,
+                  l10n.downloadTeaching(transcript.media!.humanReadableSize!),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
+                ),
+                subtitle: Text(
+                  Misc.formatDateTime(transcript.media!.createdAt!, timezone),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 trailing: BlocConsumer<DownloadFileCubit, DownloadFileState>(
                   listener: (context, state) {

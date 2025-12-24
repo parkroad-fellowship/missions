@@ -25,10 +25,14 @@ class RecordingUploadCubit extends Cubit<RecordingUploadState> {
   Future<void> uploadRecording(PRFMediaDTO mediaDTO) async {
     emit(const RecordingUploadState.loading());
     try {
+      // Track locally first so the UI can reflect a queued item immediately.
+      await _failedUploadService.storePendingUpload(mediaDTO);
+
       Logger().d('Uploading recording: ${mediaDTO.name}');
       final result = await _mediaService.uploadFile(imageDTO: mediaDTO);
       if (result != null) {
         Logger().d('Recording upload successful: ${mediaDTO.name}');
+        await _failedUploadService.removeFailedUploadByPath(mediaDTO.path);
         emit(RecordingUploadState.loaded(mediaDTO));
       } else {
         Logger().w('Recording upload returned null: ${mediaDTO.name}');
@@ -67,7 +71,9 @@ class RecordingUploadCubit extends Cubit<RecordingUploadState> {
       for (final mediaDTO in mediaDTOs) {
         Logger().d('Uploading recording: ${mediaDTO.name}');
         try {
+          await _failedUploadService.storePendingUpload(mediaDTO);
           await _mediaService.uploadFile(imageDTO: mediaDTO);
+          await _failedUploadService.removeFailedUploadByPath(mediaDTO.path);
           uploadedFiles.add(mediaDTO);
         } on Failure catch (e) {
           // Store failed upload for retry later
