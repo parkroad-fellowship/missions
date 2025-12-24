@@ -62,7 +62,7 @@ gallery:
 		keytool -export -rfc -keystore upload-keystore.jks -alias [alias] -file upload_certificate.pem
 
 aab-shore:
-		shorebird release android  --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols
+		shorebird release android  --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols -v
 
 ios-shore:
 		shorebird release ios  --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols
