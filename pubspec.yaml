@@ -5,7 +5,7 @@ publish_to: none
 
 environment:
   sdk: ^3.10.0
-  flutter: ^3.38.3
+  flutter: ^3.38.5
 
 isar_version: &isar_version 3.3.0
 
