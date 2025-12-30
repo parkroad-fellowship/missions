@@ -91,6 +91,7 @@ import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
 import 'package:app/services/audio_recording_service.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
+import 'package:app/services/firebase_messaging_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/services/local_auth_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -108,6 +109,9 @@ class Singletons {
       ..registerSingleton<IsarService>(IsarService())
       ..registerSingleton<LocalAuthService>(LocalAuthService())
       ..registerSingleton<FirebaseService>(FirebaseServiceImpl())
+      ..registerSingleton<FirebaseMessagingService>(
+        FirebaseMessagingServiceImpl(),
+      )
       ..registerSingleton<AuthService>(AuthService())
       ..registerSingleton<MissionService>(MissionService())
       ..registerSingleton<MissionSubscriptionService>(
@@ -199,7 +203,7 @@ class Singletons {
           hiveService: getIt(),
           socketService: getIt(),
           analyticsService: getIt(),
-          firebaseService: getIt(),
+          firebaseMessagingService: getIt(),
         ),
       ),
       BlocProvider<GoogleSignInCubit>(

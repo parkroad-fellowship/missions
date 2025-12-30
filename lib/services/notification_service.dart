@@ -4,10 +4,12 @@ import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_prayer_prompt.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/shared_widgets/buttons/primary/primary.dart';
 import 'package:app/shared_widgets/buttons/secondary/secondary.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -23,25 +25,29 @@ abstract class NotificationService {
     required List<PRFPrayerPrompt> prayerPrompts,
   });
   Future<void> scheduleGivingNotification();
+
   @pragma('vm:entry-point')
   static Future<void> onNotificationCreatedMethod(
     ReceivedNotification receivedNotification,
   ) async {
-    // Logger().d(receivedNotification);
+    // Just log - notification is already created, don't create another one
+    Logger().d('Notification created: ${receivedNotification.title}');
   }
 
   @pragma('vm:entry-point')
   static Future<void> onNotificationDisplayedMethod(
     ReceivedNotification receivedNotification,
   ) async {
-    // Logger().d(receivedNotification);
+    // Just log - notification is already displayed, don't create another one
+    Logger().d('Notification displayed: ${receivedNotification.title}');
   }
 
   @pragma('vm:entry-point')
   static Future<void> onDismissActionReceivedMethod(
     ReceivedAction receivedAction,
   ) async {
-    // Logger().d(receivedAction);
+    // User dismissed the notification - just log, don't navigate
+    Logger().d('Notification dismissed: ${receivedAction.title}');
   }
 
   @pragma('vm:entry-point')
@@ -49,8 +55,10 @@ abstract class NotificationService {
     ReceivedAction receivedAction,
   ) async {
     Logger().f(receivedAction);
+    await _act(receivedAction.payload);
+  }
 
-    final payload = receivedAction.payload;
+  static Future<void> _act(Map<String, String?>? payload) async {
     final context = getIt<PRFSuperAppRouter>().navigatorKey.currentContext;
 
     if (payload == null) {
@@ -153,7 +161,7 @@ abstract class NotificationService {
         case PRFNotificationType.givingPrompt:
           await getIt<PRFSuperAppRouter>().replaceAll([
             const LandingRoute(),
-            // const GivingRoute(),
+            const GivingRoute(),
           ]);
 
         case PRFNotificationType.cancelledMission:
@@ -225,7 +233,7 @@ class NotificationServiceImpl implements NotificationService {
           channelGroupName: 'Basic group',
         ),
       ],
-      debug: true,
+      debug: kDebugMode,
     );
 
     await AwesomeNotifications().setListeners(
@@ -237,6 +245,8 @@ class NotificationServiceImpl implements NotificationService {
       onDismissActionReceivedMethod:
           NotificationService.onDismissActionReceivedMethod,
     );
+
+    await scheduleGivingNotification();
   }
 
   @override
@@ -260,27 +270,19 @@ class NotificationServiceImpl implements NotificationService {
           title: Text(l10n.getNotified),
           content: Text(l10n.allowNotifications),
           actions: [
-            TextButton(
+            PRFSecondaryButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                l10n.deny,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ),
+              title: l10n.deny,
+              disabled: false,
             ),
-            TextButton(
+            const SizedBox(height: 16),
+            PRFPrimaryButton(
               onPressed: () {
                 userAuthorized = true;
                 Navigator.of(context).pop();
               },
-              child: Text(
-                l10n.allow,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              title: l10n.allow,
+              disabled: false,
             ),
           ],
         );

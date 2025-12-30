@@ -1,5 +1,6 @@
 import 'package:app/app/app.dart';
 import 'package:app/bootstrap.dart';
+import 'package:app/enums/prf_environment.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ Future<void> main() async {
 
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
+      environment: PRFEnvironment.staging,
       hiveBox: 'prf-super-app-stg',
       baseDomain: 'stg.api.parkroadfellowship.org',
       urlScheme: 'https',
