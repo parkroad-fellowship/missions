@@ -422,7 +422,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   theme.colorScheme.secondary,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 4),
               Expanded(
                 child: _buildStatCard(
                   context,
@@ -435,27 +435,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   theme.colorScheme.error,
                 ),
               ),
-            ],
-          ),
-
-          const SizedBox(height: 12),
-
-          Row(
-            children: [
-              // TODO(miller): Look into this
-              // Expanded(
-              //   child: _buildStatCard(
-              //     context,
-              //     l10n.tokenAmount,
-              //     NumberFormat.currency(
-              //       locale: 'en_KE',
-              //       symbol: 'KES ',
-              //     ).format(missionExpense.tokenAmount),
-              //     Icons.token,
-              //     theme.colorScheme.tertiary,
-              //   ),
-              // ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 4),
               Expanded(
                 child: _buildStatCard(
                   context,
@@ -484,7 +464,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
   ) {
     final theme = Theme.of(context);
     return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
@@ -514,17 +494,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
               ),
               const SizedBox(height: 12),
               Text(
-                title,
+                '$title\n',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
+                maxLines: 2,
               ),
               const SizedBox(height: 4),
               Text(
-                value,
+                '$value\n',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
+                maxLines: 2,
               ),
             ],
           ),
