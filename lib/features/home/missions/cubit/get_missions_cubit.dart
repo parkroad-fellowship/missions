@@ -35,6 +35,7 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
           'school.schoolContacts.contactType',
           'loggedInMemberMissionSubscription',
           'weatherForecasts',
+          'accountingEvent',
         ],
         filters: {
           'status_keys': [

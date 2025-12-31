@@ -33,6 +33,7 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
       capacity: remote.capacity,
       status: remote.status,
       missionSubscriptionsNeeded: remote.missionSubscriptionsNeeded,
+      accountingEventUlid: remote.accountingEvent!.ulid,
       createdAt: remote.createdAt,
       updatedAt: remote.updatedAt,
       missionType: PRFLocalMissionType(

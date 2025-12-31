@@ -1,9 +1,12 @@
 import 'package:app/enums/prf_charge_type.dart';
-import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
+import 'package:app/enums/prf_entry_type.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
+import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,9 +14,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 
 class AddExpenseViewHandset extends StatefulWidget {
-  const AddExpenseViewHandset({required this.missionUlid, super.key});
+  const AddExpenseViewHandset({required this.accountingEventUlid, super.key});
 
-  final String missionUlid;
+  final String accountingEventUlid;
 
   @override
   State<AddExpenseViewHandset> createState() => _AddExpenseViewHandsetState();
@@ -270,11 +273,13 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           PRFTextAreaInput(
                             hintText: l10n.paymentDesc,
                             controller: _narrationController,
+                            textInputAction: TextInputAction.next,
                           ),
                           const SizedBox(height: 16),
                           PRFTextAreaInput(
                             hintText: l10n.confirmationMsg,
                             controller: _confirmationMessageController,
+                            textInputAction: TextInputAction.done,
                           ),
                         ],
                       ),
@@ -286,7 +291,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               const SizedBox(height: 24),
 
               // Submit Button
-              BlocConsumer<AddExpenseCubit, AddExpenseState>(
+              BlocConsumer<AddAllocationEntryCubit, AddAllocationEntryState>(
                 listener: (context, state) {
                   state.mapOrNull(
                     loading: (_) {
@@ -570,15 +575,28 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
   Future<void> _submitForm() async {
     if (!_isFormValid) return;
 
-    await context.read<AddExpenseCubit>().addExpense(
-      missionUlid: widget.missionUlid,
+    final unitCost = double.parse(_unitCostController.text).round();
+    final quantity = int.parse(_quantityController.text);
+    final charge = double.parse(_chargeController.text).round();
+
+    // Get uploaded media from SelectMediaCubit
+    final uploadMediaState = context.read<SelectMediaCubit>().state;
+    final uploadedMedia = uploadMediaState.maybeWhen(
+      orElse: () => <PRFMediaDTO>[],
+      loaded: (mediaItems) => mediaItems,
+    );
+
+    await context.read<AddAllocationEntryCubit>().addAllocationEntry(
+      accountingEventUlid: widget.accountingEventUlid,
       expenseCategoryUlid: selectedExpenseCategory!.ulid,
-      unitCost: _unitCostController.text,
-      quantity: _quantityController.text,
+      entryType: PRFEntryType.debit, // Always debit for expenses
       chargeType: selectedChargeType!,
-      charge: _chargeController.text,
+      charge: charge,
+      unitCost: unitCost,
+      quantity: quantity,
+      narration: _narrationController.text,
       confirmationMessage: _confirmationMessageController.text,
-      narration: _narrationController.text.trim(),
+      receiptDTOs: uploadedMedia,
     );
   }
 

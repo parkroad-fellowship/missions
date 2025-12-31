@@ -8,18 +8,21 @@ class PRFNumberInputHandset extends StatelessWidget {
     super.key,
     this.isLoading = false,
     this.prefixText,
+    this.textInputAction = TextInputAction.next,
   });
 
   final String hintText;
   final TextEditingController controller;
   final bool isLoading;
   final String? prefixText;
+  final TextInputAction textInputAction;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return TextFormField(
+      textInputAction: textInputAction,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
       textCapitalization: TextCapitalization.words,

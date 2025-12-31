@@ -1,4 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
@@ -6,7 +7,6 @@ import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 part 'select_media_state.dart';
 part 'select_media_cubit.freezed.dart';
@@ -27,59 +27,127 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
     required BuildContext context,
     required String modelUlid,
     required PRFMediaModel model,
-    required RequestType mediaType,
+    required MediaType mediaType,
     List<PRFMediaDTO> previousMedia = const [],
   }) async {
     try {
+      emit(const SelectMediaState.loading());
+
       final media = await _mediaService.getAssets(
         context,
         modelUlid: modelUlid,
         model: model,
         mediaType: mediaType,
-        count: 30,
       );
-
-      await _isarService.mediaUploads.persistEntities(media);
 
       final items = [...previousMedia, ...media];
 
+      await _isarService.mediaUploads.persistEntities(media);
+
       if (items.isEmpty) {
         emit(const SelectMediaState.empty());
-        return;
+      } else {
+        emit(SelectMediaState.loaded(media: items));
       }
-
-      emit(SelectMediaState.loaded(media: items));
-    } on Failure catch (e) {
-      emit(SelectMediaState.error(e.message));
+    } on Failure catch (f) {
+      emit(SelectMediaState.error(f.message));
     } catch (e) {
-      emit(SelectMediaState.error('Failed to select media: $e'));
+      emit(SelectMediaState.error(e.toString()));
     }
   }
 
-  Future<void> selectAudioFiles({
+  Future<void> selectMediaWithSource({
+    required BuildContext context,
+    required String modelUlid,
+    required PRFMediaModel model,
+    required MediaType mediaType,
+    List<PRFMediaDTO> previousMedia = const [],
+  }) async {
+    try {
+      emit(const SelectMediaState.loading());
+
+      final media = await _mediaService.pickMediaWithSource(
+        context,
+        modelUlid: modelUlid,
+        model: model,
+        mediaType: mediaType,
+      );
+
+      final items = [...previousMedia, ...media];
+
+      await _isarService.mediaUploads.persistEntities(media);
+
+      if (items.isEmpty) {
+        emit(const SelectMediaState.empty());
+      } else {
+        emit(SelectMediaState.loaded(media: items));
+      }
+    } on Failure catch (f) {
+      emit(SelectMediaState.error(f.message));
+    } catch (e) {
+      emit(SelectMediaState.error(e.toString()));
+    }
+  }
+
+  Future<void> captureFromCamera({
+    required BuildContext context,
+    required String modelUlid,
+    required PRFMediaModel model,
+    required MediaType mediaType,
+    List<PRFMediaDTO> previousMedia = const [],
+  }) async {
+    try {
+      emit(const SelectMediaState.loading());
+
+      final media = await _mediaService.captureFromCamera(
+        context,
+        modelUlid: modelUlid,
+        model: model,
+        mediaType: mediaType,
+      );
+
+      if (media != null) {
+        await _isarService.mediaUploads.persistEntity(media);
+
+        final items = [...previousMedia, media];
+        emit(SelectMediaState.loaded(media: items));
+      } else {
+        // User cancelled or no media captured
+        emit(SelectMediaState.loaded(media: previousMedia));
+      }
+    } on Failure catch (f) {
+      emit(SelectMediaState.error(f.message));
+    } catch (e) {
+      emit(SelectMediaState.error(e.toString()));
+    }
+  }
+
+  Future<void> selectDocuments({
     required String modelUlid,
     required PRFMediaModel model,
     List<PRFMediaDTO> previousMedia = const [],
   }) async {
     try {
-      final media = await _mediaService.getAudioFiles(
+      emit(const SelectMediaState.loading());
+
+      final media = await _mediaService.getDocuments(
         modelUlid: modelUlid,
         model: model,
       );
+
       await _isarService.mediaUploads.persistEntities(media);
 
       final items = [...previousMedia, ...media];
 
       if (items.isEmpty) {
         emit(const SelectMediaState.empty());
-        return;
+      } else {
+        emit(SelectMediaState.loaded(media: items));
       }
-
-      emit(SelectMediaState.loaded(media: items));
-    } on Failure catch (e) {
-      emit(SelectMediaState.error(e.message));
+    } on Failure catch (f) {
+      emit(SelectMediaState.error(f.message));
     } catch (e) {
-      emit(SelectMediaState.error('Failed to select audio files: $e'));
+      emit(SelectMediaState.error(e.toString()));
     }
   }
 

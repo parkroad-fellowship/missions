@@ -1,3 +1,4 @@
+import 'package:app/models/local/prf_mission.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/api/mission_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -35,6 +36,7 @@ class GetMissionCubit extends Cubit<GetMissionState> {
             'school.schoolContacts.contactType',
             'loggedInMemberMissionSubscription',
             'weatherForecasts',
+            'accountingEvent',
           ],
         );
         await _isarService.missions.persistEntity(mission);
@@ -42,6 +44,41 @@ class GetMissionCubit extends Cubit<GetMissionState> {
 
       await _isarService.missions.refreshItemStream(missionUlid);
       emit(const GetMissionState.loaded());
+    } on Failure catch (e) {
+      emit(GetMissionState.error(e.message));
+    } catch (e) {
+      emit(GetMissionState.error(e.toString()));
+    }
+  }
+
+  Future<void> getMissionSync({
+    required String missionUlid,
+  }) async {
+    emit(const GetMissionState.loading());
+    try {
+      final localMission = await _isarService.missions.get(missionUlid);
+      if (localMission != null) {
+        emit(GetMissionState.loadedSync(mission: localMission));
+        return;
+      } else {
+        final mission = await _missionService.get(
+          ulid: missionUlid,
+          includes: [
+            'school',
+            'missionType',
+            'school.schoolContacts.contactType',
+            'loggedInMemberMissionSubscription',
+            'weatherForecasts',
+            'accountingEvent',
+          ],
+        );
+        await _isarService.missions.persistEntity(mission);
+        emit(
+          GetMissionState.loadedSync(
+            mission: _isarService.missions.remoteToLocal(mission),
+          ),
+        );
+      }
     } on Failure catch (e) {
       emit(GetMissionState.error(e.message));
     } catch (e) {

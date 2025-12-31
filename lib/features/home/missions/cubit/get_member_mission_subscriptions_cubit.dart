@@ -42,6 +42,7 @@ class GetMemberMissionSubscriptionsCubit
           'mission.missionType,mission.school',
           'mission.school.schoolContacts.contactType',
           'mission.weatherForecasts',
+          'mission.accountingEvent',
         ],
         filters: {
           'member_ulid': member.ulid,

@@ -1194,4 +1194,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String impact(int year) {
     return '$year Review';
   }
+
+  @override
+  String get unknownCategory => 'Unknown Category';
 }

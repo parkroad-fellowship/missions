@@ -51,6 +51,7 @@ dependencies:
   hive_ce_flutter: ^2.3.3
   http: ^1.6.0
   http_parser: ^4.1.2
+  image_picker: ^1.2.1
   intl: ^0.20.2
   intl_phone_number_input:
     git:
@@ -68,6 +69,7 @@ dependencies:
   map_launcher: ^4.0.0
   mime: ^2.0.0
   path_provider: ^2.1.5
+  pdfx: ^2.9.2
   permission_handler: ^12.0.1
   posthog_flutter: ^5.10.0
   pretty_dio_logger: ^1.4.0
@@ -77,7 +79,6 @@ dependencies:
   upgrader: ^12.3.0
   url_launcher: ^6.3.2
   video_player: ^2.10.1
-  wechat_assets_picker: ^10.0.0
   wolt_modal_sheet: ^0.11.0
 
 dev_dependencies:

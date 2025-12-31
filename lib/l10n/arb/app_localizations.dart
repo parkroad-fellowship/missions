@@ -2307,6 +2307,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{year} Review'**
   String impact(int year);
+
+  /// No description provided for @unknownCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Category'**
+  String get unknownCategory;
 }
 
 class _AppLocalizationsDelegate

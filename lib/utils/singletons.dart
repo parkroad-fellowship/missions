@@ -30,11 +30,9 @@ import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_g
 import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
-import 'package:app/features/home/missions/cubit/add_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
-import 'package:app/features/home/missions/cubit/add_token_cubit.dart';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
@@ -42,7 +40,6 @@ import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
@@ -55,6 +52,11 @@ import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_token_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
@@ -64,6 +66,8 @@ import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.da
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/api/accounting_event_service.dart';
+import 'package:app/services/api/allocation_entry_service.dart';
 import 'package:app/services/api/announcement_service.dart';
 import 'package:app/services/api/class_group_service.dart';
 import 'package:app/services/api/course_module_service.dart';
@@ -71,11 +75,9 @@ import 'package:app/services/api/course_service.dart';
 import 'package:app/services/api/debrief_note_service.dart';
 import 'package:app/services/api/event_subscription_service.dart';
 import 'package:app/services/api/expense_categories_service.dart';
-import 'package:app/services/api/expense_service.dart';
 import 'package:app/services/api/lesson_member_service.dart';
 import 'package:app/services/api/lesson_module_service.dart';
 import 'package:app/services/api/member_service.dart';
-import 'package:app/services/api/mission_expenses_service.dart';
 import 'package:app/services/api/mission_faq_category_service.dart';
 import 'package:app/services/api/mission_faq_service.dart';
 import 'package:app/services/api/mission_ground_suggestion_service.dart';
@@ -132,10 +134,6 @@ class Singletons {
       ..registerSingleton<ExpenseCategoriesService>(
         ExpenseCategoriesService(),
       )
-      ..registerSingleton<MissionExpensesService>(
-        MissionExpensesService(),
-      )
-      ..registerSingleton<ExpenseService>(ExpenseService())
       ..registerSingleton<MissionQuestionService>(
         MissionQuestionService(),
       )
@@ -187,7 +185,9 @@ class Singletons {
           mediaService: getIt(),
         ),
       )
-      ..registerSingleton<MemberService>(MemberService());
+      ..registerSingleton<MemberService>(MemberService())
+      ..registerSingleton<AccountingEventService>(AccountingEventService())
+      ..registerSingleton<AllocationEntryService>(AllocationEntryService());
   }
 
   static Future<void> setupDatabases() async {
@@ -403,18 +403,36 @@ class Singletons {
           hiveService: getIt(),
         ),
       ),
-      BlocProvider<GetMissionExpenseCubit>(
-        create: (context) => GetMissionExpenseCubit(
-          missionExpensesService: getIt(),
+      BlocProvider<GetAllocationEntriesCubit>(
+        create: (context) => GetAllocationEntriesCubit(
+          allocationEntryService: getIt(),
+        ),
+      ),
+      BlocProvider<AddAllocationEntryCubit>(
+        create: (context) => AddAllocationEntryCubit(
+          allocationEntryService: getIt(),
+          hiveService: getIt(),
+          mediaService: getIt(),
+        ),
+      ),
+      BlocProvider<AddAllocationTokenEntryCubit>(
+        create: (context) => AddAllocationTokenEntryCubit(
+          allocationEntryService: getIt(),
           hiveService: getIt(),
         ),
       ),
-      BlocProvider<AddExpenseCubit>(
-        create: (context) =>
-            AddExpenseCubit(expenseService: getIt(), hiveService: getIt()),
+
+      BlocProvider<DeleteAllocationEntryCubit>(
+        create: (context) => DeleteAllocationEntryCubit(
+          allocationEntryService: getIt(),
+        ),
       ),
-      BlocProvider<AddTokenCubit>(
-        create: (context) => AddTokenCubit(missionExpensesService: getIt()),
+      BlocProvider<EditAllocationEntryCubit>(
+        create: (context) => EditAllocationEntryCubit(
+          allocationEntryService: getIt(),
+          hiveService: getIt(),
+          mediaService: getIt(),
+        ),
       ),
       BlocProvider<SelectMediaCubit>(
         create: (context) => SelectMediaCubit(

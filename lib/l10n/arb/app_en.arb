@@ -893,5 +893,7 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "unknownCategory": "Unknown Category",
+    "@unknownCategory": {}
 }
