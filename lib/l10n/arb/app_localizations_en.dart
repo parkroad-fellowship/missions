@@ -1101,7 +1101,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get refundText =>
-      'Send the remaining balance and token to the above M-Pesa details to complete the refund process.';
+      'Please send the balance indicated above to the M-Pesa details and share the confirmation to complete the refund process.';
 
   @override
   String get financialOverview => 'Mission Financial Overview';
@@ -1194,4 +1194,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String impact(int year) {
     return '$year Review';
   }
+
+  @override
+  String get unknownCategory => 'Unknown Category';
 }

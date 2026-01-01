@@ -5,6 +5,7 @@ import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/auth.dart';
 import 'package:app/models/remote/socket_config.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/firebase_messaging_service.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:bloc/bloc.dart';
@@ -101,7 +102,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       await getIt<AnalyticsService>().identifyUser(user: user);
 
       try {
-        final fcmToken = await getIt<FirebaseService>().retrieveFCMToken();
+        final fcmToken = await getIt<FirebaseMessagingService>()
+            .retrieveFCMToken();
         if (fcmToken.isNotEmpty) {
           await getIt<AuthService>().updateProfile(
             updateDTO: UserUpdateDTO(

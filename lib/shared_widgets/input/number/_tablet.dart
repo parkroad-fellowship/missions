@@ -8,12 +8,14 @@ class PRFNumberInputTablet extends StatelessWidget {
     super.key,
     this.isLoading = false,
     this.prefixText,
+    this.textInputAction = TextInputAction.next,
   });
 
   final String hintText;
   final TextEditingController controller;
   final bool isLoading;
   final String? prefixText;
+  final TextInputAction textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class PRFNumberInputTablet extends StatelessWidget {
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
       textCapitalization: TextCapitalization.words,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
         hintText: hintText,
         prefixText: prefixText,

@@ -10,12 +10,14 @@ class PRFNumberInput extends StatelessWidget {
     super.key,
     this.isLoading = false,
     this.prefixText,
+    this.textInputAction = TextInputAction.next,
   });
 
   final String hintText;
   final TextEditingController controller;
   final bool isLoading;
   final String? prefixText;
+  final TextInputAction textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class PRFNumberInput extends StatelessWidget {
         controller: controller,
         isLoading: isLoading,
         prefixText: prefixText,
+        textInputAction: textInputAction,
       ),
       layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
         handset: (_, _) => PRFNumberInputHandset(
@@ -32,12 +35,14 @@ class PRFNumberInput extends StatelessWidget {
           controller: controller,
           isLoading: isLoading,
           prefixText: prefixText,
+          textInputAction: textInputAction,
         ),
         tablet: (_, _) => PRFNumberInputTablet(
           hintText: hintText,
           controller: controller,
           isLoading: isLoading,
           prefixText: prefixText,
+          textInputAction: textInputAction,
         ),
       ),
     );

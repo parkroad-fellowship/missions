@@ -17,6 +17,7 @@ class PRFLocalMemberMission {
     required this.capacity,
     required this.status,
     required this.missionSubscriptionsNeeded,
+    required this.accountingEventUlid,
     required this.createdAt,
     required this.updatedAt,
     this.missionPrepNotes,
@@ -42,6 +43,7 @@ class PRFLocalMemberMission {
   final PRFMissionStatus status;
 
   final int missionSubscriptionsNeeded;
+  final String accountingEventUlid;
   final DateTime createdAt;
   final DateTime updatedAt;
 

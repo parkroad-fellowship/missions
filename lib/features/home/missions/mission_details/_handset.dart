@@ -1,6 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_expense_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
@@ -9,7 +8,6 @@ import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/actions/add_debrief_note/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_expense/add_expense.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
@@ -22,7 +20,6 @@ import 'package:app/features/home/missions/mission_details/widgets/souls/actions
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/shared_widgets/progress/circular_progress_indicator.dart';
 import 'package:app/utils/_index.dart';
@@ -233,7 +230,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             );
           },
         ),
-        > 1 && < 8 => Container(
+        > 1 && < 6 || == 7 => Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
@@ -256,7 +253,6 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 3 => l10n.addSoul,
                 4 => l10n.addNote,
                 5 => l10n.addQuestion,
-                6 => l10n.addExpense,
                 7 => l10n.addMissionPhotos,
                 _ => '',
               },
@@ -361,38 +357,6 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                         .getMissionQuestions(
                           missionUlid: missionUlid,
                         );
-                  }
-                });
-              }
-              if (_currentTab == 6) {
-                final missionExpense = getIt<HiveService>().data.expenses
-                    .retrieveMissionExpense(missionUlid);
-                if (missionExpense == null) {
-                  Gaimon.error();
-                  ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-                    SnackBar(content: Text(l10n.pleaseWaitForFunds)),
-                  );
-                  return;
-                }
-                WoltModalSheet.show<void>(
-                  context: context,
-                  pageListBuilder: (modalSheetContext) {
-                    return [
-                      WoltModalSheetPage(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddExpenseView(missionUlid: missionUlid),
-                        ),
-                      ),
-                    ];
-                  },
-                ).then((_) {
-                  if (context.mounted) {
-                    context.read<GetMissionExpenseCubit>().getMissionExpense(
-                      missionUlid: missionUlid,
-                    );
                   }
                 });
               }

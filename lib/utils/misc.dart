@@ -1,22 +1,28 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:app/enums/prf_mission_status.dart';
 import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/enums/prf_supported_platform.dart';
 import 'package:app/models/remote/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/slugify.dart' as slugify;
 import 'package:app/versioning/build_version.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart'
     show BuildContext, MediaQuery, ScaffoldMessenger, SnackBar, Text;
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:url_launcher/url_launcher.dart';
 
 class Misc {
   // Private constructor to prevent instantiation
   Misc._();
+
+  static final DeviceInfoPlugin _deviceInfo = DeviceInfoPlugin();
 
   // Cache for timezone locations to improve performance
   static final Map<String, tz.Location> _timezoneCache = {};
@@ -478,6 +484,56 @@ class Misc {
       );
     } else {
       SystemNavigator.pop();
+    }
+  }
+
+  static Future<PRFSupportedPlatform> getCurrentPlatform() async {
+    if (Platform.isIOS) {
+      return PRFSupportedPlatform.ios;
+    } else if (Platform.isAndroid) {
+      // Check if this is a Huawei device without Google Play Services
+      return await _isHuaweiDevice()
+          ? PRFSupportedPlatform.huawei
+          : PRFSupportedPlatform.android;
+    }
+    return PRFSupportedPlatform.unknown;
+  }
+
+  static Future<bool> _isHuaweiDevice() async {
+    try {
+      if (Platform.isAndroid) {
+        return _checkHuaweiManufacturer();
+      }
+      return false;
+    } catch (e) {
+      Logger().e('Error checking Huawei device: $e');
+      return false;
+    }
+  }
+
+  static Future<bool> _checkHuaweiManufacturer() async {
+    try {
+      // This is a synchronous check that should work in most cases
+      // You can also make this async if needed
+      final androidInfo = _deviceInfo.androidInfo;
+
+      // Check common Huawei identifiers
+      return await androidInfo
+          .then((info) {
+            final manufacturer = info.manufacturer.toLowerCase();
+            final brand = info.brand.toLowerCase();
+
+            return manufacturer.contains('huawei') ||
+                manufacturer.contains('honor') ||
+                brand.contains('huawei') ||
+                brand.contains('honor');
+          })
+          .catchError((Object e) {
+            Logger().e('Error getting Android info: $e');
+            return false;
+          });
+    } catch (e) {
+      return false;
     }
   }
 }

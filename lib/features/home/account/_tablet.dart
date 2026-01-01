@@ -2,6 +2,7 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_membership_type.dart';
 import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/_index.dart';
@@ -14,7 +15,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AccountPageTablet extends StatelessWidget {
   const AccountPageTablet({super.key});
@@ -639,7 +639,7 @@ class ChangeProfilePictureButton extends StatelessWidget {
                   context: context,
                   modelUlid: member.ulid,
                   model: PRFMediaModel.memberProfilePictures,
-                  mediaType: RequestType.image,
+                  mediaType: MediaType.photos,
                 ),
             child: Container(
               padding: const EdgeInsets.all(12),

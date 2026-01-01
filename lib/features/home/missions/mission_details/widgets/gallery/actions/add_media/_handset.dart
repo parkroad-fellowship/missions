@@ -9,7 +9,6 @@ import 'package:app/shared_widgets/_index.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 enum MediaType { photos, videos }
 
@@ -97,8 +96,8 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
           // Media Selection Area
           Expanded(
             child: BlocBuilder<SelectMediaCubit, SelectMediaState>(
-              builder: (context, state) => state.when(
-                initial: () => _buildEmptyState(context, theme),
+              builder: (context, state) => state.maybeWhen(
+                orElse: () => _buildEmptyState(context, theme),
                 empty: () => _buildEmptyState(context, theme),
                 loaded: (images) => _buildImageGrid(context, theme, images),
                 error: (message) => Center(
@@ -477,15 +476,15 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
     required List<PRFMediaDTO> previousMedia,
   }) {
     // Determine the correct RequestType based on selected media type
-    RequestType requestType;
+    MediaType requestType;
     PRFMediaModel model;
 
     switch (_selectedMediaType) {
       case MediaType.photos:
-        requestType = RequestType.image;
+        requestType = MediaType.photos;
         model = PRFMediaModel.missionPhotos;
       case MediaType.videos:
-        requestType = RequestType.video;
+        requestType = MediaType.videos;
         model = PRFMediaModel.missionVideos;
     }
 

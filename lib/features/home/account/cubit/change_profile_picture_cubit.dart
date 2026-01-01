@@ -1,10 +1,10 @@
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 part 'change_profile_picture_state.dart';
 part 'change_profile_picture_cubit.freezed.dart';
@@ -25,7 +25,7 @@ class ChangeProfilePictureCubit extends Cubit<ChangeProfilePictureState> {
     required BuildContext context,
     required String modelUlid,
     required PRFMediaModel model,
-    required RequestType mediaType,
+    required MediaType mediaType,
   }) async {
     try {
       emit(const ChangeProfilePictureState.loading());

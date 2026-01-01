@@ -35,6 +35,7 @@ class MemberMissionDbService
       capacity: mission.capacity,
       status: mission.status,
       missionSubscriptionsNeeded: mission.missionSubscriptionsNeeded,
+      accountingEventUlid: mission.accountingEvent!.ulid,
       createdAt: mission.createdAt,
       updatedAt: mission.updatedAt,
       loggedInMemberMissionSubscription: PRFLocalMissionMemberSubscription(
@@ -178,6 +179,7 @@ class MemberMissionDbService
       capacity: mission.capacity,
       status: mission.status,
       missionSubscriptionsNeeded: mission.missionSubscriptionsNeeded,
+      accountingEventUlid: mission.accountingEventUlid,
       createdAt: mission.createdAt,
       updatedAt: mission.updatedAt,
       loggedInMemberMissionSubscription: PRFLocalMissionMemberSubscription(

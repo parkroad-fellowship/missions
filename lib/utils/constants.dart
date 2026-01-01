@@ -1,5 +1,8 @@
+import 'package:app/enums/prf_environment.dart';
+
 class PRFSuperAppValues {
   PRFSuperAppValues({
+    required this.environment,
     required this.urlScheme,
     required this.baseDomain,
     required this.hiveBox,
@@ -10,6 +13,7 @@ class PRFSuperAppValues {
     required this.azureConnString,
   });
 
+  final PRFEnvironment environment;
   final String urlScheme;
   final String baseDomain;
   final String hiveBox;

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/models/remote/failure.dart';
 import 'package:app/models/remote/prf_media.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
@@ -11,11 +12,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 abstract class MediaService {
   Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO});
@@ -23,14 +24,30 @@ abstract class MediaService {
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
-    required RequestType mediaType,
+    required MediaType mediaType,
+    int count = 9,
+  });
+  Future<List<PRFMediaDTO>> pickMediaWithSource(
+    BuildContext context, {
+    required String modelUlid,
+    required PRFMediaModel model,
+    required MediaType mediaType,
     int count = 9,
   });
   Future<List<PRFMediaDTO>> getAudioFiles({
     required String modelUlid,
     required PRFMediaModel model,
   });
-
+  Future<List<PRFMediaDTO>> getDocuments({
+    required String modelUlid,
+    required PRFMediaModel model,
+  });
+  Future<PRFMediaDTO?> captureFromCamera(
+    BuildContext context, {
+    required String modelUlid,
+    required PRFMediaModel model,
+    required MediaType mediaType,
+  });
   Future<void> initDownloader();
   Future<void> downloadFile(String downloadURL);
 }
@@ -38,6 +55,7 @@ abstract class MediaService {
 @pragma('vm:entry-point')
 class MediaServiceImpl implements MediaService {
   final _networkUtil = NetworkUtil();
+  final _picker = ImagePicker();
 
   @override
   Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO}) async {
@@ -58,6 +76,8 @@ class MediaServiceImpl implements MediaService {
         url.write('members');
       case PRFMediaModel.expenses:
         url.write('expenses');
+      case PRFMediaModel.allocationEntryReceipts:
+        url.write('allocation-entries');
     }
 
     url.write('/${imageDTO.modelUlid}/media');
@@ -92,45 +112,251 @@ class MediaServiceImpl implements MediaService {
   }
 
   @override
+  Future<void> initDownloader() async {
+    await FlutterDownloader.initialize(debug: kDebugMode);
+    await FlutterDownloader.registerCallback(callback);
+  }
+
+  @pragma('vm:entry-point')
+  static void callback(String id, int status, int progress) {
+    Logger().d('$id: $status ($progress)');
+  }
+
+  @override
+  Future<void> downloadFile(String downloadURL) async {
+    try {
+      await Permission.storage.request();
+      late String appDocDir;
+      if (Platform.isAndroid) {
+        appDocDir = (await path_provider.getExternalStorageDirectory())!.path;
+      } else {
+        appDocDir = (await path_provider.getApplicationDocumentsDirectory())
+            .absolute
+            .path;
+      }
+
+      await FlutterDownloader.enqueue(
+        url: downloadURL,
+        fileName: Misc.getFileName(downloadURL),
+        savedDir: appDocDir,
+        saveInPublicStorage: true,
+      );
+    } on SocketException {
+      throw Failure(message: 'Check network connection!');
+    } catch (e) {
+      Logger().e(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
   Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
     required PRFMediaModel model,
-    required RequestType mediaType,
+    required MediaType mediaType,
     int count = 9,
   }) async {
     try {
-      final themeColor = Theme.of(context).colorScheme.primary;
+      // Use image_picker with multi_image for multiple selection
+      // On Android 13+, this automatically uses the Photo Picker
+      // without requiring permissions
+      var files = <XFile>[];
 
-      final assets = await AssetPicker.pickAssets(
-        context,
-        pickerConfig: AssetPickerConfig(
-          themeColor: themeColor,
-          textDelegate: const EnglishAssetPickerTextDelegate(),
-          requestType: mediaType,
-          maxAssets: count,
-        ),
-      );
+      if (mediaType == MediaType.photos) {
+        if (count == 1) {
+          final image = await _picker.pickImage(source: ImageSource.gallery);
+          if (image != null) files = [image];
+        } else {
+          files = await _picker.pickMultiImage(limit: count);
+        }
+      } else if (mediaType == MediaType.videos) {
+        final video = await _picker.pickVideo(source: ImageSource.gallery);
+        if (video != null) files = [video];
+      }
 
       final uploadAssets = <PRFMediaDTO>[];
 
-      if (assets != null) {
-        for (final asset in assets) {
-          final filePath = (await asset.file)!.path;
-          uploadAssets.add(
-            PRFMediaDTO(
-              path: filePath,
-              model: model,
-              modelUlid: modelUlid,
-              name: Misc.getFileName(filePath),
-            ),
-          );
-        }
+      for (final file in files) {
+        uploadAssets.add(
+          PRFMediaDTO(
+            path: file.path,
+            model: model,
+            modelUlid: modelUlid,
+            name: Misc.getFileName(file.path),
+          ),
+        );
       }
 
       return uploadAssets;
-    } catch (_) {
-      rethrow;
+    } catch (e) {
+      Logger().e('Error selecting assets: $e');
+      throw Failure(message: 'Failed to select media: $e');
+    }
+  }
+
+  @override
+  Future<List<PRFMediaDTO>> pickMediaWithSource(
+    BuildContext context, {
+    required String modelUlid,
+    required PRFMediaModel model,
+    required MediaType mediaType,
+    int count = 9,
+  }) async {
+    try {
+      // Show bottom sheet to let user choose between camera and gallery
+      final source = await showModalBottomSheet<ImageSource>(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (BuildContext context) {
+          final theme = Theme.of(context);
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 20),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  Text(
+                    'Choose Source',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ListTile(
+                    leading: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                    title: const Text('Camera'),
+                    subtitle: Text(
+                      mediaType == MediaType.videos
+                          ? 'Record a video'
+                          : 'Take a photo',
+                    ),
+                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                  ),
+                  ListTile(
+                    leading: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.secondary.withValues(
+                          alpha: 0.1,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.photo_library_outlined,
+                        color: theme.colorScheme.secondary,
+                      ),
+                    ),
+                    title: const Text('Gallery'),
+                    subtitle: Text(
+                      count > 1
+                          ? 'Select up to $count items'
+                          : 'Choose from your library',
+                    ),
+                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      if (source == null) {
+        return [];
+      }
+
+      var files = <XFile>[];
+
+      if (source == ImageSource.camera) {
+        // Request camera permission
+        final cameraStatus = await Permission.camera.request();
+        if (!cameraStatus.isGranted) {
+          throw Failure(message: 'Camera permission denied');
+        }
+
+        XFile? capturedFile;
+        if (mediaType == MediaType.videos) {
+          capturedFile = await _picker.pickVideo(source: ImageSource.camera);
+        } else {
+          capturedFile = await _picker.pickImage(source: ImageSource.camera);
+        }
+
+        if (capturedFile != null) {
+          files = [capturedFile];
+        }
+      } else {
+        // Gallery selection
+        if (mediaType == MediaType.photos) {
+          if (count == 1) {
+            final image = await _picker.pickImage(source: ImageSource.gallery);
+            if (image != null) files = [image];
+          } else {
+            files = await _picker.pickMultiImage(limit: count);
+          }
+        } else if (mediaType == MediaType.videos) {
+          final video = await _picker.pickVideo(source: ImageSource.gallery);
+          if (video != null) files = [video];
+        }
+      }
+
+      final uploadAssets = <PRFMediaDTO>[];
+
+      for (final file in files) {
+        // Create app directory for storing media
+        final appDir = await path_provider.getApplicationDocumentsDirectory();
+        final mediaDir = Directory('${appDir.path}/selected_media');
+        await mediaDir.create(recursive: true);
+
+        // Generate unique filename
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final originalFileName = Misc.getFileName(file.path);
+        final extension = originalFileName.split('.').last;
+        final fileName = 'media_$timestamp.$extension';
+        final newPath = '${mediaDir.path}/$fileName';
+
+        // Copy file to app directory
+        final savedFile = await File(file.path).copy(newPath);
+
+        uploadAssets.add(
+          PRFMediaDTO(
+            path: savedFile.path,
+            model: model,
+            modelUlid: modelUlid,
+            name: fileName,
+          ),
+        );
+      }
+
+      return uploadAssets;
+    } catch (e) {
+      Logger().e('Error picking media with source: $e');
+      if (e is Failure) {
+        rethrow;
+      }
+      throw Failure(message: 'Failed to select media: $e');
     }
   }
 
@@ -140,22 +366,8 @@ class MediaServiceImpl implements MediaService {
     required PRFMediaModel model,
   }) async {
     try {
-      // Request storage permission for accessing audio files
-      final permissionStatus = await Permission.storage.request();
-
-      if (!permissionStatus.isGranted) {
-        // If permission is permanently denied, open app settings
-        if (permissionStatus.isPermanentlyDenied) {
-          await openAppSettings();
-          throw Failure(
-            message:
-                'Please grant storage access permission in Settings '
-                'and try again',
-          );
-        }
-        throw Failure(message: 'Storage access permission denied');
-      }
-
+      // FilePicker uses SAF (Storage Access Framework)
+      // which doesn't require permissions
       final result = await FilePicker.platform
           .pickFiles(
             allowMultiple: true,
@@ -211,40 +423,107 @@ class MediaServiceImpl implements MediaService {
   }
 
   @override
-  Future<void> initDownloader() async {
-    await FlutterDownloader.initialize(debug: kDebugMode);
-    await FlutterDownloader.registerCallback(callback);
-  }
+  Future<List<PRFMediaDTO>> getDocuments({
+    required String modelUlid,
+    required PRFMediaModel model,
+  }) async {
+    try {
+      // FilePicker uses SAF (Storage Access Framework)
+      // which doesn't require permissions
+      final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
 
-  @pragma('vm:entry-point')
-  static void callback(String id, int status, int progress) {
-    Logger().d('$id: $status ($progress)');
+      if (result != null && result.paths.isNotEmpty) {
+        final filePaths = result.paths;
+        final uploadAssets = <PRFMediaDTO>[];
+        final appDir = await path_provider.getApplicationDocumentsDirectory();
+
+        for (final filePath in filePaths) {
+          if (filePath != null) {
+            final file = File(filePath);
+            final fileName = Misc.getFileName(filePath);
+            final mediaUploadsDir = '${appDir.path}/media_uploads';
+            await Directory(mediaUploadsDir).create(recursive: true);
+            final newPath = '$mediaUploadsDir/$fileName';
+
+            await file.copy(newPath);
+
+            uploadAssets.add(
+              PRFMediaDTO(
+                path: newPath,
+                model: model,
+                modelUlid: modelUlid,
+                name: fileName,
+              ),
+            );
+          }
+        }
+        return uploadAssets;
+      }
+
+      return [];
+    } catch (e) {
+      Logger().e('Error selecting documents: $e');
+      throw Failure(message: 'Failed to select PDF files: $e');
+    }
   }
 
   @override
-  Future<void> downloadFile(String downloadURL) async {
+  Future<PRFMediaDTO?> captureFromCamera(
+    BuildContext context, {
+    required String modelUlid,
+    required PRFMediaModel model,
+    required MediaType mediaType,
+  }) async {
     try {
-      await Permission.storage.request();
-      late String appDocDir;
-      if (Platform.isAndroid) {
-        appDocDir = (await path_provider.getExternalStorageDirectory())!.path;
-      } else {
-        appDocDir = (await path_provider.getApplicationDocumentsDirectory())
-            .absolute
-            .path;
+      // Request camera permission
+      final cameraStatus = await Permission.camera.request();
+      if (!cameraStatus.isGranted) {
+        throw Failure(message: 'Camera permission denied');
       }
 
-      await FlutterDownloader.enqueue(
-        url: downloadURL,
-        fileName: Misc.getFileName(downloadURL),
-        savedDir: appDocDir,
-        saveInPublicStorage: true,
+      // Use image_picker for camera capture - it handles permissions gracefully
+      XFile? capturedFile;
+
+      if (mediaType == MediaType.videos) {
+        capturedFile = await _picker.pickVideo(source: ImageSource.camera);
+      } else {
+        capturedFile = await _picker.pickImage(source: ImageSource.camera);
+      }
+
+      if (capturedFile == null) {
+        return null;
+      }
+
+      // Create app directory for storing captured media
+      final appDir = await path_provider.getApplicationDocumentsDirectory();
+      final mediaDir = Directory('${appDir.path}/captured_media');
+      await mediaDir.create(recursive: true);
+
+      // Generate unique filename
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final extension = mediaType == MediaType.videos ? 'mp4' : 'jpg';
+      final fileName = 'captured_$timestamp.$extension';
+      final newPath = '${mediaDir.path}/$fileName';
+
+      // Move captured file to app directory
+      final savedFile = await File(capturedFile.path).copy(newPath);
+
+      return PRFMediaDTO(
+        path: savedFile.path,
+        model: model,
+        modelUlid: modelUlid,
+        name: fileName,
       );
-    } on SocketException {
-      throw Failure(message: 'Check network connection!');
     } catch (e) {
-      Logger().e(e.toString());
-      rethrow;
+      Logger().e('Error capturing from camera: $e');
+      if (e is Failure) {
+        rethrow;
+      }
+      throw Failure(message: 'Failed to capture from camera: $e');
     }
   }
 }

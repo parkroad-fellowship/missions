@@ -29,7 +29,6 @@ class HiveService {
       ..registerAdapter(PRFClassGroupResponseAdapter())
       ..registerAdapter(PRFSoulsAdapter())
       ..registerAdapter(PRFExpenseCategoryResponseAdapter())
-      ..registerAdapter(PRFMissionExpenseResponseAdapter())
       ..registerAdapter(PRFPaymentTypeResponseAdapter());
 
     // Open boxes

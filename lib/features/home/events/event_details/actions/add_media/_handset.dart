@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_media_dto.dart';
@@ -10,7 +11,6 @@ import 'package:app/shared_widgets/_index.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AddEventMediaViewHandset extends StatefulWidget {
   const AddEventMediaViewHandset({required this.eventUlid, super.key});
@@ -61,8 +61,8 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
           // Media Selection Area
           Expanded(
             child: BlocBuilder<SelectMediaCubit, SelectMediaState>(
-              builder: (context, state) => state.when(
-                initial: () => _buildEmptyState(context, theme, l10n),
+              builder: (context, state) => state.maybeWhen(
+                orElse: () => _buildEmptyState(context, theme, l10n),
                 empty: () => _buildEmptyState(context, theme, l10n),
                 loaded: (images) => _buildImageGrid(context, theme, images),
                 error: (message) => Center(
@@ -173,11 +173,12 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             // Media Selection Area
             Expanded(
               child: BlocBuilder<SelectMediaCubit, SelectMediaState>(
-                builder: (context, state) => state.when(
-                  initial: () => _buildEmptyState(context, theme, l10n),
-                  empty: () => _buildEmptyState(context, theme, l10n),
-                  loaded: (images) => _buildImageGrid(context, theme, images),
-                  error: (message) => Center(
+                builder: (context, state) => state.maybeMap(
+                  orElse: () => _buildEmptyState(context, theme, l10n),
+                  empty: (_) => _buildEmptyState(context, theme, l10n),
+                  loaded: (result) =>
+                      _buildImageGrid(context, theme, result.media),
+                  error: (error) => Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -188,7 +189,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          message,
+                          error.message,
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: theme.colorScheme.error,
                           ),
@@ -430,7 +431,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
       model: PRFMediaModel.eventPhotos,
       modelUlid: widget.eventUlid,
       previousMedia: previousMedia.cast(),
-      mediaType: RequestType.image,
+      mediaType: MediaType.photos,
     );
   }
 }

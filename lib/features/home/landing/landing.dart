@@ -10,6 +10,7 @@ import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/services/firebase_messaging_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
@@ -48,8 +49,7 @@ class _LandingPageState extends State<LandingPage> {
     try {
       await getIt<NotificationService>().requestPermissions();
       await getIt<NotificationService>().init();
-
-      await getIt<NotificationService>().scheduleGivingNotification();
+      await getIt<FirebaseMessagingService>().init();
     } catch (e) {
       Logger().e('NotificationService init error: $e');
     }

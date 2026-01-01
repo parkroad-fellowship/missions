@@ -1,5 +1,5 @@
 import 'package:app/enums/prf_mission_status.dart';
-import 'package:app/models/remote/prf_mission_expense.dart';
+import 'package:app/models/remote/prf_accounting_event.dart';
 import 'package:app/models/remote/prf_mission_subscription.dart';
 import 'package:app/models/remote/prf_mission_type.dart';
 import 'package:app/models/remote/prf_school.dart';
@@ -32,7 +32,7 @@ abstract class PRFMission with _$PRFMission {
     PRFSchool? school,
     @JsonKey(name: 'school_term') PRFSchoolTerm? schoolTerm,
     @JsonKey(name: 'mission_type') PRFMissionType? missionType,
-    @JsonKey(name: 'mission_expense') PRFMissionExpense? missionExpense,
+    @JsonKey(name: 'accounting_event') PRFAccountingEvent? accountingEvent,
     @JsonKey(name: 'weather_forecasts')
     @Default([])
     List<PRFWeatherForecast> weatherForecasts,
