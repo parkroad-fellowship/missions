@@ -54,6 +54,7 @@ import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_token_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_mission_refund_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
@@ -89,6 +90,7 @@ import 'package:app/services/api/payment_type_service.dart';
 import 'package:app/services/api/prayer_prompt_service.dart';
 import 'package:app/services/api/prayer_request_service.dart';
 import 'package:app/services/api/prayer_response_service.dart';
+import 'package:app/services/api/refund_service.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
 import 'package:app/services/audio_recording_service.dart';
@@ -187,7 +189,8 @@ class Singletons {
       )
       ..registerSingleton<MemberService>(MemberService())
       ..registerSingleton<AccountingEventService>(AccountingEventService())
-      ..registerSingleton<AllocationEntryService>(AllocationEntryService());
+      ..registerSingleton<AllocationEntryService>(AllocationEntryService())
+      ..registerSingleton<RefundService>(RefundService());
   }
 
   static Future<void> setupDatabases() async {
@@ -433,6 +436,9 @@ class Singletons {
           hiveService: getIt(),
           mediaService: getIt(),
         ),
+      ),
+      BlocProvider<AddMissionRefundCubit>(
+        create: (context) => AddMissionRefundCubit(refundService: getIt()),
       ),
       BlocProvider<SelectMediaCubit>(
         create: (context) => SelectMediaCubit(

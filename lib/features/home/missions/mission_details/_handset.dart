@@ -230,8 +230,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             );
           },
         ),
-        // TODO(miller): Enable FAB on photos page
-        > 1 && < 6 => Container(
+        > 1 && < 6 || == 7 => Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             boxShadow: [

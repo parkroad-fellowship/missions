@@ -1,14 +1,11 @@
-import 'package:app/enums/prf_charge_type.dart';
-import 'package:app/enums/prf_entry_type.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_token_entry_cubit.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_mission_refund_cubit.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddTokenViewHandset extends StatefulWidget {
-  const AddTokenViewHandset({
+class AddRefundViewHandset extends StatefulWidget {
+  const AddRefundViewHandset({
     required this.accountingEventUlid,
     super.key,
   });
@@ -16,15 +13,19 @@ class AddTokenViewHandset extends StatefulWidget {
   final String accountingEventUlid;
 
   @override
-  State<AddTokenViewHandset> createState() => _AddTokenViewHandsetState();
+  State<AddRefundViewHandset> createState() => _AddRefundViewHandsetState();
 }
 
-class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
+class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
   final _amountController = TextEditingController();
   final _confirmationController = TextEditingController();
 
   bool _isLoading = false;
-  PRFChargeType _selectedChargeType = PRFChargeType.cash;
+
+  bool get _isFormValid {
+    return _amountController.text.isNotEmpty &&
+        _confirmationController.text.isNotEmpty;
+  }
 
   @override
   void initState() {
@@ -33,26 +34,19 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
     _confirmationController.addListener(_onFormChange);
   }
 
-  bool get _isFormValid {
-    return _amountController.text.isNotEmpty &&
-        _confirmationController.text.isNotEmpty;
-  }
-
   void _onFormChange() {
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.05),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -91,13 +85,13 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                 child: Column(
                   children: [
                     Icon(
-                      Icons.toll,
+                      Icons.account_balance_wallet,
                       size: 32,
                       color: Theme.of(context).colorScheme.onTertiary,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Add Token',
+                      'Add Refund Entry',
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(
                             color: Theme.of(context).colorScheme.onTertiary,
@@ -106,7 +100,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Add funds as a credit entry to the allocation',
+                      'Record a new refund entry for this accounting event',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(
                           context,
@@ -145,24 +139,26 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                   children: [
                     _buildFormSection(
                       icon: Icons.attach_money,
-                      title: 'Amount',
+                      title: 'Refund Amount',
                       isRequired: true,
                       child: _buildNumberField(
                         controller: _amountController,
-                        label: 'Token Amount',
-                        hint: 'Enter token amount',
+                        label: 'Amount',
+                        hint: 'Enter refund amount',
                         prefix: 'KES ',
                       ),
                     ).animate(delay: 200.ms).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.description,
-                      title: l10n.description,
+                      title: 'Confirmation Message',
                       isRequired: true,
                       child: Column(
                         children: [
                           PRFTextAreaInput(
-                            hintText: l10n.confirmationMessage,
+                            hintText:
+                                'Enter confirmation message or '
+                                'reference number',
                             controller: _confirmationController,
                             maxLines: 3,
                             textInputAction: TextInputAction.done,
@@ -170,13 +166,6 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                         ],
                       ),
                     ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
-
-                    _buildFormSection(
-                      icon: Icons.payment,
-                      title: l10n.paymentMethod,
-                      isRequired: true,
-                      child: _buildTransactionTypeSelector(Theme.of(context)),
-                    ).animate(delay: 300.ms).slideX(begin: -0.2).fadeIn(),
                   ],
                 ),
               ),
@@ -184,46 +173,52 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
               const SizedBox(height: 24),
 
               // Submit Button
-              BlocConsumer<
-                    AddAllocationTokenEntryCubit,
-                    AddAllocationTokenEntryState
-                  >(
-                    listener: (context, state) {
-                      state.when(
-                        initial: () {},
-                        loading: () {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                        },
-                        loaded: () {
-                          setState(() {
-                            _isLoading = false;
-                          });
-                          Navigator.of(context).pop();
-                        },
-                        error: (message) {
-                          setState(() {
-                            _isLoading = false;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(message)),
-                          );
-                        },
+              BlocConsumer<AddMissionRefundCubit, AddMissionRefundState>(
+                listener: (context, state) {
+                  state.when(
+                    initial: () {},
+                    loading: () {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                    },
+                    loaded: (refund) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Refund entry added successfully',
+                          ),
+                          duration: Duration(seconds: 2),
+                        ),
                       );
                     },
-                    builder: (context, state) {
-                      return PRFPrimaryButton(
-                        onPressed: _submitForm,
-                        title: 'Add Token',
-                        disabled: !_isFormValid,
-                        isLoading: _isLoading,
+                    error: (message) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error: $message'),
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          duration: const Duration(seconds: 3),
+                        ),
                       );
                     },
-                  )
-                  .animate(delay: 500.ms)
-                  .slideY(begin: 0.3)
-                  .fadeIn(),
+                  );
+                },
+                builder: (context, state) {
+                  return PRFPrimaryButton(
+                    onPressed: _submitForm,
+                    title: 'Add Refund Entry',
+                    disabled: !_isFormValid,
+                    isLoading: _isLoading,
+                  );
+                },
+              ).animate(delay: 500.ms).slideY(begin: 0.3).fadeIn(),
 
               const SizedBox(height: 32),
             ],
@@ -251,13 +246,13 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
+                  ).colorScheme.tertiary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
                   icon,
                   size: 20,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
               const SizedBox(width: 12),
@@ -310,82 +305,16 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
     );
   }
 
-  Widget _buildTransactionTypeSelector(ThemeData theme) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: PRFChargeType.values.map((type) {
-        final isSelected = _selectedChargeType == type;
-        return GestureDetector(
-          onTap: () => setState(() => _selectedChargeType = type),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isSelected
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.outline.withValues(alpha: 0.3),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  _getPaymentIcon(type),
-                  size: 16,
-                  color: isSelected
-                      ? theme.colorScheme.onPrimary
-                      : theme.colorScheme.onSurfaceVariant,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  type.name,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: isSelected
-                        ? theme.colorScheme.onPrimary
-                        : theme.colorScheme.onSurface,
-                    fontWeight: isSelected
-                        ? FontWeight.w600
-                        : FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  IconData _getPaymentIcon(PRFChargeType type) {
-    switch (type) {
-      case PRFChargeType.cash:
-        return Icons.payments;
-      case PRFChargeType.mpesaATMWithdrawal:
-        return Icons.atm;
-      case PRFChargeType.mpesaAgentWithdrawal:
-      case PRFChargeType.mpesaDefault:
-      case PRFChargeType.mpesaOtherRegisteredUser:
-        return Icons.phone_android;
-    }
-  }
-
   void _submitForm() {
     if (!_isFormValid) return;
 
     final amount = double.parse(_amountController.text).round();
+    final confirmationMessage = _confirmationController.text.trim();
 
-    context.read<AddAllocationTokenEntryCubit>().addAllocationEntry(
+    context.read<AddMissionRefundCubit>().addMissionRefund(
       accountingEventUlid: widget.accountingEventUlid,
-      entryType: PRFEntryType.credit, // Always credit for tokens
-      unitCost: amount, // Use amount as unit cost
-      narration: 'Token from the school',
-      confirmationMessage: _confirmationController.text.trim(),
+      amount: amount,
+      confirmationMessage: confirmationMessage,
     );
   }
 

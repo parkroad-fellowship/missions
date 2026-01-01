@@ -40,8 +40,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     _unitCostController.addListener(_calculateTotal);
     _quantityController.addListener(_calculateTotal);
     _chargeController.addListener(_calculateTotal);
-    _confirmationMessageController.addListener(() => setState(() {}));
-    _narrationController.addListener(() => setState(() {}));
+    _confirmationMessageController.addListener(_onFormChange);
+    _narrationController.addListener(_onFormChange);
   }
 
   void _calculateTotal() {
@@ -53,6 +53,10 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     setState(() {
       _totalAmount = lineTotal + charge;
     });
+  }
+
+  void _onFormChange() {
+    setState(() {});
   }
 
   bool get _isFormValid {

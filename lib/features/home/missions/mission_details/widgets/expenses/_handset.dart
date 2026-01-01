@@ -5,6 +5,7 @@ import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
 import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_expense/_handset.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_refund/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_token/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/edit_expense/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
@@ -17,9 +18,12 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prf_accounting_event.dart';
 import 'package:app/models/remote/prf_allocation_entry.dart';
 import 'package:app/models/remote/prf_media.dart';
+import 'package:app/models/remote/prf_refund.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/pdf_viewer.dart';
 import 'package:app/shared_widgets/receipt_preview.dart';
+import 'package:app/utils/misc.dart';
+import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -39,7 +43,8 @@ class ExpensesViewHandset extends StatefulWidget {
   State<ExpensesViewHandset> createState() => _ExpensesViewHandsetState();
 }
 
-class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
+class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
+    with TimezoneMixin {
   bool _showBreakdown = true;
   String get missionUlid => widget.missionUlid;
 
@@ -443,7 +448,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                   NumberFormat.currency(
                     locale: 'en_KE',
                     symbol: 'KES ',
-                  ).format(accountingEvent.amountToRefund),
+                  ).format(
+                    accountingEvent.latestRefund?.deficitAmount ??
+                        accountingEvent.amountToRefund,
+                  ),
                   Icons.refresh,
                   theme.colorScheme.outline,
                 ),
@@ -1486,6 +1494,35 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
     });
   }
 
+  void _showAddRefundModal(
+    BuildContext context,
+    PRFAccountingEvent accountingEvent,
+  ) {
+    WoltModalSheet.show<void>(
+      context: context,
+      pageListBuilder: (modalSheetContext) {
+        return [
+          WoltModalSheetPage(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.8,
+              child: AddRefundViewHandset(
+                accountingEventUlid: accountingEvent.ulid,
+              ),
+            ),
+          ),
+        ];
+      },
+    ).then((_) {
+      if (context.mounted) {
+        context.read<GetAllocationEntriesCubit>().getAllocationEntries(
+          accountingEventUlid: accountingEvent.ulid,
+        );
+      }
+    });
+  }
+
   Widget _buildRefundInformation(
     BuildContext context,
     AppLocalizations l10n,
@@ -1561,7 +1598,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                     NumberFormat.currency(
                       locale: 'en_KE',
                       symbol: 'KES ',
-                    ).format(accountingEvent.amountToRefund),
+                    ).format(
+                      accountingEvent.latestRefund?.deficitAmount ??
+                          accountingEvent.amountToRefund,
+                    ),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -1643,9 +1683,239 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset> {
                 ],
               ),
             ),
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: () => _showAddRefundModal(context, accountingEvent),
+              icon: const Icon(Icons.account_balance_wallet),
+              label: const Text('Add Refund'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.tertiary,
+                foregroundColor: theme.colorScheme.onTertiary,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            if (accountingEvent.refunds.isNotEmpty)
+              _buildRefundEntriesList(context, theme, accountingEvent.refunds),
+            if (accountingEvent.refunds.isNotEmpty) const SizedBox(height: 12),
           ],
         ),
       ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
+    );
+  }
+
+  Widget _buildRefundEntriesList(
+    BuildContext context,
+    ThemeData theme,
+    List<PRFRefund> refunds,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.receipt_long,
+                color: theme.colorScheme.primary,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Refund Entries',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${refunds.length}',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: refunds.length,
+            separatorBuilder: (context, index) => Divider(
+              color: theme.colorScheme.outline.withValues(alpha: 0.1),
+              height: 16,
+            ),
+            itemBuilder: (context, index) {
+              final refund = refunds.reversed.elementAt(index);
+              return _buildRefundEntryItem(context, theme, refund, index + 1);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRefundEntryItem(
+    BuildContext context,
+    ThemeData theme,
+    PRFRefund refund,
+    int entryNumber,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                '#$entryNumber',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSecondaryContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Amount',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  Text(
+                    NumberFormat.currency(
+                      locale: 'en_KE',
+                      symbol: 'KES ',
+                    ).format(refund.amount),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        _buildRefundDetailValue(
+          context,
+          theme,
+          'Deficit Amount',
+          NumberFormat.currency(locale: 'en_KE', symbol: 'KES ').format(
+            refund.deficitAmount,
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildRefundDetailValue(
+          context,
+          theme,
+          'Confirmation',
+          refund.confirmationMessage,
+          isCopyable: true,
+        ),
+        const SizedBox(height: 8),
+        _buildRefundDetailValue(
+          context,
+          theme,
+          'Date',
+          Misc.formatDateTime(refund.createdAt, timezone),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRefundDetailValue(
+    BuildContext context,
+    ThemeData theme,
+    String label,
+    String value, {
+    bool isCopyable = false,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+        if (isCopyable)
+          IconButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: value));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Copied to clipboard'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.copy,
+              size: 16,
+              color: theme.colorScheme.primary,
+            ),
+            padding: const EdgeInsets.all(4),
+            constraints: const BoxConstraints(
+              minWidth: 24,
+              minHeight: 24,
+            ),
+          ),
+      ],
     );
   }
 

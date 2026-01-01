@@ -2131,7 +2131,7 @@ abstract class AppLocalizations {
   /// No description provided for @refundText.
   ///
   /// In en, this message translates to:
-  /// **'Send the remaining balance and token to the above M-Pesa details to complete the refund process.'**
+  /// **'Please send the balance indicated above to the M-Pesa details and share the confirmation to complete the refund process.'**
   String get refundText;
 
   /// No description provided for @financialOverview.

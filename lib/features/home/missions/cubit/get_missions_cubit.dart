@@ -36,6 +36,8 @@ class GetMissionsCubit extends Cubit<GetMissionsState> {
           'loggedInMemberMissionSubscription',
           'weatherForecasts',
           'accountingEvent',
+          'accountingEvent.refunds',
+          'accountingEvent.latestRefund',
         ],
         filters: {
           'status_keys': [

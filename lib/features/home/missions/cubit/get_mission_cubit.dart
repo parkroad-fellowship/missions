@@ -36,7 +36,8 @@ class GetMissionCubit extends Cubit<GetMissionState> {
             'school.schoolContacts.contactType',
             'loggedInMemberMissionSubscription',
             'weatherForecasts',
-            'accountingEvent',
+            'accountingEvent.refunds',
+            'accountingEvent.latestRefund',
           ],
         );
         await _isarService.missions.persistEntity(mission);
@@ -70,6 +71,7 @@ class GetMissionCubit extends Cubit<GetMissionState> {
             'loggedInMemberMissionSubscription',
             'weatherForecasts',
             'accountingEvent',
+            'accountingEvent.refunds',
           ],
         );
         await _isarService.missions.persistEntity(mission);

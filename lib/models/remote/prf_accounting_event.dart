@@ -1,4 +1,5 @@
 import 'package:app/enums/prf_responsible_desk.dart';
+import 'package:app/models/remote/prf_refund.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_accounting_event.freezed.dart';
@@ -19,8 +20,10 @@ abstract class PRFAccountingEvent with _$PRFAccountingEvent {
     @JsonKey(name: 'refund_charge') int refundCharge,
     @JsonKey(name: 'amount_to_refund') int amountToRefund,
     @JsonKey(name: 'created_at') DateTime createdAt,
-    @JsonKey(name: 'updated_at') DateTime updatedAt,
-  ) = _PRFAccountingEvent;
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @Default([]) List<PRFRefund> refunds,
+    @JsonKey(name: 'latest_refund') PRFRefund? latestRefund,
+  }) = _PRFAccountingEvent;
 
   factory PRFAccountingEvent.fromJson(Map<String, dynamic> json) =>
       _$PRFAccountingEventFromJson(json);

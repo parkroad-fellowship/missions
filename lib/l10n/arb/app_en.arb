@@ -828,7 +828,7 @@
     "@paybillNumber": {},
     "accountNumber": "Account Number",
     "@accountNumber": {},
-    "refundText": "Send the remaining balance and token to the above M-Pesa details to complete the refund process.",
+    "refundText": "Please send the balance indicated above to the M-Pesa details and share the confirmation to complete the refund process.",
     "@refundText": {},
     "financialOverview": "Mission Financial Overview",
     "@financialOverview": {},
