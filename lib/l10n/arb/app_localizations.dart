@@ -898,11 +898,11 @@ abstract class AppLocalizations {
   /// **'for my credentials'**
   String get viewCredentials;
 
-  /// No description provided for @expenses.
+  /// No description provided for @financials.
   ///
   /// In en, this message translates to:
-  /// **'Expenses'**
-  String get expenses;
+  /// **'Financials'**
+  String get financials;
 
   /// No description provided for @confirmationMessage.
   ///

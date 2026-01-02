@@ -438,7 +438,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewCredentials => 'for my credentials';
 
   @override
-  String get expenses => 'Expenses';
+  String get financials => 'Financials';
 
   @override
   String get confirmationMessage => 'Confirmation Message';
