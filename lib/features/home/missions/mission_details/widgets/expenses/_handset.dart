@@ -1046,35 +1046,26 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                     return ColoredBox(
                                                       color: theme
                                                           .colorScheme
-                                                          // ignore: lines_longer_than_80_chars
                                                           .surfaceContainerHighest,
                                                       child: Center(
                                                         child: SizedBox(
                                                           width: 20,
                                                           height: 20,
-                                                          child:
-                                                              // ignore: lines_longer_than_80_chars
-                                                              CircularProgressIndicator(
-                                                                strokeWidth: 2,
-                                                                color: theme
-                                                                    .colorScheme
-                                                                    .primary,
-                                                                value:
-                                                                    // ignore: lines_longer_than_80_chars
-                                                                    loadingProgress
-                                                                            // ignore: lines_longer_than_80_chars
-                                                                            .expectedTotalBytes !=
-                                                                        null
-                                                                    // ignore: lines_longer_than_80_chars
-                                                                    ? loadingProgress
-                                                                              // ignore: lines_longer_than_80_chars
-                                                                              .cumulativeBytesLoaded /
-                                                                          // ignore: lines_longer_than_80_chars
-                                                                          loadingProgress
-                                                                              // ignore: lines_longer_than_80_chars
-                                                                              .expectedTotalBytes!
-                                                                    : null,
-                                                              ),
+                                                          child: CircularProgressIndicator(
+                                                            strokeWidth: 2,
+                                                            color: theme
+                                                                .colorScheme
+                                                                .primary,
+                                                            value:
+                                                                loadingProgress
+                                                                        .expectedTotalBytes !=
+                                                                    null
+                                                                ? loadingProgress
+                                                                          .cumulativeBytesLoaded /
+                                                                      loadingProgress
+                                                                          .expectedTotalBytes!
+                                                                : null,
+                                                          ),
                                                         ),
                                                       ),
                                                     );
