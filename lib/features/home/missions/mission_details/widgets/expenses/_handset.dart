@@ -665,154 +665,179 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _showExpenseDetails(context, entry),
-          borderRadius: BorderRadius.circular(20),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header Row with Category and Amount
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: isCredit
-                            ? theme.colorScheme.primaryContainer.withValues(
-                                alpha: 0.3,
-                              )
-                            : theme.colorScheme.errorContainer.withValues(
-                                alpha: 0.3,
-                              ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        isCredit ? Icons.trending_up : Icons.trending_down,
-                        size: 16,
-                        color: isCredit
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.error,
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Row with Category and Amount
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: isCredit
+                          ? theme.colorScheme.primaryContainer.withValues(
+                              alpha: 0.3,
+                            )
+                          : theme.colorScheme.errorContainer.withValues(
+                              alpha: 0.3,
+                            ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            entry.expenseCategory?.name ?? l10n.unknownCategory,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          if (entry.member?.fullName != null) ...[
-                            const SizedBox(height: 4),
-                            Text(
-                              entry.member!.fullName,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ],
-                      ),
+                    child: Icon(
+                      isCredit ? Icons.trending_up : Icons.trending_down,
+                      size: 16,
+                      color: isCredit
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.error,
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            NumberFormat.currency(
-                              symbol: 'KES ',
-                              decimalDigits: 0,
-                            ).format(entry.amount),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: isCredit
-                                  ? theme.colorScheme.primary
-                                  : theme.colorScheme.error,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          entry.expenseCategory?.name ?? l10n.unknownCategory,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (entry.member?.fullName != null) ...[
                           const SizedBox(height: 4),
                           Text(
-                            DateFormat('MMM dd, yyyy').format(entry.createdAt),
+                            entry.member!.fullName,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
                           ),
                         ],
-                      ),
+                      ],
                     ),
-                    // Delete Button for Debit Entries Only
-                    if (!isCredit) ...[
-                      const SizedBox(width: 12),
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => _showDeleteConfirmation(context, entry),
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.errorContainer
-                                  .withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: theme.colorScheme.error.withValues(
-                                  alpha: 0.3,
-                                ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          NumberFormat.currency(
+                            symbol: 'KES ',
+                            decimalDigits: 0,
+                          ).format(entry.amount),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: isCredit
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.error,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          DateFormat('MMM dd, yyyy').format(entry.createdAt),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Delete Button for Debit Entries Only
+                  if (!isCredit) ...[
+                    const SizedBox(width: 8),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => _showDeleteConfirmation(context, entry),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.errorContainer.withValues(
+                              alpha: 0.5,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: theme.colorScheme.error.withValues(
+                                alpha: 0.3,
                               ),
                             ),
-                            child: Icon(
-                              Icons.delete_outline,
-                              size: 18,
-                              color: theme.colorScheme.error,
-                            ),
+                          ),
+                          child: Icon(
+                            Icons.delete_outline,
+                            size: 18,
+                            color: theme.colorScheme.error,
                           ),
                         ),
                       ),
-                    ],
-                  ],
-                ),
-
-                // Description Row (if exists)
-                if (entry.narration.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    entry.narration,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  ],
+                  // Edit Button
+                  const SizedBox(width: 8),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => _showExpenseDetails(context, entry),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer.withValues(
+                            alpha: 0.5,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.3,
+                            ),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.edit_outlined,
+                          size: 18,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
+              ),
 
-                const SizedBox(height: 12),
-
-                if (hasReceipts) ...[
-                  _buildReceiptAttachments(context, entry.ulid, entry.receipts),
-                ] else if (missingReceipt) ...[
-                  _buildMissingReceiptAction(context, entry),
-                ],
+              // Description Row (if exists)
+              if (entry.narration.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  entry.narration,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
-            ),
+
+              const SizedBox(height: 12),
+
+              if (hasReceipts) ...[
+                _buildReceiptAttachments(context, entry.ulid, entry.receipts),
+              ] else if (missingReceipt) ...[
+                _buildMissingReceiptAction(context, entry),
+              ],
+            ],
           ),
         ),
       ),
@@ -914,30 +939,31 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             GestureDetector(
                               onTap: isPdf
                                   ? () => _openPdfDocument(
-                                        context,
-                                        receipt.temporaryURL,
-                                      )
+                                      context,
+                                      receipt.temporaryURL,
+                                    )
                                   : () => _showReceiptPreview(
-                                        context,
-                                        receipts,
-                                        index,
-                                      ),
+                                      context,
+                                      receipts,
+                                      index,
+                                    ),
                               child: Container(
                                 width: 70,
                                 height: 70,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
-                                    color: theme.colorScheme.primary
-                                        .withValues(alpha: 0.3),
+                                    color: theme.colorScheme.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
                                     width: 2,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color:
-                                          theme.colorScheme.primary.withValues(
-                                        alpha: 0.1,
-                                      ),
+                                      color: theme.colorScheme.primary
+                                          .withValues(
+                                            alpha: 0.1,
+                                          ),
                                       blurRadius: 8,
                                       offset: const Offset(0, 2),
                                     ),
@@ -948,10 +974,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                         decoration: BoxDecoration(
                                           color: theme.colorScheme.tertiary
                                               .withValues(
-                                            alpha: 0.2,
+                                                alpha: 0.2,
+                                              ),
+                                          borderRadius: BorderRadius.circular(
+                                            14,
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(14),
                                         ),
                                         child: Column(
                                           mainAxisAlignment:
@@ -967,11 +994,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                               'PDF',
                                               style: theme.textTheme.bodySmall
                                                   ?.copyWith(
-                                                color:
-                                                    theme.colorScheme.onSurface,
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                                    color: theme
+                                                        .colorScheme
+                                                        .onSurface,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
                                           ],
                                         ),
@@ -987,58 +1015,71 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                               height: double.infinity,
                                               errorBuilder:
                                                   (context, error, stackTrace) {
-                                                return ColoredBox(
-                                                  color: theme.colorScheme
-                                                      .surfaceContainerHighest,
-                                                  child: Icon(
-                                                    Icons.image_not_supported,
-                                                    color: theme
-                                                        .colorScheme.onSurface
-                                                        .withValues(
-                                                      alpha: 0.4,
-                                                    ),
-                                                    size: 24,
-                                                  ),
-                                                );
-                                              },
-                                              // ignore: lines_longer_than_80_chars
-                                              loadingBuilder: (
-                                                context,
-                                                child,
-                                                loadingProgress,
-                                              ) {
-                                                if (loadingProgress == null) {
-                                                  return child;
-                                                }
-                                                return ColoredBox(
-                                                  color: theme.colorScheme
-                                                      .surfaceContainerHighest,
-                                                  child: Center(
-                                                    child: SizedBox(
-                                                      width: 20,
-                                                      height: 20,
-                                                      child:
+                                                    return ColoredBox(
+                                                      color: theme
+                                                          .colorScheme
                                                           // ignore: lines_longer_than_80_chars
-                                                          CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                        color: theme.colorScheme
-                                                            .primary,
-                                                        value: loadingProgress
-                                                                    // ignore: lines_longer_than_80_chars
-                                                                    .expectedTotalBytes !=
-                                                                null
-                                                            ? loadingProgress
-                                                                    // ignore: lines_longer_than_80_chars
-                                                                    .cumulativeBytesLoaded /
-                                                                loadingProgress
-                                                                    // ignore: lines_longer_than_80_chars
-                                                                    .expectedTotalBytes!
-                                                            : null,
+                                                          .surfaceContainerHighest,
+                                                      child: Icon(
+                                                        Icons
+                                                            // ignore: lines_longer_than_80_chars
+                                                            .image_not_supported,
+                                                        color: theme
+                                                            .colorScheme
+                                                            .onSurface
+                                                            .withValues(
+                                                              alpha: 0.4,
+                                                            ),
+                                                        size: 24,
                                                       ),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
+                                                    );
+                                                  },
+                                              loadingBuilder:
+                                                  (
+                                                    context,
+                                                    child,
+                                                    loadingProgress,
+                                                  ) {
+                                                    if (loadingProgress ==
+                                                        null) {
+                                                      return child;
+                                                    }
+                                                    return ColoredBox(
+                                                      color: theme
+                                                          .colorScheme
+                                                          // ignore: lines_longer_than_80_chars
+                                                          .surfaceContainerHighest,
+                                                      child: Center(
+                                                        child: SizedBox(
+                                                          width: 20,
+                                                          height: 20,
+                                                          child:
+                                                              // ignore: lines_longer_than_80_chars
+                                                              CircularProgressIndicator(
+                                                                strokeWidth: 2,
+                                                                color: theme
+                                                                    .colorScheme
+                                                                    .primary,
+                                                                value:
+                                                                    // ignore: lines_longer_than_80_chars
+                                                                    loadingProgress
+                                                                            // ignore: lines_longer_than_80_chars
+                                                                            .expectedTotalBytes !=
+                                                                        null
+                                                                    // ignore: lines_longer_than_80_chars
+                                                                    ? loadingProgress
+                                                                              // ignore: lines_longer_than_80_chars
+                                                                              .cumulativeBytesLoaded /
+                                                                          // ignore: lines_longer_than_80_chars
+                                                                          loadingProgress
+                                                                              // ignore: lines_longer_than_80_chars
+                                                                              .expectedTotalBytes!
+                                                                    : null,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
                                             ),
                                             // Overlay for better tap indication
                                             Positioned.fill(
@@ -1185,17 +1226,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 context.read<DeleteReceiptCubit>().deleteReceipt(
-                      allocationEntryUlid: allocationEntryUlid,
-                      mediaUuid: receipt.uuid,
-                    );
+                  allocationEntryUlid: allocationEntryUlid,
+                  mediaUuid: receipt.uuid,
+                );
               },
               icon: const Icon(Icons.delete_outline, size: 18),
               label: const Text('Delete'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.error,
                 foregroundColor: theme.colorScheme.onError,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
               ),
             ),
           ],

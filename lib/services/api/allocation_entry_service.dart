@@ -44,7 +44,7 @@ class AllocationEntryService extends BaseAPIService<PRFAllocationEntry> {
     try {
       await networkUtil.delete(
         '$endpoint/$allocationEntryUlid/media/$mediaUuid',
-        apiVersion: 'v2'
+        apiVersion: 'v2',
       );
     } catch (e) {
       rethrow;
