@@ -347,7 +347,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get missionQuestion => 'Mission Question';
 
   @override
-  String get expenseTracking => 'Expense Tracking';
+  String get expenseTracking => 'Financials Tracking';
 
   @override
   String get currentBalance => 'Current Balance';
@@ -484,7 +484,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Ask the missions desk to disburse funds';
 
   @override
-  String get amountReceived => 'Amount received';
+  String get amountReceived => 'Amount received (Token included)';
 
   @override
   String get tokenAmount => 'Token from institution';

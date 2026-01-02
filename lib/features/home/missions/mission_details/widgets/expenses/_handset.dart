@@ -235,12 +235,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
     return CustomScrollView(
       slivers: [
+        SliverToBoxAdapter(
+          child: _buildHeader(
+            context,
+            l10n,
+            accountingEvent!,
+          ),
+        ),
         // Financial Overview Header
         SliverToBoxAdapter(
           child: _buildFinancialOverview(
             context,
             l10n,
-            accountingEvent!,
+            accountingEvent,
           ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
         ),
 
@@ -1987,6 +1994,70 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildHeader(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFAccountingEvent accountingEvent,
+  ) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.expenseTracking,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.financialOverview,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          BlocBuilder<GetAllocationEntriesCubit, GetAllocationEntriesState>(
+            builder: (context, state) {
+              return IconButton.filled(
+                onPressed: () => context
+                    .read<GetAllocationEntriesCubit>()
+                    .getAllocationEntries(
+                      accountingEventUlid: accountingEvent.ulid,
+                    ),
+                icon: state.maybeWhen(
+                  orElse: () => const Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                  loading: () => const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  loaded: (_) => const Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
