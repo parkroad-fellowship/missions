@@ -56,6 +56,7 @@ import 'package:app/features/home/missions/mission_details/widgets/expenses/cubi
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_token_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_mission_refund_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
@@ -427,6 +428,11 @@ class Singletons {
 
       BlocProvider<DeleteAllocationEntryCubit>(
         create: (context) => DeleteAllocationEntryCubit(
+          allocationEntryService: getIt(),
+        ),
+      ),
+      BlocProvider<DeleteReceiptCubit>(
+        create: (context) => DeleteReceiptCubit(
           allocationEntryService: getIt(),
         ),
       ),

@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:app/enums/prf_entry_type.dart';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
@@ -10,6 +12,7 @@ import 'package:app/features/home/missions/mission_details/widgets/expenses/acti
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/edit_expense/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
@@ -235,12 +238,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
     return CustomScrollView(
       slivers: [
+        SliverToBoxAdapter(
+          child: _buildHeader(
+            context,
+            l10n,
+            accountingEvent!,
+          ),
+        ),
         // Financial Overview Header
         SliverToBoxAdapter(
           child: _buildFinancialOverview(
             context,
             l10n,
-            accountingEvent!,
+            accountingEvent,
           ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
         ),
 
@@ -277,8 +287,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final entry = entries[index];
-                  return _buildExpenseCard(context, entry)
+                  return _buildExpenseCard(context, entries[index])
                       .animate()
                       .fadeIn(
                         duration: 300.ms,
@@ -657,154 +666,179 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _showExpenseDetails(context, entry),
-          borderRadius: BorderRadius.circular(20),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header Row with Category and Amount
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: isCredit
-                            ? theme.colorScheme.primaryContainer.withValues(
-                                alpha: 0.3,
-                              )
-                            : theme.colorScheme.errorContainer.withValues(
-                                alpha: 0.3,
-                              ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        isCredit ? Icons.trending_up : Icons.trending_down,
-                        size: 16,
-                        color: isCredit
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.error,
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Row with Category and Amount
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: isCredit
+                          ? theme.colorScheme.primaryContainer.withValues(
+                              alpha: 0.3,
+                            )
+                          : theme.colorScheme.errorContainer.withValues(
+                              alpha: 0.3,
+                            ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            entry.expenseCategory?.name ?? l10n.unknownCategory,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          if (entry.member?.fullName != null) ...[
-                            const SizedBox(height: 4),
-                            Text(
-                              entry.member!.fullName,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ],
-                      ),
+                    child: Icon(
+                      isCredit ? Icons.trending_up : Icons.trending_down,
+                      size: 16,
+                      color: isCredit
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.error,
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            NumberFormat.currency(
-                              symbol: 'KES ',
-                              decimalDigits: 0,
-                            ).format(entry.amount),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: isCredit
-                                  ? theme.colorScheme.primary
-                                  : theme.colorScheme.error,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          entry.expenseCategory?.name ?? l10n.unknownCategory,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (entry.member?.fullName != null) ...[
                           const SizedBox(height: 4),
                           Text(
-                            DateFormat('MMM dd, yyyy').format(entry.createdAt),
+                            entry.member!.fullName,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
                           ),
                         ],
-                      ),
+                      ],
                     ),
-                    // Delete Button for Debit Entries Only
-                    if (!isCredit) ...[
-                      const SizedBox(width: 12),
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => _showDeleteConfirmation(context, entry),
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.errorContainer
-                                  .withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: theme.colorScheme.error.withValues(
-                                  alpha: 0.3,
-                                ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          NumberFormat.currency(
+                            symbol: 'KES ',
+                            decimalDigits: 0,
+                          ).format(entry.amount),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: isCredit
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.error,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          DateFormat('MMM dd, yyyy').format(entry.createdAt),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Delete Button for Debit Entries Only
+                  if (!isCredit) ...[
+                    const SizedBox(width: 8),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => _showDeleteConfirmation(context, entry),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.errorContainer.withValues(
+                              alpha: 0.5,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: theme.colorScheme.error.withValues(
+                                alpha: 0.3,
                               ),
                             ),
-                            child: Icon(
-                              Icons.delete_outline,
-                              size: 18,
-                              color: theme.colorScheme.error,
-                            ),
+                          ),
+                          child: Icon(
+                            Icons.delete_outline,
+                            size: 18,
+                            color: theme.colorScheme.error,
                           ),
                         ),
                       ),
-                    ],
-                  ],
-                ),
-
-                // Description Row (if exists)
-                if (entry.narration.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    entry.narration,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  ],
+                  // Edit Button
+                  const SizedBox(width: 8),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => _showExpenseDetails(context, entry),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer.withValues(
+                            alpha: 0.5,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.3,
+                            ),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.edit_outlined,
+                          size: 18,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
+              ),
 
-                const SizedBox(height: 12),
-
-                if (hasReceipts) ...[
-                  _buildReceiptAttachments(context, entry.receipts),
-                ] else if (missingReceipt) ...[
-                  _buildMissingReceiptAction(context, entry),
-                ],
+              // Description Row (if exists)
+              if (entry.narration.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  entry.narration,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
-            ),
+
+              const SizedBox(height: 12),
+
+              if (hasReceipts) ...[
+                _buildReceiptAttachments(context, entry.ulid, entry.receipts),
+              ] else if (missingReceipt) ...[
+                _buildMissingReceiptAction(context, entry),
+              ],
+            ],
           ),
         ),
       ),
@@ -813,199 +847,393 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
   Widget _buildReceiptAttachments(
     BuildContext context,
+    String allocationEntryUlid,
     List<PRFMedia> receipts,
   ) {
     final theme = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.receipt_long,
-                  size: 16,
-                  color: theme.colorScheme.primary,
-                ),
+    return BlocListener<DeleteReceiptCubit, DeleteReceiptState>(
+      listener: (context, state) {
+        state.when(
+          initial: () {},
+          loading: (mediaUuid) {},
+          loaded: (mediaUuid) {
+            _loadData();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Receipt deleted successfully'),
+                backgroundColor: Colors.green,
               ),
-              const SizedBox(width: 8),
-              Text(
-                '${receipts.length} '
-                'Attachment${receipts.length == 1 ? '' : 's'}',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
-                ),
+            );
+          },
+          error: (message) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(message),
+                backgroundColor: Theme.of(context).colorScheme.error,
               ),
-              const Spacer(),
-              Text(
-                'Tap to view',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+            );
+          },
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: theme.colorScheme.primary.withValues(alpha: 0.2),
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 80,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: receipts.length,
-              itemBuilder: (context, index) {
-                final receipt = receipts[index];
-                final isPdf = receipt.temporaryURL.toLowerCase().contains(
-                  '.pdf',
-                );
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.receipt_long,
+                    size: 16,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '${receipts.length} '
+                  'Attachment${receipts.length == 1 ? '' : 's'}',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 80,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: receipts.length,
+                itemBuilder: (context, index) {
+                  final receipt = receipts[index];
+                  final isPdf = receipt.temporaryURL.toLowerCase().contains(
+                    '.pdf',
+                  );
 
-                return GestureDetector(
-                  onTap: isPdf
-                      ? () => _openPdfDocument(context, receipt.temporaryURL)
-                      : () => _showReceiptPreview(context, receipts, index),
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    margin: const EdgeInsets.only(right: 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                        width: 2,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: theme.colorScheme.primary.withValues(
-                            alpha: 0.1,
-                          ),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: isPdf
-                        ? Container(
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.tertiary.withValues(
-                                alpha: 0.2,
-                              ),
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.file_present,
-                                  size: 28,
-                                  color: theme.colorScheme.tertiary,
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  'PDF',
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurface,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
+                  return BlocBuilder<DeleteReceiptCubit, DeleteReceiptState>(
+                    builder: (context, state) {
+                      final isDeleting = state.maybeWhen(
+                        loading: (mediaUuid) => mediaUuid == receipt.uuid,
+                        orElse: () => false,
+                      );
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            GestureDetector(
+                              onTap: isPdf
+                                  ? () => _openPdfDocument(
+                                      context,
+                                      receipt.temporaryURL,
+                                    )
+                                  : () => _showReceiptPreview(
+                                      context,
+                                      receipts,
+                                      index,
+                                    ),
+                              child: Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: theme.colorScheme.primary.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    width: 2,
                                   ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: theme.colorScheme.primary
+                                          .withValues(
+                                            alpha: 0.1,
+                                          ),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(14),
-                            child: Stack(
-                              children: [
-                                Image.network(
-                                  receipt.temporaryURL,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return ColoredBox(
-                                      color: theme
-                                          .colorScheme
-                                          .surfaceContainerHighest,
-                                      child: Icon(
-                                        Icons.image_not_supported,
-                                        color: theme.colorScheme.onSurface
-                                            .withValues(
-                                              alpha: 0.4,
-                                            ),
-                                        size: 24,
-                                      ),
-                                    );
-                                  },
-                                  // ignore: lines_longer_than_80_chars
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return ColoredBox(
-                                      color: theme
-                                          .colorScheme
-                                          .surfaceContainerHighest,
-                                      child: Center(
-                                        child: SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: theme.colorScheme.primary,
-                                            value:
-                                                loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                          // ignore: lines_longer_than_80_chars
-                                                          .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                : null,
+                                child: isPdf
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.tertiary
+                                              .withValues(
+                                                alpha: 0.2,
+                                              ),
+                                          borderRadius: BorderRadius.circular(
+                                            14,
                                           ),
                                         ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.file_present,
+                                              size: 28,
+                                              color: theme.colorScheme.tertiary,
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              'PDF',
+                                              style: theme.textTheme.bodySmall
+                                                  ?.copyWith(
+                                                    color: theme
+                                                        .colorScheme
+                                                        .onSurface,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(14),
+                                        child: Stack(
+                                          children: [
+                                            Image.network(
+                                              receipt.temporaryURL,
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                    return ColoredBox(
+                                                      color: theme
+                                                          .colorScheme
+                                                          .surfaceContainerHighest,
+                                                      child: Icon(
+                                                        Icons
+                                                            .image_not_supported,
+                                                        color: theme
+                                                            .colorScheme
+                                                            .onSurface
+                                                            .withValues(
+                                                              alpha: 0.4,
+                                                            ),
+                                                        size: 24,
+                                                      ),
+                                                    );
+                                                  },
+                                              loadingBuilder:
+                                                  (
+                                                    context,
+                                                    child,
+                                                    loadingProgress,
+                                                  ) {
+                                                    if (loadingProgress ==
+                                                        null) {
+                                                      return child;
+                                                    }
+                                                    return ColoredBox(
+                                                      color: theme
+                                                          .colorScheme
+                                                          .surfaceContainerHighest,
+                                                      child: Center(
+                                                        child: SizedBox(
+                                                          width: 20,
+                                                          height: 20,
+                                                          child: CircularProgressIndicator(
+                                                            strokeWidth: 2,
+                                                            color: theme
+                                                                .colorScheme
+                                                                .primary,
+                                                            value:
+                                                                loadingProgress
+                                                                        .expectedTotalBytes !=
+                                                                    null
+                                                                ? loadingProgress
+                                                                          .cumulativeBytesLoaded /
+                                                                      loadingProgress
+                                                                          .expectedTotalBytes!
+                                                                : null,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                            ),
+                                            // Overlay for better tap indication
+                                            Positioned.fill(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(14),
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      Colors.transparent,
+                                                      Colors.black.withValues(
+                                                        alpha: 0.1,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    );
-                                  },
+                              ),
+                            ),
+                            // Delete button
+                            Positioned(
+                              top: -6,
+                              right: -6,
+                              child: GestureDetector(
+                                onTap: () => _showDeleteReceiptConfirmation(
+                                  context,
+                                  allocationEntryUlid,
+                                  receipt,
                                 ),
-                                // Overlay for better tap indication
-                                Positioned.fill(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Colors.transparent,
-                                          Colors.black.withValues(alpha: 0.1),
-                                        ],
+                                child: Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.error,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: theme.colorScheme.surface,
+                                      width: 2,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: theme.colorScheme.shadow
+                                            .withValues(alpha: 0.2),
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 14,
+                                    color: theme.colorScheme.onError,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Loading overlay during deletion
+                            if (isDeleting)
+                              Positioned.fill(
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: const Center(
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                  ),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteReceiptConfirmation(
+    BuildContext context,
+    String allocationEntryUlid,
+    PRFMedia receipt,
+  ) {
+    final theme = Theme.of(context);
+
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.errorContainer,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.delete_outline,
+                  color: theme.colorScheme.error,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Text('Delete Receipt'),
+            ],
+          ),
+          content: const Text(
+            'Are you sure you want to delete this receipt? '
+            'This action cannot be undone.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: theme.colorScheme.onSurface),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<DeleteReceiptCubit>().deleteReceipt(
+                  allocationEntryUlid: allocationEntryUlid,
+                  mediaUuid: receipt.uuid,
                 );
               },
+              icon: const Icon(Icons.delete_outline, size: 18),
+              label: const Text('Delete'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.error,
+                foregroundColor: theme.colorScheme.onError,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 
@@ -1987,6 +2215,70 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildHeader(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFAccountingEvent accountingEvent,
+  ) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.expenseTracking,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.financialOverview,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          BlocBuilder<GetAllocationEntriesCubit, GetAllocationEntriesState>(
+            builder: (context, state) {
+              return IconButton.filled(
+                onPressed: () => context
+                    .read<GetAllocationEntriesCubit>()
+                    .getAllocationEntries(
+                      accountingEventUlid: accountingEvent.ulid,
+                    ),
+                icon: state.maybeWhen(
+                  orElse: () => const Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                  loading: () => const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  loaded: (_) => const Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

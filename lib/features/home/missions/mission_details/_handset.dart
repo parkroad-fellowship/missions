@@ -124,7 +124,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       Tab(text: l10n.souls),
                       Tab(text: l10n.debriefNotes),
                       Tab(text: l10n.missionQuestions),
-                      Tab(text: l10n.expenses),
+                      Tab(text: l10n.financials),
                       Tab(text: l10n.gallery),
                     ],
                   ),

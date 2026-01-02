@@ -727,7 +727,7 @@ abstract class AppLocalizations {
   /// No description provided for @expenseTracking.
   ///
   /// In en, this message translates to:
-  /// **'Expense Tracking'**
+  /// **'Financials Tracking'**
   String get expenseTracking;
 
   /// No description provided for @currentBalance.
@@ -898,11 +898,11 @@ abstract class AppLocalizations {
   /// **'for my credentials'**
   String get viewCredentials;
 
-  /// No description provided for @expenses.
+  /// No description provided for @financials.
   ///
   /// In en, this message translates to:
-  /// **'Expenses'**
-  String get expenses;
+  /// **'Financials'**
+  String get financials;
 
   /// No description provided for @confirmationMessage.
   ///
@@ -991,7 +991,7 @@ abstract class AppLocalizations {
   /// No description provided for @amountReceived.
   ///
   /// In en, this message translates to:
-  /// **'Amount received'**
+  /// **'Amount received (Token included)'**
   String get amountReceived;
 
   /// No description provided for @tokenAmount.
