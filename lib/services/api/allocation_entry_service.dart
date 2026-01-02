@@ -36,4 +36,18 @@ class AllocationEntryService extends BaseAPIService<PRFAllocationEntry> {
       rethrow;
     }
   }
+
+  Future<void> deleteReceipt({
+    required String allocationEntryUlid,
+    required String mediaUuid,
+  }) async {
+    try {
+      await networkUtil.delete(
+        '$endpoint/$allocationEntryUlid/media/$mediaUuid',
+        apiVersion: 'v2'
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

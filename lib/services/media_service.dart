@@ -74,8 +74,6 @@ class MediaServiceImpl implements MediaService {
         url.write('events');
       case PRFMediaModel.memberProfilePictures:
         url.write('members');
-      case PRFMediaModel.expenses:
-        url.write('expenses');
       case PRFMediaModel.allocationEntryReceipts:
         url.write('allocation-entries');
     }

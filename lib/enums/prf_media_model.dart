@@ -6,7 +6,6 @@ enum PRFMediaModel {
   missionSessionLiveRecordings,
   eventPhotos,
   memberProfilePictures,
-  expenses,
   allocationEntryReceipts
   ;
 
@@ -26,8 +25,6 @@ enum PRFMediaModel {
         return 'event-photos';
       case PRFMediaModel.memberProfilePictures:
         return 'profile-pictures';
-      case PRFMediaModel.expenses:
-        return 'receipts';
       case PRFMediaModel.allocationEntryReceipts:
         return 'allocation-entry-receipts';
     }

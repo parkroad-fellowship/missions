@@ -10,6 +10,7 @@ import 'package:app/features/home/missions/mission_details/widgets/expenses/acti
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/edit_expense/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
@@ -806,7 +807,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 const SizedBox(height: 12),
 
                 if (hasReceipts) ...[
-                  _buildReceiptAttachments(context, entry.receipts),
+                  _buildReceiptAttachments(context, entry.ulid, entry.receipts),
                 ] else if (missingReceipt) ...[
                   _buildMissingReceiptAction(context, entry),
                 ],
@@ -820,199 +821,386 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
   Widget _buildReceiptAttachments(
     BuildContext context,
+    String allocationEntryUlid,
     List<PRFMedia> receipts,
   ) {
     final theme = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.receipt_long,
-                  size: 16,
-                  color: theme.colorScheme.primary,
-                ),
+    return BlocListener<DeleteReceiptCubit, DeleteReceiptState>(
+      listener: (context, state) {
+        state.when(
+          initial: () {},
+          loading: (mediaUuid) {},
+          loaded: (mediaUuid) {
+            _loadData();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Receipt deleted successfully'),
+                backgroundColor: Colors.green,
               ),
-              const SizedBox(width: 8),
-              Text(
-                '${receipts.length} '
-                'Attachment${receipts.length == 1 ? '' : 's'}',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
-                ),
+            );
+          },
+          error: (message) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(message),
+                backgroundColor: Theme.of(context).colorScheme.error,
               ),
-              const Spacer(),
-              Text(
-                'Tap to view',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+            );
+          },
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: theme.colorScheme.primary.withValues(alpha: 0.2),
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 80,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: receipts.length,
-              itemBuilder: (context, index) {
-                final receipt = receipts[index];
-                final isPdf = receipt.temporaryURL.toLowerCase().contains(
-                  '.pdf',
-                );
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.receipt_long,
+                    size: 16,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '${receipts.length} '
+                  'Attachment${receipts.length == 1 ? '' : 's'}',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 80,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: receipts.length,
+                itemBuilder: (context, index) {
+                  final receipt = receipts[index];
+                  final isPdf = receipt.temporaryURL.toLowerCase().contains(
+                    '.pdf',
+                  );
 
-                return GestureDetector(
-                  onTap: isPdf
-                      ? () => _openPdfDocument(context, receipt.temporaryURL)
-                      : () => _showReceiptPreview(context, receipts, index),
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    margin: const EdgeInsets.only(right: 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                        width: 2,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: theme.colorScheme.primary.withValues(
-                            alpha: 0.1,
-                          ),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: isPdf
-                        ? Container(
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.tertiary.withValues(
-                                alpha: 0.2,
-                              ),
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.file_present,
-                                  size: 28,
-                                  color: theme.colorScheme.tertiary,
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  'PDF',
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurface,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(14),
-                            child: Stack(
-                              children: [
-                                Image.network(
-                                  receipt.temporaryURL,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return ColoredBox(
-                                      color: theme
-                                          .colorScheme
-                                          .surfaceContainerHighest,
-                                      child: Icon(
-                                        Icons.image_not_supported,
-                                        color: theme.colorScheme.onSurface
-                                            .withValues(
-                                              alpha: 0.4,
-                                            ),
-                                        size: 24,
+                  return BlocBuilder<DeleteReceiptCubit, DeleteReceiptState>(
+                    builder: (context, state) {
+                      final isDeleting = state.maybeWhen(
+                        loading: (mediaUuid) => mediaUuid == receipt.uuid,
+                        orElse: () => false,
+                      );
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            GestureDetector(
+                              onTap: isPdf
+                                  ? () => _openPdfDocument(
+                                        context,
+                                        receipt.temporaryURL,
+                                      )
+                                  : () => _showReceiptPreview(
+                                        context,
+                                        receipts,
+                                        index,
                                       ),
-                                    );
-                                  },
-                                  // ignore: lines_longer_than_80_chars
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return ColoredBox(
-                                      color: theme
-                                          .colorScheme
-                                          .surfaceContainerHighest,
-                                      child: Center(
-                                        child: SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: theme.colorScheme.primary,
-                                            value:
-                                                loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                          // ignore: lines_longer_than_80_chars
-                                                          .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                : null,
+                              child: Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: theme.colorScheme.primary
+                                        .withValues(alpha: 0.3),
+                                    width: 2,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          theme.colorScheme.primary.withValues(
+                                        alpha: 0.1,
+                                      ),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: isPdf
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.tertiary
+                                              .withValues(
+                                            alpha: 0.2,
                                           ),
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.file_present,
+                                              size: 28,
+                                              color: theme.colorScheme.tertiary,
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              'PDF',
+                                              style: theme.textTheme.bodySmall
+                                                  ?.copyWith(
+                                                color:
+                                                    theme.colorScheme.onSurface,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(14),
+                                        child: Stack(
+                                          children: [
+                                            Image.network(
+                                              receipt.temporaryURL,
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return ColoredBox(
+                                                  color: theme.colorScheme
+                                                      .surfaceContainerHighest,
+                                                  child: Icon(
+                                                    Icons.image_not_supported,
+                                                    color: theme
+                                                        .colorScheme.onSurface
+                                                        .withValues(
+                                                      alpha: 0.4,
+                                                    ),
+                                                    size: 24,
+                                                  ),
+                                                );
+                                              },
+                                              // ignore: lines_longer_than_80_chars
+                                              loadingBuilder: (
+                                                context,
+                                                child,
+                                                loadingProgress,
+                                              ) {
+                                                if (loadingProgress == null) {
+                                                  return child;
+                                                }
+                                                return ColoredBox(
+                                                  color: theme.colorScheme
+                                                      .surfaceContainerHighest,
+                                                  child: Center(
+                                                    child: SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                          // ignore: lines_longer_than_80_chars
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: theme.colorScheme
+                                                            .primary,
+                                                        value: loadingProgress
+                                                                    // ignore: lines_longer_than_80_chars
+                                                                    .expectedTotalBytes !=
+                                                                null
+                                                            ? loadingProgress
+                                                                    // ignore: lines_longer_than_80_chars
+                                                                    .cumulativeBytesLoaded /
+                                                                loadingProgress
+                                                                    // ignore: lines_longer_than_80_chars
+                                                                    .expectedTotalBytes!
+                                                            : null,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            // Overlay for better tap indication
+                                            Positioned.fill(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(14),
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      Colors.transparent,
+                                                      Colors.black.withValues(
+                                                        alpha: 0.1,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    );
-                                  },
+                              ),
+                            ),
+                            // Delete button
+                            Positioned(
+                              top: -6,
+                              right: -6,
+                              child: GestureDetector(
+                                onTap: () => _showDeleteReceiptConfirmation(
+                                  context,
+                                  allocationEntryUlid,
+                                  receipt,
                                 ),
-                                // Overlay for better tap indication
-                                Positioned.fill(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Colors.transparent,
-                                          Colors.black.withValues(alpha: 0.1),
-                                        ],
+                                child: Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.error,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: theme.colorScheme.surface,
+                                      width: 2,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: theme.colorScheme.shadow
+                                            .withValues(alpha: 0.2),
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    size: 14,
+                                    color: theme.colorScheme.onError,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Loading overlay during deletion
+                            if (isDeleting)
+                              Positioned.fill(
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: const Center(
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                  ),
-                );
-              },
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+
+  void _showDeleteReceiptConfirmation(
+    BuildContext context,
+    String allocationEntryUlid,
+    PRFMedia receipt,
+  ) {
+    final theme = Theme.of(context);
+
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.errorContainer,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.delete_outline,
+                  color: theme.colorScheme.error,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Text('Delete Receipt'),
+            ],
+          ),
+          content: const Text(
+            'Are you sure you want to delete this receipt? '
+            'This action cannot be undone.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: theme.colorScheme.onSurface),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<DeleteReceiptCubit>().deleteReceipt(
+                      allocationEntryUlid: allocationEntryUlid,
+                      mediaUuid: receipt.uuid,
+                    );
+              },
+              icon: const Icon(Icons.delete_outline, size: 18),
+              label: const Text('Delete'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.error,
+                foregroundColor: theme.colorScheme.onError,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
