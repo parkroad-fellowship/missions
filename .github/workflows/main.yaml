@@ -68,7 +68,7 @@ jobs:
         with:
           flutter-version: 3
       - name: 🐦 Setup Shorebird
-        uses: shorebirdtech/setup-shorebird@v1
+        uses: shorebirdtech/setup-shorebird@main
         with:
           cache: true # Optionally cache your Shorebird installation
 
@@ -113,14 +113,14 @@ jobs:
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
       - name: 🚀 Shorebird Release (Android)
-        uses: shorebirdtech/shorebird-release@v1
+        uses: shorebirdtech/shorebird-release@main
         with:
-          flutter-version: 3.38.5
+          flutter-version: 3.38.4
           platform: android
           args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols -v
 
       - name: 🚀 Shorebird Patch
-        uses: shorebirdtech/shorebird-patch@v1
+        uses: shorebirdtech/shorebird-patch@main
         with:
           platform: android
           args: --flavor production --target lib/main_production.dart
