@@ -1,3 +1,4 @@
+import 'package:app/models/remote/prf_accounting_event.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_refund.freezed.dart';
@@ -12,7 +13,7 @@ abstract class PRFRefund with _$PRFRefund {
     @JsonKey(name: 'confirmation_message') String confirmationMessage,
     @JsonKey(name: 'created_at') DateTime createdAt,
     @JsonKey(name: 'updated_at') DateTime updatedAt, {
-    @JsonKey(name: 'accounting_event') String? accountingEvent,
+    @JsonKey(name: 'accounting_event') PRFAccountingEvent? accountingEvent,
   }) = _PRFRefund;
 
   factory PRFRefund.fromJson(Map<String, dynamic> json) =>
