@@ -69,8 +69,6 @@ jobs:
           flutter-version: 3
       - name: 🐦 Setup Shorebird
         uses: shorebirdtech/setup-shorebird@main
-        with:
-          cache: true # Optionally cache your Shorebird installation
 
       - name: 🚀 Use Shorebird
         run: shorebird --version
