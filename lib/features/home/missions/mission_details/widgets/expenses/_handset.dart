@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:app/enums/prf_entry_type.dart';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
@@ -1017,11 +1019,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                     return ColoredBox(
                                                       color: theme
                                                           .colorScheme
-                                                          // ignore: lines_longer_than_80_chars
                                                           .surfaceContainerHighest,
                                                       child: Icon(
                                                         Icons
-                                                            // ignore: lines_longer_than_80_chars
                                                             .image_not_supported,
                                                         color: theme
                                                             .colorScheme
