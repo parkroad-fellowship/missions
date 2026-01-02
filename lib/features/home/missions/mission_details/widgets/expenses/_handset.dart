@@ -285,8 +285,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final entry = entries.reversed.toList()[index];
-                  return _buildExpenseCard(context, entry)
+                  return _buildExpenseCard(context, entries[index])
                       .animate()
                       .fadeIn(
                         duration: 300.ms,
