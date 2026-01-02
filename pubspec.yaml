@@ -13,7 +13,7 @@ dependencies:
   auto_route: ^10.3.0
   awesome_notifications: ^0.10.1
   awesome_notifications_core: ^0.10.1
-  bloc: ^9.1.0
+  bloc: ^9.2.0
   build_version: ^2.1.1
   collection: ^1.19.1
   crypto: ^3.0.7
