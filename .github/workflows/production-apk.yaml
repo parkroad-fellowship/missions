@@ -88,8 +88,6 @@ jobs:
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
       - name: ⚙️ Build APK
-        env:
-          GRADLE_OPTS: "-Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=false -Xmx3g"
         run: flutter build apk --flavor development --target lib/main_development.dart --release
 
       - name: ☁ Upload artifact to Firebase App Distribution

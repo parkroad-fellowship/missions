@@ -1,6 +1,10 @@
 name: Release to production
 
 on:
+  pull_request:
+    branches:
+      - main
+  
   push:
     branches:
       - main
@@ -23,17 +27,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
-
-      - name: 🧹 Free Disk Space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: false
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
 
       - name: 🗄️ Cache Gradle
         uses: actions/cache@v5
@@ -67,7 +60,7 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3
+          flutter-version: 3.38.5
       - name: 🐦 Setup Shorebird
         uses: shorebirdtech/setup-shorebird@main
 
@@ -114,7 +107,7 @@ jobs:
       - name: 🚀 Shorebird Release (Android)
         uses: shorebirdtech/shorebird-release@main
         with:
-          flutter-version: 3.38.4
+          flutter-version: 3.38.5
           platform: android
           args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols -v
 
@@ -124,12 +117,6 @@ jobs:
           platform: android
           args: --flavor production --target lib/main_production.dart
           release-version: latest
-
-      - name: 🧹 Clean intermediate build files
-        run: |
-          find build -type f -name "*.gradle" -delete
-          find build -type f -name "*.so" -delete
-          du -sh build/ || true
 
       - name: 📦 Upload debug symbols artifact
         uses: actions/upload-artifact@v6
@@ -226,15 +213,6 @@ jobs:
         run: |
           rm -f $HOME/firebase-service-account.json
 
-      - name: Status
-        if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: https://hooks.slack.com/services/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
-          SLACK_TITLE: "Debug Symbols Upload Failed"
-          SLACK_MESSAGE: "Failed to upload debug symbols to Firebase Crashlytics"
-          SLACK_COLOR: warning
-
   release_google_play:
     needs: build
     runs-on: ubuntu-latest
@@ -271,11 +249,6 @@ jobs:
           --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
           --track production
 
-      - name: Status
-        if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: https://hooks.slack.com/services/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
 
   release_app_gallery:
     needs: build
@@ -302,9 +275,3 @@ jobs:
           file-extension: "aab"
           file-path: build/app/outputs/bundle/productionRelease/app-production-release.aab
           submit: false
-
-      - name: Status
-        if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: https://hooks.slack.com/services/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
