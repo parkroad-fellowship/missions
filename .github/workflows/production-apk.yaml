@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    if: github.actor != 'dependabot[bot]'
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v5
@@ -36,9 +36,7 @@ jobs:
         run: dart format --set-exit-if-changed lib test
 
       - name: ⚙️ Code Generation
-        run: |
-          dart run build_runner build --delete-conflicting-outputs
-          flutter pub get
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: 🕵️ Analyse
         run: flutter analyze lib
