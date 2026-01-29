@@ -28,7 +28,15 @@ jobs:
           haskell: true
           large-packages: true
           docker-images: true
-          swap-storage: true
+          swap-storage: false
+
+      - name: 💾 Create Swap Space
+        run: |
+          sudo fallocate -l 8G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          sudo swapon --show
 
       - name: 🗄️ Cache Gradle
         uses: actions/cache@v5
@@ -99,7 +107,9 @@ jobs:
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
       - name: ⚙️ Build APK
-        run: flutter build apk  --flavor development --target lib/main_development.dart --release
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=false -Xmx3g"
+        run: flutter build apk --flavor development --target lib/main_development.dart --release
 
       - name: ☁ Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
