@@ -1177,7 +1177,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
     showDialog<void>(
       context: context,
-      builder: (BuildContext dialogContext) {
+      builder: (dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -1525,7 +1525,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
     showDialog<void>(
       context: context,
-      builder: (BuildContext dialogContext) {
+      builder: (dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),

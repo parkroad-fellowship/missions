@@ -246,23 +246,22 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         : MediaQuery.of(context).size.height * 0.6,
                   ),
                   child: LiveRecordingWidget(
-                    onRecordingCompleted:
-                        (String filePath, Duration duration) async {
-                          final file = File(filePath);
-                          if (file.existsSync()) {
-                            await context
-                                .read<RecordingUploadCubit>()
-                                .uploadRecording(
-                                  PRFMediaDTO(
-                                    model: PRFMediaModel
-                                        .missionSessionLiveRecordings,
-                                    modelUlid: widget.missionSessionUlid,
-                                    path: file.path,
-                                    name: Misc.getFileName(file.path),
-                                  ),
-                                );
-                          }
-                        },
+                    onRecordingCompleted: (filePath, duration) async {
+                      final file = File(filePath);
+                      if (file.existsSync()) {
+                        await context
+                            .read<RecordingUploadCubit>()
+                            .uploadRecording(
+                              PRFMediaDTO(
+                                model:
+                                    PRFMediaModel.missionSessionLiveRecordings,
+                                modelUlid: widget.missionSessionUlid,
+                                path: file.path,
+                                name: Misc.getFileName(file.path),
+                              ),
+                            );
+                      }
+                    },
                   ),
                 );
               },

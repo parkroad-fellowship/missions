@@ -265,7 +265,7 @@ class NotificationServiceImpl implements NotificationService {
 
     await showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           title: Text(l10n.getNotified),
           content: Text(l10n.allowNotifications),

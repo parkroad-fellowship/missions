@@ -208,7 +208,7 @@ class MediaServiceImpl implements MediaService {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        builder: (BuildContext context) {
+        builder: (context) {
           final theme = Theme.of(context);
           return SafeArea(
             child: Padding(
