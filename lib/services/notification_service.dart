@@ -315,6 +315,7 @@ class NotificationServiceImpl implements NotificationService {
     final notificationsEnabled = getIt<HiveService>().settings
         .areNotificationsEnabled();
     if (!notificationsEnabled) return;
+    await AwesomeNotifications().cancelAllSchedules();
     for (final prayerPrompt in prayerPrompts) {
       await AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -348,6 +349,7 @@ class NotificationServiceImpl implements NotificationService {
     final notificationsEnabled = getIt<HiveService>().settings
         .areNotificationsEnabled();
     if (!notificationsEnabled) return;
+    await AwesomeNotifications().cancelAllSchedules();
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         autoDismissible: false,
@@ -357,7 +359,7 @@ class NotificationServiceImpl implements NotificationService {
         body: 'Consider supporting the fellowship with your giving',
         payload: {'type': 'giving_prompt'},
       ),
-      // Show this notification every Fridy at 1250 Hours
+      // Show this notification every Friday at 1250 Hours
       schedule: NotificationCalendar(
         weekday: 5,
         hour: 12,
