@@ -1,5 +1,12 @@
 // Theme barrel export file
-export 'app_theme.dart';
-export 'colors/_index.dart';
-export 'extensions/_index.dart';
-export 'text_theme.dart';
+// Re-exports from prf_design_system package
+
+export 'package:prf_design_system/prf_design_system.dart'
+    show
+        PRFColorPalette,
+        PRFColors,
+        PRFColorsExtension,
+        PRFStatusExtension,
+        PRFTextTheme,
+        PRFTheme,
+        PRFThemeContextExtensions;

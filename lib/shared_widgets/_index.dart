@@ -1,25 +1,34 @@
 // Shared widgets barrel export file
-// Note: Prefer direct imports to specific widget files
+// Re-exports from prf_design_system package + local widgets
 
-export 'buttons/destroy/destroy.dart';
-export 'buttons/google_auth/google_auth.dart';
-export 'buttons/primary/primary.dart';
-export 'buttons/secondary/secondary.dart';
+// Package exports
+export 'package:prf_design_system/prf_design_system.dart'
+    show
+        AnimatedStatCard,
+        FormFieldLabel,
+        GoogleAuthButton,
+        ImagePreviewPage,
+        PDFViewerPage,
+        PRFCategoryChips,
+        PRFCircularProgressIndicator,
+        PRFDestroyButton,
+        PRFEmailInput,
+        PRFEmptyView,
+        PRFErrorSnackbar,
+        PRFErrorView,
+        PRFLinearProgressIndicator,
+        PRFNameInput,
+        PRFNumberInput,
+        PRFPasswordInput,
+        PRFPrimaryButton,
+        PRFSecondaryButton,
+        PRFTextAreaInput,
+        PRFTextInput,
+        ReplyStatusView,
+        StatHighlightCard,
+        WrappedPageIndicator;
+
+// Local widgets (not in package)
 export 'home_action_card/home_action_card.dart';
-export 'input/email_address/email_address.dart';
-export 'input/form_field_label/form_field_label.dart';
-export 'input/name/name.dart';
-export 'input/number/number.dart';
-export 'input/password/password.dart';
-export 'input/text/text.dart';
-export 'input/text_area/text_area.dart';
-export 'progress/circular_progress_indicator.dart';
-export 'progress/linear_progress_indicator.dart';
 export 'states/categories.dart';
-export 'states/empty_state.dart';
 export 'states/receipt_preview.dart';
-export 'states/reply_status.dart';
-export 'viewers/pdf_viewer.dart';
-export 'wrapped/animated_stat_card.dart';
-export 'wrapped/stat_highlight_card.dart';
-export 'wrapped/wrapped_page_indicator.dart';

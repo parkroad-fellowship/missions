@@ -4,8 +4,6 @@ import 'package:app/features/home/shared/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_prompt.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/shared_widgets/buttons/primary/primary.dart';
-import 'package:app/shared_widgets/buttons/secondary/secondary.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -13,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:prf_design_system/prf_design_system.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 abstract class NotificationService {

@@ -1,10 +1,10 @@
 import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/faq/prf_faq_category.dart';
-import 'package:app/shared_widgets/progress/linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design_system/prf_design_system.dart';
 
 class FaqCategoriesPreview extends StatefulWidget {
   const FaqCategoriesPreview({required this.onCategorySelected, super.key});

@@ -2,11 +2,11 @@ import 'package:app/features/home/missions/mission_details/widgets/mission_quest
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission_question.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:app/shared_widgets/states/empty_state.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design_system/prf_design_system.dart';
 
 class MissionQuestionsViewHandset extends StatefulWidget {
   const MissionQuestionsViewHandset({required this.missionUlid, super.key});

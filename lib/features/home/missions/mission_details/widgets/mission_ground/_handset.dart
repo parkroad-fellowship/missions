@@ -6,12 +6,12 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/shared_widgets/progress/linear_progress_indicator.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:prf_design_system/prf_design_system.dart';
 
 class MissionGroundViewHandset extends StatefulWidget {
   const MissionGroundViewHandset({required this.missionUlid, super.key});

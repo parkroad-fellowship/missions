@@ -50,10 +50,11 @@ class _StudentEnquiriesPageHandsetState
             // Reply Status Filter
             SliverToBoxAdapter(
               child: ReplyStatusView(
-                // ignore: avoid_types_on_closure_parameters
-                onReplyStatusSelected: ({bool? replyStatus}) {
+                unreadLabel: l10n.unread,
+                repliedLabel: l10n.replied,
+                onStatusSelected: ({required status}) {
                   setState(() {
-                    _selectedReplyStatus = replyStatus ?? false;
+                    _selectedReplyStatus = status;
                   });
                   Logger().i('Selected Status: $_selectedReplyStatus');
                 },
