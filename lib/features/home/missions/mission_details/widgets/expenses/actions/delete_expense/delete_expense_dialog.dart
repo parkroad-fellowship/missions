@@ -1,7 +1,7 @@
-import 'package:app/enums/prf_entry_type.dart';
+import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_allocation_entry.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';

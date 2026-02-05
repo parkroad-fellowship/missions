@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_event_subscription.dart';
+import 'package:app/models/remote/event/prf_event_subscription.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class EventSubscriptionService extends BaseAPIService<PRFEventSubscription> {

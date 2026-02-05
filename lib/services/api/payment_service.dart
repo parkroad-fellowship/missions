@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_payment.dart';
+import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class PaymentService extends BaseAPIService<PRFPayment> {

@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
-import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/pending_uploads_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_failed_recording_upload.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/local/media/prf_failed_recording_upload.dart';
+import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -257,7 +257,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                                     PRFMediaModel.missionSessionLiveRecordings,
                                 modelUlid: widget.missionSessionUlid,
                                 path: file.path,
-                                name: Misc.getFileName(file.path),
+                                name: StringFormatter.getFileName(file.path),
                               ),
                             );
                       }

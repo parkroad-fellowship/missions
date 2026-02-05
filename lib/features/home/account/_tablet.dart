@@ -1,5 +1,5 @@
+import 'package:app/enums/member/prf_membership_type.dart';
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/enums/prf_membership_type.dart';
 import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
@@ -413,7 +413,7 @@ class AccountPageTablet extends StatelessWidget {
                                           host: 'parkroadfellowship.org',
                                           path: '/privacy-policy',
                                         );
-                                        await Misc.openUrl(uri);
+                                        await UrlHelper.openUrl(uri);
                                       },
                                   ),
                                   TextSpan(
@@ -436,7 +436,7 @@ class AccountPageTablet extends StatelessWidget {
                                           host: 'parkroadfellowship.org',
                                           path: 'privacy-policy',
                                         );
-                                        await Misc.openUrl(uri);
+                                        await UrlHelper.openUrl(uri);
                                       },
                                   ),
                                 ],
@@ -445,7 +445,7 @@ class AccountPageTablet extends StatelessWidget {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              l10n.version(Misc.getAppVersion()),
+                              l10n.version(AppVersionHelper.getAppVersion()),
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),

@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_accounting_event.dart';
+import 'package:app/models/remote/expense/prf_accounting_event.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class AccountingEventService extends BaseAPIService<PRFAccountingEvent> {

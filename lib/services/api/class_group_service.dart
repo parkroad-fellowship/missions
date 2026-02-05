@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class ClassGroupService extends BaseAPIService<PRFClassGroup> {

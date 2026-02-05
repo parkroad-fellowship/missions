@@ -17,7 +17,7 @@ class PRFTheme {
 
   static ThemeData light(BuildContext context) {
     final textTheme = PRFTextTheme.getLightTheme(context);
-    final scaleFactor = Misc.getScaleFactor(context);
+    final scaleFactor = DeviceHelper.getScaleFactor(context);
 
     return ThemeData(
       useMaterial3: true,

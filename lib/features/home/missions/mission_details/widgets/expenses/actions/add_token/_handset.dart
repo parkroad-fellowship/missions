@@ -1,5 +1,5 @@
-import 'package:app/enums/prf_charge_type.dart';
-import 'package:app/enums/prf_entry_type.dart';
+import 'package:app/enums/mission/prf_entry_type.dart';
+import 'package:app/enums/payment/prf_charge_type.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_token_entry_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/shared_widgets/_index.dart';

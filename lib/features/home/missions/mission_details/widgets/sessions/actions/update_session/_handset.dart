@@ -1,10 +1,10 @@
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
-import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/update_mission_session_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_local_mission_subscription.dart';
-import 'package:app/models/local/prf_mission_session.dart';
+import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
+import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';

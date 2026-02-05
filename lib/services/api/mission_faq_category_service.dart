@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_faq_category.dart';
+import 'package:app/models/remote/content/prf_faq_category.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class MissionFaqCategoryService extends BaseAPIService<PRFFaqCategory> {

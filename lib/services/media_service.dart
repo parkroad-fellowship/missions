@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_media.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/media/prf_media.dart';
+import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/utils/_index.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -87,7 +87,7 @@ class MediaServiceImpl implements MediaService {
       );
 
       await azureStorage.putBlob(
-        'prf-media-upload/${Misc.getFileName(imageDTO.path)}',
+        'prf-media-upload/${StringFormatter.getFileName(imageDTO.path)}',
         bodyBytes: File(imageDTO.path).readAsBytesSync(),
         contentType: mime.lookupMimeType(imageDTO.path) ?? 'image/jpeg',
       );
@@ -135,7 +135,7 @@ class MediaServiceImpl implements MediaService {
 
       await FlutterDownloader.enqueue(
         url: downloadURL,
-        fileName: Misc.getFileName(downloadURL),
+        fileName: StringFormatter.getFileName(downloadURL),
         savedDir: appDocDir,
         saveInPublicStorage: true,
       );
@@ -181,7 +181,7 @@ class MediaServiceImpl implements MediaService {
             path: file.path,
             model: model,
             modelUlid: modelUlid,
-            name: Misc.getFileName(file.path),
+            name: StringFormatter.getFileName(file.path),
           ),
         );
       }
@@ -330,7 +330,7 @@ class MediaServiceImpl implements MediaService {
 
         // Generate unique filename
         final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final originalFileName = Misc.getFileName(file.path);
+        final originalFileName = StringFormatter.getFileName(file.path);
         final extension = originalFileName.split('.').last;
         final fileName = 'media_$timestamp.$extension';
         final newPath = '${mediaDir.path}/$fileName';
@@ -389,7 +389,7 @@ class MediaServiceImpl implements MediaService {
           for (final filePath in filePaths) {
             if (filePath != null) {
               final file = File(filePath);
-              final fileName = Misc.getFileName(filePath);
+              final fileName = StringFormatter.getFileName(filePath);
               final mediaUploadsDir = '${appDir.path}/media_uploads';
               await Directory(mediaUploadsDir).create(recursive: true);
               final newPath = '$mediaUploadsDir/$fileName';
@@ -442,7 +442,7 @@ class MediaServiceImpl implements MediaService {
         for (final filePath in filePaths) {
           if (filePath != null) {
             final file = File(filePath);
-            final fileName = Misc.getFileName(filePath);
+            final fileName = StringFormatter.getFileName(filePath);
             final mediaUploadsDir = '${appDir.path}/media_uploads';
             await Directory(mediaUploadsDir).create(recursive: true);
             final newPath = '$mediaUploadsDir/$fileName';

@@ -1,12 +1,12 @@
-import 'package:app/enums/prf_charge_type.dart';
+import 'package:app/enums/payment/prf_charge_type.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_allocation_entry.dart';
-import 'package:app/models/remote/prf_expense_category.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
+import 'package:app/models/remote/expense/prf_expense_category.dart';
+import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

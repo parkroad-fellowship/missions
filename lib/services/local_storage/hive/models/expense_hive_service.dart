@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_expense_category.dart';
+import 'package:app/models/remote/expense/prf_expense_category.dart';
 import 'package:app/services/local_storage/hive/_base_hive_service.dart';
 import 'package:app/utils/_index.dart';
 

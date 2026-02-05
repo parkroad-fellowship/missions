@@ -6,7 +6,7 @@ import 'package:app/features/home/events/event_details/actions/update_event_subs
 import 'package:app/features/home/events/event_details/event_details/event_details.dart';
 import 'package:app/features/home/events/event_details/gallery/gallery.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_event.dart';
+import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';

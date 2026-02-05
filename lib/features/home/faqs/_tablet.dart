@@ -1,7 +1,7 @@
 import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_faq.dart';
-import 'package:app/models/local/prf_faq_category.dart';
+import 'package:app/models/local/faq/prf_faq.dart';
+import 'package:app/models/local/faq/prf_faq_category.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';

@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_mission_session.dart';
+import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class MissionSessionService extends BaseAPIService<PRFMissionSession> {

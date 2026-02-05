@@ -1,5 +1,5 @@
-import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
+import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -80,7 +80,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                 ),
               ),
               // Call button
-              if (Misc.userCan('viewAny mission ground suggestion'))
+              if (PermissionHelper.userCan('viewAny mission ground suggestion'))
                 Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
@@ -97,7 +97,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                         scheme: 'tel',
                         path: missionGroundSuggestion.contactNumber,
                       );
-                      await Misc.openUrl(uri);
+                      await UrlHelper.openUrl(uri);
                     },
                   ),
                 ).animate(

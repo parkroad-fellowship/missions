@@ -1,11 +1,10 @@
-import 'package:app/features/home/cubit/get_announcements_cubit.dart';
+import 'package:app/features/home/shared/cubit/get_announcements_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_announcement.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -320,7 +319,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                Misc.formatTimeFromDateTime(
+                                DateFormatter.formatTimeFromDateTime(
                                   announcement.publishedAt,
                                   timezone,
                                 ),

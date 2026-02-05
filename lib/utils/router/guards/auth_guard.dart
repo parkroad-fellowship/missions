@@ -1,7 +1,6 @@
 import 'package:app/services/_index.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
+import 'package:app/utils/singletons.dart';
 import 'package:auto_route/auto_route.dart';
 
 class AuthGuard extends AutoRouteGuard {

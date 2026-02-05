@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_member_engagement.dart';
+import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

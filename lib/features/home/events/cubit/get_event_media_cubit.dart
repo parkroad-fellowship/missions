@@ -1,5 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/models/remote/prf_media.dart';
+import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/event_service.dart';
 import 'package:bloc/bloc.dart';

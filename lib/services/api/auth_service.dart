@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/common/auth.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class AuthService extends BaseAPIService<PRFUser> {

@@ -1,4 +1,4 @@
-import 'package:app/enums/prf_environment.dart';
+import 'package:app/enums/common/prf_environment.dart';
 
 class PRFSuperAppValues {
   PRFSuperAppValues({

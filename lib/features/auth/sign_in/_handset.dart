@@ -335,7 +335,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
-                                  l10n.version(Misc.getAppVersion()),
+                                  l10n.version(
+                                    AppVersionHelper.getAppVersion(),
+                                  ),
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
                                     fontSize: 12,

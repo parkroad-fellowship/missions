@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_faq.dart';
+import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class MissionFaqService extends BaseAPIService<PRFFaq> {

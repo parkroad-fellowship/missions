@@ -1,8 +1,8 @@
-import 'package:app/enums/prf_mission_role.dart';
-import 'package:app/enums/prf_mission_subscription_status.dart';
+import 'package:app/enums/mission/prf_mission_role.dart';
+import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_local_mission_subscription.dart';
+import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
@@ -342,7 +342,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
       scheme: 'tel',
       path: subscription.member.phoneNumber,
     );
-    await Misc.openUrl(uri);
+    await UrlHelper.openUrl(uri);
   }
 
   void _viewSubscriber(

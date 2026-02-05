@@ -1,4 +1,4 @@
-import 'package:app/features/home/cubit/get_member_engagement_cubit.dart';
+import 'package:app/features/home/shared/cubit/get_member_engagement_cubit.dart';
 import 'package:app/features/home/wrapped/pages/wrapped_pages.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:auto_route/auto_route.dart';

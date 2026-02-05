@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:app/di/di_container.dart';
 import 'package:app/firebase_options.dart';
-import 'package:app/models/remote/auth.dart';
-import 'package:app/models/remote/socket_config.dart';
+import 'package:app/models/remote/common/auth.dart';
+import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/firebase_messaging_service.dart';
-import 'package:app/services/firebase_service.dart';
-import 'package:app/utils/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -72,8 +70,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       };
     }
 
-    Singletons.setup();
-    await Singletons.setupDatabases();
+    DIContainer.setup();
+    await DIContainer.initializeDatabases();
 
     try {
       await getIt<FirebaseService>().initRemoteConfig();

@@ -6,7 +6,7 @@ class PRFTextTheme {
   PRFTextTheme._();
 
   static TextTheme getLightTheme(BuildContext context) {
-    final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
 
     const defaultTextColor = Colors.black;
     const secondaryTextColor = Color(0xff6c757d);
@@ -131,7 +131,7 @@ class PRFTextTheme {
 
   // Utility methods for special text styles
   static TextStyle getErrorTextStyle(BuildContext context) {
-    final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
@@ -141,7 +141,7 @@ class PRFTextTheme {
   }
 
   static TextStyle getSuccessTextStyle(BuildContext context) {
-    final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
@@ -151,7 +151,7 @@ class PRFTextTheme {
   }
 
   static TextStyle getWarningTextStyle(BuildContext context) {
-    final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
@@ -161,7 +161,7 @@ class PRFTextTheme {
   }
 
   static TextStyle getInfoTextStyle(BuildContext context) {
-    final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
@@ -171,7 +171,7 @@ class PRFTextTheme {
   }
 
   static TextStyle getButtonTextStyle(BuildContext context) {
-    final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
     return GoogleFonts.lato(
       fontSize: 14 * adjustedScaleFactor,
       fontWeight: FontWeight.w600,
@@ -180,7 +180,7 @@ class PRFTextTheme {
   }
 
   static TextStyle getCaptionTextStyle(BuildContext context) {
-    final adjustedScaleFactor = Misc.getScaleFactor(context);
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
     return GoogleFonts.lato(
       fontSize: 10 * adjustedScaleFactor,
       fontWeight: FontWeight.w400,

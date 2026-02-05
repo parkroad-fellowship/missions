@@ -1,4 +1,4 @@
-import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/add_mission_question_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';

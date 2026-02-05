@@ -1,7 +1,6 @@
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

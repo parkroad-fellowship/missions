@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, lines_longer_than_80_chars
 
-import 'package:app/models/local/prf_failed_recording_upload.dart';
-import 'package:app/models/local/upload_retry_progress.dart';
+import 'package:app/di/_index.dart';
+import 'package:app/models/local/media/prf_failed_recording_upload.dart';
+import 'package:app/models/local/media/upload_retry_progress.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';

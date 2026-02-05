@@ -1,7 +1,7 @@
 import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_payment_type.dart';
+import 'package:app/models/remote/payment/prf_payment_type.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +100,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     Gaimon.success();
                     Navigator.of(context).pop();
                     if (result.payment.authorizationUrl != null) {
-                      await Misc.openUrl(
+                      await UrlHelper.openUrl(
                         Uri.parse(result.payment.authorizationUrl!),
                       );
                     }

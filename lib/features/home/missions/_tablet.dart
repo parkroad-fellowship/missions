@@ -1,11 +1,10 @@
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_mission.dart';
+import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -384,7 +383,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                         ),
                       ),
                       Text(
-                        Misc.getMonthAbbreviation(startDate.month),
+                        DateFormatter.getMonthAbbreviation(startDate.month),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
@@ -405,7 +404,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                         ),
                       ),
                       Text(
-                        Misc.getMonthAbbreviation(endDate.month),
+                        DateFormatter.getMonthAbbreviation(endDate.month),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
@@ -421,7 +420,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                         ),
                       ),
                       Text(
-                        Misc.getMonthAbbreviation(startDate.month),
+                        DateFormatter.getMonthAbbreviation(startDate.month),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
@@ -598,7 +597,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                   isMultiDay
                                       ? l10n.durationDesc(duration)
                                       // ignore: lines_longer_than_80_chars
-                                      : '${Misc.formatTime(mission.startTime, timezone)} - ${Misc.formatTime(mission.endTime, timezone)}',
+                                      : '${DateFormatter.formatTime(mission.startTime, timezone)} - ${DateFormatter.formatTime(mission.endTime, timezone)}',
                                   theme.colorScheme.primary,
                                 ),
                               ),
@@ -659,8 +658,8 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                       Text(
                                         isMultiDay
                                             // ignore: lines_longer_than_80_chars
-                                            ? '${Misc.formatDate(startDate, timezone)} - ${Misc.formatDate(endDate, timezone)}'
-                                            : Misc.formatDate(
+                                            ? '${DateFormatter.formatDate(startDate, timezone)} - ${DateFormatter.formatDate(endDate, timezone)}'
+                                            : DateFormatter.formatDate(
                                                 startDate,
                                                 timezone,
                                               ),
@@ -676,7 +675,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                       if (isMultiDay)
                                         Text(
                                           // ignore: lines_longer_than_80_chars
-                                          '${Misc.formatTime(mission.startTime, timezone)} - ${Misc.formatTime(mission.endTime, timezone)}',
+                                          '${DateFormatter.formatTime(mission.startTime, timezone)} - ${DateFormatter.formatTime(mission.endTime, timezone)}',
                                           style: theme.textTheme.bodySmall
                                               ?.copyWith(
                                                 color: theme

@@ -1,5 +1,5 @@
-import 'package:app/models/local/prf_faq.dart';
-import 'package:app/models/remote/prf_faq.dart';
+import 'package:app/models/local/faq/prf_faq.dart';
+import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar_community/isar.dart';
 

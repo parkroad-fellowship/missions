@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_prayer_request.dart';
+import 'package:app/models/remote/prayer/prf_prayer_request.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class PrayerRequestService extends BaseAPIService<PRFPrayerRequest> {

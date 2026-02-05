@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/http/retry_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
@@ -37,8 +36,8 @@ class NetworkUtil {
         contentType: 'application/json',
         headers: <String, dynamic>{
           'Accept': 'application/json',
-          'X-App-Version': Misc.getFullAppVersion(),
-          'X-PRF-App': 'PRF-Missions-${Misc.getFullAppVersion()}',
+          'X-App-Version': AppVersionHelper.getFullAppVersion(),
+          'X-PRF-App': 'PRF-Missions-${AppVersionHelper.getFullAppVersion()}',
         },
         // Fixed timeout configuration
         connectTimeout: const Duration(seconds: 30),

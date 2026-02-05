@@ -1,6 +1,7 @@
 import 'package:app/app/app.dart';
 import 'package:app/bootstrap.dart';
-import 'package:app/enums/prf_environment.dart';
+import 'package:app/di/di_container.dart';
+import 'package:app/enums/common/prf_environment.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,7 @@ Future<void> main() async {
   ]).then(
     (_) async => bootstrap(
       () => MultiBlocProvider(
-        providers: Singletons.registerCubits(),
+        providers: DIContainer.registerCubits(),
         child: const PRFSuperApp(),
       ),
     ),

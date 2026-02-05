@@ -3,7 +3,7 @@ import 'package:app/features/home/mission_ground_suggestions/actions/update_miss
 import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/widgets/mission_ground_suggestion_card.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
@@ -215,7 +215,7 @@ class _MissionGroundSuggestionsPageHandsetState
   Future<void> _updateMissionGroundSuggestion(
     PRFMissionGroundSuggestion missionGroundSuggestion,
   ) async {
-    if (!Misc.userCan('edit mission ground suggestion')) {
+    if (!PermissionHelper.userCan('edit mission ground suggestion')) {
       return;
     }
 

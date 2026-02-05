@@ -1,6 +1,6 @@
-import 'package:app/enums/prf_event_type.dart';
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_event.dart';
+import 'package:app/enums/event/prf_event_type.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/services/api/event_service.dart';
 import 'package:bloc/bloc.dart';

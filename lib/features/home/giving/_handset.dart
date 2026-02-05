@@ -1,12 +1,11 @@
-import 'package:app/enums/prf_payment_status.dart';
+import 'package:app/enums/payment/prf_payment_status.dart';
 import 'package:app/features/home/giving/actions/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_payment.dart';
+import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -298,7 +297,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       onTap: () async {
                         Navigator.pop(context);
                         final uri = Uri.parse(payment.authorizationUrl!);
-                        await Misc.openUrl(uri).then((_) {
+                        await UrlHelper.openUrl(uri).then((_) {
                           // ignore: use_build_context_synchronously
                           context.read<GetPaymentsCubit>().getPayments();
                         });
@@ -424,7 +423,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
               ),
               const SizedBox(width: 8),
               Text(
-                Misc.formatDateTime(payment.createdAt, timezone),
+                DateFormatter.formatDateTime(payment.createdAt, timezone),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),

@@ -1,7 +1,7 @@
-import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
+import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

@@ -1,8 +1,8 @@
-import 'package:app/enums/prf_notification_type.dart';
-import 'package:app/enums/prf_time_of_day.dart';
-import 'package:app/features/home/cubit/save_prayer_response_cubit.dart';
+import 'package:app/enums/common/prf_notification_type.dart';
+import 'package:app/enums/mission/prf_time_of_day.dart';
+import 'package:app/features/home/shared/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_prayer_prompt.dart';
+import 'package:app/models/remote/prayer/prf_prayer_prompt.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/buttons/primary/primary.dart';
 import 'package:app/shared_widgets/buttons/secondary/secondary.dart';

@@ -2,7 +2,7 @@ import 'package:app/features/home/events/cubit/add_event_subscription_cubit.dart
 import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_event.dart';
+import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

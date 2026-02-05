@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:app/models/remote/prf_allocation_entry.dart';
-import 'package:app/models/remote/prf_allocation_entry_dto.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry_dto.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class AllocationEntryService extends BaseAPIService<PRFAllocationEntry> {

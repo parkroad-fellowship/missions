@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:app/models/remote/auth.dart';
+import 'package:app/models/remote/common/auth.dart';
 import 'package:app/services/firebase_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
