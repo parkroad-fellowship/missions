@@ -49,7 +49,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
+                        color: PRFColors.black.withValues(alpha: 0.1),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -348,7 +348,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final statusColor = _getStatusColor(theme);
+    final statusColor = _getStatusColor(context);
     final l10n = context.l10n;
 
     return Container(
@@ -459,18 +459,19 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
     );
   }
 
-  Color _getStatusColor(ThemeData theme) {
+  Color _getStatusColor(BuildContext context) {
+    final statusColors = context.statusColors;
     switch (payment.paymentStatus.name.toLowerCase()) {
       case 'success':
       case 'completed':
-        return Colors.green;
+        return statusColors.completed.main;
       case 'pending':
-        return Colors.orange;
+        return statusColors.pending.main;
       case 'failed':
       case 'cancelled':
-        return Colors.red;
+        return statusColors.failed.main;
       default:
-        return theme.colorScheme.primary;
+        return context.colorScheme.primary;
     }
   }
 }

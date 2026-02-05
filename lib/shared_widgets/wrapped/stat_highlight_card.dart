@@ -1,3 +1,4 @@
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -50,13 +51,13 @@ class StatHighlightCard extends StatelessWidget {
             Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: PRFColors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     icon,
                     size: 32,
-                    color: Colors.white,
+                    color: PRFColors.white,
                   ),
                 )
                 .animate(delay: delay)
@@ -72,7 +73,7 @@ class StatHighlightCard extends StatelessWidget {
                 Text(
                       title,
                       style: theme.textTheme.headlineSmall?.copyWith(
-                        color: Colors.white,
+                        color: PRFColors.white,
                         fontWeight: FontWeight.w700,
                       ),
                     )
@@ -83,7 +84,7 @@ class StatHighlightCard extends StatelessWidget {
                 Text(
                       subtitle,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.9),
+                        color: PRFColors.white.withValues(alpha: 0.9),
                       ),
                     )
                     .animate(delay: delay + 400.ms)

@@ -1,3 +1,4 @@
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -83,7 +84,7 @@ class AnimatedStatCard extends StatelessWidget {
           Text(
                 label,
                 style: theme.textTheme.titleLarge?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: PRFColors.white.withValues(alpha: 0.9),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.center,

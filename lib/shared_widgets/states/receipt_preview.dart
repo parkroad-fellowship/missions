@@ -1,4 +1,5 @@
 import 'package:app/models/remote/media/prf_media.dart';
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 
 class ReceiptPreviewPage extends StatefulWidget {
@@ -37,13 +38,13 @@ class ReceiptPreviewPageState extends State<ReceiptPreviewPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: PRFColors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: PRFColors.black,
+        foregroundColor: PRFColors.white,
         title: Text(
           'Receipt ${_currentIndex + 1} of ${widget.receipts.length}',
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: PRFColors.white),
         ),
       ),
       body: PageView.builder(

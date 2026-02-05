@@ -220,7 +220,8 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(l10n.completed),
-                                  backgroundColor: Colors.green,
+                                  backgroundColor:
+                                      context.statusColors.success.main,
                                 ),
                               );
                               Navigator.of(context).pop();
@@ -233,7 +234,8 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(message),
-                                  backgroundColor: Colors.red,
+                                  backgroundColor:
+                                      context.statusColors.error.main,
                                 ),
                               );
                             },

@@ -1,19 +1,11 @@
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/helpers/_index.dart';
+import 'package:app/utils/theme/colors/_index.dart';
+import 'package:app/utils/theme/extensions/_index.dart';
+import 'package:app/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 
 class PRFTheme {
   PRFTheme._();
-
-  static const int primaryColor = 0xff17154c;
-  static const int secondaryColor = 0xff93d500;
-  static const int errorColor = 0xff78251b;
-  static const int surfaceColor = 0xfff8f9fa;
-  static const int onSurfaceVariant = 0xff6c757d;
-  static const int outline = 0xffdee2e6;
-  static const int shadow = 0x1f000000;
-  static const int successColor = 0xff28a745;
-  static const int warningColor = 0xffffc107;
-  static const int infoColor = 0xff17a2b8;
 
   static ThemeData light(BuildContext context) {
     final textTheme = PRFTextTheme.getLightTheme(context);
@@ -21,37 +13,43 @@ class PRFTheme {
 
     return ThemeData(
       useMaterial3: true,
-      primaryColor: const Color(primaryColor),
-      scaffoldBackgroundColor: Colors.white,
+      primaryColor: PRFColors.navyBlue,
+      scaffoldBackgroundColor: PRFColors.white,
+
+      // Theme extensions
+      extensions: const <ThemeExtension<dynamic>>[
+        PRFColorsExtension.light,
+        PRFStatusExtension.light,
+      ],
 
       // Text theme
       textTheme: textTheme,
 
       colorScheme: const ColorScheme(
-        primary: Color(primaryColor),
-        secondary: Color(secondaryColor),
-        surface: Colors.white,
-        surfaceContainerHighest: Color(surfaceColor),
-        error: Color(errorColor),
-        onPrimary: Colors.white,
-        onSecondary: Colors.black,
-        onSurface: Colors.black,
-        onSurfaceVariant: Color(onSurfaceVariant),
-        onError: Colors.white,
-        outline: Color(outline),
-        shadow: Color(shadow),
+        primary: PRFColors.navyBlue,
+        secondary: PRFColors.limeGreen,
+        surface: PRFColors.white,
+        surfaceContainerHighest: PRFColors.gray50,
+        error: PRFColors.error,
+        onPrimary: PRFColors.white,
+        onSecondary: PRFColors.black,
+        onSurface: PRFColors.black,
+        onSurfaceVariant: PRFColors.gray600,
+        onError: PRFColors.white,
+        outline: PRFColors.gray300,
+        shadow: Color(0x1F000000),
         brightness: Brightness.light,
       ),
 
       // App Bar Theme
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white,
-        foregroundColor: const Color(primaryColor),
+        backgroundColor: PRFColors.white,
+        foregroundColor: PRFColors.navyBlue,
         elevation: 0,
         centerTitle: true,
-        surfaceTintColor: Colors.transparent,
+        surfaceTintColor: PRFColors.transparent,
         titleTextStyle: textTheme.titleLarge?.copyWith(
-          color: const Color(primaryColor),
+          color: PRFColors.navyBlue,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -59,48 +57,44 @@ class PRFTheme {
       // Button Themes
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(primaryColor),
-          foregroundColor: Colors.white,
-          disabledBackgroundColor: const Color(
-            primaryColor,
-          ).withValues(alpha: 0.4),
-          disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
+          backgroundColor: PRFColors.navyBlue,
+          foregroundColor: PRFColors.white,
+          disabledBackgroundColor: PRFColors.navyBlue.withValues(alpha: 0.4),
+          disabledForegroundColor: PRFColors.white.withValues(alpha: 0.7),
           minimumSize: const Size(double.infinity, 56),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           elevation: 2,
-          shadowColor: const Color(shadow),
+          shadowColor: const Color(0x1F000000),
           textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
-            color: Colors.white,
+            color: PRFColors.white,
           ),
         ),
       ),
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: const Color(primaryColor),
-          side: const BorderSide(color: Color(primaryColor), width: 1.5),
-          disabledForegroundColor: const Color(
-            primaryColor,
-          ).withValues(alpha: 0.4),
+          foregroundColor: PRFColors.navyBlue,
+          side: const BorderSide(color: PRFColors.navyBlue, width: 1.5),
+          disabledForegroundColor: PRFColors.navyBlue.withValues(alpha: 0.4),
           minimumSize: const Size(double.infinity, 56),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
-            color: const Color(primaryColor),
+            color: PRFColors.navyBlue,
           ),
         ),
       ),
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: const Color(primaryColor),
+          foregroundColor: PRFColors.navyBlue,
           textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
-            color: const Color(primaryColor),
+            color: PRFColors.navyBlue,
           ),
         ),
       ),
@@ -108,31 +102,31 @@ class PRFTheme {
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(surfaceColor),
+        fillColor: PRFColors.gray50,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(outline)),
+          borderSide: const BorderSide(color: PRFColors.gray300),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(outline)),
+          borderSide: const BorderSide(color: PRFColors.gray300),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(primaryColor), width: 2),
+          borderSide: const BorderSide(color: PRFColors.navyBlue, width: 2),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(errorColor)),
+          borderSide: const BorderSide(color: PRFColors.error),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(errorColor), width: 2),
+          borderSide: const BorderSide(color: PRFColors.error, width: 2),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: const Color(outline).withValues(alpha: 0.5),
+            color: PRFColors.gray300.withValues(alpha: 0.5),
           ),
         ),
         contentPadding: const EdgeInsets.symmetric(
@@ -140,24 +134,24 @@ class PRFTheme {
           vertical: 20,
         ),
         hintStyle: textTheme.bodyMedium?.copyWith(
-          color: const Color(onSurfaceVariant),
+          color: PRFColors.gray600,
         ),
         labelStyle: textTheme.bodyMedium?.copyWith(
-          color: const Color(onSurfaceVariant),
+          color: PRFColors.gray600,
         ),
         errorStyle: PRFTextTheme.getErrorTextStyle(context),
       ),
 
       // Card Theme
       cardTheme: const CardThemeData(
-        surfaceTintColor: Colors.transparent,
+        surfaceTintColor: PRFColors.transparent,
         elevation: 4,
-        shadowColor: Color(shadow),
+        shadowColor: Color(0x1F000000),
       ),
 
       // Divider Theme
       dividerTheme: const DividerThemeData(
-        color: Color(outline),
+        color: PRFColors.gray300,
         thickness: 1,
       ),
 
@@ -165,16 +159,16 @@ class PRFTheme {
       tabBarTheme: TabBarThemeData(
         labelStyle: textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600,
-          color: const Color(primaryColor),
+          color: PRFColors.navyBlue,
         ),
         unselectedLabelStyle: textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w500,
-          color: const Color(onSurfaceVariant),
+          color: PRFColors.gray600,
         ),
-        dividerColor: Colors.white,
+        dividerColor: PRFColors.white,
         tabAlignment: TabAlignment.start,
-        indicatorColor: Colors.white,
-        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        indicatorColor: PRFColors.white,
+        overlayColor: WidgetStateProperty.all(PRFColors.transparent),
       ),
 
       // Data Table Theme
@@ -188,9 +182,9 @@ class PRFTheme {
       // Snack Bar Theme
       snackBarTheme: SnackBarThemeData(
         contentTextStyle: textTheme.bodyMedium?.copyWith(
-          color: Colors.white,
+          color: PRFColors.white,
         ),
-        backgroundColor: const Color(primaryColor),
+        backgroundColor: PRFColors.navyBlue,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
@@ -200,7 +194,7 @@ class PRFTheme {
       // Icon Theme
       iconTheme: IconThemeData(
         size: 24 * scaleFactor,
-        color: const Color(primaryColor),
+        color: PRFColors.navyBlue,
       ),
 
       // Dialog Theme
@@ -218,7 +212,7 @@ class PRFTheme {
       listTileTheme: ListTileThemeData(
         titleTextStyle: textTheme.bodyLarge,
         subtitleTextStyle: textTheme.bodyMedium?.copyWith(
-          color: const Color(onSurfaceVariant),
+          color: PRFColors.gray600,
         ),
       ),
 
@@ -226,11 +220,11 @@ class PRFTheme {
       chipTheme: ChipThemeData(
         labelStyle: textTheme.labelMedium,
         secondaryLabelStyle: textTheme.labelMedium?.copyWith(
-          color: Colors.white,
+          color: PRFColors.white,
         ),
-        backgroundColor: const Color(surfaceColor),
-        selectedColor: const Color(primaryColor),
-        disabledColor: const Color(outline),
+        backgroundColor: PRFColors.gray50,
+        selectedColor: PRFColors.navyBlue,
+        disabledColor: PRFColors.gray300,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -241,10 +235,250 @@ class PRFTheme {
         textStyle: textTheme.bodyMedium,
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: const Color(surfaceColor),
+          fillColor: PRFColors.gray50,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(outline)),
+            borderSide: const BorderSide(color: PRFColors.gray300),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static ThemeData dark(BuildContext context) {
+    final textTheme = PRFTextTheme.getDarkTheme(context);
+    final scaleFactor = DeviceHelper.getScaleFactor(context);
+
+    return ThemeData(
+      useMaterial3: true,
+      primaryColor: PRFColors.navyBlue,
+      scaffoldBackgroundColor: PRFColors.gray900,
+
+      // Theme extensions
+      extensions: const <ThemeExtension<dynamic>>[
+        PRFColorsExtension.dark,
+        PRFStatusExtension.dark,
+      ],
+
+      // Text theme
+      textTheme: textTheme,
+
+      colorScheme: const ColorScheme(
+        primary: PRFColors.limeGreen,
+        secondary: PRFColors.navyBlue,
+        surface: PRFColors.gray800,
+        surfaceContainerHighest: PRFColors.gray700,
+        error: PRFColors.error,
+        onPrimary: PRFColors.black,
+        onSecondary: PRFColors.white,
+        onSurface: PRFColors.white,
+        onSurfaceVariant: PRFColors.gray400,
+        onError: PRFColors.white,
+        outline: PRFColors.gray600,
+        shadow: Color(0x3F000000),
+        brightness: Brightness.dark,
+      ),
+
+      // App Bar Theme
+      appBarTheme: AppBarTheme(
+        backgroundColor: PRFColors.gray900,
+        foregroundColor: PRFColors.white,
+        elevation: 0,
+        centerTitle: true,
+        surfaceTintColor: PRFColors.transparent,
+        titleTextStyle: textTheme.titleLarge?.copyWith(
+          color: PRFColors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+
+      // Button Themes
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: PRFColors.limeGreen,
+          foregroundColor: PRFColors.black,
+          disabledBackgroundColor: PRFColors.limeGreen.withValues(alpha: 0.4),
+          disabledForegroundColor: PRFColors.black.withValues(alpha: 0.7),
+          minimumSize: const Size(double.infinity, 56),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+          shadowColor: const Color(0x3F000000),
+          textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
+            color: PRFColors.black,
+          ),
+        ),
+      ),
+
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: PRFColors.limeGreen,
+          side: const BorderSide(color: PRFColors.limeGreen, width: 1.5),
+          disabledForegroundColor: PRFColors.limeGreen.withValues(alpha: 0.4),
+          minimumSize: const Size(double.infinity, 56),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
+            color: PRFColors.limeGreen,
+          ),
+        ),
+      ),
+
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: PRFColors.limeGreen,
+          textStyle: PRFTextTheme.getButtonTextStyle(context).copyWith(
+            color: PRFColors.limeGreen,
+          ),
+        ),
+      ),
+
+      // Input Decoration Theme
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: PRFColors.gray800,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: PRFColors.gray600),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: PRFColors.gray600),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: PRFColors.limeGreen, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: PRFColors.error),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: PRFColors.error, width: 2),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: PRFColors.gray600.withValues(alpha: 0.5),
+          ),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 20,
+        ),
+        hintStyle: textTheme.bodyMedium?.copyWith(
+          color: PRFColors.gray500,
+        ),
+        labelStyle: textTheme.bodyMedium?.copyWith(
+          color: PRFColors.gray400,
+        ),
+        errorStyle: PRFTextTheme.getErrorTextStyle(context),
+      ),
+
+      // Card Theme
+      cardTheme: const CardThemeData(
+        color: PRFColors.gray800,
+        surfaceTintColor: PRFColors.transparent,
+        elevation: 4,
+        shadowColor: Color(0x3F000000),
+      ),
+
+      // Divider Theme
+      dividerTheme: const DividerThemeData(
+        color: PRFColors.gray700,
+        thickness: 1,
+      ),
+
+      // Tab Bar Theme
+      tabBarTheme: TabBarThemeData(
+        labelStyle: textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: PRFColors.limeGreen,
+        ),
+        unselectedLabelStyle: textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w500,
+          color: PRFColors.gray500,
+        ),
+        dividerColor: PRFColors.gray800,
+        tabAlignment: TabAlignment.start,
+        indicatorColor: PRFColors.limeGreen,
+        overlayColor: WidgetStateProperty.all(PRFColors.transparent),
+      ),
+
+      // Data Table Theme
+      dataTableTheme: DataTableThemeData(
+        dataTextStyle: textTheme.bodyMedium,
+        headingTextStyle: textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+
+      // Snack Bar Theme
+      snackBarTheme: SnackBarThemeData(
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
+          color: PRFColors.black,
+        ),
+        backgroundColor: PRFColors.limeGreen,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+
+      // Icon Theme
+      iconTheme: IconThemeData(
+        size: 24 * scaleFactor,
+        color: PRFColors.white,
+      ),
+
+      // Dialog Theme
+      dialogTheme: DialogThemeData(
+        backgroundColor: PRFColors.gray800,
+        titleTextStyle: textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+        contentTextStyle: textTheme.bodyMedium,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+
+      // List Tile Theme
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: textTheme.bodyLarge,
+        subtitleTextStyle: textTheme.bodyMedium?.copyWith(
+          color: PRFColors.gray400,
+        ),
+      ),
+
+      // Chip Theme
+      chipTheme: ChipThemeData(
+        labelStyle: textTheme.labelMedium,
+        secondaryLabelStyle: textTheme.labelMedium?.copyWith(
+          color: PRFColors.black,
+        ),
+        backgroundColor: PRFColors.gray700,
+        selectedColor: PRFColors.limeGreen,
+        disabledColor: PRFColors.gray600,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+
+      // Dropdown Menu Theme
+      dropdownMenuTheme: DropdownMenuThemeData(
+        textStyle: textTheme.bodyMedium,
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: PRFColors.gray800,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: PRFColors.gray600),
           ),
         ),
       ),

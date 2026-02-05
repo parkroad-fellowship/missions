@@ -104,7 +104,7 @@ class LandingPageTablet extends StatelessWidget {
                                               ),
                                               style: theme.textTheme.titleLarge
                                                   ?.copyWith(
-                                                    color: Colors.white,
+                                                    color: PRFColors.white,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),

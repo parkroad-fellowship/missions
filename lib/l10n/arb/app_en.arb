@@ -895,5 +895,15 @@
         }
     },
     "unknownCategory": "Unknown Category",
-    "@unknownCategory": {}
+    "@unknownCategory": {},
+    "settings": "Settings",
+    "@settings": {},
+    "darkMode": "Dark Mode",
+    "@darkMode": {},
+    "systemDefault": "Using system setting",
+    "@systemDefault": {},
+    "lightMode": "Light mode enabled",
+    "@lightMode": {},
+    "darkModeEnabled": "Dark mode enabled",
+    "@darkModeEnabled": {}
 }

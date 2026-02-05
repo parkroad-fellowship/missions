@@ -2313,6 +2313,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown Category'**
   String get unknownCategory;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @systemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Using system setting'**
+  String get systemDefault;
+
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light mode enabled'**
+  String get lightMode;
+
+  /// No description provided for @darkModeEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode enabled'**
+  String get darkModeEnabled;
 }
 
 class _AppLocalizationsDelegate

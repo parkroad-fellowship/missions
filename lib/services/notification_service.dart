@@ -92,12 +92,12 @@ abstract class NotificationService {
               final l10n = context.l10n;
               return Center(
                 child: Material(
-                  color: Colors.transparent,
+                  color: PRFColors.transparent,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Card(
-                        color: Colors.white,
+                        color: PRFColors.white,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 24,

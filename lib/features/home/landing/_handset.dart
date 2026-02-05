@@ -106,7 +106,7 @@ class LandingPageHandset extends StatelessWidget {
                                               ),
                                               style: theme.textTheme.titleMedium
                                                   ?.copyWith(
-                                                    color: Colors.white,
+                                                    color: PRFColors.white,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),

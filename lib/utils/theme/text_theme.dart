@@ -1,4 +1,5 @@
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/helpers/_index.dart';
+import 'package:app/utils/theme/colors/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,8 +9,8 @@ class PRFTextTheme {
   static TextTheme getLightTheme(BuildContext context) {
     final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
 
-    const defaultTextColor = Colors.black;
-    const secondaryTextColor = Color(0xff6c757d);
+    const defaultTextColor = PRFColors.black;
+    const secondaryTextColor = PRFColors.gray600;
 
     return GoogleFonts.latoTextTheme().copyWith(
       // Display styles - for large text
@@ -135,7 +136,7 @@ class PRFTextTheme {
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
-      color: const Color(0xff78251b),
+      color: PRFColors.error,
       height: 1.4,
     );
   }
@@ -145,7 +146,7 @@ class PRFTextTheme {
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
-      color: const Color(0xff28a745),
+      color: PRFColors.success,
       height: 1.4,
     );
   }
@@ -155,7 +156,7 @@ class PRFTextTheme {
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
-      color: const Color(0xffffc107),
+      color: PRFColors.warning,
       height: 1.4,
     );
   }
@@ -165,7 +166,7 @@ class PRFTextTheme {
     return GoogleFonts.lato(
       fontSize: 12 * adjustedScaleFactor,
       fontWeight: FontWeight.w500,
-      color: const Color(0xff17a2b8),
+      color: PRFColors.info,
       height: 1.4,
     );
   }
@@ -184,8 +185,132 @@ class PRFTextTheme {
     return GoogleFonts.lato(
       fontSize: 10 * adjustedScaleFactor,
       fontWeight: FontWeight.w400,
-      color: const Color(0xff6c757d),
+      color: PRFColors.gray600,
       height: 1.4,
+    );
+  }
+
+  static TextTheme getDarkTheme(BuildContext context) {
+    final adjustedScaleFactor = DeviceHelper.getScaleFactor(context);
+
+    const defaultTextColor = PRFColors.white;
+    const secondaryTextColor = PRFColors.gray400;
+
+    return GoogleFonts.latoTextTheme().copyWith(
+      // Display styles - for large text
+      displayLarge: GoogleFonts.lato(
+        fontSize: 32 * adjustedScaleFactor,
+        fontWeight: FontWeight.w700,
+        fontStyle: FontStyle.normal,
+        color: defaultTextColor,
+        height: 1.2,
+        letterSpacing: -0.5,
+      ),
+      displayMedium: GoogleFonts.lato(
+        fontSize: 28 * adjustedScaleFactor,
+        fontWeight: FontWeight.w600,
+        fontStyle: FontStyle.normal,
+        color: defaultTextColor,
+        height: 1.2,
+        letterSpacing: -0.25,
+      ),
+      displaySmall: GoogleFonts.lato(
+        fontSize: 24 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        color: defaultTextColor,
+        height: 1.3,
+      ),
+
+      // Headline styles - for section headers
+      headlineLarge: GoogleFonts.lato(
+        fontSize: 22 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w700,
+        color: defaultTextColor,
+        height: 1.3,
+      ),
+      headlineMedium: GoogleFonts.lato(
+        fontSize: 18 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        color: defaultTextColor,
+        height: 1.3,
+      ),
+      headlineSmall: GoogleFonts.lato(
+        fontSize: 16 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        color: defaultTextColor,
+        fontWeight: FontWeight.w600,
+        height: 1.4,
+      ),
+
+      // Title styles - for component titles
+      titleLarge: GoogleFonts.lato(
+        fontSize: 20 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w600,
+        color: defaultTextColor,
+        height: 1.3,
+      ),
+      titleMedium: GoogleFonts.lato(
+        fontSize: 16 * adjustedScaleFactor,
+        fontWeight: FontWeight.w500,
+        color: defaultTextColor,
+        height: 1.4,
+      ),
+      titleSmall: GoogleFonts.lato(
+        fontSize: 14 * adjustedScaleFactor,
+        fontWeight: FontWeight.w500,
+        color: defaultTextColor,
+        height: 1.4,
+      ),
+
+      // Body styles - for main content
+      bodyLarge: GoogleFonts.lato(
+        fontSize: 16 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        color: defaultTextColor,
+        height: 1.5,
+      ),
+      bodyMedium: GoogleFonts.lato(
+        fontSize: 14 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        color: defaultTextColor,
+        height: 1.5,
+      ),
+      bodySmall: GoogleFonts.lato(
+        fontSize: 12 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        color: secondaryTextColor,
+        height: 1.5,
+      ),
+
+      // Label styles - for UI elements
+      labelLarge: GoogleFonts.lato(
+        fontSize: 14 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w500,
+        color: defaultTextColor,
+        height: 1.4,
+      ),
+      labelMedium: GoogleFonts.lato(
+        fontSize: 12 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w500,
+        color: defaultTextColor,
+        height: 1.4,
+      ),
+      labelSmall: GoogleFonts.lato(
+        fontSize: 11 * adjustedScaleFactor,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w500,
+        color: secondaryTextColor,
+        height: 1.4,
+      ),
     );
   }
 }

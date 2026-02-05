@@ -72,7 +72,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
+                  color: PRFColors.black.withValues(alpha: 0.1),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -321,9 +321,10 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
 
     // Premium status color system
     final statusColor = isSubscribed
-        ? const Color(PRFTheme.secondaryColor)
+        ? PRFColors.limeGreen
         : isOngoing
-        ? const Color(PRFTheme.secondaryColor) // Active green
+        ? PRFColors
+              .limeGreen // Active green
         : isUpcoming
         ? theme.colorScheme.primary
         : isPast
@@ -694,13 +695,13 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                         width: 8,
                                         height: 8,
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFF10B981),
+                                          color: context.statusColors.active,
                                           shape: BoxShape.circle,
                                           boxShadow: [
                                             BoxShadow(
-                                              color: const Color(
-                                                0xFF10B981,
-                                              ).withValues(alpha: 0.5),
+                                              color: context
+                                                  .statusColors
+                                                  .activeGlow,
                                               blurRadius: 8,
                                               spreadRadius: 2,
                                             ),

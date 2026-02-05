@@ -69,6 +69,9 @@ class DIContainer {
   /// around the application widget tree.
   static List<BlocProvider> registerCubits() {
     return [
+      // Core cubits (must be first - theme is needed by MaterialApp)
+      ...CoreModule.registerCubits(getIt),
+      // Domain-specific cubits
       ...AuthModule.registerCubits(getIt),
       ...MissionsModule.registerCubits(getIt),
       ...LmsModule.registerCubits(getIt),

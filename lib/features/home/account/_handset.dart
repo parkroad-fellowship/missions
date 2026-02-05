@@ -1,8 +1,11 @@
+import 'package:app/enums/common/prf_theme_mode.dart';
 import 'package:app/enums/member/prf_membership_type.dart';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
+import 'package:app/features/home/shared/cubit/theme_cubit.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/shared_widgets/_index.dart';
@@ -489,6 +492,142 @@ class AccountPageHandset extends StatelessWidget {
               },
             ),
 
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+            // Settings Section
+            SliverToBoxAdapter(
+              child:
+                  Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.shadow.withValues(
+                                alpha: 0.08,
+                              ),
+                              blurRadius: 16,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.settings_outlined,
+                                  color: theme.colorScheme.primary,
+                                  size: 24,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  l10n.settings,
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            // Theme Toggle
+                            BlocBuilder<ThemeCubit, ThemeState>(
+                              builder: (context, state) {
+                                final themeCubit = context.read<ThemeCubit>();
+                                final currentMode = themeCubit.currentThemeMode;
+                                final surfaceColor =
+                                    theme.colorScheme.surfaceContainerHighest;
+                                final outlineColor = theme.colorScheme.outline
+                                    .withValues(alpha: 0.2);
+                                final primaryLight = theme.colorScheme.primary
+                                    .withValues(alpha: 0.1);
+
+                                return Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: surfaceColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: outlineColor),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: primaryLight,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          currentMode == PRFThemeMode.dark
+                                              ? Icons.dark_mode_rounded
+                                              : Icons.light_mode_rounded,
+                                          color: theme.colorScheme.primary,
+                                          size: 20,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              l10n.darkMode,
+                                              style: theme.textTheme.bodyLarge
+                                                  ?.copyWith(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: theme
+                                                        .colorScheme
+                                                        .onSurface,
+                                                  ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              _getThemeModeLabel(
+                                                currentMode,
+                                                l10n,
+                                              ),
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                    color: theme
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Switch.adaptive(
+                                        value: currentMode == PRFThemeMode.dark,
+                                        onChanged: (value) {
+                                          themeCubit.setThemeMode(
+                                            value
+                                                ? PRFThemeMode.dark
+                                                : PRFThemeMode.light,
+                                          );
+                                        },
+                                        activeTrackColor:
+                                            theme.colorScheme.primary,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                      .animate(delay: 250.ms)
+                      .fadeIn(duration: 300.ms)
+                      .slideY(begin: 0.1, end: 0),
+            ),
+
             const SliverToBoxAdapter(child: SizedBox(height: 32)),
 
             // Footer Section
@@ -646,6 +785,14 @@ class AccountPageHandset extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getThemeModeLabel(PRFThemeMode mode, AppLocalizations l10n) {
+    return switch (mode) {
+      PRFThemeMode.system => l10n.systemDefault,
+      PRFThemeMode.light => l10n.lightMode,
+      PRFThemeMode.dark => l10n.darkModeEnabled,
+    };
   }
 }
 

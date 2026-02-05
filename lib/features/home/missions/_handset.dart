@@ -78,7 +78,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
+                  color: PRFColors.black.withValues(alpha: 0.1),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -334,9 +334,9 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
 
     // Premium status color system
     final statusColor = isSubscribed
-        ? const Color(PRFTheme.secondaryColor)
+        ? PRFColors.limeGreen
         : isOngoing
-        ? const Color(PRFTheme.secondaryColor)
+        ? PRFColors.limeGreen
         : isUpcoming
         ? theme.colorScheme.primary
         : isPast
@@ -834,13 +834,11 @@ class DateRangeView extends StatelessWidget {
                   width: 6,
                   height: 6,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF10B981),
+                    color: context.statusColors.active,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(
-                          0xFF10B981,
-                        ).withValues(alpha: 0.5),
+                        color: context.statusColors.activeGlow,
                         blurRadius: 6,
                         spreadRadius: 1,
                       ),

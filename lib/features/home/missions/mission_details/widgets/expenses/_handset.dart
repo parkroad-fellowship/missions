@@ -96,9 +96,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               loaded: () {
                 _loadData();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Entry added successfully'),
-                    backgroundColor: Colors.green,
+                  SnackBar(
+                    content: const Text('Entry added successfully'),
+                    backgroundColor: context.statusColors.success.main,
                   ),
                 );
               },
@@ -121,9 +121,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               loaded: () {
                 _loadData();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Expense updated successfully'),
-                    backgroundColor: Colors.green,
+                  SnackBar(
+                    content: const Text('Expense updated successfully'),
+                    backgroundColor: context.statusColors.success.main,
                   ),
                 );
               },
@@ -146,9 +146,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               loaded: () {
                 _loadData();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Expense deleted successfully'),
-                    backgroundColor: Colors.green,
+                  SnackBar(
+                    content: const Text('Expense deleted successfully'),
+                    backgroundColor: context.statusColors.success.main,
                   ),
                 );
               },
@@ -170,9 +170,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               loaded: () {
                 _loadData();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Receipt uploaded successfully'),
-                    backgroundColor: Colors.green,
+                  SnackBar(
+                    content: const Text('Receipt uploaded successfully'),
+                    backgroundColor: context.statusColors.success.main,
                   ),
                 );
               },
@@ -857,9 +857,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           loaded: (mediaUuid) {
             _loadData();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Receipt deleted successfully'),
-                backgroundColor: Colors.green,
+              SnackBar(
+                content: const Text('Receipt deleted successfully'),
+                backgroundColor: context.statusColors.success.main,
               ),
             );
           },

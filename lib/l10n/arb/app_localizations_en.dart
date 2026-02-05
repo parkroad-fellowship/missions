@@ -1197,4 +1197,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknownCategory => 'Unknown Category';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get systemDefault => 'Using system setting';
+
+  @override
+  String get lightMode => 'Light mode enabled';
+
+  @override
+  String get darkModeEnabled => 'Dark mode enabled';
 }

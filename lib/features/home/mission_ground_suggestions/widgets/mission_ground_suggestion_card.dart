@@ -122,7 +122,10 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: _getStatusColor(theme, missionGroundSuggestion.status),
+                  color: _getStatusColor(
+                    context,
+                    missionGroundSuggestion.status,
+                  ),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -132,7 +135,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       _getStatusIcon(missionGroundSuggestion.status),
                       size: 14,
                       color: _getStatusTextColor(
-                        theme,
+                        context,
                         missionGroundSuggestion.status,
                       ),
                     ),
@@ -141,7 +144,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       missionGroundSuggestion.status.name.toUpperCase(),
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: _getStatusTextColor(
-                          theme,
+                          context,
                           missionGroundSuggestion.status,
                         ),
                         fontWeight: FontWeight.w500,
@@ -166,42 +169,44 @@ class MissionGroundSuggestionCard extends StatelessWidget {
   }
 
   Color _getStatusColor(
-    ThemeData theme,
+    BuildContext context,
     PRFMissionGroundSuggestionStatus status,
   ) {
+    final statusColors = context.statusColors;
     switch (status) {
       case PRFMissionGroundSuggestionStatus.pending:
-        return theme.colorScheme.secondaryContainer;
+        return statusColors.pending.background;
       case PRFMissionGroundSuggestionStatus.initiatedContact:
-        return Colors.blue.withValues(alpha: 0.2);
+        return statusColors.initiated.background;
       case PRFMissionGroundSuggestionStatus.visitScheduled:
-        return Colors.orange.withValues(alpha: 0.2);
+        return statusColors.scheduled.background;
       case PRFMissionGroundSuggestionStatus.missionScheduled:
-        return Colors.purple.withValues(alpha: 0.2);
+        return context.prfColors.purple.withValues(alpha: 0.2);
       case PRFMissionGroundSuggestionStatus.completed:
-        return Colors.green.withValues(alpha: 0.2);
+        return statusColors.completed.background;
       case PRFMissionGroundSuggestionStatus.ignore:
-        return Colors.red.withValues(alpha: 0.2);
+        return statusColors.ignored.background;
     }
   }
 
   Color _getStatusTextColor(
-    ThemeData theme,
+    BuildContext context,
     PRFMissionGroundSuggestionStatus status,
   ) {
+    final statusColors = context.statusColors;
     switch (status) {
       case PRFMissionGroundSuggestionStatus.pending:
-        return theme.colorScheme.onSecondaryContainer;
+        return statusColors.pending.main;
       case PRFMissionGroundSuggestionStatus.initiatedContact:
-        return Colors.blue.shade700;
+        return statusColors.initiated.main;
       case PRFMissionGroundSuggestionStatus.visitScheduled:
-        return Colors.orange.shade700;
+        return statusColors.scheduled.main;
       case PRFMissionGroundSuggestionStatus.missionScheduled:
-        return Colors.purple.shade700;
+        return context.prfColors.purple;
       case PRFMissionGroundSuggestionStatus.completed:
-        return Colors.green.shade700;
+        return statusColors.completed.main;
       case PRFMissionGroundSuggestionStatus.ignore:
-        return Colors.red.shade700;
+        return statusColors.ignored.main;
     }
   }
 
