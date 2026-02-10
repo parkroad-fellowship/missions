@@ -66,3 +66,9 @@ aab-shore:
 
 ios-shore:
 		shorebird release ios  --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols
+
+screenshots:
+		patrol test --target integration_test/screenshot_test.dart --flavor development --dart-define=FLUTTER_TEST=true --dart-define=PROJECT_DIR=$(CURDIR)
+
+patrol-dev:
+		patrol develop --target integration_test/screenshot_test.dart --flavor development

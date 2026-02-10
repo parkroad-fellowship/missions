@@ -119,3 +119,7 @@ app.*.map.json
 *.freezed.dart
 *.gr.dart
 lib/versioning/build_version.dart
+
+# Test files
+patrol_test/test_bundle.dart
+integration_test/test_bundle.dart

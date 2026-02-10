@@ -99,6 +99,7 @@ dev_dependencies:
     hosted: https://pub.dev
   json_serializable: ^6.11.2
   mocktail: ^1.0.4
+  patrol: ^4.1.0
   very_good_analysis: ^10.1.0
 
 flutter:
@@ -110,3 +111,11 @@ flutter:
     - assets/images/authentication/
     - assets/google_fonts/lato/
     - shorebird.yaml
+
+patrol:
+  app_name: PRF Missions
+  test_directory: integration_test
+  android:
+    package_name: org.parkroadfellowship.app.dev
+  ios:
+    bundle_id: app.parkroadfellowship.org.dev
