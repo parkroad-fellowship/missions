@@ -88,14 +88,10 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                               missionSessionUlid: missionSessionUlid,
                               refresh: true,
                             );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.doneUploading)),
-                        );
+                        PRFSnackbar.success(context, l10n.doneUploading);
                       },
                       error: (error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(error.message)),
-                        );
+                        PRFSnackbar.error(context, error.message);
                       },
                     );
                   },
@@ -436,9 +432,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   listener: (context, state) {
                     state.mapOrNull(
                       loaded: (_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.downloaded)),
-                        );
+                        PRFSnackbar.success(context, l10n.downloaded);
                       },
                     );
                   },
@@ -853,24 +847,16 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                                 .getMissionSessions(
                                                   missionUlid: missionUlid,
                                                 );
-                                            ScaffoldMessenger.of(
+                                            PRFSnackbar.success(
                                               context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  l10n.sessionDeleted,
-                                                ),
-                                              ),
+                                              l10n.sessionDeleted,
                                             );
                                           },
                                           error: (e) {
                                             Navigator.of(context).pop();
-                                            ScaffoldMessenger.of(
+                                            PRFSnackbar.error(
                                               context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(e.message),
-                                              ),
+                                              e.message,
                                             );
                                           },
                                         );

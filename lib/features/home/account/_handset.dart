@@ -847,24 +847,16 @@ class ChangeProfilePictureButton extends StatelessWidget {
                       state.mapOrNull(
                         loaded: (_) {
                           Gaimon.success();
-                          ScaffoldMessenger.of(
+                          PRFSnackbar.success(
                             context,
-                          ).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                l10n.successfullyUpdated,
-                              ),
-                            ),
+                            l10n.successfullyUpdated,
                           );
                         },
                         error: (error) {
                           Gaimon.error();
-                          ScaffoldMessenger.of(
+                          PRFSnackbar.error(
                             context,
-                          ).showSnackBar(
-                            SnackBar(
-                              content: Text(error.message),
-                            ),
+                            error.message,
                           );
                         },
                       );

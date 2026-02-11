@@ -206,9 +206,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           setState(() {
                             _isLoading = false;
                           });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(message)),
-                          );
+                          PRFSnackbar.error(context, message);
                         },
                       );
                     },

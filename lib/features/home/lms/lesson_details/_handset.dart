@@ -218,13 +218,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                 _isLoading = false;
                               });
                               Gaimon.success();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.completed),
-                                  backgroundColor:
-                                      context.statusColors.success.main,
-                                ),
-                              );
+                              PRFSnackbar.success(context, l10n.completed);
                               Navigator.of(context).pop();
                             },
                             error: (message) {
@@ -232,13 +226,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                 _isLoading = false;
                               });
                               Gaimon.error();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                  backgroundColor:
-                                      context.statusColors.error.main,
-                                ),
-                              );
+                              PRFSnackbar.error(context, message);
                             },
                             orElse: () {},
                           );

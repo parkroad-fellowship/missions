@@ -10,6 +10,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
+import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -162,11 +163,9 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               initial: () {},
               loading: () {},
               loaded: (uploadedFile) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${l10n.upload} ${l10n.recordingCompleted}'),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
+                PRFSnackbar.success(
+                  context,
+                  '${l10n.upload} ${l10n.recordingCompleted}',
                 );
                 context.read<GetMissionSessionCubit>().getMissionSession(
                   missionSessionUlid: widget.missionSessionUlid,
@@ -175,28 +174,20 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                 Navigator.of(context).pop();
               },
               multipleLoaded: (uploadedFiles) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      '${uploadedFiles.length}'
-                      ' ${l10n.recordings} ${l10n.upload}',
-                    ),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
+                PRFSnackbar.success(
+                  context,
+                  '${uploadedFiles.length}'
+                  ' ${l10n.recordings} ${l10n.upload}',
                 );
                 // Close the modal after successful upload
                 Navigator.of(context).pop();
               },
               error: (message) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text(
-                      'You are offline. '
-                      'The app will retry when you are back online. '
-                      'You can continue using the app.',
-                    ),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
+                PRFSnackbar.info(
+                  context,
+                  'You are offline. '
+                  'The app will retry when you are back online. '
+                  'You can continue using the app.',
                 );
               },
             );

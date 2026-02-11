@@ -250,18 +250,14 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                       });
                       Gaimon.success();
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.soulRecorded)),
-                      );
+                      PRFSnackbar.success(context, l10n.soulRecorded);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },
@@ -364,25 +360,19 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     final l10n = context.l10n;
 
     if (selectedClassGroup == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.selectClass)),
-      );
+      PRFSnackbar.warning(context, l10n.selectClass);
       Gaimon.warning();
       return;
     }
 
     if (selectedDecisionType == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.selectDecisionType)),
-      );
+      PRFSnackbar.warning(context, l10n.selectDecisionType);
       Gaimon.warning();
       return;
     }
 
     if (_fullNameController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterName)),
-      );
+      PRFSnackbar.warning(context, l10n.enterName);
       Gaimon.warning();
       return;
     }

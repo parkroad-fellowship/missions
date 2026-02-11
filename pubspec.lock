@@ -1650,10 +1650,10 @@ packages:
     dependency: "direct main"
     description:
       name: prf_design
-      sha256: "1df00c3f404fbd0840cb16e29ba288720956a0fa25d135eee0cf557e20a39d39"
+      sha256: "8a6f8578fc098733e91219c3c916c53812f7b33d7cd473c4895d2913f0b6f930"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.3.0"
   protobuf:
     dependency: transitive
     description:

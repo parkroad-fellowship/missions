@@ -228,13 +228,10 @@ class _AddMissionGroundSuggestionViewHandsetState
                           });
                           Gaimon.success();
                           Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                l10n.missionGroundRecorded(
-                                  result.missionGroundSuggestion.name,
-                                ),
-                              ),
+                          PRFSnackbar.success(
+                            context,
+                            l10n.missionGroundRecorded(
+                              result.missionGroundSuggestion.name,
                             ),
                           );
                         },
@@ -243,9 +240,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                             _isLoading = false;
                           });
                           Gaimon.error();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.message)),
-                          );
+                          PRFSnackbar.error(context, error.message);
                         },
                       );
                     },
@@ -312,25 +307,19 @@ class _AddMissionGroundSuggestionViewHandsetState
     final l10n = context.l10n;
 
     if (_nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterMissionGround)),
-      );
+      PRFSnackbar.warning(context, l10n.enterMissionGround);
       Gaimon.warning();
       return;
     }
 
     if (_contactPersonController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterContactPerson)),
-      );
+      PRFSnackbar.warning(context, l10n.enterContactPerson);
       Gaimon.warning();
       return;
     }
 
     if (_contactNumber == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterContactNumber)),
-      );
+      PRFSnackbar.warning(context, l10n.enterContactNumber);
       Gaimon.warning();
       return;
     }

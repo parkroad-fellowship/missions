@@ -4,6 +4,7 @@ import 'package:app/di/_index.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
 import 'package:app/models/local/media/upload_retry_progress.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
+import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -238,9 +239,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
           .getPendingUploadsForSession(widget.missionSessionUlid);
 
       if (pendingUploads.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No pending uploads for this session')),
-        );
+        PRFSnackbar.info(context, 'No pending uploads for this session');
         return;
       }
 
@@ -249,13 +248,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Some uploads failed to retry. Please try again.',
-            ),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
+        PRFSnackbar.error(
+          context,
+          'Some uploads failed to retry. Please try again.',
         );
       }
     }
@@ -705,19 +700,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
   ) async {
     try {
       await getIt<FailedRecordingUploadService>().retrySpecificUpload(upload);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${upload.name} uploaded successfully'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
-      );
+      PRFSnackbar.success(context, '${upload.name} uploaded successfully');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Retry failed'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
+      PRFSnackbar.error(context, 'Retry failed');
     }
   }
 }

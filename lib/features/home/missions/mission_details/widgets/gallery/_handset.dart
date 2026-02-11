@@ -67,15 +67,11 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     ],
                   );
                   Gaimon.success();
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(l10n.doneUploading)));
+                  PRFSnackbar.success(context, l10n.doneUploading);
                 },
                 error: (error) {
                   Gaimon.error();
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(error.message)));
+                  PRFSnackbar.error(context, error.message);
                 },
               );
             },

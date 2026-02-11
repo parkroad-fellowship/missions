@@ -322,17 +322,13 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                         _isLoading = false;
                       });
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.expenseRecorded)),
-                      );
+                      PRFSnackbar.success(context, l10n.expenseRecorded);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },

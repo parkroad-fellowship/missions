@@ -309,18 +309,14 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       });
                       Gaimon.success();
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.expenseRecorded)),
-                      );
+                      PRFSnackbar.success(context, l10n.expenseRecorded);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },

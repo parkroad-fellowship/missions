@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart'
-    show BuildContext, ScaffoldMessenger, SnackBar, Text;
+import 'package:flutter/material.dart' show BuildContext;
 import 'package:flutter/services.dart';
+import 'package:prf_design/prf_design.dart';
 
 /// Navigation and app lifecycle utilities.
 class NavigationHelper {
@@ -27,12 +27,7 @@ class NavigationHelper {
     if (_lastBackPressed == null ||
         now.difference(_lastBackPressed!) > window) {
       _lastBackPressed = now;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          duration: window,
-        ),
-      );
+      PRFSnackbar.info(context, message, duration: window);
     } else {
       SystemNavigator.pop();
     }

@@ -110,9 +110,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                       _isLoading = false;
                     });
                     Gaimon.error();
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(error.error)));
+                    PRFSnackbar.error(context, error.error);
                   },
                 );
               },
@@ -124,18 +122,15 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     isLoading: _isLoading ? true : null,
                     onPressed: () async {
                       if (_amountController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.enterAmount)),
-                        );
+                        PRFSnackbar.warning(context, l10n.enterAmount);
                         Gaimon.warning();
                         return;
                       }
 
                       if (selectedPaymentType == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.selectReasonForGiving),
-                          ),
+                        PRFSnackbar.warning(
+                          context,
+                          l10n.selectReasonForGiving,
                         );
                         Gaimon.warning();
                         return;

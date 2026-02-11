@@ -161,15 +161,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   missionUlid: missionUlid,
                   refresh: true,
                 );
-                ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-                  SnackBar(content: Text(l10n.successfullySubscribed)),
-                );
+                PRFSnackbar.success(context, l10n.successfullySubscribed);
               },
               error: (error) {
                 Gaimon.error();
-                ScaffoldMessenger.maybeOf(
-                  context,
-                )?.showSnackBar(SnackBar(content: Text(error.message)));
+                PRFSnackbar.error(context, error.message);
               },
             );
           },

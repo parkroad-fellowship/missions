@@ -78,12 +78,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 );
               },
               error: (message) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Failed to load mission: $message'),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
+                PRFSnackbar.error(context, 'Failed to load mission: $message');
               },
             );
           },
@@ -95,20 +90,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               loading: () {},
               loaded: () {
                 _loadData();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Entry added successfully'),
-                    backgroundColor: context.statusColors.success.main,
-                  ),
-                );
+                PRFSnackbar.success(context, 'Entry added successfully');
               },
               error: (message) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
+                PRFSnackbar.error(context, message);
               },
             );
           },
@@ -120,20 +105,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               loading: () {},
               loaded: () {
                 _loadData();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Expense updated successfully'),
-                    backgroundColor: context.statusColors.success.main,
-                  ),
-                );
+                PRFSnackbar.success(context, 'Expense updated successfully');
               },
               error: (message) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
+                PRFSnackbar.error(context, message);
               },
             );
           },
@@ -145,20 +120,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               loading: () {},
               loaded: () {
                 _loadData();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Expense deleted successfully'),
-                    backgroundColor: context.statusColors.success.main,
-                  ),
-                );
+                PRFSnackbar.success(context, 'Expense deleted successfully');
               },
               error: (message) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
+                PRFSnackbar.error(context, message);
               },
             );
           },
@@ -169,19 +134,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               orElse: () {},
               loaded: () {
                 _loadData();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Receipt uploaded successfully'),
-                    backgroundColor: context.statusColors.success.main,
-                  ),
-                );
+                PRFSnackbar.success(context, 'Receipt uploaded successfully');
               },
               error: (message) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Failed to upload receipt: $message'),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
+                PRFSnackbar.error(
+                  context,
+                  'Failed to upload receipt: $message',
                 );
               },
             );
@@ -856,20 +814,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           loading: (mediaUuid) {},
           loaded: (mediaUuid) {
             _loadData();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('Receipt deleted successfully'),
-                backgroundColor: context.statusColors.success.main,
-              ),
-            );
+            PRFSnackbar.success(context, 'Receipt deleted successfully');
           },
           error: (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                backgroundColor: Theme.of(context).colorScheme.error,
-              ),
-            );
+            PRFSnackbar.error(context, message);
           },
         );
       },
@@ -1320,13 +1268,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             );
                           } catch (e) {
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Failed to select image: $e'),
-                                  backgroundColor: Theme.of(
-                                    context,
-                                  ).colorScheme.error,
-                                ),
+                              PRFSnackbar.error(
+                                context,
+                                'Failed to select image: $e',
                               );
                             }
                           }
@@ -1387,13 +1331,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             );
                           } catch (e) {
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Failed to select PDF: $e'),
-                                  backgroundColor: Theme.of(
-                                    context,
-                                  ).colorScheme.error,
-                                ),
+                              PRFSnackbar.error(
+                                context,
+                                'Failed to select PDF: $e',
                               );
                             }
                           }
@@ -2122,12 +2062,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           IconButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: value));
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Copied to clipboard'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
+              PRFSnackbar.info(context, 'Copied to clipboard');
             },
             icon: Icon(
               Icons.copy,
@@ -2170,12 +2105,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         GestureDetector(
           onTap: () {
             Clipboard.setData(ClipboardData(text: value));
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Copied "$value" to clipboard'),
-                duration: const Duration(seconds: 2),
-              ),
-            );
+            PRFSnackbar.info(context, 'Copied "$value" to clipboard');
           },
           child: Container(
             padding: const EdgeInsets.symmetric(

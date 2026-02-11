@@ -187,26 +187,16 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                         _isLoading = false;
                       });
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Refund entry added successfully',
-                          ),
-                          duration: Duration(seconds: 2),
-                        ),
+                      PRFSnackbar.success(
+                        context,
+                        'Refund entry added successfully',
                       );
                     },
                     error: (message) {
                       setState(() {
                         _isLoading = false;
                       });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error: $message'),
-                          backgroundColor: Theme.of(context).colorScheme.error,
-                          duration: const Duration(seconds: 3),
-                        ),
-                      );
+                      PRFSnackbar.error(context, message);
                     },
                   );
                 },

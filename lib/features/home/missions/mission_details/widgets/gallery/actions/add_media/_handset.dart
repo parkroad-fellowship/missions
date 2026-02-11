@@ -149,9 +149,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                         ? () {}
                         : () async {
                             Navigator.of(context).pop();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.willUpload)),
-                            );
+                            PRFSnackbar.info(context, l10n.willUpload);
                             await context
                                 .read<UploadMediaCubit>()
                                 .uploadMedia();
@@ -444,11 +442,9 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                 onTap: () {
                   // Remove image logic would go here
                   // For now, we'll just show a snackbar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Remove functionality not implemented'),
-                      duration: Duration(seconds: 1),
-                    ),
+                  PRFSnackbar.info(
+                    context,
+                    'Remove functionality not implemented',
                   );
                 },
                 child: Container(

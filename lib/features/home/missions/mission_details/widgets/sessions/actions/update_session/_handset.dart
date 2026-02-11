@@ -357,9 +357,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           });
                           Gaimon.success();
                           Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(l10n.sessionRecorded)),
-                          );
+                          PRFSnackbar.success(context, l10n.sessionRecorded);
                           context
                               .read<GetMissionSessionCubit>()
                               .getMissionSession(
@@ -372,9 +370,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             _isLoading = false;
                           });
                           Gaimon.error();
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(error.error)));
+                          PRFSnackbar.error(context, error.error);
                         },
                       );
                     },
@@ -441,33 +437,25 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     final l10n = context.l10n;
 
     if (selectedFacilitatorUlid == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.selectFacilitator)),
-      );
+      PRFSnackbar.warning(context, l10n.selectFacilitator);
       Gaimon.warning();
       return;
     }
 
     if (_notesController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterNotes)),
-      );
+      PRFSnackbar.warning(context, l10n.enterNotes);
       Gaimon.warning();
       return;
     }
 
     if (startsAt == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.addStartEnd)),
-      );
+      PRFSnackbar.warning(context, l10n.addStartEnd);
       Gaimon.warning();
       return;
     }
 
     if (endsAt == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.addStartEnd)),
-      );
+      PRFSnackbar.warning(context, l10n.addStartEnd);
       Gaimon.warning();
       return;
     }
