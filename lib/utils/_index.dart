@@ -1,7 +1,7 @@
 // Utils barrel export file
 
 // Package re-exports
-export 'package:prf_design_system/prf_design_system.dart'
+export 'package:prf_design/prf_design.dart'
     show DateFormatter, Debouncer, NumberFormatter, StringFormatter;
 
 // Local exports

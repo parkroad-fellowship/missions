@@ -1,7 +1,7 @@
 import 'package:app/enums/error_severity.dart';
 import 'package:app/enums/error_type.dart';
 import 'package:app/models/remote/common/failure.dart';
-import 'package:prf_design_system/prf_design_system.dart';
+import 'package:prf_design/prf_design.dart';
 
 /// Adapter extension to convert app's Failure to PRFFailure.
 extension FailureAdapter on Failure {

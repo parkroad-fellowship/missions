@@ -1646,13 +1646,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  prf_design_system:
+  prf_design:
     dependency: "direct main"
     description:
-      path: "packages/prf_design_system"
-      relative: true
-    source: path
-    version: "0.1.0"
+      name: prf_design
+      sha256: "1df00c3f404fbd0840cb16e29ba288720956a0fa25d135eee0cf557e20a39d39"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   protobuf:
     dependency: transitive
     description:

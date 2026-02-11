@@ -1471,7 +1471,7 @@ flutter pub run build_runner build --delete-conflicting-outputs && flutter pub g
 | `google_sign_in` | Google authentication |
 | `local_auth` | Biometric authentication |
 | `shorebird_code_push` | Over-the-air updates |
-| `prf_design_system` | Internal design system package |
+| `prf_design` | Internal design system package |
 | `logger` | Logging |
 | `mocktail` | Testing mocks |
 | `bloc_test` | Cubit/Bloc testing utilities |

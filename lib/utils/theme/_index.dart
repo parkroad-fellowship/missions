@@ -1,7 +1,7 @@
 // Theme barrel export file
-// Re-exports from prf_design_system package
+// Re-exports from prf_design package
 
-export 'package:prf_design_system/prf_design_system.dart'
+export 'package:prf_design/prf_design.dart'
     show
         PRFColorPalette,
         PRFColors,

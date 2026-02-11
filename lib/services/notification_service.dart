@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:prf_design_system/prf_design_system.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 abstract class NotificationService {

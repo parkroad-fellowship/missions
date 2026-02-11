@@ -1,8 +1,8 @@
 // Shared widgets barrel export file
-// Re-exports from prf_design_system package + local widgets
+// Re-exports from prf_design package + local widgets
 
 // Package exports
-export 'package:prf_design_system/prf_design_system.dart'
+export 'package:prf_design/prf_design.dart'
     show
         AnimatedStatCard,
         FormFieldLabel,

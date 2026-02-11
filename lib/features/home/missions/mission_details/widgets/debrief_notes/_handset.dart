@@ -6,7 +6,7 @@ import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prf_design_system/prf_design_system.dart';
+import 'package:prf_design/prf_design.dart';
 
 class DebriefNotesViewHandset extends StatefulWidget {
   const DebriefNotesViewHandset({required this.missionUlid, super.key});

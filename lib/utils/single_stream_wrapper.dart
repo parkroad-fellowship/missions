@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:prf_design_system/prf_design_system.dart';
+import 'package:prf_design/prf_design.dart';
 
 class SingleStreamWrapper<T> extends StatelessWidget {
   const SingleStreamWrapper({
