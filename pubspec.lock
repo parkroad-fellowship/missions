@@ -1649,10 +1649,9 @@ packages:
   prf_design:
     dependency: "direct main"
     description:
-      name: prf_design
-      sha256: "8a6f8578fc098733e91219c3c916c53812f7b33d7cd473c4895d2913f0b6f930"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../prf_design_system"
+      relative: true
+    source: path
     version: "0.3.0"
   protobuf:
     dependency: transitive

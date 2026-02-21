@@ -208,6 +208,24 @@ abstract class AppLocalizations {
   /// **'Please wait for an update from the missions desk'**
   String get pleaseWait;
 
+  /// No description provided for @missionsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search missions'**
+  String get missionsSearchHint;
+
+  /// No description provided for @activeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Active now'**
+  String get activeNow;
+
+  /// No description provided for @statusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get statusAvailable;
+
   /// No description provided for @missionStart.
   ///
   /// In en, this message translates to:

@@ -66,6 +66,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseWait => 'Please wait for an update from the missions desk';
 
   @override
+  String get missionsSearchHint => 'Search missions';
+
+  @override
+  String get activeNow => 'Active now';
+
+  @override
+  String get statusAvailable => 'Available';
+
+  @override
   String missionStart(String missionDate, String missionTime) {
     return 'Starts on: $missionDate, $missionTime';
   }

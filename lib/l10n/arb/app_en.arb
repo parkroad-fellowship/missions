@@ -38,6 +38,12 @@
     "@noMissions": {},
     "pleaseWait": "Please wait for an update from the missions desk",
     "@pleaseWait": {},
+    "missionsSearchHint": "Search missions",
+    "@missionsSearchHint": {},
+    "activeNow": "Active now",
+    "@activeNow": {},
+    "statusAvailable": "Available",
+    "@statusAvailable": {},
     "missionStart": "Starts on: {missionDate}, {missionTime}",
     "@missionStart": {
         "placeholders": {

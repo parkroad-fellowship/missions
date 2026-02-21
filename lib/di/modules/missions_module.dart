@@ -11,12 +11,17 @@ import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/add_debrief_note_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/delete_debrief_note_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/update_debrief_note_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/delete_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/add_mission_question_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/delete_mission_question_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/get_mission_questions_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/update_mission_question_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/add_mission_session_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/delete_mission_session_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/get_mission_sessions_cubit.dart';
@@ -24,7 +29,9 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/cubi
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/add_soul_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/delete_soul_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/get_souls_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/update_soul_cubit.dart';
 import 'package:app/services/api/class_group_service.dart';
 import 'package:app/services/api/debrief_note_service.dart';
 import 'package:app/services/api/mission_ground_suggestion_service.dart';
@@ -120,6 +127,18 @@ class MissionsModule {
           isarService: getIt(),
         ),
       ),
+      BlocProvider<UpdateSoulCubit>(
+        create: (context) => UpdateSoulCubit(
+          soulService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<DeleteSoulCubit>(
+        create: (context) => DeleteSoulCubit(
+          soulService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
       BlocProvider<GetDebriefNotesCubit>(
         create: (context) => GetDebriefNotesCubit(
           debriefNoteService: getIt(),
@@ -132,6 +151,18 @@ class MissionsModule {
           isarService: getIt(),
         ),
       ),
+      BlocProvider<UpdateDebriefNoteCubit>(
+        create: (context) => UpdateDebriefNoteCubit(
+          debriefNoteService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<DeleteDebriefNoteCubit>(
+        create: (context) => DeleteDebriefNoteCubit(
+          debriefNoteService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
       BlocProvider<GetMissionQuestionsCubit>(
         create: (context) => GetMissionQuestionsCubit(
           missionQuestionService: getIt(),
@@ -140,6 +171,18 @@ class MissionsModule {
       ),
       BlocProvider<AddMissionQuestionCubit>(
         create: (context) => AddMissionQuestionCubit(
+          missionQuestionService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<UpdateMissionQuestionCubit>(
+        create: (context) => UpdateMissionQuestionCubit(
+          missionQuestionService: getIt(),
+          isarService: getIt(),
+        ),
+      ),
+      BlocProvider<DeleteMissionQuestionCubit>(
+        create: (context) => DeleteMissionQuestionCubit(
           missionQuestionService: getIt(),
           isarService: getIt(),
         ),
@@ -158,6 +201,11 @@ class MissionsModule {
       ),
       BlocProvider<GetMissionMediaCubit>(
         create: (context) => GetMissionMediaCubit(missionService: getIt()),
+      ),
+      BlocProvider<DeleteMediaCubit>(
+        create: (context) => DeleteMediaCubit(
+          missionService: getIt(),
+        ),
       ),
       BlocProvider<GetMissionSessionsCubit>(
         create: (context) => GetMissionSessionsCubit(
