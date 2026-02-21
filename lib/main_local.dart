@@ -23,7 +23,7 @@ Future<void> main() async {
       azureConnString:
           'DefaultEndpointsProtocol=https;AccountName=prfcorestorage;AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0TA4TNOV4TYqU1QONfaQOrrs7+ASteXMXPA==;EndpointSuffix=core.windows.net',
       appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
-      appSecret: 'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
+      appSecret: 'qeujrgcAc8NSmMof4IOcWzrTmOjSXEhUv6c2vKVARAaczzv9yOUoW2cK8UuEHLlb',
     ),
   );
 
