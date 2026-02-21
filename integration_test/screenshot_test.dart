@@ -58,6 +58,9 @@ void main() {
               'AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0'
               'TA4TNOV4TYqU1QONfaQOrrs7+ASteXMXPA==;'
               'EndpointSuffix=core.windows.net',
+          appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
+          appSecret:
+              'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
         ),
       );
 
@@ -105,8 +108,8 @@ void main() {
         }
         await getIt<AnalyticsService>().identifyUser(user: user);
         try {
-          final fcmToken =
-              await getIt<FirebaseMessagingService>().retrieveFCMToken();
+          final fcmToken = await getIt<FirebaseMessagingService>()
+              .retrieveFCMToken();
           if (fcmToken.isNotEmpty) {
             await getIt<AuthService>().updateProfile(
               updateDTO: UserUpdateDTO(fcmTokens: [fcmToken]),
@@ -283,8 +286,9 @@ void main() {
           // Try tapping the first session item in the list.
           final sessionItems = find.byType(ListTile);
           final sessionCards = find.byType(Card);
-          final tappable =
-              sessionItems.evaluate().isNotEmpty ? sessionItems : sessionCards;
+          final tappable = sessionItems.evaluate().isNotEmpty
+              ? sessionItems
+              : sessionCards;
           if (tappable.evaluate().isNotEmpty) {
             await tester.tap(tappable.first);
             await tester.pump(TestConfig.pageLoadWait);

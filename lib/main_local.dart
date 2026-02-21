@@ -14,14 +14,16 @@ Future<void> main() async {
     values: PRFSuperAppValues(
       environment: PRFEnvironment.local,
       hiveBox: 'prf-super-app-${AppVersionHelper.getSluggedAppVersion()}',
-      baseDomain: 'prf-sockets.test',
-      urlScheme: 'http',
-      socketDomain: 'prf-sockets.test',
+      baseDomain: 'app.docker.orb.local',
+      urlScheme: 'https',
+      socketDomain: 'app.docker.orb.local',
       socketKey: 'yvnlkaqadqiadutrs9sa',
-      socketScheme: 'ws',
+      socketScheme: 'wss',
       socketPort: 9000,
       azureConnString:
           'DefaultEndpointsProtocol=https;AccountName=prfcorestorage;AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0TA4TNOV4TYqU1QONfaQOrrs7+ASteXMXPA==;EndpointSuffix=core.windows.net',
+      appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
+      appSecret: 'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
     ),
   );
 

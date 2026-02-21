@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/http/request_signer.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
@@ -55,6 +56,15 @@ class NetworkUtil {
             options.headers['Authorization'] = 'Bearer $token';
           }
 
+          // Generate signature with the fully resolved URL
+          final signatureHeaders = RequestSigner.generateHeaders(
+            method: options.method,
+            url: options.uri.toString(),
+            appId: PRFSuperAppConfig.instance!.values.appId,
+            appSecret: PRFSuperAppConfig.instance!.values.appSecret,
+          );
+          options.headers.addAll(signatureHeaders);
+
           // Add request timestamp for debugging
           options.headers['X-Request-Time'] = DateTime.now().toIso8601String();
 
@@ -93,6 +103,7 @@ class NetworkUtil {
         PrettyDioLogger(
           requestHeader: true,
           requestBody: true,
+          responseHeader: true
         ),
       );
     }
