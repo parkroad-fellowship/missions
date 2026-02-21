@@ -24,7 +24,7 @@ class RequestSigner {
     required String appId,
     required String appSecret,
   }) {
-    final timestamp = (DateTime.now().millisecondsSinceEpoch * 0.001)
+    final timestamp = (DateTime.now().toUtc().millisecondsSinceEpoch * 0.001)
         .toString(); // Convert to seconds
     final signature = generateSignature(
       method: method,
