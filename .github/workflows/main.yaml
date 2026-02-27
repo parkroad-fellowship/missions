@@ -1,9 +1,6 @@
 name: Release to production
 
-on:  
-  pull_request:
-    branches:
-      - main  
+on:
   push:
     branches:
       - main
@@ -231,7 +228,7 @@ jobs:
       - name: ⚙️ Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.0"
+          ruby-version: "3.2"
           bundler-cache: true
 
       - name: ⚙️ Download bundle dependencies
