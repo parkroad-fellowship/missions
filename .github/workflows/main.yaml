@@ -148,7 +148,7 @@ jobs:
           fetch-depth: 1
 
       - name: ⬇️ Download debug symbols artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: debug-symbols
           path: debug-symbols/
@@ -223,7 +223,7 @@ jobs:
           fetch-depth: 1
 
       - name: ⬇️ Download AAB artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-production-release
           path: build/app/outputs/bundle/productionRelease/
@@ -260,7 +260,7 @@ jobs:
           fetch-depth: 1
 
       - name: ⬇️ Download AAB artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-production-release
           path: build/app/outputs/bundle/productionRelease/
