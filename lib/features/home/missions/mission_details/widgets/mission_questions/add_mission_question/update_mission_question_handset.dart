@@ -72,8 +72,10 @@ class _UpdateMissionQuestionViewHandsetState
             const SizedBox(height: 24),
 
             // Submit Button
-            BlocConsumer<UpdateMissionQuestionCubit,
-                UpdateMissionQuestionState>(
+            BlocConsumer<
+              UpdateMissionQuestionCubit,
+              UpdateMissionQuestionState
+            >(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {

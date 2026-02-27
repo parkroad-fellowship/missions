@@ -8,8 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'update_mission_question_state.dart';
 part 'update_mission_question_cubit.freezed.dart';
 
-class UpdateMissionQuestionCubit
-    extends Cubit<UpdateMissionQuestionState> {
+class UpdateMissionQuestionCubit extends Cubit<UpdateMissionQuestionState> {
   UpdateMissionQuestionCubit({
     required MissionQuestionService missionQuestionService,
     required IsarService isarService,

@@ -46,15 +46,13 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
 
     // Pre-populate fields with existing soul data
     _fullNameController.text = widget.soul.fullName;
-    _admissionNumberController.text =
-        widget.soul.admissionNumber ?? '';
+    _admissionNumberController.text = widget.soul.admissionNumber ?? '';
     _notesController.text = widget.soul.notes ?? '';
     selectedDecisionType = widget.soul.decisionType;
     _initialClassGroupUlid = widget.soul.classGroup.ulid;
 
     _fullNameController.addListener(() => setState(() {}));
-    _admissionNumberController
-        .addListener(() => setState(() {}));
+    _admissionNumberController.addListener(() => setState(() {}));
 
     context.read<GetClassGroupsCubit>().getClassGroups(
       missionUlid: widget.missionUlid,
@@ -91,59 +89,55 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
             _buildFormSection(
               title: l10n.classGroup,
               isRequired: true,
-              child:
-                  BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        orElse: () => const SizedBox.shrink(),
-                        loading: () => const Center(
-                          child: LinearProgressIndicator(),
-                        ),
-                        loaded: (classes) {
-                          // Match initial class group by ulid
-                          if (selectedClassGroup == null &&
-                              _initialClassGroupUlid != null) {
-                            final match = classes
-                                .where(
-                                  (c) =>
-                                      c.ulid ==
-                                      _initialClassGroupUlid,
+              child: BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () => const SizedBox.shrink(),
+                    loading: () => const Center(
+                      child: LinearProgressIndicator(),
+                    ),
+                    loaded: (classes) {
+                      // Match initial class group by ulid
+                      if (selectedClassGroup == null &&
+                          _initialClassGroupUlid != null) {
+                        final match = classes
+                            .where(
+                              (c) => c.ulid == _initialClassGroupUlid,
+                            )
+                            .firstOrNull;
+                        if (match != null) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            setState(() {
+                              selectedClassGroup = match;
+                            });
+                          });
+                        }
+                      }
+                      return LayoutBuilder(
+                        builder: (context, constraints) {
+                          return DropdownMenu<PRFClassGroup>(
+                            width: constraints.maxWidth,
+                            initialSelection: selectedClassGroup,
+                            hintText: l10n.selectClass,
+                            dropdownMenuEntries: classes
+                                .map(
+                                  (classGroup) =>
+                                      DropdownMenuEntry<PRFClassGroup>(
+                                        value: classGroup,
+                                        label: classGroup.name,
+                                      ),
                                 )
-                                .firstOrNull;
-                            if (match != null) {
-                              WidgetsBinding.instance
-                                  .addPostFrameCallback((_) {
-                                setState(() {
-                                  selectedClassGroup = match;
-                                });
-                              });
-                            }
-                          }
-                          return LayoutBuilder(
-                          builder: (context, constraints) {
-                            return DropdownMenu<PRFClassGroup>(
-                              width: constraints.maxWidth,
-                              initialSelection: selectedClassGroup,
-                              hintText: l10n.selectClass,
-                              dropdownMenuEntries: classes
-                                  .map(
-                                    (classGroup) =>
-                                        DropdownMenuEntry<PRFClassGroup>(
-                                          value: classGroup,
-                                          label: classGroup.name,
-                                        ),
-                                  )
-                                  .toList(),
-                              onSelected: (classGroup) => setState(() {
-                                selectedClassGroup = classGroup;
-                              }),
-                            );
-                          },
+                                .toList(),
+                            onSelected: (classGroup) => setState(() {
+                              selectedClassGroup = classGroup;
+                            }),
                           );
                         },
                       );
                     },
-                  ),
+                  );
+                },
+              ),
             ),
 
             // Full Name

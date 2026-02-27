@@ -60,6 +60,7 @@ void main() {
               'EndpointSuffix=core.windows.net',
           appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
           appSecret:
+              // ignore: lines_longer_than_80_chars
               'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
         ),
       );

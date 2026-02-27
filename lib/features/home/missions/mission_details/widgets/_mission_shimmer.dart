@@ -22,16 +22,16 @@ class _ShimmerBlock extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      width: width ?? double.infinity,
-      height: height,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: shape == BoxShape.circle
-            ? null
-            : BorderRadius.circular(borderRadius),
-        shape: shape ?? BoxShape.rectangle,
-      ),
-    )
+          width: width ?? double.infinity,
+          height: height,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest,
+            borderRadius: shape == BoxShape.circle
+                ? null
+                : BorderRadius.circular(borderRadius),
+            shape: shape ?? BoxShape.rectangle,
+          ),
+        )
         .animate(onPlay: (controller) => controller.repeat())
         .shimmer(
           duration: 1200.ms,
@@ -60,10 +60,9 @@ class MissionListShimmer extends StatelessWidget {
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Theme.of(context)
-                  .colorScheme
-                  .outline
-                  .withValues(alpha: 0.08),
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.08),
             ),
           ),
           child: Row(
@@ -125,8 +124,7 @@ class MissionCardShimmer extends StatelessWidget {
               children: [
                 Container(
                   width: 3,
-                  color: theme.colorScheme.outline
-                      .withValues(alpha: 0.2),
+                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
                 ),
                 Expanded(
                   child: Padding(

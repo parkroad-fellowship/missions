@@ -7,8 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'delete_mission_question_cubit.freezed.dart';
 part 'delete_mission_question_state.dart';
 
-class DeleteMissionQuestionCubit
-    extends Cubit<DeleteMissionQuestionState> {
+class DeleteMissionQuestionCubit extends Cubit<DeleteMissionQuestionState> {
   DeleteMissionQuestionCubit({
     required MissionQuestionService missionQuestionService,
     required IsarService isarService,
