@@ -2,8 +2,8 @@
 
 import 'dart:math';
 
-import 'package:app/enums/prf_supported_platform.dart';
-import 'package:app/models/remote/failure.dart';
+import 'package:app/enums/common/prf_supported_platform.dart';
+import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -122,7 +122,7 @@ class FirebaseMessagingServiceImpl implements FirebaseMessagingService {
   @override
   Future<String> retrieveFCMToken() async {
     try {
-      final platform = await Misc.getCurrentPlatform();
+      final platform = await DeviceHelper.getCurrentPlatform();
       Logger().i('Platform: $platform');
 
       final hive = getIt<HiveService>().settings;

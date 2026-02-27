@@ -21,7 +21,7 @@ class LandingPageHandset extends StatelessWidget {
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) => Misc.exitApp(
+      onPopInvokedWithResult: (didPop, result) => NavigationHelper.exitApp(
         context: context,
         didPop: didPop,
         result: result,
@@ -97,7 +97,8 @@ class LandingPageHandset extends StatelessWidget {
                                             backgroundColor:
                                                 theme.colorScheme.primary,
                                             child: Text(
-                                              Misc.getUserNameInitials(
+                                              // ignore: lines_longer_than_80_chars
+                                              StringFormatter.getUserNameInitials(
                                                 getIt<HiveService>()
                                                         .retrieveMember()
                                                         ?.fullName ??
@@ -105,7 +106,7 @@ class LandingPageHandset extends StatelessWidget {
                                               ),
                                               style: theme.textTheme.titleMedium
                                                   ?.copyWith(
-                                                    color: Colors.white,
+                                                    color: PRFColors.white,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),

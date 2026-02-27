@@ -1,0 +1,27 @@
+import 'package:app/models/remote/content/prf_faq_category.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'prf_faq.freezed.dart';
+part 'prf_faq.g.dart';
+
+@freezed
+abstract class PRFFaq with _$PRFFaq {
+  factory PRFFaq(
+    String ulid,
+    String question,
+    String answer,
+    @JsonKey(name: 'created_at') DateTime createdAt,
+    @JsonKey(name: 'updated_at') DateTime updatedAt, {
+    @JsonKey(name: 'mission_faq_category') PRFFaqCategory? category,
+  }) = _PRFFaq;
+
+  factory PRFFaq.fromJson(Map<String, dynamic> json) => _$PRFFaqFromJson(json);
+}
+
+@freezed
+abstract class PRFFaqResponse with _$PRFFaqResponse {
+  const factory PRFFaqResponse({required List<PRFFaq> data}) = _PRFFaqResponse;
+
+  factory PRFFaqResponse.fromJson(Map<String, dynamic> json) =>
+      _$PRFFaqResponseFromJson(json);
+}

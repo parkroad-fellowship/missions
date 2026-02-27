@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/models/local/prf_debrief_note.dart';
-import 'package:app/models/remote/prf_debrief_note.dart';
+import 'package:app/models/local/mission/prf_debrief_note.dart';
+import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar_community/isar.dart';
 

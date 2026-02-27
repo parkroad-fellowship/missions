@@ -208,6 +208,24 @@ abstract class AppLocalizations {
   /// **'Please wait for an update from the missions desk'**
   String get pleaseWait;
 
+  /// No description provided for @missionsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search missions'**
+  String get missionsSearchHint;
+
+  /// No description provided for @activeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Active now'**
+  String get activeNow;
+
+  /// No description provided for @statusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get statusAvailable;
+
   /// No description provided for @missionStart.
   ///
   /// In en, this message translates to:
@@ -2313,6 +2331,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown Category'**
   String get unknownCategory;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @systemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Using system setting'**
+  String get systemDefault;
+
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light mode enabled'**
+  String get lightMode;
+
+  /// No description provided for @darkModeEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode enabled'**
+  String get darkModeEnabled;
 }
 
 class _AppLocalizationsDelegate

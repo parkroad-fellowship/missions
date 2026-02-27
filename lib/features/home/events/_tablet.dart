@@ -1,10 +1,9 @@
 import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_event.dart';
+import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -269,7 +268,8 @@ class _EventsPageTabletState extends State<EventsPageTablet>
 
             final events =
                 eventSubscriptions
-                    .map((subscription) => subscription.event!)
+                    .map((subscription) => subscription.event)
+                    .whereType<PRFEvent>()
                     .toList()
                   ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
@@ -353,9 +353,10 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
 
     // Premium status color system
     final statusColor = isSubscribed
-        ? const Color(PRFTheme.secondaryColor)
+        ? PRFColors.limeGreen
         : isOngoing
-        ? const Color(PRFTheme.secondaryColor) // Active green
+        ? PRFColors
+              .limeGreen // Active green
         : isUpcoming
         ? theme.colorScheme.primary
         : isPast
@@ -415,7 +416,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                         ),
                       ),
                       Text(
-                        Misc.getMonthAbbreviation(startDate.month),
+                        DateFormatter.getMonthAbbreviation(startDate.month),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
@@ -436,7 +437,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                         ),
                       ),
                       Text(
-                        Misc.getMonthAbbreviation(endDate.month),
+                        DateFormatter.getMonthAbbreviation(endDate.month),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
@@ -452,7 +453,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                         ),
                       ),
                       Text(
-                        Misc.getMonthAbbreviation(startDate.month),
+                        DateFormatter.getMonthAbbreviation(startDate.month),
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w500,
@@ -841,9 +842,9 @@ class DateRangeView extends StatelessWidget {
               children: [
                 Text(
                   isMultiDay
-                      ? '${Misc.formatDate(startDate, timezone)} - '
-                            '${Misc.formatDate(endDate, timezone)}'
-                      : Misc.formatDate(
+                      ? '${DateFormatter.formatDate(startDate, timezone)} - '
+                            '${DateFormatter.formatDate(endDate, timezone)}'
+                      : DateFormatter.formatDate(
                           startDate,
                           timezone,
                         ),
@@ -854,8 +855,8 @@ class DateRangeView extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${Misc.formatTime(event.startTime, timezone)} -'
-                  ' ${Misc.formatTime(event.endTime, timezone)} daily',
+                  '${DateFormatter.formatTime(event.startTime, timezone)} -'
+                  ' ${DateFormatter.formatTime(event.endTime, timezone)} daily',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),

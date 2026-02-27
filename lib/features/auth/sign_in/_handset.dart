@@ -21,10 +21,10 @@ class SignInHandset extends StatefulWidget {
 
 class _SignInHandsetState extends State<SignInHandset> {
   final _emailController = TextEditingController(
-    text: kDebugMode ? 'approvals@parkroadfellowship.org' : '',
+    text: kDebugMode ? 'member.toy@parkroadfellowship.org' : '',
   );
   final _passwordController = TextEditingController(
-    text: kDebugMode ? 'password' : '',
+    text: kDebugMode ? 'QRnYYl3say' : '',
   );
   final _hidePasswordNotifier = ValueNotifier<bool>(true);
 
@@ -43,16 +43,7 @@ class _SignInHandsetState extends State<SignInHandset> {
             socialAuthDTO: socialLoginDTO,
           ),
           error: (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                backgroundColor: theme.colorScheme.error,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            );
+            PRFSnackbar.error(context, message);
           },
         );
       },
@@ -63,16 +54,7 @@ class _SignInHandsetState extends State<SignInHandset> {
             loaded: () =>
                 context.router.pushPath(PRFSuperAppRouter.decisionRoute),
             error: (message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: theme.colorScheme.error,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              );
+              PRFSnackbar.error(context, message);
             },
           );
         },
@@ -191,22 +173,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                               setState(() {
                                                 _isLoading = !_isLoading;
                                               });
-                                              ScaffoldMessenger.of(
+                                              PRFSnackbar.error(
                                                 context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(message),
-                                                  backgroundColor:
-                                                      theme.colorScheme.error,
-                                                  behavior:
-                                                      SnackBarBehavior.floating,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          8,
-                                                        ),
-                                                  ),
-                                                ),
+                                                message,
                                               );
                                             },
                                             orElse: () {},
@@ -218,18 +187,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                               if (_emailController
                                                   .text
                                                   .isEmpty) {
-                                                ScaffoldMessenger.of(
+                                                PRFSnackbar.warning(
                                                   context,
-                                                ).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      l10n.enterEmail,
-                                                    ),
-                                                    backgroundColor:
-                                                        theme.colorScheme.error,
-                                                    behavior: SnackBarBehavior
-                                                        .floating,
-                                                  ),
+                                                  l10n.enterEmail,
                                                 );
                                                 Gaimon.warning();
                                                 return;
@@ -238,18 +198,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                               if (_passwordController
                                                   .text
                                                   .isEmpty) {
-                                                ScaffoldMessenger.of(
+                                                PRFSnackbar.warning(
                                                   context,
-                                                ).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      l10n.enterPassword,
-                                                    ),
-                                                    backgroundColor:
-                                                        theme.colorScheme.error,
-                                                    behavior: SnackBarBehavior
-                                                        .floating,
-                                                  ),
+                                                  l10n.enterPassword,
                                                 );
                                                 Gaimon.warning();
                                                 return;
@@ -335,7 +286,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
-                                  l10n.version(Misc.getAppVersion()),
+                                  l10n.version(
+                                    AppVersionHelper.getAppVersion(),
+                                  ),
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
                                     fontSize: 12,

@@ -1,8 +1,7 @@
-import 'package:app/models/remote/auth.dart';
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/socket_config.dart';
+import 'package:app/models/remote/common/auth.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/firebase_messaging_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';

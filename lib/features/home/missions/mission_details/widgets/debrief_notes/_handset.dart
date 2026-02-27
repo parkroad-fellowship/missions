@@ -1,13 +1,12 @@
-import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_debrief_note.dart';
+import 'package:app/models/local/mission/prf_debrief_note.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:app/shared_widgets/empty_state.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 
 class DebriefNotesViewHandset extends StatefulWidget {
   const DebriefNotesViewHandset({required this.missionUlid, super.key});
@@ -187,7 +186,7 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
           ),
           const SizedBox(width: 4),
           Text(
-            Misc.formatDateTime(debriefNote.createdAt, timezone),
+            DateFormatter.formatDateTime(debriefNote.createdAt, timezone),
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.secondary,
               fontWeight: FontWeight.w600,

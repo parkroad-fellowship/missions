@@ -90,12 +90,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           },
           error: (message) {
             _waveController.stop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                backgroundColor: Theme.of(context).colorScheme.error,
-              ),
-            );
+            PRFSnackbar.error(context, message);
           },
         );
       },

@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_prayer_request.dart';
+import 'package:app/models/remote/prayer/prf_prayer_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';

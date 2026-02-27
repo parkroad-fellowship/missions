@@ -1,8 +1,8 @@
-import 'package:app/enums/prf_soul_decision_type.dart';
-import 'package:app/features/home/missions/cubit/add_soul_cubit.dart';
+import 'package:app/enums/mission/prf_soul_decision_type.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/add_soul_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_class_group.dart';
+import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -250,18 +250,14 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                       });
                       Gaimon.success();
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.soulRecorded)),
-                      );
+                      PRFSnackbar.success(context, l10n.soulRecorded);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },
@@ -364,25 +360,19 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     final l10n = context.l10n;
 
     if (selectedClassGroup == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.selectClass)),
-      );
+      PRFSnackbar.warning(context, l10n.selectClass);
       Gaimon.warning();
       return;
     }
 
     if (selectedDecisionType == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.selectDecisionType)),
-      );
+      PRFSnackbar.warning(context, l10n.selectDecisionType);
       Gaimon.warning();
       return;
     }
 
     if (_fullNameController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterName)),
-      );
+      PRFSnackbar.warning(context, l10n.enterName);
       Gaimon.warning();
       return;
     }

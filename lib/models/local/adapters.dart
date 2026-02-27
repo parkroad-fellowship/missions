@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:app/models/remote/auth.dart';
-import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/models/remote/prf_expense_category.dart';
-import 'package:app/models/remote/prf_payment_type.dart';
-import 'package:app/models/remote/prf_soul.dart';
+import 'package:app/models/remote/common/auth.dart';
+import 'package:app/models/remote/expense/prf_expense_category.dart';
+import 'package:app/models/remote/member/prf_class_group.dart';
+import 'package:app/models/remote/payment/prf_payment_type.dart';
+import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class PRFUserAdapter extends TypeAdapter<PRFUser> {

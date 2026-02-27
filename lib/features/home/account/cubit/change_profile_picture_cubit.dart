@@ -1,6 +1,6 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
-import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';

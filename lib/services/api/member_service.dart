@@ -1,5 +1,5 @@
-import 'package:app/models/remote/prf_member.dart';
-import 'package:app/models/remote/prf_member_engagement.dart';
+import 'package:app/models/remote/member/prf_member.dart';
+import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class MemberService extends BaseAPIService<PRFMember> {

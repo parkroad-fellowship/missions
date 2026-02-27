@@ -1,6 +1,6 @@
-import 'package:app/models/remote/prf_class_group.dart';
-import 'package:app/models/remote/prf_expense_category.dart';
-import 'package:app/models/remote/prf_payment_type.dart';
+import 'package:app/models/remote/expense/prf_expense_category.dart';
+import 'package:app/models/remote/member/prf_class_group.dart';
+import 'package:app/models/remote/payment/prf_payment_type.dart';
 import 'package:app/services/local_storage/hive/_base_hive_service.dart';
 import 'package:app/services/local_storage/hive/models/class_group_hive_service.dart';
 import 'package:app/services/local_storage/hive/models/expense_hive_service.dart';

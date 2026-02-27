@@ -1,8 +1,6 @@
-import 'package:app/enums/prf_morph_types.dart';
-import 'package:app/models/remote/prf_student_enquiry_reply_dto.dart';
+import 'package:app/enums/common/prf_morph_types.dart';
+import 'package:app/models/remote/enquiry/prf_student_enquiry_reply_dto.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/api/student_enquiry_reply_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

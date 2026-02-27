@@ -1,15 +1,15 @@
-import 'package:app/enums/prf_soul_decision_type.dart';
-import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
+import 'package:app/enums/mission/prf_soul_decision_type.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/get_souls_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_soul.dart';
+import 'package:app/models/local/mission/prf_soul.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:app/shared_widgets/empty_state.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:prf_design/prf_design.dart';
 
 class SoulsViewHandset extends StatefulWidget {
   const SoulsViewHandset({required this.missionUlid, super.key});
@@ -160,7 +160,7 @@ class BeautifulSoulCard extends StatelessWidget {
   }
 
   Widget _buildAvatarIcon(ThemeData theme) {
-    final initials = Misc.getUserNameInitials(soul.fullName);
+    final initials = StringFormatter.getUserNameInitials(soul.fullName);
 
     return Text(
       initials,

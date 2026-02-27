@@ -1,4 +1,4 @@
-import 'package:app/features/home/missions/cubit/add_mission_question_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/add_mission_question_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
@@ -162,18 +162,14 @@ class _AddMissionQuestionViewHandsetState
                       });
                       Gaimon.success();
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.questionRecorded)),
-                      );
+                      PRFSnackbar.success(context, l10n.questionRecorded);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },
@@ -237,9 +233,7 @@ class _AddMissionQuestionViewHandsetState
     final l10n = context.l10n;
 
     if (_questionController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterQuestion)),
-      );
+      PRFSnackbar.warning(context, l10n.enterQuestion);
       Gaimon.warning();
       return;
     }

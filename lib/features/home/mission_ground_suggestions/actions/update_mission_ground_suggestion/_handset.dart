@@ -1,7 +1,7 @@
-import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
+import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -282,13 +282,10 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           });
                           Gaimon.success();
                           Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                l10n.missionGroundRecorded(
-                                  result.missionGroundSuggestion.name,
-                                ),
-                              ),
+                          PRFSnackbar.success(
+                            context,
+                            l10n.missionGroundRecorded(
+                              result.missionGroundSuggestion.name,
                             ),
                           );
                         },
@@ -297,9 +294,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             _isLoading = false;
                           });
                           Gaimon.error();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.message)),
-                          );
+                          PRFSnackbar.error(context, error.message);
                         },
                       );
                     },
@@ -366,33 +361,25 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     final l10n = context.l10n;
 
     if (_nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterMissionGround)),
-      );
+      PRFSnackbar.warning(context, l10n.enterMissionGround);
       Gaimon.warning();
       return;
     }
 
     if (_contactPersonController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterContactPerson)),
-      );
+      PRFSnackbar.warning(context, l10n.enterContactPerson);
       Gaimon.warning();
       return;
     }
 
     if (_contactNumberController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterContactNumber)),
-      );
+      PRFSnackbar.warning(context, l10n.enterContactNumber);
       Gaimon.warning();
       return;
     }
 
     if (_selectedStatus == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.selectStatus)),
-      );
+      PRFSnackbar.warning(context, l10n.selectStatus);
       Gaimon.warning();
       return;
     }

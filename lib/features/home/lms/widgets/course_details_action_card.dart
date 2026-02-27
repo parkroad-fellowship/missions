@@ -1,5 +1,5 @@
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_course_module.dart';
+import 'package:app/models/local/course/prf_course_module.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';

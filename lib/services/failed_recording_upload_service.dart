@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/models/local/prf_failed_recording_upload.dart';
-import 'package:app/models/local/upload_retry_progress.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/local/media/prf_failed_recording_upload.dart';
+import 'package:app/models/local/media/upload_retry_progress.dart';
+import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:isar_community/isar.dart';
 import 'package:logger/logger.dart';
 

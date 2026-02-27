@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_debrief_note.dart';
+import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class DebriefNoteService extends BaseAPIService<PRFDebriefNote> {

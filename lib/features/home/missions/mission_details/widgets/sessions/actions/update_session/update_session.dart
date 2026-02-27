@@ -1,5 +1,5 @@
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/update_session/_handset.dart';
-import 'package:app/models/local/prf_mission_session.dart';
+import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 

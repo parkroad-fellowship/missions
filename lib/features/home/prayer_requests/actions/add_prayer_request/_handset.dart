@@ -182,18 +182,14 @@ class _AddPrayerRequestViewHandsetState
                       });
                       Gaimon.success();
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.prayerRequestSubmitted)),
-                      );
+                      PRFSnackbar.success(context, l10n.prayerRequestSubmitted);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },
@@ -257,17 +253,13 @@ class _AddPrayerRequestViewHandsetState
     final l10n = context.l10n;
 
     if (_titleController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.fillAllFields)),
-      );
+      PRFSnackbar.warning(context, l10n.fillAllFields);
       Gaimon.warning();
       return;
     }
 
     if (_requestController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.fillAllFields)),
-      );
+      PRFSnackbar.warning(context, l10n.fillAllFields);
       Gaimon.warning();
       return;
     }

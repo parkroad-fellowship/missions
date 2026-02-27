@@ -1,10 +1,10 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
-import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/video_player_widget.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_media.dart';
+import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -67,15 +67,11 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     ],
                   );
                   Gaimon.success();
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(l10n.doneUploading)));
+                  PRFSnackbar.success(context, l10n.doneUploading);
                 },
                 error: (error) {
                   Gaimon.error();
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(error.message)));
+                  PRFSnackbar.error(context, error.message);
                 },
               );
             },

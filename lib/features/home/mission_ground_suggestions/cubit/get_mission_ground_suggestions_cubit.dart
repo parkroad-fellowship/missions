@@ -1,8 +1,7 @@
-import 'package:app/enums/prf_mission_ground_suggestion_status.dart';
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_mission_ground_suggestion.dart';
+import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/api/mission_ground_suggestion_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -27,7 +26,7 @@ class GetMissionGroundSuggestionsCubit
     try {
       final member = _hiveService.retrieveMember()!;
 
-      final viewAnyMissionGrounds = Misc.userCan(
+      final viewAnyMissionGrounds = PermissionHelper.userCan(
         'viewAny mission ground suggestion',
       );
 

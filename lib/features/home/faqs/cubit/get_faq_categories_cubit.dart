@@ -1,4 +1,4 @@
-import 'package:app/models/local/prf_faq_category.dart';
+import 'package:app/models/local/faq/prf_faq_category.dart';
 import 'package:app/services/api/mission_faq_category_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';

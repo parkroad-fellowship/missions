@@ -1,8 +1,7 @@
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_event.dart';
+import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -151,8 +150,11 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       context,
                       Icons.play_arrow_rounded,
                       l10n.missionStart(
-                        Misc.formatMissionDate(event.startDate, timezone),
-                        Misc.formatTime(event.startTime, timezone),
+                        DateFormatter.formatMissionDate(
+                          event.startDate,
+                          timezone,
+                        ),
+                        DateFormatter.formatTime(event.startTime, timezone),
                       ),
                       theme,
                     ),
@@ -165,8 +167,11 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       context,
                       Icons.stop_rounded,
                       l10n.missionEnd(
-                        Misc.formatMissionDate(event.endDate, timezone),
-                        Misc.formatTime(event.endTime, timezone),
+                        DateFormatter.formatMissionDate(
+                          event.endDate,
+                          timezone,
+                        ),
+                        DateFormatter.formatTime(event.endTime, timezone),
                       ),
                       theme,
                     ),

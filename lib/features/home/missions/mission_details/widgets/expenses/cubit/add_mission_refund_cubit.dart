@@ -1,5 +1,5 @@
-import 'package:app/models/remote/prf_refund.dart';
-import 'package:app/models/remote/prf_refund_dto.dart';
+import 'package:app/models/remote/expense/prf_refund.dart';
+import 'package:app/models/remote/expense/prf_refund_dto.dart';
 import 'package:app/services/api/refund_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

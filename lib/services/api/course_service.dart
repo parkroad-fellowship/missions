@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_course.dart';
+import 'package:app/models/remote/course/prf_course.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class CourseService extends BaseAPIService<PRFCourse> {

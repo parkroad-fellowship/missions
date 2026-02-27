@@ -18,7 +18,7 @@ class HomeActionCardTablet extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
-    final scaleFactor = Misc.getScaleFactor(context);
+    final scaleFactor = DeviceHelper.getScaleFactor(context);
 
     return GestureDetector(
       onTap: onTap,

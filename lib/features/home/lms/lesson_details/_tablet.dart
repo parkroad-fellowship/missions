@@ -1,8 +1,8 @@
-import 'package:app/enums/prf_completion_status.dart';
+import 'package:app/enums/payment/prf_completion_status.dart';
 import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
 import 'package:app/features/home/lms/cubit/get_lesson_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_lesson_module.dart';
+import 'package:app/models/local/course/prf_lesson_module.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
@@ -123,7 +123,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                           subtitle: Text(lesson.videoUrl!),
                           onTap: () async {
                             final uri = Uri.parse(lesson.videoUrl!);
-                            await Misc.openUrl(uri);
+                            await UrlHelper.openUrl(uri);
                           },
                         )
                       : const SizedBox.shrink();
@@ -152,7 +152,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                           subtitle: Text(lesson.documentUrl!),
                           onTap: () async {
                             final uri = Uri.parse(lesson.documentUrl!);
-                            await Misc.openUrl(uri);
+                            await UrlHelper.openUrl(uri);
                           },
                         )
                       : const SizedBox.shrink();
@@ -180,7 +180,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                           subtitle: Text(lesson.audioUrl!),
                           onTap: () async {
                             final uri = Uri.parse(lesson.audioUrl!);
-                            await Misc.openUrl(uri);
+                            await UrlHelper.openUrl(uri);
                           },
                         )
                       : const SizedBox.shrink();
@@ -217,12 +217,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                                 _isLoading = false;
                               });
                               Gaimon.success();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.completed),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
+                              PRFSnackbar.success(context, l10n.completed);
                               Navigator.of(context).pop();
                             },
                             error: (message) {
@@ -230,12 +225,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                                 _isLoading = false;
                               });
                               Gaimon.error();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+                              PRFSnackbar.error(context, message);
                             },
                             orElse: () {},
                           );

@@ -3,8 +3,8 @@ import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/features/home/events/cubit/update_event_subscription_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_event.dart';
-import 'package:app/models/remote/prf_event_subscription.dart';
+import 'package:app/models/remote/event/prf_event.dart';
+import 'package:app/models/remote/event/prf_event_subscription.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -183,17 +183,9 @@ class _UpdateEventSubscriptionViewHandsetState
                           context
                               .read<GetMemberEventSubscriptionsCubit>()
                               .getMemberEventSubscriptions();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(l10n.eventRegistrationRecorded),
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.primary,
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
+                          PRFSnackbar.success(
+                            context,
+                            l10n.eventRegistrationRecorded,
                           );
                         },
                         error: (error) {
@@ -201,18 +193,7 @@ class _UpdateEventSubscriptionViewHandsetState
                             _isLoading = false;
                           });
                           Gaimon.error();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(error.message),
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.error,
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          );
+                          PRFSnackbar.error(context, error.message);
                         },
                       );
                     },
@@ -278,33 +259,14 @@ class _UpdateEventSubscriptionViewHandsetState
                                 context
                                     .read<GetMemberEventSubscriptionsCubit>()
                                     .getMemberEventSubscriptions();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(l10n.subscriptionCancelled),
-                                    backgroundColor: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
+                                PRFSnackbar.success(
+                                  context,
+                                  l10n.subscriptionCancelled,
                                 );
                               },
                               error: (e) {
                                 Navigator.of(context).pop();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(e.message),
-                                    backgroundColor: Theme.of(
-                                      context,
-                                    ).colorScheme.error,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                );
+                                PRFSnackbar.error(context, e.message);
                               },
                             );
                           },
@@ -394,16 +356,7 @@ class _UpdateEventSubscriptionViewHandsetState
     final l10n = context.l10n;
 
     if (_ticketController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.enterTickets),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-      );
+      PRFSnackbar.warning(context, l10n.enterTickets);
       Gaimon.warning();
       return;
     }

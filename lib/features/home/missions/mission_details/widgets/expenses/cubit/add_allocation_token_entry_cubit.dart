@@ -1,6 +1,6 @@
-import 'package:app/enums/prf_entry_type.dart';
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_allocation_entry_dto.dart';
+import 'package:app/enums/mission/prf_entry_type.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry_dto.dart';
 import 'package:app/services/api/allocation_entry_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:bloc/bloc.dart';

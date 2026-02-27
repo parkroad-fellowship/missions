@@ -1,5 +1,6 @@
-import 'package:app/models/remote/prf_member_engagement.dart';
+import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:app/shared_widgets/_index.dart';
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -38,7 +39,7 @@ class IntroWrappedPage extends StatelessWidget {
               const Icon(
                     Icons.celebration_rounded,
                     size: 80,
-                    color: Colors.white,
+                    color: PRFColors.white,
                   )
                   .animate()
                   .scale(
@@ -50,7 +51,7 @@ class IntroWrappedPage extends StatelessWidget {
               Text(
                     memberName,
                     style: theme.textTheme.displayMedium?.copyWith(
-                      color: Colors.white,
+                      color: PRFColors.white,
                       fontWeight: FontWeight.w800,
                     ),
                     textAlign: TextAlign.center,
@@ -62,7 +63,7 @@ class IntroWrappedPage extends StatelessWidget {
               Text(
                     'Your $year',
                     style: theme.textTheme.headlineLarge?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.9),
+                      color: PRFColors.white.withValues(alpha: 0.9),
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.center,
@@ -74,7 +75,7 @@ class IntroWrappedPage extends StatelessWidget {
               Text(
                     'Missions Wrapped',
                     style: theme.textTheme.displayLarge?.copyWith(
-                      color: Colors.white,
+                      color: PRFColors.white,
                       fontWeight: FontWeight.w900,
                       fontSize: 48,
                     ),
@@ -87,18 +88,18 @@ class IntroWrappedPage extends StatelessWidget {
               Text(
                     'Swipe to see your journey',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.8),
+                      color: PRFColors.white.withValues(alpha: 0.8),
                     ),
                     textAlign: TextAlign.center,
                   )
                   .animate(delay: 1500.ms)
                   .fadeIn()
                   .then(delay: 500.ms)
-                  .shimmer(duration: 2000.ms, color: Colors.white),
+                  .shimmer(duration: 2000.ms, color: PRFColors.white),
               const SizedBox(height: 16),
               Icon(
                     Icons.arrow_forward_ios_rounded,
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: PRFColors.white.withValues(alpha: 0.8),
                     size: 24,
                   )
                   .animate(
@@ -157,7 +158,7 @@ class MissionsWrappedPage extends StatelessWidget {
               Text(
                 'Your Mission Journey',
                 style: theme.textTheme.displaySmall?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
@@ -167,7 +168,7 @@ class MissionsWrappedPage extends StatelessWidget {
                 value: missionStats.totalMissions.toString(),
                 label: 'Total Missions',
                 icon: Icons.explore_rounded,
-                color: Colors.white,
+                color: PRFColors.white,
               ),
               const SizedBox(height: 24),
               Row(
@@ -246,7 +247,7 @@ class ImpactWrappedPage extends StatelessWidget {
               Text(
                 'Your Impact',
                 style: theme.textTheme.displaySmall?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
@@ -256,7 +257,7 @@ class ImpactWrappedPage extends StatelessWidget {
                 value: impactStats.soulsTouched.toString(),
                 label: 'Souls Touched',
                 icon: Icons.favorite_rounded,
-                color: Colors.white,
+                color: PRFColors.white,
               ),
               if (impactStats.mostImpactfulMission != null) ...[
                 const SizedBox(height: 24),
@@ -279,10 +280,10 @@ class ImpactWrappedPage extends StatelessWidget {
                 Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.15),
+                        color: PRFColors.white.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
+                          color: PRFColors.white.withValues(alpha: 0.3),
                           width: 2,
                         ),
                       ),
@@ -291,7 +292,7 @@ class ImpactWrappedPage extends StatelessWidget {
                           Text(
                             'Decision Types',
                             style: theme.textTheme.titleLarge?.copyWith(
-                              color: Colors.white,
+                              color: PRFColors.white,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -311,7 +312,7 @@ class ImpactWrappedPage extends StatelessWidget {
                                         dt.type,
                                         style: theme.textTheme.bodyLarge
                                             ?.copyWith(
-                                              color: Colors.white.withValues(
+                                              color: PRFColors.white.withValues(
                                                 alpha: 0.9,
                                               ),
                                             ),
@@ -320,7 +321,7 @@ class ImpactWrappedPage extends StatelessWidget {
                                         dt.count.toString(),
                                         style: theme.textTheme.titleMedium
                                             ?.copyWith(
-                                              color: Colors.white,
+                                              color: PRFColors.white,
                                               fontWeight: FontWeight.w700,
                                             ),
                                       ),
@@ -375,7 +376,7 @@ class LearningWrappedPage extends StatelessWidget {
               Text(
                 'Your Learning Growth',
                 style: theme.textTheme.displaySmall?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
@@ -388,7 +389,7 @@ class LearningWrappedPage extends StatelessWidget {
                       value: learningStats.coursesCompleted.toString(),
                       label: 'Courses\nCompleted',
                       icon: Icons.workspace_premium_rounded,
-                      color: Colors.white,
+                      color: PRFColors.white,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -397,7 +398,7 @@ class LearningWrappedPage extends StatelessWidget {
                       value: learningStats.lessonsCompleted.toString(),
                       label: 'Lessons\nCompleted',
                       icon: Icons.book_rounded,
-                      color: Colors.white,
+                      color: PRFColors.white,
                       delay: 200.ms,
                     ),
                   ),
@@ -465,7 +466,7 @@ class PrayerWrappedPage extends StatelessWidget {
               Text(
                 'Your Prayer Journey',
                 style: theme.textTheme.displaySmall?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
@@ -475,7 +476,7 @@ class PrayerWrappedPage extends StatelessWidget {
                 value: prayerStats.prayerResponses.toString(),
                 label: 'Prayer Responses',
                 icon: Icons.volunteer_activism_rounded,
-                color: Colors.white,
+                color: PRFColors.white,
               ),
               if (prayerStats.prayerConsistencyDays > 0) ...[
                 const SizedBox(height: 24),
@@ -530,7 +531,7 @@ class EventsWrappedPage extends StatelessWidget {
               Text(
                 'Your Event Participation',
                 style: theme.textTheme.displaySmall?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
@@ -543,7 +544,7 @@ class EventsWrappedPage extends StatelessWidget {
                       value: eventStats.eventsAttended.toString(),
                       label: 'Events\nAttended',
                       icon: Icons.event_rounded,
-                      color: Colors.white,
+                      color: PRFColors.white,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -613,7 +614,7 @@ class SummaryWrappedPage extends StatelessWidget {
               Text(
                 'What a Year!',
                 style: theme.textTheme.displayMedium?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                   fontWeight: FontWeight.w900,
                 ),
                 textAlign: TextAlign.center,
@@ -622,10 +623,10 @@ class SummaryWrappedPage extends StatelessWidget {
               Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.15),
+                      color: PRFColors.white.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: PRFColors.white.withValues(alpha: 0.3),
                         width: 2,
                       ),
                     ),
@@ -670,7 +671,7 @@ class SummaryWrappedPage extends StatelessWidget {
               Text(
                     'Thank you for making\nan impact in $year!',
                     style: theme.textTheme.headlineSmall?.copyWith(
-                      color: Colors.white,
+                      color: PRFColors.white,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.center,
@@ -682,14 +683,14 @@ class SummaryWrappedPage extends StatelessWidget {
               Text(
                     "Let's make next year even better! 🚀",
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.9),
+                      color: PRFColors.white.withValues(alpha: 0.9),
                     ),
                     textAlign: TextAlign.center,
                   )
                   .animate(delay: 1200.ms)
                   .fadeIn(duration: 800.ms)
                   .then(delay: 500.ms)
-                  .shimmer(duration: 2000.ms, color: Colors.white),
+                  .shimmer(duration: 2000.ms, color: PRFColors.white),
             ],
           ),
         ),
@@ -710,12 +711,12 @@ class SummaryWrappedPage extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.2),
+            color: PRFColors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
-            color: Colors.white,
+            color: PRFColors.white,
             size: 24,
           ),
         ),
@@ -724,14 +725,14 @@ class SummaryWrappedPage extends StatelessWidget {
           child: Text(
             label,
             style: theme.textTheme.titleMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: PRFColors.white.withValues(alpha: 0.9),
             ),
           ),
         ),
         Text(
           value,
           style: theme.textTheme.headlineMedium?.copyWith(
-            color: Colors.white,
+            color: PRFColors.white,
             fontWeight: FontWeight.w800,
           ),
         ),

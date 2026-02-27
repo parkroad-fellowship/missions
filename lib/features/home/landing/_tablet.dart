@@ -19,7 +19,7 @@ class LandingPageTablet extends StatelessWidget {
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) => Misc.exitApp(
+      onPopInvokedWithResult: (didPop, result) => NavigationHelper.exitApp(
         context: context,
         didPop: didPop,
         result: result,
@@ -95,7 +95,8 @@ class LandingPageTablet extends StatelessWidget {
                                             backgroundColor:
                                                 theme.colorScheme.primary,
                                             child: Text(
-                                              Misc.getUserNameInitials(
+                                              // ignore: lines_longer_than_80_chars
+                                              StringFormatter.getUserNameInitials(
                                                 getIt<HiveService>()
                                                         .retrieveMember()
                                                         ?.fullName ??
@@ -103,7 +104,7 @@ class LandingPageTablet extends StatelessWidget {
                                               ),
                                               style: theme.textTheme.titleLarge
                                                   ?.copyWith(
-                                                    color: Colors.white,
+                                                    color: PRFColors.white,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),

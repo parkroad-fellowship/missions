@@ -1,4 +1,4 @@
-import 'package:app/models/remote/failure.dart';
+import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/api/course_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';

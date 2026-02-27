@@ -1,12 +1,12 @@
-import 'package:app/enums/prf_charge_type.dart';
-import 'package:app/enums/prf_entry_type.dart';
+import 'package:app/enums/mission/prf_entry_type.dart';
+import 'package:app/enums/payment/prf_charge_type.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_expense_category.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/remote/expense/prf_expense_category.dart';
+import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -309,18 +309,14 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       });
                       Gaimon.success();
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.expenseRecorded)),
-                      );
+                      PRFSnackbar.success(context, l10n.expenseRecorded);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },

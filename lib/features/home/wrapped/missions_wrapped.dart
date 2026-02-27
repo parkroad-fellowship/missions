@@ -1,4 +1,4 @@
-import 'package:app/features/home/cubit/get_member_engagement_cubit.dart';
+import 'package:app/features/home/shared/cubit/get_member_engagement_cubit.dart';
 import 'package:app/features/home/wrapped/_handset.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';

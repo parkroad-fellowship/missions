@@ -1,12 +1,11 @@
-import 'package:app/enums/prf_morph_types.dart';
+import 'package:app/enums/common/prf_morph_types.dart';
 import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_student_enquiry_reply.dart';
-import 'package:app/models/remote/socket_config.dart';
+import 'package:app/models/local/enquiry/prf_student_enquiry_reply.dart';
+import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';

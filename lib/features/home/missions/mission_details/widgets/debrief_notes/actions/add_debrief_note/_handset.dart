@@ -1,4 +1,4 @@
-import 'package:app/features/home/missions/cubit/add_debrief_note_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/add_debrief_note_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
@@ -163,18 +163,14 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                       });
                       Gaimon.success();
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.noteRecorded)),
-                      );
+                      PRFSnackbar.success(context, l10n.noteRecorded);
                     },
                     error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(error.message)));
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },
@@ -238,9 +234,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
     final l10n = context.l10n;
 
     if (_noteController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterDebriefNote)),
-      );
+      PRFSnackbar.warning(context, l10n.enterDebriefNote);
       Gaimon.warning();
       return;
     }

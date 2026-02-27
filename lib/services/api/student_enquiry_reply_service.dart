@@ -1,4 +1,4 @@
-import 'package:app/models/remote/prf_student_enquiry_reply.dart';
+import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/services/api/_base_api_service.dart';
 
 class StudentEnquiryReplyService

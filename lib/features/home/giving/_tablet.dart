@@ -1,12 +1,11 @@
-import 'package:app/enums/prf_payment_status.dart';
+import 'package:app/enums/payment/prf_payment_status.dart';
 import 'package:app/features/home/giving/actions/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_payment.dart';
+import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -50,7 +49,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
+                        color: PRFColors.black.withValues(alpha: 0.1),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -315,7 +314,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                       onTap: () async {
                         Navigator.pop(context);
                         final uri = Uri.parse(payment.authorizationUrl!);
-                        await Misc.openUrl(uri).then((_) {
+                        await UrlHelper.openUrl(uri).then((_) {
                           // ignore: use_build_context_synchronously
                           context.read<GetPaymentsCubit>().getPayments();
                         });
@@ -366,7 +365,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final statusColor = _getStatusColor(theme);
+    final statusColor = _getStatusColor(context);
     final l10n = context.l10n;
 
     return Container(
@@ -454,7 +453,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      Misc.formatDateTime(payment.createdAt, timezone),
+                      DateFormatter.formatDateTime(payment.createdAt, timezone),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -497,18 +496,19 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
     );
   }
 
-  Color _getStatusColor(ThemeData theme) {
+  Color _getStatusColor(BuildContext context) {
+    final statusColors = context.statusColors;
     switch (payment.paymentStatus.name.toLowerCase()) {
       case 'success':
       case 'completed':
-        return Colors.green;
+        return statusColors.completed.main;
       case 'pending':
-        return Colors.orange;
+        return statusColors.pending.main;
       case 'failed':
       case 'cancelled':
-        return Colors.red;
+        return statusColors.failed.main;
       default:
-        return theme.colorScheme.primary;
+        return context.colorScheme.primary;
     }
   }
 }

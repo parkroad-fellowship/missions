@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/cubit/select_media_cubit.dart';
-import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/prf_media_dto.dart';
+import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/shared_widgets/_index.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -114,9 +113,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                         ? () {}
                         : () async {
                             Navigator.of(context).pop();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l10n.willUpload)),
-                            );
+                            PRFSnackbar.info(context, l10n.willUpload);
                             await context
                                 .read<UploadMediaCubit>()
                                 .uploadMedia();
@@ -227,9 +224,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                           ? () {}
                           : () async {
                               Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(l10n.willUpload)),
-                              );
+                              PRFSnackbar.info(context, l10n.willUpload);
                               await context
                                   .read<UploadMediaCubit>()
                                   .uploadMedia();
@@ -395,11 +390,9 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                 onTap: () {
                   // Remove image logic would go here
                   // For now, we'll just show a snackbar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Remove functionality not implemented'),
-                      duration: Duration(seconds: 1),
-                    ),
+                  PRFSnackbar.info(
+                    context,
+                    'Remove functionality not implemented',
                   );
                 },
                 child: Container(

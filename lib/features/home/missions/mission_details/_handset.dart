@@ -1,33 +1,33 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/cubit/get_debrief_notes_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_media_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_questions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/actions/add_debrief_note/_handset.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_ground/mission_ground.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/add_mission_question/add_mission_question.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/add_session/add_session.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/sessions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/actions/add_soul/add_soul.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
-import 'package:app/shared_widgets/progress/circular_progress_indicator.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class MissionsDetailsPageHandset extends StatefulWidget {
@@ -161,15 +161,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   missionUlid: missionUlid,
                   refresh: true,
                 );
-                ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-                  SnackBar(content: Text(l10n.successfullySubscribed)),
-                );
+                PRFSnackbar.success(context, l10n.successfullySubscribed);
               },
               error: (error) {
                 Gaimon.error();
-                ScaffoldMessenger.maybeOf(
-                  context,
-                )?.showSnackBar(SnackBar(content: Text(error.message)));
+                PRFSnackbar.error(context, error.message);
               },
             );
           },

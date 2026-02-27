@@ -22,10 +22,10 @@ class SignInTablet extends StatefulWidget {
 
 class _SignInTabletState extends State<SignInTablet> {
   final _emailController = TextEditingController(
-    text: kDebugMode ? 'approvals@parkroadfellowship.org' : '',
+    text: kDebugMode ? 'member.toy@parkroadfellowship.org' : '',
   );
   final _passwordController = TextEditingController(
-    text: kDebugMode ? 'password' : '',
+    text: kDebugMode ? 'QRnYYl3say' : '',
   );
   final _hidePasswordNotifier = ValueNotifier<bool>(true);
 
@@ -44,16 +44,7 @@ class _SignInTabletState extends State<SignInTablet> {
             socialAuthDTO: socialLoginDTO,
           ),
           error: (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(message),
-                backgroundColor: theme.colorScheme.error,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            );
+            PRFSnackbar.error(context, message);
           },
         );
       },
@@ -64,16 +55,7 @@ class _SignInTabletState extends State<SignInTablet> {
             loaded: () =>
                 context.router.pushPath(PRFSuperAppRouter.decisionRoute),
             error: (message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: theme.colorScheme.error,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              );
+              PRFSnackbar.error(context, message);
             },
           );
         },
@@ -221,22 +203,7 @@ class _SignInTabletState extends State<SignInTablet> {
                               setState(() {
                                 _isLoading = !_isLoading;
                               });
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    message,
-                                  ),
-                                  backgroundColor: theme.colorScheme.error,
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      8,
-                                    ),
-                                  ),
-                                ),
-                              );
+                              PRFSnackbar.error(context, message);
                             },
                             orElse: () {},
                           );
@@ -245,32 +212,15 @@ class _SignInTabletState extends State<SignInTablet> {
                           return PRFPrimaryButton(
                             onPressed: () {
                               if (_emailController.text.isEmpty) {
-                                ScaffoldMessenger.of(
-                                  context,
-                                ).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      l10n.enterEmail,
-                                    ),
-                                    backgroundColor: theme.colorScheme.error,
-                                    behavior: SnackBarBehavior.floating,
-                                  ),
-                                );
+                                PRFSnackbar.warning(context, l10n.enterEmail);
                                 Gaimon.warning();
                                 return;
                               }
 
                               if (_passwordController.text.isEmpty) {
-                                ScaffoldMessenger.of(
+                                PRFSnackbar.warning(
                                   context,
-                                ).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      l10n.enterPassword,
-                                    ),
-                                    backgroundColor: theme.colorScheme.error,
-                                    behavior: SnackBarBehavior.floating,
-                                  ),
+                                  l10n.enterPassword,
                                 );
                                 Gaimon.warning();
                                 return;
@@ -345,7 +295,7 @@ class _SignInTabletState extends State<SignInTablet> {
                   ),
                 ),
                 child: Text(
-                  l10n.version(Misc.getAppVersion()),
+                  l10n.version(AppVersionHelper.getAppVersion()),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                     fontSize: 14,

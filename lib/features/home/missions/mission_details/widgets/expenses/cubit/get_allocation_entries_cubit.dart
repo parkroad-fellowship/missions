@@ -1,5 +1,5 @@
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_allocation_entry.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/services/api/allocation_entry_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

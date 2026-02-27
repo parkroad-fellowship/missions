@@ -1,4 +1,4 @@
-import 'package:app/enums/prf_environment.dart';
+import 'package:app/enums/common/prf_environment.dart';
 
 class PRFSuperAppValues {
   PRFSuperAppValues({
@@ -11,6 +11,8 @@ class PRFSuperAppValues {
     required this.socketScheme,
     required this.socketPort,
     required this.azureConnString,
+    required this.appId,
+    required this.appSecret,
   });
 
   final PRFEnvironment environment;
@@ -22,6 +24,8 @@ class PRFSuperAppValues {
   final String socketScheme;
   final int socketPort;
   final String azureConnString;
+  final String appId;
+  final String appSecret;
 
   String get baseUrl => '$urlScheme://$baseDomain';
   String get globalHiveAuthBox => 'prf-super-app-auth-';

@@ -1,6 +1,6 @@
-import 'package:app/models/remote/failure.dart';
-import 'package:app/models/remote/prf_payment.dart';
-import 'package:app/models/remote/prf_payment_dto.dart';
+import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/payment/prf_payment.dart';
+import 'package:app/models/remote/payment/prf_payment_dto.dart';
 import 'package:app/services/_index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:app/models/remote/auth.dart';
-import 'package:app/models/remote/remote_config.dart';
-import 'package:app/utils/misc.dart';
+import 'package:app/models/remote/common/auth.dart';
+import 'package:app/models/remote/common/remote_config.dart';
+import 'package:app/utils/_index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -79,8 +79,8 @@ class FirebaseServiceImpl implements FirebaseService {
     final reviewConfig = getReviewConfig();
     Logger().i(reviewConfig);
 
-    final currentVersion = Misc.getFullAppVersion();
-    final currentPlatform = await Misc.getCurrentPlatform();
+    final currentVersion = AppVersionHelper.getFullAppVersion();
+    final currentPlatform = await DeviceHelper.getCurrentPlatform();
 
     // Check if current platform and version is in review
     return reviewConfig.reviewConfigs.any(

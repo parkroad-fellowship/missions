@@ -1,10 +1,10 @@
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
-import 'package:app/features/home/missions/cubit/update_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/update_mission_session_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_local_mission_subscription.dart';
-import 'package:app/models/local/prf_mission_session.dart';
+import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
+import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -357,9 +357,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           });
                           Gaimon.success();
                           Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(l10n.sessionRecorded)),
-                          );
+                          PRFSnackbar.success(context, l10n.sessionRecorded);
                           context
                               .read<GetMissionSessionCubit>()
                               .getMissionSession(
@@ -372,9 +370,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                             _isLoading = false;
                           });
                           Gaimon.error();
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(error.error)));
+                          PRFSnackbar.error(context, error.error);
                         },
                       );
                     },
@@ -441,33 +437,25 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     final l10n = context.l10n;
 
     if (selectedFacilitatorUlid == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.selectFacilitator)),
-      );
+      PRFSnackbar.warning(context, l10n.selectFacilitator);
       Gaimon.warning();
       return;
     }
 
     if (_notesController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterNotes)),
-      );
+      PRFSnackbar.warning(context, l10n.enterNotes);
       Gaimon.warning();
       return;
     }
 
     if (startsAt == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.addStartEnd)),
-      );
+      PRFSnackbar.warning(context, l10n.addStartEnd);
       Gaimon.warning();
       return;
     }
 
     if (endsAt == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.addStartEnd)),
-      );
+      PRFSnackbar.warning(context, l10n.addStartEnd);
       Gaimon.warning();
       return;
     }

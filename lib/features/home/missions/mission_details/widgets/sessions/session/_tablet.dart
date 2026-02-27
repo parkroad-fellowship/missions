@@ -1,18 +1,17 @@
-import 'package:app/features/home/missions/cubit/delete_mission_session_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_sessions_cubit.dart';
-import 'package:app/features/home/missions/cubit/upload_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/update_session/update_session.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/delete_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/get_mission_sessions_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_mission_session.dart';
+import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/shared_widgets/_index.dart';
 import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -89,14 +88,10 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                               missionSessionUlid: missionSessionUlid,
                               refresh: true,
                             );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.doneUploading)),
-                        );
+                        PRFSnackbar.success(context, l10n.doneUploading);
                       },
                       error: (error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(error.message)),
-                        );
+                        PRFSnackbar.error(context, error.message);
                       },
                     );
                   },
@@ -437,9 +432,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   listener: (context, state) {
                     state.mapOrNull(
                       loaded: (_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.downloaded)),
-                        );
+                        PRFSnackbar.success(context, l10n.downloaded);
                       },
                     );
                   },
@@ -669,9 +662,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     Icons.access_time,
                     l10n.time,
                     // ignore: lines_longer_than_80_chars
-                    '${Misc.formatTimeFromDateTime(missionSession.startsAt, timezone)} '
+                    '${DateFormatter.formatTimeFromDateTime(missionSession.startsAt, timezone)} '
                     // ignore: lines_longer_than_80_chars
-                    '- ${Misc.formatTimeFromDateTime(missionSession.endsAt, timezone)}',
+                    '- ${DateFormatter.formatTimeFromDateTime(missionSession.endsAt, timezone)}',
                   ),
                   const SizedBox(height: 12),
                   _buildInfoCard(
@@ -854,24 +847,16 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                                 .getMissionSessions(
                                                   missionUlid: missionUlid,
                                                 );
-                                            ScaffoldMessenger.of(
+                                            PRFSnackbar.success(
                                               context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  l10n.sessionDeleted,
-                                                ),
-                                              ),
+                                              l10n.sessionDeleted,
                                             );
                                           },
                                           error: (e) {
                                             Navigator.of(context).pop();
-                                            ScaffoldMessenger.of(
+                                            PRFSnackbar.error(
                                               context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(e.message),
-                                              ),
+                                              e.message,
                                             );
                                           },
                                         );
