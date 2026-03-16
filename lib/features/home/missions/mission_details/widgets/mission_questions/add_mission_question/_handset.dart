@@ -21,13 +21,39 @@ class _AddMissionQuestionViewHandsetState
   final _questionController = TextEditingController();
   bool _isLoading = false;
 
+  // Structured validation
+  bool _showValidation = false;
+  String? _questionError;
+
+  bool get _isFormValid => _questionController.text.trim().isNotEmpty;
+
   @override
   void initState() {
     super.initState();
-    _questionController.addListener(() => setState(() {}));
+    _questionController.addListener(_onFormChanged);
   }
 
-  bool get _isFormValid => _questionController.text.trim().isNotEmpty;
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _questionError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_questionController.text.trim().isEmpty) {
+      _questionError = 'Question is required';
+    }
+
+    setState(() => _showValidation = true);
+    return _questionError == null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,57 +79,61 @@ class _AddMissionQuestionViewHandsetState
 
               // Header Card
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.help_outline,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      l10n.addQuestion,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      l10n.addQuestionSubTitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.help_outline,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          l10n.addQuestion,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.xs),
+                        Text(
+                          l10n.addQuestionSubTitle,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
 
               const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -130,7 +160,7 @@ class _AddMissionQuestionViewHandsetState
                 ),
                 child: Column(
                   children: [
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.help_outline,
                       title: l10n.addQuestion,
                       isRequired: true,
@@ -139,6 +169,7 @@ class _AddMissionQuestionViewHandsetState
                         controller: _questionController,
                         enabled: !_isLoading,
                         maxLines: 6,
+                        errorText: _showValidation ? _questionError : null,
                       ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
                   ],
@@ -149,39 +180,42 @@ class _AddMissionQuestionViewHandsetState
 
               // Submit Button
               BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    loading: (_) {
-                      setState(() {
-                        _isLoading = true;
-                      });
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        },
+                        loaded: (_) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.success();
+                          Navigator.of(context).pop();
+                          PRFSnackbar.success(context, l10n.questionRecorded);
+                        },
+                        error: (error) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.error();
+                          PRFSnackbar.error(context, error.message);
+                        },
+                      );
                     },
-                    loaded: (_) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.success();
-                      Navigator.of(context).pop();
-                      PRFSnackbar.success(context, l10n.questionRecorded);
+                    builder: (context, state) {
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: l10n.record,
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
+                      );
                     },
-                    error: (error) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.error();
-                      PRFSnackbar.error(context, error.message);
-                    },
-                  );
-                },
-                builder: (context, state) {
-                  return PRFPrimaryButton(
-                    onPressed: _submitForm,
-                    title: l10n.record,
-                    disabled: !_isFormValid,
-                    isLoading: _isLoading,
-                  );
-                },
-              ).animate(delay: PRFMotionTokens.standard).slideY(begin: 0.3).fadeIn(),
+                  )
+                  .animate(delay: PRFMotionTokens.standard)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: PRFSpacingTokens.xxl),
             ],
@@ -191,50 +225,13 @@ class _AddMissionQuestionViewHandsetState
     );
   }
 
-  Widget _buildFormSection({
-    required IconData icon,
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              FormFieldLabel(label: title, isRequired: isRequired),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (_questionController.text.trim().isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterQuestion);
+    if (!_validateForm()) {
       Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 

@@ -24,7 +24,10 @@ class _AddEventSubscriptionViewHandsetState
   final _ticketController = TextEditingController();
   bool _isLoading = false;
 
-  // Add form validity check
+  // Structured validation
+  bool _showValidation = false;
+  String? _ticketError;
+
   bool get _isFormValid {
     return _ticketController.text.isNotEmpty;
   }
@@ -32,8 +35,29 @@ class _AddEventSubscriptionViewHandsetState
   @override
   void initState() {
     super.initState();
-    // Add listeners to update form validity
-    _ticketController.addListener(() => setState(() {}));
+    _ticketController.addListener(_onFormChanged);
+  }
+
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _ticketError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_ticketController.text.trim().isEmpty) {
+      _ticketError = 'Number of tickets is required';
+    }
+
+    setState(() => _showValidation = true);
+    return _ticketError == null;
   }
 
   @override
@@ -60,57 +84,61 @@ class _AddEventSubscriptionViewHandsetState
 
               // Header Card
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.event_available_rounded,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      l10n.registerForEvent,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      widget.event.name,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.event_available_rounded,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          l10n.registerForEvent,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.xs),
+                        Text(
+                          widget.event.name,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
 
               const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -137,13 +165,14 @@ class _AddEventSubscriptionViewHandsetState
                 ),
                 child: Column(
                   children: [
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.confirmation_number_rounded,
                       title: l10n.tickets,
                       isRequired: true,
                       child: PRFNumberInput(
                         hintText: l10n.tickets,
                         controller: _ticketController,
+                        errorText: _showValidation ? _ticketError : null,
                       ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
                   ],
@@ -210,50 +239,13 @@ class _AddEventSubscriptionViewHandsetState
     );
   }
 
-  Widget _buildFormSection({
-    required IconData icon,
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              FormFieldLabel(label: title, isRequired: isRequired),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (_ticketController.text.isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterTickets);
+    if (!_validateForm()) {
       Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 

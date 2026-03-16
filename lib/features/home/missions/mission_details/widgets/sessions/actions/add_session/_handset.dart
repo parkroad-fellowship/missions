@@ -39,7 +39,13 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
   DateTime? startsAt;
   DateTime? endsAt;
 
-  // Add form validity check
+  // Structured validation
+  bool _showValidation = false;
+  String? _facilitatorError;
+  String? _notesError;
+  String? _startTimeError;
+  String? _endTimeError;
+
   bool get _isFormValid {
     return selectedFacilitator != null &&
         _notesController.text.isNotEmpty &&
@@ -50,14 +56,51 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
   @override
   void initState() {
     super.initState();
-    // Add listeners to update form validity
-    _notesController.addListener(() => setState(() {}));
+    _notesController.addListener(_onFormChanged);
     context.read<GetSubscribersCubit>().getSubscriptions(
       missionUlid: widget.missionUlid,
     );
     context.read<GetClassGroupsCubit>().getClassGroups(
       missionUlid: widget.missionUlid,
     );
+  }
+
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _facilitatorError = null;
+    _notesError = null;
+    _startTimeError = null;
+    _endTimeError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (selectedFacilitator == null) {
+      _facilitatorError = 'Facilitator is required';
+    }
+    if (_notesController.text.trim().isEmpty) {
+      _notesError = 'Notes are required';
+    }
+    if (startsAt == null) {
+      _startTimeError = 'Start time is required';
+    }
+    if (endsAt == null) {
+      _endTimeError = 'End time is required';
+    }
+
+    setState(() => _showValidation = true);
+
+    return _facilitatorError == null &&
+        _notesError == null &&
+        _startTimeError == null &&
+        _endTimeError == null;
   }
 
   @override
@@ -84,57 +127,61 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
 
               // Header Card
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.add_circle_outline,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      'Create New Session',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      'Fill in the details below to record a new session',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.add_circle_outline,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          'Create New Session',
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.xs),
+                        Text(
+                          'Fill in the details below to record a new session',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
 
               const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -161,7 +208,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                 ),
                 child: Column(
                   children: [
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.person_outline,
                       title: l10n.facilitator,
                       isRequired: true,
@@ -173,16 +220,14 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                 .missionSubscriptions
                                 .parentStream,
                             loading: const PRFLinearProgressIndicator(),
-                            widget: (context, subscribers) => LayoutBuilder(
-                              builder: (context, constraints) {
-                                return DropdownMenu<PRFLocalMember>(
-                                  width: constraints.maxWidth,
-                                  initialSelection: selectedFacilitator,
-                                  hintText: l10n.facilitator,
-                                  dropdownMenuEntries: subscribers
+                            widget: (context, subscribers) =>
+                                PRFSearchableList<PRFLocalMember>(
+                                  entries: subscribers
                                       .map(
                                         (subscriber) =>
-                                            DropdownMenuEntry<PRFLocalMember>(
+                                            PRFSearchableListEntry<
+                                              PRFLocalMember
+                                            >(
                                               value: subscriber.member,
                                               label:
                                                   subscriber.member.fullName!,
@@ -191,125 +236,148 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                       .toList(),
                                   onSelected: (member) => setState(() {
                                     selectedFacilitator = member;
+                                    if (_showValidation) _validateForm();
                                   }),
-                                );
-                              },
-                            ),
+                                  selection: selectedFacilitator,
+                                  hintText: l10n.facilitator,
+                                  emptyText: 'No subscribers found',
+                                ),
                           ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.mic_outlined,
-                      title: l10n.speaker,
-                      child:
-                          SingleStreamWrapper<
-                            List<PRFLocalMissionSubscription>
-                          >(
-                            stream: getIt<IsarService>()
-                                .missionSubscriptions
-                                .parentStream,
-                            loading: const PRFLinearProgressIndicator(),
-                            widget: (context, subscribers) => LayoutBuilder(
-                              builder: (context, constraints) {
-                                return DropdownMenu<PRFLocalMember>(
-                                  width: constraints.maxWidth,
-                                  initialSelection: selectedSpeaker,
-                                  hintText: l10n.speaker,
-                                  dropdownMenuEntries: subscribers
-                                      .map(
-                                        (subscriber) =>
-                                            DropdownMenuEntry<PRFLocalMember>(
-                                              value: subscriber.member,
-                                              label:
-                                                  subscriber.member.fullName!,
-                                            ),
-                                      )
-                                      .toList(),
-                                  onSelected: (member) => setState(() {
-                                    selectedSpeaker = member;
-                                  }),
-                                );
-                              },
-                            ),
-                          ),
-                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
-
-                    _buildFormSection(
-                      icon: Icons.group_outlined,
-                      title: l10n.classGroup,
-                      child:
-                          BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
-                            builder: (context, state) {
-                              return state.maybeWhen(
-                                orElse: () => const SizedBox.shrink(),
-                                loading: () => const Center(
-                                  child: LinearProgressIndicator(),
-                                ),
-                                loaded: (classes) => LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    return DropdownMenu<PRFClassGroup>(
-                                      width: constraints.maxWidth,
-                                      initialSelection: selectedClassGroup,
-                                      hintText: l10n.classGroup,
-                                      dropdownMenuEntries: classes
+                    PRFFormSection(
+                          icon: Icons.mic_outlined,
+                          title: l10n.speaker,
+                          child:
+                              SingleStreamWrapper<
+                                List<PRFLocalMissionSubscription>
+                              >(
+                                stream: getIt<IsarService>()
+                                    .missionSubscriptions
+                                    .parentStream,
+                                loading: const PRFLinearProgressIndicator(),
+                                widget: (context, subscribers) =>
+                                    PRFSearchableList<PRFLocalMember>(
+                                      entries: subscribers
                                           .map(
-                                            (classGroup) =>
-                                                DropdownMenuEntry<
-                                                  PRFClassGroup
+                                            (subscriber) =>
+                                                PRFSearchableListEntry<
+                                                  PRFLocalMember
                                                 >(
-                                                  value: classGroup,
-                                                  label: classGroup.name,
+                                                  value: subscriber.member,
+                                                  label: subscriber
+                                                      .member
+                                                      .fullName!,
                                                 ),
                                           )
                                           .toList(),
-                                      onSelected: (classGroup) => setState(() {
-                                        selectedClassGroup = classGroup;
+                                      onSelected: (member) => setState(() {
+                                        selectedSpeaker = member;
                                       }),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
+                                      selection: selectedSpeaker,
+                                      hintText: l10n.speaker,
+                                      emptyText: 'No subscribers found',
+                                    ),
+                              ),
+                        )
+                        .animate(delay: PRFMotionTokens.standard)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
+
+                    PRFFormSection(
+                          icon: Icons.group_outlined,
+                          title: l10n.classGroup,
+                          child:
+                              BlocBuilder<
+                                GetClassGroupsCubit,
+                                GetClassGroupsState
+                              >(
+                                builder: (context, state) {
+                                  return state.maybeWhen(
+                                    orElse: () => const SizedBox.shrink(),
+                                    loading: () => const Center(
+                                      child: LinearProgressIndicator(),
+                                    ),
+                                    loaded: (classes) =>
+                                        PRFSearchableList<PRFClassGroup>(
+                                          entries: classes
+                                              .map(
+                                                (classGroup) =>
+                                                    PRFSearchableListEntry<
+                                                      PRFClassGroup
+                                                    >(
+                                                      value: classGroup,
+                                                      label: classGroup.name,
+                                                    ),
+                                              )
+                                              .toList(),
+                                          onSelected: (classGroup) =>
+                                              setState(() {
+                                                selectedClassGroup = classGroup;
+                                              }),
+                                          selection: selectedClassGroup,
+                                          hintText: l10n.classGroup,
+                                          emptyText: 'No class groups found',
+                                        ),
+                                  );
+                                },
+                              ),
+                        )
+                        .animate(delay: PRFMotionTokens.slow)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
+
+                    PRFFormSection(
+                          icon: Icons.schedule_outlined,
+                          title: l10n.startTime,
+                          isRequired: true,
+                          child: GestureDetector(
+                            onTap: _selectStartDate,
+                            child: PRFTextInput(
+                              hintText: l10n.startTime,
+                              controller: _startDateController,
+                              enabled: false,
+                              errorText:
+                                  _showValidation ? _startTimeError : null,
+                            ),
                           ),
-                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
+                        )
+                        .animate(delay: PRFMotionTokens.slow)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.schedule_outlined,
-                      title: l10n.startTime,
-                      isRequired: true,
-                      child: GestureDetector(
-                        onTap: _selectStartDate,
-                        child: PRFTextInput(
-                          hintText: l10n.startTime,
-                          controller: _startDateController,
-                          enabled: false,
-                        ),
-                      ),
-                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
+                    PRFFormSection(
+                          icon: Icons.schedule_outlined,
+                          title: l10n.endTime,
+                          isRequired: true,
+                          child: GestureDetector(
+                            onTap: _selectEndDate,
+                            child: PRFTextInput(
+                              hintText: l10n.endTime,
+                              controller: _endDateController,
+                              enabled: false,
+                              errorText:
+                                  _showValidation ? _endTimeError : null,
+                            ),
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.enterShort)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.schedule_outlined,
-                      title: l10n.endTime,
-                      isRequired: true,
-                      child: GestureDetector(
-                        onTap: _selectEndDate,
-                        child: PRFTextInput(
-                          hintText: l10n.endTime,
-                          controller: _endDateController,
-                          enabled: false,
-                        ),
-                      ),
-                    ).animate(delay: PRFMotionTokens.enterShort).slideX(begin: -0.2).fadeIn(),
-
-                    _buildFormSection(
-                      icon: Icons.notes_outlined,
-                      title: l10n.notes,
-                      isRequired: true,
-                      child: PRFTextAreaInput(
-                        hintText: l10n.notes,
-                        controller: _notesController,
-                      ),
-                    ).animate(delay: PRFMotionTokens.enterShort).slideX(begin: -0.2).fadeIn(),
+                    PRFFormSection(
+                          icon: Icons.notes_outlined,
+                          title: l10n.notes,
+                          isRequired: true,
+                          child: PRFTextAreaInput(
+                            hintText: l10n.notes,
+                            controller: _notesController,
+                            errorText: _showValidation ? _notesError : null,
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.enterShort)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
                   ],
                 ),
               ),
@@ -360,68 +428,13 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     );
   }
 
-  Widget _buildFormSection({
-    required IconData icon,
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              FormFieldLabel(label: title, isRequired: isRequired),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (selectedFacilitator == null) {
-      PRFSnackbar.warning(context, l10n.selectFacilitator);
+    if (!_validateForm()) {
       Gaimon.warning();
-      return;
-    }
-
-    if (_notesController.text.isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterNotes);
-      Gaimon.warning();
-      return;
-    }
-
-    if (startsAt == null) {
-      PRFSnackbar.warning(context, l10n.addStartEnd);
-      Gaimon.warning();
-      return;
-    }
-
-    if (endsAt == null) {
-      PRFSnackbar.warning(context, l10n.addStartEnd);
-      Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 
@@ -449,6 +462,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
       onConfirm: (date) {
         setState(() {
           startsAt = date;
+          if (_showValidation) _validateForm();
         });
         _startDateController.text = DateFormat.MMMMEEEEd().add_Hm().format(
           date,
@@ -471,6 +485,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
       onConfirm: (date) {
         setState(() {
           endsAt = date;
+          if (_showValidation) _validateForm();
         });
         _endDateController.text = DateFormat.MMMMEEEEd().add_Hm().format(date);
       },

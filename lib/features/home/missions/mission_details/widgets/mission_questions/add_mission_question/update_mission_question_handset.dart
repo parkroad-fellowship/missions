@@ -26,16 +26,39 @@ class _UpdateMissionQuestionViewHandsetState
   final _questionController = TextEditingController();
   bool _isLoading = false;
 
+  // Structured validation
+  bool _showValidation = false;
+  String? _questionError;
+
   bool get _isFormValid => _questionController.text.trim().isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-
-    // Pre-populate with existing question data
     _questionController.text = widget.missionQuestion.question;
+    _questionController.addListener(_onFormChanged);
+  }
 
-    _questionController.addListener(() => setState(() {}));
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _questionError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_questionController.text.trim().isEmpty) {
+      _questionError = 'Question is required';
+    }
+
+    setState(() => _showValidation = true);
+    return _questionError == null;
   }
 
   @override
@@ -58,7 +81,8 @@ class _UpdateMissionQuestionViewHandsetState
             const SizedBox(height: PRFSpacingTokens.xl),
 
             // Question
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.help_outline,
               title: l10n.addQuestion,
               isRequired: true,
               child: PRFTextAreaInput(
@@ -66,6 +90,7 @@ class _UpdateMissionQuestionViewHandsetState
                 controller: _questionController,
                 enabled: !_isLoading,
                 maxLines: 6,
+                errorText: _showValidation ? _questionError : null,
               ),
             ),
 
@@ -115,59 +140,13 @@ class _UpdateMissionQuestionViewHandsetState
     );
   }
 
-  Widget _buildFormSection({
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(
-            alpha: 0.06,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              if (isRequired)
-                Text(
-                  ' *',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.error,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (_questionController.text.trim().isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterQuestion);
+    if (!_validateForm()) {
       Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 

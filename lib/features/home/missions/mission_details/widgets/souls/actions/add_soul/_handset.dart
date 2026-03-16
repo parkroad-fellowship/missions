@@ -28,7 +28,12 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
   PRFClassGroup? selectedClassGroup;
   PRFSoulDecisionType? selectedDecisionType;
 
-  // Add form validity check
+  // Structured validation
+  bool _showValidation = false;
+  String? _fullNameError;
+  String? _classGroupError;
+  String? _decisionTypeError;
+
   bool get _isFormValid {
     return selectedClassGroup != null &&
         selectedDecisionType != null &&
@@ -38,9 +43,8 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
   @override
   void initState() {
     super.initState();
-    // Add listeners to update form validity
-    _fullNameController.addListener(() => setState(() {}));
-    _admissionNumberController.addListener(() => setState(() {}));
+    _fullNameController.addListener(_onFormChanged);
+    _admissionNumberController.addListener(_onFormChanged);
 
     // Have salvation selected by default
     selectedDecisionType = PRFSoulDecisionType.salvation;
@@ -48,6 +52,39 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     context.read<GetClassGroupsCubit>().getClassGroups(
       missionUlid: widget.missionUlid,
     );
+  }
+
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _fullNameError = null;
+    _classGroupError = null;
+    _decisionTypeError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_fullNameController.text.trim().isEmpty) {
+      _fullNameError = 'Full name is required';
+    }
+    if (selectedClassGroup == null) {
+      _classGroupError = 'Class group is required';
+    }
+    if (selectedDecisionType == null) {
+      _decisionTypeError = 'Decision type is required';
+    }
+
+    setState(() => _showValidation = true);
+
+    return _fullNameError == null &&
+        _classGroupError == null &&
+        _decisionTypeError == null;
   }
 
   @override
@@ -74,57 +111,61 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
 
               // Header Card
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.person_add_outlined,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      l10n.recordSoul,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      l10n.addSoulSubTitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.person_add_outlined,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          l10n.recordSoul,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.xs),
+                        Text(
+                          l10n.addSoulSubTitle,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
 
               const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -151,13 +192,13 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                 ),
                 child: Column(
                   children: [
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.category,
                       title: l10n.decisionType,
                       isRequired: true,
                       child: _buildDecisionTypeSelector(Theme.of(context)),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.group_outlined,
                       title: l10n.classGroup,
                       isRequired: true,
@@ -169,16 +210,12 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                                 loading: () => const Center(
                                   child: LinearProgressIndicator(),
                                 ),
-                                loaded: (classes) => LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    return DropdownMenu<PRFClassGroup>(
-                                      width: constraints.maxWidth,
-                                      initialSelection: selectedClassGroup,
-                                      hintText: l10n.selectClass,
-                                      dropdownMenuEntries: classes
+                                loaded: (classes) =>
+                                    PRFSearchableList<PRFClassGroup>(
+                                      entries: classes
                                           .map(
                                             (classGroup) =>
-                                                DropdownMenuEntry<
+                                                PRFSearchableListEntry<
                                                   PRFClassGroup
                                                 >(
                                                   value: classGroup,
@@ -188,40 +225,48 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                                           .toList(),
                                       onSelected: (classGroup) => setState(() {
                                         selectedClassGroup = classGroup;
+                                        if (_showValidation) _validateForm();
                                       }),
-                                    );
-                                  },
-                                ),
+                                      selection: selectedClassGroup,
+                                      hintText: l10n.selectClass,
+                                      emptyText: 'No class groups found',
+                                    ),
                               );
                             },
                           ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.person_outline,
-                      title: l10n.fullName,
-                      isRequired: true,
-                      child: PRFNameInput(
-                        hintText: l10n.enterName,
-                        controller: _fullNameController,
-                        enabled: !_isLoading,
-                      ),
-                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
+                    PRFFormSection(
+                          icon: Icons.person_outline,
+                          title: l10n.fullName,
+                          isRequired: true,
+                          child: PRFTextInput(
+                            hintText: l10n.enterName,
+                            controller: _fullNameController,
+                            enabled: !_isLoading,
+                            errorText: _showValidation ? _fullNameError : null,
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.standard)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.badge_outlined,
-                      title: l10n.admissionNumber,
-                      child: PRFTextInput(
-                        hintText: l10n.enterAdmissionNumber,
-                        controller: _admissionNumberController,
-                        enabled: !_isLoading,
-                      ),
-                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
+                    PRFFormSection(
+                          icon: Icons.badge_outlined,
+                          title: l10n.admissionNumber,
+                          child: PRFTextInput(
+                            hintText: l10n.enterAdmissionNumber,
+                            controller: _admissionNumberController,
+                            enabled: !_isLoading,
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.slow)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
 
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.edit_note,
                       title: l10n.note,
-
                       child: PRFTextAreaInput(
                         hintText: l10n.addDecisionNote,
                         controller: _notesController,
@@ -237,39 +282,42 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
 
               // Submit Button
               BlocConsumer<AddSoulCubit, AddSoulState>(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    loading: (_) {
-                      setState(() {
-                        _isLoading = true;
-                      });
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        },
+                        loaded: (_) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.success();
+                          Navigator.of(context).pop();
+                          PRFSnackbar.success(context, l10n.soulRecorded);
+                        },
+                        error: (error) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.error();
+                          PRFSnackbar.error(context, error.message);
+                        },
+                      );
                     },
-                    loaded: (_) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.success();
-                      Navigator.of(context).pop();
-                      PRFSnackbar.success(context, l10n.soulRecorded);
+                    builder: (context, state) {
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: l10n.record,
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
+                      );
                     },
-                    error: (error) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.error();
-                      PRFSnackbar.error(context, error.message);
-                    },
-                  );
-                },
-                builder: (context, state) {
-                  return PRFPrimaryButton(
-                    onPressed: _submitForm,
-                    title: l10n.record,
-                    disabled: !_isFormValid,
-                    isLoading: _isLoading,
-                  );
-                },
-              ).animate(delay: PRFMotionTokens.slow).slideY(begin: 0.3).fadeIn(),
+                  )
+                  .animate(delay: PRFMotionTokens.slow)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: PRFSpacingTokens.xxl),
             ],
@@ -291,7 +339,10 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
           onTap: () => setState(() => selectedDecisionType = decisionType),
           child: AnimatedContainer(
             duration: PRFMotionTokens.standard,
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.md,
+            ),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
@@ -318,62 +369,13 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     );
   }
 
-  Widget _buildFormSection({
-    required IconData icon,
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              FormFieldLabel(label: title, isRequired: isRequired),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (selectedClassGroup == null) {
-      PRFSnackbar.warning(context, l10n.selectClass);
+    if (!_validateForm()) {
       Gaimon.warning();
-      return;
-    }
-
-    if (selectedDecisionType == null) {
-      PRFSnackbar.warning(context, l10n.selectDecisionType);
-      Gaimon.warning();
-      return;
-    }
-
-    if (_fullNameController.text.trim().isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterName);
-      Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 

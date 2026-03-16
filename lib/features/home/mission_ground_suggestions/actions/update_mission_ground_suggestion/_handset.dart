@@ -37,7 +37,13 @@ class _UpdateMissionGroundSuggestionViewHandsetState
 
   bool _isLoading = false;
 
-  // Add form validity check
+  // Structured validation
+  bool _showValidation = false;
+  String? _nameError;
+  String? _contactPersonError;
+  String? _contactNumberError;
+  String? _statusError;
+
   bool get _isFormValid {
     return _nameController.text.isNotEmpty &&
         _contactPersonController.text.isNotEmpty &&
@@ -54,10 +60,47 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     _notesController.text = missionGroundSuggestion.notes ?? '';
     _selectedStatus = missionGroundSuggestion.status;
 
-    // Add listeners to update form validity
-    _nameController.addListener(() => setState(() {}));
-    _contactPersonController.addListener(() => setState(() {}));
-    _contactNumberController.addListener(() => setState(() {}));
+    _nameController.addListener(_onFormChanged);
+    _contactPersonController.addListener(_onFormChanged);
+    _contactNumberController.addListener(_onFormChanged);
+  }
+
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _nameError = null;
+    _contactPersonError = null;
+    _contactNumberError = null;
+    _statusError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_nameController.text.trim().isEmpty) {
+      _nameError = 'Mission ground name is required';
+    }
+    if (_contactPersonController.text.trim().isEmpty) {
+      _contactPersonError = 'Contact person is required';
+    }
+    if (_contactNumberController.text.trim().isEmpty) {
+      _contactNumberError = 'Contact number is required';
+    }
+    if (_selectedStatus == null) {
+      _statusError = 'Status is required';
+    }
+
+    setState(() => _showValidation = true);
+
+    return _nameError == null &&
+        _contactPersonError == null &&
+        _contactNumberError == null &&
+        _statusError == null;
   }
 
   @override
@@ -84,57 +127,61 @@ class _UpdateMissionGroundSuggestionViewHandsetState
 
               // Header Card
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.edit_rounded,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      l10n.editMissionSuggestion,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      l10n.editMissionSuggestionSubTitle,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.edit_rounded,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          l10n.editMissionSuggestion,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.xs),
+                        Text(
+                          l10n.editMissionSuggestionSubTitle,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
 
               const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -161,103 +208,120 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                 ),
                 child: Column(
                   children: [
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.school_outlined,
                       title: l10n.missionGround,
                       isRequired: true,
-                      child: PRFNameInput(
+                      child: PRFTextInput(
                         hintText: l10n.missionGround,
                         controller: _nameController,
+                        errorText: _showValidation ? _nameError : null,
                       ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.person_outline,
-                      title: l10n.contactPerson,
-                      isRequired: true,
-                      child: PRFNameInput(
-                        hintText: l10n.contactPerson,
-                        controller: _contactPersonController,
-                      ),
-                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
-
-                    _buildFormSection(
-                      icon: Icons.phone_outlined,
-                      title: l10n.contactNumber,
-                      isRequired: true,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                          border: Border.all(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.outline.withValues(alpha: 0.2),
+                    PRFFormSection(
+                          icon: Icons.person_outline,
+                          title: l10n.contactPerson,
+                          isRequired: true,
+                          child: PRFTextInput(
+                            hintText: l10n.contactPerson,
+                            controller: _contactPersonController,
+                            errorText:
+                                _showValidation ? _contactPersonError : null,
                           ),
-                        ),
-                        child: InternationalPhoneNumberInput(
-                          textFieldController: _contactNumberController,
-                          countries: const ['KE'],
-                          onInputChanged: (phoneNumber) => setState(() {
-                            contactNumber = phoneNumber;
-                          }),
-                          textStyle: Theme.of(context).textTheme.bodyMedium,
-                          inputDecoration: InputDecoration(
-                            hintText: '+254 712 345 678',
-                            hintStyle: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
+                        )
+                        .animate(delay: PRFMotionTokens.standard)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
+
+                    PRFFormSection(
+                          icon: Icons.phone_outlined,
+                          title: l10n.contactNumber,
+                          isRequired: true,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.smd,
+                              ),
+                              border: Border.all(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.outline.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: InternationalPhoneNumberInput(
+                              textFieldController: _contactNumberController,
+                              countries: const ['KE'],
+                              onInputChanged: (phoneNumber) => setState(() {
+                                contactNumber = phoneNumber;
+                                if (_showValidation) _validateForm();
+                              }),
+                              textStyle: Theme.of(context).textTheme.bodyMedium,
+                              inputDecoration: InputDecoration(
+                                hintText: '+254 712 345 678',
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurfaceVariant,
+                                    ),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: PRFSpacingTokens.lg,
+                                  vertical: PRFSpacingTokens.lg,
                                 ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: PRFSpacingTokens.lg,
-                              vertical: PRFSpacingTokens.lg,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
+                        )
+                        .animate(delay: PRFMotionTokens.slow)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.flag_outlined,
-                      title: l10n.status,
-                      isRequired: true,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFMissionGroundSuggestionStatus>(
-                            width: constraints.maxWidth,
-                            initialSelection: _selectedStatus,
-                            hintText: l10n.status,
-                            dropdownMenuEntries:
-                                PRFMissionGroundSuggestionStatus.values
-                                    .map(
-                                      (status) =>
-                                          DropdownMenuEntry<
-                                            PRFMissionGroundSuggestionStatus
-                                          >(
-                                            value: status,
-                                            label: status.name,
-                                          ),
-                                    )
-                                    .toList(),
+                    PRFFormSection(
+                          icon: Icons.flag_outlined,
+                          title: l10n.status,
+                          isRequired: true,
+                          child: PRFSearchableList<
+                            PRFMissionGroundSuggestionStatus
+                          >(
+                            entries: PRFMissionGroundSuggestionStatus.values
+                                .map(
+                                  (status) => PRFSearchableListEntry<
+                                    PRFMissionGroundSuggestionStatus
+                                  >(
+                                    value: status,
+                                    label: status.name,
+                                  ),
+                                )
+                                .toList(),
                             onSelected: (status) => setState(() {
                               _selectedStatus = status;
+                              if (_showValidation) _validateForm();
                             }),
-                          );
-                        },
-                      ),
-                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
+                            selection: _selectedStatus,
+                            hintText: l10n.status,
+                            emptyText: 'No statuses found',
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.slow)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.notes_outlined,
-                      title: l10n.comments,
-                      child: PRFTextAreaInput(
-                        hintText: l10n.comments,
-                        controller: _notesController,
-                      ),
-                    ).animate(delay: PRFMotionTokens.enterShort).slideX(begin: -0.2).fadeIn(),
+                    PRFFormSection(
+                          icon: Icons.notes_outlined,
+                          title: l10n.comments,
+                          child: PRFTextAreaInput(
+                            hintText: l10n.comments,
+                            controller: _notesController,
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.enterShort)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
                   ],
                 ),
               ),
@@ -319,68 +383,13 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     );
   }
 
-  Widget _buildFormSection({
-    required IconData icon,
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              FormFieldLabel(label: title, isRequired: isRequired),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (_nameController.text.isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterMissionGround);
+    if (!_validateForm()) {
       Gaimon.warning();
-      return;
-    }
-
-    if (_contactPersonController.text.isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterContactPerson);
-      Gaimon.warning();
-      return;
-    }
-
-    if (_contactNumberController.text.isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterContactNumber);
-      Gaimon.warning();
-      return;
-    }
-
-    if (_selectedStatus == null) {
-      PRFSnackbar.warning(context, l10n.selectStatus);
-      Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 

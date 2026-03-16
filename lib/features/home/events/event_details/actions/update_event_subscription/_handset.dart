@@ -30,7 +30,10 @@ class _UpdateEventSubscriptionViewHandsetState
   final _ticketController = TextEditingController();
   bool _isLoading = false;
 
-  // Add form validity check
+  // Structured validation
+  bool _showValidation = false;
+  String? _ticketError;
+
   bool get _isFormValid {
     return _ticketController.text.isNotEmpty;
   }
@@ -38,10 +41,30 @@ class _UpdateEventSubscriptionViewHandsetState
   @override
   void initState() {
     super.initState();
-    // Initialize the fields with the current values
     _ticketController.text = eventSubscription.numberOfAttendees.toString();
-    // Add listeners to update form validity
-    _ticketController.addListener(() => setState(() {}));
+    _ticketController.addListener(_onFormChanged);
+  }
+
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _ticketError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_ticketController.text.trim().isEmpty) {
+      _ticketError = 'Number of tickets is required';
+    }
+
+    setState(() => _showValidation = true);
+    return _ticketError == null;
   }
 
   @override
@@ -68,57 +91,61 @@ class _UpdateEventSubscriptionViewHandsetState
 
               // Header Card
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.edit_calendar_rounded,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      l10n.updateRegistration,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      widget.event.name,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.edit_calendar_rounded,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          l10n.updateRegistration,
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.xs),
+                        Text(
+                          widget.event.name,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
 
               const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -145,13 +172,14 @@ class _UpdateEventSubscriptionViewHandsetState
                 ),
                 child: Column(
                   children: [
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.confirmation_number_rounded,
                       title: l10n.tickets,
                       isRequired: true,
                       child: PRFNumberInput(
                         hintText: l10n.tickets,
                         controller: _ticketController,
+                        errorText: _showValidation ? _ticketError : null,
                       ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
                   ],
@@ -214,97 +242,109 @@ class _UpdateEventSubscriptionViewHandsetState
 
               // Cancel Registration Button
               PRFDestroyButton(
-                title: l10n.cancelRegistration,
-                disabled: false,
-                onPressed: () async => showDialog<void>(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                      ),
-                      title: Text(
-                        l10n.cancelRegistration,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      content: Text(
-                        l10n.confirmCancellation,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(
-                            l10n.cancel,
-                            style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurfaceVariant,
+                    title: l10n.cancelRegistration,
+                    disabled: false,
+                    onPressed: () async => showDialog<void>(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.md,
                             ),
                           ),
-                        ),
-                        BlocConsumer<
-                          DeleteEventSubscriptionCubit,
-                          DeleteEventSubscriptionState
-                        >(
-                          listener: (context, state) {
-                            state.mapOrNull(
-                              loaded: (_) {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                                context.read<GetEventsCubit>().getEvents();
-                                context
-                                    .read<GetMemberEventSubscriptionsCubit>()
-                                    .getMemberEventSubscriptions();
-                                PRFSnackbar.success(
-                                  context,
-                                  l10n.subscriptionCancelled,
-                                );
-                              },
-                              error: (e) {
-                                Navigator.of(context).pop();
-                                PRFSnackbar.error(context, e.message);
-                              },
-                            );
-                          },
-                          builder: (context, state) {
-                            return TextButton(
-                              onPressed: () {
-                                context
-                                    .read<DeleteEventSubscriptionCubit>()
-                                    .deleteSubscription(
-                                      eventSubscriptionUlid:
-                                          eventSubscription.ulid,
-                                    );
-                              },
-                              child: state.maybeWhen(
-                                orElse: () => Text(
-                                  l10n.next,
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.error,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                          title: Text(
+                            l10n.cancelRegistration,
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                loading: () => SizedBox(
-                                  width: PRFSpacingTokens.lg,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
+                          ),
+                          content: Text(
+                            l10n.confirmCancellation,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(
+                                l10n.cancel,
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ).animate(delay: PRFMotionTokens.slow).slideY(begin: 0.3).fadeIn(),
+                            ),
+                            BlocConsumer<
+                              DeleteEventSubscriptionCubit,
+                              DeleteEventSubscriptionState
+                            >(
+                              listener: (context, state) {
+                                state.mapOrNull(
+                                  loaded: (_) {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                    context.read<GetEventsCubit>().getEvents();
+                                    context
+                                        .read<
+                                          GetMemberEventSubscriptionsCubit
+                                        >()
+                                        .getMemberEventSubscriptions();
+                                    PRFSnackbar.success(
+                                      context,
+                                      l10n.subscriptionCancelled,
+                                    );
+                                  },
+                                  error: (e) {
+                                    Navigator.of(context).pop();
+                                    PRFSnackbar.error(context, e.message);
+                                  },
+                                );
+                              },
+                              builder: (context, state) {
+                                return TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<DeleteEventSubscriptionCubit>()
+                                        .deleteSubscription(
+                                          eventSubscriptionUlid:
+                                              eventSubscription.ulid,
+                                        );
+                                  },
+                                  child: state.maybeWhen(
+                                    orElse: () => Text(
+                                      l10n.next,
+                                      style: TextStyle(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.error,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    loading: () => SizedBox(
+                                      width: PRFSpacingTokens.lg,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.error,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  )
+                  .animate(delay: PRFMotionTokens.slow)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: PRFSpacingTokens.xxl),
             ],
@@ -314,50 +354,13 @@ class _UpdateEventSubscriptionViewHandsetState
     );
   }
 
-  Widget _buildFormSection({
-    required IconData icon,
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              FormFieldLabel(label: title, isRequired: isRequired),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (_ticketController.text.isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterTickets);
+    if (!_validateForm()) {
       Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 

@@ -21,10 +21,49 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
 
   bool _isLoading = false;
 
+  // Structured validation
+  bool _showValidation = false;
+  String? _amountError;
+  String? _paymentTypeError;
+
   @override
   void initState() {
     super.initState();
     context.read<GetPaymentTypesCubit>().getPaymentTypes();
+    _amountController.addListener(_onFormChanged);
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _amountError = null;
+    _paymentTypeError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_amountController.text.trim().isEmpty) {
+      _amountError = 'Amount is required';
+    }
+    if (selectedPaymentType == null) {
+      _paymentTypeError = 'Please select a reason for giving';
+    }
+
+    setState(() => _showValidation = true);
+
+    return _amountError == null && _paymentTypeError == null;
   }
 
   @override
@@ -37,52 +76,49 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
         child: Column(
           children: [
             const SizedBox(height: PRFSpacingTokens.lg),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(
-                label: l10n.reasonForGiving,
-                isRequired: true,
+            PRFFormSection(
+              icon: Icons.volunteer_activism_outlined,
+              title: l10n.reasonForGiving,
+              isRequired: true,
+              margin: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
+              child: BlocBuilder<GetPaymentTypesCubit, GetPaymentTypesState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () => const SizedBox.shrink(),
+                    loading: () =>
+                        const Center(child: LinearProgressIndicator()),
+                    loaded: (classes) => PRFSearchableList<PRFPaymentType>(
+                      entries: classes
+                          .map(
+                            (paymentType) =>
+                                PRFSearchableListEntry<PRFPaymentType>(
+                                  value: paymentType,
+                                  label: paymentType.name,
+                                ),
+                          )
+                          .toList(),
+                      onSelected: (paymentType) => setState(() {
+                        selectedPaymentType = paymentType;
+                        if (_showValidation) _validateForm();
+                      }),
+                      selection: selectedPaymentType,
+                      hintText: l10n.reasonForGiving,
+                      emptyText: 'No payment types found',
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: PRFSpacingTokens.xs),
-            BlocBuilder<GetPaymentTypesCubit, GetPaymentTypesState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => const SizedBox.shrink(),
-                  loading: () => const Center(child: LinearProgressIndicator()),
-                  loaded: (classes) => LayoutBuilder(
-                    builder: (context, constraints) {
-                      return DropdownMenu<PRFPaymentType>(
-                        width: constraints.maxWidth,
-                        initialSelection: selectedPaymentType,
-                        hintText: l10n.reasonForGiving,
-                        dropdownMenuEntries: classes
-                            .map(
-                              (paymentType) =>
-                                  DropdownMenuEntry<PRFPaymentType>(
-                                    value: paymentType,
-                                    label: paymentType.name,
-                                  ),
-                            )
-                            .toList(),
-                        onSelected: (paymentType) => setState(() {
-                          selectedPaymentType = paymentType;
-                        }),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: PRFSpacingTokens.lg),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: FormFieldLabel(label: l10n.amount, isRequired: true),
-            ),
-            const SizedBox(height: PRFSpacingTokens.xs),
-            PRFNumberInput(
-              hintText: l10n.enterAmount,
-              controller: _amountController,
+            PRFFormSection(
+              icon: Icons.attach_money,
+              title: l10n.amount,
+              isRequired: true,
+              margin: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
+              child: PRFNumberInput(
+                hintText: l10n.enterAmount,
+                controller: _amountController,
+                errorText: _showValidation ? _amountError : null,
+              ),
             ),
             const SizedBox(height: PRFSpacingTokens.xxl),
             BlocConsumer<AddPaymentCubit, AddPaymentState>(
@@ -121,18 +157,12 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     disabled: _isLoading,
                     isLoading: _isLoading ? true : null,
                     onPressed: () async {
-                      if (_amountController.text.isEmpty) {
-                        PRFSnackbar.warning(context, l10n.enterAmount);
+                      if (!_validateForm()) {
                         Gaimon.warning();
-                        return;
-                      }
-
-                      if (selectedPaymentType == null) {
-                        PRFSnackbar.warning(
+                        PRFSnackbar.error(
                           context,
-                          l10n.selectReasonForGiving,
+                          'Please fix the highlighted fields and try again.',
                         );
-                        Gaimon.warning();
                         return;
                       }
 

@@ -49,18 +49,15 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
   void _initializeFields() {
     final entry = widget.allocationEntry;
 
-    // Initialize form fields with existing data
     _narrationController.text = entry.narration;
     _confirmationController.text = entry.confirmationMessage ?? '';
     _unitCostController.text = entry.unitCost.toString();
     _quantityController.text = entry.quantity.toString();
     _chargeController.text = entry.charge.toString();
 
-    // Set selected values
     _selectedChargeType = entry.chargeType ?? PRFChargeType.cash;
     _selectedCategory = entry.expenseCategory;
 
-    // Calculate initial total
     _calculateTotal();
   }
 
@@ -107,81 +104,88 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
 
               // Header Card
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.edit_outlined,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      'Edit Expense',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      'Update expense details and receipts',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.8),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                    if (_totalAmount > 0) ...[
-                      const SizedBox(height: PRFSpacingTokens.md),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: PRFSpacingTokens.lg,
-                          vertical: PRFSpacingTokens.sm,
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.edit_outlined,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary
-                              .withValues(
-                                alpha: 0.2,
-                              ),
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-                        ),
-                        child: Text(
-                          'Total: KES ${_totalAmount.toStringAsFixed(2)}',
-                          style: Theme.of(context).textTheme.titleMedium
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          'Edit Expense',
+                          style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                               ),
                         ),
-                      ),
-                    ],
-                  ],
-                ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+                        const SizedBox(height: PRFSpacingTokens.xs),
+                        Text(
+                          'Update expense details and receipts',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                        if (_totalAmount > 0) ...[
+                          const SizedBox(height: PRFSpacingTokens.md),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: PRFSpacingTokens.lg,
+                              vertical: PRFSpacingTokens.sm,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.lg,
+                              ),
+                            ),
+                            child: Text(
+                              'Total: KES ${_totalAmount.toStringAsFixed(2)}',
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
 
               const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -208,7 +212,7 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                 ),
                 child: Column(
                   children: [
-                    _buildFormSection(
+                    PRFFormSection(
                       icon: Icons.category,
                       title: l10n.expenseDetails,
                       isRequired: true,
@@ -232,76 +236,90 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                           ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
 
-                    _buildFormSection(
-                      icon: Icons.payments,
-                      title: l10n.amountDetails,
-                      isRequired: true,
-                      child: Column(
-                        children: [
-                          Row(
+                    PRFFormSection(
+                          icon: Icons.payments,
+                          title: l10n.amountDetails,
+                          isRequired: true,
+                          child: Column(
                             children: [
-                              Expanded(
-                                child: _buildNumberField(
-                                  controller: _unitCostController,
-                                  label: l10n.unitCost,
-                                  hint: l10n.unitCostDesc,
-                                  prefix: 'KES ',
-                                ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildNumberField(
+                                      controller: _unitCostController,
+                                      label: l10n.unitCost,
+                                      hint: l10n.unitCostDesc,
+                                      prefix: 'KES ',
+                                    ),
+                                  ),
+                                  const SizedBox(width: PRFSpacingTokens.lg),
+                                  Expanded(
+                                    child: _buildNumberField(
+                                      controller: _quantityController,
+                                      label: l10n.quantity,
+                                      hint: l10n.enterQuantity,
+                                      prefix: 'X ',
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: PRFSpacingTokens.lg),
-                              Expanded(
-                                child: _buildNumberField(
-                                  controller: _quantityController,
-                                  label: l10n.quantity,
-                                  hint: l10n.enterQuantity,
-                                  prefix: 'X ',
+                              const SizedBox(height: PRFSpacingTokens.lg),
+                              _buildNumberField(
+                                controller: _chargeController,
+                                label: l10n.charge,
+                                hint: l10n.enterCharge,
+                                prefix: 'KES ',
+                                fullWidth: true,
+                              ),
+                              if (_totalAmount > 0) ...[
+                                const SizedBox(height: PRFSpacingTokens.lg),
+                                _buildCalculationSummary(
+                                  Theme.of(context),
+                                  l10n,
                                 ),
+                              ],
+                            ],
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.standard)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
+
+                    PRFFormSection(
+                          icon: Icons.payment,
+                          title: l10n.paymentMethod,
+                          isRequired: true,
+                          child: _buildTransactionTypeSelector(
+                            Theme.of(context),
+                          ),
+                        )
+                        .animate(delay: PRFMotionTokens.slow)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
+
+                    PRFFormSection(
+                          icon: Icons.description,
+                          title: l10n.description,
+                          isRequired: true,
+                          child: Column(
+                            children: [
+                              PRFTextAreaInput(
+                                hintText: l10n.paymentDesc,
+                                controller: _narrationController,
+                                textInputAction: TextInputAction.done,
+                              ),
+                              const SizedBox(height: PRFSpacingTokens.lg),
+                              PRFTextAreaInput(
+                                hintText: l10n.confirmationMsg,
+                                controller: _confirmationController,
+                                textInputAction: TextInputAction.done,
                               ),
                             ],
                           ),
-                          const SizedBox(height: PRFSpacingTokens.lg),
-                          _buildNumberField(
-                            controller: _chargeController,
-                            label: l10n.charge,
-                            hint: l10n.enterCharge,
-                            prefix: 'KES ',
-                            fullWidth: true,
-                          ),
-                          if (_totalAmount > 0) ...[
-                            const SizedBox(height: PRFSpacingTokens.lg),
-                            _buildCalculationSummary(Theme.of(context), l10n),
-                          ],
-                        ],
-                      ),
-                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
-
-                    _buildFormSection(
-                      icon: Icons.payment,
-                      title: l10n.paymentMethod,
-                      isRequired: true,
-                      child: _buildTransactionTypeSelector(Theme.of(context)),
-                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
-
-                    _buildFormSection(
-                      icon: Icons.description,
-                      title: l10n.description,
-                      isRequired: true,
-                      child: Column(
-                        children: [
-                          PRFTextAreaInput(
-                            hintText: l10n.paymentDesc,
-                            controller: _narrationController,
-                            textInputAction: TextInputAction.done,
-                          ),
-                          const SizedBox(height: PRFSpacingTokens.lg),
-                          PRFTextAreaInput(
-                            hintText: l10n.confirmationMsg,
-                            controller: _confirmationController,
-                            textInputAction: TextInputAction.done,
-                          ),
-                        ],
-                      ),
-                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
+                        )
+                        .animate(delay: PRFMotionTokens.slow)
+                        .slideX(begin: -0.2)
+                        .fadeIn(),
                   ],
                 ),
               ),
@@ -310,80 +328,39 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
 
               // Submit Button
               BlocConsumer<EditAllocationEntryCubit, EditAllocationEntryState>(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    loading: (_) {
-                      setState(() {
-                        _isLoading = true;
-                      });
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        loading: (_) {
+                          setState(() => _isLoading = true);
+                        },
+                        loaded: (_) {
+                          setState(() => _isLoading = false);
+                          Navigator.of(context).pop();
+                          PRFSnackbar.success(context, l10n.expenseRecorded);
+                        },
+                        error: (error) {
+                          setState(() => _isLoading = false);
+                          PRFSnackbar.error(context, error.message);
+                        },
+                      );
                     },
-                    loaded: (_) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Navigator.of(context).pop();
-                      PRFSnackbar.success(context, l10n.expenseRecorded);
+                    builder: (context, state) {
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: 'Update Expense',
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
+                      );
                     },
-                    error: (error) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      PRFSnackbar.error(context, error.message);
-                    },
-                  );
-                },
-                builder: (context, state) {
-                  return PRFPrimaryButton(
-                    onPressed: _submitForm,
-                    title: 'Update Expense',
-                    disabled: !_isFormValid,
-                    isLoading: _isLoading,
-                  );
-                },
-              ).animate(delay: PRFMotionTokens.enterShort).slideY(begin: 0.3).fadeIn(),
+                  )
+                  .animate(delay: PRFMotionTokens.enterShort)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: PRFSpacingTokens.xxl),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildFormSection({
-    required IconData icon,
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              FormFieldLabel(label: title, isRequired: isRequired),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
       ),
     );
   }
@@ -401,7 +378,10 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
           onTap: () => setState(() => _selectedCategory = category),
           child: AnimatedContainer(
             duration: PRFMotionTokens.standard,
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.md,
+            ),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
@@ -461,7 +441,6 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
     final quantity = double.tryParse(_quantityController.text) ?? 0;
     final charge = double.tryParse(_chargeController.text) ?? 0;
     final lineTotal = unitCost * quantity;
-
     return Container(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
@@ -529,7 +508,10 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
           onTap: () => setState(() => _selectedChargeType = type),
           child: AnimatedContainer(
             duration: PRFMotionTokens.standard,
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.md,
+            ),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
@@ -586,18 +568,14 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
 
   Future<void> _submitForm() async {
     if (!_isFormValid) return;
-
     final unitCost = double.parse(_unitCostController.text).round();
     final quantity = int.parse(_quantityController.text);
     final charge = double.parse(_chargeController.text).round();
-
-    // Get uploaded media from SelectMediaCubit
     final uploadMediaState = context.read<SelectMediaCubit>().state;
     final uploadedMedia = uploadMediaState.maybeWhen(
       orElse: () => <PRFMediaDTO>[],
       loaded: (mediaItems) => mediaItems,
     );
-
     await context.read<EditAllocationEntryCubit>().updateAllocationEntry(
       allocationEntryUlid: widget.allocationEntry.ulid,
       accountingEventUlid: widget.allocationEntry.accountingEvent!.ulid,

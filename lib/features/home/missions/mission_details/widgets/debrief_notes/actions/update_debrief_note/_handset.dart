@@ -26,16 +26,39 @@ class _UpdateDebriefNoteViewHandsetState
   final _noteController = TextEditingController();
   bool _isLoading = false;
 
+  // Structured validation
+  bool _showValidation = false;
+  String? _noteError;
+
   bool get _isFormValid => _noteController.text.trim().isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-
-    // Pre-populate with existing note data
     _noteController.text = widget.debriefNote.note;
+    _noteController.addListener(_onFormChanged);
+  }
 
-    _noteController.addListener(() => setState(() {}));
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _noteError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_noteController.text.trim().isEmpty) {
+      _noteError = 'Note is required';
+    }
+
+    setState(() => _showValidation = true);
+    return _noteError == null;
   }
 
   @override
@@ -58,7 +81,8 @@ class _UpdateDebriefNoteViewHandsetState
             const SizedBox(height: PRFSpacingTokens.xl),
 
             // Note
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.edit_note,
               title: l10n.note,
               isRequired: true,
               child: PRFTextAreaInput(
@@ -66,6 +90,7 @@ class _UpdateDebriefNoteViewHandsetState
                 controller: _noteController,
                 enabled: !_isLoading,
                 maxLines: 6,
+                errorText: _showValidation ? _noteError : null,
               ),
             ),
 
@@ -112,59 +137,13 @@ class _UpdateDebriefNoteViewHandsetState
     );
   }
 
-  Widget _buildFormSection({
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(
-            alpha: 0.06,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              if (isRequired)
-                Text(
-                  ' *',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.error,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (_noteController.text.trim().isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterDebriefNote);
+    if (!_validateForm()) {
       Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 

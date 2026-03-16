@@ -34,6 +34,12 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
   PRFSoulDecisionType? selectedDecisionType;
   String? _initialClassGroupUlid;
 
+  // Structured validation
+  bool _showValidation = false;
+  String? _fullNameError;
+  String? _classGroupError;
+  String? _decisionTypeError;
+
   bool get _isFormValid {
     return selectedClassGroup != null &&
         selectedDecisionType != null &&
@@ -44,19 +50,51 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
   void initState() {
     super.initState();
 
-    // Pre-populate fields with existing soul data
     _fullNameController.text = widget.soul.fullName;
     _admissionNumberController.text = widget.soul.admissionNumber ?? '';
     _notesController.text = widget.soul.notes ?? '';
     selectedDecisionType = widget.soul.decisionType;
     _initialClassGroupUlid = widget.soul.classGroup.ulid;
 
-    _fullNameController.addListener(() => setState(() {}));
-    _admissionNumberController.addListener(() => setState(() {}));
+    _fullNameController.addListener(_onFormChanged);
+    _admissionNumberController.addListener(_onFormChanged);
 
     context.read<GetClassGroupsCubit>().getClassGroups(
       missionUlid: widget.missionUlid,
     );
+  }
+
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _fullNameError = null;
+    _classGroupError = null;
+    _decisionTypeError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_fullNameController.text.trim().isEmpty) {
+      _fullNameError = 'Full name is required';
+    }
+    if (selectedClassGroup == null) {
+      _classGroupError = 'Class group is required';
+    }
+    if (selectedDecisionType == null) {
+      _decisionTypeError = 'Decision type is required';
+    }
+
+    setState(() => _showValidation = true);
+
+    return _fullNameError == null &&
+        _classGroupError == null &&
+        _decisionTypeError == null;
   }
 
   @override
@@ -79,14 +117,16 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
             const SizedBox(height: PRFSpacingTokens.xl),
 
             // Decision Type
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.category,
               title: l10n.decisionType,
               isRequired: true,
               child: _buildDecisionTypeSelector(theme),
             ),
 
             // Class Group
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.group_outlined,
               title: l10n.classGroup,
               isRequired: true,
               child: BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
@@ -113,26 +153,23 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                           });
                         }
                       }
-                      return LayoutBuilder(
-                        builder: (context, constraints) {
-                          return DropdownMenu<PRFClassGroup>(
-                            width: constraints.maxWidth,
-                            initialSelection: selectedClassGroup,
-                            hintText: l10n.selectClass,
-                            dropdownMenuEntries: classes
-                                .map(
-                                  (classGroup) =>
-                                      DropdownMenuEntry<PRFClassGroup>(
-                                        value: classGroup,
-                                        label: classGroup.name,
-                                      ),
-                                )
-                                .toList(),
-                            onSelected: (classGroup) => setState(() {
-                              selectedClassGroup = classGroup;
-                            }),
-                          );
-                        },
+                      return PRFSearchableList<PRFClassGroup>(
+                        entries: classes
+                            .map(
+                              (classGroup) =>
+                                  PRFSearchableListEntry<PRFClassGroup>(
+                                    value: classGroup,
+                                    label: classGroup.name,
+                                  ),
+                            )
+                            .toList(),
+                        onSelected: (classGroup) => setState(() {
+                          selectedClassGroup = classGroup;
+                          if (_showValidation) _validateForm();
+                        }),
+                        selection: selectedClassGroup,
+                        hintText: l10n.selectClass,
+                        emptyText: 'No class groups found',
                       );
                     },
                   );
@@ -141,18 +178,21 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
             ),
 
             // Full Name
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.person_outline,
               title: l10n.fullName,
               isRequired: true,
-              child: PRFNameInput(
+              child: PRFTextInput(
                 hintText: l10n.enterName,
                 controller: _fullNameController,
                 enabled: !_isLoading,
+                errorText: _showValidation ? _fullNameError : null,
               ),
             ),
 
             // Admission Number
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.badge_outlined,
               title: l10n.admissionNumber,
               child: PRFTextInput(
                 hintText: l10n.enterAdmissionNumber,
@@ -162,7 +202,8 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
             ),
 
             // Notes
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.edit_note,
               title: l10n.note,
               child: PRFTextAreaInput(
                 hintText: l10n.addDecisionNote,
@@ -225,7 +266,10 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
           onTap: () => setState(() => selectedDecisionType = decisionType),
           child: AnimatedContainer(
             duration: PRFMotionTokens.standard,
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.md,
+            ),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
@@ -252,71 +296,13 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     );
   }
 
-  Widget _buildFormSection({
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(
-            alpha: 0.06,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              if (isRequired)
-                Text(
-                  ' *',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.error,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (selectedClassGroup == null) {
-      PRFSnackbar.warning(context, l10n.selectClass);
+    if (!_validateForm()) {
       Gaimon.warning();
-      return;
-    }
-
-    if (selectedDecisionType == null) {
-      PRFSnackbar.warning(context, l10n.selectDecisionType);
-      Gaimon.warning();
-      return;
-    }
-
-    if (_fullNameController.text.trim().isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterName);
-      Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 
