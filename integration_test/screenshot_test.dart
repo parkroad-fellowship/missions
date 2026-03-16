@@ -7,7 +7,7 @@ import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/shared_widgets/_index.dart' show PRFPrimaryButton;
+import 'package:prf_design/prf_design.dart' show PRFPrimaryButton;
 import 'package:app/utils/_index.dart' hide getIt;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';

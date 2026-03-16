@@ -7,7 +7,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_expense_category.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

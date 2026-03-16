@@ -6,7 +6,7 @@ import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

@@ -1,8 +1,8 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/shared_widgets/_index.dart';
-import 'package:app/shared_widgets/home_action_card/home_action_card.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -252,9 +252,11 @@ class LandingPageHandset extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                               ),
-                              child: HomeActionCard(
+                              child: PRFActionCard(
                                 title: action[0] as String,
-                                assetPath: action[1] as String,
+                                image: SvgPicture.asset(
+                                  action[1] as String,
+                                ),
                                 onTap: action[2] as VoidCallback,
                               ),
                             ),

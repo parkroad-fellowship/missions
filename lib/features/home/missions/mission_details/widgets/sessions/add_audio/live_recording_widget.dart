@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

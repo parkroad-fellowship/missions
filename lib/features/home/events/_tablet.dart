@@ -2,7 +2,7 @@ import 'package:app/features/home/events/cubit/get_events_cubit.dart';
 import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/event/prf_event.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';

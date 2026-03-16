@@ -2,8 +2,7 @@ import 'package:app/features/home/prayer_requests/actions/add_prayer_request/add
 import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/shared_widgets/_index.dart';
-import 'package:app/shared_widgets/navbar/navbar.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';

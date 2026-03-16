@@ -5,7 +5,7 @@ import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit
 import 'package:app/features/home/missions/mission_details/widgets/gallery/video_player_widget.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

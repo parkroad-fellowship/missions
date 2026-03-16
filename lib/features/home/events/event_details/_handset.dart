@@ -7,9 +7,9 @@ import 'package:app/features/home/events/event_details/event_details/event_detai
 import 'package:app/features/home/events/event_details/gallery/gallery.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/event/prf_event.dart';
-import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';

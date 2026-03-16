@@ -1,7 +1,8 @@
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -296,9 +297,9 @@ class LandingPageTablet extends StatelessWidget {
       ],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: HomeActionCard(
+        child: PRFActionCard(
           title: title,
-          assetPath: assetPath,
+          image: SvgPicture.asset(assetPath),
           onTap: onTap,
         ),
       ),

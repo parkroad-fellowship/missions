@@ -1,9 +1,9 @@
+import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
 import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/faq/prf_faq.dart';
 import 'package:app/models/local/faq/prf_faq_category.dart';
-import 'package:app/shared_widgets/_index.dart';
-import 'package:app/shared_widgets/navbar/navbar.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -84,17 +84,30 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
 
             // FAQ Categories
             SliverToBoxAdapter(
-              child: FaqCategoriesPreview(
-                onCategorySelected: (newValue) {
-                  setState(() {
-                    _selectedCategory = newValue;
-                  });
-                  Logger().i('Selected Category: $_selectedCategory');
-                  context.read<GetFaqsCubit>().getFaqs(
-                    categoryUlid: _selectedCategory?.ulid,
-                    query: (_searchQuery?.isNotEmpty ?? false)
-                        ? _searchQuery
-                        : null,
+              child: BlocBuilder<GetFaqCategoriesCubit, GetFaqCategoriesState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () => const SizedBox.shrink(),
+                    loading: PRFLinearProgressIndicator.new,
+                    loaded: (faqCategories) =>
+                        PRFCategoryChips<PRFLocalFaqCategory>(
+                      categories: faqCategories,
+                      selectedCategory: _selectedCategory,
+                      labelBuilder: (c) => c.name,
+                      allLabel: l10n.all.toUpperCase(),
+                      onCategorySelected: (newValue) {
+                        setState(() {
+                          _selectedCategory = newValue;
+                        });
+                        Logger().i('Selected Category: $_selectedCategory');
+                        context.read<GetFaqsCubit>().getFaqs(
+                          categoryUlid: _selectedCategory?.ulid,
+                          query: (_searchQuery?.isNotEmpty ?? false)
+                              ? _searchQuery
+                              : null,
+                        );
+                      },
+                    ),
                   );
                 },
               ),

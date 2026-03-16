@@ -2,8 +2,7 @@ import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.da
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/enquiry/prf_student_enquiry.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:app/shared_widgets/_index.dart';
-import 'package:app/shared_widgets/navbar/navbar.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
