@@ -77,16 +77,16 @@ class _SignInTabletState extends State<SignInTablet> {
                             // Left side - Logo and branding
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.all(32),
+                                padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.all(24),
+                                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                                       decoration: BoxDecoration(
                                         color: theme.colorScheme.primary
                                             .withValues(alpha: 0.1),
-                                        borderRadius: BorderRadius.circular(24),
+                                        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                                         border: Border.all(
                                           color: theme.colorScheme.primary
                                               .withValues(alpha: 0.2),
@@ -99,7 +99,7 @@ class _SignInTabletState extends State<SignInTablet> {
                                         width: 138,
                                       ),
                                     ),
-                                    const SizedBox(height: 32),
+                                    const SizedBox(height: PRFSpacingTokens.xxl),
                                     Text(
                                       l10n.welcomeIntro,
                                       style: theme.textTheme.headlineLarge
@@ -109,7 +109,7 @@ class _SignInTabletState extends State<SignInTablet> {
                                           ),
                                       textAlign: TextAlign.center,
                                     ),
-                                    const SizedBox(height: 16),
+                                    const SizedBox(height: PRFSpacingTokens.lg),
                                     Text(
                                       l10n.welcomeBack,
                                       style: theme.textTheme.bodyLarge
@@ -178,7 +178,7 @@ class _SignInTabletState extends State<SignInTablet> {
                         emailController: _emailController,
                         enabled: !_isLoading,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: PRFSpacingTokens.xl),
 
                       // Password Input
                       PRFPasswordInput(
@@ -187,7 +187,7 @@ class _SignInTabletState extends State<SignInTablet> {
                         passwordController: _passwordController,
                         enabled: !_isLoading,
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: PRFSpacingTokens.xxl),
 
                       // Sign In Button
                       BlocConsumer<SigninCubit, SignInState>(
@@ -237,7 +237,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           );
                         },
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: PRFSpacingTokens.xxl),
 
                       // Divider
                       Row(
@@ -250,7 +250,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
+                              horizontal: PRFSpacingTokens.xl,
                             ),
                             child: Text(
                               'OR',
@@ -269,7 +269,7 @@ class _SignInTabletState extends State<SignInTablet> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: PRFSpacingTokens.xxl),
                     ],
 
                     // Google Sign In Button
@@ -285,8 +285,8 @@ class _SignInTabletState extends State<SignInTablet> {
             Center(
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
+                  horizontal: PRFSpacingTokens.xl,
+                  vertical: PRFSpacingTokens.md,
                 ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surfaceContainerHighest,

@@ -48,7 +48,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
             itemCount: debriefNotes.length,
             separatorBuilder: (context, index) => const SizedBox(height: 0),
             itemBuilder: (context, index) =>
@@ -81,11 +81,11 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.shadow.withValues(alpha: .08),
@@ -109,10 +109,10 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(PRFSpacingTokens.md),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
                 child: Icon(
                   Icons.sticky_note_2_outlined,
@@ -120,7 +120,7 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: PRFSpacingTokens.lg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +132,7 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: PRFSpacingTokens.xs),
                     _buildTimestampChip(theme),
                   ],
                 ),
@@ -143,12 +143,12 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
           // Note content
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest.withValues(
                 alpha: 0.3,
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.2),
               ),
@@ -168,10 +168,10 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
 
   Widget _buildTimestampChip(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
       decoration: BoxDecoration(
         color: theme.colorScheme.secondary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
         border: Border.all(
           color: theme.colorScheme.secondary.withValues(alpha: 0.3),
         ),
@@ -184,7 +184,7 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
             size: 12,
             color: theme.colorScheme.secondary,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: PRFSpacingTokens.xs),
           Text(
             DateFormatter.formatDateTime(debriefNote.createdAt, timezone),
             style: theme.textTheme.bodySmall?.copyWith(

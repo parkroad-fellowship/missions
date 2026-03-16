@@ -161,7 +161,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const PRFCircularProgressIndicator(color: Colors.white),
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
           Text(
             'Loading video...',
             style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white),
@@ -172,7 +172,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
     if (_hasError) {
       return Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -181,7 +181,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               color: theme.colorScheme.error,
               size: 64,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
             Text(
               'Error loading video',
               style: theme.textTheme.titleLarge?.copyWith(
@@ -189,7 +189,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: PRFSpacingTokens.sm),
             Text(
               _errorMessage ?? 'Unknown error occurred',
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -197,7 +197,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
             PRFPrimaryButton(
               title: 'Retry',
               disabled: false,
@@ -230,7 +230,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: PRFSpacingTokens.xl),
           if (_showControls) _buildVideoControlsBar(theme),
         ],
       );
@@ -300,7 +300,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 },
                 child: AnimatedOpacity(
                   opacity: _controller.value.isPlaying ? 0.0 : 1.0,
-                  duration: const Duration(milliseconds: 300),
+                  duration: PRFMotionTokens.slow,
                   child: Container(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withValues(alpha: 0.9),
@@ -313,7 +313,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                     child: Icon(
                       _controller.value.isPlaying
                           ? Icons.pause
@@ -342,7 +342,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       backgroundColor: Colors.white24,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: PRFSpacingTokens.sm),
                   // Time and controls
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -421,7 +421,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             Center(
               child: AnimatedOpacity(
                 opacity: _controller.value.isPlaying ? 0.0 : 1.0,
-                duration: const Duration(milliseconds: 300),
+                duration: PRFMotionTokens.slow,
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(
@@ -436,7 +436,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       ),
                     ],
                   ),
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                   child: Icon(
                     _controller.value.isPlaying
                         ? Icons.pause
@@ -456,9 +456,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                   ),
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                   child: const Icon(
                     Icons.fullscreen,
                     color: Colors.white,
@@ -475,7 +475,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   Widget _buildVideoControlsBar(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
       child: Column(
         children: [
           // Progress bar
@@ -488,7 +488,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               backgroundColor: Colors.white24,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: PRFSpacingTokens.sm),
           // Time indicators and controls
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

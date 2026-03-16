@@ -85,16 +85,16 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
 
               // Header Card
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -104,7 +104,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       ).colorScheme.primary.withValues(alpha: 0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
                       color: Theme.of(
@@ -122,7 +122,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       size: 32,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: PRFSpacingTokens.sm),
                     Text(
                       'Add New Expense',
                       style: Theme.of(context).textTheme.headlineSmall
@@ -131,7 +131,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: PRFSpacingTokens.xs),
                     Text(
                       'Fill in the details below to record a new expense',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -142,18 +142,18 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       textAlign: TextAlign.center,
                     ),
                     if (_totalAmount > 0) ...[
-                      const SizedBox(height: 12),
+                      const SizedBox(height: PRFSpacingTokens.md),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                          horizontal: PRFSpacingTokens.lg,
+                          vertical: PRFSpacingTokens.sm,
                         ),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.onPrimary
                               .withValues(
                                 alpha: 0.2,
                               ),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                         ),
                         child: Text(
                           'Total: KES ${_totalAmount.toStringAsFixed(2)}',
@@ -167,16 +167,16 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     ],
                   ],
                 ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
+              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Form Card
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   border: Border.all(
                     color: Theme.of(
                       context,
@@ -234,7 +234,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                                   prefix: 'KES ',
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: PRFSpacingTokens.lg),
                               Expanded(
                                 child: _buildNumberField(
                                   controller: _quantityController,
@@ -245,7 +245,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: PRFSpacingTokens.lg),
                           _buildNumberField(
                             controller: _chargeController,
                             label: l10n.charge,
@@ -254,19 +254,19 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             fullWidth: true,
                           ),
                           if (_totalAmount > 0) ...[
-                            const SizedBox(height: 16),
+                            const SizedBox(height: PRFSpacingTokens.lg),
                             _buildCalculationSummary(Theme.of(context), l10n),
                           ],
                         ],
                       ),
-                    ).animate(delay: 200.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.payment,
                       title: l10n.paymentMethod,
                       isRequired: true,
                       child: _buildTransactionTypeSelector(Theme.of(context)),
-                    ).animate(delay: 300.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.description,
@@ -279,7 +279,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             controller: _narrationController,
                             textInputAction: TextInputAction.next,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: PRFSpacingTokens.lg),
                           PRFTextAreaInput(
                             hintText: l10n.confirmationMsg,
                             controller: _confirmationMessageController,
@@ -287,12 +287,12 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           ),
                         ],
                       ),
-                    ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
               BlocConsumer<AddAllocationEntryCubit, AddAllocationEntryState>(
@@ -328,9 +328,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                     isLoading: _isLoading,
                   );
                 },
-              ).animate(delay: 500.ms).slideY(begin: 0.3).fadeIn(),
+              ).animate(delay: PRFMotionTokens.enterShort).slideY(begin: 0.3).fadeIn(),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: PRFSpacingTokens.xxl),
             ],
           ),
         ),
@@ -345,19 +345,19 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     bool isRequired = false,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
                   ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Icon(
                   icon,
@@ -365,11 +365,11 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
               FormFieldLabel(label: title, isRequired: isRequired),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: PRFSpacingTokens.sm),
           child,
         ],
       ),
@@ -388,13 +388,13 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
         return GestureDetector(
           onTap: () => setState(() => selectedExpenseCategory = category),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            duration: PRFMotionTokens.standard,
+            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
                   : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
@@ -434,7 +434,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: PRFSpacingTokens.sm),
         PRFNumberInput(
           controller: controller,
           hintText: hint,
@@ -451,10 +451,10 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     final lineTotal = unitCost * quantity;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.2),
         ),
@@ -462,7 +462,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
       child: Column(
         children: [
           _buildCalculationRow(l10n.subTotal, lineTotal, theme),
-          const SizedBox(height: 8),
+          const SizedBox(height: PRFSpacingTokens.sm),
           _buildCalculationRow(l10n.charge, charge, theme),
           const Divider(),
           _buildCalculationRow(
@@ -516,13 +516,13 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
         return GestureDetector(
           onTap: () => setState(() => selectedChargeType = type),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            duration: PRFMotionTokens.standard,
+            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
                   : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
@@ -539,7 +539,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       ? theme.colorScheme.onPrimary
                       : theme.colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: PRFSpacingTokens.sm),
                 Text(
                   type.name,
                   style: theme.textTheme.bodySmall?.copyWith(

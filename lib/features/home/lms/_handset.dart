@@ -38,7 +38,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
               child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
                 builder: (context, state) => state.maybeWhen(
                   loading: () => const Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                     child: PRFLinearProgressIndicator(),
                   ),
                   orElse: SizedBox.shrink,
@@ -71,7 +71,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                   itemBuilder: (context, index) =>
                       CourseActionCard(course: courses[index]),
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                 );
               },
             ),

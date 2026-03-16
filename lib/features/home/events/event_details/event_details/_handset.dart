@@ -5,6 +5,7 @@ import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:map_launcher/map_launcher.dart';
+import 'package:prf_design/prf_design.dart';
 
 class EventDetailsViewHandset extends StatefulWidget {
   const EventDetailsViewHandset({required this.event, super.key});
@@ -27,28 +28,28 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         child: Column(
           children: [
             // Hero Event Card
             _buildHeroCard(context, event, l10n, theme),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Quick Actions Row
             _buildQuickActions(context, event, l10n, theme),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Event Intelligence Grid
             _buildIntelligenceGrid(context, event, l10n, theme),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Description Section
             _buildDescriptionSection(context, event, l10n, theme),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Location & Navigation Hub
             _buildLocationHub(context, event, l10n, theme),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Weather Intelligence
             if (event.weatherForecasts.isNotEmpty)
@@ -76,7 +77,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 theme.colorScheme.primary.withValues(alpha: 0.8),
               ],
             ),
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
             boxShadow: [
               BoxShadow(
                 color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -86,7 +87,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,12 +95,12 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                       ),
                       child: Text(
                         'EVENT',
@@ -112,10 +113,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     ),
                     const Spacer(),
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       ),
                       child: const Icon(
                         Icons.event_rounded,
@@ -125,7 +126,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: PRFSpacingTokens.lg),
                 Text(
                   event.name.toUpperCase(),
                   style: theme.textTheme.headlineLarge?.copyWith(
@@ -134,7 +135,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     height: 1.1,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: PRFSpacingTokens.sm),
                 if (event.venue != null)
                   Text(
                     event.venue!,
@@ -143,7 +144,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                const SizedBox(height: 20),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 Row(
                   children: [
                     _buildDateTimeChip(
@@ -160,7 +161,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: PRFSpacingTokens.sm),
                 Row(
                   children: [
                     _buildDateTimeChip(
@@ -182,7 +183,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
           ),
         )
         .animate()
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -193,16 +194,16 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.md, vertical: PRFSpacingTokens.sm),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, color: Colors.white, size: 16),
-          const SizedBox(width: 8),
+          const SizedBox(width: PRFSpacingTokens.sm),
           Text(
             text,
             style: theme.textTheme.bodySmall?.copyWith(
@@ -235,8 +236,8 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
             ),
           ],
         )
-        .animate(delay: const Duration(milliseconds: 200))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .animate(delay: PRFMotionTokens.standard)
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -251,10 +252,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg, horizontal: PRFSpacingTokens.xl),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           boxShadow: [
             BoxShadow(
               color: color.withValues(alpha: 0.3),
@@ -267,7 +268,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
+            const SizedBox(width: PRFSpacingTokens.sm),
             Text(
               label,
               style: theme.textTheme.titleSmall?.copyWith(
@@ -296,7 +297,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -325,8 +326,8 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
             ),
           ],
         )
-        .animate(delay: const Duration(milliseconds: 400))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .animate(delay: PRFMotionTokens.slow)
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -339,10 +340,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
         ),
@@ -351,10 +352,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
@@ -386,10 +387,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
   ) {
     return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
               color: theme.colorScheme.outline.withValues(alpha: 0.1),
             ),
@@ -400,10 +401,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       Icons.description_rounded,
@@ -411,7 +412,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Text(
                     l10n.description,
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -420,7 +421,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
               Text(
                 event.description,
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -430,8 +431,8 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
             ],
           ),
         )
-        .animate(delay: const Duration(milliseconds: 500))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .animate(delay: PRFMotionTokens.enterShort)
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -443,7 +444,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
   ) {
     return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -453,7 +454,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 theme.colorScheme.tertiary.withValues(alpha: 0.05),
               ],
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
               color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
             ),
@@ -464,10 +465,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       Icons.location_on_rounded,
@@ -475,7 +476,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Text(
                     l10n.address,
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -486,7 +487,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   Container(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: IconButton(
                       onPressed: () => _openMap(event),
@@ -500,18 +501,18 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     effects: const [
                       ShakeEffect(
                         duration: Duration(seconds: 2),
-                        delay: Duration(milliseconds: 500),
+                        delay: PRFMotionTokens.enterShort,
                       ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.05),
@@ -523,12 +524,12 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.tertiary.withValues(
                           alpha: 0.1,
                         ),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       ),
                       child: Icon(
                         Icons.place_rounded,
@@ -536,7 +537,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                         size: 16,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: PRFSpacingTokens.md),
                     Expanded(
                       child: Text(
                         event.venue ?? 'Venue not specified',
@@ -551,8 +552,8 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
             ],
           ),
         )
-        .animate(delay: const Duration(milliseconds: 600))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .animate(delay: PRFMotionTokens.enterShort)
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -564,7 +565,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
   ) {
     return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -574,7 +575,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 theme.colorScheme.secondary.withValues(alpha: 0.05),
               ],
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
               color: theme.colorScheme.secondary.withValues(alpha: 0.2),
             ),
@@ -585,10 +586,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.secondary.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       Icons.wb_sunny_rounded,
@@ -596,7 +597,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Text(
                     l10n.weather,
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -605,18 +606,18 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
               ...event.weatherForecasts.asMap().entries.map(
                 (entry) {
                   final index = entry.key;
                   final forecast = entry.value;
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surface,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: 0.05),
@@ -637,7 +638,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: PRFSpacingTokens.sm),
                           Text(
                             l10n.visibility(
                               forecast.visibility.min,
@@ -654,7 +655,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                             ),
                             style: theme.textTheme.bodySmall,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: PRFSpacingTokens.sm),
                           Text(
                             l10n.dressingRecommendations,
                             style: theme.textTheme.labelLarge?.copyWith(
@@ -675,7 +676,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
           ),
         )
         .animate(delay: const Duration(milliseconds: 700))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 

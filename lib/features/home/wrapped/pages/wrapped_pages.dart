@@ -32,7 +32,7 @@ class IntroWrappedPage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -47,7 +47,7 @@ class IntroWrappedPage extends StatelessWidget {
                     curve: Curves.elasticOut,
                   )
                   .fadeIn(),
-              const SizedBox(height: 32),
+              const SizedBox(height: PRFSpacingTokens.xxl),
               Text(
                     memberName,
                     style: theme.textTheme.displayMedium?.copyWith(
@@ -56,10 +56,10 @@ class IntroWrappedPage extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   )
-                  .animate(delay: 300.ms)
+                  .animate(delay: PRFMotionTokens.slow)
                   .fadeIn(duration: 800.ms)
                   .slideY(begin: 0.3, end: 0),
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
               Text(
                     'Your $year',
                     style: theme.textTheme.headlineLarge?.copyWith(
@@ -68,10 +68,10 @@ class IntroWrappedPage extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   )
-                  .animate(delay: 600.ms)
+                  .animate(delay: PRFMotionTokens.enterShort)
                   .fadeIn(duration: 800.ms)
                   .slideY(begin: 0.3, end: 0),
-              const SizedBox(height: 8),
+              const SizedBox(height: PRFSpacingTokens.sm),
               Text(
                     'Missions Wrapped',
                     style: theme.textTheme.displayLarge?.copyWith(
@@ -94,9 +94,9 @@ class IntroWrappedPage extends StatelessWidget {
                   )
                   .animate(delay: 1500.ms)
                   .fadeIn()
-                  .then(delay: 500.ms)
+                  .then(delay: PRFMotionTokens.enterShort)
                   .shimmer(duration: 2000.ms, color: PRFColors.white),
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
               Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: PRFColors.white.withValues(alpha: 0.8),
@@ -151,7 +151,7 @@ class MissionsWrappedPage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -162,7 +162,7 @@ class MissionsWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: missionStats.totalMissions.toString(),
@@ -170,7 +170,7 @@ class MissionsWrappedPage extends StatelessWidget {
                 icon: Icons.explore_rounded,
                 color: PRFColors.white,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
               Row(
                 children: [
                   Expanded(
@@ -179,10 +179,10 @@ class MissionsWrappedPage extends StatelessWidget {
                       label: 'Schools Reached',
                       icon: Icons.school_rounded,
                       color: theme.colorScheme.secondary,
-                      delay: 400.ms,
+                      delay: PRFMotionTokens.slow,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: PRFSpacingTokens.lg),
                   Expanded(
                     child: AnimatedStatCard(
                       value:
@@ -190,13 +190,13 @@ class MissionsWrappedPage extends StatelessWidget {
                       label: 'Completion',
                       icon: Icons.check_circle_rounded,
                       color: theme.colorScheme.secondary,
-                      delay: 600.ms,
+                      delay: PRFMotionTokens.enterShort,
                     ),
                   ),
                 ],
               ),
               if (missionStats.missionStreak > 0) ...[
-                const SizedBox(height: 24),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 StatHighlightCard(
                   title: '🔥 ${missionStats.missionStreak} Mission Streak!',
                   subtitle: 'Keep up the amazing work',
@@ -240,7 +240,7 @@ class ImpactWrappedPage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -251,7 +251,7 @@ class ImpactWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: impactStats.soulsTouched.toString(),
@@ -260,7 +260,7 @@ class ImpactWrappedPage extends StatelessWidget {
                 color: PRFColors.white,
               ),
               if (impactStats.mostImpactfulMission != null) ...[
-                const SizedBox(height: 24),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 StatHighlightCard(
                   title: impactStats.mostImpactfulMission!.name,
                   subtitle:
@@ -272,16 +272,16 @@ class ImpactWrappedPage extends StatelessWidget {
                     theme.colorScheme.secondary,
                     theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
-                  delay: 400.ms,
+                  delay: PRFMotionTokens.slow,
                 ),
               ],
               if (impactStats.decisionTypes.isNotEmpty) ...[
-                const SizedBox(height: 24),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                       decoration: BoxDecoration(
                         color: PRFColors.white.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                         border: Border.all(
                           color: PRFColors.white.withValues(alpha: 0.3),
                           width: 2,
@@ -296,13 +296,13 @@ class ImpactWrappedPage extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: PRFSpacingTokens.md),
                           ...impactStats.decisionTypes
                               .take(3)
                               .map(
                                 (dt) => Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    vertical: 4,
+                                    vertical: PRFSpacingTokens.xs,
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
@@ -332,8 +332,8 @@ class ImpactWrappedPage extends StatelessWidget {
                         ],
                       ),
                     )
-                    .animate(delay: 600.ms)
-                    .fadeIn(duration: 600.ms)
+                    .animate(delay: PRFMotionTokens.enterShort)
+                    .fadeIn(duration: PRFMotionTokens.enterShort)
                     .slideY(begin: 0.3, end: 0),
               ],
             ],
@@ -369,7 +369,7 @@ class LearningWrappedPage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -380,7 +380,7 @@ class LearningWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               Row(
                 children: [
@@ -392,19 +392,19 @@ class LearningWrappedPage extends StatelessWidget {
                       color: PRFColors.white,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: PRFSpacingTokens.lg),
                   Expanded(
                     child: AnimatedStatCard(
                       value: learningStats.lessonsCompleted.toString(),
                       label: 'Lessons\nCompleted',
                       icon: Icons.book_rounded,
                       color: PRFColors.white,
-                      delay: 200.ms,
+                      delay: PRFMotionTokens.standard,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
               AnimatedStatCard(
                 value:
                     // ignore: lines_longer_than_80_chars
@@ -412,10 +412,10 @@ class LearningWrappedPage extends StatelessWidget {
                 label: 'Overall Progress',
                 icon: Icons.trending_up_rounded,
                 color: theme.colorScheme.secondary,
-                delay: 400.ms,
+                delay: PRFMotionTokens.slow,
               ),
               if (learningStats.learningStreak > 0) ...[
-                const SizedBox(height: 24),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 StatHighlightCard(
                   title: '📚 ${learningStats.learningStreak} Day Streak!',
                   subtitle: "You're on fire! Keep learning",
@@ -423,7 +423,7 @@ class LearningWrappedPage extends StatelessWidget {
                     theme.colorScheme.secondary,
                     theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
-                  delay: 600.ms,
+                  delay: PRFMotionTokens.enterShort,
                 ),
               ],
             ],
@@ -459,7 +459,7 @@ class PrayerWrappedPage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -470,7 +470,7 @@ class PrayerWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: prayerStats.prayerResponses.toString(),
@@ -479,7 +479,7 @@ class PrayerWrappedPage extends StatelessWidget {
                 color: PRFColors.white,
               ),
               if (prayerStats.prayerConsistencyDays > 0) ...[
-                const SizedBox(height: 24),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 StatHighlightCard(
                   title:
                       '🙏 ${prayerStats.prayerConsistencyDays} Days of Prayer',
@@ -488,7 +488,7 @@ class PrayerWrappedPage extends StatelessWidget {
                     theme.colorScheme.secondary,
                     theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
-                  delay: 400.ms,
+                  delay: PRFMotionTokens.slow,
                 ),
               ],
             ],
@@ -524,7 +524,7 @@ class EventsWrappedPage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -535,7 +535,7 @@ class EventsWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.3, end: 0),
+              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               Row(
                 children: [
@@ -547,20 +547,20 @@ class EventsWrappedPage extends StatelessWidget {
                       color: PRFColors.white,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: PRFSpacingTokens.lg),
                   Expanded(
                     child: AnimatedStatCard(
                       value: eventStats.upcomingEvents.toString(),
                       label: 'Upcoming\nEvents',
                       icon: Icons.event_available_rounded,
                       color: theme.colorScheme.secondary,
-                      delay: 200.ms,
+                      delay: PRFMotionTokens.standard,
                     ),
                   ),
                 ],
               ),
               if (eventStats.eventsAttended > 0) ...[
-                const SizedBox(height: 24),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 StatHighlightCard(
                   title: '🎉 Active Participant!',
                   subtitle: 'Thank you for being part of our community',
@@ -568,7 +568,7 @@ class EventsWrappedPage extends StatelessWidget {
                     theme.colorScheme.secondary,
                     theme.colorScheme.secondary.withValues(alpha: 0.8),
                   ],
-                  delay: 400.ms,
+                  delay: PRFMotionTokens.slow,
                 ),
               ],
             ],
@@ -607,7 +607,7 @@ class SummaryWrappedPage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -618,13 +618,13 @@ class SummaryWrappedPage extends StatelessWidget {
                   fontWeight: FontWeight.w900,
                 ),
                 textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: 600.ms).scale(curve: Curves.easeOut),
+              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).scale(curve: Curves.easeOut),
               const SizedBox(height: 48),
               Container(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                     decoration: BoxDecoration(
                       color: PRFColors.white.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                       border: Border.all(
                         color: PRFColors.white.withValues(alpha: 0.3),
                         width: 2,
@@ -639,14 +639,14 @@ class SummaryWrappedPage extends StatelessWidget {
                           memberEngagement.missionStats.totalMissions
                               .toString(),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         _buildSummaryRow(
                           context,
                           Icons.favorite_rounded,
                           'Souls Touched',
                           memberEngagement.impactStats.soulsTouched.toString(),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         _buildSummaryRow(
                           context,
                           Icons.workspace_premium_rounded,
@@ -654,7 +654,7 @@ class SummaryWrappedPage extends StatelessWidget {
                           memberEngagement.learningStats.coursesCompleted
                               .toString(),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         _buildSummaryRow(
                           context,
                           Icons.event_rounded,
@@ -664,7 +664,7 @@ class SummaryWrappedPage extends StatelessWidget {
                       ],
                     ),
                   )
-                  .animate(delay: 300.ms)
+                  .animate(delay: PRFMotionTokens.slow)
                   .fadeIn(duration: 800.ms)
                   .slideY(begin: 0.3, end: 0),
               const SizedBox(height: 48),
@@ -679,7 +679,7 @@ class SummaryWrappedPage extends StatelessWidget {
                   .animate(delay: 800.ms)
                   .fadeIn(duration: 1000.ms)
                   .slideY(begin: 0.3, end: 0),
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
               Text(
                     "Let's make next year even better! 🚀",
                     style: theme.textTheme.titleMedium?.copyWith(
@@ -689,7 +689,7 @@ class SummaryWrappedPage extends StatelessWidget {
                   )
                   .animate(delay: 1200.ms)
                   .fadeIn(duration: 800.ms)
-                  .then(delay: 500.ms)
+                  .then(delay: PRFMotionTokens.enterShort)
                   .shimmer(duration: 2000.ms, color: PRFColors.white),
             ],
           ),
@@ -709,10 +709,10 @@ class SummaryWrappedPage extends StatelessWidget {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(PRFSpacingTokens.md),
           decoration: BoxDecoration(
             color: PRFColors.white.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
           ),
           child: Icon(
             icon,
@@ -720,7 +720,7 @@ class SummaryWrappedPage extends StatelessWidget {
             size: 24,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: PRFSpacingTokens.lg),
         Expanded(
           child: Text(
             label,

@@ -36,7 +36,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     final l10n = context.l10n;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
       child: SingleStreamWrapper(
         stream: getIt<IsarService>().missionSessions.getByParentKeyGrouped(
           missionUlid,
@@ -67,9 +67,9 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                       // Timeline Date Header
                       Container(
                             margin: const EdgeInsets.only(
-                              left: 32,
-                              top: 16,
-                              bottom: 8,
+                              left: PRFSpacingTokens.xxl,
+                              top: PRFSpacingTokens.lg,
+                              bottom: PRFSpacingTokens.sm,
                             ),
                             child: Row(
                               children: [
@@ -83,7 +83,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: PRFSpacingTokens.md),
                                 Text(
                                   DateFormatter.formatMissionDate(
                                     missionSessions.keys.elementAt(index),
@@ -119,7 +119,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                           userTimezone: timezone,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                     ],
                   );
                 },
@@ -150,7 +150,7 @@ class TimelineSessionCard extends StatelessWidget {
     final l10n = context.l10n;
 
     return Container(
-      margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+      margin: const EdgeInsets.only(left: PRFSpacingTokens.lg, right: PRFSpacingTokens.lg, bottom: PRFSpacingTokens.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -179,7 +179,7 @@ class TimelineSessionCard extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: PRFSpacingTokens.lg),
 
           // Session Card
           Expanded(
@@ -193,10 +193,10 @@ class TimelineSessionCard extends StatelessWidget {
               ),
               child:
                   Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                           border: Border.all(
                             color: Theme.of(
                               context,
@@ -220,8 +220,8 @@ class TimelineSessionCard extends StatelessWidget {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
+                                    horizontal: PRFSpacingTokens.sm,
+                                    vertical: PRFSpacingTokens.xs,
                                   ),
                                   decoration: BoxDecoration(
                                     color:
@@ -230,7 +230,7 @@ class TimelineSessionCard extends StatelessWidget {
                                         ).colorScheme.primary.withValues(
                                           alpha: 0.1,
                                         ),
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                                   ),
                                   child: Text(
                                     // ignore: lines_longer_than_80_chars
@@ -258,7 +258,7 @@ class TimelineSessionCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: PRFSpacingTokens.md),
                             Row(
                               children: [
                                 Icon(
@@ -271,7 +271,7 @@ class TimelineSessionCard extends StatelessWidget {
                                         alpha: 0.7,
                                       ),
                                 ),
-                                const SizedBox(width: 6),
+                                const SizedBox(width: PRFSpacingTokens.xs),
                                 Text(
                                   '${l10n.facilitator}: ',
                                   style: Theme.of(context).textTheme.bodySmall
@@ -292,7 +292,7 @@ class TimelineSessionCard extends StatelessWidget {
                               ],
                             ),
                             if (missionSession.speaker != null) ...[
-                              const SizedBox(height: 4),
+                              const SizedBox(height: PRFSpacingTokens.xs),
                               Row(
                                 children: [
                                   Icon(
@@ -305,7 +305,7 @@ class TimelineSessionCard extends StatelessWidget {
                                           alpha: 0.7,
                                         ),
                                   ),
-                                  const SizedBox(width: 6),
+                                  const SizedBox(width: PRFSpacingTokens.xs),
                                   Text(
                                     '${l10n.speaker}: ',
                                     style: Theme.of(context).textTheme.bodySmall
@@ -326,7 +326,7 @@ class TimelineSessionCard extends StatelessWidget {
                               ),
                             ],
                             if (missionSession.classGroup != null) ...[
-                              const SizedBox(height: 4),
+                              const SizedBox(height: PRFSpacingTokens.xs),
                               Row(
                                 children: [
                                   Icon(
@@ -339,7 +339,7 @@ class TimelineSessionCard extends StatelessWidget {
                                           alpha: 0.7,
                                         ),
                                   ),
-                                  const SizedBox(width: 6),
+                                  const SizedBox(width: PRFSpacingTokens.xs),
                                   Text(
                                     '${l10n.classGroup}: ',
                                     style: Theme.of(context).textTheme.bodySmall
@@ -364,7 +364,7 @@ class TimelineSessionCard extends StatelessWidget {
                       )
                       .animate(delay: animationDelay)
                       .slideX(begin: 0.3)
-                      .fadeIn(duration: 400.ms)
+                      .fadeIn(duration: PRFMotionTokens.slow)
                       .scale(begin: const Offset(0.95, 0.95)),
             ),
           ),

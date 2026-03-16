@@ -72,11 +72,11 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
             final uploadsToShow = sessionUploads.take(3).toList();
 
             return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 border: Border.all(
                   color: Theme.of(
                     context,
@@ -92,7 +92,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         Icons.library_music_outlined,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: PRFSpacingTokens.sm),
                       Expanded(
                         child: Text(
                           'Queued recordings',
@@ -113,14 +113,14 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: PRFSpacingTokens.md),
                   ...uploadsToShow.map(
                     (upload) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(bottom: PRFSpacingTokens.sm),
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                             decoration: BoxDecoration(
                               color: Theme.of(
                                 context,
@@ -133,7 +133,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: PRFSpacingTokens.md),
                           Expanded(
                             child: Text(
                               upload.name,
@@ -142,7 +142,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: PRFSpacingTokens.sm),
                           const Chip(
                             label: Text('Queued'),
                             padding: EdgeInsets.zero,
@@ -194,22 +194,22 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
           },
           builder: (context, state) => state.maybeWhen(
             loading: () => Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(PRFSpacingTokens.lg),
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
                 color: Theme.of(
                   context,
                 ).colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               ),
               child: Row(
                 children: [
                   const SizedBox(
-                    width: 20,
+                    width: PRFSpacingTokens.xl,
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Text(
                     '${l10n.upload}...',
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -224,7 +224,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
         // Live Recording Widget
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return ConstrainedBox(

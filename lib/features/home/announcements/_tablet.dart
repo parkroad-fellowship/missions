@@ -79,7 +79,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                         .read<GetAnnouncementsCubit>()
                         .getAnnouncements(),
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                       itemCount: groupedEntries.length,
                       itemBuilder: (context, index) {
                         final mapAsList = groupedEntries.keys.toList();
@@ -90,16 +90,16 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                           children: [
                             // Date Header with enhanced styling
                             Container(
-                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.xl),
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 12,
+                                horizontal: PRFSpacingTokens.xl,
+                                vertical: PRFSpacingTokens.md,
                               ),
                               decoration: BoxDecoration(
                                 color: colorScheme.primary.withValues(
                                   alpha: 0.08,
                                 ),
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                                 border: Border.all(
                                   color: colorScheme.primary.withValues(
                                     alpha: 0.18,
@@ -137,12 +137,12 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                                     .animate(
                                       delay: (announcementIndex * 100).ms,
                                     )
-                                    .fadeIn(duration: 300.ms)
+                                    .fadeIn(duration: PRFMotionTokens.slow)
                                     .slideY(begin: 0.1, end: 0);
                               },
                             ),
 
-                            const SizedBox(height: 32),
+                            const SizedBox(height: PRFSpacingTokens.xxl),
                           ],
                         );
                       },
@@ -175,7 +175,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         boxShadow: [
           BoxShadow(
             color: colorScheme.shadow.withValues(alpha: 0.08),
@@ -202,7 +202,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                 backgroundColor: colorScheme.surface,
                 surfaceTintColor: Colors.transparent,
                 child: Padding(
-                  padding: const EdgeInsets.all(32),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +210,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
@@ -220,7 +220,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                             ),
                             child: Icon(
                               Icons.campaign_rounded,
@@ -228,7 +228,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                               size: 28,
                             ),
                           ),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: PRFSpacingTokens.xl),
                           Expanded(
                             child: Text(
                               announcement.title,
@@ -242,7 +242,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: PRFSpacingTokens.xxl),
                       HtmlWidget(
                         announcement.content,
                         textStyle: textTheme.bodyLarge?.copyWith(
@@ -256,9 +256,9 @@ class _TabletAnnouncementCard extends StatelessWidget {
               ),
             ],
           ),
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -276,7 +276,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                         boxShadow: [
                           BoxShadow(
                             color: colorScheme.primary.withValues(alpha: 0.10),
@@ -285,14 +285,14 @@ class _TabletAnnouncementCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
                       child: Icon(
                         Icons.campaign_rounded,
                         size: 24,
                         color: colorScheme.onPrimary,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: PRFSpacingTokens.lg),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,7 +306,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: PRFSpacingTokens.sm),
                           Row(
                             children: [
                               Icon(
@@ -316,7 +316,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                                   alpha: 0.7,
                                 ),
                               ),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: PRFSpacingTokens.xs),
                               Text(
                                 DateFormatter.formatTimeFromDateTime(
                                   announcement.publishedAt,
@@ -336,7 +336,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 Expanded(
                   child: Text(
                     announcement.content.replaceAll(RegExp('<[^>]*>'), ''),
@@ -348,7 +348,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: PRFSpacingTokens.lg),
                 // Bottom action indicator
                 Row(
                   children: [
@@ -370,12 +370,12 @@ class _TabletAnnouncementCard extends StatelessWidget {
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
                         color: colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                         border: Border.all(
                           color: colorScheme.primary.withValues(alpha: 0.2),
                         ),
@@ -390,7 +390,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: PRFSpacingTokens.xs),
                           Icon(
                             Icons.arrow_forward_ios_rounded,
                             size: 12,

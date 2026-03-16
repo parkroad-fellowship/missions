@@ -43,7 +43,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
           child: CustomScrollView(
             slivers: [
               PRFNavBar(
@@ -57,8 +57,8 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                     stream: getIt<IsarService>().courses.itemStream,
                     widget: (context, course) => Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 6,
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary,
@@ -92,7 +92,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                     BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
                       builder: (context, state) => state.maybeWhen(
                         loading: () => const Padding(
-                          padding: EdgeInsets.only(bottom: 16),
+                          padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
 
                           child: PRFLinearProgressIndicator(),
                         ),
@@ -126,7 +126,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                       courseModule: courseModules[index],
                     ),
                     separatorBuilder: (context, index) =>
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                   );
                 },
               ),

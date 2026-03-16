@@ -49,7 +49,7 @@ class AccountPageTablet extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: theme.colorScheme.error.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                         border: Border.all(
                           color: theme.colorScheme.error.withValues(alpha: 0.3),
                         ),
@@ -69,16 +69,16 @@ class AccountPageTablet extends StatelessWidget {
               ],
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
 
             // Profile Section
             SliverToBoxAdapter(
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                padding: const EdgeInsets.all(32),
+                margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                   boxShadow: [
                     BoxShadow(
                       color: theme.colorScheme.shadow.withValues(alpha: 0.08),
@@ -151,7 +151,7 @@ class AccountPageTablet extends StatelessWidget {
                         const ChangeProfilePictureButton(),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: PRFSpacingTokens.xl),
                     // User Name
                     ValueListenableBuilder(
                       valueListenable: Hive.box<dynamic>(
@@ -169,7 +169,7 @@ class AccountPageTablet extends StatelessWidget {
                         );
                       },
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: PRFSpacingTokens.sm),
                     // User Email
                     ValueListenableBuilder(
                       valueListenable: Hive.box<dynamic>(
@@ -188,10 +188,10 @@ class AccountPageTablet extends StatelessWidget {
                     ),
                   ],
                 ),
-              ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
+              ).animate().fadeIn(duration: PRFMotionTokens.slow).slideY(begin: 0.1, end: 0),
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
 
             // Personal Information Section
             ValueListenableBuilder(
@@ -206,11 +206,11 @@ class AccountPageTablet extends StatelessWidget {
                 return SliverToBoxAdapter(
                   child:
                       Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 24),
-                            padding: const EdgeInsets.all(24),
+                            margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surface,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                               boxShadow: [
                                 BoxShadow(
                                   color: theme.colorScheme.shadow.withValues(
@@ -231,7 +231,7 @@ class AccountPageTablet extends StatelessWidget {
                                       color: theme.colorScheme.primary,
                                       size: 28,
                                     ),
-                                    const SizedBox(width: 16),
+                                    const SizedBox(width: PRFSpacingTokens.lg),
                                     Text(
                                       'Personal Information',
                                       style: theme.textTheme.titleLarge
@@ -242,14 +242,14 @@ class AccountPageTablet extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 24),
+                                const SizedBox(height: PRFSpacingTokens.xl),
                                 _buildInfoField(
                                   context,
                                   label: l10n.name,
                                   value: profile.name,
                                   icon: Icons.badge_outlined,
                                 ),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: PRFSpacingTokens.xl),
                                 _buildInfoField(
                                   context,
                                   label: l10n.email,
@@ -258,7 +258,7 @@ class AccountPageTablet extends StatelessWidget {
                                 ),
                                 if (profile.member?.bio != null &&
                                     profile.member!.bio!.isNotEmpty) ...[
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: PRFSpacingTokens.xl),
                                   _buildInfoField(
                                     context,
                                     label: l10n.bio,
@@ -271,13 +271,13 @@ class AccountPageTablet extends StatelessWidget {
                             ),
                           )
                           .animate(delay: 100.ms)
-                          .fadeIn(duration: 300.ms)
+                          .fadeIn(duration: PRFMotionTokens.slow)
                           .slideY(begin: 0.1, end: 0),
                 );
               },
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
 
             // Memberships Section
             ValueListenableBuilder(
@@ -293,11 +293,11 @@ class AccountPageTablet extends StatelessWidget {
                 return SliverToBoxAdapter(
                   child:
                       Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 24),
-                            padding: const EdgeInsets.all(24),
+                            margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surface,
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                               boxShadow: [
                                 BoxShadow(
                                   color: theme.colorScheme.shadow.withValues(
@@ -318,7 +318,7 @@ class AccountPageTablet extends StatelessWidget {
                                       color: theme.colorScheme.primary,
                                       size: 28,
                                     ),
-                                    const SizedBox(width: 16),
+                                    const SizedBox(width: PRFSpacingTokens.lg),
                                     Text(
                                       l10n.memberships,
                                       style: theme.textTheme.titleLarge
@@ -329,7 +329,7 @@ class AccountPageTablet extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: PRFSpacingTokens.xl),
                                 ...profile!.member!.memberships
                                     .asMap()
                                     .entries
@@ -361,8 +361,8 @@ class AccountPageTablet extends StatelessWidget {
                               ],
                             ),
                           )
-                          .animate(delay: 200.ms)
-                          .fadeIn(duration: 300.ms)
+                          .animate(delay: PRFMotionTokens.standard)
+                          .fadeIn(duration: PRFMotionTokens.slow)
                           .slideY(begin: 0.1, end: 0),
                 );
               },
@@ -374,11 +374,11 @@ class AccountPageTablet extends StatelessWidget {
             SliverToBoxAdapter(
               child:
                   Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 24),
-                        padding: const EdgeInsets.all(24),
+                        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.surface,
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                           boxShadow: [
                             BoxShadow(
                               color: theme.colorScheme.shadow.withValues(
@@ -442,7 +442,7 @@ class AccountPageTablet extends StatelessWidget {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: PRFSpacingTokens.lg),
                             Text(
                               l10n.version(AppVersionHelper.getAppVersion()),
                               style: theme.textTheme.bodySmall?.copyWith(
@@ -453,15 +453,15 @@ class AccountPageTablet extends StatelessWidget {
                           ],
                         ),
                       )
-                      .animate(delay: 300.ms)
-                      .fadeIn(duration: 300.ms)
+                      .animate(delay: PRFMotionTokens.slow)
+                      .fadeIn(duration: PRFMotionTokens.slow)
                       .slideY(
                         begin: 0.1,
                         end: 0,
                       ),
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
           ],
         ),
       ),
@@ -477,12 +477,12 @@ class AccountPageTablet extends StatelessWidget {
   }) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(
           alpha: 0.5,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.2),
         ),
@@ -495,7 +495,7 @@ class AccountPageTablet extends StatelessWidget {
             color: theme.colorScheme.primary,
             size: 20,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -507,7 +507,7 @@ class AccountPageTablet extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: PRFSpacingTokens.xs),
                 Text(
                   value,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -533,12 +533,12 @@ class AccountPageTablet extends StatelessWidget {
   }) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(
           alpha: 0.5,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
           color: isApproved
               ? theme.colorScheme.primary.withValues(alpha: 0.3)
@@ -548,12 +548,12 @@ class AccountPageTablet extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
             decoration: BoxDecoration(
               color: isApproved
                   ? theme.colorScheme.primary.withValues(alpha: 0.1)
                   : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             ),
             child: Icon(
               isApproved ? Icons.check_circle_outline : Icons.pending_outlined,
@@ -563,7 +563,7 @@ class AccountPageTablet extends StatelessWidget {
               size: 20,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -587,14 +587,14 @@ class AccountPageTablet extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 4,
+              horizontal: PRFSpacingTokens.sm,
+              vertical: PRFSpacingTokens.xs,
             ),
             decoration: BoxDecoration(
               color: isApproved
                   ? theme.colorScheme.primary.withValues(alpha: 0.1)
                   : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
             ),
             child: Text(
               isApproved ? 'Approved' : 'Pending',
@@ -641,7 +641,7 @@ class ChangeProfilePictureButton extends StatelessWidget {
                   mediaType: MediaType.photos,
                 ),
             child: Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(PRFSpacingTokens.md),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary,
                 shape: BoxShape.circle,

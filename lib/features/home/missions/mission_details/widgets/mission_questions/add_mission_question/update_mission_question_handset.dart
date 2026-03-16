@@ -44,7 +44,7 @@ class _UpdateMissionQuestionViewHandsetState
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +55,7 @@ class _UpdateMissionQuestionViewHandsetState
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Question
             _buildFormSection(
@@ -69,7 +69,7 @@ class _UpdateMissionQuestionViewHandsetState
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Submit Button
             BlocConsumer<
@@ -122,11 +122,11 @@ class _UpdateMissionQuestionViewHandsetState
   }) {
     final theme = Theme.of(context);
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(
             alpha: 0.06,
@@ -155,7 +155,7 @@ class _UpdateMissionQuestionViewHandsetState
                 ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: PRFSpacingTokens.sm),
           child,
         ],
       ),

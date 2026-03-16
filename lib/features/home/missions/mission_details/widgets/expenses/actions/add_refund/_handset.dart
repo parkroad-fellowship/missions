@@ -52,16 +52,16 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
 
               // Header Card
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -71,7 +71,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                       ).colorScheme.tertiary.withValues(alpha: 0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
                       color: Theme.of(
@@ -89,7 +89,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                       size: 32,
                       color: Theme.of(context).colorScheme.onTertiary,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: PRFSpacingTokens.sm),
                     Text(
                       'Add Refund Entry',
                       style: Theme.of(context).textTheme.headlineSmall
@@ -98,7 +98,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: PRFSpacingTokens.xs),
                     Text(
                       'Record a new refund entry for this accounting event',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -110,16 +110,16 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                     ),
                   ],
                 ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
+              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Form Card
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   border: Border.all(
                     color: Theme.of(
                       context,
@@ -147,7 +147,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                         hint: 'Enter refund amount',
                         prefix: 'KES ',
                       ),
-                    ).animate(delay: 200.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.description,
@@ -165,12 +165,12 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                           ),
                         ],
                       ),
-                    ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
               BlocConsumer<AddMissionRefundCubit, AddMissionRefundState>(
@@ -208,9 +208,9 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                     isLoading: _isLoading,
                   );
                 },
-              ).animate(delay: 500.ms).slideY(begin: 0.3).fadeIn(),
+              ).animate(delay: PRFMotionTokens.enterShort).slideY(begin: 0.3).fadeIn(),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: PRFSpacingTokens.xxl),
             ],
           ),
         ),
@@ -225,19 +225,19 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
     bool isRequired = false,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
                   ).colorScheme.tertiary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Icon(
                   icon,
@@ -245,7 +245,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -253,7 +253,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                 ),
               ),
               if (isRequired) ...[
-                const SizedBox(width: 4),
+                const SizedBox(width: PRFSpacingTokens.xs),
                 Text(
                   '*',
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
@@ -261,7 +261,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
               ],
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: PRFSpacingTokens.sm),
           child,
         ],
       ),
@@ -285,7 +285,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: PRFSpacingTokens.sm),
         PRFNumberInput(
           controller: controller,
           hintText: hint,

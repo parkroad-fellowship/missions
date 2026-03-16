@@ -76,16 +76,16 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
 
               // Header Card
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -95,7 +95,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                       ).colorScheme.primary.withValues(alpha: 0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
                       color: Theme.of(
@@ -113,7 +113,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                       size: 32,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: PRFSpacingTokens.sm),
                     Text(
                       'Create New Session',
                       style: Theme.of(context).textTheme.headlineSmall
@@ -122,7 +122,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: PRFSpacingTokens.xs),
                     Text(
                       'Fill in the details below to record a new session',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -134,16 +134,16 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                     ),
                   ],
                 ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
+              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Form Card
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   border: Border.all(
                     color: Theme.of(
                       context,
@@ -232,7 +232,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                               },
                             ),
                           ),
-                    ).animate(delay: 200.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.group_outlined,
@@ -271,7 +271,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                               );
                             },
                           ),
-                    ).animate(delay: 300.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.schedule_outlined,
@@ -285,7 +285,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                           enabled: false,
                         ),
                       ),
-                    ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.schedule_outlined,
@@ -299,7 +299,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                           enabled: false,
                         ),
                       ),
-                    ).animate(delay: 500.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.enterShort).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.notes_outlined,
@@ -309,12 +309,12 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                         hintText: l10n.notes,
                         controller: _notesController,
                       ),
-                    ).animate(delay: 600.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.enterShort).slideX(begin: -0.2).fadeIn(),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
               BlocConsumer<AddMissionSessionCubit, AddMissionSessionState>(
@@ -352,7 +352,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                 },
               ).animate(delay: 700.ms).slideY(begin: 0.3).fadeIn(),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: PRFSpacingTokens.xxl),
             ],
           ),
         ),
@@ -367,19 +367,19 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     bool isRequired = false,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
                   ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Icon(
                   icon,
@@ -387,11 +387,11 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
               FormFieldLabel(label: title, isRequired: isRequired),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: PRFSpacingTokens.sm),
           child,
         ],
       ),

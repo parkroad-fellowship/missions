@@ -80,11 +80,11 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                 child: state.maybeWhen(
                   loading: () => Container(
                     margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                      horizontal: PRFSpacingTokens.lg,
+                      vertical: PRFSpacingTokens.sm,
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       child: const PRFLinearProgressIndicator(),
                     ),
                   ),
@@ -107,7 +107,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                 ),
                 empty: () => SliverFillRemaining(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl),
                     child: PRFEmptyView(
                       label: l10n.addMissionPhotos,
                       description: l10n.addMissionPhotosDesc,
@@ -119,7 +119,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                 ),
                 loaded: (mediaItems) {
                   return SliverPadding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -155,14 +155,14 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                           size: 64,
                           color: theme.colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
                           'Error loading media',
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.error,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
                           error,
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -185,14 +185,14 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   Widget _buildAddPhotoTile(BuildContext context, ThemeData theme) {
     return Animate(
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 300)),
-        ScaleEffect(duration: Duration(milliseconds: 300)),
+        FadeEffect(duration: PRFMotionTokens.slow),
+        ScaleEffect(duration: PRFMotionTokens.slow),
       ],
       child: GestureDetector(
         onTap: () => _showAddMediaModal(context),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
               color: theme.colorScheme.primary.withValues(alpha: 0.3),
               width: 2,
@@ -210,7 +210,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: theme.colorScheme.primary.withValues(alpha: 0.1),
@@ -221,7 +221,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                   color: theme.colorScheme.primary,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: PRFSpacingTokens.md),
               Text(
                 'Add Media',
                 style: theme.textTheme.titleMedium?.copyWith(
@@ -243,10 +243,10 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     return Animate(
       delay: Duration(milliseconds: 100 * (index + 1)),
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 400)),
+        FadeEffect(duration: PRFMotionTokens.slow),
         SlideEffect(
           begin: Offset(0, 0.3),
-          duration: Duration(milliseconds: 400),
+          duration: PRFMotionTokens.slow,
         ),
       ],
       child: isVideo
@@ -254,7 +254,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
               onTap: () => _openVideoPlayer(context, mediaItem.temporaryURL),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.1),
@@ -264,7 +264,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
@@ -288,12 +288,12 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         right: 8,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
+                            horizontal: PRFSpacingTokens.sm,
+                            vertical: PRFSpacingTokens.xs,
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.8),
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                           ),
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
@@ -332,7 +332,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                               ),
                             ],
                           ),
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(PRFSpacingTokens.md),
                           child: const Icon(
                             Icons.play_arrow,
                             color: Colors.white,
@@ -349,7 +349,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
               disposeLevel: DisposeLevel.High,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.1),
@@ -359,7 +359,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
@@ -435,7 +435,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
               size: 32,
               color: theme.colorScheme.onSurfaceVariant,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: PRFSpacingTokens.sm),
             Text(
               'Video File',
               style: theme.textTheme.labelMedium?.copyWith(

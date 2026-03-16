@@ -54,8 +54,8 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   stream: getIt<IsarService>().courses.itemStream,
                   widget: (context, course) => Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 6,
+                      horizontal: PRFSpacingTokens.md,
+                      vertical: PRFSpacingTokens.xs,
                     ),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary,
@@ -88,7 +88,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
               child: BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
                 builder: (context, state) => state.maybeWhen(
                   loading: () => const Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                     child: PRFLinearProgressIndicator(),
                   ),
                   orElse: SizedBox.shrink,
@@ -121,7 +121,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                     courseModule: courseModules[index],
                   ),
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                 );
               },
             ),

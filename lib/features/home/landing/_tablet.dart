@@ -33,7 +33,7 @@ class LandingPageTablet extends StatelessWidget {
               // Header Section
               SliverToBoxAdapter(
                 child: Container(
-                  padding: const EdgeInsets.all(32),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
                   child: Row(
                     children: [
                       // Profile Picture
@@ -126,7 +126,7 @@ class LandingPageTablet extends StatelessWidget {
                           )
                           .then(delay: 1000.ms),
 
-                      const SizedBox(width: 24),
+                      const SizedBox(width: PRFSpacingTokens.xl),
 
                       // Greeting Section
                       Expanded(
@@ -140,7 +140,7 @@ class LandingPageTablet extends StatelessWidget {
                                 fontSize: 14,
                               ),
                             ),
-                            const SizedBox(height: 6),
+                            const SizedBox(height: PRFSpacingTokens.xs),
                             Text(
                               l10n.hello(
                                 getIt<HiveService>().auth
@@ -166,13 +166,13 @@ class LandingPageTablet extends StatelessWidget {
                           onTap: () => context.router.pushPath(
                             PRFSuperAppRouter.announcementsRoute,
                           ),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                           child: Container(
                             width: 56,
                             height: 56,
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                               border: Border.all(
                                 color: theme.colorScheme.outline.withValues(
                                   alpha: 0.2,
@@ -213,7 +213,7 @@ class LandingPageTablet extends StatelessWidget {
               // Title Section
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(32, 32, 32, 48),
+                  padding: const EdgeInsets.fromLTRB(PRFSpacingTokens.xxl, PRFSpacingTokens.xxl, PRFSpacingTokens.xxl, 48),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -226,7 +226,7 @@ class LandingPageTablet extends StatelessWidget {
                           height: 1.1,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                       Container(
                         width: 80,
                         height: 5,
@@ -242,7 +242,7 @@ class LandingPageTablet extends StatelessWidget {
 
               // Action Cards Grid
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl),
                 sliver: SliverGrid(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -285,18 +285,18 @@ class LandingPageTablet extends StatelessWidget {
     return Animate(
       effects: [
         FadeEffect(
-          duration: 400.ms,
+          duration: PRFMotionTokens.slow,
           delay: Duration(milliseconds: delay),
         ),
         SlideEffect(
-          duration: 500.ms,
+          duration: PRFMotionTokens.enterShort,
           delay: Duration(milliseconds: delay),
           begin: const Offset(0, 0.2),
           curve: Curves.easeOut,
         ),
       ],
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.md),
         child: PRFActionCard(
           title: title,
           image: SvgPicture.asset(assetPath),

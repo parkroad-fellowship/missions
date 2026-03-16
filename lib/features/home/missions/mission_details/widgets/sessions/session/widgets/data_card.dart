@@ -13,12 +13,12 @@ class DataCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxxl),
           child: FormFieldLabel(label: label, isBold: true),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: PRFSpacingTokens.xs),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxxl),
           child: PRFTextInput(
             hintText: '',
             controller: TextEditingController(text: value),

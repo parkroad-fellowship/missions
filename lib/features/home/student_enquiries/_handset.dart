@@ -59,7 +59,7 @@ class _StudentEnquiriesPageHandsetState
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -103,7 +103,7 @@ class _StudentEnquiriesPageHandsetState
                 return SliverList.separated(
                   itemCount: enquiries!.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                   itemBuilder: (context, index) {
                     final enquiry = enquiries[index];
                     return _StudentEnquiryCard(
@@ -117,7 +117,7 @@ class _StudentEnquiriesPageHandsetState
                 );
               },
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
           ],
         ),
       ),
@@ -141,14 +141,14 @@ class _StudentEnquiryCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return InkWell(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.shadow.withValues(alpha: 0.08),
@@ -182,7 +182,7 @@ class _StudentEnquiryCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: PRFSpacingTokens.lg),
             // Content
             Expanded(
               child: Column(
@@ -197,7 +197,7 @@ class _StudentEnquiryCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: PRFSpacingTokens.sm),
                   Text(
                     DateFormatter.formatTimeFromDateTime(
                       enquiry.createdAt,

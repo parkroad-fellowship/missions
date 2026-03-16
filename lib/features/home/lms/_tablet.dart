@@ -30,7 +30,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
           child: CustomScrollView(
             slivers: [
               PRFNavBar(
@@ -44,7 +44,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                 child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
                   builder: (context, state) => state.maybeWhen(
                     loading: () => const Padding(
-                      padding: EdgeInsets.only(bottom: 16),
+                      padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                       child: PRFLinearProgressIndicator(),
                     ),
                     orElse: SizedBox.shrink,
@@ -81,7 +81,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                     itemBuilder: (context, index) =>
                         CourseActionCard(course: courses[index]),
                     separatorBuilder: (context, index) =>
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                   );
                 },
               ),

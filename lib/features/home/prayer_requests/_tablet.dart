@@ -42,7 +42,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
               backgroundColor: theme.colorScheme.surface,
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
               sliver:
                   BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
                     builder: (context, state) {
@@ -79,7 +79,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 32,
+                                    horizontal: PRFSpacingTokens.xxl,
                                   ),
                                   child: PRFEmptyView(
                                     label: l10n.noPrayerRequests,
@@ -98,7 +98,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                             sliver: SliverList.separated(
                               itemCount: prayerRequests.length,
                               separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 24),
+                                  const SizedBox(height: PRFSpacingTokens.xl),
                               itemBuilder: (context, index) {
                                 final prayerRequest = prayerRequests[index];
                                 return PrayerRequestCard(
@@ -134,7 +134,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -160,12 +160,12 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
               effects: [
                 const ShimmerEffect(
                   duration: Duration(seconds: 2),
-                  delay: Duration(milliseconds: 500),
+                  delay: PRFMotionTokens.enterShort,
                 ),
                 const ScaleEffect(
                   begin: Offset(0.8, 0.8),
                   end: Offset(1, 1),
-                  duration: Duration(milliseconds: 400),
+                  duration: PRFMotionTokens.slow,
                 ),
               ],
             ),

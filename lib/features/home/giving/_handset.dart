@@ -45,7 +45,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                 Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                     boxShadow: [
                       BoxShadow(
                         color: PRFColors.black.withValues(alpha: 0.1),
@@ -67,7 +67,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
               ],
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -103,7 +103,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                 size: 64,
                                 color: theme.colorScheme.error,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: PRFSpacingTokens.lg),
                               Text(
                                 message,
                                 style: theme.textTheme.bodyLarge,
@@ -122,7 +122,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
+                          horizontal: PRFSpacingTokens.lg,
                         ),
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.6,
@@ -139,24 +139,24 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                   ),
                   loaded: (payments) => SliverPadding(
                     padding: const EdgeInsets.only(
-                      left: 16,
-                      right: 16,
+                      left: PRFSpacingTokens.lg,
+                      right: PRFSpacingTokens.lg,
                       bottom: 100, // Space for FAB
                     ),
                     sliver: SliverList.separated(
                       itemCount: payments.length,
                       separatorBuilder: (context, index) =>
-                          const SizedBox(height: 16),
+                          const SizedBox(height: PRFSpacingTokens.lg),
                       itemBuilder: (context, index) {
                         final payment = payments[index];
                         return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xs),
                               child: Material(
                                 color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(24),
+                                borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                                 child: InkWell(
                                   onTap: () => _showPaymentActions(payment),
-                                  borderRadius: BorderRadius.circular(24),
+                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                                   splashColor: theme.colorScheme.primary
                                       .withValues(alpha: 0.1),
                                   highlightColor: theme.colorScheme.primary
@@ -166,17 +166,17 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                               ),
                             )
                             .animate(delay: Duration(milliseconds: index * 100))
-                            .fadeIn(duration: const Duration(milliseconds: 600))
+                            .fadeIn(duration: PRFMotionTokens.enterShort)
                             .slideY(
                               begin: 0.3,
                               end: 0,
-                              duration: const Duration(milliseconds: 500),
+                              duration: PRFMotionTokens.enterShort,
                               curve: Curves.easeOutCubic,
                             )
                             .scale(
                               begin: const Offset(0.9, 0.9),
                               end: const Offset(1, 1),
-                              duration: const Duration(milliseconds: 500),
+                              duration: PRFMotionTokens.enterShort,
                               curve: Curves.easeOutCubic,
                             );
                       },
@@ -190,7 +190,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -216,12 +216,12 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
               effects: [
                 const ShimmerEffect(
                   duration: Duration(seconds: 2),
-                  delay: Duration(milliseconds: 500),
+                  delay: PRFMotionTokens.enterShort,
                 ),
                 const ScaleEffect(
                   begin: Offset(0.8, 0.8),
                   end: Offset(1, 1),
-                  duration: Duration(milliseconds: 400),
+                  duration: PRFMotionTokens.slow,
                 ),
               ],
             ),
@@ -263,7 +263,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.3,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -271,14 +271,14 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                     l10n.paymentActions,
                     style: theme.textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: PRFSpacingTokens.lg),
                   if (payment.authorizationUrl != null)
                     ListTile(
                       leading: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                         ),
                         child: Icon(
                           Icons.open_in_browser_rounded,
@@ -302,13 +302,13 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                         });
                       },
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: PRFSpacingTokens.lg),
                   ListTile(
                     leading: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       ),
                       child: Icon(
                         Icons.refresh_rounded,
@@ -328,7 +328,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       context.read<GetPaymentsCubit>().getPayments();
                     },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: PRFSpacingTokens.xl),
                 ],
               ),
             ),
@@ -351,10 +351,10 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
     final l10n = context.l10n;
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.shadow.withValues(alpha: 0.08),
@@ -391,12 +391,12 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
+                  horizontal: PRFSpacingTokens.md,
+                  vertical: PRFSpacingTokens.xs,
                 ),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   border: Border.all(
                     color: statusColor.withValues(alpha: 0.3),
                   ),
@@ -412,7 +412,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
           Row(
             children: [
               Icon(
@@ -420,7 +420,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                 size: 16,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: PRFSpacingTokens.sm),
               Text(
                 DateFormatter.formatDateTime(payment.createdAt, timezone),
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -432,7 +432,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
           if (payment.authorizationUrl != null &&
               (payment.paymentStatus != PRFPaymentStatus.success ||
                   payment.paymentStatus != PRFPaymentStatus.success)) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: PRFSpacingTokens.md),
             Row(
               children: [
                 Icon(
@@ -440,7 +440,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                   size: 16,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: PRFSpacingTokens.sm),
                 Expanded(
                   child: Text(
                     l10n.tapForActions,

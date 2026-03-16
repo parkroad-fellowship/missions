@@ -3,6 +3,7 @@ import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:prf_design/prf_design.dart';
 
 class MissionGroundSuggestionCard extends StatelessWidget {
   const MissionGroundSuggestionCard({
@@ -17,10 +18,10 @@ class MissionGroundSuggestionCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.shadow..withValues(alpha: 0.08),
@@ -44,10 +45,10 @@ class MissionGroundSuggestionCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(PRFSpacingTokens.md),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
                 child: Icon(
                   Icons.lightbulb_outline_rounded,
@@ -55,7 +56,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: PRFSpacingTokens.lg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +70,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: PRFSpacingTokens.xs),
                     Text(
                       missionGroundSuggestion.contactPerson,
                       style: theme.textTheme.bodySmall?.copyWith(
@@ -84,7 +85,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   ),
                   child: IconButton(
                     icon: Icon(
@@ -104,29 +105,29 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                   effects: const [
                     ShakeEffect(
                       duration: Duration(seconds: 2),
-                      delay: Duration(milliseconds: 500),
+                      delay: PRFMotionTokens.enterShort,
                     ),
                   ],
                 ),
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
 
           // Status and additional info
           Row(
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
+                  horizontal: PRFSpacingTokens.md,
+                  vertical: PRFSpacingTokens.xs,
                 ),
                 decoration: BoxDecoration(
                   color: _getStatusColor(
                     context,
                     missionGroundSuggestion.status,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -139,7 +140,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
                         missionGroundSuggestion.status,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: PRFSpacingTokens.xs),
                     Text(
                       missionGroundSuggestion.status.name.toUpperCase(),
                       style: theme.textTheme.labelSmall?.copyWith(

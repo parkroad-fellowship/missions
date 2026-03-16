@@ -67,7 +67,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   }
                   final lesson = lessonModule.lesson;
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                     child: Text(
                       lesson.name!.toUpperCase(),
                       style: theme.textTheme.headlineMedium,
@@ -76,12 +76,12 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
 
             // Lesson content
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                 child: SingleStreamWrapper<PRFLocalLessonModule?>(
                   stream: getIt<IsarService>().lessonModules.itemStream,
                   widget: (context, lessonModule) {
@@ -117,7 +117,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   return lesson.videoUrl != null
                       ? ListTile(
                           contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 24,
+                            horizontal: PRFSpacingTokens.xl,
                           ),
                           title: Text(l10n.video),
                           subtitle: Text(lesson.videoUrl!),
@@ -146,7 +146,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   return lesson.documentUrl != null
                       ? ListTile(
                           contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 24,
+                            horizontal: PRFSpacingTokens.xl,
                           ),
                           title: Text(l10n.document),
                           subtitle: Text(lesson.documentUrl!),
@@ -174,7 +174,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   return lesson.audioUrl != null
                       ? ListTile(
                           contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 24,
+                            horizontal: PRFSpacingTokens.xl,
                           ),
                           title: Text(l10n.audio),
                           subtitle: Text(lesson.audioUrl!),
@@ -187,7 +187,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
 
             // Complete button
             SliverToBoxAdapter(
@@ -205,7 +205,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                           lessonModule.lessonMember!.completionStatus !=
                               PRFCompletionStatus.complete)) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                       child: BlocConsumer<FinishLessonCubit, FinishLessonState>(
                         listener: (context, state) {
                           state.maybeWhen(

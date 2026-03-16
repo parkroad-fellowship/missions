@@ -58,16 +58,16 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
 
               // Header Card
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -77,7 +77,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       ).colorScheme.tertiary.withValues(alpha: 0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
                       color: Theme.of(
@@ -95,7 +95,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       size: 32,
                       color: Theme.of(context).colorScheme.onTertiary,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: PRFSpacingTokens.sm),
                     Text(
                       'Add Token',
                       style: Theme.of(context).textTheme.headlineSmall
@@ -104,7 +104,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: PRFSpacingTokens.xs),
                     Text(
                       'Add funds as a credit entry to the allocation',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -116,16 +116,16 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                     ),
                   ],
                 ),
-              ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
+              ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Form Card
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   border: Border.all(
                     color: Theme.of(
                       context,
@@ -153,7 +153,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                         hint: 'Enter token amount',
                         prefix: 'KES ',
                       ),
-                    ).animate(delay: 200.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.standard).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.description,
@@ -169,19 +169,19 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           ),
                         ],
                       ),
-                    ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
 
                     _buildFormSection(
                       icon: Icons.payment,
                       title: l10n.paymentMethod,
                       isRequired: true,
                       child: _buildTransactionTypeSelector(Theme.of(context)),
-                    ).animate(delay: 300.ms).slideX(begin: -0.2).fadeIn(),
+                    ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
               BlocConsumer<
@@ -219,11 +219,11 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       );
                     },
                   )
-                  .animate(delay: 500.ms)
+                  .animate(delay: PRFMotionTokens.enterShort)
                   .slideY(begin: 0.3)
                   .fadeIn(),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: PRFSpacingTokens.xxl),
             ],
           ),
         ),
@@ -238,19 +238,19 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
     bool isRequired = false,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
                   ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Icon(
                   icon,
@@ -258,7 +258,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -266,7 +266,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                 ),
               ),
               if (isRequired) ...[
-                const SizedBox(width: 4),
+                const SizedBox(width: PRFSpacingTokens.xs),
                 Text(
                   '*',
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
@@ -274,7 +274,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
               ],
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: PRFSpacingTokens.sm),
           child,
         ],
       ),
@@ -298,7 +298,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: PRFSpacingTokens.sm),
         PRFNumberInput(
           controller: controller,
           hintText: hint,
@@ -317,13 +317,13 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
         return GestureDetector(
           onTap: () => setState(() => _selectedChargeType = type),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            duration: PRFMotionTokens.standard,
+            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
                   : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
@@ -340,7 +340,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       ? theme.colorScheme.onPrimary
                       : theme.colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: PRFSpacingTokens.sm),
                 Text(
                   type.name,
                   style: theme.textTheme.bodySmall?.copyWith(

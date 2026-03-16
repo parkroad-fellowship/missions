@@ -2,6 +2,7 @@ import 'package:app/models/remote/prayer/prf_prayer_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:prf_design/prf_design.dart';
 
 class PrayerRequestCard extends StatelessWidget {
   const PrayerRequestCard({required this.prayerRequest, super.key});
@@ -20,7 +21,7 @@ class PrayerRequestCard extends StatelessWidget {
             backgroundColor: theme.colorScheme.surface,
             surfaceTintColor: Colors.transparent,
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(PRFSpacingTokens.xl),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,10 +29,10 @@ class PrayerRequestCard extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                         ),
                         child: Icon(
                           Icons.hail_rounded,
@@ -39,7 +40,7 @@ class PrayerRequestCard extends StatelessWidget {
                           size: 24,
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: PRFSpacingTokens.lg),
                       Expanded(
                         child: Text(
                           prayerRequest.title,
@@ -51,7 +52,7 @@ class PrayerRequestCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: PRFSpacingTokens.xl),
                   Text(
                     prayerRequest.description,
                     style: theme.textTheme.bodyLarge?.copyWith(
@@ -65,11 +66,11 @@ class PrayerRequestCard extends StatelessWidget {
         ],
       ),
       child: Container(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.shadow.withValues(alpha: .08),
@@ -93,10 +94,10 @@ class PrayerRequestCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.md),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   ),
                   child: Icon(
                     Icons.hail_rounded,
@@ -104,7 +105,7 @@ class PrayerRequestCard extends StatelessWidget {
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: PRFSpacingTokens.lg),
                 Expanded(
                   child: Text(
                     prayerRequest.title,
@@ -119,7 +120,7 @@ class PrayerRequestCard extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
 
             // Description preview
             Text(

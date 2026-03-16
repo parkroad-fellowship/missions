@@ -42,7 +42,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
               child: BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
                 builder: (context, state) => state.maybeWhen(
                   loading: () => const Padding(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                     child: PRFLinearProgressIndicator(),
                   ),
                   orElse: () => const SizedBox.shrink(),
@@ -81,7 +81,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                         .read<GetAnnouncementsCubit>()
                         .getAnnouncements(),
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       itemCount: groupedEntries.length,
                       itemBuilder: (context, index) {
                         final mapAsList = groupedEntries.keys.toList();
@@ -92,16 +92,16 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                           children: [
                             // Date Header with your theme
                             Container(
-                              margin: const EdgeInsets.symmetric(vertical: 16),
+                              margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
+                                horizontal: PRFSpacingTokens.lg,
+                                vertical: PRFSpacingTokens.sm,
                               ),
                               decoration: BoxDecoration(
                                 color: colorScheme.primary.withValues(
                                   alpha: 0.08,
                                 ),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                                 border: Border.all(
                                   color: colorScheme.primary.withValues(
                                     alpha: 0.18,
@@ -125,7 +125,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                               ),
                             ),
 
-                            const SizedBox(height: 24),
+                            const SizedBox(height: PRFSpacingTokens.xl),
                           ],
                         );
                       },
@@ -156,10 +156,10 @@ class _AnnouncementCard extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.sm),
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         boxShadow: [
           BoxShadow(
             color: colorScheme.shadow.withValues(alpha: 0.08),
@@ -184,7 +184,7 @@ class _AnnouncementCard extends StatelessWidget {
               backgroundColor: colorScheme.surface,
               surfaceTintColor: Colors.transparent,
               child: Padding(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +192,7 @@ class _AnnouncementCard extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(PRFSpacingTokens.md),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
@@ -202,7 +202,7 @@ class _AnnouncementCard extends StatelessWidget {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                           ),
                           child: Icon(
                             Icons.campaign_rounded,
@@ -210,7 +210,7 @@ class _AnnouncementCard extends StatelessWidget {
                             size: 24,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: PRFSpacingTokens.lg),
                         Expanded(
                           child: Text(
                             announcement.title,
@@ -224,7 +224,7 @@ class _AnnouncementCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: PRFSpacingTokens.xl),
                     HtmlWidget(
                       announcement.content,
                       textStyle: textTheme.bodyLarge?.copyWith(
@@ -238,7 +238,7 @@ class _AnnouncementCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+          padding: const EdgeInsets.fromLTRB(PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -265,14 +265,14 @@ class _AnnouncementCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     child: Icon(
                       Icons.campaign_rounded,
                       size: 24,
                       color: colorScheme.onPrimary,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: PRFSpacingTokens.lg),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,7 +286,7 @@ class _AnnouncementCard extends StatelessWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: PRFSpacingTokens.xs),
                         Row(
                           children: [
                             Icon(
@@ -294,7 +294,7 @@ class _AnnouncementCard extends StatelessWidget {
                               size: 16,
                               color: colorScheme.primary.withValues(alpha: 0.7),
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: PRFSpacingTokens.xs),
                             Text(
                               DateFormatter.formatTimeFromDateTime(
                                 announcement.publishedAt,
@@ -314,7 +314,7 @@ class _AnnouncementCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: PRFSpacingTokens.lg),
               Text(
                 announcement.content * 25,
                 style: theme.textTheme.bodyMedium?.copyWith(

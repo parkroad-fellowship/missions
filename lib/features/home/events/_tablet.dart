@@ -64,7 +64,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
           leading: Container(
             decoration: BoxDecoration(
               color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.1),
@@ -73,7 +73,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                 ),
               ],
             ),
-            margin: const EdgeInsets.only(left: 8),
+            margin: const EdgeInsets.only(left: PRFSpacingTokens.sm),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new,
@@ -95,7 +95,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                 orElse: SizedBox.shrink,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: PRFSpacingTokens.sm),
             BlocBuilder<
               GetMemberEventSubscriptionsCubit,
               GetMemberEventSubscriptionsState
@@ -108,7 +108,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                 orElse: SizedBox.shrink,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: PRFSpacingTokens.lg),
           ],
           backgroundColor: Colors.transparent,
           bottom: TabBar(
@@ -154,7 +154,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                   size: 48,
                   color: theme.colorScheme.error,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: PRFSpacingTokens.lg),
                 Text(
                   message,
                   style: theme.textTheme.bodyLarge?.copyWith(
@@ -183,8 +183,8 @@ class _EventsPageTabletState extends State<EventsPageTablet>
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 20,
+                  horizontal: PRFSpacingTokens.xl,
+                  vertical: PRFSpacingTokens.xl,
                 ),
                 itemCount: sortedEvents.length,
                 itemBuilder: (context, index) {
@@ -202,7 +202,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                       .animate()
                       .fadeIn(
                         delay: Duration(milliseconds: index * 100),
-                        duration: 600.ms,
+                        duration: PRFMotionTokens.enterShort,
                       )
                       .slideX(
                         begin: 0.3,
@@ -244,7 +244,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                   size: 48,
                   color: theme.colorScheme.error,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: PRFSpacingTokens.lg),
                 Text(
                   message,
                   style: theme.textTheme.bodyLarge?.copyWith(
@@ -280,8 +280,8 @@ class _EventsPageTabletState extends State<EventsPageTablet>
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 20,
+                  horizontal: PRFSpacingTokens.xl,
+                  vertical: PRFSpacingTokens.xl,
                 ),
                 itemCount: events.length,
                 itemBuilder: (context, index) {
@@ -300,7 +300,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                       .animate()
                       .fadeIn(
                         delay: Duration(milliseconds: index * 100),
-                        duration: 600.ms,
+                        duration: PRFMotionTokens.enterShort,
                       )
                       .slideX(
                         begin: 0.3,
@@ -393,7 +393,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                       statusColor.withValues(alpha: 0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
                       color: statusColor.withValues(alpha: 0.3),
@@ -426,7 +426,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                         width: 16,
                         height: 2,
                         color: Colors.white.withValues(alpha: 0.7),
-                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.xs),
                       ),
                       // End date
                       Text(
@@ -468,7 +468,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 Container(
                   width: 3,
                   height: 80,
-                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -484,7 +484,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
             ],
           ),
         ),
-        const SizedBox(width: 24),
+        const SizedBox(width: PRFSpacingTokens.xl),
         Expanded(
           child: GestureDetector(
             onTap: onTap,
@@ -494,7 +494,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
               ),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                 border: Border.all(
                   color: statusColor.withValues(alpha: 0.2),
                   width: 1.5,
@@ -513,13 +513,13 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
@@ -548,11 +548,11 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: PRFSpacingTokens.md),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
+                                  horizontal: PRFSpacingTokens.md,
+                                  vertical: PRFSpacingTokens.xs,
                                 ),
                                 decoration: BoxDecoration(
                                   color: statusColor,
@@ -578,7 +578,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                             ],
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: PRFSpacingTokens.lg),
 
                           // Event venue with icon
                           if (event.venue != null)
@@ -600,7 +600,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                     color: theme.colorScheme.onPrimaryContainer,
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: PRFSpacingTokens.md),
                                 Expanded(
                                   child: Text(
                                     event.venue!,
@@ -621,7 +621,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
 
                     // Event details
                     Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -639,7 +639,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                   theme.colorScheme.onPrimaryContainer,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: PRFSpacingTokens.md),
                               Flexible(
                                 child: _buildInfoChip(
                                   context,
@@ -653,7 +653,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                             ],
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: PRFSpacingTokens.xl),
 
                           // Date range display
                           DateRangeView(
@@ -664,7 +664,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                             event: event,
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: PRFSpacingTokens.xl),
 
                           // Description preview
                           if (event.description.isNotEmpty)
@@ -677,14 +677,14 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                               overflow: TextOverflow.ellipsis,
                             ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: PRFSpacingTokens.xl),
 
                           // Action button
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 16,
+                              horizontal: PRFSpacingTokens.xl,
+                              vertical: PRFSpacingTokens.lg,
                             ),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -710,7 +710,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                     color: statusColor,
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: PRFSpacingTokens.md),
                                 Icon(
                                   Icons.arrow_forward_rounded,
                                   size: 22,
@@ -743,12 +743,12 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 12,
+        horizontal: PRFSpacingTokens.lg,
+        vertical: PRFSpacingTokens.md,
       ),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: textColor.withValues(alpha: 0.2),
         ),
@@ -761,7 +761,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
             size: 18,
             color: textColor,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: PRFSpacingTokens.sm),
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -834,7 +834,7 @@ class DateRangeView extends StatelessWidget {
             size: 24,
             color: theme.colorScheme.primary,
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: PRFSpacingTokens.lg),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -853,7 +853,7 @@ class DateRangeView extends StatelessWidget {
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: PRFSpacingTokens.xs),
                 Text(
                   '${DateFormatter.formatTime(event.startTime, timezone)} -'
                   ' ${DateFormatter.formatTime(event.endTime, timezone)} daily',

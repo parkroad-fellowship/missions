@@ -71,11 +71,11 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                 child: state.maybeWhen(
                   loading: () => Container(
                     margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                      horizontal: PRFSpacingTokens.lg,
+                      vertical: PRFSpacingTokens.sm,
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       child: const PRFLinearProgressIndicator(),
                     ),
                   ),
@@ -98,7 +98,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                 ),
                 empty: () => SliverFillRemaining(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl),
                     child: PRFEmptyView(
                       label: l10n.addPhotos,
                       description: l10n.addEventPhotos,
@@ -110,7 +110,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                 ),
                 loaded: (mediaItems) {
                   return SliverPadding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -147,14 +147,14 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                           size: 64,
                           color: theme.colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
                           l10n.errorLoadingPhotos,
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.error,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
                           error,
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -177,14 +177,14 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
   Widget _buildAddPhotoTile(BuildContext context, ThemeData theme) {
     return Animate(
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 300)),
-        ScaleEffect(duration: Duration(milliseconds: 300)),
+        FadeEffect(duration: PRFMotionTokens.slow),
+        ScaleEffect(duration: PRFMotionTokens.slow),
       ],
       child: GestureDetector(
         onTap: () => _showAddMediaModal(context),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
               color: theme.colorScheme.primary.withValues(alpha: 0.3),
               width: 2,
@@ -202,7 +202,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: theme.colorScheme.primary.withValues(alpha: 0.1),
@@ -213,7 +213,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                   color: theme.colorScheme.primary,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: PRFSpacingTokens.md),
               Text(
                 'Add Photos',
                 style: theme.textTheme.titleMedium?.copyWith(
@@ -234,17 +234,17 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
     return Animate(
       delay: Duration(milliseconds: 100 * (index + 1)),
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 400)),
+        FadeEffect(duration: PRFMotionTokens.slow),
         SlideEffect(
           begin: Offset(0, 0.3),
-          duration: Duration(milliseconds: 400),
+          duration: PRFMotionTokens.slow,
         ),
       ],
       child: FullScreenWidget(
         disposeLevel: DisposeLevel.High,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.1),
@@ -254,7 +254,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             child: Stack(
               fit: StackFit.expand,
               children: [

@@ -75,7 +75,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           leading: Container(
             decoration: BoxDecoration(
               color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               boxShadow: [
                 BoxShadow(
                   color: PRFColors.black.withValues(alpha: 0.1),
@@ -84,7 +84,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                 ),
               ],
             ),
-            margin: const EdgeInsets.only(left: 8),
+            margin: const EdgeInsets.only(left: PRFSpacingTokens.sm),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new,
@@ -106,7 +106,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                 orElse: SizedBox.shrink,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: PRFSpacingTokens.sm),
             BlocBuilder<
               GetMemberMissionSubscriptionsCubit,
               GetMemberMissionSubscriptionsState
@@ -119,7 +119,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                 orElse: SizedBox.shrink,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: PRFSpacingTokens.lg),
           ],
           backgroundColor: Colors.transparent,
           bottom: TabBar(
@@ -182,8 +182,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 20,
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.xl,
             ),
             itemCount: sortedMissions.length,
             itemBuilder: (context, index) {
@@ -210,7 +210,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                   .animate()
                   .fadeIn(
                     delay: Duration(milliseconds: index * 100),
-                    duration: 600.ms,
+                    duration: PRFMotionTokens.enterShort,
                   )
                   .slideX(
                     begin: 0.3,
@@ -266,8 +266,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 20,
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.xl,
             ),
             itemCount: missions!.length,
             itemBuilder: (context, index) {
@@ -288,7 +288,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                   .animate()
                   .fadeIn(
                     delay: Duration(milliseconds: index * 100),
-                    duration: 600.ms,
+                    duration: PRFMotionTokens.enterShort,
                   )
                   .slideX(
                     begin: 0.3,
@@ -373,7 +373,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                       statusColor.withValues(alpha: 0.8),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   boxShadow: [
                     BoxShadow(
                       color: statusColor.withValues(alpha: 0.3),
@@ -448,7 +448,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                 Container(
                   width: 2,
                   height: 60,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.sm),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -465,7 +465,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
           ),
         ),
 
-        const SizedBox(width: 16),
+        const SizedBox(width: PRFSpacingTokens.lg),
 
         Expanded(
           child: GestureDetector(
@@ -474,7 +474,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
               margin: EdgeInsets.only(bottom: isLast ? 0 : 16),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                 border: Border.all(
                   color: statusColor.withValues(alpha: 0.2),
                 ),
@@ -492,14 +492,14 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Premium header with gradient
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
@@ -528,15 +528,15 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: PRFSpacingTokens.sm),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
+                                  horizontal: PRFSpacingTokens.sm,
+                                  vertical: PRFSpacingTokens.xs,
                                 ),
                                 decoration: BoxDecoration(
                                   color: statusColor,
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                                   boxShadow: [
                                     BoxShadow(
                                       color: statusColor.withValues(alpha: 0.3),
@@ -556,16 +556,16 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                             ],
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: PRFSpacingTokens.md),
 
                           // Mission type with icon
                           Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(PRFSpacingTokens.xs),
                                 decoration: BoxDecoration(
                                   color: theme.colorScheme.primaryContainer,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                                 ),
                                 child: Icon(
                                   Icons.school_rounded,
@@ -573,7 +573,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                                   color: theme.colorScheme.onPrimaryContainer,
                                 ),
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: PRFSpacingTokens.sm),
                               Expanded(
                                 child: Text(
                                   mission.missionType!.name!,
@@ -593,7 +593,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
 
                     // Content section
                     Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -613,7 +613,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                                   theme.colorScheme.primary,
                                 ),
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: PRFSpacingTokens.sm),
                               Expanded(
                                 child: _buildInfoChip(
                                   context,
@@ -626,7 +626,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                             ],
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: PRFSpacingTokens.md),
 
                           // Date range display
                           DateRangeView(
@@ -638,18 +638,18 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                             isOngoing: isOngoing,
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: PRFSpacingTokens.md),
 
                           // Action button
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
+                              horizontal: PRFSpacingTokens.lg,
+                              vertical: PRFSpacingTokens.sm,
                             ),
                             decoration: BoxDecoration(
                               color: statusColor.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                               border: Border.all(
                                 color: statusColor.withValues(alpha: 0.3),
                               ),
@@ -665,7 +665,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                                     color: statusColor,
                                   ),
                                 ),
-                                const SizedBox(width: 6),
+                                const SizedBox(width: PRFSpacingTokens.xs),
                                 Icon(
                                   Icons.arrow_forward_rounded,
                                   size: 14,
@@ -696,10 +696,10 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
   ) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
         ),
@@ -716,7 +716,7 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                 size: 12,
                 color: color,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: PRFSpacingTokens.xs),
               Flexible(
                 child: Text(
                   label,
@@ -777,10 +777,10 @@ class DateRangeView extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(PRFSpacingTokens.md),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(
             alpha: 0.2,
@@ -794,7 +794,7 @@ class DateRangeView extends StatelessWidget {
             size: 16,
             color: theme.colorScheme.primary,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: PRFSpacingTokens.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

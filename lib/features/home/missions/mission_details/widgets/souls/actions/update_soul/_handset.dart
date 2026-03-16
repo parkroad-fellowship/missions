@@ -65,7 +65,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +76,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Decision Type
             _buildFormSection(
@@ -172,7 +172,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Submit Button
             BlocConsumer<UpdateSoulCubit, UpdateSoulState>(
@@ -224,13 +224,13 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
         return GestureDetector(
           onTap: () => setState(() => selectedDecisionType = decisionType),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            duration: PRFMotionTokens.standard,
+            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.md),
             decoration: BoxDecoration(
               color: isSelected
                   ? theme.colorScheme.primary
                   : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
@@ -259,11 +259,11 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
   }) {
     final theme = Theme.of(context);
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(
             alpha: 0.06,
@@ -292,7 +292,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                 ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: PRFSpacingTokens.sm),
           child,
         ],
       ),

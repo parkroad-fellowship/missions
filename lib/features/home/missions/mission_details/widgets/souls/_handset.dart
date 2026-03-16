@@ -49,7 +49,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
             itemCount: souls.length,
             separatorBuilder: (context, index) => const SizedBox(height: 0),
             itemBuilder: (context, index) =>
@@ -83,11 +83,11 @@ class BeautifulSoulCard extends StatelessWidget {
     final l10n = context.l10n;
 
     return Container(
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.shadow.withValues(alpha: .08),
@@ -111,14 +111,14 @@ class BeautifulSoulCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(PRFSpacingTokens.md),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
                 child: _buildAvatarIcon(theme),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: PRFSpacingTokens.lg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,19 +140,19 @@ class BeautifulSoulCard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
 
           // Additional Information Section
           _buildAdditionalInfo(theme, l10n),
 
           // Notes Section (if available)
           if (soul.notes != null && soul.notes!.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: PRFSpacingTokens.md),
             _buildNotesSection(theme),
           ],
 
           // Date Information
-          const SizedBox(height: 12),
+          const SizedBox(height: PRFSpacingTokens.md),
           _buildDateInfo(theme),
         ],
       ),
@@ -175,10 +175,10 @@ class BeautifulSoulCard extends StatelessWidget {
     final decisionColor = _getDecisionTypeColor(theme);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
       decoration: BoxDecoration(
         color: decisionColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: decisionColor.withValues(alpha: 0.3),
         ),
@@ -191,7 +191,7 @@ class BeautifulSoulCard extends StatelessWidget {
             size: 14,
             color: decisionColor,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: PRFSpacingTokens.xs),
           Text(
             soul.decisionType.name,
             style: theme.textTheme.bodySmall?.copyWith(
@@ -206,10 +206,10 @@ class BeautifulSoulCard extends StatelessWidget {
 
   Widget _buildAdditionalInfo(ThemeData theme, AppLocalizations l10n) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(PRFSpacingTokens.md),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
       ),
       child: Row(
         children: [
@@ -223,7 +223,7 @@ class BeautifulSoulCard extends StatelessWidget {
           ),
           if (soul.admissionNumber != null &&
               soul.admissionNumber!.isNotEmpty) ...[
-            const SizedBox(width: 16),
+            const SizedBox(width: PRFSpacingTokens.lg),
             Expanded(
               child: _buildInfoItem(
                 theme,
@@ -254,7 +254,7 @@ class BeautifulSoulCard extends StatelessWidget {
               size: 14,
               color: theme.colorScheme.onSurfaceVariant,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: PRFSpacingTokens.xs),
             Text(
               label,
               style: theme.textTheme.bodySmall?.copyWith(
@@ -276,10 +276,10 @@ class BeautifulSoulCard extends StatelessWidget {
 
   Widget _buildNotesSection(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(PRFSpacingTokens.md),
       decoration: BoxDecoration(
         color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: theme.colorScheme.secondary.withValues(alpha: 0.2),
         ),
@@ -294,7 +294,7 @@ class BeautifulSoulCard extends StatelessWidget {
                 size: 14,
                 color: theme.colorScheme.secondary,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: PRFSpacingTokens.xs),
               Text(
                 'Notes',
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -304,7 +304,7 @@ class BeautifulSoulCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: PRFSpacingTokens.xs),
           Text(
             soul.notes!,
             style: theme.textTheme.bodySmall?.copyWith(
@@ -330,7 +330,7 @@ class BeautifulSoulCard extends StatelessWidget {
           size: 14,
           color: theme.colorScheme.onSurfaceVariant,
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: PRFSpacingTokens.xs),
         Text(
           'Recorded: $formattedDate',
           style: theme.textTheme.bodySmall?.copyWith(

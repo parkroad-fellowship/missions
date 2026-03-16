@@ -97,7 +97,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
         length: tabCount,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
             child: CustomScrollView(
               physics: const ScrollPhysics(),
               slivers: [
@@ -131,11 +131,11 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                     ),
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
                 SliverFillRemaining(
                   fillOverscroll: true,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                     child: TabBarView(
                       controller: _tabController,
                       children: [
@@ -178,7 +178,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
             final theme = Theme.of(context);
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                 boxShadow: [
                   BoxShadow(
                     color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -221,12 +221,12 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                     effects: [
                       const ShimmerEffect(
                         duration: Duration(seconds: 2),
-                        delay: Duration(milliseconds: 500),
+                        delay: PRFMotionTokens.enterShort,
                       ),
                       const ScaleEffect(
                         begin: Offset(0.8, 0.8),
                         end: Offset(1, 1),
-                        duration: Duration(milliseconds: 400),
+                        duration: PRFMotionTokens.slow,
                       ),
                     ],
                   ),
@@ -235,7 +235,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
         ),
         > 1 && < 8 => Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             boxShadow: [
               BoxShadow(
                 color: Theme.of(

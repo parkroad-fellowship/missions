@@ -1,6 +1,7 @@
 import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:prf_design/prf_design.dart';
 
 class ReceiptPreviewPage extends StatefulWidget {
   const ReceiptPreviewPage({
@@ -75,7 +76,7 @@ class ReceiptPreviewPageState extends State<ReceiptPreviewPage> {
                           ),
                           size: 64,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
                           'Failed to load image',
                           style: theme.textTheme.bodyLarge?.copyWith(

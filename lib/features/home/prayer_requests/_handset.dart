@@ -60,7 +60,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                               const SizedBox(height: 64),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
+                                  horizontal: PRFSpacingTokens.lg,
                                 ),
                                 child: PRFEmptyView(
                                   label: l10n.noPrayerRequests,
@@ -79,14 +79,14 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                     return SliverList.separated(
                       itemCount: prayerRequests.length,
                       separatorBuilder: (context, index) =>
-                          const SizedBox(height: 24),
+                          const SizedBox(height: PRFSpacingTokens.xl),
                       itemBuilder: (context, index) {
                         final prayerRequest = prayerRequests[index];
                         return PrayerRequestCard(
                               prayerRequest: prayerRequest,
                             )
                             .animate(delay: Duration(milliseconds: 80 * index))
-                            .fadeIn(duration: const Duration(milliseconds: 500))
+                            .fadeIn(duration: PRFMotionTokens.enterShort)
                             .slideY(begin: 0.1, end: 0);
                       },
                     );
@@ -101,7 +101,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
         effects: const [
           ShimmerEffect(
             duration: Duration(seconds: 2),
-            delay: Duration(milliseconds: 500),
+            delay: PRFMotionTokens.enterShort,
           ),
         ],
         child: FloatingActionButton.extended(

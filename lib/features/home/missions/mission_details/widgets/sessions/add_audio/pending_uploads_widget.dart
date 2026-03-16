@@ -53,11 +53,11 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
               }
 
               return Container(
-                margin: const EdgeInsets.all(16),
-                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.all(PRFSpacingTokens.lg),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   border: Border.all(
                     color: Theme.of(
                       context,
@@ -71,7 +71,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       size: 20,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: PRFSpacingTokens.sm),
                     Expanded(
                       child: Text(
                         'No pending uploads for this session',
@@ -95,13 +95,13 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
             final progress = progressSnapshot.data ?? UploadRetryProgress.idle;
 
             return Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(PRFSpacingTokens.lg),
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
                 color: Theme.of(
                   context,
                 ).colorScheme.errorContainer.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 border: Border.all(
                   color: Theme.of(
                     context,
@@ -119,7 +119,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         size: 20,
                         color: Theme.of(context).colorScheme.error,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: PRFSpacingTokens.sm),
                       Expanded(
                         child: Text(
                           'Pending Uploads',
@@ -147,12 +147,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: PRFSpacingTokens.sm),
 
                   // Progress indicator
                   if (progress.isRetrying) ...[
                     _buildProgressIndicator(context, progress),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: PRFSpacingTokens.md),
                   ] else ...[
                     Text(
                       'Recordings will retry automatically '
@@ -163,7 +163,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         ).colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: PRFSpacingTokens.md),
                   ],
 
                   Row(
@@ -175,7 +175,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                               : () => _retryAllUploads(context),
                           icon: progress.isRetrying
                               ? const SizedBox(
-                                  width: 16,
+                                  width: PRFSpacingTokens.lg,
                                   height: 16,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
@@ -192,14 +192,14 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                             ).colorScheme.primary,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                              horizontal: PRFSpacingTokens.lg,
+                              vertical: PRFSpacingTokens.sm,
                             ),
                             minimumSize: const Size(0, 36),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: PRFSpacingTokens.sm),
                       OutlinedButton.icon(
                         onPressed: progress.isRetrying
                             ? null
@@ -215,8 +215,8 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                             color: Theme.of(context).colorScheme.error,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
+                            horizontal: PRFSpacingTokens.lg,
+                            vertical: PRFSpacingTokens.sm,
                           ),
                           minimumSize: const Size(0, 36),
                         ),
@@ -283,7 +283,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: PRFSpacingTokens.xs),
         LinearProgressIndicator(
           value: progress.progress,
           backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
@@ -292,7 +292,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
           ),
         ),
         if (progress.currentFileName != null) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: PRFSpacingTokens.xs),
           Text(
             'Uploading: ${progress.currentFileName}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -310,13 +310,13 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
   Widget _buildSuccessMessage(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(PRFSpacingTokens.lg),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: Theme.of(
           context,
         ).colorScheme.primaryContainer.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
         ),
@@ -328,7 +328,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
             size: 20,
             color: Theme.of(context).colorScheme.primary,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: PRFSpacingTokens.sm),
           Expanded(
             child: Text(
               'All uploads completed successfully!',
@@ -362,7 +362,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   ).height *
                   0.6,
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 child: Column(
                   children: [
                     Row(
@@ -393,7 +393,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                     },
                               icon: progress.isRetrying
                                   ? const SizedBox(
-                                      width: 16,
+                                      width: PRFSpacingTokens.lg,
                                       height: 16,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
@@ -422,13 +422,13 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         if (progress.isRetrying) {
                           return Column(
                             children: [
-                              const SizedBox(height: 8),
+                              const SizedBox(height: PRFSpacingTokens.sm),
                               _buildProgressIndicator(context, progress),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: PRFSpacingTokens.lg),
                             ],
                           );
                         }
-                        return const SizedBox(height: 16);
+                        return const SizedBox(height: PRFSpacingTokens.lg);
                       },
                     ),
 
@@ -465,9 +465,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
             progress.isRetrying && progress.currentFileName == upload.name;
 
         return Container(
-          margin: const EdgeInsets.only(bottom: 12),
+          margin: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
               color: isCurrentlyUploading
                   ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)
@@ -494,14 +494,14 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
                         color: isCurrentlyUploading
                             ? Theme.of(
@@ -509,7 +509,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                               ).colorScheme.primary.withValues(alpha: 0.15)
                             : Theme.of(context).colorScheme.surfaceContainer
                                   .withValues(alpha: 0.7),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       ),
                       child: Icon(
                         isCurrentlyUploading
@@ -521,7 +521,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                             : Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: PRFSpacingTokens.md),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -574,10 +574,10 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: PRFSpacingTokens.sm),
                     if (isCurrentlyUploading)
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                         decoration: BoxDecoration(
                           color: Theme.of(
                             context,
@@ -585,7 +585,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                           shape: BoxShape.circle,
                         ),
                         child: SizedBox(
-                          width: 16,
+                          width: PRFSpacingTokens.lg,
                           height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
@@ -599,7 +599,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                         ),
                         child: IconButton(
                           onPressed: progress.isRetrying
@@ -614,24 +614,24 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                 : Theme.of(context).colorScheme.primary,
                           ),
                           iconSize: 18,
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                           constraints: const BoxConstraints(),
                           tooltip: 'Retry upload',
                         ),
                       ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: PRFSpacingTokens.md),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
+                    horizontal: PRFSpacingTokens.md,
+                    vertical: PRFSpacingTokens.sm,
                   ),
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
                     ).colorScheme.surfaceContainer.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Row(
                     children: [
@@ -642,7 +642,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                           context,
                         ).colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: PRFSpacingTokens.xs),
                       Expanded(
                         child: Text(
                           'Failed on ${dateFormat.format(upload.failedAt)}',
@@ -658,7 +658,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
+                          horizontal: PRFSpacingTokens.xs,
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(

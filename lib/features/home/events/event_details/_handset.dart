@@ -74,8 +74,8 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                   if (event.loggedInMemberEventSubscription != null)
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 6,
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary,
@@ -106,7 +106,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                 ],
               ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 16)),
+              const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
               SliverToBoxAdapter(
                 child: TabBar(
                   controller: _tabController,

@@ -99,26 +99,26 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                   },
                   builder: (context, state) => state.maybeWhen(
                     loading: () => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(16),
+                      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
                         ).colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       ),
                       child: const Center(
                         child: LinearProgressIndicator(),
                       ),
                     ),
                     error: (message) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      padding: const EdgeInsets.all(16),
+                      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
                         ).colorScheme.error.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       ),
                       child: Center(
                         child: Text(
@@ -141,12 +141,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                       builder: (context, state) => state.maybeWhen(
                         loading: () => Container(
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
+                            horizontal: PRFSpacingTokens.lg,
                           ),
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                           ),
                           child: const Center(
                             child: LinearProgressIndicator(),
@@ -154,14 +154,14 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                         ),
                         error: (message) => Container(
                           margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
+                            horizontal: PRFSpacingTokens.lg,
                           ),
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                           decoration: BoxDecoration(
                             color: Theme.of(
                               context,
                             ).colorScheme.error.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                           ),
                           child: Center(
                             child: Text(
@@ -193,7 +193,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 nullWidget: defaultEmptyStateWidget,
                 loading: defaultLoadingWidget,
                 widget: (context, missionSession) =>
-                    const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                    const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
               ),
 
               // Recordings Section
@@ -203,8 +203,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 loading: defaultLoadingWidget,
                 widget: (context, missionSession) => SliverToBoxAdapter(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(20),
+                    margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -214,7 +214,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           ).colorScheme.primary.withValues(alpha: 0.8),
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
                           color: Theme.of(
@@ -232,7 +232,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           color: Theme.of(context).colorScheme.onPrimary,
                           size: 24,
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: PRFSpacingTokens.md),
                         Expanded(
                           child: Text(
                             l10n.recordings,
@@ -250,7 +250,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             color: Theme.of(
                               context,
                             ).colorScheme.onPrimary.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                           ),
                           child: IconButton(
                             icon: Icon(
@@ -284,7 +284,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                         ),
                       ],
                     ),
-                  ).animate(delay: 300.ms).slideY(begin: 0.2).fadeIn(),
+                  ).animate(delay: PRFMotionTokens.slow).slideY(begin: 0.2).fadeIn(),
                 ),
               ),
 
@@ -316,13 +316,13 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                         return SliverToBoxAdapter(
                           child: Container(
                             margin: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
+                              horizontal: PRFSpacingTokens.lg,
+                              vertical: PRFSpacingTokens.md,
                             ),
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                               border: Border.all(
                                 color: Theme.of(
                                   context,
@@ -340,7 +340,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                         context,
                                       ).colorScheme.primary,
                                     ),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: PRFSpacingTokens.sm),
                                     Expanded(
                                       child: Text(
                                         'Queued recordings for this session',
@@ -362,16 +362,16 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: PRFSpacingTokens.sm),
                                 ...sessionUploads.map(
                                   (upload) => Container(
-                                    margin: const EdgeInsets.only(bottom: 8),
-                                    padding: const EdgeInsets.all(12),
+                                    margin: const EdgeInsets.only(bottom: PRFSpacingTokens.sm),
+                                    padding: const EdgeInsets.all(PRFSpacingTokens.md),
                                     decoration: BoxDecoration(
                                       color: Theme.of(
                                         context,
                                       ).colorScheme.surfaceContainerHighest,
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                                     ),
                                     child: Row(
                                       children: [
@@ -382,7 +382,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                           ).colorScheme.primary,
                                           size: 20,
                                         ),
-                                        const SizedBox(width: 12),
+                                        const SizedBox(width: PRFSpacingTokens.md),
                                         Expanded(
                                           child: Column(
                                             crossAxisAlignment:
@@ -399,7 +399,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                     ),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
-                                              const SizedBox(height: 4),
+                                              const SizedBox(height: PRFSpacingTokens.xs),
                                               Text(
                                                 'Queued • Will upload when '
                                                 'online',
@@ -443,7 +443,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 nullWidget: defaultEmptyStateWidget,
                 loading: defaultLoadingWidget,
                 widget: (context, missionSession) =>
-                    const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                    const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
               ),
 
               // Recordings List
@@ -469,7 +469,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                             .onSurface
                                             .withValues(alpha: 0.5),
                                       ),
-                                      const SizedBox(height: 16),
+                                      const SizedBox(height: PRFSpacingTokens.lg),
                                       Text(
                                         l10n.noRecordings,
                                         style: Theme.of(context)
@@ -485,7 +485,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                     ],
                                   )
                                   .animate()
-                                  .fadeIn(duration: 600.ms)
+                                  .fadeIn(duration: PRFMotionTokens.enterShort)
                                   .scale(begin: const Offset(0.8, 0.8)),
                         ),
                       )
@@ -504,7 +504,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                       ),
               ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 32)),
+              const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
             ],
           ),
         ),
@@ -517,10 +517,10 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     int index,
     AppLocalizations l10n,
   ) => Container(
-    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.xs),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surface,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
       border: Border.all(
         color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
       ),
@@ -537,12 +537,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
       title: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
             decoration: BoxDecoration(
               color: Theme.of(
                 context,
               ).colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             ),
             child: Icon(
               Icons.audiotrack,
@@ -550,7 +550,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
               color: Theme.of(context).colorScheme.primary,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: PRFSpacingTokens.md),
           Text(
             l10n.recordingItem(index + 1),
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -563,13 +563,13 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(PRFSpacingTokens.lg),
+          padding: const EdgeInsets.all(PRFSpacingTokens.lg),
           decoration: BoxDecoration(
             color: Theme.of(
               context,
             ).colorScheme.primary.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
           ),
           child: Column(
             children: [
@@ -609,7 +609,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           color: Theme.of(
                             context,
                           ).colorScheme.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                         ),
                         child: IconButton(
                           icon: Icon(
@@ -631,18 +631,18 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: PRFSpacingTokens.md),
               if (transcript.content?.isEmpty ?? false)
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
+                    horizontal: PRFSpacingTokens.md,
+                    vertical: PRFSpacingTokens.sm,
                   ),
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
                     ).colorScheme.secondary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     border: Border.all(
                       color: Theme.of(
                         context,
@@ -656,7 +656,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                         size: 16,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: PRFSpacingTokens.sm),
                       Expanded(
                         child: Text(
                           l10n.transcriptProcessing,
@@ -668,7 +668,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
+                          horizontal: PRFSpacingTokens.xs,
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
@@ -691,14 +691,14 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                   onTap: () => _viewTranscript(transcript),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                      horizontal: PRFSpacingTokens.md,
+                      vertical: PRFSpacingTokens.sm,
                     ),
                     decoration: BoxDecoration(
                       color: Theme.of(
                         context,
                       ).colorScheme.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       border: Border.all(
                         color: Theme.of(
                           context,
@@ -712,7 +712,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           size: 16,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: PRFSpacingTokens.sm),
                         Expanded(
                           child: Text(
                             l10n.viewTranscript,
@@ -725,7 +725,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
+                            horizontal: PRFSpacingTokens.xs,
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
@@ -742,7 +742,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                 ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: PRFSpacingTokens.sm),
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 12,
@@ -770,7 +770,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
               child: SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.8,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
                   child: Text(
                     transcript.content!,
                     style: Theme.of(context).textTheme.bodySmall,
@@ -804,10 +804,10 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
 
     return SliverToBoxAdapter(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
             color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
           ),
@@ -826,7 +826,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
           children: [
             // Session Info Cards
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(PRFSpacingTokens.xl),
               child: Column(
                 children: [
                   _buildInfoCard(
@@ -838,7 +838,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     // ignore: lines_longer_than_80_chars
                     '- ${DateFormatter.formatTimeFromDateTime(missionSession.endsAt, timezone)}',
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: PRFSpacingTokens.md),
                   _buildInfoCard(
                     context,
                     Icons.person,
@@ -846,7 +846,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     missionSession.facilitator.fullName!,
                   ),
                   if (missionSession.speaker != null) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: PRFSpacingTokens.md),
                     _buildInfoCard(
                       context,
                       Icons.mic,
@@ -855,7 +855,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     ),
                   ],
                   if (missionSession.classGroup != null) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: PRFSpacingTokens.md),
                     _buildInfoCard(
                       context,
                       Icons.group,
@@ -863,17 +863,17 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                       missionSession.classGroup!.name ?? 'N/A',
                     ),
                   ],
-                  const SizedBox(height: 20),
+                  const SizedBox(height: PRFSpacingTokens.xl),
 
                   // Notes Section
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     decoration: BoxDecoration(
                       color: Theme.of(
                         context,
                       ).colorScheme.primary.withValues(alpha: 0.05),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       border: Border.all(
                         color: Theme.of(
                           context,
@@ -890,7 +890,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                               color: Theme.of(context).colorScheme.primary,
                               size: 20,
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: PRFSpacingTokens.sm),
                             Text(
                               l10n.notes,
                               style: Theme.of(context).textTheme.titleMedium
@@ -903,13 +903,13 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: PRFSpacingTokens.md),
                         Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(PRFSpacingTokens.md),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                           ),
                           child: Text(
                             missionSession.notes.isNotEmpty
@@ -928,7 +928,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: PRFSpacingTokens.xl),
 
                   // Action Buttons
                   Row(
@@ -944,7 +944,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                 ).colorScheme.primary.withValues(alpha: 0.8),
                               ],
                             ),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                             boxShadow: [
                               BoxShadow(
                                 color: Theme.of(
@@ -979,9 +979,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.md),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                               ),
                             ),
                             icon: Icon(
@@ -998,7 +998,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: PRFSpacingTokens.lg),
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
@@ -1006,7 +1006,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                               color: Theme.of(context).colorScheme.error,
                               width: 1.5,
                             ),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                           ),
                           child: ElevatedButton.icon(
                             onPressed: () async => showDialog<void>(
@@ -1072,9 +1072,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.md),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                               ),
                             ),
                             icon: Icon(
@@ -1098,7 +1098,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
             ),
           ],
         ),
-      ).animate(delay: 200.ms).slideY(begin: 0.2).fadeIn(),
+      ).animate(delay: PRFMotionTokens.standard).slideY(begin: 0.2).fadeIn(),
     );
   }
 
@@ -1109,10 +1109,10 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
     String value,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
@@ -1120,12 +1120,12 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
             decoration: BoxDecoration(
               color: Theme.of(
                 context,
               ).colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             ),
             child: Icon(
               icon,
@@ -1133,7 +1133,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
               color: Theme.of(context).colorScheme.primary,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1147,7 +1147,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: PRFSpacingTokens.xs),
                 Text(
                   value,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(

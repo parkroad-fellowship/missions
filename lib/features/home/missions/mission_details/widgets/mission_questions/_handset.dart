@@ -50,7 +50,7 @@ class _MissionQuestionsViewHandsetState
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
             itemCount: missionQuestions.length,
             separatorBuilder: (context, index) => const SizedBox(height: 0),
             itemBuilder: (context, index) =>
@@ -84,11 +84,11 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
     final l10n = context.l10n;
 
     return Container(
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.shadow.withValues(alpha: .08),
@@ -112,10 +112,10 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(PRFSpacingTokens.md),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
                 child: Icon(
                   Icons.quiz_outlined,
@@ -123,7 +123,7 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
                   size: 24,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: PRFSpacingTokens.lg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +135,7 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: PRFSpacingTokens.xs),
                     _buildTimestampChip(theme),
                   ],
                 ),
@@ -146,12 +146,12 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
           // Question content
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest.withValues(
                 alpha: 0.3,
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.2),
               ),
@@ -164,7 +164,7 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
                   color: theme.colorScheme.primary,
                   size: 20,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: PRFSpacingTokens.md),
                 Expanded(
                   child: Text(
                     missionQuestion.question,
@@ -184,10 +184,10 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
 
   Widget _buildTimestampChip(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
       decoration: BoxDecoration(
         color: theme.colorScheme.secondary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
         border: Border.all(
           color: theme.colorScheme.secondary.withValues(alpha: 0.3),
         ),
@@ -200,7 +200,7 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
             size: 12,
             color: theme.colorScheme.secondary,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: PRFSpacingTokens.xs),
           Text(
             DateFormatter.formatDateTime(missionQuestion.createdAt, timezone),
             style: theme.textTheme.bodySmall?.copyWith(

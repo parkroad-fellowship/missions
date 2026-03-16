@@ -49,7 +49,7 @@ class _StudentEnquiryRepliesPageTabletState
     _subscribeToEnquiryReplies();
 
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: PRFMotionTokens.slow,
       vsync: this,
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
@@ -80,7 +80,7 @@ class _StudentEnquiryRepliesPageTabletState
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 400),
+        duration: PRFMotionTokens.slow,
         curve: Curves.easeOutCubic,
       );
     }
@@ -147,8 +147,8 @@ class _StudentEnquiryRepliesPageTabletState
         margin: EdgeInsets.only(
           left: isStudent ? 16 : 80,
           right: isStudent ? 80 : 16,
-          top: 4,
-          bottom: 4,
+          top: PRFSpacingTokens.xs,
+          bottom: PRFSpacingTokens.xs,
         ),
         child: Column(
           crossAxisAlignment: isStudent
@@ -157,8 +157,8 @@ class _StudentEnquiryRepliesPageTabletState
           children: [
             Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
+                horizontal: PRFSpacingTokens.lg,
+                vertical: PRFSpacingTokens.md,
               ),
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.sizeOf(context).width * 0.75,
@@ -211,9 +211,9 @@ class _StudentEnquiryRepliesPageTabletState
                 ),
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: PRFSpacingTokens.xs),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -225,7 +225,7 @@ class _StudentEnquiryRepliesPageTabletState
                     ),
                   ),
                   if (!isStudent) ...[
-                    const SizedBox(width: 4),
+                    const SizedBox(width: PRFSpacingTokens.xs),
                     Icon(
                       Icons.check_circle,
                       size: 12,
@@ -263,8 +263,8 @@ class _StudentEnquiryRepliesPageTabletState
       ),
       child: Padding(
         padding: EdgeInsets.only(
-          left: 16,
-          right: 16,
+          left: PRFSpacingTokens.lg,
+          right: PRFSpacingTokens.lg,
           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           top: 12,
         ),
@@ -275,7 +275,7 @@ class _StudentEnquiryRepliesPageTabletState
               child: Container(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                   border: Border.all(
                     color: _focusNode.hasFocus
                         ? theme.colorScheme.primary.withValues(alpha: 0.5)
@@ -291,7 +291,7 @@ class _StudentEnquiryRepliesPageTabletState
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: PRFSpacingTokens.md),
             BlocConsumer<CreateEnquiryReplyCubit, CreateEnquiryReplyState>(
               listener: (context, state) {
                 state.mapOrNull(
@@ -312,7 +312,7 @@ class _StudentEnquiryRepliesPageTabletState
                 );
 
                 return AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
+                  duration: PRFMotionTokens.standard,
                   decoration: BoxDecoration(
                     gradient: _isComposing
                         ? LinearGradient(
@@ -325,7 +325,7 @@ class _StudentEnquiryRepliesPageTabletState
                     color: _isComposing
                         ? null
                         : theme.colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                     boxShadow: _isComposing
                         ? [
                             BoxShadow(
@@ -341,7 +341,7 @@ class _StudentEnquiryRepliesPageTabletState
                   child: IconButton(
                     icon: loading
                         ? SizedBox(
-                            width: 20,
+                            width: PRFSpacingTokens.xl,
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
@@ -416,7 +416,7 @@ class _StudentEnquiryRepliesPageTabletState
                           ),
                           backgroundColor: theme.colorScheme.surface,
                         ),
-                        const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                        const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
                         StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
                           stream: getIt<IsarService>()
                               .studentEnquiryReplies
@@ -470,7 +470,7 @@ class _StudentEnquiryRepliesPageTabletState
                             );
                           },
                         ),
-                        const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                        const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
                       ],
                     );
                   },

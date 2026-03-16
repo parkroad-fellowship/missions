@@ -34,7 +34,7 @@ class LandingPageHandset extends StatelessWidget {
               // Header Section
               SliverToBoxAdapter(
                 child: Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                   child: Row(
                     children: [
                       // Profile Picture
@@ -127,7 +127,7 @@ class LandingPageHandset extends StatelessWidget {
                           )
                           .then(delay: 1000.ms),
 
-                      const SizedBox(width: 16),
+                      const SizedBox(width: PRFSpacingTokens.lg),
 
                       // Greeting Section
                       Expanded(
@@ -140,7 +140,7 @@ class LandingPageHandset extends StatelessWidget {
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: PRFSpacingTokens.xs),
                             Text(
                               l10n.hello(
                                 getIt<HiveService>().auth
@@ -166,13 +166,13 @@ class LandingPageHandset extends StatelessWidget {
                           onTap: () => context.router.pushPath(
                             PRFSuperAppRouter.announcementsRoute,
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                           child: Container(
                             width: 48,
                             height: 48,
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                               border: Border.all(
                                 color: theme.colorScheme.outline.withValues(
                                   alpha: 0.2,
@@ -213,7 +213,7 @@ class LandingPageHandset extends StatelessWidget {
               // Title Section
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+                  padding: const EdgeInsets.fromLTRB(PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.xxl),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -226,7 +226,7 @@ class LandingPageHandset extends StatelessWidget {
                           height: 1.1,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: PRFSpacingTokens.md),
                       Container(
                         width: 60,
                         height: 4,
@@ -250,7 +250,7 @@ class LandingPageHandset extends StatelessWidget {
                           (action) => _buildAnimatedCard(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                                horizontal: PRFSpacingTokens.sm,
                               ),
                               child: PRFActionCard(
                                 title: action[0] as String,
@@ -279,15 +279,15 @@ class LandingPageHandset extends StatelessWidget {
     required int delay,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
       child: Animate(
         effects: [
           FadeEffect(
-            duration: 400.ms,
+            duration: PRFMotionTokens.slow,
             delay: Duration(milliseconds: delay),
           ),
           SlideEffect(
-            duration: 500.ms,
+            duration: PRFMotionTokens.enterShort,
             delay: Duration(milliseconds: delay),
             begin: Offset([-1, 1].sample(1).single * 0.2, 0),
             curve: Curves.easeOut,

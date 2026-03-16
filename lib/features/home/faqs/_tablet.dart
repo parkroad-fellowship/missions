@@ -3,13 +3,13 @@ import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/faq/prf_faq.dart';
 import 'package:app/models/local/faq/prf_faq_category.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:prf_design/prf_design.dart';
 
 class MemberFAQPageTablet extends StatefulWidget {
   const MemberFAQPageTablet({super.key});
@@ -59,7 +59,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
             // Search Field
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
                 child: PRFTextInput(
                   hintText: l10n.whatWouldYouLikeToKnow,
                   controller: _searchController,
@@ -80,7 +80,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
 
             // FAQ Categories
             SliverToBoxAdapter(
@@ -112,7 +112,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -123,7 +123,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
 
             // FAQ List
             BlocBuilder<GetFaqsCubit, GetFaqsState>(
@@ -149,7 +149,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                     return SliverList.separated(
                       itemCount: faqs.length,
                       separatorBuilder: (context, index) =>
-                          const SizedBox(height: 12),
+                          const SizedBox(height: PRFSpacingTokens.md),
                       itemBuilder: (context, index) =>
                           FaqCard(faq: faqs[index]),
                     );
@@ -176,11 +176,11 @@ class FaqCard extends StatelessWidget {
     return Animate(
       effects: const [SaturateEffect()],
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.xs),
+        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.shadow.withValues(alpha: 0.08),
@@ -210,7 +210,7 @@ class FaqCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 8, right: 8),
+                padding: const EdgeInsets.only(top: PRFSpacingTokens.sm, bottom: PRFSpacingTokens.sm, right: PRFSpacingTokens.sm),
                 child: Text(
                   faq.answer,
                   style: theme.textTheme.bodyMedium?.copyWith(

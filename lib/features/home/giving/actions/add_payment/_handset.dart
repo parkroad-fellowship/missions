@@ -32,11 +32,11 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
     final l10n = context.l10n;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(
@@ -44,7 +44,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                 isRequired: true,
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: PRFSpacingTokens.xs),
             BlocBuilder<GetPaymentTypesCubit, GetPaymentTypesState>(
               builder: (context, state) {
                 return state.maybeWhen(
@@ -74,17 +74,17 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                 );
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
             Align(
               alignment: Alignment.centerLeft,
               child: FormFieldLabel(label: l10n.amount, isRequired: true),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: PRFSpacingTokens.xs),
             PRFNumberInput(
               hintText: l10n.enterAmount,
               controller: _amountController,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: PRFSpacingTokens.xxl),
             BlocConsumer<AddPaymentCubit, AddPaymentState>(
               listener: (context, state) {
                 state.mapOrNull(
@@ -145,7 +145,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                 );
               },
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: PRFSpacingTokens.xxl),
             Text(
               l10n.directed,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(),

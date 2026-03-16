@@ -59,7 +59,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const SizedBox(
-                        width: 36,
+                        width: PRFSpacingTokens.xxxl,
                         height: 36,
                         child: Center(
                           child: CircularProgressIndicator(strokeWidth: 2),
@@ -69,8 +69,8 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                     final courseModule = snapshot.data;
                     return Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 6,
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary,
@@ -105,7 +105,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
             // Module name
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                 child: StreamBuilder<PRFLocalCourseModule?>(
                   stream: getIt<IsarService>().courseModules.itemStream,
                   builder: (context, snapshot) {
@@ -126,7 +126,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
             // Module description
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                 child: StreamBuilder<PRFLocalCourseModule?>(
                   stream: getIt<IsarService>().courseModules.itemStream,
                   builder: (context, snapshot) {
@@ -144,11 +144,11 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
             // Lessons header
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                 child: Text(
                   l10n.lessons,
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -157,7 +157,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
             // Lessons list
             StreamBuilder<List<PRFLocalLessonModule>>(
               stream: getIt<IsarService>().lessonModules.parentStream,
@@ -186,7 +186,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                     courseModuleUlid: courseModuleUlid,
                   ),
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                 );
               },
             ),

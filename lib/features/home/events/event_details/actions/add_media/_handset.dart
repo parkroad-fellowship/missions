@@ -34,7 +34,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -47,7 +47,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             ),
             textAlign: TextAlign.left,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: PRFSpacingTokens.sm),
           Text(
             'Share photos and memories from this event',
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -55,7 +55,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             ),
             textAlign: TextAlign.left,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: PRFSpacingTokens.xxl),
 
           // Media Selection Area
           Expanded(
@@ -73,7 +73,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                         size: 64,
                         color: theme.colorScheme.error,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                       Text(
                         message,
                         style: theme.textTheme.bodyLarge?.copyWith(
@@ -81,7 +81,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: PRFSpacingTokens.lg),
                       ElevatedButton(
                         onPressed: () =>
                             _selectMedia(context, previousMedia: []),
@@ -94,7 +94,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: PRFSpacingTokens.xl),
 
           // Action Buttons
           BlocBuilder<SelectMediaCubit, SelectMediaState>(
@@ -119,7 +119,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                                 .uploadMedia();
                           },
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: PRFSpacingTokens.md),
                   PRFSecondaryButton(
                     title: l10n.cancel,
                     disabled: false,
@@ -144,7 +144,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
   ) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -157,7 +157,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
               ),
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: PRFSpacingTokens.sm),
             Text(
               'Share photos and memories from this event',
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -165,7 +165,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
               ),
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: PRFSpacingTokens.xxl),
 
             // Media Selection Area
             Expanded(
@@ -184,7 +184,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                           size: 64,
                           color: theme.colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
                           error.message,
                           style: theme.textTheme.bodyLarge?.copyWith(
@@ -192,7 +192,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         ElevatedButton(
                           onPressed: () =>
                               _selectMedia(context, previousMedia: []),
@@ -205,7 +205,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Action Buttons
             BlocBuilder<SelectMediaCubit, SelectMediaState>(
@@ -230,7 +230,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                                   .uploadMedia();
                             },
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: PRFSpacingTokens.md),
                     PRFSecondaryButton(
                       title: l10n.cancel,
                       disabled: false,
@@ -266,12 +266,12 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                 color: theme.colorScheme.onSurface,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: PRFSpacingTokens.sm),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               ),
               child: Text(
                 '${images.length}',
@@ -283,7 +283,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: PRFSpacingTokens.lg),
         Expanded(
           child: GridView.builder(
             physics: const BouncingScrollPhysics(),
@@ -314,7 +314,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
       onTap: () => _selectMedia(context, previousMedia: images),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
             color: theme.colorScheme.primary.withValues(alpha: 0.3),
             width: 2,
@@ -329,7 +329,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
               size: 32,
               color: theme.colorScheme.primary,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: PRFSpacingTokens.sm),
             Text(
               'Add More',
               style: theme.textTheme.labelMedium?.copyWith(
@@ -351,7 +351,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
   ) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
@@ -361,7 +361,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -396,7 +396,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.xs),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.6),
                     shape: BoxShape.circle,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:prf_design/prf_design.dart';
 
 /// Shimmer placeholder block for skeleton loading screens.
 // TODO(prf): Replace with PRFShimmerBlock from prf_design
@@ -49,16 +50,16 @@ class MissionListShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.only(bottom: PRFSpacingTokens.sm),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(PRFSpacingTokens.lg),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
             border: Border.all(
               color: Theme.of(
                 context,
@@ -72,7 +73,7 @@ class MissionListShimmer extends StatelessWidget {
                 height: 40,
                 shape: BoxShape.circle,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +82,7 @@ class MissionListShimmer extends StatelessWidget {
                       width: 160 + (index * 20).toDouble(),
                       height: 14,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: PRFSpacingTokens.sm),
                     const _ShimmerBlock(width: 100, height: 10),
                   ],
                 ),
@@ -105,16 +106,16 @@ class MissionCardShimmer extends StatelessWidget {
     final theme = Theme.of(context);
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
         child: Container(
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
             border: Border.all(
               color: theme.colorScheme.outline.withValues(alpha: 0.08),
             ),
@@ -128,7 +129,7 @@ class MissionCardShimmer extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -140,13 +141,13 @@ class MissionCardShimmer extends StatelessWidget {
                                 height: 16,
                               ),
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: PRFSpacingTokens.md),
                             const _ShimmerBlock(width: 60, height: 12),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: PRFSpacingTokens.sm),
                         const _ShimmerBlock(width: 120, height: 12),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: PRFSpacingTokens.md),
                         const _ShimmerBlock(height: 10),
                       ],
                     ),
@@ -170,7 +171,7 @@ class MissionDetailShimmer extends StatelessWidget {
     final theme = Theme.of(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
         children: [
@@ -178,7 +179,7 @@ class MissionDetailShimmer extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.08),
               ),
@@ -196,16 +197,16 @@ class MissionDetailShimmer extends StatelessWidget {
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.all(PRFSpacingTokens.xl),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _ShimmerBlock(width: 80, height: 12),
-                      SizedBox(height: 12),
+                      SizedBox(height: PRFSpacingTokens.md),
                       _ShimmerBlock(width: 220, height: 24),
-                      SizedBox(height: 8),
+                      SizedBox(height: PRFSpacingTokens.sm),
                       _ShimmerBlock(width: 160, height: 14),
-                      SizedBox(height: 16),
+                      SizedBox(height: PRFSpacingTokens.lg),
                       _ShimmerBlock(width: 200, height: 12),
                     ],
                   ),
@@ -213,7 +214,7 @@ class MissionDetailShimmer extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
           // Stats grid (2x2)
           GridView.count(
             crossAxisCount: 2,
@@ -225,10 +226,10 @@ class MissionDetailShimmer extends StatelessWidget {
             children: List.generate(
               4,
               (_) => Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   border: Border.all(
                     color: theme.colorScheme.outline.withValues(alpha: 0.08),
                   ),
@@ -238,7 +239,7 @@ class MissionDetailShimmer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _ShimmerBlock(width: 40, height: 28),
-                    SizedBox(height: 8),
+                    SizedBox(height: PRFSpacingTokens.sm),
                     _ShimmerBlock(width: 80, height: 12),
                   ],
                 ),
@@ -260,7 +261,7 @@ class MissionGridShimmer extends StatelessWidget {
     final theme = Theme.of(context);
 
     return GridView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -271,7 +272,7 @@ class MissionGridShimmer extends StatelessWidget {
       itemBuilder: (context, index) => Container(
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
           border: Border.all(
             color: theme.colorScheme.outline.withValues(alpha: 0.08),
           ),

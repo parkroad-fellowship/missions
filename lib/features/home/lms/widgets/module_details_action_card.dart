@@ -2,6 +2,7 @@ import 'package:app/models/local/course/prf_lesson_module.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:prf_design/prf_design.dart';
 
 class ModuleDetailsActionCard extends StatelessWidget {
   const ModuleDetailsActionCard({
@@ -25,11 +26,11 @@ class ModuleDetailsActionCard extends StatelessWidget {
         ),
       ),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl, vertical: PRFSpacingTokens.xxl),
         decoration: BoxDecoration(
           color: theme.colorScheme.primary.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.shadow.withValues(alpha: 0.04),
@@ -52,11 +53,11 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
+                    horizontal: PRFSpacingTokens.sm,
+                    vertical: PRFSpacingTokens.xs,
                   ),
                   child: Icon(
                     lessonModule.lessonMember?.completionStatus?.icon ??
@@ -67,7 +68,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
             Text(
               lessonModule.lesson.description ?? '',
               style: theme.textTheme.bodyMedium,

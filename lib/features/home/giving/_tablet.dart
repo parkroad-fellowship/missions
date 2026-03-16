@@ -45,7 +45,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                 Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                     boxShadow: [
                       BoxShadow(
                         color: PRFColors.black.withValues(alpha: 0.1),
@@ -67,7 +67,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
               ],
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -92,7 +92,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                           context.read<GetPaymentsCubit>().getPayments(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                         child: Container(
                           height: MediaQuery.sizeOf(context).height * 0.6,
                           alignment: Alignment.center,
@@ -104,7 +104,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                 size: 80,
                                 color: theme.colorScheme.error,
                               ),
-                              const SizedBox(height: 24),
+                              const SizedBox(height: PRFSpacingTokens.xl),
                               Text(
                                 message,
                                 style: theme.textTheme.headlineSmall,
@@ -122,7 +122,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                           context.read<GetPaymentsCubit>().getPayments(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.6,
                           child: PRFEmptyView(
@@ -138,8 +138,8 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                   ),
                   loaded: (payments) => SliverPadding(
                     padding: const EdgeInsets.only(
-                      left: 24,
-                      right: 24,
+                      left: PRFSpacingTokens.xl,
+                      right: PRFSpacingTokens.xl,
                       bottom: 120,
                     ),
                     sliver: SliverGrid(
@@ -155,14 +155,14 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                           final payment = payments[index];
                           return Container(
                                 margin: const EdgeInsets.symmetric(
-                                  horizontal: 4,
+                                  horizontal: PRFSpacingTokens.xs,
                                 ),
                                 child: Material(
                                   color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(24),
+                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                                   child: InkWell(
                                     onTap: () => _showPaymentActions(payment),
-                                    borderRadius: BorderRadius.circular(24),
+                                    borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
                                     splashColor: theme.colorScheme.primary
                                         .withValues(alpha: 0.1),
                                     highlightColor: theme.colorScheme.primary
@@ -175,18 +175,18 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                 delay: Duration(milliseconds: index * 100),
                               )
                               .fadeIn(
-                                duration: const Duration(milliseconds: 600),
+                                duration: PRFMotionTokens.enterShort,
                               )
                               .slideY(
                                 begin: 0.3,
                                 end: 0,
-                                duration: const Duration(milliseconds: 500),
+                                duration: PRFMotionTokens.enterShort,
                                 curve: Curves.easeOutCubic,
                               )
                               .scale(
                                 begin: const Offset(0.9, 0.9),
                                 end: const Offset(1, 1),
-                                duration: const Duration(milliseconds: 500),
+                                duration: PRFMotionTokens.enterShort,
                                 curve: Curves.easeOutCubic,
                               );
                         },
@@ -202,7 +202,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -226,19 +226,19 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                 ),
               ),
               extendedPadding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 16,
+                horizontal: PRFSpacingTokens.xl,
+                vertical: PRFSpacingTokens.lg,
               ),
             ).animate(
               effects: [
                 const ShimmerEffect(
                   duration: Duration(seconds: 2),
-                  delay: Duration(milliseconds: 500),
+                  delay: PRFMotionTokens.enterShort,
                 ),
                 const ScaleEffect(
                   begin: Offset(0.8, 0.8),
                   end: Offset(1, 1),
-                  duration: Duration(milliseconds: 400),
+                  duration: PRFMotionTokens.slow,
                 ),
               ],
             ),
@@ -280,7 +280,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.4,
             child: Container(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -288,14 +288,14 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                     l10n.paymentActions,
                     style: theme.textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: PRFSpacingTokens.xxl),
                   if (payment.authorizationUrl != null)
                     ListTile(
                       leading: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                         ),
                         child: Icon(
                           Icons.open_in_browser_rounded,
@@ -319,13 +319,13 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                         });
                       },
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: PRFSpacingTokens.lg),
                   ListTile(
                     leading: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       ),
                       child: Icon(
                         Icons.refresh_rounded,
@@ -345,7 +345,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                       context.read<GetPaymentsCubit>().getPayments();
                     },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: PRFSpacingTokens.xl),
                 ],
               ),
             ),
@@ -368,10 +368,10 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
     final l10n = context.l10n;
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.shadow.withValues(alpha: 0.08),
@@ -411,15 +411,15 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
+                  horizontal: PRFSpacingTokens.md,
+                  vertical: PRFSpacingTokens.xs,
                 ),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   border: Border.all(
                     color: statusColor.withValues(alpha: 0.3),
                   ),
@@ -449,7 +449,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                     size: 16,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: PRFSpacingTokens.sm),
                   Expanded(
                     child: Text(
                       DateFormatter.formatDateTime(payment.createdAt, timezone),
@@ -465,7 +465,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
               if (payment.authorizationUrl != null &&
                   (payment.paymentStatus != PRFPaymentStatus.success ||
                       payment.paymentStatus != PRFPaymentStatus.success)) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: PRFSpacingTokens.sm),
                 Row(
                   children: [
                     Icon(
@@ -473,7 +473,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                       size: 16,
                       color: theme.colorScheme.primary,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: PRFSpacingTokens.sm),
                     Expanded(
                       child: Text(
                         l10n.longPressForActions,

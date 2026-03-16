@@ -64,7 +64,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 24,
+              horizontal: PRFSpacingTokens.xl,
             ),
             child: CustomScrollView(
               slivers: [
@@ -77,8 +77,8 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                     if (event.loggedInMemberEventSubscription != null)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                          horizontal: PRFSpacingTokens.lg,
+                          vertical: PRFSpacingTokens.sm,
                         ),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primary,
@@ -112,7 +112,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                 ),
 
                 const SliverToBoxAdapter(
-                  child: SizedBox(height: 20),
+                  child: SizedBox(height: PRFSpacingTokens.xl),
                 ),
                 SliverToBoxAdapter(
                   child: TabBar(
@@ -131,7 +131,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                 SliverFillRemaining(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
+                      horizontal: PRFSpacingTokens.xl,
                     ),
                     child: TabBarView(
                       controller: _tabController,

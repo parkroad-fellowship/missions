@@ -129,7 +129,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   ),
                 ),
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 16)),
+              const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
               SliverFillRemaining(
                 fillOverscroll: true,
                 child: TabBarView(
@@ -172,7 +172,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             final theme = Theme.of(context);
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                 boxShadow: [
                   BoxShadow(
                     color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -213,12 +213,12 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     effects: [
                       const ShimmerEffect(
                         duration: Duration(seconds: 2),
-                        delay: Duration(milliseconds: 500),
+                        delay: PRFMotionTokens.enterShort,
                       ),
                       const ScaleEffect(
                         begin: Offset(0.8, 0.8),
                         end: Offset(1, 1),
-                        duration: Duration(milliseconds: 400),
+                        duration: PRFMotionTokens.slow,
                       ),
                     ],
                   ),
@@ -227,7 +227,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
         ),
         > 1 && < 6 || == 7 => Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             boxShadow: [
               BoxShadow(
                 color: Theme.of(

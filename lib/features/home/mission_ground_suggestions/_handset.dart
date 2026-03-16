@@ -47,7 +47,7 @@ class _MissionGroundSuggestionsPageHandsetState
             ),
             // Content
             SliverPadding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               sliver:
                   BlocBuilder<
                     GetMissionGroundSuggestionsCubit,
@@ -102,17 +102,17 @@ class _MissionGroundSuggestionsPageHandsetState
                             sliver: SliverList.separated(
                               itemCount: missionGroundSuggestions.length,
                               separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: PRFSpacingTokens.lg),
                               itemBuilder: (context, index) {
                                 final suggestion =
                                     missionGroundSuggestions[index];
                                 return Container(
                                       margin: const EdgeInsets.symmetric(
-                                        horizontal: 4,
+                                        horizontal: PRFSpacingTokens.xs,
                                       ),
                                       child: Material(
                                         color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                                         child: InkWell(
                                           onLongPress: () async =>
                                               _updateMissionGroundSuggestion(
@@ -172,7 +172,7 @@ class _MissionGroundSuggestionsPageHandsetState
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           boxShadow: [
             BoxShadow(
               color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -198,12 +198,12 @@ class _MissionGroundSuggestionsPageHandsetState
               effects: [
                 const ShimmerEffect(
                   duration: Duration(seconds: 2),
-                  delay: Duration(milliseconds: 500),
+                  delay: PRFMotionTokens.enterShort,
                 ),
                 const ScaleEffect(
                   begin: Offset(0.8, 0.8),
                   end: Offset(1, 1),
-                  duration: Duration(milliseconds: 400),
+                  duration: PRFMotionTokens.slow,
                 ),
               ],
             ),
