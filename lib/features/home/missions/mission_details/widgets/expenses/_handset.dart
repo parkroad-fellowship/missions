@@ -22,6 +22,7 @@ import 'package:app/models/remote/expense/prf_refund.dart';
 import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -56,9 +57,28 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   }
 
   void _loadData() {
-    context.read<MissionResourceCubit>().loadAll(
-      filters: {'ulid': missionUlid},
+    // Don't re-fetch mission — parent already loaded it.
+    // Extract accountingEventUlid from existing cubit state.
+    final missionState = context.read<MissionResourceCubit>().state;
+    final mission = missionState.maybeWhen(
+      listLoaded: (items, _, _) => items.firstWhereOrNull(
+        (m) => m.ulid == missionUlid,
+      ),
+      mutated: (items, _, _) => items.firstWhereOrNull(
+        (m) => m.ulid == missionUlid,
+      ),
+      orElse: () => null,
     );
+
+    if (mission != null) {
+      accountingEventUlid = mission.accountingEvent?.ulid;
+      if (accountingEventUlid != null) {
+        context.read<AllocationEntryResourceCubit>().loadAll(
+          filters: {'accounting_event_ulid': accountingEventUlid},
+        );
+      }
+    }
+
     context.read<ExpenseCategoryResourceCubit>().loadAll();
   }
 

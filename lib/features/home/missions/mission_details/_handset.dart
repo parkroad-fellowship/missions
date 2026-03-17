@@ -53,7 +53,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     _tabController = TabController(length: _tabCount, vsync: this);
 
     context.read<MissionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+      filters: {'ulid': missionUlid},
     );
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
