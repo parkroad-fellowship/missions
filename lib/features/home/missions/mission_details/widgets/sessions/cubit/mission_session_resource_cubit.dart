@@ -13,8 +13,9 @@ class MissionSessionResourceCubit extends ResourceCubit<PRFMissionSession> {
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     final parentKey = filters?['mission_ulid'] as String?;
     if (parentKey != null && dbService is MissionSessionDbService) {
-      await (dbService as MissionSessionDbService)
-          .refreshParentStream(parentKey);
+      await (dbService as MissionSessionDbService).refreshParentStream(
+        parentKey,
+      );
     }
     await dbService?.refreshStream();
   }

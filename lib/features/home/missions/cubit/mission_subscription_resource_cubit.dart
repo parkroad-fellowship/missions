@@ -14,8 +14,9 @@ class MissionSubscriptionResourceCubit
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     final parentKey = filters?['mission_ulid'] as String?;
     if (parentKey != null && dbService is MissionSubscriptionDbService) {
-      await (dbService as MissionSubscriptionDbService)
-          .refreshParentStream(parentKey);
+      await (dbService as MissionSubscriptionDbService).refreshParentStream(
+        parentKey,
+      );
     }
     await dbService?.refreshStream();
   }

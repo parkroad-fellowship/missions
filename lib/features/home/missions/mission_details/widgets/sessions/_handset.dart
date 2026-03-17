@@ -37,112 +37,112 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
-      child: BlocBuilder<
-        MissionSessionResourceCubit,
-        ResourceState<PRFMissionSession>
-      >(
-        builder: (context, state) {
-          return state.maybeWhen(
-            listLoading: () => const Center(
-              child: PRFCircularProgressIndicator(),
-            ),
-            listLoaded: (sessions, _, _) {
-              if (sessions.isEmpty) {
-                return PRFEmptyView(
-                  label: l10n.noSessions,
-                  description: l10n.sessionsWillAppearHere,
-                  icon: Icons.event_note_outlined,
-                );
-              }
+      child:
+          BlocBuilder<
+            MissionSessionResourceCubit,
+            ResourceState<PRFMissionSession>
+          >(
+            builder: (context, state) {
+              return state.maybeWhen(
+                listLoading: () => const Center(
+                  child: PRFCircularProgressIndicator(),
+                ),
+                listLoaded: (sessions, _, _) {
+                  if (sessions.isEmpty) {
+                    return PRFEmptyView(
+                      label: l10n.noSessions,
+                      description: l10n.sessionsWillAppearHere,
+                      icon: Icons.event_note_outlined,
+                    );
+                  }
 
-              // Group by startsAt date
-              final missionSessions = col.groupBy(
-                sessions,
-                (PRFMissionSession session) => session.startsAt,
-              );
+                  // Group by startsAt date
+                  final missionSessions = col.groupBy(
+                    sessions,
+                    (PRFMissionSession session) => session.startsAt,
+                  );
 
-              return ListView.builder(
-                physics: const ScrollPhysics(),
-                itemCount: missionSessions.length,
-                itemBuilder: (context, index) {
-                  final sortedDailySessions =
-                      List<PRFMissionSession>.from(
+                  return ListView.builder(
+                    physics: const ScrollPhysics(),
+                    itemCount: missionSessions.length,
+                    itemBuilder: (context, index) {
+                      final sortedDailySessions = List<PRFMissionSession>.from(
                         missionSessions.values.elementAt(index),
                       )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Timeline Date Header
-                      Container(
-                            margin: const EdgeInsets.only(
-                              left: PRFSpacingTokens.xxl,
-                              top: PRFSpacingTokens.lg,
-                              bottom: PRFSpacingTokens.sm,
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 4,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Timeline Date Header
+                          Container(
+                                margin: const EdgeInsets.only(
+                                  left: PRFSpacingTokens.xxl,
+                                  top: PRFSpacingTokens.lg,
+                                  bottom: PRFSpacingTokens.sm,
                                 ),
-                                const SizedBox(width: PRFSpacingTokens.md),
-                                Text(
-                                  DateFormatter.formatMissionDate(
-                                    missionSessions.keys.elementAt(index),
-                                    timezone,
-                                  ),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w600,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 4,
+                                      height: 24,
+                                      decoration: BoxDecoration(
                                         color: Theme.of(
                                           context,
                                         ).colorScheme.primary,
+                                        borderRadius: BorderRadius.circular(2),
                                       ),
+                                    ),
+                                    const SizedBox(width: PRFSpacingTokens.md),
+                                    Text(
+                                      DateFormatter.formatMissionDate(
+                                        missionSessions.keys.elementAt(index),
+                                        timezone,
+                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                          ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )
-                          .animate(delay: (index * 100).ms)
-                          .slideX(begin: -0.3)
-                          .fadeIn(),
+                              )
+                              .animate(delay: (index * 100).ms)
+                              .slideX(begin: -0.3)
+                              .fadeIn(),
 
-                      // Timeline Sessions
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        itemCount: sortedDailySessions.length,
-                        itemBuilder: (context, i) => TimelineSessionCard(
-                          missionSession: sortedDailySessions[i],
-                          missionUlid: missionUlid,
-                          isLast: i == sortedDailySessions.length - 1,
-                          animationDelay: (index * 100 + i * 50).ms,
-                          userTimezone: timezone,
-                        ),
-                      ),
-                      const SizedBox(height: PRFSpacingTokens.lg),
-                    ],
+                          // Timeline Sessions
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const ScrollPhysics(),
+                            itemCount: sortedDailySessions.length,
+                            itemBuilder: (context, i) => TimelineSessionCard(
+                              missionSession: sortedDailySessions[i],
+                              missionUlid: missionUlid,
+                              isLast: i == sortedDailySessions.length - 1,
+                              animationDelay: (index * 100 + i * 50).ms,
+                              userTimezone: timezone,
+                            ),
+                          ),
+                          const SizedBox(height: PRFSpacingTokens.lg),
+                        ],
+                      );
+                    },
                   );
                 },
+                error: (message, _) => PRFEmptyView(
+                  label: l10n.noSessions,
+                  description: message,
+                  icon: Icons.event_note_outlined,
+                ),
+                orElse: () => const SizedBox.shrink(),
               );
             },
-            error: (message, _) => PRFEmptyView(
-              label: l10n.noSessions,
-              description: message,
-              icon: Icons.event_note_outlined,
-            ),
-            orElse: () => const SizedBox.shrink(),
-          );
-        },
-      ),
+          ),
     );
   }
 }

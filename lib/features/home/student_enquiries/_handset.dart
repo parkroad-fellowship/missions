@@ -76,10 +76,7 @@ class _StudentEnquiriesPageHandsetState
             ),
 
             // Enquiries List
-            BlocBuilder<
-              EnquiryResourceCubit,
-              ResourceState<PRFStudentEnquiry>
-            >(
+            BlocBuilder<EnquiryResourceCubit, ResourceState<PRFStudentEnquiry>>(
               builder: (context, state) {
                 return state.maybeWhen(
                   listLoaded: (allEnquiries, _, _) {

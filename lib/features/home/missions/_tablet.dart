@@ -160,8 +160,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
           listLoaded: (missions, _, _) {
             if (missions.isEmpty) {
               return RefreshIndicator(
-                onRefresh: () =>
-                    context.read<MissionResourceCubit>().loadAll(),
+                onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
                 child: PRFEmptyView(
                   label: l10n.noMissions,
                   description: l10n.pleaseWait,
@@ -173,8 +172,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
               ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
             return RefreshIndicator(
-              onRefresh: () =>
-                  context.read<MissionResourceCubit>().loadAll(),
+              onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
@@ -318,7 +316,8 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
   final VoidCallback? onTap;
 
   String _schoolName() {
-    if (mission is PRFMission) return (mission as PRFMission).school?.name ?? '';
+    if (mission is PRFMission)
+      return (mission as PRFMission).school?.name ?? '';
     if (mission is PRFLocalMission) {
       return (mission as PRFLocalMission).school?.name ?? '';
     }

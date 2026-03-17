@@ -212,45 +212,8 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                       icon: Icons.person_outline,
                       title: l10n.facilitator,
                       isRequired: true,
-                      child: BlocBuilder<
-                        MissionSubscriptionResourceCubit,
-                        ResourceState<PRFMissionSubscription>
-                      >(
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            orElse: () => const SizedBox.shrink(),
-                            listLoading: () =>
-                                const PRFLinearProgressIndicator(),
-                            listLoaded: (subscribers, _, _) =>
-                                PRFSearchableList<PRFMember>(
-                                  entries: subscribers
-                                      .where((s) => s.member != null)
-                                      .map(
-                                        (subscriber) =>
-                                            PRFSearchableListEntry<PRFMember>(
-                                              value: subscriber.member!,
-                                              label:
-                                                  subscriber.member!.fullName,
-                                            ),
-                                      )
-                                      .toList(),
-                                  onSelected: (member) => setState(() {
-                                    selectedFacilitator = member;
-                                    if (_showValidation) _validateForm();
-                                  }),
-                                  selection: selectedFacilitator,
-                                  hintText: l10n.facilitator,
-                                  emptyText: 'No subscribers found',
-                                ),
-                          );
-                        },
-                      ),
-                    ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
-
-                    PRFFormSection(
-                          icon: Icons.mic_outlined,
-                          title: l10n.speaker,
-                          child: BlocBuilder<
+                      child:
+                          BlocBuilder<
                             MissionSubscriptionResourceCubit,
                             ResourceState<PRFMissionSubscription>
                           >(
@@ -276,15 +239,57 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                           )
                                           .toList(),
                                       onSelected: (member) => setState(() {
-                                        selectedSpeaker = member;
+                                        selectedFacilitator = member;
+                                        if (_showValidation) _validateForm();
                                       }),
-                                      selection: selectedSpeaker,
-                                      hintText: l10n.speaker,
+                                      selection: selectedFacilitator,
+                                      hintText: l10n.facilitator,
                                       emptyText: 'No subscribers found',
                                     ),
                               );
                             },
                           ),
+                    ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
+
+                    PRFFormSection(
+                          icon: Icons.mic_outlined,
+                          title: l10n.speaker,
+                          child:
+                              BlocBuilder<
+                                MissionSubscriptionResourceCubit,
+                                ResourceState<PRFMissionSubscription>
+                              >(
+                                builder: (context, state) {
+                                  return state.maybeWhen(
+                                    orElse: () => const SizedBox.shrink(),
+                                    listLoading: () =>
+                                        const PRFLinearProgressIndicator(),
+                                    listLoaded: (subscribers, _, _) =>
+                                        PRFSearchableList<PRFMember>(
+                                          entries: subscribers
+                                              .where((s) => s.member != null)
+                                              .map(
+                                                (subscriber) =>
+                                                    PRFSearchableListEntry<
+                                                      PRFMember
+                                                    >(
+                                                      value: subscriber.member!,
+                                                      label: subscriber
+                                                          .member!
+                                                          .fullName,
+                                                    ),
+                                              )
+                                              .toList(),
+                                          onSelected: (member) => setState(() {
+                                            selectedSpeaker = member;
+                                          }),
+                                          selection: selectedSpeaker,
+                                          hintText: l10n.speaker,
+                                          emptyText: 'No subscribers found',
+                                        ),
+                                  );
+                                },
+                              ),
                         )
                         .animate(delay: PRFMotionTokens.standard)
                         .slideX(begin: -0.2)

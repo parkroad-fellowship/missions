@@ -75,10 +75,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
             ),
 
             // Enquiries List
-            BlocBuilder<
-              EnquiryResourceCubit,
-              ResourceState<PRFStudentEnquiry>
-            >(
+            BlocBuilder<EnquiryResourceCubit, ResourceState<PRFStudentEnquiry>>(
               builder: (context, state) {
                 return state.maybeWhen(
                   listLoaded: (allEnquiries, _, _) {

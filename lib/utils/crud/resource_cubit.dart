@@ -17,8 +17,8 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   ResourceCubit({
     required BaseAPIService<T> service,
     this.dbService,
-  })  : _service = service,
-        super(const ResourceState.initial());
+  }) : _service = service,
+       super(const ResourceState.initial());
 
   final BaseAPIService<T> _service;
   final BaseLocalDBService<T, dynamic>? dbService;

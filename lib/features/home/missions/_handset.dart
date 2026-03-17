@@ -166,8 +166,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           listLoaded: (missions, _, _) {
             if (missions.isEmpty) {
               return RefreshIndicator(
-                onRefresh: () =>
-                    context.read<MissionResourceCubit>().loadAll(),
+                onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
                 child: PRFEmptyView(
                   label: l10n.noMissions,
                   description: l10n.pleaseWait,
@@ -179,8 +178,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
             return RefreshIndicator(
-              onRefresh: () =>
-                  context.read<MissionResourceCubit>().loadAll(),
+              onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
