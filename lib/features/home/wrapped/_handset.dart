@@ -40,8 +40,12 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
         return state.when(
           initial: () => _buildLoadingState(theme),
           listLoading: () => _buildLoadingState(theme),
-          empty: _buildEmptyState,
-          listLoaded: (memberEngagement) {
+          listLoaded: (memberEngagementList, _, __) {
+            if (memberEngagementList.isEmpty) {
+              return _buildEmptyState();
+            }
+            final memberEngagement = memberEngagementList.first;
+            // ignore: unused_local_variable
             final year = DateTime.now().year;
             final pages = <Widget>[
               IntroWrappedPage(
@@ -145,7 +149,9 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               ),
             );
           },
-          error: _buildErrorState,
+          mutating: (_, __) => _buildLoadingState(theme),
+          mutated: (_, __, ___) => _buildLoadingState(theme),
+          error: (message, _) => _buildErrorState(message),
         );
       },
     );

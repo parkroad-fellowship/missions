@@ -3,6 +3,7 @@ import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
@@ -35,7 +36,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
     super.initState();
 
     context.read<MissionResourceCubit>().loadAll();
-    context.read<GetMemberMissionSubscriptionsCubit>().loadAll(
+    context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions(
       refresh: true,
     );
 
@@ -94,7 +95,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
           actions: [
             BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
               builder: (context, state) => state.maybeWhen(
-                loading: () => const SizedBox.square(
+                listLoading: () => const SizedBox.square(
                   dimension: 24,
                   child: PRFCircularProgressIndicator(),
                 ),
@@ -239,7 +240,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
           return RefreshIndicator(
             onRefresh: () => context
                 .read<GetMemberMissionSubscriptionsCubit>()
-                .loadAll(),
+                .getSubscriptions(),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: l10n.pleaseWait,
@@ -250,7 +251,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
         return RefreshIndicator(
           onRefresh: () => context
               .read<GetMemberMissionSubscriptionsCubit>()
-              .loadAll(),
+              .getSubscriptions(),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(

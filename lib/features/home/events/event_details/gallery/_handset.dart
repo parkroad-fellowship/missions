@@ -98,21 +98,23 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                     ),
                   ),
                 ),
-                empty: () => SliverFillRemaining(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: PRFSpacingTokens.xxl,
-                    ),
-                    child: PRFEmptyView(
-                      label: l10n.addPhotos,
-                      description: l10n.addEventPhotos,
-                      icon: Icons.photo_camera_outlined,
-                      actionLabel: l10n.addPhotos,
-                      onActionPressed: () => _showAddMediaModal(context),
-                    ),
-                  ),
-                ),
-                loaded: (mediaItems) {
+                listLoaded: (mediaItems, _, __) {
+                  if (mediaItems.isEmpty) {
+                    return SliverFillRemaining(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.xxl,
+                        ),
+                        child: PRFEmptyView(
+                          label: l10n.addPhotos,
+                          description: l10n.addEventPhotos,
+                          icon: Icons.photo_camera_outlined,
+                          actionLabel: l10n.addPhotos,
+                          onActionPressed: () => _showAddMediaModal(context),
+                        ),
+                      ),
+                    );
+                  }
                   return SliverPadding(
                     padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     sliver: SliverGrid(
@@ -141,7 +143,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                     ),
                   );
                 },
-                error: (error) => SliverFillRemaining(
+                error: (error, _) => SliverFillRemaining(
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

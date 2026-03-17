@@ -9,6 +9,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/cubi
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission_session.dart';
+import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
@@ -46,7 +47,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
   void initState() {
     super.initState();
     context.read<MissionSessionResourceCubit>().loadAll(
-      missionSessionUlid: missionSessionUlid,
+      filters: {'mission_session_ulid': missionSessionUlid},
     );
   }
 
@@ -66,9 +67,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
         child: RefreshIndicator(
           onRefresh: () =>
               context.read<MissionSessionResourceCubit>().loadAll(
-                missionSessionUlid: missionSessionUlid,
-                refresh: true,
-              ),
+      filters: {'mission_session_ulid': missionSessionUlid},
+    ),
           child: CustomScrollView(
             slivers: [
               // Navigation Header
@@ -85,9 +85,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                         context
                             .read<MissionSessionResourceCubit>()
                             .loadAll(
-                              missionSessionUlid: missionSessionUlid,
-                              refresh: true,
-                            );
+      filters: {'mission_session_ulid': missionSessionUlid},
+    );
                         PRFSnackbar.success(context, l10n.doneUploading);
                       },
                       error: (error) {
@@ -145,7 +144,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                 child:
                     BlocBuilder<MissionSessionResourceCubit, ResourceState<PRFMissionSession>>(
                       builder: (context, state) => state.maybeWhen(
-                        loading: () => Container(
+                        listLoading: () => Container(
                           margin: const EdgeInsets.symmetric(
                             horizontal: PRFSpacingTokens.lg,
                           ),
@@ -160,7 +159,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                             child: LinearProgressIndicator(),
                           ),
                         ),
-                        error: (message) => Container(
+                        error: (message, _) => Container(
                           margin: const EdgeInsets.symmetric(
                             horizontal: PRFSpacingTokens.lg,
                           ),
@@ -652,8 +651,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
       ).then((_) {
         // ignore: use_build_context_synchronously
         context.read<MissionSessionResourceCubit>().loadAll(
-          missionSessionUlid: missionSessionUlid,
-        );
+      filters: {'mission_session_ulid': missionSessionUlid},
+    );
       });
 }
 
@@ -886,14 +885,14 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                     >(
                                       listener: (context, state) {
                                         state.mapOrNull(
-                                          loaded: (_) {
+                                          mutated: (_) {
                                             Navigator.of(context).pop();
                                             Navigator.of(context).pop();
                                             context
                                                 .read<MissionSessionResourceCubit>()
                                                 .loadAll(
-                                                  missionUlid: missionUlid,
-                                                );
+      filters: {'mission_ulid': missionUlid},
+    );
                                             PRFSnackbar.success(
                                               context,
                                               l10n.sessionDeleted,
@@ -916,14 +915,13 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                                   MissionSessionResourceCubit
                                                 >()
                                                 .deleteSession(
-                                                  missionSessionUlid:
-                                                      missionSession.ulid,
+                                                  missionSession.ulid,
                                                 );
                                           },
                                           title: l10n.delete,
                                           disabled: false,
                                           isLoading: state.maybeWhen(
-                                            loading: () => true,
+                                            mutating: (_, __) => true,
                                             orElse: () => false,
                                           ),
                                         );

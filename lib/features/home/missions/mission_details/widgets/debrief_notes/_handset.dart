@@ -25,7 +25,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   @override
   void initState() {
     context.read<DebriefNoteResourceCubit>().loadAll(
-      missionUlid: missionUlid,
+      filters: {'mission_ulid': missionUlid},
     );
     super.initState();
   }
@@ -43,8 +43,8 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
       ),
       widget: (context, debriefNotes) => RefreshIndicator(
         onRefresh: () => context.read<DebriefNoteResourceCubit>().loadAll(
-          missionUlid: missionUlid,
-        ),
+      filters: {'mission_ulid': missionUlid},
+    ),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(

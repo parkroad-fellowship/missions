@@ -58,7 +58,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   }
 
   void _loadData() {
-    context.read<MissionResourceCubit>().currentItemsmissionUlid: missionUlid);
+    context.read<MissionResourceCubit>().loadAll(
+      filters: {'mission_ulid': missionUlid},
+    );
     context.read<ExpenseCategoryResourceCubit>().loadAll();
   }
 
@@ -72,13 +74,20 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              loadedSync: (mission) {
-                accountingEventUlid = mission.accountingEventUlid;
-                context.read<AllocationEntryResourceCubit>().loadAll(
-                  accountingEventUlid: mission.accountingEventUlid,
-                );
+              listLoaded: (missions, _, __) {
+                if (missions.isNotEmpty) {
+                  final mission = missions.first;
+                  accountingEventUlid = mission.accountingEvent?.ulid;
+                  if (accountingEventUlid != null) {
+                    context.read<AllocationEntryResourceCubit>().loadAll(
+                      filters: {
+                        'accounting_event_ulid': accountingEventUlid,
+                      },
+                    );
+                  }
+                }
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, 'Failed to load mission: $message');
               },
             );
@@ -86,14 +95,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ),
         BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
-            state.when(
-              initial: () {},
-              loading: () {},
-              loaded: () {
+            state.maybeWhen(
+              orElse: () {},
+              mutated: (_, __, ___) {
                 _loadData();
                 PRFSnackbar.success(context, 'Entry added successfully');
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
             );
@@ -101,14 +109,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ),
         BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
-            state.when(
-              initial: () {},
-              loading: () {},
-              loaded: () {
+            state.maybeWhen(
+              orElse: () {},
+              mutated: (_, __, ___) {
                 _loadData();
                 PRFSnackbar.success(context, 'Expense updated successfully');
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
             );
@@ -116,14 +123,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ),
         BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
-            state.when(
-              initial: () {},
-              loading: () {},
-              loaded: () {
+            state.maybeWhen(
+              orElse: () {},
+              mutated: (_, __, ___) {
                 _loadData();
                 PRFSnackbar.success(context, 'Expense deleted successfully');
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
             );
@@ -154,20 +160,29 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
               child: PRFLinearProgressIndicator(),
             ),
-            loading: () => const Padding(
+            listLoading: () => const Padding(
               padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
               child: PRFLinearProgressIndicator(),
             ),
-            loaded: (entries) => _buildLoadedView(context, l10n, entries),
-            empty: () => const Padding(
+            listLoaded: (entries, _, __) {
+              if (entries.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                  child: PRFEmptyView(
+                    label: 'No Expenses Yet',
+                    description: 'Start by adding your first expense',
+                    icon: Icons.receipt_long_outlined,
+                  ),
+                );
+              }
+              return _buildLoadedView(context, l10n, entries);
+            },
+            mutating: (_, __) => const Padding(
               padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-              child: PRFEmptyView(
-                label: 'No Expenses Yet',
-                description: 'Start by adding your first expense',
-                icon: Icons.receipt_long_outlined,
-              ),
+              child: PRFLinearProgressIndicator(),
             ),
-            error: (message) => Padding(
+            mutated: (entries, _, __) => _buildLoadedView(context, l10n, entries),
+            error: (message, _) => Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: PRFSpacingTokens.lg,
               ),
@@ -1611,20 +1626,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ResourceState<PRFAllocationEntry>
             >(
               listener: (context, state) {
-                state.when(
-                  initial: () {},
-                  loading: () {},
-                  loaded: () {
+                state.maybeWhen(
+                  orElse: () {},
+                  mutated: (_, __, ___) {
                     Navigator.of(dialogContext).pop();
                   },
-                  error: (message) {
+                  error: (message, _) {
                     Navigator.of(dialogContext).pop();
                   },
                 );
               },
               builder: (context, state) {
-                return state.when(
-                  loading: () => const Padding(
+                return state.maybeWhen(
+                  mutating: (_, __) => const Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: PRFSpacingTokens.lg,
                       vertical: PRFSpacingTokens.sm,
@@ -1635,9 +1649,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),
                   ),
-                  initial: () => _buildDeleteButton(theme, context, entry),
-                  loaded: () => _buildDeleteButton(theme, context, entry),
-                  error: (message) => _buildDeleteButton(theme, context, entry),
+                  orElse: () => _buildDeleteButton(theme, context, entry),
                 );
               },
             ),
@@ -1654,9 +1666,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     return ElevatedButton.icon(
       onPressed: () {
-        context.read<AllocationEntryResourceCubit>().deleteEntry(
-          allocationEntryUlid: entry.ulid,
-        );
+        context.read<AllocationEntryResourceCubit>().deleteEntry(entry.ulid);
       },
       icon: const Icon(Icons.delete_outline, size: 18),
       label: const Text('Delete'),
@@ -1697,7 +1707,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     ).then((_) {
       if (context.mounted) {
         context.read<AllocationEntryResourceCubit>().loadAll(
-          accountingEventUlid: accountingEvent.ulid,
+          filters: {'accounting_event_ulid': accountingEvent.ulid},
         );
       }
     });
@@ -1726,7 +1736,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     ).then((_) {
       if (context.mounted) {
         context.read<AllocationEntryResourceCubit>().loadAll(
-          accountingEventUlid: accountingEvent.ulid,
+          filters: {'accounting_event_ulid': accountingEvent.ulid},
         );
       }
     });
@@ -2247,19 +2257,21 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 onPressed: () => context
                     .read<AllocationEntryResourceCubit>()
                     .loadAll(
-                      accountingEventUlid: accountingEvent.ulid,
+                      filters: {
+                        'accounting_event_ulid': accountingEvent.ulid,
+                      },
                     ),
                 icon: state.maybeWhen(
                   orElse: () => const Icon(
                     Icons.refresh,
                     color: Colors.white,
                   ),
-                  loading: () => const SizedBox(
+                  listLoading: () => const SizedBox(
                     width: PRFSpacingTokens.xl,
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
-                  loaded: (_) => const Icon(
+                  listLoaded: (_, __, ___) => const Icon(
                     Icons.refresh,
                     color: Colors.white,
                   ),

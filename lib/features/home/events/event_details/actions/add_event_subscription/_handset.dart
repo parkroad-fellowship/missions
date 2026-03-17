@@ -192,12 +192,12 @@ class _AddEventSubscriptionViewHandsetState
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (_) {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -213,7 +213,7 @@ class _AddEventSubscriptionViewHandsetState
                             l10n.eventRegistrationRecorded,
                           );
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -254,8 +254,10 @@ class _AddEventSubscriptionViewHandsetState
     }
 
     await context.read<EventSubscriptionResourceCubit>().addSubscription(
-      event: widget.event,
-      tickets: _ticketController.text.trim(),
+      data: {
+        'event_ulid': widget.event.ulid,
+        'tickets': _ticketController.text.trim(),
+      },
     );
   }
 }

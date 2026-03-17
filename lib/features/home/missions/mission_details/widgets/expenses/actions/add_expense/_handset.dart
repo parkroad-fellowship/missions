@@ -217,9 +217,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                             builder: (context, state) {
                               return state.maybeWhen(
                                 orElse: () => const SizedBox.shrink(),
-                                loading: () =>
+                                listLoading: () =>
                                     const PRFLinearProgressIndicator(),
-                                loaded: (expenseCategories) =>
+                                listLoaded: (expenseCategories, _, __) =>
                                     _buildCategorySelector(
                                       expenseCategories,
                                       Theme.of(context),
@@ -323,12 +323,12 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               BlocConsumer<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        loaded: (_) {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -583,15 +583,17 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     );
 
     await context.read<AllocationEntryResourceCubit>().addEntry(
-      accountingEventUlid: widget.accountingEventUlid,
-      expenseCategoryUlid: selectedExpenseCategory!.ulid,
-      entryType: PRFEntryType.debit, // Always debit for expenses
-      chargeType: selectedChargeType!,
-      charge: charge,
-      unitCost: unitCost,
-      quantity: quantity,
-      narration: _narrationController.text,
-      confirmationMessage: _confirmationMessageController.text,
+      data: {
+        'accounting_event_ulid': widget.accountingEventUlid,
+        'expense_category_ulid': selectedExpenseCategory!.ulid,
+        'entry_type': PRFEntryType.debit.apiKey,
+        'charge_type': selectedChargeType!,
+        'charge': charge,
+        'unit_cost': unitCost,
+        'quantity': quantity,
+        'narration': _narrationController.text,
+        'confirmation_message': _confirmationMessageController.text,
+      },
       receiptDTOs: uploadedMedia,
     );
   }

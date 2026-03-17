@@ -53,7 +53,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     selectedDecisionType = PRFSoulDecisionType.salvation;
 
     context.read<ClassGroupResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
+      filters: {'mission_ulid': widget.missionUlid},
     );
   }
 
@@ -213,7 +213,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                                 listLoading: () => const Center(
                                   child: LinearProgressIndicator(),
                                 ),
-                                listLoaded: (classes) =>
+                                listLoaded: (classes, _, __) =>
                                     PRFSearchableList<PRFClassGroup>(
                                       entries: classes
                                           .map(
@@ -287,12 +287,12 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
               BlocConsumer<SoulResourceCubit, ResourceState<PRFSoul>>(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (_) {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -300,7 +300,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.soulRecorded);
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -383,12 +383,14 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     }
 
     await context.read<SoulResourceCubit>().createSoul(
-      missionUlid: widget.missionUlid,
-      classGroup: selectedClassGroup!,
-      fullName: _fullNameController.text.trim(),
-      admissionNumber: _admissionNumberController.text.trim(),
-      decisionType: selectedDecisionType!,
-      notes: _notesController.text.trim(),
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'class_group_ulid': selectedClassGroup!.ulid,
+        'full_name': _fullNameController.text.trim(),
+        'admission_number': _admissionNumberController.text.trim(),
+        'decision_type': selectedDecisionType!.apiKey,
+        'notes': _notesController.text.trim(),
+      },
     );
   }
 }

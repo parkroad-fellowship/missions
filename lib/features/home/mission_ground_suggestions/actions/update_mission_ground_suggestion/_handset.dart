@@ -340,12 +340,12 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (result) {
+                        mutated: (result) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -354,11 +354,11 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           PRFSnackbar.success(
                             context,
                             l10n.missionGroundRecorded(
-                              result.missionGroundSuggestion.name,
+                              result.item?.name ?? '',
                             ),
                           );
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -401,12 +401,14 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     await context
         .read<GroundSuggestionResourceCubit>()
         .updateSuggestion(
-          name: _nameController.text.trim(),
-          contactPerson: _contactPersonController.text.trim(),
-          contactNumber: _contactNumberController.text.trim(),
-          status: _selectedStatus!,
-          notes: _notesController.text,
-          missionGroundSuggestionUlid: missionGroundSuggestion.ulid,
+          ulid: missionGroundSuggestion.ulid,
+          data: {
+            'name': _nameController.text.trim(),
+            'contact_person': _contactPersonController.text.trim(),
+            'contact_number': _contactNumberController.text.trim(),
+            'status': _selectedStatus!,
+            'notes': _notesController.text,
+          },
         );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
+import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/enums/common/prf_morph_types.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
@@ -43,10 +44,10 @@ class _StudentEnquiryRepliesPageTabletState
     super.initState();
 
     context.read<EnquiryResourceCubit>().loadAll(
-      studentEnquiryUlid: enquiryUlid,
+      filters: {'student_enquiry_ulid': enquiryUlid},
     );
     context.read<EnquiryReplyResourceCubit>().loadAll(
-      enquiryUlid: enquiryUlid,
+      filters: {'student_enquiry_ulid': enquiryUlid},
     );
     _subscribeToEnquiryReplies();
 
@@ -108,8 +109,10 @@ class _StudentEnquiryRepliesPageTabletState
     if (text.trim().isEmpty) return;
 
     await context.read<EnquiryReplyResourceCubit>().createReply(
-      studentEnquiryUlid: enquiryUlid,
-      content: text.trim(),
+      data: {
+        'student_enquiry_ulid': enquiryUlid,
+        'content': text.trim(),
+      },
     );
   }
 
@@ -299,10 +302,10 @@ class _StudentEnquiryRepliesPageTabletState
             BlocConsumer<EnquiryReplyResourceCubit, ResourceState<PRFStudentEnquiryReply>>(
               listener: (context, state) {
                 state.mapOrNull(
-                  loading: (_) {
+                  mutating: (_) {
                     setState(() => _isLoading = true);
                   },
-                  listLoaded: (_) {
+                  mutated: (_) {
                     setState(() => _isLoading = false);
                     _enquiryReplyController.clear();
                     FocusScope.of(context).unfocus();

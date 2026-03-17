@@ -27,7 +27,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
   @override
   void initState() {
     context.read<MissionSessionResourceCubit>().loadAll(
-      missionUlid: missionUlid,
+      filters: {'mission_ulid': missionUlid},
     );
     super.initState();
   }

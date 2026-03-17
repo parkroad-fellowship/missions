@@ -26,7 +26,7 @@ class _MissionQuestionsViewHandsetState
   @override
   void initState() {
     context.read<MissionQuestionResourceCubit>().loadAll(
-      missionUlid: missionUlid,
+      filters: {'mission_ulid': missionUlid},
     );
     super.initState();
   }
@@ -45,8 +45,8 @@ class _MissionQuestionsViewHandsetState
       widget: (context, missionQuestions) => RefreshIndicator(
         onRefresh: () =>
             context.read<MissionQuestionResourceCubit>().loadAll(
-              missionUlid: missionUlid,
-            ),
+      filters: {'mission_ulid': missionUlid},
+    ),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(

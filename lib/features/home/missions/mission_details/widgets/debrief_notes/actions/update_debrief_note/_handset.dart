@@ -102,12 +102,12 @@ class _UpdateDebriefNoteViewHandsetState
             BlocConsumer<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
               listener: (context, state) {
                 state.mapOrNull(
-                  loading: (_) {
+                  mutating: (_) {
                     setState(() {
                       _isLoading = true;
                     });
                   },
-                  listLoaded: (_) {
+                  mutated: (_) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -115,7 +115,7 @@ class _UpdateDebriefNoteViewHandsetState
                     Navigator.of(context).pop();
                     PRFSnackbar.success(context, l10n.noteRecorded);
                   },
-                  error: (error, _) {
+                  error: (error) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -150,9 +150,11 @@ class _UpdateDebriefNoteViewHandsetState
     }
 
     await context.read<DebriefNoteResourceCubit>().updateDebriefNote(
-      debriefNoteUlid: widget.debriefNote.ulid,
-      missionUlid: widget.missionUlid,
-      note: _noteController.text.trim(),
+      ulid: widget.debriefNote.ulid,
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'note': _noteController.text.trim(),
+      },
     );
   }
 }

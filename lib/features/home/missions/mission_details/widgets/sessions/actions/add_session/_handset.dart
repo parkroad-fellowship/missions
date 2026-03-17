@@ -61,10 +61,10 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     super.initState();
     _notesController.addListener(_onFormChanged);
     context.read<MissionSubscriptionResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
+      filters: {'mission_ulid': widget.missionUlid},
     );
     context.read<ClassGroupResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
+      filters: {'mission_ulid': widget.missionUlid},
     );
   }
 
@@ -301,7 +301,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                     listLoading: () => const Center(
                                       child: LinearProgressIndicator(),
                                     ),
-                                    listLoaded: (classes) =>
+                                    listLoaded: (classes, _, __) =>
                                         PRFSearchableList<PRFClassGroup>(
                                           entries: classes
                                               .map(
@@ -391,12 +391,12 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               BlocConsumer<MissionSessionResourceCubit, ResourceState<PRFMissionSession>>(
                 listener: (context, state) {
                   state.mapOrNull(
-                    loading: (_) {
+                    mutating: (_) {
                       setState(() {
                         _isLoading = true;
                       });
                     },
-                    listLoaded: (_) {
+                    mutated: (_) {
                       setState(() {
                         _isLoading = false;
                       });
@@ -404,12 +404,12 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                       Navigator.of(context).pop();
                       PRFSnackbar.success(context, l10n.sessionRecorded);
                     },
-                    error: (error, _) {
+                    error: (error) {
                       setState(() {
                         _isLoading = false;
                       });
                       Gaimon.error();
-                      PRFSnackbar.error(context, error.error);
+                      PRFSnackbar.error(context, error.message);
                     },
                   );
                 },
@@ -442,13 +442,17 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     }
 
     await context.read<MissionSessionResourceCubit>().addSession(
-      missionUlid: widget.missionUlid,
-      facilitatorUlid: selectedFacilitator!.ulid!,
-      startsAt: startsAt!,
-      endsAt: endsAt!,
-      notes: _notesController.text,
-      speakerUlid: selectedSpeaker?.ulid,
-      classGroupUlid: selectedClassGroup?.ulid,
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'facilitator_ulid': selectedFacilitator!.ulid!,
+        'starts_at': startsAt!.toIso8601String(),
+        'ends_at': endsAt!.toIso8601String(),
+        'notes': _notesController.text,
+        if (selectedSpeaker?.ulid != null)
+          'speaker_ulid': selectedSpeaker!.ulid,
+        if (selectedClassGroup?.ulid != null)
+          'class_group_ulid': selectedClassGroup!.ulid,
+      },
     );
   }
 

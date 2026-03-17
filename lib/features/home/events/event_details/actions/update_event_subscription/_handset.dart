@@ -197,12 +197,12 @@ class _UpdateEventSubscriptionViewHandsetState
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (_) {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -218,7 +218,7 @@ class _UpdateEventSubscriptionViewHandsetState
                             l10n.eventRegistrationRecorded,
                           );
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -311,8 +311,7 @@ class _UpdateEventSubscriptionViewHandsetState
                                     context
                                         .read<EventSubscriptionResourceCubit>()
                                         .deleteSubscription(
-                                          eventSubscriptionUlid:
-                                              eventSubscription.ulid,
+                                          eventSubscription.ulid,
                                         );
                                   },
                                   child: state.maybeWhen(
@@ -367,9 +366,11 @@ class _UpdateEventSubscriptionViewHandsetState
     }
 
     await context.read<EventSubscriptionResourceCubit>().updateSubscription(
-      event: widget.event,
-      eventSubscription: eventSubscription,
-      tickets: _ticketController.text.trim(),
+      ulid: eventSubscription.ulid,
+      data: {
+        'event_ulid': widget.event.ulid,
+        'tickets': _ticketController.text.trim(),
+      },
     );
   }
 }

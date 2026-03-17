@@ -62,24 +62,19 @@ class _MissionsDetailsPageHandsetState
     super.initState();
 
     context.read<MissionSubscriptionResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': widget.missionUlid},
     );
     context.read<MissionSessionResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
     context.read<SoulResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
     context.read<DebriefNoteResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
     context.read<MissionQuestionResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
   }
 
@@ -193,18 +188,17 @@ class _MissionsDetailsPageHandsetState
         BlocConsumer<SubscribeCubit, SubscribeState>(
           listener: (context, state) {
             state.mapOrNull(
-              listLoaded: (_) {
+              loaded: (_) {
                 Gaimon.success();
                 context.read<MissionSubscriptionResourceCubit>().loadAll(
-                  missionUlid: missionUlid,
-                  refresh: true,
+                  filters: {'mission_ulid': missionUlid},
                 );
                 PRFSnackbar.success(
                   context,
                   l10n.successfullySubscribed,
                 );
               },
-              error: (error, _) {
+              error: (error) {
                 Gaimon.error();
                 PRFSnackbar.error(context, error.message);
               },
@@ -245,7 +239,7 @@ class _MissionsDetailsPageHandsetState
                     icon: BlocBuilder<SubscribeCubit, SubscribeState>(
                       builder: (context, state) => state.maybeWhen(
                         orElse: () => const Icon(Icons.hail_rounded),
-                        listLoading: () => const SizedBox.square(
+                        loading: () => const SizedBox.square(
                           dimension: 16,
                           child: PRFCircularProgressIndicator(
                             color: Colors.white,
@@ -349,7 +343,7 @@ class _MissionsDetailsPageHandsetState
         ).then((_) {
           if (context.mounted) {
             context.read<MissionSessionResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });
@@ -371,7 +365,7 @@ class _MissionsDetailsPageHandsetState
         ).then((_) {
           if (context.mounted) {
             context.read<SoulResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });
@@ -395,7 +389,7 @@ class _MissionsDetailsPageHandsetState
         ).then((_) {
           if (context.mounted) {
             context.read<DebriefNoteResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });
@@ -419,7 +413,7 @@ class _MissionsDetailsPageHandsetState
         ).then((_) {
           if (context.mounted) {
             context.read<MissionQuestionResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });

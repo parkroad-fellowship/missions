@@ -7,6 +7,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/cubi
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/local/mission/prf_mission_session.dart';
+import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
@@ -70,10 +71,10 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     _notesController.addListener(_onFormChanged);
 
     context.read<MissionSubscriptionResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
+      filters: {'mission_ulid': widget.missionUlid},
     );
     context.read<ClassGroupResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
+      filters: {'mission_ulid': widget.missionUlid},
     );
 
     // Initialize the fields with the current values
@@ -321,7 +322,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                     listLoading: () => const Center(
                                       child: LinearProgressIndicator(),
                                     ),
-                                    listLoaded: (classes) =>
+                                    listLoaded: (classes, _, __) =>
                                         PRFSearchableList<String>(
                                           entries: classes
                                               .map(
@@ -415,12 +416,12 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (_) {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -430,16 +431,15 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           context
                               .read<MissionSessionResourceCubit>()
                               .loadAll(
-                                missionSessionUlid: widget.missionSession.ulid,
-                                refresh: true,
-                              );
+      filters: {'mission_session_ulid': widget.missionSession.ulid},
+    );
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
                           Gaimon.error();
-                          PRFSnackbar.error(context, error.error);
+                          PRFSnackbar.error(context, error.message);
                         },
                       );
                     },
@@ -475,14 +475,18 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     }
 
     await context.read<MissionSessionResourceCubit>().updateSession(
-      missionUlid: widget.missionUlid,
-      missionSessionUlid: missionSession.ulid,
-      facilitatorUlid: selectedFacilitatorUlid!,
-      startsAt: startsAt!,
-      endsAt: endsAt!,
-      notes: _notesController.text,
-      speakerUlid: selectedSpeakerUlid,
-      classGroupUlid: selectedClassGroupUlid,
+      ulid: missionSession.ulid,
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'facilitator_ulid': selectedFacilitatorUlid!,
+        'starts_at': startsAt!.toIso8601String(),
+        'ends_at': endsAt!.toIso8601String(),
+        'notes': _notesController.text,
+        if (selectedSpeakerUlid != null)
+          'speaker_ulid': selectedSpeakerUlid,
+        if (selectedClassGroupUlid != null)
+          'class_group_ulid': selectedClassGroupUlid,
+      },
     );
   }
 

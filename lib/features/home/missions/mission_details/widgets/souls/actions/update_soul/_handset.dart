@@ -5,6 +5,7 @@ import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart
 
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_soul.dart';
+import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     _admissionNumberController.addListener(_onFormChanged);
 
     context.read<ClassGroupResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
+      filters: {'mission_ulid': widget.missionUlid},
     );
   }
 
@@ -138,7 +139,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                     listLoading: () => const Center(
                       child: LinearProgressIndicator(),
                     ),
-                    listLoaded: (classes) {
+                    listLoaded: (classes, _, __) {
                       // Match initial class group by ulid
                       if (selectedClassGroup == null &&
                           _initialClassGroupUlid != null) {
@@ -221,12 +222,12 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
             BlocConsumer<SoulResourceCubit, ResourceState<PRFSoul>>(
               listener: (context, state) {
                 state.mapOrNull(
-                  loading: (_) {
+                  mutating: (_) {
                     setState(() {
                       _isLoading = true;
                     });
                   },
-                  listLoaded: (_) {
+                  mutated: (_) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -234,7 +235,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                     Navigator.of(context).pop();
                     PRFSnackbar.success(context, l10n.soulRecorded);
                   },
-                  error: (error, _) {
+                  error: (error) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -309,13 +310,15 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     }
 
     await context.read<SoulResourceCubit>().updateSoul(
-      soulUlid: widget.soul.ulid,
-      missionUlid: widget.missionUlid,
-      classGroupUlid: selectedClassGroup!.ulid,
-      fullName: _fullNameController.text.trim(),
-      decisionType: selectedDecisionType!.apiKey,
-      notes: _notesController.text.trim(),
-      admissionNumber: _admissionNumberController.text.trim(),
+      ulid: widget.soul.ulid,
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'class_group_ulid': selectedClassGroup!.ulid,
+        'full_name': _fullNameController.text.trim(),
+        'decision_type': selectedDecisionType!.apiKey,
+        'notes': _notesController.text.trim(),
+        'admission_number': _admissionNumberController.text.trim(),
+      },
     );
   }
 }

@@ -79,23 +79,28 @@ class _MissionGroundSuggestionsPageTabletState
                             ),
                           ),
                         ),
-                        empty: () => SliverFillRemaining(
-                          child: RefreshIndicator(
-                            onRefresh: () => context
-                                .read<GroundSuggestionResourceCubit>()
-                                .loadAll(),
-                            child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              child: PRFEmptyView(
-                                label: l10n.suggestAMission,
-                                description: l10n.suggestMissionDescription,
-                                actionLabel: l10n.suggestAMission,
-                                onActionPressed: _addMissionGroundSuggestion,
+                        listLoaded: (missionGroundSuggestions, _, __) {
+                          if (missionGroundSuggestions.isEmpty) {
+                            return SliverFillRemaining(
+                              child: RefreshIndicator(
+                                onRefresh: () => context
+                                    .read<GroundSuggestionResourceCubit>()
+                                    .loadAll(),
+                                child: SingleChildScrollView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  child: PRFEmptyView(
+                                    label: l10n.suggestAMission,
+                                    description:
+                                        l10n.suggestMissionDescription,
+                                    actionLabel: l10n.suggestAMission,
+                                    onActionPressed:
+                                        _addMissionGroundSuggestion,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        listLoaded: (missionGroundSuggestions) {
+                            );
+                          }
                           return SliverPadding(
                             padding: const EdgeInsets.only(
                               bottom: 100,

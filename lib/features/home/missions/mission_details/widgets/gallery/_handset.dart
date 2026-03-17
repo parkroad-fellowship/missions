@@ -106,21 +106,23 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     ),
                   ),
                 ),
-                empty: () => SliverFillRemaining(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: PRFSpacingTokens.xxl,
-                    ),
-                    child: PRFEmptyView(
-                      label: l10n.addMissionPhotos,
-                      description: l10n.addMissionPhotosDesc,
-                      icon: Icons.photo_camera_outlined,
-                      actionLabel: l10n.addMissionPhotos,
-                      onActionPressed: () => _showAddMediaModal(context),
-                    ),
-                  ),
-                ),
-                loaded: (mediaItems) {
+                listLoaded: (mediaItems, _, __) {
+                  if (mediaItems.isEmpty) {
+                    return SliverFillRemaining(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.xxl,
+                        ),
+                        child: PRFEmptyView(
+                          label: l10n.addMissionPhotos,
+                          description: l10n.addMissionPhotosDesc,
+                          icon: Icons.photo_camera_outlined,
+                          actionLabel: l10n.addMissionPhotos,
+                          onActionPressed: () => _showAddMediaModal(context),
+                        ),
+                      ),
+                    );
+                  }
                   return SliverPadding(
                     padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     sliver: SliverGrid(
@@ -148,7 +150,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     ),
                   );
                 },
-                error: (error) => SliverFillRemaining(
+                error: (error, _) => SliverFillRemaining(
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

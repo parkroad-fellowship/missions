@@ -31,10 +31,10 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
   @override
   void initState() {
     context.read<ModuleResourceCubit>().loadAll(
-      courseModuleUlid: courseModuleUlid,
+      filters: {'course_module_ulid': courseModuleUlid},
     );
     context.read<LessonResourceCubit>().loadAll(
-      courseModuleUlid: courseModuleUlid,
+      filters: {'course_module_ulid': courseModuleUlid},
     );
     super.initState();
   }

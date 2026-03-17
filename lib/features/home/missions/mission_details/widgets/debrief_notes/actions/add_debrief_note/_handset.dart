@@ -184,12 +184,12 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
               BlocConsumer<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (_) {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -197,7 +197,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.noteRecorded);
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -238,8 +238,10 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
     }
 
     await context.read<DebriefNoteResourceCubit>().addDebriefNote(
-      missionUlid: widget.missionUlid,
-      note: _noteController.text.trim(),
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'note': _noteController.text.trim(),
+      },
     );
   }
 }

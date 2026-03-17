@@ -3,6 +3,7 @@ import 'package:app/enums/payment/prf_completion_status.dart';
 import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/course/prf_lesson_module.dart';
+import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
@@ -221,7 +222,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                             listLoading: () => setState(() {
                               _isLoading = true;
                             }),
-                            listLoaded: () {
+                            mutated: (_, __, ___) {
                               setState(() {
                                 _isLoading = false;
                               });
@@ -245,8 +246,10 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                               onPressed: () async => context
                                   .read<LessonResourceCubit>()
                                   .finishLesson(
-                                    lessonModuleUlid: lessonModuleUlid,
-                                    courseModuleUlid: courseModuleUlid,
+                                    data: {
+                                      'lesson_module_ulid': lessonModuleUlid,
+                                      'course_module_ulid': courseModuleUlid,
+                                    },
                                   ),
                               title: _isLoading
                                   ? l10n.completing

@@ -185,12 +185,12 @@ class _AddMissionQuestionViewHandsetState
               BlocConsumer<MissionQuestionResourceCubit, ResourceState<PRFMissionQuestion>>(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (_) {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -198,7 +198,7 @@ class _AddMissionQuestionViewHandsetState
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.questionRecorded);
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -239,8 +239,10 @@ class _AddMissionQuestionViewHandsetState
     }
 
     await context.read<MissionQuestionResourceCubit>().addMissionQuestion(
-      missionUlid: widget.missionUlid,
-      question: _questionController.text.trim(),
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'question': _questionController.text.trim(),
+      },
     );
   }
 }

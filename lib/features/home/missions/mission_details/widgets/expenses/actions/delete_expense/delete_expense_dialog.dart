@@ -128,10 +128,9 @@ class DeleteExpenseDialog extends StatelessWidget {
         ),
         BlocConsumer<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
-            state.when(
-              initial: () {},
-              listLoading: () {},
-              listLoaded: () {
+            state.maybeWhen(
+              orElse: () {},
+              mutated: (_, __, ___) {
                 Navigator.of(context).pop(true);
               },
               error: (message, _) {
@@ -140,8 +139,8 @@ class DeleteExpenseDialog extends StatelessWidget {
             );
           },
           builder: (context, state) {
-            return state.when(
-              listLoading: () => const Padding(
+            return state.maybeWhen(
+              mutating: (_, __) => const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: SizedBox(
                   width: 20,
@@ -149,9 +148,7 @@ class DeleteExpenseDialog extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
-              initial: () => _buildDeleteButton(theme, context),
-              listLoaded: () => _buildDeleteButton(theme, context),
-              error: (message, _) => _buildDeleteButton(theme, context),
+              orElse: () => _buildDeleteButton(theme, context),
             );
           },
         ),
@@ -162,9 +159,7 @@ class DeleteExpenseDialog extends StatelessWidget {
   Widget _buildDeleteButton(ThemeData theme, BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {
-        context.read<AllocationEntryResourceCubit>().deleteEntry(
-          allocationEntryUlid: entry.ulid,
-        );
+        context.read<AllocationEntryResourceCubit>().deleteEntry(entry.ulid);
       },
       icon: const Icon(Icons.delete_outline, size: 18),
       label: const Text('Delete'),

@@ -226,9 +226,9 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                             builder: (context, state) {
                               return state.maybeWhen(
                                 orElse: () => const SizedBox.shrink(),
-                                loading: () =>
+                                listLoading: () =>
                                     const PRFLinearProgressIndicator(),
-                                loaded: (expenseCategories) =>
+                                listLoaded: (expenseCategories, _, __) =>
                                     _buildCategorySelector(
                                       expenseCategories,
                                       Theme.of(context),
@@ -332,10 +332,10 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
               BlocConsumer<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() => _isLoading = true);
                         },
-                        loaded: (_) {
+                        mutated: (_) {
                           setState(() => _isLoading = false);
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.expenseRecorded);
@@ -579,16 +579,18 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
       loaded: (mediaItems) => mediaItems,
     );
     await context.read<AllocationEntryResourceCubit>().editEntry(
-      allocationEntryUlid: widget.allocationEntry.ulid,
-      accountingEventUlid: widget.allocationEntry.accountingEvent!.ulid,
-      expenseCategoryUlid: _selectedCategory!.ulid,
-      entryType: widget.allocationEntry.entryType,
-      chargeType: _selectedChargeType,
-      charge: charge,
-      unitCost: unitCost,
-      quantity: quantity,
-      narration: _narrationController.text,
-      confirmationMessage: _confirmationController.text,
+      ulid: widget.allocationEntry.ulid,
+      data: {
+        'accounting_event_ulid': widget.allocationEntry.accountingEvent!.ulid,
+        'expense_category_ulid': _selectedCategory!.ulid,
+        'entry_type': widget.allocationEntry.entryType,
+        'charge_type': _selectedChargeType,
+        'charge': charge,
+        'unit_cost': unitCost,
+        'quantity': quantity,
+        'narration': _narrationController.text,
+        'confirmation_message': _confirmationController.text,
+      },
       receiptDTOs: uploadedMedia,
     );
   }

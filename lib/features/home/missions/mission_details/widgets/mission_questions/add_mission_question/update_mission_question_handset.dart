@@ -105,12 +105,12 @@ class _UpdateMissionQuestionViewHandsetState
             >(
               listener: (context, state) {
                 state.mapOrNull(
-                  loading: (_) {
+                  mutating: (_) {
                     setState(() {
                       _isLoading = true;
                     });
                   },
-                  listLoaded: (_) {
+                  mutated: (_) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -118,7 +118,7 @@ class _UpdateMissionQuestionViewHandsetState
                     Navigator.of(context).pop();
                     PRFSnackbar.success(context, l10n.questionRecorded);
                   },
-                  error: (error, _) {
+                  error: (error) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -153,9 +153,11 @@ class _UpdateMissionQuestionViewHandsetState
     }
 
     await context.read<MissionQuestionResourceCubit>().updateMissionQuestion(
-      missionQuestionUlid: widget.missionQuestion.ulid,
-      missionUlid: widget.missionUlid,
-      question: _questionController.text.trim(),
+      ulid: widget.missionQuestion.ulid,
+      data: {
+        'mission_ulid': widget.missionUlid,
+        'question': _questionController.text.trim(),
+      },
     );
   }
 }

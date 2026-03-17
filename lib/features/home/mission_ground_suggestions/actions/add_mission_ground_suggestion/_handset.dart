@@ -275,12 +275,12 @@ class _AddMissionGroundSuggestionViewHandsetState
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
-                        loading: (_) {
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (result) {
+                        mutated: (result) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -289,11 +289,11 @@ class _AddMissionGroundSuggestionViewHandsetState
                           PRFSnackbar.success(
                             context,
                             l10n.missionGroundRecorded(
-                              result.missionGroundSuggestion.name,
+                              result.item?.name ?? '',
                             ),
                           );
                         },
-                        error: (error, _) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -334,9 +334,11 @@ class _AddMissionGroundSuggestionViewHandsetState
     }
 
     await context.read<GroundSuggestionResourceCubit>().createSuggestion(
-      name: _nameController.text.trim(),
-      contactPerson: _contactPersonController.text.trim(),
-      contactNumber: _contactNumber!,
+      data: {
+        'name': _nameController.text.trim(),
+        'contact_person': _contactPersonController.text.trim(),
+        'contact_number': _contactNumber!,
+      },
     );
   }
 }

@@ -217,12 +217,12 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                     listener: (context, state) {
                       state.when(
                         initial: () {},
-                        listLoading: () {
+                        loading: () {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        listLoaded: (refund) {
+                        loaded: (refund) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -232,7 +232,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                             'Refund entry added successfully',
                           );
                         },
-                        error: (message, _) {
+                        error: (message) {
                           setState(() {
                             _isLoading = false;
                           });

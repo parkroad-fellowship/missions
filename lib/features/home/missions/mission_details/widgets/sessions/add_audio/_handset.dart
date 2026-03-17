@@ -174,9 +174,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                   '${l10n.upload} ${l10n.recordingCompleted}',
                 );
                 context.read<MissionSessionResourceCubit>().loadAll(
-                  missionSessionUlid: widget.missionSessionUlid,
-                  refresh: true,
-                );
+      filters: {'mission_session_ulid': widget.missionSessionUlid},
+    );
                 Navigator.of(context).pop();
               },
               multipleLoaded: (uploadedFiles) {

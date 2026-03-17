@@ -2,6 +2,7 @@ import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/enquiry/prf_student_enquiry.dart';
+import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
@@ -69,7 +70,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                 builder: (context, state) => state.maybeWhen(
                   orElse: () => const PRFLinearProgressIndicator(),
                   error: (message, _) => const SizedBox.shrink(),
-                  loaded: SizedBox.shrink,
+                  listLoaded: (_, __, ___) => const SizedBox.shrink(),
                 ),
               ),
             ),

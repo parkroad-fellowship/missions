@@ -61,24 +61,19 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
     super.initState();
 
     context.read<MissionSubscriptionResourceCubit>().loadAll(
-      missionUlid: widget.missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': widget.missionUlid},
     );
     context.read<MissionQuestionResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
     context.read<DebriefNoteResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
     context.read<SoulResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
     context.read<MissionSessionResourceCubit>().loadAll(
-      missionUlid: missionUlid,
-      refresh: true,
+      filters: {'mission_ulid': missionUlid},
     );
   }
 
@@ -206,18 +201,17 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
         BlocConsumer<SubscribeCubit, SubscribeState>(
           listener: (context, state) {
             state.mapOrNull(
-              listLoaded: (_) {
+              loaded: (_) {
                 Gaimon.success();
                 context.read<MissionSubscriptionResourceCubit>().loadAll(
-                  missionUlid: missionUlid,
-                  refresh: true,
+                  filters: {'mission_ulid': missionUlid},
                 );
                 PRFSnackbar.success(
                   context,
                   l10n.successfullySubscribed,
                 );
               },
-              error: (error, _) {
+              error: (error) {
                 Gaimon.error();
                 PRFSnackbar.error(context, error.message);
               },
@@ -262,7 +256,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
                           Icons.hail_rounded,
                           size: 20,
                         ),
-                        listLoading: () => const SizedBox.square(
+                        loading: () => const SizedBox.square(
                           dimension: 20,
                           child: PRFCircularProgressIndicator(
                             color: Colors.white,
@@ -367,7 +361,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
         ).then((_) {
           if (context.mounted) {
             context.read<MissionSessionResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });
@@ -389,7 +383,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
         ).then((_) {
           if (context.mounted) {
             context.read<SoulResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });
@@ -413,7 +407,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
         ).then((_) {
           if (context.mounted) {
             context.read<DebriefNoteResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });
@@ -437,7 +431,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
         ).then((_) {
           if (context.mounted) {
             context.read<MissionQuestionResourceCubit>().loadAll(
-              missionUlid: missionUlid,
+              filters: {'mission_ulid': missionUlid},
             );
           }
         });
