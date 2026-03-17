@@ -51,9 +51,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
     // Have salvation selected by default
     selectedDecisionType = PRFSoulDecisionType.salvation;
 
-    context.read<ClassGroupResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
-    );
+    context.read<ClassGroupResourceCubit>().loadAll();
   }
 
   void _onFormChanged() {

@@ -235,10 +235,9 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                 heroTag: 'subscribe',
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                onPressed: () async =>
-                    context.read<SubscribeCubit>().subscribe(
-                      missionUlid: missionUlid,
-                    ),
+                onPressed: () async => context.read<SubscribeCubit>().subscribe(
+                  missionUlid: missionUlid,
+                ),
                 label: Text(
                   l10n.sendMe,
                   style: TextStyle(
