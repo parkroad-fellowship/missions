@@ -44,8 +44,7 @@ class MissionsDetailsPageHandset extends StatefulWidget {
       _MissionsDetailsPageHandsetState();
 }
 
-class _MissionsDetailsPageHandsetState
-    extends State<MissionsDetailsPageHandset>
+class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     with SingleTickerProviderStateMixin {
   String get missionUlid => widget.missionUlid;
 
