@@ -599,7 +599,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.sm,
+                          ),
                         ),
                         child: IconButton(
                           onPressed: progress.isRetrying

@@ -472,7 +472,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 Container(
                   width: 2,
                   height: 60,
-                  margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.sm),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.sm,
+                  ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -560,7 +562,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                 ),
                                 decoration: BoxDecoration(
                                   color: statusColor,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.smd,
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: statusColor.withValues(alpha: 0.3),
@@ -587,10 +591,14 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                             Row(
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.all(PRFSpacingTokens.xs),
+                                  padding: const EdgeInsets.all(
+                                    PRFSpacingTokens.xs,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: theme.colorScheme.primaryContainer,
-                                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.sm,
+                                    ),
                                   ),
                                   child: Icon(
                                     Icons.location_on_rounded,
@@ -657,7 +665,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                             padding: const EdgeInsets.all(PRFSpacingTokens.md),
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.smd,
+                              ),
                               border: Border.all(
                                 color: theme.colorScheme.outline.withValues(
                                   alpha: 0.2,
@@ -740,7 +750,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                                   statusColor.withValues(alpha: 0.05),
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.smd,
+                              ),
                               border: Border.all(
                                 color: statusColor.withValues(alpha: 0.3),
                               ),

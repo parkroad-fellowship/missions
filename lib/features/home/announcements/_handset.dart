@@ -92,7 +92,9 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                           children: [
                             // Date Header with your theme
                             Container(
-                              margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
+                              margin: const EdgeInsets.symmetric(
+                                vertical: PRFSpacingTokens.lg,
+                              ),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: PRFSpacingTokens.lg,
                                 vertical: PRFSpacingTokens.sm,
@@ -101,7 +103,9 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                                 color: colorScheme.primary.withValues(
                                   alpha: 0.08,
                                 ),
-                                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                                borderRadius: BorderRadius.circular(
+                                  PRFRadiusTokens.smd,
+                                ),
                                 border: Border.all(
                                   color: colorScheme.primary.withValues(
                                     alpha: 0.18,
@@ -202,7 +206,9 @@ class _AnnouncementCard extends StatelessWidget {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
                           ),
                           child: Icon(
                             Icons.campaign_rounded,
@@ -238,7 +244,12 @@ class _AnnouncementCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.lg),
+          padding: const EdgeInsets.fromLTRB(
+            PRFSpacingTokens.xl,
+            PRFSpacingTokens.xl,
+            PRFSpacingTokens.xl,
+            PRFSpacingTokens.lg,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

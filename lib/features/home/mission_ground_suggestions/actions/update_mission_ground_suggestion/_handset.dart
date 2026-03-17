@@ -226,8 +226,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           child: PRFTextInput(
                             hintText: l10n.contactPerson,
                             controller: _contactPersonController,
-                            errorText:
-                                _showValidation ? _contactPersonError : null,
+                            errorText: _showValidation
+                                ? _contactPersonError
+                                : null,
                           ),
                         )
                         .animate(delay: PRFMotionTokens.standard)
@@ -285,27 +286,29 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           icon: Icons.flag_outlined,
                           title: l10n.status,
                           isRequired: true,
-                          child: PRFSearchableList<
-                            PRFMissionGroundSuggestionStatus
-                          >(
-                            entries: PRFMissionGroundSuggestionStatus.values
-                                .map(
-                                  (status) => PRFSearchableListEntry<
-                                    PRFMissionGroundSuggestionStatus
-                                  >(
-                                    value: status,
-                                    label: status.name,
-                                  ),
-                                )
-                                .toList(),
-                            onSelected: (status) => setState(() {
-                              _selectedStatus = status;
-                              if (_showValidation) _validateForm();
-                            }),
-                            selection: _selectedStatus,
-                            hintText: l10n.status,
-                            emptyText: 'No statuses found',
-                          ),
+                          child:
+                              PRFSearchableList<
+                                PRFMissionGroundSuggestionStatus
+                              >(
+                                entries: PRFMissionGroundSuggestionStatus.values
+                                    .map(
+                                      (status) =>
+                                          PRFSearchableListEntry<
+                                            PRFMissionGroundSuggestionStatus
+                                          >(
+                                            value: status,
+                                            label: status.name,
+                                          ),
+                                    )
+                                    .toList(),
+                                onSelected: (status) => setState(() {
+                                  _selectedStatus = status;
+                                  if (_showValidation) _validateForm();
+                                }),
+                                selection: _selectedStatus,
+                                hintText: l10n.status,
+                                emptyText: 'No statuses found',
+                              ),
                         )
                         .animate(delay: PRFMotionTokens.slow)
                         .slideX(begin: -0.2)

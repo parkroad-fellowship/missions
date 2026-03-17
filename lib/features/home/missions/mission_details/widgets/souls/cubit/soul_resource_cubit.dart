@@ -1,13 +1,12 @@
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/services/api/soul_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class SoulResourceCubit extends ResourceCubit<PRFSoul> {
   SoulResourceCubit({
     required SoulService soulService,
-    BaseLocalDBService<PRFSoul, dynamic>? dbService,
-  }) : super(service: soulService, dbService: dbService);
+    super.dbService,
+  }) : super(service: soulService);
 
   @override
   List<String> get defaultIncludes => ['classGroup', 'mission'];

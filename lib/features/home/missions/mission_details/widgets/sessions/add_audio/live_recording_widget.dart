@@ -98,7 +98,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         return LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.sm,
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: state.when(
@@ -178,7 +180,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.error,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl, vertical: PRFSpacingTokens.lg),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.xxl,
+              vertical: PRFSpacingTokens.lg,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
             ),
@@ -487,7 +492,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl, vertical: PRFSpacingTokens.lg),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.xxl,
+              vertical: PRFSpacingTokens.lg,
+            ),
           ),
         ),
       ],
@@ -551,7 +559,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl, vertical: PRFSpacingTokens.lg),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.xxl,
+                vertical: PRFSpacingTokens.lg,
+              ),
             ),
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
@@ -566,7 +577,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                 ? Theme.of(context).colorScheme.secondary
                 : Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl, vertical: PRFSpacingTokens.lg),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.xxl,
+              vertical: PRFSpacingTokens.lg,
+            ),
           ),
         ),
       ],

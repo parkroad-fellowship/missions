@@ -359,8 +359,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                               hintText: l10n.startTime,
                               controller: _startDateController,
                               enabled: false,
-                              errorText:
-                                  _showValidation ? _startTimeError : null,
+                              errorText: _showValidation
+                                  ? _startTimeError
+                                  : null,
                             ),
                           ),
                         )
@@ -378,8 +379,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                               hintText: l10n.endTime,
                               controller: _endDateController,
                               enabled: false,
-                              errorText:
-                                  _showValidation ? _endTimeError : null,
+                              errorText: _showValidation ? _endTimeError : null,
                             ),
                           ),
                         )

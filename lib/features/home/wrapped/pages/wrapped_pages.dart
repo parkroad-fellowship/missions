@@ -156,13 +156,16 @@ class MissionsWrappedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Your Mission Journey',
-                style: theme.textTheme.displaySmall?.copyWith(
-                  color: PRFColors.white,
-                  fontWeight: FontWeight.w800,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
+                    'Your Mission Journey',
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: PRFColors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                  .animate()
+                  .fadeIn(duration: PRFMotionTokens.enterShort)
+                  .slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: missionStats.totalMissions.toString(),
@@ -245,13 +248,16 @@ class ImpactWrappedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Your Impact',
-                style: theme.textTheme.displaySmall?.copyWith(
-                  color: PRFColors.white,
-                  fontWeight: FontWeight.w800,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
+                    'Your Impact',
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: PRFColors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                  .animate()
+                  .fadeIn(duration: PRFMotionTokens.enterShort)
+                  .slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: impactStats.soulsTouched.toString(),
@@ -374,13 +380,16 @@ class LearningWrappedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Your Learning Growth',
-                style: theme.textTheme.displaySmall?.copyWith(
-                  color: PRFColors.white,
-                  fontWeight: FontWeight.w800,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
+                    'Your Learning Growth',
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: PRFColors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                  .animate()
+                  .fadeIn(duration: PRFMotionTokens.enterShort)
+                  .slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               Row(
                 children: [
@@ -464,13 +473,16 @@ class PrayerWrappedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Your Prayer Journey',
-                style: theme.textTheme.displaySmall?.copyWith(
-                  color: PRFColors.white,
-                  fontWeight: FontWeight.w800,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
+                    'Your Prayer Journey',
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: PRFColors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                  .animate()
+                  .fadeIn(duration: PRFMotionTokens.enterShort)
+                  .slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               AnimatedStatCard(
                 value: prayerStats.prayerResponses.toString(),
@@ -529,13 +541,16 @@ class EventsWrappedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Your Event Participation',
-                style: theme.textTheme.displaySmall?.copyWith(
-                  color: PRFColors.white,
-                  fontWeight: FontWeight.w800,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: -0.3, end: 0),
+                    'Your Event Participation',
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: PRFColors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                  .animate()
+                  .fadeIn(duration: PRFMotionTokens.enterShort)
+                  .slideY(begin: -0.3, end: 0),
               const SizedBox(height: 48),
               Row(
                 children: [
@@ -612,13 +627,16 @@ class SummaryWrappedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'What a Year!',
-                style: theme.textTheme.displayMedium?.copyWith(
-                  color: PRFColors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-                textAlign: TextAlign.center,
-              ).animate().fadeIn(duration: PRFMotionTokens.enterShort).scale(curve: Curves.easeOut),
+                    'What a Year!',
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: PRFColors.white,
+                      fontWeight: FontWeight.w900,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                  .animate()
+                  .fadeIn(duration: PRFMotionTokens.enterShort)
+                  .scale(curve: Curves.easeOut),
               const SizedBox(height: 48),
               Container(
                     padding: const EdgeInsets.all(PRFSpacingTokens.xl),

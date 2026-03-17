@@ -96,26 +96,34 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   },
                   builder: (context, state) => state.maybeWhen(
                     loading: () => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.lg,
+                      ),
                       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
                         ).colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: const Center(
                         child: LinearProgressIndicator(),
                       ),
                     ),
                     error: (message) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.lg,
+                      ),
                       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
                         ).colorScheme.error.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: Center(
                         child: Text(
@@ -143,7 +151,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                           padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
                           ),
                           child: const Center(
                             child: LinearProgressIndicator(),
@@ -158,7 +168,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                             color: Theme.of(
                               context,
                             ).colorScheme.error.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
                           ),
                           child: Center(
                             child: Text(
@@ -189,8 +201,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                 stream: _missionSessionStream,
                 nullWidget: defaultEmptyStateWidget,
                 loading: defaultLoadingWidget,
-                widget: (context, missionSession) =>
-                    const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
+                widget: (context, missionSession) => const SliverToBoxAdapter(
+                  child: SizedBox(height: PRFSpacingTokens.xl),
+                ),
               ),
 
               // Recordings Section
@@ -199,87 +212,105 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                 nullWidget: defaultEmptyStateWidget,
                 loading: defaultLoadingWidget,
                 widget: (context, missionSession) => SliverToBoxAdapter(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.8),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.audiotrack_outlined,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          size: 24,
-                        ),
-                        const SizedBox(width: PRFSpacingTokens.md),
-                        Expanded(
-                          child: Text(
-                            l10n.recordings,
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(
+                  child:
+                      Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: PRFSpacingTokens.lg,
+                            ),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Theme.of(context).colorScheme.primary,
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.8),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.md,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.audiotrack_outlined,
                                   color: Theme.of(
                                     context,
                                   ).colorScheme.onPrimary,
-                                  fontWeight: FontWeight.w600,
+                                  size: 24,
                                 ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onPrimary.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                          ),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onPrimary,
-                            ),
-                            onPressed: () => WoltModalSheet.show<void>(
-                              context: context,
-                              pageListBuilder: (modalSheetContext) {
-                                return [
-                                  WoltModalSheetPage(
-                                    backgroundColor: Colors.white,
-                                    surfaceTintColor: Colors.white,
-                                    child: SizedBox(
-                                      height: MediaQuery.sizeOf(
-                                        context,
-                                      ).height,
-                                      child: AddAudioView(
-                                        missionSessionUlid: missionSessionUlid,
-                                      ),
+                                const SizedBox(width: PRFSpacingTokens.md),
+                                Expanded(
+                                  child: Text(
+                                    l10n.recordings,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onPrimary.withValues(
+                                          alpha: 0.2,
+                                        ),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.sm,
                                     ),
                                   ),
-                                ];
-                              },
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary,
+                                    ),
+                                    onPressed: () => WoltModalSheet.show<void>(
+                                      context: context,
+                                      pageListBuilder: (modalSheetContext) {
+                                        return [
+                                          WoltModalSheetPage(
+                                            backgroundColor: Colors.white,
+                                            surfaceTintColor: Colors.white,
+                                            child: SizedBox(
+                                              height: MediaQuery.sizeOf(
+                                                context,
+                                              ).height,
+                                              child: AddAudioView(
+                                                missionSessionUlid:
+                                                    missionSessionUlid,
+                                              ),
+                                            ),
+                                          ),
+                                        ];
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ).animate(delay: PRFMotionTokens.slow).slideY(begin: 0.2).fadeIn(),
+                          )
+                          .animate(delay: PRFMotionTokens.slow)
+                          .slideY(begin: 0.2)
+                          .fadeIn(),
                 ),
               ),
 
@@ -287,8 +318,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                 stream: _missionSessionStream,
                 nullWidget: defaultEmptyStateWidget,
                 loading: defaultLoadingWidget,
-                widget: (context, missionSession) =>
-                    const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+                widget: (context, missionSession) => const SliverToBoxAdapter(
+                  child: SizedBox(height: PRFSpacingTokens.lg),
+                ),
               ),
 
               // Recordings List
@@ -312,7 +344,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                                             .onSurface
                                             .withValues(alpha: 0.5),
                                       ),
-                                      const SizedBox(height: PRFSpacingTokens.lg),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.lg,
+                                      ),
                                       Text(
                                         l10n.noRecordings,
                                         style: Theme.of(context)
@@ -346,7 +380,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                       ),
               ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: PRFSpacingTokens.xxl),
+              ),
             ],
           ),
         ),
@@ -359,7 +395,10 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
     int index,
     AppLocalizations l10n,
   ) => Container(
-    margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.xs),
+    margin: const EdgeInsets.symmetric(
+      horizontal: PRFSpacingTokens.lg,
+      vertical: PRFSpacingTokens.xs,
+    ),
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
@@ -597,7 +636,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
               child: SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.8,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
                   child: Text(
                     transcript.content!,
                     style: Theme.of(context).textTheme.bodySmall,
@@ -736,7 +777,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                           padding: const EdgeInsets.all(PRFSpacingTokens.md),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.sm,
+                            ),
                           ),
                           child: Text(
                             missionSession.notes.isNotEmpty
@@ -771,7 +814,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                 ).colorScheme.primary.withValues(alpha: 0.8),
                               ],
                             ),
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Theme.of(
@@ -816,7 +861,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                               color: Theme.of(context).colorScheme.error,
                               width: 1.5,
                             ),
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
                           ),
                           child: PRFDestroyButton(
                             onPressed: () async => showDialog<void>(

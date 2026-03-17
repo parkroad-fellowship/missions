@@ -205,8 +205,9 @@ class _AddMissionGroundSuggestionViewHandsetState
                           child: PRFTextInput(
                             hintText: 'e.g., Tr John',
                             controller: _contactPersonController,
-                            errorText:
-                                _showValidation ? _contactPersonError : null,
+                            errorText: _showValidation
+                                ? _contactPersonError
+                                : null,
                           ),
                         )
                         .animate(delay: PRFMotionTokens.standard)

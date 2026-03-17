@@ -10,8 +10,8 @@ import 'package:bloc/bloc.dart';
 class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
   MissionMediaResourceCubit({
     required MissionService missionService,
-  })  : _missionService = missionService,
-        super(const ResourceState.initial());
+  }) : _missionService = missionService,
+       super(const ResourceState.initial());
 
   final MissionService _missionService;
 
@@ -37,8 +37,10 @@ class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
         parentId: missionUlid,
         childPath: 'media',
         queryParameters: {
-          'collections':
-              collections.map((e) => e.collection).toList().join(','),
+          'collections': collections
+              .map((e) => e.collection)
+              .toList()
+              .join(','),
         },
         fromJson: (json) => PRFMediaResponse.fromJson(json).data,
       );
@@ -54,22 +56,25 @@ class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
     required String missionUlid,
     required String mediaUuid,
   }) async {
-    emit(ResourceState.mutating(
-      items: currentItems,
-      operation: ResourceOperation.delete,
-    ));
+    emit(
+      ResourceState.mutating(
+        items: currentItems,
+        operation: ResourceOperation.delete,
+      ),
+    );
     try {
       await _missionService.deleteChild(
         parentId: missionUlid,
         childPath: 'media',
         childId: mediaUuid,
       );
-      final updated =
-          currentItems.where((m) => m.uuid != mediaUuid).toList();
-      emit(ResourceState.mutated(
-        items: updated,
-        operation: ResourceOperation.delete,
-      ));
+      final updated = currentItems.where((m) => m.uuid != mediaUuid).toList();
+      emit(
+        ResourceState.mutated(
+          items: updated,
+          operation: ResourceOperation.delete,
+        ),
+      );
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {

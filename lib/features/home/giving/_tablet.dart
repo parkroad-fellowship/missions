@@ -67,7 +67,9 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
               ],
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xxl),
+            ),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -92,7 +94,9 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                           context.read<GetPaymentsCubit>().getPayments(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.xl,
+                        ),
                         child: Container(
                           height: MediaQuery.sizeOf(context).height * 0.6,
                           alignment: Alignment.center,
@@ -122,7 +126,9 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                           context.read<GetPaymentsCubit>().getPayments(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.xl,
+                        ),
                         child: SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.6,
                           child: PRFEmptyView(
@@ -159,10 +165,14 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                 ),
                                 child: Material(
                                   color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.xl,
+                                  ),
                                   child: InkWell(
                                     onTap: () => _showPaymentActions(payment),
-                                    borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.xl,
+                                    ),
                                     splashColor: theme.colorScheme.primary
                                         .withValues(alpha: 0.1),
                                     highlightColor: theme.colorScheme.primary
@@ -295,7 +305,9 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                         padding: const EdgeInsets.all(PRFSpacingTokens.md),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
                         ),
                         child: Icon(
                           Icons.open_in_browser_rounded,
@@ -325,7 +337,9 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                       padding: const EdgeInsets.all(PRFSpacingTokens.md),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: Icon(
                         Icons.refresh_rounded,

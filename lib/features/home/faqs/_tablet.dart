@@ -59,7 +59,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
             // Search Field
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.lg,
+                ),
                 child: PRFTextInput(
                   hintText: l10n.whatWouldYouLikeToKnow,
                   controller: _searchController,
@@ -80,7 +82,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.lg),
+            ),
 
             // FAQ Categories
             SliverToBoxAdapter(
@@ -91,28 +95,30 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                     loading: PRFLinearProgressIndicator.new,
                     loaded: (faqCategories) =>
                         PRFCategoryChips<PRFLocalFaqCategory>(
-                      categories: faqCategories,
-                      selectedCategory: _selectedCategory,
-                      labelBuilder: (c) => c.name,
-                      allLabel: l10n.all.toUpperCase(),
-                      onCategorySelected: (newValue) {
-                        setState(() {
-                          _selectedCategory = newValue;
-                        });
-                        Logger().i('Selected Category: $_selectedCategory');
-                        context.read<GetFaqsCubit>().getFaqs(
-                          categoryUlid: _selectedCategory?.ulid,
-                          query: (_searchQuery?.isNotEmpty ?? false)
-                              ? _searchQuery
-                              : null,
-                        );
-                      },
-                    ),
+                          categories: faqCategories,
+                          selectedCategory: _selectedCategory,
+                          labelBuilder: (c) => c.name,
+                          allLabel: l10n.all.toUpperCase(),
+                          onCategorySelected: (newValue) {
+                            setState(() {
+                              _selectedCategory = newValue;
+                            });
+                            Logger().i('Selected Category: $_selectedCategory');
+                            context.read<GetFaqsCubit>().getFaqs(
+                              categoryUlid: _selectedCategory?.ulid,
+                              query: (_searchQuery?.isNotEmpty ?? false)
+                                  ? _searchQuery
+                                  : null,
+                            );
+                          },
+                        ),
                   );
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.lg),
+            ),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -123,7 +129,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.lg),
+            ),
 
             // FAQ List
             BlocBuilder<GetFaqsCubit, GetFaqsState>(
@@ -176,7 +184,10 @@ class FaqCard extends StatelessWidget {
     return Animate(
       effects: const [SaturateEffect()],
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.xs),
+        margin: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.lg,
+          vertical: PRFSpacingTokens.xs,
+        ),
         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
@@ -210,7 +221,11 @@ class FaqCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: PRFSpacingTokens.sm, bottom: PRFSpacingTokens.sm, right: PRFSpacingTokens.sm),
+                padding: const EdgeInsets.only(
+                  top: PRFSpacingTokens.sm,
+                  bottom: PRFSpacingTokens.sm,
+                  right: PRFSpacingTokens.sm,
+                ),
                 child: Text(
                   faq.answer,
                   style: theme.textTheme.bodyMedium?.copyWith(

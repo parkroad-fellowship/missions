@@ -269,7 +269,10 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
             ),
             const SizedBox(width: PRFSpacingTokens.sm),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.sm,
+                vertical: PRFSpacingTokens.xs,
+              ),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary,
                 borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
@@ -511,7 +514,10 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
         context.read<SelectMediaCubit>().clearMedia();
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.md, horizontal: PRFSpacingTokens.lg),
+        padding: const EdgeInsets.symmetric(
+          vertical: PRFSpacingTokens.md,
+          horizontal: PRFSpacingTokens.lg,
+        ),
         decoration: BoxDecoration(
           color: isSelected
               ? theme.colorScheme.primary.withValues(alpha: 0.1)

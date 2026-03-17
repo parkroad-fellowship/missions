@@ -4,7 +4,6 @@ import 'package:app/models/remote/expense/prf_allocation_entry_dto.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/api/allocation_entry_service.dart';
 import 'package:app/services/api/refund_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:app/services/media_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -14,11 +13,11 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
     required AllocationEntryService allocationEntryService,
     required MediaService mediaService,
     RefundService? refundService,
-    BaseLocalDBService<PRFAllocationEntry, dynamic>? dbService,
-  })  : _allocationEntryService = allocationEntryService,
-        _mediaService = mediaService,
-        _refundService = refundService,
-        super(service: allocationEntryService, dbService: dbService);
+    super.dbService,
+  }) : _allocationEntryService = allocationEntryService,
+       _mediaService = mediaService,
+       _refundService = refundService,
+       super(service: allocationEntryService);
 
   final AllocationEntryService _allocationEntryService;
   final MediaService _mediaService;
@@ -39,10 +38,12 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
     required Map<String, dynamic> data,
     List<PRFMediaDTO> receiptDTOs = const [],
   }) async {
-    emit(ResourceState.mutating(
-      items: currentItems,
-      operation: ResourceOperation.create,
-    ));
+    emit(
+      ResourceState.mutating(
+        items: currentItems,
+        operation: ResourceOperation.create,
+      ),
+    );
 
     try {
       final entry = await _allocationEntryService.create(data: data);
@@ -54,11 +55,13 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
       }
 
       final updated = [entry, ...currentItems];
-      emit(ResourceState.mutated(
-        items: updated,
-        operation: ResourceOperation.create,
-        item: entry,
-      ));
+      emit(
+        ResourceState.mutated(
+          items: updated,
+          operation: ResourceOperation.create,
+          item: entry,
+        ),
+      );
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
@@ -72,10 +75,12 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
     required Map<String, dynamic> data,
     List<PRFMediaDTO> receiptDTOs = const [],
   }) async {
-    emit(ResourceState.mutating(
-      items: currentItems,
-      operation: ResourceOperation.update,
-    ));
+    emit(
+      ResourceState.mutating(
+        items: currentItems,
+        operation: ResourceOperation.update,
+      ),
+    );
 
     try {
       final entry = await _allocationEntryService.update(
@@ -92,11 +97,13 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
       final updated = currentItems.map((e) {
         return e.ulid == ulid ? entry : e;
       }).toList();
-      emit(ResourceState.mutated(
-        items: updated,
-        operation: ResourceOperation.update,
-        item: entry,
-      ));
+      emit(
+        ResourceState.mutated(
+          items: updated,
+          operation: ResourceOperation.update,
+          item: entry,
+        ),
+      );
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
@@ -113,19 +120,23 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
   Future<void> addTokenEntry({
     required PRFAllocationTokenEntryDTO data,
   }) async {
-    emit(ResourceState.mutating(
-      items: currentItems,
-      operation: ResourceOperation.create,
-    ));
+    emit(
+      ResourceState.mutating(
+        items: currentItems,
+        operation: ResourceOperation.create,
+      ),
+    );
 
     try {
       final entry = await _allocationEntryService.addToken(data: data);
       final updated = [entry, ...currentItems];
-      emit(ResourceState.mutated(
-        items: updated,
-        operation: ResourceOperation.create,
-        item: entry,
-      ));
+      emit(
+        ResourceState.mutated(
+          items: updated,
+          operation: ResourceOperation.create,
+          item: entry,
+        ),
+      );
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
@@ -135,20 +146,24 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
 
   /// Add a mission refund (uses RefundService).
   Future<void> addRefund({required Map<String, dynamic> data}) async {
-    emit(ResourceState.mutating(
-      items: currentItems,
-      operation: ResourceOperation.create,
-    ));
+    emit(
+      ResourceState.mutating(
+        items: currentItems,
+        operation: ResourceOperation.create,
+      ),
+    );
 
     try {
       if (_refundService == null) {
         throw Exception('RefundService not provided');
       }
       await _refundService.create(data: data);
-      emit(ResourceState.mutated(
-        items: currentItems,
-        operation: ResourceOperation.create,
-      ));
+      emit(
+        ResourceState.mutated(
+          items: currentItems,
+          operation: ResourceOperation.create,
+        ),
+      );
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {

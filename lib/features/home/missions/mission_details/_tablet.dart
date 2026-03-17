@@ -228,49 +228,50 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
                   ),
                 ],
               ),
-              child: FloatingActionButton.extended(
-                heroTag: 'subscribe',
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
-                onPressed: () async =>
-                    context.read<SubscribeCubit>().subscribe(
-                      missionUlid: missionUlid,
-                    ),
-                label: Text(
-                  l10n.sendMe,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                icon: BlocBuilder<SubscribeCubit, SubscribeState>(
-                  builder: (context, state) => state.maybeWhen(
-                    orElse: () => const Icon(
-                      Icons.hail_rounded,
-                      size: 20,
-                    ),
-                    loading: () => const SizedBox.square(
-                      dimension: 20,
-                      child: PRFCircularProgressIndicator(
-                        color: Colors.white,
+              child:
+                  FloatingActionButton.extended(
+                    heroTag: 'subscribe',
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
+                    onPressed: () async =>
+                        context.read<SubscribeCubit>().subscribe(
+                          missionUlid: missionUlid,
+                        ),
+                    label: Text(
+                      l10n.sendMe,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ),
+                    icon: BlocBuilder<SubscribeCubit, SubscribeState>(
+                      builder: (context, state) => state.maybeWhen(
+                        orElse: () => const Icon(
+                          Icons.hail_rounded,
+                          size: 20,
+                        ),
+                        loading: () => const SizedBox.square(
+                          dimension: 20,
+                          child: PRFCircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ).animate(
+                    effects: [
+                      const ShimmerEffect(
+                        duration: Duration(seconds: 2),
+                        delay: PRFMotionTokens.enterShort,
+                      ),
+                      const ScaleEffect(
+                        begin: Offset(0.8, 0.8),
+                        end: Offset(1, 1),
+                        duration: PRFMotionTokens.slow,
+                      ),
+                    ],
                   ),
-                ),
-              ).animate(
-                effects: [
-                  const ShimmerEffect(
-                    duration: Duration(seconds: 2),
-                    delay: PRFMotionTokens.enterShort,
-                  ),
-                  const ScaleEffect(
-                    begin: Offset(0.8, 0.8),
-                    end: Offset(1, 1),
-                    duration: PRFMotionTokens.slow,
-                  ),
-                ],
-              ),
             );
           },
         ),
@@ -354,9 +355,9 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
           },
         ).then((_) {
           if (context.mounted) {
-            context
-                .read<GetMissionSessionsCubit>()
-                .getMissionSessions(missionUlid: missionUlid);
+            context.read<GetMissionSessionsCubit>().getMissionSessions(
+              missionUlid: missionUlid,
+            );
           }
         });
       case 1:
@@ -424,9 +425,9 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
           },
         ).then((_) {
           if (context.mounted) {
-            context
-                .read<GetMissionQuestionsCubit>()
-                .getMissionQuestions(missionUlid: missionUlid);
+            context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+              missionUlid: missionUlid,
+            );
           }
         });
       case 4:

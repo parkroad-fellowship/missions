@@ -58,7 +58,9 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.lg),
+            ),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -116,7 +118,9 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                 );
               },
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xl),
+            ),
           ],
         ),
       ),

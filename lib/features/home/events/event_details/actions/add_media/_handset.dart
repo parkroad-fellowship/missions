@@ -268,7 +268,10 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             ),
             const SizedBox(width: PRFSpacingTokens.sm),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.sm,
+                vertical: PRFSpacingTokens.xs,
+              ),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary,
                 borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),

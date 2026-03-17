@@ -67,7 +67,9 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   }
                   final lesson = lessonModule.lesson;
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: PRFSpacingTokens.xl,
+                    ),
                     child: Text(
                       lesson.name!.toUpperCase(),
                       style: theme.textTheme.headlineMedium,
@@ -76,12 +78,16 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xl),
+            ),
 
             // Lesson content
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.xl,
+                ),
                 child: SingleStreamWrapper<PRFLocalLessonModule?>(
                   stream: getIt<IsarService>().lessonModules.itemStream,
                   widget: (context, lessonModule) {
@@ -187,7 +193,9 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xxl),
+            ),
 
             // Complete button
             SliverToBoxAdapter(
@@ -205,7 +213,9 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                           lessonModule.lessonMember!.completionStatus !=
                               PRFCompletionStatus.complete)) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.xl,
+                      ),
                       child: BlocConsumer<FinishLessonCubit, FinishLessonState>(
                         listener: (context, state) {
                           state.maybeWhen(

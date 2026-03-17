@@ -90,7 +90,9 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                           children: [
                             // Date Header with enhanced styling
                             Container(
-                              margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.xl),
+                              margin: const EdgeInsets.symmetric(
+                                vertical: PRFSpacingTokens.xl,
+                              ),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: PRFSpacingTokens.xl,
                                 vertical: PRFSpacingTokens.md,
@@ -99,7 +101,9 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                                 color: colorScheme.primary.withValues(
                                   alpha: 0.08,
                                 ),
-                                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                                borderRadius: BorderRadius.circular(
+                                  PRFRadiusTokens.md,
+                                ),
                                 border: Border.all(
                                   color: colorScheme.primary.withValues(
                                     alpha: 0.18,
@@ -220,7 +224,9 @@ class _TabletAnnouncementCard extends StatelessWidget {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.md,
+                              ),
                             ),
                             child: Icon(
                               Icons.campaign_rounded,
@@ -375,7 +381,9 @@ class _TabletAnnouncementCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         border: Border.all(
                           color: colorScheme.primary.withValues(alpha: 0.2),
                         ),

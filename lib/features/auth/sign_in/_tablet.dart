@@ -77,16 +77,22 @@ class _SignInTabletState extends State<SignInTablet> {
                             // Left side - Logo and branding
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.xxl,
+                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                                      padding: const EdgeInsets.all(
+                                        PRFSpacingTokens.xl,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: theme.colorScheme.primary
                                             .withValues(alpha: 0.1),
-                                        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+                                        borderRadius: BorderRadius.circular(
+                                          PRFRadiusTokens.xl,
+                                        ),
                                         border: Border.all(
                                           color: theme.colorScheme.primary
                                               .withValues(alpha: 0.2),
@@ -99,7 +105,9 @@ class _SignInTabletState extends State<SignInTablet> {
                                         width: 138,
                                       ),
                                     ),
-                                    const SizedBox(height: PRFSpacingTokens.xxl),
+                                    const SizedBox(
+                                      height: PRFSpacingTokens.xxl,
+                                    ),
                                     Text(
                                       l10n.welcomeIntro,
                                       style: theme.textTheme.headlineLarge
@@ -353,7 +361,7 @@ class GoogleSignIn extends StatelessWidget {
                       ),
                     );
 
-                    return GoogleAuthButton(
+                    return PRFGoogleAuthButton(
                       onPressed: () =>
                           context.read<GoogleSignInCubit>().signInwithGoogle(),
                       title: title,

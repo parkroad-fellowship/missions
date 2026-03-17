@@ -168,7 +168,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ),
             ),
             error: (message) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.lg,
+              ),
               child: PRFEmptyView(
                 label: 'Error',
                 description: message,
@@ -203,20 +205,28 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ),
         // Financial Overview Header
         SliverToBoxAdapter(
-          child: _buildFinancialOverview(
-            context,
-            l10n,
-            accountingEvent,
-          ).animate().slideY(begin: -0.3).fadeIn(duration: PRFMotionTokens.enterShort),
+          child:
+              _buildFinancialOverview(
+                    context,
+                    l10n,
+                    accountingEvent,
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
         ),
 
         // Quick Actions
         SliverToBoxAdapter(
-          child: _buildQuickActions(
-            context,
-            l10n,
-            accountingEvent,
-          ).animate(delay: PRFMotionTokens.standard).slideY(begin: 0.3).fadeIn(),
+          child:
+              _buildQuickActions(
+                    context,
+                    l10n,
+                    accountingEvent,
+                  )
+                  .animate(delay: PRFMotionTokens.standard)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
         ),
 
         // Refund Information (show when balance > 0)
@@ -290,90 +300,95 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         children: [
           // Main Balance Card
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  theme.colorScheme.primary,
-                  theme.colorScheme.primary.withValues(alpha: 0.8),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
+                width: double.infinity,
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      theme.colorScheme.primary,
+                      theme.colorScheme.primary.withValues(alpha: 0.8),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.currentBalance,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: PRFSpacingTokens.md,
+                            vertical: PRFSpacingTokens.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
+                          ),
+                          child: Text(
+                            '${(spentPercentage * 100).toStringAsFixed(1)}% spent',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
                     Text(
-                      l10n.currentBalance,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.9),
+                      NumberFormat.currency(
+                        locale: 'en_KE',
+                        symbol: 'KES ',
+                      ).format(accountingEvent.balance),
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    const SizedBox(height: PRFSpacingTokens.lg),
+                    // Progress bar
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: PRFSpacingTokens.md,
-                        vertical: PRFSpacingTokens.xs,
-                      ),
+                      height: 6,
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        color: Colors.white.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(3),
                       ),
-                      child: Text(
-                        '${(spentPercentage * 100).toStringAsFixed(1)}% spent',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: spentPercentage.clamp(0.0, 1.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: PRFSpacingTokens.md),
-                Text(
-                  NumberFormat.currency(
-                    locale: 'en_KE',
-                    symbol: 'KES ',
-                  ).format(accountingEvent.balance),
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: PRFSpacingTokens.lg),
-                // Progress bar
-                Container(
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: FractionallySizedBox(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: spentPercentage.clamp(0.0, 1.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: 0.3, end: 0),
+              )
+              .animate()
+              .fadeIn(duration: PRFMotionTokens.enterShort)
+              .slideY(begin: 0.3, end: 0),
 
           const SizedBox(height: PRFSpacingTokens.lg),
 
@@ -507,7 +522,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.secondary,
                 foregroundColor: theme.colorScheme.onSecondary,
-                padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
+                padding: const EdgeInsets.symmetric(
+                  vertical: PRFSpacingTokens.lg,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
@@ -521,7 +538,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               icon: const Icon(Icons.receipt_long),
               label: Text(l10n.addExpense),
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
+                padding: const EdgeInsets.symmetric(
+                  vertical: PRFSpacingTokens.lg,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
@@ -720,14 +739,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: () => _showDeleteConfirmation(context, entry),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         child: Container(
                           padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.errorContainer.withValues(
                               alpha: 0.5,
                             ),
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
                             border: Border.all(
                               color: theme.colorScheme.error.withValues(
                                 alpha: 0.3,
@@ -756,7 +779,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                           color: theme.colorScheme.primaryContainer.withValues(
                             alpha: 0.5,
                           ),
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
                           border: Border.all(
                             color: theme.colorScheme.primary.withValues(
                               alpha: 0.3,
@@ -879,7 +904,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       );
 
                       return Padding(
-                        padding: const EdgeInsets.only(right: PRFSpacingTokens.md),
+                        padding: const EdgeInsets.only(
+                          right: PRFSpacingTokens.md,
+                        ),
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
@@ -898,7 +925,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                 width: 70,
                                 height: 70,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.md,
+                                  ),
                                   border: Border.all(
                                     color: theme.colorScheme.primary.withValues(
                                       alpha: 0.3,
@@ -995,7 +1024,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                           .surfaceContainerHighest,
                                                       child: Center(
                                                         child: SizedBox(
-                                                          width: PRFSpacingTokens.xl,
+                                                          width:
+                                                              PRFSpacingTokens
+                                                                  .xl,
                                                           height: 20,
                                                           child: CircularProgressIndicator(
                                                             strokeWidth: 2,
@@ -1086,7 +1117,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                   height: 70,
                                   decoration: BoxDecoration(
                                     color: Colors.black.withValues(alpha: 0.5),
-                                    borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.md,
+                                    ),
                                   ),
                                   child: const Center(
                                     child: SizedBox(
@@ -1276,7 +1309,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             }
                           }
                         },
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: PRFSpacingTokens.md,
@@ -1339,7 +1374,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             }
                           }
                         },
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: PRFSpacingTokens.md,
@@ -1588,7 +1625,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               builder: (context, state) {
                 return state.when(
                   loading: () => const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PRFSpacingTokens.lg,
+                      vertical: PRFSpacingTokens.sm,
+                    ),
                     child: SizedBox(
                       width: PRFSpacingTokens.xl,
                       height: 20,
@@ -1626,7 +1666,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+        padding: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.lg,
+          vertical: PRFSpacingTokens.sm,
+        ),
       ),
     );
   }
@@ -1697,182 +1740,204 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-      child: Container(
-        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              theme.colorScheme.tertiary.withValues(alpha: 0.1),
-              theme.colorScheme.tertiary.withValues(alpha: 0.05),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-          border: Border.all(
-            color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                  ),
-                  child: Icon(
-                    Icons.account_balance_wallet,
-                    color: theme.colorScheme.tertiary,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: PRFSpacingTokens.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.refundInformation,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.tertiary,
-                        ),
-                      ),
-                      Text(
-                        l10n.refundDesc,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
+      child:
+          Container(
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      theme.colorScheme.tertiary.withValues(alpha: 0.1),
+                      theme.colorScheme.tertiary.withValues(alpha: 0.05),
                     ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                  border: Border.all(
+                    color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: PRFSpacingTokens.md,
-                    vertical: PRFSpacingTokens.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                  ),
-                  child: Text(
-                    NumberFormat.currency(
-                      locale: 'en_KE',
-                      symbol: 'KES ',
-                    ).format(
-                      accountingEvent.latestRefund?.deficitAmount ??
-                          accountingEvent.amountToRefund,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.tertiary.withValues(
+                              alpha: 0.2,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.sm,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.account_balance_wallet,
+                            color: theme.colorScheme.tertiary,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: PRFSpacingTokens.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.refundInformation,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.colorScheme.tertiary,
+                                ),
+                              ),
+                              Text(
+                                l10n.refundDesc,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: PRFSpacingTokens.md,
+                            vertical: PRFSpacingTokens.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.tertiary,
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
+                          ),
+                          child: Text(
+                            NumberFormat.currency(
+                              locale: 'en_KE',
+                              symbol: 'KES ',
+                            ).format(
+                              accountingEvent.latestRefund?.deficitAmount ??
+                                  accountingEvent.amountToRefund,
+                            ),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: PRFSpacingTokens.lg),
-            Container(
-              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.payment,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: PRFSpacingTokens.sm),
-                      Text(
-                        l10n.refundDetails,
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                    const SizedBox(height: PRFSpacingTokens.lg),
+                    Container(
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
+                        border: Border.all(
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.2,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: PRFSpacingTokens.md),
-                  _buildRefundDetailRow(
-                    context,
-                    l10n.paybillNumber,
-                    '4088159',
-                    Icons.numbers,
-                  ),
-                  const SizedBox(height: PRFSpacingTokens.sm),
-                  _buildRefundDetailRow(
-                    context,
-                    l10n.accountNumber,
-                    'REFUND',
-                    Icons.account_balance,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: PRFSpacingTokens.md),
-            Container(
-              padding: const EdgeInsets.all(PRFSpacingTokens.md),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(
-                  alpha: 0.3,
-                ),
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: theme.colorScheme.primary,
-                    size: 16,
-                  ),
-                  const SizedBox(width: PRFSpacingTokens.sm),
-                  Expanded(
-                    child: Text(
-                      l10n.refundText,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.payment,
+                                color: theme.colorScheme.primary,
+                                size: 20,
+                              ),
+                              const SizedBox(width: PRFSpacingTokens.sm),
+                              Text(
+                                l10n.refundDetails,
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: PRFSpacingTokens.md),
+                          _buildRefundDetailRow(
+                            context,
+                            l10n.paybillNumber,
+                            '4088159',
+                            Icons.numbers,
+                          ),
+                          const SizedBox(height: PRFSpacingTokens.sm),
+                          _buildRefundDetailRow(
+                            context,
+                            l10n.accountNumber,
+                            'REFUND',
+                            Icons.account_balance,
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: PRFSpacingTokens.md),
-            ElevatedButton.icon(
-              onPressed: () => _showAddRefundModal(context, accountingEvent),
-              icon: const Icon(Icons.account_balance_wallet),
-              label: const Text('Add Refund'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.tertiary,
-                foregroundColor: theme.colorScheme.onTertiary,
-                padding: const EdgeInsets.symmetric(
-                  vertical: PRFSpacingTokens.lg,
-                  horizontal: PRFSpacingTokens.lg,
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    Container(
+                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer.withValues(
+                          alpha: 0.3,
+                        ),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            color: theme.colorScheme.primary,
+                            size: 16,
+                          ),
+                          const SizedBox(width: PRFSpacingTokens.sm),
+                          Expanded(
+                            child: Text(
+                              l10n.refundText,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    ElevatedButton.icon(
+                      onPressed: () =>
+                          _showAddRefundModal(context, accountingEvent),
+                      icon: const Icon(Icons.account_balance_wallet),
+                      label: const Text('Add Refund'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.tertiary,
+                        foregroundColor: theme.colorScheme.onTertiary,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: PRFSpacingTokens.lg,
+                          horizontal: PRFSpacingTokens.lg,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    if (accountingEvent.refunds.isNotEmpty)
+                      _buildRefundEntriesList(
+                        context,
+                        theme,
+                        accountingEvent.refunds,
+                      ),
+                    if (accountingEvent.refunds.isNotEmpty)
+                      const SizedBox(height: PRFSpacingTokens.md),
+                  ],
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                ),
-              ),
-            ),
-            const SizedBox(height: PRFSpacingTokens.md),
-            if (accountingEvent.refunds.isNotEmpty)
-              _buildRefundEntriesList(context, theme, accountingEvent.refunds),
-            if (accountingEvent.refunds.isNotEmpty) const SizedBox(height: PRFSpacingTokens.md),
-          ],
-        ),
-      ).animate().fadeIn(duration: PRFMotionTokens.enterShort).slideY(begin: 0.2, end: 0),
+              )
+              .animate()
+              .fadeIn(duration: PRFMotionTokens.enterShort)
+              .slideY(begin: 0.2, end: 0),
     );
   }
 

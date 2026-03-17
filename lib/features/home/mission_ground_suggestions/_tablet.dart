@@ -111,7 +111,9 @@ class _MissionGroundSuggestionsPageTabletState
                                       ),
                                       child: Material(
                                         color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+                                        borderRadius: BorderRadius.circular(
+                                          PRFRadiusTokens.lg,
+                                        ),
                                         child: InkWell(
                                           onLongPress: () async =>
                                               _updateMissionGroundSuggestion(

@@ -7,7 +7,6 @@ import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/_index.dart';
-import 'package:prf_design/prf_design.dart' show PRFPrimaryButton;
 import 'package:app/utils/_index.dart' hide getIt;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -17,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:patrol/patrol.dart';
+import 'package:prf_design/prf_design.dart' show PRFPrimaryButton;
 import 'package:timezone/data/latest.dart' as tz_data;
 
 import 'utils/screenshot_helper.dart';

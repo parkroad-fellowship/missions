@@ -26,8 +26,14 @@ class ModuleDetailsActionCard extends StatelessWidget {
         ),
       ),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
-        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl, vertical: PRFSpacingTokens.xxl),
+        margin: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.lg,
+          vertical: PRFSpacingTokens.sm,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.xl,
+          vertical: PRFSpacingTokens.xxl,
+        ),
         decoration: BoxDecoration(
           color: theme.colorScheme.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),

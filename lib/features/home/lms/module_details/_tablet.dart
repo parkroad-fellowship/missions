@@ -105,7 +105,9 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
             // Module name
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.xl,
+                ),
                 child: StreamBuilder<PRFLocalCourseModule?>(
                   stream: getIt<IsarService>().courseModules.itemStream,
                   builder: (context, snapshot) {
@@ -126,7 +128,9 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
             // Module description
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.xl,
+                ),
                 child: StreamBuilder<PRFLocalCourseModule?>(
                   stream: getIt<IsarService>().courseModules.itemStream,
                   builder: (context, snapshot) {
@@ -144,11 +148,15 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xxl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xxl),
+            ),
             // Lessons header
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.xl,
+                ),
                 child: Text(
                   l10n.lessons,
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -157,7 +165,9 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xl),
+            ),
             // Lessons list
             StreamBuilder<List<PRFLocalLessonModule>>(
               stream: getIt<IsarService>().lessonModules.parentStream,

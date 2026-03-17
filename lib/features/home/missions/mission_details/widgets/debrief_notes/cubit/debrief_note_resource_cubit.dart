@@ -1,13 +1,12 @@
 import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/services/api/debrief_note_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   DebriefNoteResourceCubit({
     required DebriefNoteService debriefNoteService,
-    BaseLocalDBService<PRFDebriefNote, dynamic>? dbService,
-  }) : super(service: debriefNoteService, dbService: dbService);
+    super.dbService,
+  }) : super(service: debriefNoteService);
 
   @override
   List<String> get defaultIncludes => ['mission'];

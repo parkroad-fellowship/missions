@@ -63,7 +63,9 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 64),
             child: ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
+              padding: const EdgeInsets.symmetric(
+                vertical: PRFSpacingTokens.lg,
+              ),
               itemCount: subscriptions!.length,
               separatorBuilder: (context, index) => const SizedBox(height: 0),
               itemBuilder: (context, index) =>
@@ -101,7 +103,10 @@ class BeautifulSubscriberCard extends StatelessWidget {
       onTap: () => _viewSubscriber(context, subscription.member),
       child: Container(
         padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+        margin: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.lg,
+          vertical: PRFSpacingTokens.sm,
+        ),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
@@ -222,7 +227,10 @@ class BeautifulSubscriberCard extends StatelessWidget {
 
   Widget _buildRoleBadge(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.sm,
+        vertical: 2,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.secondary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
@@ -277,7 +285,10 @@ class BeautifulSubscriberCard extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.sm,
+        vertical: PRFSpacingTokens.xs,
+      ),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
@@ -306,7 +317,10 @@ class BeautifulSubscriberCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
         onTap: onPressed,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.md, vertical: PRFSpacingTokens.sm),
+          padding: const EdgeInsets.symmetric(
+            horizontal: PRFSpacingTokens.md,
+            vertical: PRFSpacingTokens.sm,
+          ),
           decoration: BoxDecoration(
             color: theme.colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
@@ -358,7 +372,9 @@ class BeautifulSubscriberCard extends StatelessWidget {
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.6,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.lg,
+              ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -429,7 +445,9 @@ class BeautifulSubscriberCard extends StatelessWidget {
                         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
                           border: Border.all(
                             color: Theme.of(
                               context,

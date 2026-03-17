@@ -50,7 +50,10 @@ class MissionListShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.lg,
+        vertical: PRFSpacingTokens.sm,
+      ),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) => Padding(
@@ -106,7 +109,10 @@ class MissionCardShimmer extends StatelessWidget {
     final theme = Theme.of(context);
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.lg,
+        vertical: PRFSpacingTokens.sm,
+      ),
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
       itemBuilder: (context, index) => Padding(

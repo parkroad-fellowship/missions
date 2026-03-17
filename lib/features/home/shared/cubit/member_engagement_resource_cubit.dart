@@ -11,8 +11,8 @@ class MemberEngagementResourceCubit
     extends Cubit<ResourceState<PRFMemberEngagement>> {
   MemberEngagementResourceCubit({
     required MemberService memberService,
-  })  : _memberService = memberService,
-        super(const ResourceState.initial());
+  }) : _memberService = memberService,
+       super(const ResourceState.initial());
 
   final MemberService _memberService;
 

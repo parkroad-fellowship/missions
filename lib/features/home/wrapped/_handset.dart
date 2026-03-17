@@ -106,7 +106,10 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                               pageCount: pages.length,
                             )
                             .animate()
-                            .fadeIn(delay: 2000.ms, duration: PRFMotionTokens.enterShort)
+                            .fadeIn(
+                              delay: 2000.ms,
+                              duration: PRFMotionTokens.enterShort,
+                            )
                             .slideY(begin: -0.5, end: 0),
                   ),
                   Positioned(
@@ -115,7 +118,9 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                     child:
                         IconButton(
                               icon: Container(
-                                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.sm,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.black.withValues(alpha: 0.3),
                                   shape: BoxShape.circle,
@@ -128,7 +133,10 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                               onPressed: () => context.router.maybePop(),
                             )
                             .animate()
-                            .fadeIn(delay: 2000.ms, duration: PRFMotionTokens.enterShort)
+                            .fadeIn(
+                              delay: 2000.ms,
+                              duration: PRFMotionTokens.enterShort,
+                            )
                             .scale(delay: PRFMotionTokens.standard),
                   ),
                 ],

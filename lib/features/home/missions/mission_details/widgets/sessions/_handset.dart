@@ -150,7 +150,11 @@ class TimelineSessionCard extends StatelessWidget {
     final l10n = context.l10n;
 
     return Container(
-      margin: const EdgeInsets.only(left: PRFSpacingTokens.lg, right: PRFSpacingTokens.lg, bottom: PRFSpacingTokens.sm),
+      margin: const EdgeInsets.only(
+        left: PRFSpacingTokens.lg,
+        right: PRFSpacingTokens.lg,
+        bottom: PRFSpacingTokens.sm,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -196,7 +200,9 @@ class TimelineSessionCard extends StatelessWidget {
                         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
                           border: Border.all(
                             color: Theme.of(
                               context,
@@ -230,7 +236,9 @@ class TimelineSessionCard extends StatelessWidget {
                                         ).colorScheme.primary.withValues(
                                           alpha: 0.1,
                                         ),
-                                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.sm,
+                                    ),
                                   ),
                                   child: Text(
                                     // ignore: lines_longer_than_80_chars

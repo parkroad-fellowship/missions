@@ -394,7 +394,9 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                         width: 16,
                         height: 2,
                         color: Colors.white.withValues(alpha: 0.7),
-                        margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.xs),
+                        margin: const EdgeInsets.symmetric(
+                          vertical: PRFSpacingTokens.xs,
+                        ),
                       ),
                       // End date
                       Text(
@@ -436,7 +438,9 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                 Container(
                   width: 3,
                   height: 80,
-                  margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.lg,
+                  ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -525,7 +529,9 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                 ),
                                 decoration: BoxDecoration(
                                   color: statusColor,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.md,
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: statusColor.withValues(alpha: 0.3),
@@ -551,10 +557,14 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                           Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.sm,
+                                ),
                                 decoration: BoxDecoration(
                                   color: theme.colorScheme.primaryContainer,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.smd,
+                                  ),
                                 ),
                                 child: Icon(
                                   Icons.school_rounded,
@@ -635,7 +645,9 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.md,
+                              ),
                               border: Border.all(
                                 color: theme.colorScheme.outline.withValues(
                                   alpha: 0.2,

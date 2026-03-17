@@ -59,7 +59,9 @@ class _StudentEnquiriesPageHandsetState
                 },
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.lg),
+            ),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -117,7 +119,9 @@ class _StudentEnquiriesPageHandsetState
                 );
               },
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xl),
+            ),
           ],
         ),
       ),

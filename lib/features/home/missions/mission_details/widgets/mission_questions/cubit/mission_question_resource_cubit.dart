@@ -1,13 +1,12 @@
 import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/services/api/mission_question_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
   MissionQuestionResourceCubit({
     required MissionQuestionService missionQuestionService,
-    BaseLocalDBService<PRFMissionQuestion, dynamic>? dbService,
-  }) : super(service: missionQuestionService, dbService: dbService);
+    super.dbService,
+  }) : super(service: missionQuestionService);
 
   @override
   List<String> get defaultIncludes => ['mission'];

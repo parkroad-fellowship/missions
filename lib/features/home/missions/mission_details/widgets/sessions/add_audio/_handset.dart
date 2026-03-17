@@ -72,7 +72,10 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
             final uploadsToShow = sessionUploads.take(3).toList();
 
             return Container(
-              margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+              margin: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.lg,
+                vertical: PRFSpacingTokens.sm,
+              ),
               padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
@@ -116,7 +119,9 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                   const SizedBox(height: PRFSpacingTokens.md),
                   ...uploadsToShow.map(
                     (upload) => Padding(
-                      padding: const EdgeInsets.only(bottom: PRFSpacingTokens.sm),
+                      padding: const EdgeInsets.only(
+                        bottom: PRFSpacingTokens.sm,
+                      ),
                       child: Row(
                         children: [
                           Container(

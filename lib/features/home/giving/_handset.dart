@@ -67,7 +67,9 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
               ],
             ),
 
-            const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xl),
+            ),
 
             // Loading Indicator
             SliverToBoxAdapter(
@@ -150,13 +152,19 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       itemBuilder: (context, index) {
                         final payment = payments[index];
                         return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xs),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: PRFSpacingTokens.xs,
+                              ),
                               child: Material(
                                 color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+                                borderRadius: BorderRadius.circular(
+                                  PRFRadiusTokens.xl,
+                                ),
                                 child: InkWell(
                                   onTap: () => _showPaymentActions(payment),
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.xl,
+                                  ),
                                   splashColor: theme.colorScheme.primary
                                       .withValues(alpha: 0.1),
                                   highlightColor: theme.colorScheme.primary
@@ -263,7 +271,9 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
           child: SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.3,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.lg,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -278,7 +288,9 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                         padding: const EdgeInsets.all(PRFSpacingTokens.md),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
                         ),
                         child: Icon(
                           Icons.open_in_browser_rounded,
@@ -308,7 +320,9 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       padding: const EdgeInsets.all(PRFSpacingTokens.md),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: Icon(
                         Icons.refresh_rounded,

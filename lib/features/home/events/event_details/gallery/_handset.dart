@@ -98,7 +98,9 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                 ),
                 empty: () => SliverFillRemaining(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: PRFSpacingTokens.xxl,
+                    ),
                     child: PRFEmptyView(
                       label: l10n.addPhotos,
                       description: l10n.addEventPhotos,

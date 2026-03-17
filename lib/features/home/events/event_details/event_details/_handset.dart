@@ -116,7 +116,9 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: const Icon(
                         Icons.event_rounded,
@@ -194,7 +196,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.md, vertical: PRFSpacingTokens.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.md,
+        vertical: PRFSpacingTokens.sm,
+      ),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
@@ -252,7 +257,10 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg, horizontal: PRFSpacingTokens.xl),
+        padding: const EdgeInsets.symmetric(
+          vertical: PRFSpacingTokens.lg,
+          horizontal: PRFSpacingTokens.xl,
+        ),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
@@ -617,7 +625,9 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surface,
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: 0.05),

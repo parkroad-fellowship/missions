@@ -84,7 +84,10 @@ class BeautifulSoulCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+      margin: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.lg,
+        vertical: PRFSpacingTokens.sm,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
@@ -175,7 +178,10 @@ class BeautifulSoulCard extends StatelessWidget {
     final decisionColor = _getDecisionTypeColor(theme);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.sm,
+        vertical: PRFSpacingTokens.xs,
+      ),
       decoration: BoxDecoration(
         color: decisionColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),

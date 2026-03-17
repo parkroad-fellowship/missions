@@ -143,7 +143,9 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: const Icon(
                         Icons.school_rounded,
@@ -224,7 +226,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.md, vertical: PRFSpacingTokens.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.md,
+        vertical: PRFSpacingTokens.sm,
+      ),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
@@ -301,7 +306,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg, horizontal: PRFSpacingTokens.xl),
+        padding: const EdgeInsets.symmetric(
+          vertical: PRFSpacingTokens.lg,
+          horizontal: PRFSpacingTokens.xl,
+        ),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
@@ -541,7 +549,9 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                         Container(
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary,
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.sm,
+                            ),
                           ),
                           child: IconButton(
                             onPressed: () async {
@@ -871,7 +881,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.sm,
+                  vertical: PRFSpacingTokens.xs,
+                ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),

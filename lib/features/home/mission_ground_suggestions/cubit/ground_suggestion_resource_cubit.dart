@@ -1,17 +1,13 @@
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/services/api/mission_ground_suggestion_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class GroundSuggestionResourceCubit
     extends ResourceCubit<PRFMissionGroundSuggestion> {
   GroundSuggestionResourceCubit({
     required MissionGroundSuggestionService missionGroundSuggestionService,
-    BaseLocalDBService<PRFMissionGroundSuggestion, dynamic>? dbService,
-  }) : super(
-         service: missionGroundSuggestionService,
-         dbService: dbService,
-       );
+    super.dbService,
+  }) : super(service: missionGroundSuggestionService);
 
   @override
   List<String> get defaultIncludes => ['suggestor'];

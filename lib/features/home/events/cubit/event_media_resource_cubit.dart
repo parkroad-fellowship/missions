@@ -9,8 +9,8 @@ import 'package:bloc/bloc.dart';
 class EventMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
   EventMediaResourceCubit({
     required EventService eventService,
-  })  : _eventService = eventService,
-        super(const ResourceState.initial());
+  }) : _eventService = eventService,
+       super(const ResourceState.initial());
 
   final EventService _eventService;
 

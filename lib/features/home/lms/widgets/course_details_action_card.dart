@@ -21,7 +21,10 @@ class CourseDetailsActionCard extends StatelessWidget {
       ),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl, vertical: PRFSpacingTokens.xxl),
+        padding: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.xl,
+          vertical: PRFSpacingTokens.xxl,
+        ),
         decoration: BoxDecoration(
           color: theme.colorScheme.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),

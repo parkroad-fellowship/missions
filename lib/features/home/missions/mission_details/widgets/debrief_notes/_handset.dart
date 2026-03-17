@@ -82,7 +82,10 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
 
     return Container(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg, vertical: PRFSpacingTokens.sm),
+      margin: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.lg,
+        vertical: PRFSpacingTokens.sm,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
@@ -168,7 +171,10 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
 
   Widget _buildTimestampChip(ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm, vertical: PRFSpacingTokens.xs),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.sm,
+        vertical: PRFSpacingTokens.xs,
+      ),
       decoration: BoxDecoration(
         color: theme.colorScheme.secondary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),

@@ -107,7 +107,9 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                 ),
                 empty: () => SliverFillRemaining(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: PRFSpacingTokens.xxl,
+                    ),
                     child: PRFEmptyView(
                       label: l10n.addMissionPhotos,
                       description: l10n.addMissionPhotosDesc,
@@ -293,7 +295,9 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.8),
-                            borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.xs,
+                            ),
                           ),
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,

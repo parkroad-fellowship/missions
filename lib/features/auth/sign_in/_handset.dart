@@ -80,10 +80,14 @@ class _SignInHandsetState extends State<SignInHandset> {
                             // Logo
                             Center(
                               child: Container(
-                                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.lg,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.md,
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withValues(
@@ -144,7 +148,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         enabled: !_isLoading,
                                       ),
 
-                                      const SizedBox(height: PRFSpacingTokens.lg),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.lg,
+                                      ),
 
                                       // Password Input
                                       PRFPasswordInput(
@@ -155,7 +161,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         enabled: !_isLoading,
                                       ),
 
-                                      const SizedBox(height: PRFSpacingTokens.xxl),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.xxl,
+                                      ),
 
                                       // Sign In Button
                                       BlocConsumer<SigninCubit, SignInState>(
@@ -225,7 +233,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         },
                                       ),
 
-                                      const SizedBox(height: PRFSpacingTokens.xxl),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.xxl,
+                                      ),
 
                                       // Divider
                                       Row(
@@ -261,7 +271,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         ],
                                       ),
 
-                                      const SizedBox(height: PRFSpacingTokens.xxl),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.xxl,
+                                      ),
                                     ],
 
                                     // Google Sign In Button
@@ -283,7 +295,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                 decoration: BoxDecoration(
                                   color:
                                       theme.colorScheme.surfaceContainerHighest,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.lg,
+                                  ),
                                 ),
                                 child: Text(
                                   l10n.version(
@@ -347,7 +361,7 @@ class GoogleSignInButton extends StatelessWidget {
                   ),
                 );
 
-                return GoogleAuthButton(
+                return PRFGoogleAuthButton(
                   onPressed: () =>
                       context.read<GoogleSignInCubit>().signInwithGoogle(),
                   title: title,

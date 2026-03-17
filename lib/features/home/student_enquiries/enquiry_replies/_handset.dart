@@ -215,7 +215,9 @@ class _StudentEnquiryRepliesPageHandsetState
             ),
             const SizedBox(height: PRFSpacingTokens.xs),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.sm,
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -419,7 +421,9 @@ class _StudentEnquiryRepliesPageHandsetState
                           ),
                           backgroundColor: theme.colorScheme.surface,
                         ),
-                        const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: PRFSpacingTokens.lg),
+                        ),
                         StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
                           stream: getIt<IsarService>()
                               .studentEnquiryReplies
@@ -473,7 +477,9 @@ class _StudentEnquiryRepliesPageHandsetState
                             );
                           },
                         ),
-                        const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.lg)),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: PRFSpacingTokens.lg),
+                        ),
                       ],
                     );
                   },

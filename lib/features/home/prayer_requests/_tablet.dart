@@ -42,7 +42,9 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
               backgroundColor: theme.colorScheme.surface,
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.lg,
+              ),
               sliver:
                   BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
                     builder: (context, state) {

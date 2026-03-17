@@ -426,7 +426,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                         width: 16,
                         height: 2,
                         color: Colors.white.withValues(alpha: 0.7),
-                        margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.xs),
+                        margin: const EdgeInsets.symmetric(
+                          vertical: PRFSpacingTokens.xs,
+                        ),
                       ),
                       // End date
                       Text(
@@ -468,7 +470,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 Container(
                   width: 3,
                   height: 80,
-                  margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.lg,
+                  ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,

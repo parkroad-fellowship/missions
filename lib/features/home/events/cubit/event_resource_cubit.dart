@@ -1,14 +1,13 @@
 import 'package:app/enums/event/prf_event_type.dart';
 import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/services/api/event_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class EventResourceCubit extends ResourceCubit<PRFEvent> {
   EventResourceCubit({
     required EventService eventService,
-    BaseLocalDBService<PRFEvent, dynamic>? dbService,
-  }) : super(service: eventService, dbService: dbService);
+    super.dbService,
+  }) : super(service: eventService);
 
   @override
   List<String> get defaultIncludes => [

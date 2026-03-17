@@ -448,7 +448,9 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                 Container(
                   width: 2,
                   height: 60,
-                  margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.sm),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.sm,
+                  ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -536,7 +538,9 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                                 ),
                                 decoration: BoxDecoration(
                                   color: statusColor,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.smd,
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: statusColor.withValues(alpha: 0.3),
@@ -562,10 +566,14 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                           Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(PRFSpacingTokens.xs),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.xs,
+                                ),
                                 decoration: BoxDecoration(
                                   color: theme.colorScheme.primaryContainer,
-                                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.sm,
+                                  ),
                                 ),
                                 child: Icon(
                                   Icons.school_rounded,
@@ -649,7 +657,9 @@ class TimelineMissionCard extends StatelessWidget with TimezoneMixin {
                             ),
                             decoration: BoxDecoration(
                               color: statusColor.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.sm,
+                              ),
                               border: Border.all(
                                 color: statusColor.withValues(alpha: 0.3),
                               ),
