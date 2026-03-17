@@ -3,6 +3,7 @@ import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/past_mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
@@ -56,6 +57,11 @@ class MissionsModule {
       // --- ResourceCubit replacements ---
       BlocProvider<MissionResourceCubit>(
         create: (context) => MissionResourceCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<PastMissionResourceCubit>(
+        create: (context) => PastMissionResourceCubit(
           missionService: getIt(),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/past_mission_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
@@ -35,12 +36,15 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
       refresh: true,
     );
 
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
-      if (_tabController.index == 0) {
-        context.read<MissionResourceCubit>().loadAll();
-      } else {
-        context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
+      switch (_tabController.index) {
+        case 0:
+          context.read<MissionResourceCubit>().loadAll();
+        case 1:
+          context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
+        case 2:
+          context.read<PastMissionResourceCubit>().loadAll();
       }
     });
   }
@@ -51,7 +55,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
     final theme = Theme.of(context);
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         backgroundColor: theme.colorScheme.surface,
         body: Column(
@@ -125,6 +129,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                           tabs: [
                             Tab(text: l10n.all),
                             Tab(text: l10n.subscribed),
+                            const Tab(text: 'Past'),
                           ],
                         ),
                       ),
@@ -139,6 +144,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                 children: [
                   _buildMissionsTimeline(context),
                   _buildSubscribedMissionsTimeline(context),
+                  _buildPastMissionsTimeline(context),
                 ],
               ),
             ),
@@ -293,6 +299,76 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                   );
             },
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPastMissionsTimeline(BuildContext context) {
+    final l10n = context.l10n;
+
+    return BlocBuilder<PastMissionResourceCubit, ResourceState<PRFMission>>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          listLoading: () => const Center(
+            child: PRFCircularProgressIndicator(),
+          ),
+          listLoaded: (missions, _, _) {
+            if (missions.isEmpty) {
+              return RefreshIndicator(
+                onRefresh: () =>
+                    context.read<PastMissionResourceCubit>().loadAll(),
+                child: PRFEmptyView(
+                  label: l10n.noMissions,
+                  description: 'No past missions found.',
+                ),
+              );
+            }
+
+            return RefreshIndicator(
+              onRefresh: () =>
+                  context.read<PastMissionResourceCubit>().loadAll(),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.lg,
+                  vertical: PRFSpacingTokens.xl,
+                ),
+                itemCount: missions.length,
+                itemBuilder: (context, index) {
+                  final mission = missions[index];
+                  final isLast = index == missions.length - 1;
+
+                  return TimelineMissionCardTablet(
+                        mission: mission,
+                        isLast: isLast,
+                        index: index,
+                        onTap: () => context.router.push(
+                          MissionsDetailsRoute(missionUlid: mission.ulid),
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(
+                        delay: Duration(milliseconds: index * 100),
+                        duration: PRFMotionTokens.enterShort,
+                      )
+                      .slideX(
+                        begin: 0.3,
+                        end: 0,
+                        curve: Curves.easeOutCubic,
+                      );
+                },
+              ),
+            );
+          },
+          error: (message, _) => RefreshIndicator(
+            onRefresh: () => context.read<PastMissionResourceCubit>().loadAll(),
+            child: PRFEmptyView(
+              label: l10n.noMissions,
+              description: message,
+            ),
+          ),
+          orElse: () => const SizedBox.shrink(),
         );
       },
     );
