@@ -1,5 +1,6 @@
 import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/services/api/mission_question_service.dart';
+import 'package:app/services/local_storage/isar/mission_question_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
@@ -7,6 +8,16 @@ class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
     required MissionQuestionService missionQuestionService,
     super.dbService,
   }) : super(service: missionQuestionService);
+
+  @override
+  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
+    final parentKey = filters?['mission_ulid'] as String?;
+    if (parentKey != null && dbService is MissionQuestionDbService) {
+      await (dbService as MissionQuestionDbService)
+          .refreshParentStream(parentKey);
+    }
+    await dbService?.refreshStream();
+  }
 
   @override
   List<String> get defaultIncludes => ['mission'];

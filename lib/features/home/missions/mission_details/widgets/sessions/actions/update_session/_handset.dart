@@ -2,11 +2,10 @@ import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -238,23 +237,25 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                       icon: Icons.person_outline,
                       title: l10n.facilitator,
                       isRequired: true,
-                      child:
-                          SingleStreamWrapper<
-                            List<PRFLocalMissionSubscription>
-                          >(
-                            stream: getIt<IsarService>()
-                                .missionSubscriptions
-                                .parentStream,
-                            loading: const PRFLinearProgressIndicator(),
-                            widget: (context, subscribers) =>
+                      child: BlocBuilder<
+                        MissionSubscriptionResourceCubit,
+                        ResourceState<PRFMissionSubscription>
+                      >(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            orElse: () => const SizedBox.shrink(),
+                            listLoading: () =>
+                                const PRFLinearProgressIndicator(),
+                            listLoaded: (subscribers, _, _) =>
                                 PRFSearchableList<String>(
                                   entries: subscribers
+                                      .where((s) => s.member != null)
                                       .map(
                                         (subscriber) =>
                                             PRFSearchableListEntry<String>(
-                                              value: subscriber.member.ulid!,
+                                              value: subscriber.member!.ulid,
                                               label:
-                                                  subscriber.member.fullName!,
+                                                  subscriber.member!.fullName,
                                             ),
                                       )
                                       .toList(),
@@ -266,31 +267,36 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                   hintText: l10n.facilitator,
                                   emptyText: 'No subscribers found',
                                 ),
-                          ),
+                          );
+                        },
+                      ),
                     ).animate(delay: 100.ms).slideX(begin: -0.2).fadeIn(),
 
                     PRFFormSection(
                           icon: Icons.mic_outlined,
                           title: l10n.speaker,
-                          child:
-                              SingleStreamWrapper<
-                                List<PRFLocalMissionSubscription>
-                              >(
-                                stream: getIt<IsarService>()
-                                    .missionSubscriptions
-                                    .parentStream,
-                                loading: const PRFLinearProgressIndicator(),
-                                widget: (context, subscribers) =>
+                          child: BlocBuilder<
+                            MissionSubscriptionResourceCubit,
+                            ResourceState<PRFMissionSubscription>
+                          >(
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => const SizedBox.shrink(),
+                                listLoading: () =>
+                                    const PRFLinearProgressIndicator(),
+                                listLoaded: (subscribers, _, _) =>
                                     PRFSearchableList<String>(
                                       entries: subscribers
+                                          .where((s) => s.member != null)
                                           .map(
-                                            (
-                                              subscriber,
-                                            ) => PRFSearchableListEntry<String>(
-                                              value: subscriber.member.ulid!,
-                                              label:
-                                                  subscriber.member.fullName!,
-                                            ),
+                                            (subscriber) =>
+                                                PRFSearchableListEntry<String>(
+                                                  value:
+                                                      subscriber.member!.ulid,
+                                                  label: subscriber
+                                                      .member!
+                                                      .fullName,
+                                                ),
                                           )
                                           .toList(),
                                       onSelected: (member) => setState(() {
@@ -300,7 +306,9 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                       hintText: l10n.speaker,
                                       emptyText: 'No subscribers found',
                                     ),
-                              ),
+                              );
+                            },
+                          ),
                         )
                         .animate(delay: PRFMotionTokens.standard)
                         .slideX(begin: -0.2)

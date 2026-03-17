@@ -2,9 +2,8 @@ import 'package:app/enums/mission/prf_mission_role.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
-import 'package:app/models/local/shared_embeds.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/member/prf_member.dart';
+import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -34,51 +33,66 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return StreamBuilder<List<PRFLocalMissionSubscription>>(
-      stream: getIt<IsarService>().missionSubscriptions.parentStream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const PRFCircularProgressIndicator();
-        }
+    return BlocBuilder<
+      MissionSubscriptionResourceCubit,
+      ResourceState<PRFMissionSubscription>
+    >(
+      builder: (context, state) {
+        return state.maybeWhen(
+          listLoading: () => const Center(
+            child: PRFCircularProgressIndicator(),
+          ),
+          listLoaded: (subscriptions, _, _) {
+            if (subscriptions.isEmpty) {
+              return RefreshIndicator(
+                onRefresh: () =>
+                    context.read<MissionSubscriptionResourceCubit>().loadAll(
+                      filters: {'mission_ulid': widget.missionUlid},
+                    ),
+                child: PRFEmptyView(
+                  label: l10n.noSubscribers,
+                  description: l10n.pleaseWait,
+                ),
+              );
+            }
 
-        final subscriptions = snapshot.data;
-
-        if (subscriptions != null && subscriptions.isEmpty) {
-          return RefreshIndicator(
+            return RefreshIndicator(
+              onRefresh: () =>
+                  context.read<MissionSubscriptionResourceCubit>().loadAll(
+                    filters: {'mission_ulid': widget.missionUlid},
+                  ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 64),
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.lg,
+                  ),
+                  itemCount: subscriptions.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 0),
+                  itemBuilder: (context, index) =>
+                      BeautifulSubscriberCard(
+                            subscription: subscriptions[index],
+                            index: index,
+                          )
+                          .animate(delay: (index * 100).ms)
+                          .fadeIn()
+                          .slideX(begin: -0.3, end: 0),
+                ),
+              ),
+            );
+          },
+          error: (message, _) => RefreshIndicator(
             onRefresh: () =>
                 context.read<MissionSubscriptionResourceCubit>().loadAll(
                   filters: {'mission_ulid': widget.missionUlid},
                 ),
             child: PRFEmptyView(
               label: l10n.noSubscribers,
-              description: l10n.pleaseWait,
-            ),
-          );
-        }
-
-        return RefreshIndicator(
-          onRefresh: () =>
-              context.read<MissionSubscriptionResourceCubit>().loadAll(
-                filters: {'mission_ulid': widget.missionUlid},
-              ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 64),
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(
-                vertical: PRFSpacingTokens.lg,
-              ),
-              itemCount: subscriptions!.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 0),
-              itemBuilder: (context, index) =>
-                  BeautifulSubscriberCard(
-                        subscription: subscriptions[index],
-                        index: index,
-                      )
-                      .animate(delay: (index * 100).ms)
-                      .fadeIn()
-                      .slideX(begin: -0.3, end: 0),
+              description: message,
             ),
           ),
+          orElse: () => const SizedBox.shrink(),
         );
       },
     );
@@ -92,16 +106,17 @@ class BeautifulSubscriberCard extends StatelessWidget {
     super.key,
   });
 
-  final PRFLocalMissionSubscription subscription;
+  final PRFMissionSubscription subscription;
   final int index;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isLeader = subscription.missionRole != PRFMissionRole.member;
+    final member = subscription.member;
 
     return GestureDetector(
-      onTap: () => _viewSubscriber(context, subscription.member),
+      onTap: () => member != null ? _viewSubscriber(context, member) : null,
       child: Container(
         padding: const EdgeInsets.all(PRFSpacingTokens.xl),
         margin: const EdgeInsets.symmetric(
@@ -150,7 +165,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              subscription.member.fullName!,
+                              member?.fullName ?? 'N/A',
                               style: theme.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: theme.colorScheme.onSurface,
@@ -190,7 +205,8 @@ class BeautifulSubscriberCard extends StatelessWidget {
                   theme,
                   Icons.visibility_outlined,
                   'View',
-                  () => _viewSubscriber(context, subscription.member),
+                  () =>
+                      member != null ? _viewSubscriber(context, member) : null,
                 ),
               ],
             ),
@@ -201,12 +217,14 @@ class BeautifulSubscriberCard extends StatelessWidget {
   }
 
   Widget _buildAvatarIcon(ThemeData theme) {
-    if (subscription.member.profilePictureUrl != null &&
-        subscription.member.profilePictureUrl!.isNotEmpty) {
+    final member = subscription.member;
+    final profilePictureUrl = member?.profilePicture?.temporaryURL;
+
+    if (profilePictureUrl != null && profilePictureUrl.isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
         child: Image.network(
-          subscription.member.profilePictureUrl!,
+          profilePictureUrl,
           width: 24,
           height: 24,
           fit: BoxFit.cover,
@@ -355,14 +373,14 @@ class BeautifulSubscriberCard extends StatelessWidget {
   Future<void> _makeCall() async {
     final uri = Uri(
       scheme: 'tel',
-      path: subscription.member.phoneNumber,
+      path: subscription.member?.phoneNumber,
     );
     await UrlHelper.openUrl(uri);
   }
 
   void _viewSubscriber(
     BuildContext context,
-    PRFLocalMember member,
+    PRFMember member,
   ) => WoltModalSheet.show<void>(
     context: context,
     pageListBuilder: (modalSheetContext) {
@@ -408,10 +426,13 @@ class BeautifulSubscriberCard extends StatelessWidget {
                         ),
                         child: ClipOval(
                           child:
-                              member.profilePictureUrl != null &&
-                                  member.profilePictureUrl!.isNotEmpty
+                              member.profilePicture?.temporaryURL != null &&
+                                  member
+                                      .profilePicture!
+                                      .temporaryURL!
+                                      .isNotEmpty
                               ? Image.network(
-                                  member.profilePictureUrl!,
+                                  member.profilePicture!.temporaryURL!,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
                                       _buildProfileFallback(
@@ -430,7 +451,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
 
                     // Member Name
                     Text(
-                      member.fullName!,
+                      member.fullName,
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             fontWeight: FontWeight.w700,
@@ -486,7 +507,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
     },
   );
 
-  Widget _buildProfileFallback(ThemeData theme, PRFLocalMember member) {
+  Widget _buildProfileFallback(ThemeData theme, PRFMember member) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -498,7 +519,7 @@ class BeautifulSubscriberCard extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          member.fullName![0].toUpperCase(),
+          member.fullName[0].toUpperCase(),
           style: theme.textTheme.displayLarge?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w700,

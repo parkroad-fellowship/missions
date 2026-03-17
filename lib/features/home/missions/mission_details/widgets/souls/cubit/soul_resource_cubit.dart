@@ -1,5 +1,6 @@
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/services/api/soul_service.dart';
+import 'package:app/services/local_storage/isar/soul_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class SoulResourceCubit extends ResourceCubit<PRFSoul> {
@@ -10,6 +11,15 @@ class SoulResourceCubit extends ResourceCubit<PRFSoul> {
 
   @override
   List<String> get defaultIncludes => ['classGroup', 'mission'];
+
+  @override
+  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
+    final parentKey = filters?['mission_ulid'] as String?;
+    if (parentKey != null && dbService is SoulDbService) {
+      await (dbService as SoulDbService).refreshParentStream(parentKey);
+    }
+    await dbService?.refreshStream();
+  }
 
   /// Create a soul.
   Future<void> createSoul({required Map<String, dynamic> data}) async {

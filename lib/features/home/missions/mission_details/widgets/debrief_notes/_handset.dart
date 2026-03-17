@@ -1,7 +1,6 @@
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_debrief_note.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -33,35 +32,55 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleStreamWrapper(
-      stream: getIt<IsarService>().debriefNotes.parentStream,
-      nullWidget: PRFEmptyView(
-        label: l10n.noNotes,
-        description: l10n.noNotesDesc,
-        icon: Icons.note_add_outlined,
-      ),
-      widget: (context, debriefNotes) => RefreshIndicator(
-        onRefresh: () => context.read<DebriefNoteResourceCubit>().loadAll(
-          filters: {'mission_ulid': missionUlid},
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 64),
-          child: ListView.separated(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
-            itemCount: debriefNotes.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 0),
-            itemBuilder: (context, index) =>
-                BeautifulDebriefNoteCard(
-                      debriefNote: debriefNotes[index],
-                      index: index,
-                    )
-                    .animate(delay: (index * 100).ms)
-                    .fadeIn()
-                    .slideX(begin: -0.3, end: 0),
+    return BlocBuilder<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          listLoading: () => const Center(
+            child: PRFCircularProgressIndicator(),
           ),
-        ),
-      ),
+          listLoaded: (debriefNotes, _, _) {
+            if (debriefNotes.isEmpty) {
+              return PRFEmptyView(
+                label: l10n.noNotes,
+                description: l10n.noNotesDesc,
+                icon: Icons.note_add_outlined,
+              );
+            }
+            return RefreshIndicator(
+              onRefresh: () =>
+                  context.read<DebriefNoteResourceCubit>().loadAll(
+                    filters: {'mission_ulid': missionUlid},
+                  ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 64),
+                child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.lg,
+                  ),
+                  itemCount: debriefNotes.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 0),
+                  itemBuilder: (context, index) =>
+                      BeautifulDebriefNoteCard(
+                            debriefNote: debriefNotes[index],
+                            index: index,
+                          )
+                          .animate(delay: (index * 100).ms)
+                          .fadeIn()
+                          .slideX(begin: -0.3, end: 0),
+                ),
+              ),
+            );
+          },
+          error: (message, _) => PRFEmptyView(
+            label: l10n.noNotes,
+            description: message,
+            icon: Icons.note_add_outlined,
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
+      },
     );
   }
 }
@@ -73,7 +92,7 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
     super.key,
   });
 
-  final PRFLocalDebriefNote debriefNote;
+  final PRFDebriefNote debriefNote;
   final int index;
 
   @override
@@ -108,7 +127,6 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with note icon and timestamp
           Row(
             children: [
               Container(
@@ -142,8 +160,6 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
               ),
             ],
           ),
-
-          // Note content
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),

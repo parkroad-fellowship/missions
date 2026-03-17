@@ -1,14 +1,11 @@
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/enquiry/prf_student_enquiry.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 
 class StudentEnquiriesPageTablet extends StatefulWidget {
@@ -55,7 +52,6 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                   setState(() {
                     _selectedReplyStatus = status;
                   });
-                  Logger().i('Selected Status: $_selectedReplyStatus');
                 },
               ),
             ),
@@ -79,46 +75,57 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
             ),
 
             // Enquiries List
-            StreamBuilder<List<PRFLocalStudentEnquiry>>(
-              stream: getIt<IsarService>().studentEnquiries.filter(
-                replyStatus: _selectedReplyStatus,
-              ),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SliverToBoxAdapter(
-                    child: Center(child: PRFCircularProgressIndicator()),
-                  );
-                }
-
-                final enquiries = snapshot.data;
-
-                if (enquiries != null && enquiries.isEmpty) {
-                  return SliverFillRemaining(
-                    child: RefreshIndicator(
-                      onRefresh: () =>
-                          context.read<EnquiryResourceCubit>().loadAll(),
-                      child: PRFEmptyView(
-                        label: l10n.noQuestions,
-                        description: l10n.pleaseWait,
-                      ),
-                    ),
-                  );
-                }
-
-                return SliverList.separated(
-                  itemCount: enquiries!.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: PRFSpacingTokens.lg),
-                  itemBuilder: (context, index) {
-                    final enquiry = enquiries[index];
-                    return _StudentEnquiryCard(
-                      enquiry: enquiry,
-                      timezone: timezone,
-                      onTap: () => context.router.push(
-                        StudentEnquiryRepliesRoute(enquiryUlid: enquiry.ulid),
-                      ),
+            BlocBuilder<
+              EnquiryResourceCubit,
+              ResourceState<PRFStudentEnquiry>
+            >(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  listLoaded: (allEnquiries, _, _) {
+                    final enquiries = allEnquiries
+                        .where(
+                          (e) => e.hasReplies == _selectedReplyStatus,
+                        )
+                        .toList();
+                    if (enquiries.isEmpty) {
+                      return SliverFillRemaining(
+                        child: RefreshIndicator(
+                          onRefresh: () =>
+                              context.read<EnquiryResourceCubit>().loadAll(),
+                          child: PRFEmptyView(
+                            label: l10n.noQuestions,
+                            description: l10n.pleaseWait,
+                          ),
+                        ),
+                      );
+                    }
+                    return SliverList.separated(
+                      itemCount: enquiries.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: PRFSpacingTokens.lg),
+                      itemBuilder: (context, index) {
+                        final enquiry = enquiries[index];
+                        return _StudentEnquiryCard(
+                          enquiry: enquiry,
+                          timezone: timezone,
+                          onTap: () => context.router.push(
+                            StudentEnquiryRepliesRoute(
+                              enquiryUlid: enquiry.ulid,
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
+                  error: (message, _) => SliverFillRemaining(
+                    child: PRFEmptyView(
+                      label: l10n.noQuestions,
+                      description: message,
+                    ),
+                  ),
+                  orElse: () => const SliverToBoxAdapter(
+                    child: SizedBox.shrink(),
+                  ),
                 );
               },
             ),
@@ -139,7 +146,7 @@ class _StudentEnquiryCard extends StatelessWidget {
     this.onTap,
   });
 
-  final PRFLocalStudentEnquiry enquiry;
+  final PRFStudentEnquiry enquiry;
   final String timezone;
   final VoidCallback? onTap;
 

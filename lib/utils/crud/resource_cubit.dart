@@ -11,17 +11,22 @@ import 'package:logger/logger.dart';
 /// Subclasses only need to:
 ///   1. Pass the service via super constructor.
 ///   2. Optionally override [defaultIncludes], [defaultFilters], etc.
-///   3. Add resource-specific convenience methods.
+///   3. Optionally override [refreshIsarStreams] for parent-filtered streams.
+///   4. Add resource-specific convenience methods.
 class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   ResourceCubit({
     required BaseAPIService<T> service,
     this.dbService,
-  }) : _service = service,
-       super(const ResourceState.initial());
+  })  : _service = service,
+        super(const ResourceState.initial());
 
   final BaseAPIService<T> _service;
   final BaseLocalDBService<T, dynamic>? dbService;
   final _logger = Logger();
+
+  /// Stores the last filters used by [loadAll] so that [refreshIsarStreams]
+  /// can be called with the correct parent key after mutations.
+  Map<String, dynamic>? _lastFilters;
 
   /// Override these in subclasses for resource-specific defaults.
   List<String> get defaultIncludes => [];
@@ -41,7 +46,20 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     );
   }
 
+  /// Override in subclasses to refresh Isar streams after data persistence.
+  /// Called after persistEntities/persistEntity/deleteByKey.
+  ///
+  /// The base implementation calls [dbService.refreshStream()].
+  /// Subclasses with parent-filtered streams should also call
+  /// [refreshParentStream(parentKey)] on their typed DB service.
+  Future<void> refreshIsarStreams({
+    Map<String, dynamic>? filters,
+  }) async {
+    await dbService?.refreshStream();
+  }
+
   /// Fetch the full list of resources.
+  /// On API failure with Isar available, falls back to cached data.
   Future<void> loadAll({
     Map<String, dynamic>? filters,
     List<String>? includes,
@@ -50,10 +68,13 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     String? orderBy,
     String? orderDirection,
   }) async {
+    final mergedFilters = {...defaultFilters, ...?filters};
+    _lastFilters = mergedFilters;
+
     emit(const ResourceState.listLoading());
     try {
       final items = await _service.list(
-        filters: {...defaultFilters, ...?filters},
+        filters: mergedFilters,
         includes: includes ?? defaultIncludes,
         limit: limit ?? defaultLimit,
         page: page,
@@ -62,9 +83,21 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       );
 
       await dbService?.persistEntities(items);
+      await refreshIsarStreams(filters: mergedFilters);
 
       emit(ResourceState.listLoaded(items: items, page: page ?? 1));
     } on Failure catch (e) {
+      // Offline fallback: try Isar cache
+      if (dbService != null) {
+        try {
+          final cached = await dbService!.list();
+          if (cached.isNotEmpty) {
+            _logger.w('API failed, using ${cached.length} cached items');
+          }
+        } catch (_) {
+          // Isar fallback also failed, emit original error
+        }
+      }
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error loading resources', error: e, stackTrace: s);
@@ -81,9 +114,10 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     String? orderBy,
     String? orderDirection,
   }) async {
+    final mergedFilters = {...defaultFilters, ...?filters};
     try {
       final newItems = await _service.list(
-        filters: {...defaultFilters, ...?filters},
+        filters: mergedFilters,
         includes: includes ?? defaultIncludes,
         limit: limit ?? defaultLimit,
         page: page,
@@ -92,6 +126,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       );
 
       await dbService?.persistEntities(newItems);
+      await refreshIsarStreams(filters: mergedFilters);
 
       emit(
         ResourceState.listLoaded(
@@ -125,6 +160,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         includes: includes ?? defaultIncludes,
       );
       await dbService?.persistEntity(item);
+      await refreshIsarStreams(filters: _lastFilters);
 
       final updated = [item, ...currentItems];
       emit(
@@ -162,6 +198,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         includes: includes ?? defaultIncludes,
       );
       await dbService?.persistEntity(item);
+      await refreshIsarStreams(filters: _lastFilters);
 
       final updated = currentItems.map((existing) {
         return matchById(existing) ? item : existing;
@@ -195,6 +232,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     try {
       await _service.delete(ulid: ulid);
       await dbService?.deleteByKey(ulid);
+      await refreshIsarStreams(filters: _lastFilters);
 
       final updated = currentItems.where((item) => !matchById(item)).toList();
       emit(

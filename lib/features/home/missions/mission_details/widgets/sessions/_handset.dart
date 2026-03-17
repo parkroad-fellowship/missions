@@ -1,10 +1,10 @@
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_mission_session.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart' as col;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,29 +37,38 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
-      child: SingleStreamWrapper(
-        stream: getIt<IsarService>().missionSessions.getByParentKeyGrouped(
-          missionUlid,
-          (session) => session.startsAt,
-        ),
-        nullWidget: PRFEmptyView(
-          label: l10n.noSessions,
-          description: l10n.sessionsWillAppearHere,
-          icon: Icons.event_note_outlined,
-        ),
-        widget: (context, missionSessions) => missionSessions.isEmpty
-            ? PRFEmptyView(
-                label: l10n.noSessions,
-                description: l10n.sessionsWillAppearHere,
-                icon: Icons.event_note_outlined,
-              )
-            : ListView.builder(
+      child: BlocBuilder<
+        MissionSessionResourceCubit,
+        ResourceState<PRFMissionSession>
+      >(
+        builder: (context, state) {
+          return state.maybeWhen(
+            listLoading: () => const Center(
+              child: PRFCircularProgressIndicator(),
+            ),
+            listLoaded: (sessions, _, _) {
+              if (sessions.isEmpty) {
+                return PRFEmptyView(
+                  label: l10n.noSessions,
+                  description: l10n.sessionsWillAppearHere,
+                  icon: Icons.event_note_outlined,
+                );
+              }
+
+              // Group by startsAt date
+              final missionSessions = col.groupBy(
+                sessions,
+                (PRFMissionSession session) => session.startsAt,
+              );
+
+              return ListView.builder(
                 physics: const ScrollPhysics(),
                 itemCount: missionSessions.length,
                 itemBuilder: (context, index) {
-                  final sortedDailySessions = List<PRFLocalMissionSession>.from(
-                    missionSessions.values.elementAt(index),
-                  )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
+                  final sortedDailySessions =
+                      List<PRFMissionSession>.from(
+                        missionSessions.values.elementAt(index),
+                      )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +132,16 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                     ],
                   );
                 },
-              ),
+              );
+            },
+            error: (message, _) => PRFEmptyView(
+              label: l10n.noSessions,
+              description: message,
+              icon: Icons.event_note_outlined,
+            ),
+            orElse: () => const SizedBox.shrink(),
+          );
+        },
       ),
     );
   }
@@ -139,7 +157,7 @@ class TimelineSessionCard extends StatelessWidget {
     super.key,
   });
 
-  final PRFLocalMissionSession missionSession;
+  final PRFMissionSession missionSession;
   final String missionUlid;
   final bool isLast;
   final Duration animationDelay;
@@ -192,7 +210,7 @@ class TimelineSessionCard extends StatelessWidget {
                 SessionRoute(
                   missionSessionUlid: missionSession.ulid,
                   missionUlid: missionUlid,
-                  missionSessionId: missionSession.id,
+                  missionSessionId: 0,
                 ),
               ),
               child:
@@ -289,7 +307,7 @@ class TimelineSessionCard extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    missionSession.facilitator.fullName ??
+                                    missionSession.facilitator?.fullName ??
                                         'N/A',
                                     style: Theme.of(
                                       context,

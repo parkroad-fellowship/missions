@@ -1,7 +1,6 @@
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_mission_question.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -34,35 +33,58 @@ class _MissionQuestionsViewHandsetState
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleStreamWrapper(
-      stream: getIt<IsarService>().missionQuestions.parentStream,
-      nullWidget: PRFEmptyView(
-        label: l10n.noQuestions,
-        description: l10n.questionsWillAppearHere,
-        icon: Icons.help_outline_rounded,
-      ),
-      widget: (context, missionQuestions) => RefreshIndicator(
-        onRefresh: () => context.read<MissionQuestionResourceCubit>().loadAll(
-          filters: {'mission_ulid': missionUlid},
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 64),
-          child: ListView.separated(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
-            itemCount: missionQuestions.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 0),
-            itemBuilder: (context, index) =>
-                BeautifulMissionQuestionCard(
-                      missionQuestion: missionQuestions[index],
-                      index: index,
-                    )
-                    .animate(delay: (index * 100).ms)
-                    .fadeIn()
-                    .slideX(begin: -0.3, end: 0),
+    return BlocBuilder<
+      MissionQuestionResourceCubit,
+      ResourceState<PRFMissionQuestion>
+    >(
+      builder: (context, state) {
+        return state.maybeWhen(
+          listLoading: () => const Center(
+            child: PRFCircularProgressIndicator(),
           ),
-        ),
-      ),
+          listLoaded: (missionQuestions, _, _) {
+            if (missionQuestions.isEmpty) {
+              return PRFEmptyView(
+                label: l10n.noQuestions,
+                description: l10n.questionsWillAppearHere,
+                icon: Icons.help_outline_rounded,
+              );
+            }
+            return RefreshIndicator(
+              onRefresh: () =>
+                  context.read<MissionQuestionResourceCubit>().loadAll(
+                    filters: {'mission_ulid': missionUlid},
+                  ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 64),
+                child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.lg,
+                  ),
+                  itemCount: missionQuestions.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 0),
+                  itemBuilder: (context, index) =>
+                      BeautifulMissionQuestionCard(
+                            missionQuestion: missionQuestions[index],
+                            index: index,
+                          )
+                          .animate(delay: (index * 100).ms)
+                          .fadeIn()
+                          .slideX(begin: -0.3, end: 0),
+                ),
+              ),
+            );
+          },
+          error: (message, _) => PRFEmptyView(
+            label: l10n.noQuestions,
+            description: message,
+            icon: Icons.help_outline_rounded,
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
+      },
     );
   }
 }
@@ -74,7 +96,7 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
     super.key,
   });
 
-  final PRFLocalMissionQuestion missionQuestion;
+  final PRFMissionQuestion missionQuestion;
   final int index;
 
   @override
@@ -110,7 +132,6 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with question icon and type
           Row(
             children: [
               Container(
@@ -144,8 +165,6 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
               ),
             ],
           ),
-
-          // Question content
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),

@@ -10,7 +10,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 
 class MissionsPageTablet extends StatefulWidget {
@@ -22,9 +21,6 @@ class MissionsPageTablet extends StatefulWidget {
 
 class _MissionsPageTabletState extends State<MissionsPageTablet>
     with SingleTickerProviderStateMixin {
-  Stream<List<PRFLocalMission>> get _missionsStream =>
-      getIt<IsarService>().missions.stream;
-
   Stream<List<PRFLocalMission>> get _memberMissionsStream =>
       getIt<IsarService>().memberMissions.parentStream;
 
@@ -154,74 +150,74 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
   Widget _buildMissionsTimeline(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
 
-    return StreamBuilder<List<PRFLocalMission>>(
-      key: PageStorageKey('missions_stream_${_tabController.index}'),
-      stream: _missionsStream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
+    return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          listLoading: () => const Center(
+            child: PRFCircularProgressIndicator(),
+          ),
+          listLoaded: (missions, _, _) {
+            if (missions.isEmpty) {
+              return RefreshIndicator(
+                onRefresh: () =>
+                    context.read<MissionResourceCubit>().loadAll(),
+                child: PRFEmptyView(
+                  label: l10n.noMissions,
+                  description: l10n.pleaseWait,
+                ),
+              );
+            }
+
+            final sortedMissions = List<PRFMission>.from(missions)
+              ..sort((a, b) => a.startDate.compareTo(b.startDate));
+
+            return RefreshIndicator(
+              onRefresh: () =>
+                  context.read<MissionResourceCubit>().loadAll(),
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.xl,
+                  vertical: PRFSpacingTokens.xxl,
+                ),
+                itemCount: sortedMissions.length,
+                itemBuilder: (context, index) {
+                  final mission = sortedMissions[index];
+                  final isLast = index == sortedMissions.length - 1;
+
+                  return TimelineMissionCardTablet(
+                        mission: mission,
+                        isLast: isLast,
+                        index: index,
+                        onTap: () => context.router.push(
+                          MissionsDetailsRoute(
+                            missionUlid: mission.ulid,
+                          ),
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(
+                        delay: Duration(milliseconds: index * 100),
+                        duration: PRFMotionTokens.enterShort,
+                      )
+                      .slideX(
+                        begin: 0.3,
+                        end: 0,
+                        curve: Curves.easeOutCubic,
+                      );
+                },
               ),
-            ),
-          );
-        }
-
-        final missions = snapshot.data;
-        Logger().e(missions);
-
-        if (missions != null && missions.isEmpty) {
-          return RefreshIndicator(
+            );
+          },
+          error: (message, _) => RefreshIndicator(
             onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
             child: PRFEmptyView(
               label: l10n.noMissions,
-              description: l10n.pleaseWait,
+              description: message,
             ),
-          );
-        }
-
-        // Sort missions by start date for timeline
-        final sortedMissions = List<PRFLocalMission>.from(missions!)
-          ..sort((a, b) => a.startDate.compareTo(b.startDate));
-
-        return RefreshIndicator(
-          onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
-          child: ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(
-              horizontal: PRFSpacingTokens.xl,
-              vertical: PRFSpacingTokens.xxl,
-            ),
-            itemCount: sortedMissions.length,
-            itemBuilder: (context, index) {
-              final mission = sortedMissions[index];
-              final isLast = index == sortedMissions.length - 1;
-
-              return TimelineMissionCardTablet(
-                    mission: mission,
-                    isLast: isLast,
-                    index: index,
-                    onTap: () => context.router.push(
-                      MissionsDetailsRoute(
-                        missionUlid: mission.ulid,
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: Duration(milliseconds: index * 100),
-                    duration: PRFMotionTokens.enterShort,
-                  )
-                  .slideX(
-                    begin: 0.3,
-                    end: 0,
-                    curve: Curves.easeOutCubic,
-                  );
-            },
           ),
+          orElse: () => const SizedBox.shrink(),
         );
       },
     );
@@ -248,7 +244,6 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
         }
 
         final missions = snapshot.data;
-        Logger().e(missions);
 
         if (missions != null && missions.isEmpty) {
           return RefreshIndicator(
@@ -316,19 +311,69 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
     super.key,
   });
 
-  final PRFLocalMission mission;
+  final dynamic mission;
   final bool isLast;
   final int index;
   final bool isSubscribed;
   final VoidCallback? onTap;
+
+  String _schoolName() {
+    if (mission is PRFMission) return (mission as PRFMission).school?.name ?? '';
+    if (mission is PRFLocalMission) {
+      return (mission as PRFLocalMission).school?.name ?? '';
+    }
+    return '';
+  }
+
+  String _missionTypeName() {
+    if (mission is PRFMission) {
+      return (mission as PRFMission).missionType?.name ?? '';
+    }
+    if (mission is PRFLocalMission) {
+      return (mission as PRFLocalMission).missionType?.name ?? '';
+    }
+    return '';
+  }
+
+  DateTime get _startDate {
+    if (mission is PRFMission) return (mission as PRFMission).startDate;
+    return (mission as PRFLocalMission).startDate;
+  }
+
+  DateTime get _endDate {
+    if (mission is PRFMission) return (mission as PRFMission).endDate;
+    return (mission as PRFLocalMission).endDate;
+  }
+
+  String get _startTime {
+    if (mission is PRFMission) return (mission as PRFMission).startTime;
+    return (mission as PRFLocalMission).startTime;
+  }
+
+  String get _endTime {
+    if (mission is PRFMission) return (mission as PRFMission).endTime;
+    return (mission as PRFLocalMission).endTime;
+  }
+
+  int get _capacity {
+    if (mission is PRFMission) return (mission as PRFMission).capacity;
+    return (mission as PRFLocalMission).capacity;
+  }
+
+  int get _missionSubscriptionsNeeded {
+    if (mission is PRFMission) {
+      return (mission as PRFMission).missionSubscriptionsNeeded;
+    }
+    return (mission as PRFLocalMission).missionSubscriptionsNeeded;
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = context.l10n;
     final now = DateTime.now();
-    final startDate = mission.startDate;
-    final endDate = mission.endDate;
+    final startDate = _startDate;
+    final endDate = _endDate;
     final isUpcoming = startDate.isAfter(now);
     final isPast = endDate.isBefore(now.subtract(const Duration(days: 1)));
     final isOngoing = startDate.isBefore(now) && endDate.isAfter(now);
@@ -391,7 +436,6 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (isMultiDay) ...[
-                      // Start date
                       Text(
                         startDate.day.toString(),
                         style: theme.textTheme.titleLarge?.copyWith(
@@ -414,7 +458,6 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                           vertical: PRFSpacingTokens.xs,
                         ),
                       ),
-                      // End date
                       Text(
                         endDate.day.toString(),
                         style: theme.textTheme.titleLarge?.copyWith(
@@ -430,7 +473,6 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                         ),
                       ),
                     ] else ...[
-                      // Single day
                       Text(
                         startDate.day.toString(),
                         style: theme.textTheme.headlineMedium?.copyWith(
@@ -449,7 +491,6 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                   ],
                 ),
               ),
-              // Timeline line with flexible height
               if (!isLast)
                 Container(
                   width: 3,
@@ -505,7 +546,6 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Premium header with gradient
                     Container(
                       padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                       decoration: BoxDecoration(
@@ -522,12 +562,11 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // School name and status
                           Row(
                             children: [
                               Expanded(
                                 child: Text(
-                                  mission.school!.name!,
+                                  _schoolName(),
                                   style: theme.textTheme.headlineSmall
                                       ?.copyWith(
                                         fontWeight: FontWeight.w700,
@@ -566,10 +605,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: PRFSpacingTokens.lg),
-
-                          // Mission type with icon
                           Row(
                             children: [
                               Container(
@@ -591,7 +627,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                               const SizedBox(width: PRFSpacingTokens.md),
                               Expanded(
                                 child: Text(
-                                  mission.missionType!.name!,
+                                  _missionTypeName(),
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: theme.colorScheme.onSurface,
@@ -605,15 +641,12 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                         ],
                       ),
                     ),
-
-                    // Content section
                     Padding(
                       padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Duration and timing info
                           Row(
                             children: [
                               Expanded(
@@ -624,7 +657,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                   isMultiDay
                                       ? l10n.durationDesc(duration)
                                       // ignore: lines_longer_than_80_chars
-                                      : '${DateFormatter.formatTime(mission.startTime, timezone)} - ${DateFormatter.formatTime(mission.endTime, timezone)}',
+                                      : '${DateFormatter.formatTime(_startTime, timezone)} - ${DateFormatter.formatTime(_endTime, timezone)}',
                                   theme.colorScheme.primary,
                                 ),
                               ),
@@ -634,7 +667,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                   context,
                                   Icons.people_rounded,
                                   l10n.capacity,
-                                  l10n.capacityDesc(mission.capacity),
+                                  l10n.capacityDesc(_capacity),
                                   theme.colorScheme.secondary,
                                 ),
                               ),
@@ -645,18 +678,14 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                   Icons.people_rounded,
                                   l10n.missionariesNeeded,
                                   l10n.subscriptionsNeeded(
-                                    mission.missionSubscriptionsNeeded
-                                        .toString(),
+                                    _missionSubscriptionsNeeded.toString(),
                                   ),
                                   theme.colorScheme.secondary,
                                 ),
                               ),
                             ],
                           ),
-
                           const SizedBox(height: PRFSpacingTokens.lg),
-
-                          // Date range display
                           Container(
                             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
@@ -704,7 +733,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                       if (isMultiDay)
                                         Text(
                                           // ignore: lines_longer_than_80_chars
-                                          '${DateFormatter.formatTime(mission.startTime, timezone)} - ${DateFormatter.formatTime(mission.endTime, timezone)}',
+                                          '${DateFormatter.formatTime(_startTime, timezone)} - ${DateFormatter.formatTime(_endTime, timezone)}',
                                           style: theme.textTheme.bodySmall
                                               ?.copyWith(
                                                 color: theme
@@ -717,7 +746,6 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                                     ],
                                   ),
                                 ),
-                                // Progress indicator for ongoing missions
                                 if (isOngoing)
                                   Container(
                                         width: 8,
@@ -748,10 +776,7 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
                               ],
                             ),
                           ),
-
                           const SizedBox(height: PRFSpacingTokens.lg),
-
-                          // Action button
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(

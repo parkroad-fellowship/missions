@@ -2,8 +2,7 @@ import 'package:app/enums/mission/prf_soul_decision_type.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_soul.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -35,37 +34,58 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleStreamWrapper(
-      stream: getIt<IsarService>().souls.parentStream,
-      nullWidget: Center(
-        child: PRFEmptyView(
-          label: l10n.noSouls,
-          description: l10n.noSoulsDesc,
-          icon: Icons.people_outline_rounded,
-        ),
-      ),
-      widget: (context, souls) => RefreshIndicator(
-        onRefresh: () => context.read<SoulResourceCubit>().loadAll(
-          filters: {'mission_ulid': missionUlid},
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 64),
-          child: ListView.separated(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.lg),
-            itemCount: souls.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 0),
-            itemBuilder: (context, index) =>
-                BeautifulSoulCard(
-                      soul: souls[index],
-                      index: index,
-                    )
-                    .animate(delay: (index * 100).ms)
-                    .fadeIn()
-                    .slideX(begin: -0.3, end: 0),
+    return BlocBuilder<SoulResourceCubit, ResourceState<PRFSoul>>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          listLoading: () => const Center(
+            child: PRFCircularProgressIndicator(),
           ),
-        ),
-      ),
+          listLoaded: (souls, _, _) {
+            if (souls.isEmpty) {
+              return Center(
+                child: PRFEmptyView(
+                  label: l10n.noSouls,
+                  description: l10n.noSoulsDesc,
+                  icon: Icons.people_outline_rounded,
+                ),
+              );
+            }
+            return RefreshIndicator(
+              onRefresh: () => context.read<SoulResourceCubit>().loadAll(
+                filters: {'mission_ulid': missionUlid},
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 64),
+                child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: PRFSpacingTokens.lg,
+                  ),
+                  itemCount: souls.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 0),
+                  itemBuilder: (context, index) =>
+                      BeautifulSoulCard(
+                            soul: souls[index],
+                            index: index,
+                          )
+                          .animate(delay: (index * 100).ms)
+                          .fadeIn()
+                          .slideX(begin: -0.3, end: 0),
+                ),
+              ),
+            );
+          },
+          error: (message, _) => Center(
+            child: PRFEmptyView(
+              label: l10n.noSouls,
+              description: message,
+              icon: Icons.people_outline_rounded,
+            ),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
+      },
     );
   }
 }
@@ -77,7 +97,7 @@ class BeautifulSoulCard extends StatelessWidget {
     super.key,
   });
 
-  final PRFLocalSoul soul;
+  final PRFSoul soul;
   final int index;
 
   @override
@@ -226,7 +246,7 @@ class BeautifulSoulCard extends StatelessWidget {
             child: _buildInfoItem(
               theme,
               l10n.classGroup,
-              soul.classGroup.name!,
+              soul.classGroup?.name ?? 'N/A',
               Icons.class_rounded,
             ),
           ),
