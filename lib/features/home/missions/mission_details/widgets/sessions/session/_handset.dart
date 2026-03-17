@@ -42,9 +42,14 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
   @override
   void initState() {
     super.initState();
-    context.read<MissionSessionResourceCubit>().loadAll(
-      filters: {'mission_session_ulid': missionSessionUlid},
-    );
+    // Sessions are already loaded by the parent mission details page.
+    // If not loaded yet, fetch all sessions for this mission.
+    final state = context.read<MissionSessionResourceCubit>().state;
+    if (state is ResourceInitial<PRFMissionSession>) {
+      context.read<MissionSessionResourceCubit>().loadAll(
+        filters: {'mission_ulid': missionUlid},
+      );
+    }
   }
 
   @override
