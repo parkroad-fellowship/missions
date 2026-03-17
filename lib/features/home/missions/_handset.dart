@@ -133,9 +133,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                             horizontal: PRFSpacingTokens.sm,
                           ),
                           tabs: [
-                            Tab(text: l10n.all),
+                            const Tab(text: 'Upcoming'),
                             Tab(text: l10n.subscribed),
-                            const Tab(text: 'Past'),
+                            const Tab(text: 'All Past'),
                           ],
                         ),
                       ),

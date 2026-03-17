@@ -16,7 +16,7 @@ class SoulResourceCubit extends ResourceCubit<PRFSoul> {
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     final parentKey = filters?['mission_ulid'] as String?;
     if (parentKey != null && dbService is SoulDbService) {
-      await (dbService as SoulDbService).refreshParentStream(parentKey);
+      await (dbService! as SoulDbService).refreshParentStream(parentKey);
     }
     await dbService?.refreshStream();
   }

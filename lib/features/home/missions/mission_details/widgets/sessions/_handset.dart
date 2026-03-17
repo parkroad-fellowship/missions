@@ -59,7 +59,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                   // Group by startsAt date
                   final missionSessions = col.groupBy(
                     sessions,
-                    (PRFMissionSession session) => session.startsAt,
+                    (session) => session.startsAt,
                   );
 
                   return ListView.builder(

@@ -427,12 +427,9 @@ class BeautifulSubscriberCard extends StatelessWidget {
                         child: ClipOval(
                           child:
                               member.profilePicture?.temporaryURL != null &&
-                                  member
-                                      .profilePicture!
-                                      .temporaryURL!
-                                      .isNotEmpty
+                                  member.profilePicture!.temporaryURL.isNotEmpty
                               ? Image.network(
-                                  member.profilePicture!.temporaryURL!,
+                                  member.profilePicture!.temporaryURL,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
                                       _buildProfileFallback(

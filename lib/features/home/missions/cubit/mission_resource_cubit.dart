@@ -12,7 +12,7 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
   @override
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     if (dbService is MissionDbService) {
-      await (dbService as MissionDbService).refreshStream();
+      await (dbService! as MissionDbService).refreshStream();
     }
     await dbService?.refreshStream();
   }

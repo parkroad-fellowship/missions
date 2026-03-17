@@ -13,7 +13,7 @@ class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     final parentKey = filters?['mission_ulid'] as String?;
     if (parentKey != null && dbService is DebriefNoteDbService) {
-      await (dbService as DebriefNoteDbService).refreshParentStream(parentKey);
+      await (dbService! as DebriefNoteDbService).refreshParentStream(parentKey);
     }
     await dbService?.refreshStream();
   }

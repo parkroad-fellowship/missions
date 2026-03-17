@@ -305,55 +305,54 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                 ),
 
                 // Recordings List
-                missionSession.transcripts.isEmpty
-                    ? SliverFillRemaining(
-                        child: Center(
-                          child:
-                              Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.music_off_outlined,
-                                        size: 64,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface
-                                            .withValues(alpha: 0.5),
-                                      ),
-                                      const SizedBox(
-                                        height: PRFSpacingTokens.lg,
-                                      ),
-                                      Text(
-                                        l10n.noRecordings,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface
-                                                  .withValues(alpha: 0.6),
-                                            ),
-                                      ),
-                                    ],
-                                  )
-                                  .animate()
-                                  .fadeIn(duration: PRFMotionTokens.enterShort)
-                                  .scale(begin: const Offset(0.8, 0.8)),
-                        ),
-                      )
-                    : SliverList.builder(
-                        itemCount: missionSession.transcripts.length,
-                        itemBuilder: (context, index) =>
-                            _viewTranscripts(
-                                  missionSession.transcripts[index],
-                                  index,
-                                  l10n,
-                                )
-                                .animate(delay: (index * 100).ms)
-                                .slideX(begin: 0.3)
-                                .fadeIn(),
-                      ),
+                if (missionSession.transcripts.isEmpty)
+                  SliverFillRemaining(
+                    child: Center(
+                      child:
+                          Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.music_off_outlined,
+                                    size: 64,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.5),
+                                  ),
+                                  const SizedBox(
+                                    height: PRFSpacingTokens.lg,
+                                  ),
+                                  Text(
+                                    l10n.noRecordings,
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withValues(alpha: 0.6),
+                                        ),
+                                  ),
+                                ],
+                              )
+                              .animate()
+                              .fadeIn(duration: PRFMotionTokens.enterShort)
+                              .scale(begin: const Offset(0.8, 0.8)),
+                    ),
+                  )
+                else
+                  SliverList.builder(
+                    itemCount: missionSession.transcripts.length,
+                    itemBuilder: (context, index) =>
+                        _viewTranscripts(
+                              missionSession.transcripts[index],
+                              index,
+                              l10n,
+                            )
+                            .animate(delay: (index * 100).ms)
+                            .slideX(begin: 0.3)
+                            .fadeIn(),
+                  ),
               ],
 
               const SliverToBoxAdapter(

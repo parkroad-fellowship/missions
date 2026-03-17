@@ -47,9 +47,9 @@ class _RequisitionsViewState extends State<RequisitionsView> {
 
     final accountingEventUlid = mission?.accountingEvent?.ulid;
     if (accountingEventUlid != null) {
-      context
-          .read<RequisitionResourceCubit>()
-          .loadForAccountingEvent(accountingEventUlid: accountingEventUlid);
+      context.read<RequisitionResourceCubit>().loadForAccountingEvent(
+        accountingEventUlid: accountingEventUlid,
+      );
     }
   }
 
@@ -75,8 +75,10 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           );
         }
 
-        return BlocBuilder<RequisitionResourceCubit,
-            ResourceState<PRFRequisition>>(
+        return BlocBuilder<
+          RequisitionResourceCubit,
+          ResourceState<PRFRequisition>
+        >(
           builder: (context, requisitionState) {
             return requisitionState.when(
               initial: () => const SizedBox.shrink(),
@@ -125,24 +127,6 @@ class _RequisitionsViewState extends State<RequisitionsView> {
     return ListView(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       children: [
-        // Financial Summary Card
-        _buildFinancialSummaryCard(context, accountingEvent: accountingEvent),
-
-        const SizedBox(height: PRFSpacingTokens.lg),
-
-        // Refund Info Card
-        if (accountingEvent.amountToRefund > 0 ||
-            accountingEvent.refunds.isNotEmpty)
-          ...[
-            _buildRefundCard(context, accountingEvent: accountingEvent),
-            const SizedBox(height: PRFSpacingTokens.lg),
-          ],
-
-        // Due date
-        _buildDueDateBanner(context, accountingEvent: accountingEvent),
-
-        const SizedBox(height: PRFSpacingTokens.lg),
-
         // Error message
         if (errorMessage != null) ...[
           Container(
@@ -161,26 +145,6 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           const SizedBox(height: PRFSpacingTokens.lg),
         ],
 
-        // Requisitions section header
-        Row(
-          children: [
-            Icon(
-              Icons.list_alt_outlined,
-              size: 20,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(width: PRFSpacingTokens.sm),
-            Text(
-              'Requisitions',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: PRFSpacingTokens.md),
-
         // Requisitions list
         if (requisitions.isEmpty)
           const PRFEmptyView(
@@ -193,164 +157,6 @@ class _RequisitionsViewState extends State<RequisitionsView> {
             (requisition) => _buildRequisitionCard(context, requisition),
           ),
       ],
-    );
-  }
-
-  Widget _buildFinancialSummaryCard(
-    BuildContext context, {
-    required PRFAccountingEvent accountingEvent,
-  }) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.account_balance_wallet_outlined,
-                size: 20,
-                color: theme.colorScheme.primary,
-              ),
-              const SizedBox(width: PRFSpacingTokens.sm),
-              Text(
-                'Fund Allocation',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.lg),
-          _buildFinancialRow(
-            context,
-            label: 'Budget (Credits)',
-            value: _currencyFormat.format(accountingEvent.credits),
-            color: PRFColors.success,
-          ),
-          const Divider(height: PRFSpacingTokens.xl),
-          _buildFinancialRow(
-            context,
-            label: 'Spent (Debits)',
-            value: _currencyFormat.format(accountingEvent.debits),
-            color: theme.colorScheme.error,
-          ),
-          const Divider(height: PRFSpacingTokens.xl),
-          _buildFinancialRow(
-            context,
-            label: 'Balance',
-            value: _currencyFormat.format(accountingEvent.balance),
-            color: accountingEvent.balance >= 0
-                ? PRFColors.success
-                : theme.colorScheme.error,
-            isBold: true,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRefundCard(
-    BuildContext context, {
-    required PRFAccountingEvent accountingEvent,
-  }) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.currency_exchange_outlined,
-                size: 20,
-                color: theme.colorScheme.tertiary,
-              ),
-              const SizedBox(width: PRFSpacingTokens.sm),
-              Text(
-                'Refunds',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.lg),
-          _buildFinancialRow(
-            context,
-            label: 'Refund Charge',
-            value: _currencyFormat.format(accountingEvent.refundCharge),
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-          const Divider(height: PRFSpacingTokens.xl),
-          _buildFinancialRow(
-            context,
-            label: 'Amount to Refund',
-            value: _currencyFormat.format(accountingEvent.amountToRefund),
-            color: theme.colorScheme.primary,
-            isBold: true,
-          ),
-          if (accountingEvent.refunds.isNotEmpty) ...[
-            const Divider(height: PRFSpacingTokens.xl),
-            Text(
-              '${accountingEvent.refunds.length} refund(s) processed',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDueDateBanner(
-    BuildContext context, {
-    required PRFAccountingEvent accountingEvent,
-  }) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.calendar_today_outlined,
-            size: 18,
-            color: theme.colorScheme.primary,
-          ),
-          const SizedBox(width: PRFSpacingTokens.sm),
-          Text(
-            'Due: ${DateFormat.yMMMd().format(accountingEvent.dueDate)}',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.primary,
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -523,8 +329,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
                 ],
               ),
             ],
-            if (item.narration != null &&
-                item.narration!.isNotEmpty) ...[
+            if (item.narration != null && item.narration!.isNotEmpty) ...[
               const SizedBox(height: PRFSpacingTokens.xs),
               Text(
                 item.narration!,
@@ -573,35 +378,6 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildFinancialRow(
-    BuildContext context, {
-    required String label,
-    required String value,
-    required Color color,
-    bool isBold = false,
-  }) {
-    final theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-            fontWeight: isBold ? FontWeight.w600 : null,
-          ),
-        ),
-        Text(
-          value,
-          style: theme.textTheme.titleSmall?.copyWith(
-            color: color,
-            fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
-          ),
-        ),
-      ],
     );
   }
 }

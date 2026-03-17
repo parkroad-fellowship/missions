@@ -392,8 +392,9 @@ class TimelineMissionCardTablet extends StatelessWidget with TimezoneMixin {
   final VoidCallback? onTap;
 
   String _schoolName() {
-    if (mission is PRFMission)
+    if (mission is PRFMission) {
       return (mission as PRFMission).school?.name ?? '';
+    }
     if (mission is PRFLocalMission) {
       return (mission as PRFLocalMission).school?.name ?? '';
     }
