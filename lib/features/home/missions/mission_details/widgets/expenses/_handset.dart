@@ -57,7 +57,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
   void _loadData() {
     context.read<MissionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+      filters: {'ulid': missionUlid},
     );
     context.read<ExpenseCategoryResourceCubit>().loadAll();
   }

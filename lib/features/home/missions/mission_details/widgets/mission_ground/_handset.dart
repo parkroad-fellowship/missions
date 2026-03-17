@@ -51,8 +51,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
         }
 
         return ListView(
-          padding:
-              const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
           children: [
             // Hero Mission Card
             _buildHeroCard(context, mission, l10n, theme),
