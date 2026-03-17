@@ -134,8 +134,10 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         : const SizedBox.shrink();
   }
 
-  Widget _buildLessonVideo(PRFLessonModule? lessonModule,
-      AppLocalizations l10n,) {
+  Widget _buildLessonVideo(
+    PRFLessonModule? lessonModule,
+    AppLocalizations l10n,
+  ) {
     if (lessonModule == null) {
       return const Center(child: PRFCircularProgressIndicator());
     }
@@ -155,8 +157,10 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         : const SizedBox.shrink();
   }
 
-  Widget _buildLessonDocument(PRFLessonModule? lessonModule,
-      AppLocalizations l10n,) {
+  Widget _buildLessonDocument(
+    PRFLessonModule? lessonModule,
+    AppLocalizations l10n,
+  ) {
     if (lessonModule == null) {
       return const Center(child: PRFCircularProgressIndicator());
     }
@@ -176,8 +180,10 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         : const SizedBox.shrink();
   }
 
-  Widget _buildLessonAudio(PRFLessonModule? lessonModule,
-      AppLocalizations l10n,) {
+  Widget _buildLessonAudio(
+    PRFLessonModule? lessonModule,
+    AppLocalizations l10n,
+  ) {
     if (lessonModule == null) {
       return const Center(child: PRFCircularProgressIndicator());
     }
@@ -197,8 +203,10 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         : const SizedBox.shrink();
   }
 
-  Widget _buildCompleteButton(PRFLessonModule? lessonModule,
-      AppLocalizations l10n,) {
+  Widget _buildCompleteButton(
+    PRFLessonModule? lessonModule,
+    AppLocalizations l10n,
+  ) {
     if (lessonModule == null) {
       return const Center(child: PRFCircularProgressIndicator());
     }
@@ -212,10 +220,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
           horizontal: PRFSpacingTokens.xl,
         ),
         child:
-            BlocConsumer<
-              LessonResourceCubit,
-              ResourceState<PRFLessonModule>
-            >(
+            BlocConsumer<LessonResourceCubit, ResourceState<PRFLessonModule>>(
               listener: (context, state) {
                 state.maybeWhen(
                   listLoading: () => setState(() {
@@ -242,9 +247,8 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => PRFPrimaryButton(
-                    onPressed: () async => context
-                        .read<LessonResourceCubit>()
-                        .finishLesson(
+                    onPressed: () async =>
+                        context.read<LessonResourceCubit>().finishLesson(
                           data: {
                             'lesson_module_ulid': lessonModuleUlid,
                             'course_module_ulid': courseModuleUlid,

@@ -40,8 +40,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                   listLoading: () => [
                     const SliverToBoxAdapter(
                       child: Padding(
-                        padding:
-                            EdgeInsets.only(bottom: PRFSpacingTokens.lg),
+                        padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                         child: PRFLinearProgressIndicator(),
                       ),
                     ),

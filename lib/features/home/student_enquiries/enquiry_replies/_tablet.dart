@@ -401,112 +401,114 @@ class _StudentEnquiryRepliesPageTabletState
             Expanded(
               child: FadeTransition(
                 opacity: _fadeAnimation,
-                child: BlocBuilder<
-                  EnquiryResourceCubit,
-                  ResourceState<PRFStudentEnquiry>
-                >(
-                  builder: (context, enquiryState) {
-                    final enquiry = enquiryState.maybeWhen(
-                      listLoaded: (items, _, _) =>
-                          items.isNotEmpty ? items.first : null,
-                      orElse: () => null,
-                    );
+                child:
+                    BlocBuilder<
+                      EnquiryResourceCubit,
+                      ResourceState<PRFStudentEnquiry>
+                    >(
+                      builder: (context, enquiryState) {
+                        final enquiry = enquiryState.maybeWhen(
+                          listLoaded: (items, _, _) =>
+                              items.isNotEmpty ? items.first : null,
+                          orElse: () => null,
+                        );
 
-                    if (enquiry == null) {
-                      return enquiryState.maybeWhen(
-                        listLoading: () => const Center(
-                          child: PRFCircularProgressIndicator(),
-                        ),
-                        orElse: () => Center(
-                          child: PRFEmptyView(
-                            label: l10n.noQuestions,
-                            description: l10n.pleaseWait,
-                          ),
-                        ),
-                      );
-                    }
-
-                    return CustomScrollView(
-                      controller: _scrollController,
-                      physics: const BouncingScrollPhysics(),
-                      slivers: [
-                        PRFNavBar(
-                          title: l10n.studentQuestions,
-                          onBack: () => context.router.popUntilRouteWithPath(
-                            PRFSuperAppRouter.studentEnquiriesRoute,
-                          ),
-                          backgroundColor: theme.colorScheme.surface,
-                        ),
-                        const SliverToBoxAdapter(
-                          child: SizedBox(height: PRFSpacingTokens.lg),
-                        ),
-                        BlocBuilder<
-                          EnquiryReplyResourceCubit,
-                          ResourceState<PRFStudentEnquiryReply>
-                        >(
-                          builder: (context, replyState) {
-                            // Scroll to bottom when new data arrives
-                            WidgetsBinding.instance.addPostFrameCallback(
-                              (_) => _scrollToBottom(),
-                            );
-
-                            final replies = replyState.maybeWhen(
-                              listLoaded: (items, _, _) => items,
-                              orElse: () => null,
-                            );
-
-                            if (replies == null) {
-                              return const SliverFillRemaining(
-                                child: Center(
-                                  child: PRFCircularProgressIndicator(),
-                                ),
-                              );
-                            }
-
-                            // Create synthetic first message from enquiry
-                            final syntheticFirst = PRFStudentEnquiryReply(
-                              enquiryUlid,
-                              enquiry.content,
-                              PRFMorphType.student,
-                              enquiry.createdAt,
-                              enquiry.updatedAt,
-                            );
-
-                            final enquiryReplies = [
-                              syntheticFirst,
-                              ...replies,
-                            ];
-
-                            if (enquiryReplies.isEmpty) {
-                              return SliverFillRemaining(
-                                hasScrollBody: false,
-                                child: Center(
-                                  child: PRFEmptyView(
-                                    label: l10n.noQuestions,
-                                    description: l10n.pleaseWait,
-                                  ),
-                                ),
-                              );
-                            }
-
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final reply = enquiryReplies[index];
-                                  return _buildMessageBubble(reply, index);
-                                },
-                                childCount: enquiryReplies.length,
+                        if (enquiry == null) {
+                          return enquiryState.maybeWhen(
+                            listLoading: () => const Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
+                            orElse: () => Center(
+                              child: PRFEmptyView(
+                                label: l10n.noQuestions,
+                                description: l10n.pleaseWait,
                               ),
-                            );
-                          },
-                        ),
-                        const SliverToBoxAdapter(
-                          child: SizedBox(height: PRFSpacingTokens.lg),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                            ),
+                          );
+                        }
+
+                        return CustomScrollView(
+                          controller: _scrollController,
+                          physics: const BouncingScrollPhysics(),
+                          slivers: [
+                            PRFNavBar(
+                              title: l10n.studentQuestions,
+                              onBack: () =>
+                                  context.router.popUntilRouteWithPath(
+                                    PRFSuperAppRouter.studentEnquiriesRoute,
+                                  ),
+                              backgroundColor: theme.colorScheme.surface,
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: PRFSpacingTokens.lg),
+                            ),
+                            BlocBuilder<
+                              EnquiryReplyResourceCubit,
+                              ResourceState<PRFStudentEnquiryReply>
+                            >(
+                              builder: (context, replyState) {
+                                // Scroll to bottom when new data arrives
+                                WidgetsBinding.instance.addPostFrameCallback(
+                                  (_) => _scrollToBottom(),
+                                );
+
+                                final replies = replyState.maybeWhen(
+                                  listLoaded: (items, _, _) => items,
+                                  orElse: () => null,
+                                );
+
+                                if (replies == null) {
+                                  return const SliverFillRemaining(
+                                    child: Center(
+                                      child: PRFCircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+
+                                // Create synthetic first message from enquiry
+                                final syntheticFirst = PRFStudentEnquiryReply(
+                                  enquiryUlid,
+                                  enquiry.content,
+                                  PRFMorphType.student,
+                                  enquiry.createdAt,
+                                  enquiry.updatedAt,
+                                );
+
+                                final enquiryReplies = [
+                                  syntheticFirst,
+                                  ...replies,
+                                ];
+
+                                if (enquiryReplies.isEmpty) {
+                                  return SliverFillRemaining(
+                                    hasScrollBody: false,
+                                    child: Center(
+                                      child: PRFEmptyView(
+                                        label: l10n.noQuestions,
+                                        description: l10n.pleaseWait,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                return SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      final reply = enquiryReplies[index];
+                                      return _buildMessageBubble(reply, index);
+                                    },
+                                    childCount: enquiryReplies.length,
+                                  ),
+                                );
+                              },
+                            ),
+                            const SliverToBoxAdapter(
+                              child: SizedBox(height: PRFSpacingTokens.lg),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
               ),
             ),
             _buildEnhancedInputArea(),

@@ -112,27 +112,28 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: PRFSpacingTokens.xl,
                 ),
-                child: BlocBuilder<
-                  ModuleResourceCubit,
-                  ResourceState<PRFCourseModule>
-                >(
-                  builder: (context, state) {
-                    final courseModule = state.maybeWhen(
-                      listLoaded: (items, _, _) =>
-                          items.isNotEmpty ? items.first : null,
-                      orElse: () => null,
-                    );
-                    if (courseModule == null) {
-                      return const Center(
-                        child: PRFCircularProgressIndicator(),
-                      );
-                    }
-                    return Text(
-                      courseModule.module?.name ?? '',
-                      style: theme.textTheme.headlineMedium,
-                    );
-                  },
-                ),
+                child:
+                    BlocBuilder<
+                      ModuleResourceCubit,
+                      ResourceState<PRFCourseModule>
+                    >(
+                      builder: (context, state) {
+                        final courseModule = state.maybeWhen(
+                          listLoaded: (items, _, _) =>
+                              items.isNotEmpty ? items.first : null,
+                          orElse: () => null,
+                        );
+                        if (courseModule == null) {
+                          return const Center(
+                            child: PRFCircularProgressIndicator(),
+                          );
+                        }
+                        return Text(
+                          courseModule.module?.name ?? '',
+                          style: theme.textTheme.headlineMedium,
+                        );
+                      },
+                    ),
               ),
             ),
             // Module description
@@ -141,27 +142,28 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: PRFSpacingTokens.xl,
                 ),
-                child: BlocBuilder<
-                  ModuleResourceCubit,
-                  ResourceState<PRFCourseModule>
-                >(
-                  builder: (context, state) {
-                    final courseModule = state.maybeWhen(
-                      listLoaded: (items, _, _) =>
-                          items.isNotEmpty ? items.first : null,
-                      orElse: () => null,
-                    );
-                    if (courseModule == null) {
-                      return const Center(
-                        child: PRFCircularProgressIndicator(),
-                      );
-                    }
-                    return Text(
-                      courseModule.module?.description ?? '',
-                      style: theme.textTheme.bodyMedium,
-                    );
-                  },
-                ),
+                child:
+                    BlocBuilder<
+                      ModuleResourceCubit,
+                      ResourceState<PRFCourseModule>
+                    >(
+                      builder: (context, state) {
+                        final courseModule = state.maybeWhen(
+                          listLoaded: (items, _, _) =>
+                              items.isNotEmpty ? items.first : null,
+                          orElse: () => null,
+                        );
+                        if (courseModule == null) {
+                          return const Center(
+                            child: PRFCircularProgressIndicator(),
+                          );
+                        }
+                        return Text(
+                          courseModule.module?.description ?? '',
+                          style: theme.textTheme.bodyMedium,
+                        );
+                      },
+                    ),
               ),
             ),
             const SliverToBoxAdapter(

@@ -191,7 +191,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
               ],
 
               // Recordings Section
-              if (missionSession != null) SliverToBoxAdapter(
+              if (missionSession != null)
+                SliverToBoxAdapter(
                   child:
                       Container(
                             margin: const EdgeInsets.symmetric(
@@ -298,7 +299,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   child: SizedBox(height: PRFSpacingTokens.lg),
                 ),
 
-              // Recordings List
+                // Recordings List
                 missionSession.transcripts.isEmpty
                     ? SliverFillRemaining(
                         child: Center(

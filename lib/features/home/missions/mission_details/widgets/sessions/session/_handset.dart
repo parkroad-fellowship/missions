@@ -194,7 +194,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
               ],
 
               // Recordings Section
-              if (missionSession != null) SliverToBoxAdapter(
+              if (missionSession != null)
+                SliverToBoxAdapter(
                   child:
                       Container(
                             margin: const EdgeInsets.symmetric(
@@ -300,167 +301,163 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
 
               // Pending / queued recordings for this session
               if (missionSession != null)
-                    StreamBuilder<List<PRFFailedRecordingUpload>>(
-                      stream: getIt<FailedRecordingUploadService>()
-                          .pendingUploadsStream,
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return const SliverToBoxAdapter(child: SizedBox());
-                        }
+                StreamBuilder<List<PRFFailedRecordingUpload>>(
+                  stream: getIt<FailedRecordingUploadService>()
+                      .pendingUploadsStream,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const SliverToBoxAdapter(child: SizedBox());
+                    }
 
-                        final sessionUploads = snapshot.data!
-                            .where(
-                              (upload) =>
-                                  upload.modelUlid == missionSessionUlid,
-                            )
-                            .toList();
+                    final sessionUploads = snapshot.data!
+                        .where(
+                          (upload) => upload.modelUlid == missionSessionUlid,
+                        )
+                        .toList();
 
-                        if (sessionUploads.isEmpty) {
-                          return const SliverToBoxAdapter(child: SizedBox());
-                        }
+                    if (sessionUploads.isEmpty) {
+                      return const SliverToBoxAdapter(child: SizedBox());
+                    }
 
-                        return SliverToBoxAdapter(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: PRFSpacingTokens.lg,
-                              vertical: PRFSpacingTokens.md,
-                            ),
-                            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(
-                                PRFRadiusTokens.smd,
-                              ),
-                              border: Border.all(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.outline.withValues(alpha: 0.2),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    return SliverToBoxAdapter(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.lg,
+                          vertical: PRFSpacingTokens.md,
+                        ),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
+                          border: Border.all(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(alpha: 0.2),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
-                                Row(
+                                Icon(
+                                  Icons.cloud_upload_outlined,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                ),
+                                const SizedBox(width: PRFSpacingTokens.sm),
+                                Expanded(
+                                  child: Text(
+                                    'Queued recordings for this session',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      getIt<FailedRecordingUploadService>()
+                                          .retryAllUploadsForSession(
+                                            missionSessionUlid,
+                                          ),
+                                  child: const Text('Retry all'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: PRFSpacingTokens.sm),
+                            ...sessionUploads.map(
+                              (upload) => Container(
+                                margin: const EdgeInsets.only(
+                                  bottom: PRFSpacingTokens.sm,
+                                ),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.md,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.surfaceContainerHighest,
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.sm,
+                                  ),
+                                ),
+                                child: Row(
                                   children: [
                                     Icon(
-                                      Icons.cloud_upload_outlined,
+                                      Icons.audiotrack,
                                       color: Theme.of(
                                         context,
                                       ).colorScheme.primary,
+                                      size: 20,
                                     ),
-                                    const SizedBox(width: PRFSpacingTokens.sm),
+                                    const SizedBox(
+                                      width: PRFSpacingTokens.md,
+                                    ),
                                     Expanded(
-                                      child: Text(
-                                        'Queued recordings for this session',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            upload.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(
+                                            height: PRFSpacingTokens.xs,
+                                          ),
+                                          Text(
+                                            'Queued • Will upload when '
+                                            'online',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface
+                                                      .withValues(
+                                                        alpha: 0.6,
+                                                      ),
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     TextButton(
                                       onPressed: () =>
                                           getIt<FailedRecordingUploadService>()
-                                              .retryAllUploadsForSession(
-                                                missionSessionUlid,
-                                              ),
-                                      child: const Text('Retry all'),
+                                              .retrySpecificUpload(upload),
+                                      child: const Text('Retry'),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: PRFSpacingTokens.sm),
-                                ...sessionUploads.map(
-                                  (upload) => Container(
-                                    margin: const EdgeInsets.only(
-                                      bottom: PRFSpacingTokens.sm,
-                                    ),
-                                    padding: const EdgeInsets.all(
-                                      PRFSpacingTokens.md,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.surfaceContainerHighest,
-                                      borderRadius: BorderRadius.circular(
-                                        PRFRadiusTokens.sm,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.audiotrack,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.primary,
-                                          size: 20,
-                                        ),
-                                        const SizedBox(
-                                          width: PRFSpacingTokens.md,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                upload.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              const SizedBox(
-                                                height: PRFSpacingTokens.xs,
-                                              ),
-                                              Text(
-                                                'Queued • Will upload when '
-                                                'online',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall
-                                                    ?.copyWith(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSurface
-                                                          .withValues(
-                                                            alpha: 0.6,
-                                                          ),
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              getIt<
-                                                    FailedRecordingUploadService
-                                                  >()
-                                                  .retrySpecificUpload(upload),
-                                          child: const Text('Retry'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
 
               if (missionSession != null) ...[
                 const SliverToBoxAdapter(
                   child: SizedBox(height: PRFSpacingTokens.lg),
                 ),
 
-              // Recordings List
+                // Recordings List
                 missionSession.transcripts.isEmpty
                     ? SliverFillRemaining(
                         hasScrollBody: false,
