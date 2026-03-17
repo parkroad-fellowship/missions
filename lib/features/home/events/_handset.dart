@@ -61,10 +61,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                       PRFSuperAppRouter.landingRoute,
                     ),
                     actions: [
-                      BlocBuilder<
-                        EventResourceCubit,
-                        ResourceState<PRFEvent>
-                      >(
+                      BlocBuilder<EventResourceCubit, ResourceState<PRFEvent>>(
                         builder: (context, state) => state.maybeWhen(
                           listLoading: () => const SizedBox.square(
                             dimension: 24,
