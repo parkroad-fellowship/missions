@@ -3,10 +3,11 @@ import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_mission.dart';
-import 'package:app/models/local/shared_embeds.dart';
+import 'package:app/models/remote/media/prf_weather_forecast.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,65 +30,71 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
   String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;
 
   @override
-  void initState() {
-    super.initState();
-
-    context.read<MissionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return SingleStreamWrapper<PRFLocalMission?>(
-      stream: getIt<IsarService>().missions.itemStream,
-      loading: const PRFLinearProgressIndicator(),
-      widget: (context, mission) => ListView(
-        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
-        children: [
-          // Hero Mission Card
-          _buildHeroCard(context, mission!, l10n, theme),
-          const SizedBox(height: PRFSpacingTokens.xl),
+    return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
+      builder: (context, state) {
+        final mission = state.maybeWhen(
+          listLoaded: (items, _, _) => items.firstWhereOrNull(
+            (m) => m.ulid == missionUlid,
+          ),
+          mutating: (items, _) => items.firstWhereOrNull(
+            (m) => m.ulid == missionUlid,
+          ),
+          orElse: () => null,
+        );
 
-          // Quick Actions Row
-          _buildQuickActions(context, mission, l10n, theme),
-          const SizedBox(height: PRFSpacingTokens.xl),
+        if (mission == null) {
+          return const Center(child: PRFCircularProgressIndicator());
+        }
 
-          // Mission Intelligence Grid
-          _buildIntelligenceGrid(context, mission, l10n, theme),
-          const SizedBox(height: PRFSpacingTokens.xl),
-
-          // Hide the contact center if the person isn't subscribed
-          // and when the mission date has passed
-          if (mission.loggedInMemberMissionSubscription != null &&
-              mission.loggedInMemberMissionSubscription!.status ==
-                  PRFMissionSubscriptionStatus.approved &&
-              mission.endDate.isAfter(
-                DateTime.now().subtract(const Duration(days: 1)),
-              )) ...[
-            // Contact Command Center
-            _buildContactCenter(context, mission, l10n, theme),
+        return ListView(
+          padding:
+              const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
+          children: [
+            // Hero Mission Card
+            _buildHeroCard(context, mission, l10n, theme),
             const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Quick Actions Row
+            _buildQuickActions(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Mission Intelligence Grid
+            _buildIntelligenceGrid(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Hide the contact center if the person isn't subscribed
+            // and when the mission date has passed
+            if (mission.loggedInMemberMissionSubscription != null &&
+                mission.loggedInMemberMissionSubscription!.status ==
+                    PRFMissionSubscriptionStatus.approved &&
+                mission.endDate.isAfter(
+                  DateTime.now().subtract(const Duration(days: 1)),
+                )) ...[
+              // Contact Command Center
+              _buildContactCenter(context, mission, l10n, theme),
+              const SizedBox(height: PRFSpacingTokens.xl),
+            ],
+
+            // Location & Navigation Hub
+            _buildLocationHub(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Weather Intelligence
+            if (mission.weatherForecasts.isNotEmpty)
+              _buildWeatherIntelligence(context, mission, l10n, theme),
           ],
-
-          // Location & Navigation Hub
-          _buildLocationHub(context, mission, l10n, theme),
-          const SizedBox(height: PRFSpacingTokens.xl),
-
-          // Weather Intelligence
-          if (mission.weatherForecasts?.isNotEmpty ?? false)
-            _buildWeatherIntelligence(context, mission, l10n, theme),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _buildHeroCard(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -155,7 +162,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 ),
                 const SizedBox(height: PRFSpacingTokens.lg),
                 Text(
-                  mission.school!.name!.toUpperCase(),
+                  (mission.school?.name ?? '').toUpperCase(),
                   style: theme.textTheme.headlineLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w900,
@@ -251,7 +258,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildQuickActions(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -339,7 +346,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildIntelligenceGrid(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -361,12 +368,12 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               crossAxisSpacing: 12,
               childAspectRatio: 1.2,
               children: [
-                if (mission.school!.totalStudents != 0)
+                if ((mission.school?.totalStudents ?? 0) != 0)
                   _buildStatCard(
                     context,
                     Icons.people_rounded,
                     l10n.population,
-                    mission.school!.totalStudents!.toString(),
+                    (mission.school?.totalStudents ?? 0).toString(),
                     theme.colorScheme.primary,
                     theme,
                   ),
@@ -390,7 +397,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   context,
                   Icons.route_rounded,
                   l10n.estimatedDistance,
-                  mission.school!.distance ?? 'N/A',
+                  mission.school?.distance ?? 'N/A',
                   theme.colorScheme.error,
                   theme,
                 ),
@@ -453,7 +460,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildContactCenter(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -494,7 +501,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 ],
               ),
               const SizedBox(height: PRFSpacingTokens.lg),
-              ...mission.school!.contacts!.map(
+              ...(mission.school?.contacts ?? []).map(
                 (contact) => Padding(
                   padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
                   child: Container(
@@ -517,7 +524,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                             alpha: 0.1,
                           ),
                           child: Text(
-                            contact.name!.substring(0, 1).toUpperCase(),
+                            contact.name.substring(0, 1).toUpperCase(),
                             style: TextStyle(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.w700,
@@ -530,13 +537,13 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                contact.name!,
+                                contact.name,
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               Text(
-                                contact.contactType!.name!,
+                                contact.contactType?.name ?? '',
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.onSurfaceVariant,
                                 ),
@@ -592,7 +599,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildLocationHub(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -673,15 +680,15 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      mission.school!.address!,
+                      mission.school?.address ?? '',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if (mission.school!.directions?.isNotEmpty ?? false) ...[
+                    if (mission.school?.directions.isNotEmpty ?? false) ...[
                       const SizedBox(height: PRFSpacingTokens.sm),
                       Text(
-                        mission.school!.directions!,
+                        mission.school!.directions,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
@@ -698,7 +705,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       context,
                       Icons.straighten_rounded,
                       l10n.estimatedDistance,
-                      mission.school!.distance ?? 'N/A',
+                      mission.school?.distance ?? 'N/A',
                       theme,
                     ),
                   ),
@@ -708,7 +715,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       context,
                       Icons.schedule_rounded,
                       'Travel Time',
-                      mission.school!.staticDuration ?? 'N/A',
+                      mission.school?.staticDuration ?? 'N/A',
                       theme,
                     ),
                   ),
@@ -785,7 +792,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildWeatherIntelligence(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -833,7 +840,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 ],
               ),
               const SizedBox(height: PRFSpacingTokens.lg),
-              ...mission.weatherForecasts!.asMap().entries.map(
+              ...mission.weatherForecasts.asMap().entries.map(
                 (entry) => Padding(
                   padding: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                   child: _buildWeatherCard(
@@ -856,7 +863,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
   Widget _buildWeatherCard(
     BuildContext context,
     int day,
-    PRFLocalWeatherForecast forecast,
+    PRFWeatherForecast forecast,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -898,7 +905,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               const SizedBox(width: PRFSpacingTokens.sm),
               Expanded(
                 child: Text(
-                  forecast.weatherCodeDescription!,
+                  forecast.weatherCodeDescription,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -913,7 +920,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 child: _buildWeatherStat(
                   context,
                   l10n.temperature,
-                  '${forecast.temperature!.apparentAvg!}°',
+                  '${forecast.temperature.apparentAvg}\u00B0',
                   theme,
                 ),
               ),
@@ -921,7 +928,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 child: _buildWeatherStat(
                   context,
                   l10n.humidity,
-                  forecast.humidity!.avg!,
+                  forecast.humidity.avg,
                   theme,
                 ),
               ),
@@ -929,13 +936,13 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 child: _buildWeatherStat(
                   context,
                   l10n.rain,
-                  forecast.precipitationProbability!.avg!,
+                  forecast.precipitationProbability.avg,
                   theme,
                 ),
               ),
             ],
           ),
-          if (forecast.dressingRecommendations?.isNotEmpty ?? false) ...[
+          if (forecast.dressingRecommendations.isNotEmpty) ...[
             const SizedBox(height: PRFSpacingTokens.md),
             Container(
               padding: const EdgeInsets.all(PRFSpacingTokens.md),
@@ -953,7 +960,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   const SizedBox(width: PRFSpacingTokens.sm),
                   Expanded(
                     child: Text(
-                      forecast.dressingRecommendations!,
+                      forecast.dressingRecommendations,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -995,7 +1002,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildPrepNotes(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -1054,8 +1061,9 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     );
   }
 
-  Future<void> _openMap(PRFLocalMission mission) async {
-    final school = mission.school!;
+  Future<void> _openMap(PRFMission mission) async {
+    final school = mission.school;
+    if (school == null) return;
 
     final mapTypes = [MapType.google, MapType.googleGo, MapType.apple];
 
@@ -1064,8 +1072,8 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
       if (isAvailable) {
         await MapLauncher.showMarker(
           mapType: mapType,
-          coords: Coords(school.latitude!, school.longitude!),
-          title: school.name!,
+          coords: Coords(school.latitude, school.longitude),
+          title: school.name,
         );
         return;
       }

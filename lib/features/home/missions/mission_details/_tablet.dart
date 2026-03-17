@@ -6,7 +6,6 @@ import 'package:app/features/home/missions/mission_details/widgets/debrief_notes
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/feedback_data_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/finance_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/overview_section.dart';
-import 'package:app/features/home/missions/mission_details/widgets/domain_sections/people_data_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_ground/mission_ground.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
@@ -42,7 +41,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
     with SingleTickerProviderStateMixin {
   String get missionUlid => widget.missionUlid;
 
-  static const _tabCount = 4;
+  static const _tabCount = 3;
 
   late TabController _tabController;
 
@@ -142,7 +141,6 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                         ),
                         tabs: const [
                           Tab(text: 'Overview'),
-                          Tab(text: 'People'),
                           Tab(text: 'Feedback'),
                           Tab(text: 'Finance'),
                         ],
@@ -157,16 +155,13 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
             child: TabBarView(
               controller: _tabController,
               children: [
-                // Tab 0: Overview (Mission Ground + Subscribers)
+                // Tab 0: Overview (Mission Ground + Subscribers + Sessions)
                 OverviewSection(
                   missionGround: MissionGroundView(missionUlid: missionUlid),
                   subscribers: SubscribersView(missionUlid: missionUlid),
+                  sessions: SessionsView(missionUlid: missionUlid),
                 ),
-                // Tab 1: People (Sessions only)
-                PeopleDataSection(
-                  sessionsTab: SessionsView(missionUlid: missionUlid),
-                ),
-                // Tab 2: Feedback (Debrief Notes + Souls + Questions)
+                // Tab 1: Feedback (Debrief Notes + Souls + Questions)
                 FeedbackDataSection(
                   debriefNotesTab: DebriefNotesView(
                     missionUlid: missionUlid,
@@ -176,7 +171,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                     missionUlid: missionUlid,
                   ),
                 ),
-                // Tab 3: Finance (Requisitions + Expenses)
+                // Tab 2: Finance (Requisitions + Expenses)
                 FinanceSection(
                   requisitionsTab: RequisitionsView(
                     missionUlid: missionUlid,
