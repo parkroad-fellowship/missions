@@ -428,11 +428,12 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           Gaimon.success();
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.sessionRecorded);
-                          context
-                              .read<MissionSessionResourceCubit>()
-                              .loadAll(
-      filters: {'mission_session_ulid': widget.missionSession.ulid},
-    );
+                          context.read<MissionSessionResourceCubit>().loadAll(
+                            filters: {
+                              'mission_session_ulid':
+                                  widget.missionSession.ulid,
+                            },
+                          );
                         },
                         error: (error) {
                           setState(() {
@@ -482,8 +483,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
         'starts_at': startsAt!.toIso8601String(),
         'ends_at': endsAt!.toIso8601String(),
         'notes': _notesController.text,
-        if (selectedSpeakerUlid != null)
-          'speaker_ulid': selectedSpeakerUlid,
+        if (selectedSpeakerUlid != null) 'speaker_ulid': selectedSpeakerUlid,
         if (selectedClassGroupUlid != null)
           'class_group_ulid': selectedClassGroupUlid,
       },

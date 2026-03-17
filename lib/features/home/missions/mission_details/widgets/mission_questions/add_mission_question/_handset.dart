@@ -182,7 +182,10 @@ class _AddMissionQuestionViewHandsetState
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<MissionQuestionResourceCubit, ResourceState<PRFMissionQuestion>>(
+              BlocConsumer<
+                    MissionQuestionResourceCubit,
+                    ResourceState<PRFMissionQuestion>
+                  >(
                     listener: (context, state) {
                       state.mapOrNull(
                         mutating: (_) {

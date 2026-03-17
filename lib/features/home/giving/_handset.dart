@@ -74,13 +74,14 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
 
             // Loading Indicator
             SliverToBoxAdapter(
-              child: BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
-                builder: (context, state) => state.maybeWhen(
-                  orElse: () => const PRFLinearProgressIndicator(),
-                  error: (_, __) => const SizedBox.shrink(),
-                  listLoaded: (_, __, ___) => const SizedBox.shrink(),
-                ),
-              ),
+              child:
+                  BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
+                    builder: (context, state) => state.maybeWhen(
+                      orElse: () => const PRFLinearProgressIndicator(),
+                      error: (_, __) => const SizedBox.shrink(),
+                      listLoaded: (_, __, ___) => const SizedBox.shrink(),
+                    ),
+                  ),
             ),
 
             BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
@@ -144,55 +145,57 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                       );
                     }
                     return SliverPadding(
-                    padding: const EdgeInsets.only(
-                      left: PRFSpacingTokens.lg,
-                      right: PRFSpacingTokens.lg,
-                      bottom: 100, // Space for FAB
-                    ),
-                    sliver: SliverList.separated(
-                      itemCount: payments.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: PRFSpacingTokens.lg),
-                      itemBuilder: (context, index) {
-                        final payment = payments[index];
-                        return Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: PRFSpacingTokens.xs,
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(
-                                  PRFRadiusTokens.xl,
+                      padding: const EdgeInsets.only(
+                        left: PRFSpacingTokens.lg,
+                        right: PRFSpacingTokens.lg,
+                        bottom: 100, // Space for FAB
+                      ),
+                      sliver: SliverList.separated(
+                        itemCount: payments.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: PRFSpacingTokens.lg),
+                        itemBuilder: (context, index) {
+                          final payment = payments[index];
+                          return Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: PRFSpacingTokens.xs,
                                 ),
-                                child: InkWell(
-                                  onTap: () => _showPaymentActions(payment),
+                                child: Material(
+                                  color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(
                                     PRFRadiusTokens.xl,
                                   ),
-                                  splashColor: theme.colorScheme.primary
-                                      .withValues(alpha: 0.1),
-                                  highlightColor: theme.colorScheme.primary
-                                      .withValues(alpha: 0.05),
-                                  child: PaymentCard(payment: payment),
+                                  child: InkWell(
+                                    onTap: () => _showPaymentActions(payment),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.xl,
+                                    ),
+                                    splashColor: theme.colorScheme.primary
+                                        .withValues(alpha: 0.1),
+                                    highlightColor: theme.colorScheme.primary
+                                        .withValues(alpha: 0.05),
+                                    child: PaymentCard(payment: payment),
+                                  ),
                                 ),
-                              ),
-                            )
-                            .animate(delay: Duration(milliseconds: index * 100))
-                            .fadeIn(duration: PRFMotionTokens.enterShort)
-                            .slideY(
-                              begin: 0.3,
-                              end: 0,
-                              duration: PRFMotionTokens.enterShort,
-                              curve: Curves.easeOutCubic,
-                            )
-                            .scale(
-                              begin: const Offset(0.9, 0.9),
-                              end: const Offset(1, 1),
-                              duration: PRFMotionTokens.enterShort,
-                              curve: Curves.easeOutCubic,
-                            );
-                      },
-                    ),
+                              )
+                              .animate(
+                                delay: Duration(milliseconds: index * 100),
+                              )
+                              .fadeIn(duration: PRFMotionTokens.enterShort)
+                              .slideY(
+                                begin: 0.3,
+                                end: 0,
+                                duration: PRFMotionTokens.enterShort,
+                                curve: Curves.easeOutCubic,
+                              )
+                              .scale(
+                                begin: const Offset(0.9, 0.9),
+                                end: const Offset(1, 1),
+                                duration: PRFMotionTokens.enterShort,
+                                curve: Curves.easeOutCubic,
+                              );
+                        },
+                      ),
                     );
                   },
                 );

@@ -1,4 +1,3 @@
-
 import 'package:app/features/home/events/cubit/event_resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/events/cubit/event_subscription_resource_cubit.dart';
@@ -288,11 +287,11 @@ class _UpdateEventSubscriptionViewHandsetState
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
-                                    context.read<EventResourceCubit>().loadAll();
                                     context
-                                        .read<
-                                          EventSubscriptionResourceCubit
-                                        >()
+                                        .read<EventResourceCubit>()
+                                        .loadAll();
+                                    context
+                                        .read<EventSubscriptionResourceCubit>()
                                         .loadAll();
                                     PRFSnackbar.success(
                                       context,

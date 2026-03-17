@@ -47,91 +47,94 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
               padding: const EdgeInsets.symmetric(
                 horizontal: PRFSpacingTokens.lg,
               ),
-              sliver: BlocBuilder<PrayerRequestResourceCubit,
-                  ResourceState<PRFPrayerRequest>>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse: () => const SliverFillRemaining(
-                      child: Center(child: PRFCircularProgressIndicator()),
-                    ),
-                    listLoading: () => const SliverFillRemaining(
-                      child: Center(child: PRFCircularProgressIndicator()),
-                    ),
-                    error: (message, _) => SliverFillRemaining(
-                      child: RefreshIndicator(
-                        onRefresh: () => context
-                            .read<PrayerRequestResourceCubit>()
-                            .loadAll(),
-                        child: SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          child: PRFEmptyView(
-                            label: l10n.noPrayerRequests,
-                            description: message,
-                            icon: Icons.hail_rounded,
-                          ),
+              sliver:
+                  BlocBuilder<
+                    PrayerRequestResourceCubit,
+                    ResourceState<PRFPrayerRequest>
+                  >(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        orElse: () => const SliverFillRemaining(
+                          child: Center(child: PRFCircularProgressIndicator()),
                         ),
-                      ),
-                    ),
-                    listLoaded: (prayerRequests, _, __) {
-                      if (prayerRequests.isEmpty) {
-                        return SliverFillRemaining(
+                        listLoading: () => const SliverFillRemaining(
+                          child: Center(child: PRFCircularProgressIndicator()),
+                        ),
+                        error: (message, _) => SliverFillRemaining(
                           child: RefreshIndicator(
                             onRefresh: () => context
                                 .read<PrayerRequestResourceCubit>()
                                 .loadAll(),
                             child: SingleChildScrollView(
-                              physics:
-                                  const AlwaysScrollableScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: PRFSpacingTokens.xxl,
-                              ),
+                              physics: const AlwaysScrollableScrollPhysics(),
                               child: PRFEmptyView(
                                 label: l10n.noPrayerRequests,
-                                description: l10n.noPrayerRequestsDesc,
+                                description: message,
                                 icon: Icons.hail_rounded,
-                                actionLabel: l10n.submitPrayerRequest,
-                                onActionPressed: _addPrayerRequest,
                               ),
                             ),
                           ),
-                        );
-                      }
-
-                      return SliverPadding(
-                        padding: const EdgeInsets.only(bottom: 100),
-                        sliver: SliverList.separated(
-                          itemCount: prayerRequests.length,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: PRFSpacingTokens.xl),
-                          itemBuilder: (context, index) {
-                            final prayerRequest = prayerRequests[index];
-                            return PrayerRequestCard(
-                                  prayerRequest: prayerRequest,
-                                )
-                                .animate(
-                                  delay: Duration(milliseconds: 80 * index),
-                                )
-                                .fadeIn(
-                                  duration: const Duration(
-                                    milliseconds: 500,
-                                  ),
-                                )
-                                .slideY(begin: 0.1, end: 0)
-                                .scale(
-                                  begin: const Offset(0.95, 0.95),
-                                  end: const Offset(1, 1),
-                                  duration: const Duration(
-                                    milliseconds: 400,
-                                  ),
-                                  curve: Curves.easeOutCubic,
-                                );
-                          },
                         ),
+                        listLoaded: (prayerRequests, _, __) {
+                          if (prayerRequests.isEmpty) {
+                            return SliverFillRemaining(
+                              child: RefreshIndicator(
+                                onRefresh: () => context
+                                    .read<PrayerRequestResourceCubit>()
+                                    .loadAll(),
+                                child: SingleChildScrollView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: PRFSpacingTokens.xxl,
+                                  ),
+                                  child: PRFEmptyView(
+                                    label: l10n.noPrayerRequests,
+                                    description: l10n.noPrayerRequestsDesc,
+                                    icon: Icons.hail_rounded,
+                                    actionLabel: l10n.submitPrayerRequest,
+                                    onActionPressed: _addPrayerRequest,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          return SliverPadding(
+                            padding: const EdgeInsets.only(bottom: 100),
+                            sliver: SliverList.separated(
+                              itemCount: prayerRequests.length,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: PRFSpacingTokens.xl),
+                              itemBuilder: (context, index) {
+                                final prayerRequest = prayerRequests[index];
+                                return PrayerRequestCard(
+                                      prayerRequest: prayerRequest,
+                                    )
+                                    .animate(
+                                      delay: Duration(milliseconds: 80 * index),
+                                    )
+                                    .fadeIn(
+                                      duration: const Duration(
+                                        milliseconds: 500,
+                                      ),
+                                    )
+                                    .slideY(begin: 0.1, end: 0)
+                                    .scale(
+                                      begin: const Offset(0.95, 0.95),
+                                      end: const Offset(1, 1),
+                                      duration: const Duration(
+                                        milliseconds: 400,
+                                      ),
+                                      curve: Curves.easeOutCubic,
+                                    );
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
+                  ),
             ),
           ],
         ),

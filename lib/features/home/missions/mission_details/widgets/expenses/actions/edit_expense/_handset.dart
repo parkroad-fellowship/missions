@@ -329,7 +329,10 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
+              BlocConsumer<
+                    AllocationEntryResourceCubit,
+                    ResourceState<PRFAllocationEntry>
+                  >(
                     listener: (context, state) {
                       state.mapOrNull(
                         mutating: (_) {

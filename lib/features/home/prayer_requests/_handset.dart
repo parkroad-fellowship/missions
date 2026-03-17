@@ -40,8 +40,10 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
               backgroundColor: theme.colorScheme.surface,
             ),
 
-            BlocBuilder<PrayerRequestResourceCubit,
-                ResourceState<PRFPrayerRequest>>(
+            BlocBuilder<
+              PrayerRequestResourceCubit,
+              ResourceState<PRFPrayerRequest>
+            >(
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SliverFillRemaining(

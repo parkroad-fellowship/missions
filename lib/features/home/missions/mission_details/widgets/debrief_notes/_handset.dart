@@ -43,8 +43,8 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
       ),
       widget: (context, debriefNotes) => RefreshIndicator(
         onRefresh: () => context.read<DebriefNoteResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
-    ),
+          filters: {'mission_ulid': missionUlid},
+        ),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(

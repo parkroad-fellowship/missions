@@ -48,8 +48,8 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
           return RefreshIndicator(
             onRefresh: () =>
                 context.read<MissionSubscriptionResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
-    ),
+                  filters: {'mission_ulid': widget.missionUlid},
+                ),
             child: PRFEmptyView(
               label: l10n.noSubscribers,
               description: l10n.pleaseWait,
@@ -58,9 +58,10 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
         }
 
         return RefreshIndicator(
-          onRefresh: () => context.read<MissionSubscriptionResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
-    ),
+          onRefresh: () =>
+              context.read<MissionSubscriptionResourceCubit>().loadAll(
+                filters: {'mission_ulid': widget.missionUlid},
+              ),
           child: Padding(
             padding: const EdgeInsets.only(bottom: 64),
             child: ListView.separated(

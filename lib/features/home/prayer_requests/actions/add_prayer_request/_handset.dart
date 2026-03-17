@@ -209,8 +209,10 @@ class _AddPrayerRequestViewHandsetState
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<PrayerRequestResourceCubit,
-                      ResourceState<PRFPrayerRequest>>(
+              BlocConsumer<
+                    PrayerRequestResourceCubit,
+                    ResourceState<PRFPrayerRequest>
+                  >(
                     listenWhen: (prev, curr) =>
                         curr is ResourceMutated<PRFPrayerRequest> ||
                         curr is ResourceError<PRFPrayerRequest>,

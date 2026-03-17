@@ -398,17 +398,15 @@ class _UpdateMissionGroundSuggestionViewHandsetState
       return;
     }
 
-    await context
-        .read<GroundSuggestionResourceCubit>()
-        .updateSuggestion(
-          ulid: missionGroundSuggestion.ulid,
-          data: {
-            'name': _nameController.text.trim(),
-            'contact_person': _contactPersonController.text.trim(),
-            'contact_number': _contactNumberController.text.trim(),
-            'status': _selectedStatus!,
-            'notes': _notesController.text,
-          },
-        );
+    await context.read<GroundSuggestionResourceCubit>().updateSuggestion(
+      ulid: missionGroundSuggestion.ulid,
+      data: {
+        'name': _nameController.text.trim(),
+        'contact_person': _contactPersonController.text.trim(),
+        'contact_number': _contactNumberController.text.trim(),
+        'status': _selectedStatus!,
+        'notes': _notesController.text,
+      },
+    );
   }
 }

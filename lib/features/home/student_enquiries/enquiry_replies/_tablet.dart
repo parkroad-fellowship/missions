@@ -299,7 +299,10 @@ class _StudentEnquiryRepliesPageTabletState
               ),
             ),
             const SizedBox(width: PRFSpacingTokens.md),
-            BlocConsumer<EnquiryReplyResourceCubit, ResourceState<PRFStudentEnquiryReply>>(
+            BlocConsumer<
+              EnquiryReplyResourceCubit,
+              ResourceState<PRFStudentEnquiryReply>
+            >(
               listener: (context, state) {
                 state.mapOrNull(
                   mutating: (_) {

@@ -35,7 +35,10 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocBuilder<MemberEngagementResourceCubit, ResourceState<PRFMemberEngagement>>(
+    return BlocBuilder<
+      MemberEngagementResourceCubit,
+      ResourceState<PRFMemberEngagement>
+    >(
       builder: (context, state) {
         return state.when(
           initial: () => _buildLoadingState(theme),

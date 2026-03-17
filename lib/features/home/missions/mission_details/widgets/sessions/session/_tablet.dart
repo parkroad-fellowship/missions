@@ -65,10 +65,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () =>
-              context.read<MissionSessionResourceCubit>().loadAll(
-      filters: {'mission_session_ulid': missionSessionUlid},
-    ),
+          onRefresh: () => context.read<MissionSessionResourceCubit>().loadAll(
+            filters: {'mission_session_ulid': missionSessionUlid},
+          ),
           child: CustomScrollView(
             slivers: [
               // Navigation Header
@@ -82,11 +81,9 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   listener: (context, state) {
                     state.mapOrNull(
                       loaded: (_) {
-                        context
-                            .read<MissionSessionResourceCubit>()
-                            .loadAll(
-      filters: {'mission_session_ulid': missionSessionUlid},
-    );
+                        context.read<MissionSessionResourceCubit>().loadAll(
+                          filters: {'mission_session_ulid': missionSessionUlid},
+                        );
                         PRFSnackbar.success(context, l10n.doneUploading);
                       },
                       error: (error) {
@@ -142,7 +139,10 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
               // Session Loading State
               SliverToBoxAdapter(
                 child:
-                    BlocBuilder<MissionSessionResourceCubit, ResourceState<PRFMissionSession>>(
+                    BlocBuilder<
+                      MissionSessionResourceCubit,
+                      ResourceState<PRFMissionSession>
+                    >(
                       builder: (context, state) => state.maybeWhen(
                         listLoading: () => Container(
                           margin: const EdgeInsets.symmetric(
@@ -651,8 +651,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
       ).then((_) {
         // ignore: use_build_context_synchronously
         context.read<MissionSessionResourceCubit>().loadAll(
-      filters: {'mission_session_ulid': missionSessionUlid},
-    );
+          filters: {'mission_session_ulid': missionSessionUlid},
+        );
       });
 }
 
@@ -889,10 +889,14 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                             Navigator.of(context).pop();
                                             Navigator.of(context).pop();
                                             context
-                                                .read<MissionSessionResourceCubit>()
+                                                .read<
+                                                  MissionSessionResourceCubit
+                                                >()
                                                 .loadAll(
-      filters: {'mission_ulid': missionUlid},
-    );
+                                                  filters: {
+                                                    'mission_ulid': missionUlid,
+                                                  },
+                                                );
                                             PRFSnackbar.success(
                                               context,
                                               l10n.sessionDeleted,

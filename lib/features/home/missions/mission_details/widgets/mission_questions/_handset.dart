@@ -43,10 +43,9 @@ class _MissionQuestionsViewHandsetState
         icon: Icons.help_outline_rounded,
       ),
       widget: (context, missionQuestions) => RefreshIndicator(
-        onRefresh: () =>
-            context.read<MissionQuestionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
-    ),
+        onRefresh: () => context.read<MissionQuestionResourceCubit>().loadAll(
+          filters: {'mission_ulid': missionUlid},
+        ),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(

@@ -91,7 +91,10 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
               ),
               SliverToBoxAdapter(
                 child:
-                    BlocBuilder<ModuleResourceCubit, ResourceState<PRFCourseModule>>(
+                    BlocBuilder<
+                      ModuleResourceCubit,
+                      ResourceState<PRFCourseModule>
+                    >(
                       builder: (context, state) => state.maybeWhen(
                         listLoading: () => const Padding(
                           padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),

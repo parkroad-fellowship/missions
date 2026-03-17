@@ -99,7 +99,10 @@ class _UpdateDebriefNoteViewHandsetState
             const SizedBox(height: PRFSpacingTokens.xl),
 
             // Submit Button
-            BlocConsumer<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
+            BlocConsumer<
+              DebriefNoteResourceCubit,
+              ResourceState<PRFDebriefNote>
+            >(
               listener: (context, state) {
                 state.mapOrNull(
                   mutating: (_) {

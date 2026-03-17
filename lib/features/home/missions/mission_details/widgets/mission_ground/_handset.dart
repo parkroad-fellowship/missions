@@ -32,7 +32,9 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
   void initState() {
     super.initState();
 
-    context.read<MissionResourceCubit>().loadAll(filters: {'mission_ulid': missionUlid});
+    context.read<MissionResourceCubit>().loadAll(
+      filters: {'mission_ulid': missionUlid},
+    );
   }
 
   @override

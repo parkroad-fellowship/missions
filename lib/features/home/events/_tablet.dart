@@ -29,18 +29,14 @@ class _EventsPageTabletState extends State<EventsPageTablet>
     super.initState();
 
     context.read<EventResourceCubit>().loadAll();
-    context
-        .read<EventSubscriptionResourceCubit>()
-        .loadAll();
+    context.read<EventSubscriptionResourceCubit>().loadAll();
 
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.index == 0) {
         context.read<EventResourceCubit>().loadAll();
       } else {
-        context
-            .read<EventSubscriptionResourceCubit>()
-            .loadAll();
+        context.read<EventSubscriptionResourceCubit>().loadAll();
       }
     });
   }
@@ -261,9 +257,8 @@ class _EventsPageTabletState extends State<EventsPageTablet>
           listLoaded: (eventSubscriptions, _, __) {
             if (eventSubscriptions.isEmpty) {
               return RefreshIndicator(
-                onRefresh: () => context
-                    .read<EventSubscriptionResourceCubit>()
-                    .loadAll(),
+                onRefresh: () =>
+                    context.read<EventSubscriptionResourceCubit>().loadAll(),
                 child: PRFEmptyView(
                   label: l10n.noEvents,
                   description: l10n.pleaseWaitForOS,
@@ -280,9 +275,8 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                   ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
             return RefreshIndicator(
-              onRefresh: () => context
-                  .read<EventSubscriptionResourceCubit>()
-                  .loadAll(),
+              onRefresh: () =>
+                  context.read<EventSubscriptionResourceCubit>().loadAll(),
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(

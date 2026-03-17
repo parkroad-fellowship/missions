@@ -206,7 +206,10 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                       title: l10n.classGroup,
                       isRequired: true,
                       child:
-                          BlocBuilder<ClassGroupResourceCubit, ResourceState<PRFClassGroup>>(
+                          BlocBuilder<
+                            ClassGroupResourceCubit,
+                            ResourceState<PRFClassGroup>
+                          >(
                             builder: (context, state) {
                               return state.maybeWhen(
                                 orElse: () => const SizedBox.shrink(),

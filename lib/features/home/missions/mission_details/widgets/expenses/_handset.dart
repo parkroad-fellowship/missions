@@ -93,7 +93,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             );
           },
         ),
-        BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
+        BlocListener<
+          AllocationEntryResourceCubit,
+          ResourceState<PRFAllocationEntry>
+        >(
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
@@ -107,7 +110,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             );
           },
         ),
-        BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
+        BlocListener<
+          AllocationEntryResourceCubit,
+          ResourceState<PRFAllocationEntry>
+        >(
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
@@ -121,7 +127,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             );
           },
         ),
-        BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
+        BlocListener<
+          AllocationEntryResourceCubit,
+          ResourceState<PRFAllocationEntry>
+        >(
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
@@ -153,50 +162,63 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           },
         ),
       ],
-      child: BlocBuilder<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-              child: PRFLinearProgressIndicator(),
-            ),
-            listLoading: () => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-              child: PRFLinearProgressIndicator(),
-            ),
-            listLoaded: (entries, _, __) {
-              if (entries.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-                  child: PRFEmptyView(
-                    label: 'No Expenses Yet',
-                    description: 'Start by adding your first expense',
-                    icon: Icons.receipt_long_outlined,
+      child:
+          BlocBuilder<
+            AllocationEntryResourceCubit,
+            ResourceState<PRFAllocationEntry>
+          >(
+            builder: (context, state) {
+              return state.when(
+                initial: () => const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
                   ),
-                );
-              }
-              return _buildLoadedView(context, l10n, entries);
+                  child: PRFLinearProgressIndicator(),
+                ),
+                listLoading: () => const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFLinearProgressIndicator(),
+                ),
+                listLoaded: (entries, _, __) {
+                  if (entries.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.lg,
+                      ),
+                      child: PRFEmptyView(
+                        label: 'No Expenses Yet',
+                        description: 'Start by adding your first expense',
+                        icon: Icons.receipt_long_outlined,
+                      ),
+                    );
+                  }
+                  return _buildLoadedView(context, l10n, entries);
+                },
+                mutating: (_, __) => const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFLinearProgressIndicator(),
+                ),
+                mutated: (entries, _, __) =>
+                    _buildLoadedView(context, l10n, entries),
+                error: (message, _) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFEmptyView(
+                    label: 'Error',
+                    description: message,
+                    icon: Icons.error_outline,
+                    actionLabel: 'Retry',
+                    onActionPressed: _loadData,
+                  ),
+                ),
+              );
             },
-            mutating: (_, __) => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-              child: PRFLinearProgressIndicator(),
-            ),
-            mutated: (entries, _, __) => _buildLoadedView(context, l10n, entries),
-            error: (message, _) => Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: PRFSpacingTokens.lg,
-              ),
-              child: PRFEmptyView(
-                label: 'Error',
-                description: message,
-                icon: Icons.error_outline,
-                actionLabel: 'Retry',
-                onActionPressed: _loadData,
-              ),
-            ),
-          );
-        },
-      ),
+          ),
     );
   }
 
@@ -2251,12 +2273,14 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ],
             ),
           ),
-          BlocBuilder<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
+          BlocBuilder<
+            AllocationEntryResourceCubit,
+            ResourceState<PRFAllocationEntry>
+          >(
             builder: (context, state) {
               return IconButton.filled(
-                onPressed: () => context
-                    .read<AllocationEntryResourceCubit>()
-                    .loadAll(
+                onPressed: () =>
+                    context.read<AllocationEntryResourceCubit>().loadAll(
                       filters: {
                         'accounting_event_ulid': accountingEvent.ulid,
                       },

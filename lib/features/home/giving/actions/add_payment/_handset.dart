@@ -83,35 +83,38 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               title: l10n.reasonForGiving,
               isRequired: true,
               margin: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
-              child: BlocBuilder<PaymentTypeResourceCubit,
-                  ResourceState<PRFPaymentType>>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse: () => const SizedBox.shrink(),
-                    listLoading: () =>
-                        const Center(child: LinearProgressIndicator()),
-                    listLoaded: (classes, _, __) =>
-                        PRFSearchableList<PRFPaymentType>(
-                      entries: classes
-                          .map(
-                            (paymentType) =>
-                                PRFSearchableListEntry<PRFPaymentType>(
-                                  value: paymentType,
-                                  label: paymentType.name,
-                                ),
-                          )
-                          .toList(),
-                      onSelected: (paymentType) => setState(() {
-                        selectedPaymentType = paymentType;
-                        if (_showValidation) _validateForm();
-                      }),
-                      selection: selectedPaymentType,
-                      hintText: l10n.reasonForGiving,
-                      emptyText: 'No payment types found',
-                    ),
-                  );
-                },
-              ),
+              child:
+                  BlocBuilder<
+                    PaymentTypeResourceCubit,
+                    ResourceState<PRFPaymentType>
+                  >(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        orElse: () => const SizedBox.shrink(),
+                        listLoading: () =>
+                            const Center(child: LinearProgressIndicator()),
+                        listLoaded: (classes, _, __) =>
+                            PRFSearchableList<PRFPaymentType>(
+                              entries: classes
+                                  .map(
+                                    (paymentType) =>
+                                        PRFSearchableListEntry<PRFPaymentType>(
+                                          value: paymentType,
+                                          label: paymentType.name,
+                                        ),
+                                  )
+                                  .toList(),
+                              onSelected: (paymentType) => setState(() {
+                                selectedPaymentType = paymentType;
+                                if (_showValidation) _validateForm();
+                              }),
+                              selection: selectedPaymentType,
+                              hintText: l10n.reasonForGiving,
+                              emptyText: 'No payment types found',
+                            ),
+                      );
+                    },
+                  ),
             ),
             PRFFormSection(
               icon: Icons.attach_money,

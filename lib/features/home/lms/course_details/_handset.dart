@@ -87,15 +87,19 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
               ],
             ),
             SliverToBoxAdapter(
-              child: BlocBuilder<ModuleResourceCubit, ResourceState<PRFCourseModule>>(
-                builder: (context, state) => state.maybeWhen(
-                  listLoading: () => const Padding(
-                    padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-                    child: PRFLinearProgressIndicator(),
+              child:
+                  BlocBuilder<
+                    ModuleResourceCubit,
+                    ResourceState<PRFCourseModule>
+                  >(
+                    builder: (context, state) => state.maybeWhen(
+                      listLoading: () => const Padding(
+                        padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
+                        child: PRFLinearProgressIndicator(),
+                      ),
+                      orElse: SizedBox.shrink,
+                    ),
                   ),
-                  orElse: SizedBox.shrink,
-                ),
-              ),
             ),
             StreamBuilder<List<PRFLocalCourseModule>>(
               stream: getIt<IsarService>().courseModules.parentStream,

@@ -126,7 +126,10 @@ class DeleteExpenseDialog extends StatelessWidget {
             ),
           ),
         ),
-        BlocConsumer<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
+        BlocConsumer<
+          AllocationEntryResourceCubit,
+          ResourceState<PRFAllocationEntry>
+        >(
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},

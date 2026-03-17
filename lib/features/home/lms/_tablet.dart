@@ -43,15 +43,16 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
-                  builder: (context, state) => state.maybeWhen(
-                    listLoading: () => const Padding(
-                      padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-                      child: PRFLinearProgressIndicator(),
+                child:
+                    BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
+                      builder: (context, state) => state.maybeWhen(
+                        listLoading: () => const Padding(
+                          padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
+                          child: PRFLinearProgressIndicator(),
+                        ),
+                        orElse: SizedBox.shrink,
+                      ),
                     ),
-                    orElse: SizedBox.shrink,
-                  ),
-                ),
               ),
               StreamBuilder(
                 stream: getIt<IsarService>().courses.stream,

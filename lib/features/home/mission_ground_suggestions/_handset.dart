@@ -27,9 +27,7 @@ class _MissionGroundSuggestionsPageHandsetState
   @override
   void initState() {
     super.initState();
-    context
-        .read<GroundSuggestionResourceCubit>()
-        .loadAll();
+    context.read<GroundSuggestionResourceCubit>().loadAll();
   }
 
   @override
@@ -91,8 +89,7 @@ class _MissionGroundSuggestionsPageHandsetState
                                       const AlwaysScrollableScrollPhysics(),
                                   child: PRFEmptyView(
                                     label: l10n.suggestAMission,
-                                    description:
-                                        l10n.suggestMissionDescription,
+                                    description: l10n.suggestMissionDescription,
                                     actionLabel: l10n.suggestAMission,
                                     onActionPressed:
                                         _addMissionGroundSuggestion,
@@ -244,9 +241,7 @@ class _MissionGroundSuggestionsPageHandsetState
       },
     ).then((_) {
       if (mounted) {
-        context
-            .read<GroundSuggestionResourceCubit>()
-            .loadAll();
+        context.read<GroundSuggestionResourceCubit>().loadAll();
       }
     });
   }
@@ -268,9 +263,7 @@ class _MissionGroundSuggestionsPageHandsetState
       },
     ).then((_) {
       if (mounted) {
-        context
-            .read<GroundSuggestionResourceCubit>()
-            .loadAll();
+        context.read<GroundSuggestionResourceCubit>().loadAll();
       }
     });
   }

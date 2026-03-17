@@ -179,9 +179,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
                 },
               ).then((_) {
                 // ignore: use_build_context_synchronously
-                context
-                    .read<EventSubscriptionResourceCubit>()
-                    .loadAll();
+                context.read<EventSubscriptionResourceCubit>().loadAll();
               });
             }
           },

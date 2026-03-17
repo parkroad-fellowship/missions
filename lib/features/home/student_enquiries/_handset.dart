@@ -67,13 +67,17 @@ class _StudentEnquiriesPageHandsetState
 
             // Loading Indicator
             SliverToBoxAdapter(
-              child: BlocBuilder<EnquiryResourceCubit, ResourceState<PRFStudentEnquiry>>(
-                builder: (context, state) => state.maybeWhen(
-                  orElse: () => const PRFLinearProgressIndicator(),
-                  error: (message, _) => const SizedBox.shrink(),
-                  listLoaded: (_, __, ___) => const SizedBox.shrink(),
-                ),
-              ),
+              child:
+                  BlocBuilder<
+                    EnquiryResourceCubit,
+                    ResourceState<PRFStudentEnquiry>
+                  >(
+                    builder: (context, state) => state.maybeWhen(
+                      orElse: () => const PRFLinearProgressIndicator(),
+                      error: (message, _) => const SizedBox.shrink(),
+                      listLoaded: (_, __, ___) => const SizedBox.shrink(),
+                    ),
+                  ),
             ),
 
             // Enquiries List
@@ -93,9 +97,8 @@ class _StudentEnquiriesPageHandsetState
                 if (enquiries != null && enquiries.isEmpty) {
                   return SliverFillRemaining(
                     child: RefreshIndicator(
-                      onRefresh: () => context
-                          .read<EnquiryResourceCubit>()
-                          .loadAll(),
+                      onRefresh: () =>
+                          context.read<EnquiryResourceCubit>().loadAll(),
                       child: PRFEmptyView(
                         label: l10n.noQuestions,
                         description: l10n.pleaseWait,

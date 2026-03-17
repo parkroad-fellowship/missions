@@ -54,108 +54,118 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
           slivers: [
             PRFNavBar(title: l10n.announcements),
             SliverToBoxAdapter(
-              child: BlocBuilder<AnnouncementResourceCubit,
-                  ResourceState<PRFAnnouncement>>(
-                builder: (context, state) => state.maybeWhen(
-                  listLoading: () => const Padding(
-                    padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-                    child: PRFLinearProgressIndicator(),
+              child:
+                  BlocBuilder<
+                    AnnouncementResourceCubit,
+                    ResourceState<PRFAnnouncement>
+                  >(
+                    builder: (context, state) => state.maybeWhen(
+                      listLoading: () => const Padding(
+                        padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
+                        child: PRFLinearProgressIndicator(),
+                      ),
+                      orElse: () => const SizedBox.shrink(),
+                    ),
                   ),
-                  orElse: () => const SizedBox.shrink(),
-                ),
-              ),
             ),
             SliverFillRemaining(
-              child: BlocBuilder<AnnouncementResourceCubit,
-                  ResourceState<PRFAnnouncement>>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    listLoading: () => const PRFCircularProgressIndicator(),
-                    error: (message, _) => Center(child: Text(message)),
-                    listLoaded: (announcements, _, __) {
-                      if (announcements.isEmpty) {
-                        return RefreshIndicator(
-                          onRefresh: () => context
-                              .read<AnnouncementResourceCubit>()
-                              .loadAll(),
-                          child: ListView(
-                            children: [
-                              PRFEmptyView(
-                                label: l10n.noAnnouncements,
-                                description: l10n.pleaseWaitForOS,
+              child:
+                  BlocBuilder<
+                    AnnouncementResourceCubit,
+                    ResourceState<PRFAnnouncement>
+                  >(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        listLoading: () => const PRFCircularProgressIndicator(),
+                        error: (message, _) => Center(child: Text(message)),
+                        listLoaded: (announcements, _, __) {
+                          if (announcements.isEmpty) {
+                            return RefreshIndicator(
+                              onRefresh: () => context
+                                  .read<AnnouncementResourceCubit>()
+                                  .loadAll(),
+                              child: ListView(
+                                children: [
+                                  PRFEmptyView(
+                                    label: l10n.noAnnouncements,
+                                    description: l10n.pleaseWaitForOS,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      }
+                            );
+                          }
 
-                      final groupedEntries = _groupByDate(announcements);
+                          final groupedEntries = _groupByDate(announcements);
 
-                      return RefreshIndicator(
-                        onRefresh: () => context
-                            .read<AnnouncementResourceCubit>()
-                            .loadAll(),
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                          itemCount: groupedEntries.length,
-                          itemBuilder: (context, index) {
-                            final mapAsList = groupedEntries.keys.toList();
-                            final entries = groupedEntries[mapAsList[index]]!;
+                          return RefreshIndicator(
+                            onRefresh: () => context
+                                .read<AnnouncementResourceCubit>()
+                                .loadAll(),
+                            child: ListView.builder(
+                              padding: const EdgeInsets.all(
+                                PRFSpacingTokens.lg,
+                              ),
+                              itemCount: groupedEntries.length,
+                              itemBuilder: (context, index) {
+                                final mapAsList = groupedEntries.keys.toList();
+                                final entries =
+                                    groupedEntries[mapAsList[index]]!;
 
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Date Header with your theme
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: PRFSpacingTokens.lg,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: PRFSpacingTokens.lg,
-                                    vertical: PRFSpacingTokens.sm,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.primary.withValues(
-                                      alpha: 0.08,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                      PRFRadiusTokens.smd,
-                                    ),
-                                    border: Border.all(
-                                      color: colorScheme.primary.withValues(
-                                        alpha: 0.18,
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Date Header with your theme
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: PRFSpacingTokens.lg,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: PRFSpacingTokens.lg,
+                                        vertical: PRFSpacingTokens.sm,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: colorScheme.primary.withValues(
+                                          alpha: 0.08,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          PRFRadiusTokens.smd,
+                                        ),
+                                        border: Border.all(
+                                          color: colorScheme.primary.withValues(
+                                            alpha: 0.18,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        DateFormat.yMMMMd().format(
+                                          mapAsList[index],
+                                        ),
+                                        style: textTheme.titleMedium?.copyWith(
+                                          color: colorScheme.primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    DateFormat.yMMMMd()
-                                        .format(mapAsList[index]),
-                                    style: textTheme.titleMedium?.copyWith(
-                                      color: colorScheme.primary,
-                                      fontWeight: FontWeight.w600,
+
+                                    // Announcements for this date
+                                    ...entries.map(
+                                      (announcement) => _AnnouncementCard(
+                                        announcement: announcement,
+                                        timezone: timezone,
+                                      ),
                                     ),
-                                  ),
-                                ),
 
-                                // Announcements for this date
-                                ...entries.map(
-                                  (announcement) => _AnnouncementCard(
-                                    announcement: announcement,
-                                    timezone: timezone,
-                                  ),
-                                ),
-
-                                const SizedBox(height: PRFSpacingTokens.xl),
-                              ],
-                            );
-                          },
-                        ),
+                                    const SizedBox(height: PRFSpacingTokens.xl),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        orElse: () => const SizedBox.shrink(),
                       );
                     },
-                    orElse: () => const SizedBox.shrink(),
-                  );
-                },
-              ),
+                  ),
             ),
           ],
         ),

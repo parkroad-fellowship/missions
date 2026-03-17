@@ -34,7 +34,9 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
   @override
   void initState() {
     super.initState();
-    context.read<LessonResourceCubit>().loadAll(filters: {'lesson_module_id': lessonModuleUlid});
+    context.read<LessonResourceCubit>().loadAll(
+      filters: {'lesson_module_id': lessonModuleUlid},
+    );
   }
 
   bool _isLoading = false;
@@ -216,50 +218,56 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: PRFSpacingTokens.xl,
                       ),
-                      child: BlocConsumer<LessonResourceCubit, ResourceState<PRFLessonModule>>(
-                        listener: (context, state) {
-                          state.maybeWhen(
-                            listLoading: () => setState(() {
-                              _isLoading = true;
-                            }),
-                            mutated: (_, __, ___) {
-                              setState(() {
-                                _isLoading = false;
-                              });
-                              Gaimon.success();
-                              PRFSnackbar.success(context, l10n.completed);
-                              Navigator.of(context).pop();
+                      child:
+                          BlocConsumer<
+                            LessonResourceCubit,
+                            ResourceState<PRFLessonModule>
+                          >(
+                            listener: (context, state) {
+                              state.maybeWhen(
+                                listLoading: () => setState(() {
+                                  _isLoading = true;
+                                }),
+                                mutated: (_, __, ___) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  Gaimon.success();
+                                  PRFSnackbar.success(context, l10n.completed);
+                                  Navigator.of(context).pop();
+                                },
+                                error: (message, _) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                  Gaimon.error();
+                                  PRFSnackbar.error(context, message);
+                                },
+                                orElse: () {},
+                              );
                             },
-                            error: (message, _) {
-                              setState(() {
-                                _isLoading = false;
-                              });
-                              Gaimon.error();
-                              PRFSnackbar.error(context, message);
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => PRFPrimaryButton(
+                                  onPressed: () async => context
+                                      .read<LessonResourceCubit>()
+                                      .finishLesson(
+                                        data: {
+                                          'lesson_module_ulid':
+                                              lessonModuleUlid,
+                                          'course_module_ulid':
+                                              courseModuleUlid,
+                                        },
+                                      ),
+                                  title: _isLoading
+                                      ? l10n.completing
+                                      : l10n.complete,
+                                  disabled: _isLoading,
+                                  isLoading: _isLoading ? true : null,
+                                ),
+                              );
                             },
-                            orElse: () {},
-                          );
-                        },
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            orElse: () => PRFPrimaryButton(
-                              onPressed: () async => context
-                                  .read<LessonResourceCubit>()
-                                  .finishLesson(
-                                    data: {
-                                      'lesson_module_ulid': lessonModuleUlid,
-                                      'course_module_ulid': courseModuleUlid,
-                                    },
-                                  ),
-                              title: _isLoading
-                                  ? l10n.completing
-                                  : l10n.complete,
-                              disabled: _isLoading,
-                              isLoading: _isLoading ? true : null,
-                            ),
-                          );
-                        },
-                      ),
+                          ),
                     );
                   }
 

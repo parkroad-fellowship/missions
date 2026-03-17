@@ -93,36 +93,41 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
             // FAQ Categories
             SliverToBoxAdapter(
               child:
-                  BlocBuilder<FaqCategoryResourceCubit,
-                    ResourceState<PRFFaqCategory>>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse: () => const SizedBox.shrink(),
-                    listLoading: PRFLinearProgressIndicator.new,
-                    listLoaded: (faqCategories, _, __) =>
-                        PRFCategoryChips<PRFFaqCategory>(
-                          categories: faqCategories,
-                          selectedCategory: _selectedCategory,
-                          labelBuilder: (c) => c.name,
-                          allLabel: l10n.all.toUpperCase(),
-                          onCategorySelected: (newValue) {
-                            setState(() {
-                              _selectedCategory = newValue;
-                            });
-                            Logger().i('Selected Category: $_selectedCategory');
-                            context.read<FaqResourceCubit>().loadAll(
-                              filters: {
-                                if (newValue?.ulid != null)
-                                  'mission_faq_category_ulid': newValue!.ulid,
-                                if (_searchQuery?.isNotEmpty ?? false)
-                                  'search': _searchQuery,
+                  BlocBuilder<
+                    FaqCategoryResourceCubit,
+                    ResourceState<PRFFaqCategory>
+                  >(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        orElse: () => const SizedBox.shrink(),
+                        listLoading: PRFLinearProgressIndicator.new,
+                        listLoaded: (faqCategories, _, __) =>
+                            PRFCategoryChips<PRFFaqCategory>(
+                              categories: faqCategories,
+                              selectedCategory: _selectedCategory,
+                              labelBuilder: (c) => c.name,
+                              allLabel: l10n.all.toUpperCase(),
+                              onCategorySelected: (newValue) {
+                                setState(() {
+                                  _selectedCategory = newValue;
+                                });
+                                Logger().i(
+                                  'Selected Category: $_selectedCategory',
+                                );
+                                context.read<FaqResourceCubit>().loadAll(
+                                  filters: {
+                                    if (newValue?.ulid != null)
+                                      'mission_faq_category_ulid':
+                                          newValue!.ulid,
+                                    if (_searchQuery?.isNotEmpty ?? false)
+                                      'search': _searchQuery,
+                                  },
+                                );
                               },
-                            );
-                          },
-                        ),
-                  );
-                },
-              ),
+                            ),
+                      );
+                    },
+                  ),
             ),
             const SliverToBoxAdapter(
               child: SizedBox(height: PRFSpacingTokens.lg),

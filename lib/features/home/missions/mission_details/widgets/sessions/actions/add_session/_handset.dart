@@ -388,40 +388,46 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<MissionSessionResourceCubit, ResourceState<PRFMissionSession>>(
-                listener: (context, state) {
-                  state.mapOrNull(
-                    mutating: (_) {
-                      setState(() {
-                        _isLoading = true;
-                      });
+              BlocConsumer<
+                    MissionSessionResourceCubit,
+                    ResourceState<PRFMissionSession>
+                  >(
+                    listener: (context, state) {
+                      state.mapOrNull(
+                        mutating: (_) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        },
+                        mutated: (_) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.success();
+                          Navigator.of(context).pop();
+                          PRFSnackbar.success(context, l10n.sessionRecorded);
+                        },
+                        error: (error) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Gaimon.error();
+                          PRFSnackbar.error(context, error.message);
+                        },
+                      );
                     },
-                    mutated: (_) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.success();
-                      Navigator.of(context).pop();
-                      PRFSnackbar.success(context, l10n.sessionRecorded);
+                    builder: (context, state) {
+                      return PRFPrimaryButton(
+                        onPressed: _submitForm,
+                        title: l10n.record,
+                        disabled: !_isFormValid,
+                        isLoading: _isLoading,
+                      );
                     },
-                    error: (error) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      Gaimon.error();
-                      PRFSnackbar.error(context, error.message);
-                    },
-                  );
-                },
-                builder: (context, state) {
-                  return PRFPrimaryButton(
-                    onPressed: _submitForm,
-                    title: l10n.record,
-                    disabled: !_isFormValid,
-                    isLoading: _isLoading,
-                  );
-                },
-              ).animate(delay: 700.ms).slideY(begin: 0.3).fadeIn(),
+                  )
+                  .animate(delay: 700.ms)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
 
               const SizedBox(height: PRFSpacingTokens.xxl),
             ],

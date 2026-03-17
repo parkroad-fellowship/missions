@@ -74,13 +74,14 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
 
             // Loading Indicator
             SliverToBoxAdapter(
-              child: BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
-                builder: (context, state) => state.maybeWhen(
-                  orElse: () => const PRFLinearProgressIndicator(),
-                  error: (_, __) => const SizedBox.shrink(),
-                  listLoaded: (_, __, ___) => const SizedBox.shrink(),
-                ),
-              ),
+              child:
+                  BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
+                    builder: (context, state) => state.maybeWhen(
+                      orElse: () => const PRFLinearProgressIndicator(),
+                      error: (_, __) => const SizedBox.shrink(),
+                      listLoaded: (_, __, ___) => const SizedBox.shrink(),
+                    ),
+                  ),
             ),
 
             BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
@@ -147,66 +148,66 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                       );
                     }
                     return SliverPadding(
-                    padding: const EdgeInsets.only(
-                      left: PRFSpacingTokens.xl,
-                      right: PRFSpacingTokens.xl,
-                      bottom: 120,
-                    ),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                            childAspectRatio: 1.8,
-                          ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final payment = payments[index];
-                          return Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.xs,
-                                ),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(
-                                    PRFRadiusTokens.xl,
+                      padding: const EdgeInsets.only(
+                        left: PRFSpacingTokens.xl,
+                        right: PRFSpacingTokens.xl,
+                        bottom: 120,
+                      ),
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20,
+                              childAspectRatio: 1.8,
+                            ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final payment = payments[index];
+                            return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: PRFSpacingTokens.xs,
                                   ),
-                                  child: InkWell(
-                                    onTap: () => _showPaymentActions(payment),
+                                  child: Material(
+                                    color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(
                                       PRFRadiusTokens.xl,
                                     ),
-                                    splashColor: theme.colorScheme.primary
-                                        .withValues(alpha: 0.1),
-                                    highlightColor: theme.colorScheme.primary
-                                        .withValues(alpha: 0.05),
-                                    child: PaymentCard(payment: payment),
+                                    child: InkWell(
+                                      onTap: () => _showPaymentActions(payment),
+                                      borderRadius: BorderRadius.circular(
+                                        PRFRadiusTokens.xl,
+                                      ),
+                                      splashColor: theme.colorScheme.primary
+                                          .withValues(alpha: 0.1),
+                                      highlightColor: theme.colorScheme.primary
+                                          .withValues(alpha: 0.05),
+                                      child: PaymentCard(payment: payment),
+                                    ),
                                   ),
-                                ),
-                              )
-                              .animate(
-                                delay: Duration(milliseconds: index * 100),
-                              )
-                              .fadeIn(
-                                duration: PRFMotionTokens.enterShort,
-                              )
-                              .slideY(
-                                begin: 0.3,
-                                end: 0,
-                                duration: PRFMotionTokens.enterShort,
-                                curve: Curves.easeOutCubic,
-                              )
-                              .scale(
-                                begin: const Offset(0.9, 0.9),
-                                end: const Offset(1, 1),
-                                duration: PRFMotionTokens.enterShort,
-                                curve: Curves.easeOutCubic,
-                              );
-                        },
-                        childCount: payments.length,
+                                )
+                                .animate(
+                                  delay: Duration(milliseconds: index * 100),
+                                )
+                                .fadeIn(
+                                  duration: PRFMotionTokens.enterShort,
+                                )
+                                .slideY(
+                                  begin: 0.3,
+                                  end: 0,
+                                  duration: PRFMotionTokens.enterShort,
+                                  curve: Curves.easeOutCubic,
+                                )
+                                .scale(
+                                  begin: const Offset(0.9, 0.9),
+                                  end: const Offset(1, 1),
+                                  duration: PRFMotionTokens.enterShort,
+                                  curve: Curves.easeOutCubic,
+                                );
+                          },
+                          childCount: payments.length,
+                        ),
                       ),
-                    ),
                     );
                   },
                 );

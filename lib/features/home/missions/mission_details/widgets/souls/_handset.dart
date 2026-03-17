@@ -26,7 +26,9 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
 
   @override
   void initState() {
-    context.read<SoulResourceCubit>().loadAll(filters: {'mission_ulid': missionUlid});
+    context.read<SoulResourceCubit>().loadAll(
+      filters: {'mission_ulid': missionUlid},
+    );
     super.initState();
   }
 
@@ -44,8 +46,9 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
         ),
       ),
       widget: (context, souls) => RefreshIndicator(
-        onRefresh: () =>
-            context.read<SoulResourceCubit>().loadAll(filters: {'mission_ulid': missionUlid}),
+        onRefresh: () => context.read<SoulResourceCubit>().loadAll(
+          filters: {'mission_ulid': missionUlid},
+        ),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 64),
           child: ListView.separated(

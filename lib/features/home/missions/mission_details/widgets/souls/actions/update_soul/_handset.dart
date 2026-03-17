@@ -132,52 +132,56 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
               icon: Icons.group_outlined,
               title: l10n.classGroup,
               isRequired: true,
-              child: BlocBuilder<ClassGroupResourceCubit, ResourceState<PRFClassGroup>>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                    orElse: () => const SizedBox.shrink(),
-                    listLoading: () => const Center(
-                      child: LinearProgressIndicator(),
-                    ),
-                    listLoaded: (classes, _, __) {
-                      // Match initial class group by ulid
-                      if (selectedClassGroup == null &&
-                          _initialClassGroupUlid != null) {
-                        final match = classes
-                            .where(
-                              (c) => c.ulid == _initialClassGroupUlid,
-                            )
-                            .firstOrNull;
-                        if (match != null) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            setState(() {
-                              selectedClassGroup = match;
-                            });
-                          });
-                        }
-                      }
-                      return PRFSearchableList<PRFClassGroup>(
-                        entries: classes
-                            .map(
-                              (classGroup) =>
-                                  PRFSearchableListEntry<PRFClassGroup>(
-                                    value: classGroup,
-                                    label: classGroup.name,
-                                  ),
-                            )
-                            .toList(),
-                        onSelected: (classGroup) => setState(() {
-                          selectedClassGroup = classGroup;
-                          if (_showValidation) _validateForm();
-                        }),
-                        selection: selectedClassGroup,
-                        hintText: l10n.selectClass,
-                        emptyText: 'No class groups found',
+              child:
+                  BlocBuilder<
+                    ClassGroupResourceCubit,
+                    ResourceState<PRFClassGroup>
+                  >(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        orElse: () => const SizedBox.shrink(),
+                        listLoading: () => const Center(
+                          child: LinearProgressIndicator(),
+                        ),
+                        listLoaded: (classes, _, __) {
+                          // Match initial class group by ulid
+                          if (selectedClassGroup == null &&
+                              _initialClassGroupUlid != null) {
+                            final match = classes
+                                .where(
+                                  (c) => c.ulid == _initialClassGroupUlid,
+                                )
+                                .firstOrNull;
+                            if (match != null) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                setState(() {
+                                  selectedClassGroup = match;
+                                });
+                              });
+                            }
+                          }
+                          return PRFSearchableList<PRFClassGroup>(
+                            entries: classes
+                                .map(
+                                  (classGroup) =>
+                                      PRFSearchableListEntry<PRFClassGroup>(
+                                        value: classGroup,
+                                        label: classGroup.name,
+                                      ),
+                                )
+                                .toList(),
+                            onSelected: (classGroup) => setState(() {
+                              selectedClassGroup = classGroup;
+                              if (_showValidation) _validateForm();
+                            }),
+                            selection: selectedClassGroup,
+                            hintText: l10n.selectClass,
+                            emptyText: 'No class groups found',
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
+                  ),
             ),
 
             // Full Name
