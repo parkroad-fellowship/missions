@@ -1,5 +1,4 @@
-import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
-import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/prayer_request_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/shared/cubit/save_prayer_response_cubit.dart';
 import 'package:app/features/home/shared/cubit/upload_prayer_response_cubit.dart';
@@ -25,6 +24,7 @@ class PrayerModule {
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
+      // Keep-as-is cubits (special logic)
       BlocProvider<GetPrayerPromptsCubit>(
         create: (context) => GetPrayerPromptsCubit(
           prayerPromptService: getIt(),
@@ -43,16 +43,10 @@ class PrayerModule {
           prayerResponseService: getIt(),
         ),
       ),
-      BlocProvider<AddPrayerRequestCubit>(
-        create: (context) => AddPrayerRequestCubit(
+      // ResourceCubit replacement
+      BlocProvider<PrayerRequestResourceCubit>(
+        create: (context) => PrayerRequestResourceCubit(
           prayerRequestService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetPrayerRequestsCubit>(
-        create: (context) => GetPrayerRequestsCubit(
-          prayerRequestService: getIt(),
-          hiveService: getIt(),
         ),
       ),
     ];

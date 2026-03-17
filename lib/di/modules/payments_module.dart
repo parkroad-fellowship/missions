@@ -1,6 +1,5 @@
-import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_resource_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
 import 'package:app/services/api/payment_service.dart';
 import 'package:app/services/api/payment_type_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,22 +19,12 @@ class PaymentsModule {
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
-      BlocProvider<GetPaymentsCubit>(
-        create: (context) => GetPaymentsCubit(
-          paymentService: getIt(),
-          hiveService: getIt(),
-        ),
+      BlocProvider<PaymentResourceCubit>(
+        create: (context) => PaymentResourceCubit(paymentService: getIt()),
       ),
-      BlocProvider<GetPaymentTypesCubit>(
-        create: (context) => GetPaymentTypesCubit(
+      BlocProvider<PaymentTypeResourceCubit>(
+        create: (context) => PaymentTypeResourceCubit(
           paymentTypeService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<AddPaymentCubit>(
-        create: (context) => AddPaymentCubit(
-          paymentService: getIt(),
-          hiveService: getIt(),
         ),
       ),
     ];

@@ -1,9 +1,7 @@
-import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
 import 'package:app/services/api/mission_faq_category_service.dart';
 import 'package:app/services/api/mission_faq_service.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
@@ -31,41 +29,22 @@ class EnquiriesModule {
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
-      BlocProvider<GetFaqsCubit>(
-        create: (context) => GetFaqsCubit(
-          missionFaqService: getIt(),
-          isarService: getIt(),
-        ),
+      BlocProvider<FaqResourceCubit>(
+        create: (context) => FaqResourceCubit(missionFaqService: getIt()),
       ),
-      BlocProvider<GetFaqCategoriesCubit>(
-        create: (context) => GetFaqCategoriesCubit(
+      BlocProvider<FaqCategoryResourceCubit>(
+        create: (context) => FaqCategoryResourceCubit(
           missionFaqCategoryService: getIt(),
-          isarService: getIt(),
         ),
       ),
-      BlocProvider<GetEnquiriesCubit>(
-        create: (context) => GetEnquiriesCubit(
+      BlocProvider<EnquiryResourceCubit>(
+        create: (context) => EnquiryResourceCubit(
           studentEnquiryService: getIt(),
-          isarService: getIt(),
         ),
       ),
-      BlocProvider<GetStudentEnquiryCubit>(
-        create: (context) => GetStudentEnquiryCubit(
-          studentEnquiryService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<CreateEnquiryReplyCubit>(
-        create: (context) => CreateEnquiryReplyCubit(
-          studentEnquiryService: getIt(),
-          hiveService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetEnquiryRepliesCubit>(
-        create: (context) => GetEnquiryRepliesCubit(
-          studentEnquiryService: getIt(),
-          isarService: getIt(),
+      BlocProvider<EnquiryReplyResourceCubit>(
+        create: (context) => EnquiryReplyResourceCubit(
+          studentEnquiryReplyService: getIt(),
         ),
       ),
     ];

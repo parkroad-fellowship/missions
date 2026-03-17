@@ -1,10 +1,6 @@
-import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_course_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_lesson_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_lesson_modules_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_module_cubit.dart';
+import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
+import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
+import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
 import 'package:app/services/api/course_module_service.dart';
 import 'package:app/services/api/course_service.dart';
 import 'package:app/services/api/lesson_member_service.dart';
@@ -29,42 +25,18 @@ class LmsModule {
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
-      BlocProvider<GetCoursesCubit>(
-        create: (context) => GetCoursesCubit(
-          courseService: getIt(),
-          isarService: getIt(),
-          hiveService: getIt(),
-        ),
+      BlocProvider<CourseResourceCubit>(
+        create: (context) => CourseResourceCubit(courseService: getIt()),
       ),
-      BlocProvider<GetCourseCubit>(
-        create: (context) => GetCourseCubit(
-          courseService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetCourseModulesCubit>(
-        create: (context) => GetCourseModulesCubit(
+      BlocProvider<ModuleResourceCubit>(
+        create: (context) => ModuleResourceCubit(
           courseModuleService: getIt(),
-          isarService: getIt(),
         ),
       ),
-      BlocProvider<GetModuleCubit>(
-        create: (context) => GetModuleCubit(isarService: getIt()),
-      ),
-      BlocProvider<GetLessonModulesCubit>(
-        create: (context) => GetLessonModulesCubit(
+      BlocProvider<LessonResourceCubit>(
+        create: (context) => LessonResourceCubit(
           lessonModuleService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetLessonCubit>(
-        create: (context) => GetLessonCubit(isarService: getIt()),
-      ),
-      BlocProvider<FinishLessonCubit>(
-        create: (context) => FinishLessonCubit(
           lessonMemberService: getIt(),
-          hiveService: getIt(),
-          isarService: getIt(),
         ),
       ),
     ];
