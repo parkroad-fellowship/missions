@@ -1,4 +1,5 @@
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/actions/add_debrief_note/_handset.dart';
@@ -11,7 +12,7 @@ import 'package:app/features/home/missions/mission_details/widgets/domain_sectio
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
+
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/add_mission_question/add_mission_question.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
@@ -23,6 +24,7 @@ import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/s
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -42,12 +44,19 @@ class MissionsDetailsPageTablet extends StatefulWidget {
       _MissionsDetailsPageTabletState();
 }
 
-class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
+class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
+    with SingleTickerProviderStateMixin {
   String get missionUlid => widget.missionUlid;
+
+  static const _tabCount = 4;
+
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+
+    _tabController = TabController(length: _tabCount, vsync: this);
 
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
@@ -67,107 +76,110 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    final sectionHeight = MediaQuery.of(context).size.height * 0.6;
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: PRFSpacingTokens.xl,
-          ),
-          child: CustomScrollView(
-            physics: const ScrollPhysics(),
-            slivers: [
-              PRFNavBar(
-                title: l10n.missionDetails,
-                onBack: () => context.router.popUntilRouteWithPath(
-                  PRFSuperAppRouter.missionsRoute,
-                ),
-              ),
-
-              // Overview Section (Mission Ground + Subscribers)
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: sectionHeight,
-                  child: OverviewSection(missionUlid: missionUlid),
-                ),
-              ),
-
-              const SliverToBoxAdapter(
-                child: Divider(height: PRFSpacingTokens.xxl),
-              ),
-
-              // People Data Section (Sessions + Souls)
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: sectionHeight,
-                  child: PeopleDataSection(
-                    sessionsTab: SessionsView(missionUlid: missionUlid),
-                    soulsTab: SoulsView(missionUlid: missionUlid),
+      backgroundColor: theme.colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: theme.colorScheme.primary,
+            child: Column(
+              children: [
+                PRFBrandedNavBar(
+                  title: l10n.missionDetails,
+                  onBack: () => context.router.popUntilRouteWithPath(
+                    PRFSuperAppRouter.missionsRoute,
                   ),
-                ),
-              ),
-
-              const SliverToBoxAdapter(
-                child: Divider(height: PRFSpacingTokens.xxl),
-              ),
-
-              // Feedback Data Section (Debrief Notes + Questions)
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: sectionHeight,
-                  child: FeedbackDataSection(
-                    debriefNotesTab: DebriefNotesView(
-                      missionUlid: missionUlid,
+                  actions: [
+                    BlocBuilder<
+                      MissionResourceCubit,
+                      ResourceState<PRFMission>
+                    >(
+                      builder: (context, state) => state.maybeWhen(
+                        listLoading: () => const SizedBox.square(
+                          dimension: 24,
+                          child: PRFCircularProgressIndicator(),
+                        ),
+                        orElse: SizedBox.shrink,
+                      ),
                     ),
-                    questionsTab: MissionQuestionsView(
-                      missionUlid: missionUlid,
+                    const SizedBox(width: PRFSpacingTokens.lg),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    PRFSpacingTokens.lg,
+                    0,
+                    PRFSpacingTokens.lg,
+                    PRFSpacingTokens.sm,
+                  ),
+                  child: Transform.translate(
+                    offset: const Offset(0, -6),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        labelColor: theme.colorScheme.onPrimary,
+                        unselectedLabelColor: theme.colorScheme.onPrimary
+                            .withValues(alpha: 0.65),
+                        indicatorColor: theme.colorScheme.secondary,
+                        dividerColor: theme.colorScheme.onPrimary.withValues(
+                          alpha: 0.2,
+                        ),
+                        labelStyle: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        padding: EdgeInsets.zero,
+                        labelPadding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.sm,
+                        ),
+                        tabs: const [
+                          Tab(text: 'Overview'),
+                          Tab(text: 'People'),
+                          Tab(text: 'Feedback'),
+                          Tab(text: 'Finance'),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-
-              const SliverToBoxAdapter(
-                child: Divider(height: PRFSpacingTokens.xxl),
-              ),
-
-              // Finance Section (Expenses)
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: sectionHeight,
-                  child: FinanceSection(
-                    expensesTab: ExpensesView(missionUlid: missionUlid),
-                  ),
-                ),
-              ),
-
-              const SliverToBoxAdapter(
-                child: Divider(height: PRFSpacingTokens.xxl),
-              ),
-
-              // Gallery Section (standalone)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: PRFSpacingTokens.xl,
-                  ),
-                  child: SizedBox(
-                    height: sectionHeight,
-                    child: GalleryView(missionUlid: missionUlid),
-                  ),
-                ),
-              ),
-
-              // Bottom spacing
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 60),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                OverviewSection(missionUlid: missionUlid),
+                PeopleDataSection(
+                  sessionsTab: SessionsView(missionUlid: missionUlid),
+                  soulsTab: SoulsView(missionUlid: missionUlid),
+                ),
+                FeedbackDataSection(
+                  debriefNotesTab: DebriefNotesView(
+                    missionUlid: missionUlid,
+                  ),
+                  questionsTab: MissionQuestionsView(
+                    missionUlid: missionUlid,
+                  ),
+                ),
+                FinanceSection(
+                  expensesTab: ExpensesView(missionUlid: missionUlid),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       floatingActionButton: _buildFloatingActionButton(
         context,
