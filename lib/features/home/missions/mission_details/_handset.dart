@@ -21,6 +21,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -125,6 +126,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       child: TabBar(
                         controller: _tabController,
                         isScrollable: true,
+                        tabAlignment: TabAlignment.start,
                         labelColor: theme.colorScheme.onPrimary,
                         unselectedLabelColor: theme.colorScheme.onPrimary
                             .withValues(alpha: 0.65),
@@ -152,33 +154,78 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             ),
           ),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // Tab 0: Overview (Mission Ground + Subscribers + Sessions)
-                OverviewSection(
-                  missionGround: MissionGroundView(missionUlid: missionUlid),
-                  subscribers: SubscribersView(missionUlid: missionUlid),
-                  sessions: SessionsView(missionUlid: missionUlid),
-                ),
-                // Tab 1: Feedback (Debrief Notes + Souls + Questions)
-                FeedbackDataSection(
-                  debriefNotesTab: DebriefNotesView(
-                    missionUlid: missionUlid,
+            child: BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
+              builder: (context, state) {
+                final mission = state.maybeWhen(
+                  listLoaded: (items, _, _) => items.firstWhereOrNull(
+                    (m) => m.ulid == missionUlid,
                   ),
-                  soulsTab: SoulsView(missionUlid: missionUlid),
-                  questionsTab: MissionQuestionsView(
-                    missionUlid: missionUlid,
+                  mutating: (items, _) => items.firstWhereOrNull(
+                    (m) => m.ulid == missionUlid,
                   ),
-                ),
-                // Tab 2: Finance (Requisitions + Expenses)
-                FinanceSection(
-                  requisitionsTab: RequisitionsView(
-                    missionUlid: missionUlid,
+                  mutated: (items, _, _) => items.firstWhereOrNull(
+                    (m) => m.ulid == missionUlid,
                   ),
-                  expensesTab: ExpensesView(missionUlid: missionUlid),
-                ),
-              ],
+                  orElse: () => null,
+                );
+
+                if (state is ResourceListLoading<PRFMission> &&
+                    mission == null) {
+                  return const Center(
+                    child: PRFCircularProgressIndicator(),
+                  );
+                }
+
+                if (mission == null && state is ResourceError<PRFMission>) {
+                  return Center(
+                    child: PRFErrorView.fromMessage(
+                      message: state.message,
+                    ),
+                  );
+                }
+
+                if (mission == null) {
+                  return const Center(
+                    child: PRFCircularProgressIndicator(),
+                  );
+                }
+
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    OverviewSection(
+                      missionGround: MissionGroundView(
+                        missionUlid: missionUlid,
+                      ),
+                      subscribers: SubscribersView(
+                        missionUlid: missionUlid,
+                      ),
+                      sessions: SessionsView(
+                        missionUlid: missionUlid,
+                      ),
+                    ),
+                    FeedbackDataSection(
+                      debriefNotesTab: DebriefNotesView(
+                        missionUlid: missionUlid,
+                      ),
+                      soulsTab: SoulsView(
+                        missionUlid: missionUlid,
+                      ),
+                      questionsTab: MissionQuestionsView(
+                        missionUlid: missionUlid,
+                      ),
+                    ),
+                    FinanceSection(
+                      requisitionsTab: RequisitionsView(
+                        missionUlid: missionUlid,
+                      ),
+                      expensesTab: ExpensesView(
+                        missionUlid: missionUlid,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],
