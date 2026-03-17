@@ -1,9 +1,10 @@
-import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/faq/prf_faq.dart';
-import 'package:app/models/local/faq/prf_faq_category.dart';
+import 'package:app/models/remote/content/prf_faq.dart';
+import 'package:app/models/remote/content/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -19,7 +20,7 @@ class MemberFAQPageTablet extends StatefulWidget {
 }
 
 class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
-  PRFLocalFaqCategory? _selectedCategory;
+  PRFFaqCategory? _selectedCategory;
   String? _searchQuery;
 
   final TextEditingController _searchController = TextEditingController();
@@ -28,7 +29,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
 
   @override
   void initState() {
-    context.read<GetFaqsCubit>().getFaqs();
+    context.read<FaqResourceCubit>().loadAll();
     super.initState();
   }
 
@@ -71,11 +72,14 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                     });
                     Logger().i('Search Query: $_searchQuery');
                     _searchDebouncer.run(() {
-                      context.read<GetFaqsCubit>().getFaqs(
-                        categoryUlid: _selectedCategory?.ulid,
-                        query: (_searchQuery?.isNotEmpty ?? false)
-                            ? _searchQuery
-                            : null,
+                      context.read<FaqResourceCubit>().loadAll(
+                        filters: {
+                          if (_selectedCategory?.ulid != null)
+                            'mission_faq_category_ulid':
+                                _selectedCategory!.ulid,
+                          if (_searchQuery?.isNotEmpty ?? false)
+                            'search': _searchQuery,
+                        },
                       );
                     });
                   },
@@ -88,13 +92,15 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
 
             // FAQ Categories
             SliverToBoxAdapter(
-              child: BlocBuilder<GetFaqCategoriesCubit, GetFaqCategoriesState>(
+              child:
+                  BlocBuilder<FaqCategoryResourceCubit,
+                    ResourceState<PRFFaqCategory>>(
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse: () => const SizedBox.shrink(),
-                    loading: PRFLinearProgressIndicator.new,
-                    loaded: (faqCategories) =>
-                        PRFCategoryChips<PRFLocalFaqCategory>(
+                    listLoading: PRFLinearProgressIndicator.new,
+                    listLoaded: (faqCategories, _, __) =>
+                        PRFCategoryChips<PRFFaqCategory>(
                           categories: faqCategories,
                           selectedCategory: _selectedCategory,
                           labelBuilder: (c) => c.name,
@@ -104,11 +110,13 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                               _selectedCategory = newValue;
                             });
                             Logger().i('Selected Category: $_selectedCategory');
-                            context.read<GetFaqsCubit>().getFaqs(
-                              categoryUlid: _selectedCategory?.ulid,
-                              query: (_searchQuery?.isNotEmpty ?? false)
-                                  ? _searchQuery
-                                  : null,
+                            context.read<FaqResourceCubit>().loadAll(
+                              filters: {
+                                if (newValue?.ulid != null)
+                                  'mission_faq_category_ulid': newValue!.ulid,
+                                if (_searchQuery?.isNotEmpty ?? false)
+                                  'search': _searchQuery,
+                              },
                             );
                           },
                         ),
@@ -122,9 +130,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
 
             // Loading Indicator
             SliverToBoxAdapter(
-              child: BlocBuilder<GetFaqsCubit, GetFaqsState>(
+              child: BlocBuilder<FaqResourceCubit, ResourceState<PRFFaq>>(
                 builder: (context, state) => state.maybeWhen(
-                  loading: () => const PRFLinearProgressIndicator(),
+                  listLoading: () => const PRFLinearProgressIndicator(),
                   orElse: () => const SizedBox.shrink(),
                 ),
               ),
@@ -134,26 +142,27 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
             ),
 
             // FAQ List
-            BlocBuilder<GetFaqsCubit, GetFaqsState>(
+            BlocBuilder<FaqResourceCubit, ResourceState<PRFFaq>>(
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () =>
                       const SliverToBoxAdapter(child: SizedBox.shrink()),
-                  error: (message) => SliverFillRemaining(
+                  error: (message, _) => SliverFillRemaining(
                     child: Center(child: Text(message)),
                   ),
-                  empty: () => SliverFillRemaining(
-                    child: RefreshIndicator(
-                      onRefresh: () => context.read<GetFaqsCubit>().getFaqs(
-                        forceRefresh: true,
-                      ),
-                      child: PRFEmptyView(
-                        label: l10n.noFaqs,
-                        description: l10n.pleaseWait,
-                      ),
-                    ),
-                  ),
-                  loaded: (faqs) {
+                  listLoaded: (faqs, _, __) {
+                    if (faqs.isEmpty) {
+                      return SliverFillRemaining(
+                        child: RefreshIndicator(
+                          onRefresh: () =>
+                              context.read<FaqResourceCubit>().loadAll(),
+                          child: PRFEmptyView(
+                            label: l10n.noFaqs,
+                            description: l10n.pleaseWait,
+                          ),
+                        ),
+                      );
+                    }
                     return SliverList.separated(
                       itemCount: faqs.length,
                       separatorBuilder: (context, index) =>
@@ -175,7 +184,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
 class FaqCard extends StatelessWidget {
   const FaqCard({required this.faq, super.key});
 
-  final PRFLocalFaq faq;
+  final PRFFaq faq;
 
   @override
   Widget build(BuildContext context) {

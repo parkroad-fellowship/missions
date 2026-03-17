@@ -1,5 +1,7 @@
+import 'package:app/models/remote/course/prf_course.dart';
 import 'package:app/di/_index.dart';
-import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
+import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/lms/widgets/course_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -17,7 +19,7 @@ class LMSPageHandset extends StatefulWidget {
 class _LMSPageHandsetState extends State<LMSPageHandset> {
   @override
   void initState() {
-    context.read<GetCoursesCubit>().getCourses();
+    context.read<CourseResourceCubit>().loadAll();
     super.initState();
   }
 
@@ -35,9 +37,9 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
               backgroundColor: theme.colorScheme.surface,
             ),
             SliverToBoxAdapter(
-              child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
+              child: BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
                 builder: (context, state) => state.maybeWhen(
-                  loading: () => const Padding(
+                  listLoading: () => const Padding(
                     padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                     child: PRFLinearProgressIndicator(),
                   ),

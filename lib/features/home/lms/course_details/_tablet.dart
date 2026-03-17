@@ -1,5 +1,6 @@
-import 'package:app/features/home/lms/cubit/get_course_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
+import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
+import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/lms/widgets/course_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/course/prf_course.dart';
@@ -26,10 +27,10 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
 
   @override
   void initState() {
-    context.read<GetCourseCubit>().getCourse(
+    context.read<CourseResourceCubit>().loadAll(
       courseUlid: courseUlid,
     );
-    context.read<GetCourseModulesCubit>().getCourseModules(
+    context.read<ModuleResourceCubit>().loadAll(
       courseUlid: courseUlid,
     );
     super.initState();
@@ -89,9 +90,9 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
               ),
               SliverToBoxAdapter(
                 child:
-                    BlocBuilder<GetCourseModulesCubit, GetCourseModulesState>(
+                    BlocBuilder<ModuleResourceCubit, ResourceState<PRFCourseModule>>(
                       builder: (context, state) => state.maybeWhen(
-                        loading: () => const Padding(
+                        listLoading: () => const Padding(
                           padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
 
                           child: PRFLinearProgressIndicator(),

@@ -1,4 +1,6 @@
-import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
@@ -268,8 +270,8 @@ class _AddMissionGroundSuggestionViewHandsetState
 
               // Submit Button
               BlocConsumer<
-                    AddMissionGroundSuggestionCubit,
-                    AddMissionGroundSuggestionState
+                    GroundSuggestionResourceCubit,
+                    ResourceState<PRFMissionGroundSuggestion>
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
@@ -278,7 +280,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                             _isLoading = true;
                           });
                         },
-                        loaded: (result) {
+                        listLoaded: (result) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -291,7 +293,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                             ),
                           );
                         },
-                        error: (error) {
+                        error: (error, _) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -331,7 +333,7 @@ class _AddMissionGroundSuggestionViewHandsetState
       return;
     }
 
-    await context.read<AddMissionGroundSuggestionCubit>().suggestMissionGround(
+    await context.read<GroundSuggestionResourceCubit>().createSuggestion(
       name: _nameController.text.trim(),
       contactPerson: _contactPersonController.text.trim(),
       contactNumber: _contactNumber!,

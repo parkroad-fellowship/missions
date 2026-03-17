@@ -1,10 +1,11 @@
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/update_session/update_session.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/delete_mission_session_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/get_mission_sessions_cubit.dart';
+
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission_session.dart';
@@ -44,7 +45,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
   @override
   void initState() {
     super.initState();
-    context.read<GetMissionSessionCubit>().getMissionSession(
+    context.read<MissionSessionResourceCubit>().loadAll(
       missionSessionUlid: missionSessionUlid,
     );
   }
@@ -64,7 +65,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () =>
-              context.read<GetMissionSessionCubit>().getMissionSession(
+              context.read<MissionSessionResourceCubit>().loadAll(
                 missionSessionUlid: missionSessionUlid,
                 refresh: true,
               ),
@@ -82,8 +83,8 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                     state.mapOrNull(
                       loaded: (_) {
                         context
-                            .read<GetMissionSessionCubit>()
-                            .getMissionSession(
+                            .read<MissionSessionResourceCubit>()
+                            .loadAll(
                               missionSessionUlid: missionSessionUlid,
                               refresh: true,
                             );
@@ -142,7 +143,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
               // Session Loading State
               SliverToBoxAdapter(
                 child:
-                    BlocBuilder<GetMissionSessionCubit, GetMissionSessionState>(
+                    BlocBuilder<MissionSessionResourceCubit, ResourceState<PRFMissionSession>>(
                       builder: (context, state) => state.maybeWhen(
                         loading: () => Container(
                           margin: const EdgeInsets.symmetric(
@@ -650,7 +651,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
         },
       ).then((_) {
         // ignore: use_build_context_synchronously
-        context.read<GetMissionSessionCubit>().getMissionSession(
+        context.read<MissionSessionResourceCubit>().loadAll(
           missionSessionUlid: missionSessionUlid,
         );
       });
@@ -880,8 +881,8 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                       disabled: false,
                                     ),
                                     BlocConsumer<
-                                      DeleteMissionSessionCubit,
-                                      DeleteMissionSessionState
+                                      MissionSessionResourceCubit,
+                                      ResourceState<PRFMissionSession>
                                     >(
                                       listener: (context, state) {
                                         state.mapOrNull(
@@ -889,8 +890,8 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                             Navigator.of(context).pop();
                                             Navigator.of(context).pop();
                                             context
-                                                .read<GetMissionSessionsCubit>()
-                                                .getMissionSessions(
+                                                .read<MissionSessionResourceCubit>()
+                                                .loadAll(
                                                   missionUlid: missionUlid,
                                                 );
                                             PRFSnackbar.success(
@@ -912,9 +913,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                           onPressed: () {
                                             context
                                                 .read<
-                                                  DeleteMissionSessionCubit
+                                                  MissionSessionResourceCubit
                                                 >()
-                                                .deleteMissionSession(
+                                                .deleteSession(
                                                   missionSessionUlid:
                                                       missionSession.ulid,
                                                 );

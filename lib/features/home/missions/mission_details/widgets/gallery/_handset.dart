@@ -1,6 +1,7 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
-import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/video_player_widget.dart';
 import 'package:app/l10n/l10n.dart';
@@ -28,7 +29,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
   @override
   void initState() {
-    context.read<GetMissionMediaCubit>().getMissionMedia(
+    context.read<MissionMediaResourceCubit>().loadMedia(
       missionUlid: missionUlid,
       collections: [
         PRFMediaModel.missionPhotos,
@@ -44,7 +45,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     final theme = Theme.of(context);
 
     return RefreshIndicator(
-      onRefresh: () => context.read<GetMissionMediaCubit>().getMissionMedia(
+      onRefresh: () => context.read<MissionMediaResourceCubit>().loadMedia(
         missionUlid: missionUlid,
         collections: [
           PRFMediaModel.missionPhotos,
@@ -59,7 +60,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             listener: (context, state) {
               state.mapOrNull(
                 loaded: (_) {
-                  context.read<GetMissionMediaCubit>().getMissionMedia(
+                  context.read<MissionMediaResourceCubit>().loadMedia(
                     missionUlid: missionUlid,
                     collections: [
                       PRFMediaModel.missionPhotos,
@@ -95,7 +96,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
           ),
 
           // Gallery
-          BlocBuilder<GetMissionMediaCubit, GetMissionMediaState>(
+          BlocBuilder<MissionMediaResourceCubit, ResourceState<PRFMedia>>(
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: () => SliverFillRemaining(

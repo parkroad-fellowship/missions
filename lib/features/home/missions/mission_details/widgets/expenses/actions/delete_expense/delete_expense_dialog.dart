@@ -1,5 +1,7 @@
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/enums/mission/prf_entry_type.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:flutter/material.dart';
@@ -124,22 +126,22 @@ class DeleteExpenseDialog extends StatelessWidget {
             ),
           ),
         ),
-        BlocConsumer<DeleteAllocationEntryCubit, DeleteAllocationEntryState>(
+        BlocConsumer<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
             state.when(
               initial: () {},
-              loading: () {},
-              loaded: () {
+              listLoading: () {},
+              listLoaded: () {
                 Navigator.of(context).pop(true);
               },
-              error: (message) {
+              error: (message, _) {
                 Navigator.of(context).pop(false);
               },
             );
           },
           builder: (context, state) {
             return state.when(
-              loading: () => const Padding(
+              listLoading: () => const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: SizedBox(
                   width: 20,
@@ -148,8 +150,8 @@ class DeleteExpenseDialog extends StatelessWidget {
                 ),
               ),
               initial: () => _buildDeleteButton(theme, context),
-              loaded: () => _buildDeleteButton(theme, context),
-              error: (message) => _buildDeleteButton(theme, context),
+              listLoaded: () => _buildDeleteButton(theme, context),
+              error: (message, _) => _buildDeleteButton(theme, context),
             );
           },
         ),
@@ -160,7 +162,7 @@ class DeleteExpenseDialog extends StatelessWidget {
   Widget _buildDeleteButton(ThemeData theme, BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {
-        context.read<DeleteAllocationEntryCubit>().deleteAllocationEntry(
+        context.read<AllocationEntryResourceCubit>().deleteEntry(
           allocationEntryUlid: entry.ulid,
         );
       },

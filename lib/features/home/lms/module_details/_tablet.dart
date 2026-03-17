@@ -1,5 +1,6 @@
-import 'package:app/features/home/lms/cubit/get_lesson_modules_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_module_cubit.dart';
+import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
 import 'package:app/features/home/lms/widgets/module_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/course/prf_course_module.dart';
@@ -29,10 +30,10 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
 
   @override
   void initState() {
-    context.read<GetModuleCubit>().getModule(
+    context.read<ModuleResourceCubit>().loadAll(
       courseModuleUlid: courseModuleUlid,
     );
-    context.read<GetLessonModulesCubit>().getLessonModules(
+    context.read<LessonResourceCubit>().loadAll(
       courseModuleUlid: courseModuleUlid,
     );
     super.initState();

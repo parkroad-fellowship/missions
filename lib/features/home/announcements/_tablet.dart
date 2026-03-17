@@ -1,14 +1,14 @@
-import 'package:app/features/home/shared/cubit/get_announcements_cubit.dart';
+import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/prf_announcement.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/models/remote/content/prf_announcement.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class AnnouncementsPageTablet extends StatefulWidget {
@@ -23,8 +23,23 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
     with TimezoneMixin {
   @override
   void initState() {
-    context.read<GetAnnouncementsCubit>().getAnnouncements();
+    context.read<AnnouncementResourceCubit>().loadAll();
     super.initState();
+  }
+
+  Map<DateTime, List<PRFAnnouncement>> _groupByDate(
+    List<PRFAnnouncement> announcements,
+  ) {
+    final grouped = <DateTime, List<PRFAnnouncement>>{};
+    for (final a in announcements) {
+      final dateKey = DateTime(
+        a.publishedAt.year,
+        a.publishedAt.month,
+        a.publishedAt.day,
+      );
+      grouped.putIfAbsent(dateKey, () => []).add(a);
+    }
+    return grouped;
   }
 
   @override
@@ -40,117 +55,129 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
           slivers: [
             PRFNavBar(title: l10n.announcements),
             SliverToBoxAdapter(
-              child: BlocBuilder<GetAnnouncementsCubit, GetAnnouncementsState>(
+              child: BlocBuilder<AnnouncementResourceCubit,
+                  ResourceState<PRFAnnouncement>>(
                 builder: (context, state) => state.maybeWhen(
-                  loading: () => const PRFLinearProgressIndicator(),
+                  listLoading: () => const PRFLinearProgressIndicator(),
                   orElse: () => const SizedBox.shrink(),
                 ),
               ),
             ),
             SliverFillRemaining(
-              child: StreamBuilder<Map<DateTime, List<PRFLocalAnnouncement>>>(
-                stream: getIt<IsarService>().announcements
-                    .getAnnouncementsGrouped(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const PRFCircularProgressIndicator();
-                  }
-
-                  final groupedEntries = snapshot.data;
-
-                  if (groupedEntries == null || groupedEntries.isEmpty) {
-                    return RefreshIndicator(
-                      onRefresh: () => context
-                          .read<GetAnnouncementsCubit>()
-                          .getAnnouncements(),
-                      child: ListView(
-                        children: [
-                          PRFEmptyView(
-                            label: l10n.noAnnouncements,
-                            description: l10n.pleaseWaitForOS,
+              child: BlocBuilder<AnnouncementResourceCubit,
+                  ResourceState<PRFAnnouncement>>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    listLoading: () => const PRFCircularProgressIndicator(),
+                    error: (message, _) => Center(child: Text(message)),
+                    listLoaded: (announcements, _, __) {
+                      if (announcements.isEmpty) {
+                        return RefreshIndicator(
+                          onRefresh: () => context
+                              .read<AnnouncementResourceCubit>()
+                              .loadAll(),
+                          child: ListView(
+                            children: [
+                              PRFEmptyView(
+                                label: l10n.noAnnouncements,
+                                description: l10n.pleaseWaitForOS,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  return RefreshIndicator(
-                    onRefresh: () => context
-                        .read<GetAnnouncementsCubit>()
-                        .getAnnouncements(),
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                      itemCount: groupedEntries.length,
-                      itemBuilder: (context, index) {
-                        final mapAsList = groupedEntries.keys.toList();
-                        final entries = groupedEntries[mapAsList[index]]!;
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Date Header with enhanced styling
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: PRFSpacingTokens.xl,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: PRFSpacingTokens.xl,
-                                vertical: PRFSpacingTokens.md,
-                              ),
-                              decoration: BoxDecoration(
-                                color: colorScheme.primary.withValues(
-                                  alpha: 0.08,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  PRFRadiusTokens.md,
-                                ),
-                                border: Border.all(
-                                  color: colorScheme.primary.withValues(
-                                    alpha: 0.18,
-                                  ),
-                                ),
-                              ),
-                              child: Text(
-                                DateFormat.yMMMMd().format(mapAsList[index]),
-                                style: textTheme.titleLarge?.copyWith(
-                                  color: colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-
-                            // Announcements for this date in grid layout
-                            GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  // ignore: lines_longer_than_80_chars
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 20,
-                                    mainAxisSpacing: 20,
-                                    childAspectRatio: 1.3,
-                                  ),
-                              itemCount: entries.length,
-                              itemBuilder: (context, announcementIndex) {
-                                final announcement = entries[announcementIndex];
-                                return _TabletAnnouncementCard(
-                                      announcement: announcement,
-                                      timezone: timezone,
-                                    )
-                                    .animate(
-                                      delay: (announcementIndex * 100).ms,
-                                    )
-                                    .fadeIn(duration: PRFMotionTokens.slow)
-                                    .slideY(begin: 0.1, end: 0);
-                              },
-                            ),
-
-                            const SizedBox(height: PRFSpacingTokens.xxl),
-                          ],
                         );
-                      },
-                    ),
+                      }
+
+                      final groupedEntries = _groupByDate(announcements);
+
+                      return RefreshIndicator(
+                        onRefresh: () => context
+                            .read<AnnouncementResourceCubit>()
+                            .loadAll(),
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                          itemCount: groupedEntries.length,
+                          itemBuilder: (context, index) {
+                            final mapAsList = groupedEntries.keys.toList();
+                            final entries = groupedEntries[mapAsList[index]]!;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Date Header with enhanced styling
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: PRFSpacingTokens.xl,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: PRFSpacingTokens.xl,
+                                    vertical: PRFSpacingTokens.md,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.primary.withValues(
+                                      alpha: 0.08,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.md,
+                                    ),
+                                    border: Border.all(
+                                      color: colorScheme.primary.withValues(
+                                        alpha: 0.18,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    DateFormat.yMMMMd()
+                                        .format(mapAsList[index]),
+                                    style: textTheme.titleLarge?.copyWith(
+                                      color: colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+
+                                // Announcements for this date in grid layout
+                                GridView.builder(
+                                  physics:
+                                      const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      // ignore: lines_longer_than_80_chars
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 20,
+                                        mainAxisSpacing: 20,
+                                        childAspectRatio: 1.3,
+                                      ),
+                                  itemCount: entries.length,
+                                  itemBuilder:
+                                      (context, announcementIndex) {
+                                    final announcement =
+                                        entries[announcementIndex];
+                                    return _TabletAnnouncementCard(
+                                          announcement: announcement,
+                                          timezone: timezone,
+                                        )
+                                        .animate(
+                                          delay:
+                                              (announcementIndex * 100).ms,
+                                        )
+                                        .fadeIn(
+                                          duration: PRFMotionTokens.slow,
+                                        )
+                                        .slideY(begin: 0.1, end: 0);
+                                  },
+                                ),
+
+                                const SizedBox(
+                                  height: PRFSpacingTokens.xxl,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    orElse: () => const SizedBox.shrink(),
                   );
                 },
               ),
@@ -167,7 +194,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
     required this.announcement,
     required this.timezone,
   });
-  final PRFLocalAnnouncement announcement;
+  final PRFAnnouncement announcement;
   final String timezone;
 
   @override
@@ -214,7 +241,8 @@ class _TabletAnnouncementCard extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                            padding:
+                                const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
@@ -282,10 +310,12 @@ class _TabletAnnouncementCard extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                        borderRadius:
+                            BorderRadius.circular(PRFRadiusTokens.md),
                         boxShadow: [
                           BoxShadow(
-                            color: colorScheme.primary.withValues(alpha: 0.10),
+                            color:
+                                colorScheme.primary.withValues(alpha: 0.10),
                             blurRadius: 10,
                             offset: const Offset(0, 3),
                           ),
@@ -385,7 +415,8 @@ class _TabletAnnouncementCard extends StatelessWidget {
                           PRFRadiusTokens.smd,
                         ),
                         border: Border.all(
-                          color: colorScheme.primary.withValues(alpha: 0.2),
+                          color:
+                              colorScheme.primary.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Row(

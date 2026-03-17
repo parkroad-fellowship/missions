@@ -1,4 +1,7 @@
-import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/add_debrief_note_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
+import 'package:app/models/remote/content/prf_debrief_note.dart';
+import 'package:app/utils/crud/resource_state.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
@@ -178,7 +181,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<AddDebriefNoteCubit, AddDebriefNoteState>(
+              BlocConsumer<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
                     listener: (context, state) {
                       state.mapOrNull(
                         loading: (_) {
@@ -186,7 +189,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                             _isLoading = true;
                           });
                         },
-                        loaded: (_) {
+                        listLoaded: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -194,7 +197,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.noteRecorded);
                         },
-                        error: (error) {
+                        error: (error, _) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -234,7 +237,7 @@ class _AddDebriefNoteViewHandsetState extends State<AddDebriefNoteViewHandset> {
       return;
     }
 
-    await context.read<AddDebriefNoteCubit>().addDebriefNote(
+    await context.read<DebriefNoteResourceCubit>().addDebriefNote(
       missionUlid: widget.missionUlid,
       note: _noteController.text.trim(),
     );

@@ -1,4 +1,7 @@
-import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/add_mission_question_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
+import 'package:app/models/remote/mission/prf_mission_question.dart';
+import 'package:app/utils/crud/resource_state.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
@@ -179,7 +182,7 @@ class _AddMissionQuestionViewHandsetState
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<AddMissionQuestionCubit, AddMissionQuestionState>(
+              BlocConsumer<MissionQuestionResourceCubit, ResourceState<PRFMissionQuestion>>(
                     listener: (context, state) {
                       state.mapOrNull(
                         loading: (_) {
@@ -187,7 +190,7 @@ class _AddMissionQuestionViewHandsetState
                             _isLoading = true;
                           });
                         },
-                        loaded: (_) {
+                        listLoaded: (_) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -195,7 +198,7 @@ class _AddMissionQuestionViewHandsetState
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.questionRecorded);
                         },
-                        error: (error) {
+                        error: (error, _) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -235,7 +238,7 @@ class _AddMissionQuestionViewHandsetState
       return;
     }
 
-    await context.read<AddMissionQuestionCubit>().addMissionQuestion(
+    await context.read<MissionQuestionResourceCubit>().addMissionQuestion(
       missionUlid: widget.missionUlid,
       question: _questionController.text.trim(),
     );

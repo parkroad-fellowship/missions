@@ -1,5 +1,7 @@
-import 'package:app/features/home/events/cubit/get_events_cubit.dart';
-import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
+import 'package:app/features/home/events/cubit/event_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/features/home/events/cubit/event_subscription_resource_cubit.dart';
+import 'package:app/models/remote/event/prf_event_subscription.dart';
 import 'package:app/features/home/events/event_details/actions/add_event_subscription/add_event_subscription.dart';
 import 'package:app/features/home/events/event_details/actions/add_media/add_media.dart';
 import 'package:app/features/home/events/event_details/actions/update_event_subscription/update_event_subscription.dart';
@@ -167,7 +169,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
                 },
               ).then((_) {
                 // ignore: use_build_context_synchronously
-                context.read<GetEventsCubit>().getEvents();
+                context.read<EventResourceCubit>().loadAll();
               });
             }
 
@@ -189,8 +191,8 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet>
               ).then((_) {
                 // ignore: use_build_context_synchronously
                 context
-                    .read<GetMemberEventSubscriptionsCubit>()
-                    .getMemberEventSubscriptions();
+                    .read<EventSubscriptionResourceCubit>()
+                    .loadAll();
               });
             }
           },

@@ -1,10 +1,12 @@
-import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/prayer_request_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/models/remote/prayer/prf_prayer_request.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddPrayerRequestViewHandset extends StatefulWidget {
   const AddPrayerRequestViewHandset({super.key});
@@ -207,15 +209,14 @@ class _AddPrayerRequestViewHandsetState
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<AddPrayerRequestCubit, AddPrayerRequestState>(
+              BlocConsumer<PrayerRequestResourceCubit,
+                      ResourceState<PRFPrayerRequest>>(
+                    listenWhen: (prev, curr) =>
+                        curr is ResourceMutated<PRFPrayerRequest> ||
+                        curr is ResourceError<PRFPrayerRequest>,
                     listener: (context, state) {
-                      state.mapOrNull(
-                        loading: (_) {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                        },
-                        loaded: (_) {
+                      switch (state) {
+                        case ResourceMutated<PRFPrayerRequest>():
                           setState(() {
                             _isLoading = false;
                           });
@@ -225,16 +226,19 @@ class _AddPrayerRequestViewHandsetState
                             context,
                             l10n.prayerRequestSubmitted,
                           );
-                        },
-                        error: (error) {
+                        case ResourceError<PRFPrayerRequest>(:final message):
                           setState(() {
                             _isLoading = false;
                           });
                           Gaimon.error();
-                          PRFSnackbar.error(context, error.message);
-                        },
-                      );
+                          PRFSnackbar.error(context, message);
+                        default:
+                          break;
+                      }
                     },
+                    buildWhen: (prev, curr) =>
+                        curr is ResourceMutating<PRFPrayerRequest> ||
+                        curr is ResourceError<PRFPrayerRequest>,
                     builder: (context, state) {
                       return PRFPrimaryButton(
                         onPressed: _submitForm,
@@ -266,9 +270,15 @@ class _AddPrayerRequestViewHandsetState
       return;
     }
 
-    await context.read<AddPrayerRequestCubit>().addPrayerRequest(
-      title: _titleController.text.trim(),
-      description: _requestController.text.trim(),
+    setState(() {
+      _isLoading = true;
+    });
+
+    await context.read<PrayerRequestResourceCubit>().createPrayerRequest(
+      data: {
+        'title': _titleController.text.trim(),
+        'description': _requestController.text.trim(),
+      },
     );
   }
 }

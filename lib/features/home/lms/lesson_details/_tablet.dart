@@ -1,6 +1,6 @@
 import 'package:app/enums/payment/prf_completion_status.dart';
-import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_lesson_cubit.dart';
+
+import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/course/prf_lesson_module.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -33,7 +33,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
   @override
   void initState() {
     super.initState();
-    context.read<GetLessonCubit>().getLesson(lessonModuleId: lessonModuleUlid);
+    context.read<LessonResourceCubit>().loadAll(filters: {'lesson_module_id': lessonModuleUlid});
   }
 
   bool _isLoading = false;
@@ -215,13 +215,13 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: PRFSpacingTokens.xl,
                       ),
-                      child: BlocConsumer<FinishLessonCubit, FinishLessonState>(
+                      child: BlocConsumer<LessonResourceCubit, ResourceState<PRFLessonModule>>(
                         listener: (context, state) {
                           state.maybeWhen(
-                            loading: () => setState(() {
+                            listLoading: () => setState(() {
                               _isLoading = true;
                             }),
-                            loaded: () {
+                            listLoaded: () {
                               setState(() {
                                 _isLoading = false;
                               });
@@ -229,7 +229,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                               PRFSnackbar.success(context, l10n.completed);
                               Navigator.of(context).pop();
                             },
-                            error: (message) {
+                            error: (message, _) {
                               setState(() {
                                 _isLoading = false;
                               });
@@ -243,7 +243,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                           return state.maybeWhen(
                             orElse: () => PRFPrimaryButton(
                               onPressed: () async => context
-                                  .read<FinishLessonCubit>()
+                                  .read<LessonResourceCubit>()
                                   .finishLesson(
                                     lessonModuleUlid: lessonModuleUlid,
                                     courseModuleUlid: courseModuleUlid,

@@ -1,12 +1,14 @@
-import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_resource_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/models/remote/payment/prf_payment_type.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AppPaymentHandset extends StatefulWidget {
   const AppPaymentHandset({super.key});
@@ -29,7 +31,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
   @override
   void initState() {
     super.initState();
-    context.read<GetPaymentTypesCubit>().getPaymentTypes();
+    context.read<PaymentTypeResourceCubit>().loadAll();
     _amountController.addListener(_onFormChanged);
   }
 
@@ -81,13 +83,15 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               title: l10n.reasonForGiving,
               isRequired: true,
               margin: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
-              child: BlocBuilder<GetPaymentTypesCubit, GetPaymentTypesState>(
+              child: BlocBuilder<PaymentTypeResourceCubit,
+                  ResourceState<PRFPaymentType>>(
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse: () => const SizedBox.shrink(),
-                    loading: () =>
+                    listLoading: () =>
                         const Center(child: LinearProgressIndicator()),
-                    loaded: (classes) => PRFSearchableList<PRFPaymentType>(
+                    listLoaded: (classes, _, __) =>
+                        PRFSearchableList<PRFPaymentType>(
                       entries: classes
                           .map(
                             (paymentType) =>
@@ -121,57 +125,62 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               ),
             ),
             const SizedBox(height: PRFSpacingTokens.xxl),
-            BlocConsumer<AddPaymentCubit, AddPaymentState>(
+            BlocConsumer<PaymentResourceCubit, ResourceState<PRFPayment>>(
+              listenWhen: (prev, curr) =>
+                  curr is ResourceMutated<PRFPayment> ||
+                  curr is ResourceError<PRFPayment>,
               listener: (context, state) {
-                state.mapOrNull(
-                  loading: (_) {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                  },
-                  loaded: (result) async {
+                switch (state) {
+                  case ResourceMutated<PRFPayment>(:final item):
                     setState(() {
                       _isLoading = false;
                     });
                     Gaimon.success();
                     Navigator.of(context).pop();
-                    if (result.payment.authorizationUrl != null) {
-                      await UrlHelper.openUrl(
-                        Uri.parse(result.payment.authorizationUrl!),
+                    if (item?.authorizationUrl != null) {
+                      UrlHelper.openUrl(
+                        Uri.parse(item!.authorizationUrl!),
                       );
                     }
-                  },
-                  error: (error) {
+                  case ResourceError<PRFPayment>(:final message):
                     setState(() {
                       _isLoading = false;
                     });
                     Gaimon.error();
-                    PRFSnackbar.error(context, error.error);
-                  },
-                );
+                    PRFSnackbar.error(context, message);
+                  default:
+                    break;
+                }
               },
+              buildWhen: (prev, curr) =>
+                  curr is ResourceMutating<PRFPayment> ||
+                  curr is ResourceError<PRFPayment>,
               builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => PRFPrimaryButton(
-                    title: _isLoading ? l10n.recording : l10n.record,
-                    disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
-                    onPressed: () async {
-                      if (!_validateForm()) {
-                        Gaimon.warning();
-                        PRFSnackbar.error(
-                          context,
-                          'Please fix the highlighted fields and try again.',
-                        );
-                        return;
-                      }
-
-                      await context.read<AddPaymentCubit>().addPayment(
-                        amount: _amountController.text.trim(),
-                        paymentTypeUlid: selectedPaymentType!.ulid,
+                return PRFPrimaryButton(
+                  title: _isLoading ? l10n.recording : l10n.record,
+                  disabled: _isLoading,
+                  isLoading: _isLoading ? true : null,
+                  onPressed: () async {
+                    if (!_validateForm()) {
+                      Gaimon.warning();
+                      PRFSnackbar.error(
+                        context,
+                        'Please fix the highlighted fields and try again.',
                       );
-                    },
-                  ),
+                      return;
+                    }
+
+                    setState(() {
+                      _isLoading = true;
+                    });
+
+                    await context.read<PaymentResourceCubit>().addPayment(
+                      data: {
+                        'amount': _amountController.text.trim(),
+                        'payment_type_ulid': selectedPaymentType!.ulid,
+                      },
+                    );
+                  },
                 );
               },
             ),

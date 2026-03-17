@@ -1,6 +1,7 @@
 import 'package:app/enums/mission/prf_mission_role.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
-import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
+import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/local/shared_embeds.dart';
@@ -24,7 +25,7 @@ class SubscribersViewHandset extends StatefulWidget {
 class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
   @override
   void initState() {
-    context.read<GetSubscribersCubit>().getSubscriptions(
+    context.read<MissionSubscriptionResourceCubit>().loadAll(
       missionUlid: widget.missionUlid,
     );
     super.initState();
@@ -46,7 +47,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
         if (subscriptions != null && subscriptions.isEmpty) {
           return RefreshIndicator(
             onRefresh: () =>
-                context.read<GetSubscribersCubit>().getSubscriptions(
+                context.read<MissionSubscriptionResourceCubit>().loadAll(
                   missionUlid: widget.missionUlid,
                 ),
             child: PRFEmptyView(
@@ -57,7 +58,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
         }
 
         return RefreshIndicator(
-          onRefresh: () => context.read<GetSubscribersCubit>().getSubscriptions(
+          onRefresh: () => context.read<MissionSubscriptionResourceCubit>().loadAll(
             missionUlid: widget.missionUlid,
           ),
           child: Padding(

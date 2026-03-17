@@ -1,8 +1,9 @@
 import 'package:app/enums/payment/prf_payment_status.dart';
 import 'package:app/features/home/giving/actions/add_payment/add_payment.dart';
-import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/payment/prf_payment.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -23,7 +24,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
   @override
   void initState() {
     super.initState();
-    context.read<GetPaymentsCubit>().getPayments();
+    context.read<PaymentResourceCubit>().loadAll();
   }
 
   @override
@@ -56,7 +57,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                   ),
                   child: IconButton(
                     onPressed: () =>
-                        context.read<GetPaymentsCubit>().getPayments(),
+                        context.read<PaymentResourceCubit>().loadAll(),
                     icon: Icon(
                       Icons.refresh_rounded,
                       color: theme.colorScheme.onPrimaryContainer,
@@ -73,25 +74,25 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
 
             // Loading Indicator
             SliverToBoxAdapter(
-              child: BlocBuilder<GetPaymentsCubit, GetPaymentsState>(
+              child: BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
                 builder: (context, state) => state.maybeWhen(
                   orElse: () => const PRFLinearProgressIndicator(),
-                  error: (message) => const SizedBox.shrink(),
-                  loaded: (_) => const SizedBox.shrink(),
+                  error: (_, __) => const SizedBox.shrink(),
+                  listLoaded: (_, __, ___) => const SizedBox.shrink(),
                 ),
               ),
             ),
 
-            BlocBuilder<GetPaymentsCubit, GetPaymentsState>(
+            BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SliverFillRemaining(
                     child: Center(child: CircularProgressIndicator()),
                   ),
-                  error: (message) => SliverFillRemaining(
+                  error: (message, _) => SliverFillRemaining(
                     child: RefreshIndicator(
                       onRefresh: () =>
-                          context.read<GetPaymentsCubit>().getPayments(),
+                          context.read<PaymentResourceCubit>().loadAll(),
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.symmetric(
@@ -120,29 +121,32 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                       ),
                     ),
                   ),
-                  empty: () => SliverFillRemaining(
-                    child: RefreshIndicator(
-                      onRefresh: () =>
-                          context.read<GetPaymentsCubit>().getPayments(),
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: PRFSpacingTokens.xl,
-                        ),
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.6,
-                          child: PRFEmptyView(
-                            label: l10n.considerGiving,
-                            description: l10n.startGiving,
-                            icon: Icons.volunteer_activism_rounded,
-                            actionLabel: l10n.give,
-                            onActionPressed: _addPayment,
+                  listLoaded: (payments, _, __) {
+                    if (payments.isEmpty) {
+                      return SliverFillRemaining(
+                        child: RefreshIndicator(
+                          onRefresh: () =>
+                              context.read<PaymentResourceCubit>().loadAll(),
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: PRFSpacingTokens.xl,
+                            ),
+                            child: SizedBox(
+                              height: MediaQuery.sizeOf(context).height * 0.6,
+                              child: PRFEmptyView(
+                                label: l10n.considerGiving,
+                                description: l10n.startGiving,
+                                icon: Icons.volunteer_activism_rounded,
+                                actionLabel: l10n.give,
+                                onActionPressed: _addPayment,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  loaded: (payments) => SliverPadding(
+                      );
+                    }
+                    return SliverPadding(
                     padding: const EdgeInsets.only(
                       left: PRFSpacingTokens.xl,
                       right: PRFSpacingTokens.xl,
@@ -203,7 +207,8 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                         childCount: payments.length,
                       ),
                     ),
-                  ),
+                    );
+                  },
                 );
               },
             ),
@@ -273,7 +278,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
         },
       ).then((_) {
         if (mounted) {
-          context.read<GetPaymentsCubit>().getPayments();
+          context.read<PaymentResourceCubit>().loadAll();
         }
       });
 
@@ -327,7 +332,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                         final uri = Uri.parse(payment.authorizationUrl!);
                         await UrlHelper.openUrl(uri).then((_) {
                           // ignore: use_build_context_synchronously
-                          context.read<GetPaymentsCubit>().getPayments();
+                          context.read<PaymentResourceCubit>().loadAll();
                         });
                       },
                     ),
@@ -356,7 +361,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      context.read<GetPaymentsCubit>().getPayments();
+                      context.read<PaymentResourceCubit>().loadAll();
                     },
                   ),
                   const SizedBox(height: PRFSpacingTokens.xl),

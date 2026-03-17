@@ -236,18 +236,18 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                     listener: (context, state) {
                       state.when(
                         initial: () {},
-                        loading: () {
+                        listLoading: () {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        loaded: () {
+                        listLoaded: () {
                           setState(() {
                             _isLoading = false;
                           });
                           Navigator.of(context).pop();
                         },
-                        error: (message) {
+                        error: (message, _) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -377,7 +377,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
 
     final amount = double.parse(_amountController.text).round();
 
-    context.read<AddAllocationTokenEntryCubit>().addAllocationEntry(
+    context.read<AddAllocationTokenEntryCubit>().addEntry(
       accountingEventUlid: widget.accountingEventUlid,
       entryType: PRFEntryType.credit, // Always credit for tokens
       unitCost: amount, // Use amount as unit cost

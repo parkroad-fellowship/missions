@@ -1,4 +1,6 @@
-import 'package:app/features/home/shared/cubit/get_member_engagement_cubit.dart';
+import 'package:app/features/home/shared/cubit/member_engagement_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:app/features/home/wrapped/pages/wrapped_pages.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:auto_route/auto_route.dart';
@@ -33,13 +35,13 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocBuilder<GetMemberEngagementCubit, GetMemberEngagementState>(
+    return BlocBuilder<MemberEngagementResourceCubit, ResourceState<PRFMemberEngagement>>(
       builder: (context, state) {
         return state.when(
           initial: () => _buildLoadingState(theme),
-          loading: () => _buildLoadingState(theme),
+          listLoading: () => _buildLoadingState(theme),
           empty: _buildEmptyState,
-          loaded: (memberEngagement) {
+          listLoaded: (memberEngagement) {
             final year = DateTime.now().year;
             final pages = <Widget>[
               IntroWrappedPage(
@@ -225,7 +227,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                 icon: Icons.error_outline_rounded,
                 actionLabel: 'Try Again',
                 onActionPressed: () {
-                  context.read<GetMemberEngagementCubit>().getMemberEngagement(
+                  context.read<MemberEngagementResourceCubit>().loadEngagement(
                     year: DateTime.now().year,
                   );
                 },

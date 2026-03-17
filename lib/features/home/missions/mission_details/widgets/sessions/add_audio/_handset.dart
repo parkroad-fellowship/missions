@@ -1,3 +1,4 @@
+import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
@@ -5,7 +6,7 @@ import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/pending_uploads_widget.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
@@ -172,7 +173,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                   context,
                   '${l10n.upload} ${l10n.recordingCompleted}',
                 );
-                context.read<GetMissionSessionCubit>().getMissionSession(
+                context.read<MissionSessionResourceCubit>().loadAll(
                   missionSessionUlid: widget.missionSessionUlid,
                   refresh: true,
                 );

@@ -1,4 +1,6 @@
-import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/update_debrief_note_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:prf_design/prf_design.dart';
@@ -97,7 +99,7 @@ class _UpdateDebriefNoteViewHandsetState
             const SizedBox(height: PRFSpacingTokens.xl),
 
             // Submit Button
-            BlocConsumer<UpdateDebriefNoteCubit, UpdateDebriefNoteState>(
+            BlocConsumer<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {
@@ -105,7 +107,7 @@ class _UpdateDebriefNoteViewHandsetState
                       _isLoading = true;
                     });
                   },
-                  loaded: (_) {
+                  listLoaded: (_) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -113,7 +115,7 @@ class _UpdateDebriefNoteViewHandsetState
                     Navigator.of(context).pop();
                     PRFSnackbar.success(context, l10n.noteRecorded);
                   },
-                  error: (error) {
+                  error: (error, _) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -147,7 +149,7 @@ class _UpdateDebriefNoteViewHandsetState
       return;
     }
 
-    await context.read<UpdateDebriefNoteCubit>().updateDebriefNote(
+    await context.read<DebriefNoteResourceCubit>().updateDebriefNote(
       debriefNoteUlid: widget.debriefNote.ulid,
       missionUlid: widget.missionUlid,
       note: _noteController.text.trim(),

@@ -1,4 +1,6 @@
-import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
+import 'package:app/models/remote/course/prf_course.dart';
+import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/lms/widgets/course_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -18,7 +20,7 @@ class LMSPageTablet extends StatefulWidget {
 class _LMSPageTabletState extends State<LMSPageTablet> {
   @override
   void initState() {
-    context.read<GetCoursesCubit>().getCourses();
+    context.read<CourseResourceCubit>().loadAll();
     super.initState();
   }
 
@@ -41,9 +43,9 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: BlocBuilder<GetCoursesCubit, GetCoursesState>(
+                child: BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
                   builder: (context, state) => state.maybeWhen(
-                    loading: () => const Padding(
+                    listLoading: () => const Padding(
                       padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                       child: PRFLinearProgressIndicator(),
                     ),
@@ -67,7 +69,7 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                       hasScrollBody: false,
                       child: RefreshIndicator(
                         onRefresh: () =>
-                            context.read<GetCoursesCubit>().getCourses(),
+                            context.read<CourseResourceCubit>().loadAll(),
                         child: PRFEmptyView(
                           label: l10n.noCourses,
                           description: l10n.pleaseWait,

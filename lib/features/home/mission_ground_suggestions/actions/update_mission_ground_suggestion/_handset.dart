@@ -1,5 +1,7 @@
+import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:prf_design/prf_design.dart';
@@ -333,8 +335,8 @@ class _UpdateMissionGroundSuggestionViewHandsetState
 
               // Submit Button
               BlocConsumer<
-                    UpdateMissionGroundSuggestionCubit,
-                    UpdateMissionGroundSuggestionState
+                    GroundSuggestionResourceCubit,
+                    ResourceState<PRFMissionGroundSuggestion>
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
@@ -343,7 +345,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             _isLoading = true;
                           });
                         },
-                        loaded: (result) {
+                        listLoaded: (result) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -356,7 +358,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             ),
                           );
                         },
-                        error: (error) {
+                        error: (error, _) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -397,8 +399,8 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     }
 
     await context
-        .read<UpdateMissionGroundSuggestionCubit>()
-        .updateMissionGroundSuggestion(
+        .read<GroundSuggestionResourceCubit>()
+        .updateSuggestion(
           name: _nameController.text.trim(),
           contactPerson: _contactPersonController.text.trim(),
           contactNumber: _contactNumberController.text.trim(),

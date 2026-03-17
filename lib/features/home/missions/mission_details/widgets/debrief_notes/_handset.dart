@@ -1,4 +1,5 @@
-import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_debrief_note.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -23,7 +24,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
 
   @override
   void initState() {
-    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+    context.read<DebriefNoteResourceCubit>().loadAll(
       missionUlid: missionUlid,
     );
     super.initState();
@@ -41,7 +42,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
         icon: Icons.note_add_outlined,
       ),
       widget: (context, debriefNotes) => RefreshIndicator(
-        onRefresh: () => context.read<GetDebriefNotesCubit>().getDebriefNotes(
+        onRefresh: () => context.read<DebriefNoteResourceCubit>().loadAll(
           missionUlid: missionUlid,
         ),
         child: Padding(

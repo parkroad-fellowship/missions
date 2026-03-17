@@ -1,18 +1,18 @@
+import 'package:app/models/remote/mission/prf_mission.dart';
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
+import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_expense/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_refund/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_token/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/edit_expense/_handset.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
+
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
@@ -58,8 +58,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   }
 
   void _loadData() {
-    context.read<GetMissionCubit>().getMissionSync(missionUlid: missionUlid);
-    context.read<GetExpenseCategoriesCubit>().getExpenseCategories();
+    context.read<MissionResourceCubit>().currentItemsmissionUlid: missionUlid);
+    context.read<ExpenseCategoryResourceCubit>().loadAll();
   }
 
   @override
@@ -68,13 +68,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<GetMissionCubit, GetMissionState>(
+        BlocListener<MissionResourceCubit, ResourceState<PRFMission>>(
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
               loadedSync: (mission) {
                 accountingEventUlid = mission.accountingEventUlid;
-                context.read<GetAllocationEntriesCubit>().getAllocationEntries(
+                context.read<AllocationEntryResourceCubit>().loadAll(
                   accountingEventUlid: mission.accountingEventUlid,
                 );
               },
@@ -84,7 +84,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             );
           },
         ),
-        BlocListener<AddAllocationEntryCubit, AddAllocationEntryState>(
+        BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
             state.when(
               initial: () {},
@@ -99,7 +99,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             );
           },
         ),
-        BlocListener<EditAllocationEntryCubit, EditAllocationEntryState>(
+        BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
             state.when(
               initial: () {},
@@ -114,7 +114,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             );
           },
         ),
-        BlocListener<DeleteAllocationEntryCubit, DeleteAllocationEntryState>(
+        BlocListener<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
           listener: (context, state) {
             state.when(
               initial: () {},
@@ -147,7 +147,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           },
         ),
       ],
-      child: BlocBuilder<GetAllocationEntriesCubit, GetAllocationEntriesState>(
+      child: BlocBuilder<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
         builder: (context, state) {
           return state.when(
             initial: () => const Padding(
@@ -1607,8 +1607,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ),
             ),
             BlocConsumer<
-              DeleteAllocationEntryCubit,
-              DeleteAllocationEntryState
+              AllocationEntryResourceCubit,
+              ResourceState<PRFAllocationEntry>
             >(
               listener: (context, state) {
                 state.when(
@@ -1654,7 +1654,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     return ElevatedButton.icon(
       onPressed: () {
-        context.read<DeleteAllocationEntryCubit>().deleteAllocationEntry(
+        context.read<AllocationEntryResourceCubit>().deleteEntry(
           allocationEntryUlid: entry.ulid,
         );
       },
@@ -1696,7 +1696,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       },
     ).then((_) {
       if (context.mounted) {
-        context.read<GetAllocationEntriesCubit>().getAllocationEntries(
+        context.read<AllocationEntryResourceCubit>().loadAll(
           accountingEventUlid: accountingEvent.ulid,
         );
       }
@@ -1725,7 +1725,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       },
     ).then((_) {
       if (context.mounted) {
-        context.read<GetAllocationEntriesCubit>().getAllocationEntries(
+        context.read<AllocationEntryResourceCubit>().loadAll(
           accountingEventUlid: accountingEvent.ulid,
         );
       }
@@ -2241,12 +2241,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ],
             ),
           ),
-          BlocBuilder<GetAllocationEntriesCubit, GetAllocationEntriesState>(
+          BlocBuilder<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
             builder: (context, state) {
               return IconButton.filled(
                 onPressed: () => context
-                    .read<GetAllocationEntriesCubit>()
-                    .getAllocationEntries(
+                    .read<AllocationEntryResourceCubit>()
+                    .loadAll(
                       accountingEventUlid: accountingEvent.ulid,
                     ),
                 icon: state.maybeWhen(

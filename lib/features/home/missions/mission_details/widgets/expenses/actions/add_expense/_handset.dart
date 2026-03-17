@@ -1,7 +1,10 @@
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/payment/prf_charge_type.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
+
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
@@ -208,8 +211,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       isRequired: true,
                       child:
                           BlocBuilder<
-                            GetExpenseCategoriesCubit,
-                            GetExpenseCategoriesState
+                            ExpenseCategoryResourceCubit,
+                            ResourceState<PRFExpenseCategory>
                           >(
                             builder: (context, state) {
                               return state.maybeWhen(
@@ -317,7 +320,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<AddAllocationEntryCubit, AddAllocationEntryState>(
+              BlocConsumer<AllocationEntryResourceCubit, ResourceState<PRFAllocationEntry>>(
                     listener: (context, state) {
                       state.mapOrNull(
                         loading: (_) {
@@ -579,7 +582,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
       loaded: (mediaItems) => mediaItems,
     );
 
-    await context.read<AddAllocationEntryCubit>().addAllocationEntry(
+    await context.read<AllocationEntryResourceCubit>().addEntry(
       accountingEventUlid: widget.accountingEventUlid,
       expenseCategoryUlid: selectedExpenseCategory!.ulid,
       entryType: PRFEntryType.debit, // Always debit for expenses

@@ -1,4 +1,5 @@
-import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/enquiry/prf_student_enquiry.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -24,7 +25,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
 
   @override
   void initState() {
-    context.read<GetEnquiriesCubit>().getStudentEnquiries();
+    context.read<EnquiryResourceCubit>().loadAll();
     super.initState();
   }
 
@@ -64,10 +65,10 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
 
             // Loading Indicator
             SliverToBoxAdapter(
-              child: BlocBuilder<GetEnquiriesCubit, GetEnquiriesState>(
+              child: BlocBuilder<EnquiryResourceCubit, ResourceState<PRFStudentEnquiry>>(
                 builder: (context, state) => state.maybeWhen(
                   orElse: () => const PRFLinearProgressIndicator(),
-                  error: (message) => const SizedBox.shrink(),
+                  error: (message, _) => const SizedBox.shrink(),
                   loaded: SizedBox.shrink,
                 ),
               ),
@@ -91,8 +92,8 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                   return SliverFillRemaining(
                     child: RefreshIndicator(
                       onRefresh: () => context
-                          .read<GetEnquiriesCubit>()
-                          .getStudentEnquiries(),
+                          .read<EnquiryResourceCubit>()
+                          .loadAll(),
                       child: PRFEmptyView(
                         label: l10n.noQuestions,
                         description: l10n.pleaseWait,

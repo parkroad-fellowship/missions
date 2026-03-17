@@ -1,4 +1,5 @@
-import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/get_mission_questions_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission_question.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -24,7 +25,7 @@ class _MissionQuestionsViewHandsetState
 
   @override
   void initState() {
-    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+    context.read<MissionQuestionResourceCubit>().loadAll(
       missionUlid: missionUlid,
     );
     super.initState();
@@ -43,7 +44,7 @@ class _MissionQuestionsViewHandsetState
       ),
       widget: (context, missionQuestions) => RefreshIndicator(
         onRefresh: () =>
-            context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+            context.read<MissionQuestionResourceCubit>().loadAll(
               missionUlid: missionUlid,
             ),
         child: Padding(

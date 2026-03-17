@@ -1,8 +1,15 @@
+import 'package:app/models/remote/media/prf_media.dart';
+import 'package:app/models/remote/content/prf_debrief_note.dart';
+import 'package:app/models/remote/mission/prf_mission_question.dart';
+import 'package:app/models/remote/mission/prf_mission_session.dart';
+import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
+import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/actions/add_debrief_note/_handset.dart';
-import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/get_debrief_notes_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/feedback_data_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/finance_section.dart';
@@ -10,16 +17,20 @@ import 'package:app/features/home/missions/mission_details/widgets/domain_sectio
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/people_data_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
-import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/add_mission_question/add_mission_question.dart';
-import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/get_mission_questions_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/add_session/add_session.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/get_mission_sessions_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/sessions.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/actions/add_soul/add_soul.dart';
-import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/get_souls_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
@@ -50,23 +61,23 @@ class _MissionsDetailsPageHandsetState
   void initState() {
     super.initState();
 
-    context.read<GetSubscribersCubit>().getSubscriptions(
+    context.read<MissionSubscriptionResourceCubit>().loadAll(
       missionUlid: widget.missionUlid,
       refresh: true,
     );
-    context.read<GetMissionSessionsCubit>().getMissionSessions(
+    context.read<MissionSessionResourceCubit>().loadAll(
       missionUlid: missionUlid,
       refresh: true,
     );
-    context.read<GetSoulsCubit>().getSouls(
+    context.read<SoulResourceCubit>().loadAll(
       missionUlid: missionUlid,
       refresh: true,
     );
-    context.read<GetDebriefNotesCubit>().getDebriefNotes(
+    context.read<DebriefNoteResourceCubit>().loadAll(
       missionUlid: missionUlid,
       refresh: true,
     );
-    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+    context.read<MissionQuestionResourceCubit>().loadAll(
       missionUlid: missionUlid,
       refresh: true,
     );
@@ -182,9 +193,9 @@ class _MissionsDetailsPageHandsetState
         BlocConsumer<SubscribeCubit, SubscribeState>(
           listener: (context, state) {
             state.mapOrNull(
-              loaded: (_) {
+              listLoaded: (_) {
                 Gaimon.success();
-                context.read<GetSubscribersCubit>().getSubscriptions(
+                context.read<MissionSubscriptionResourceCubit>().loadAll(
                   missionUlid: missionUlid,
                   refresh: true,
                 );
@@ -193,7 +204,7 @@ class _MissionsDetailsPageHandsetState
                   l10n.successfullySubscribed,
                 );
               },
-              error: (error) {
+              error: (error, _) {
                 Gaimon.error();
                 PRFSnackbar.error(context, error.message);
               },
@@ -234,7 +245,7 @@ class _MissionsDetailsPageHandsetState
                     icon: BlocBuilder<SubscribeCubit, SubscribeState>(
                       builder: (context, state) => state.maybeWhen(
                         orElse: () => const Icon(Icons.hail_rounded),
-                        loading: () => const SizedBox.square(
+                        listLoading: () => const SizedBox.square(
                           dimension: 16,
                           child: PRFCircularProgressIndicator(
                             color: Colors.white,
@@ -337,7 +348,7 @@ class _MissionsDetailsPageHandsetState
           },
         ).then((_) {
           if (context.mounted) {
-            context.read<GetMissionSessionsCubit>().getMissionSessions(
+            context.read<MissionSessionResourceCubit>().loadAll(
               missionUlid: missionUlid,
             );
           }
@@ -359,7 +370,7 @@ class _MissionsDetailsPageHandsetState
           },
         ).then((_) {
           if (context.mounted) {
-            context.read<GetSoulsCubit>().getSouls(
+            context.read<SoulResourceCubit>().loadAll(
               missionUlid: missionUlid,
             );
           }
@@ -383,7 +394,7 @@ class _MissionsDetailsPageHandsetState
           },
         ).then((_) {
           if (context.mounted) {
-            context.read<GetDebriefNotesCubit>().getDebriefNotes(
+            context.read<DebriefNoteResourceCubit>().loadAll(
               missionUlid: missionUlid,
             );
           }
@@ -407,7 +418,7 @@ class _MissionsDetailsPageHandsetState
           },
         ).then((_) {
           if (context.mounted) {
-            context.read<GetMissionQuestionsCubit>().getMissionQuestions(
+            context.read<MissionQuestionResourceCubit>().loadAll(
               missionUlid: missionUlid,
             );
           }
@@ -429,7 +440,7 @@ class _MissionsDetailsPageHandsetState
           },
         ).then((_) {
           if (context.mounted) {
-            context.read<GetMissionMediaCubit>().getMissionMedia(
+            context.read<MissionMediaResourceCubit>().loadMedia(
               missionUlid: missionUlid,
               collections: [
                 PRFMediaModel.missionPhotos,

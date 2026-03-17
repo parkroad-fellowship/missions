@@ -1,5 +1,7 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
+import 'package:app/features/home/events/cubit/event_media_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/features/home/events/event_details/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -28,7 +30,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
 
   @override
   void initState() {
-    context.read<GetEventMediaCubit>().getEventMedia(
+    context.read<EventMediaResourceCubit>().loadMedia(
       eventUlid: eventUlid,
       model: PRFMediaModel.eventPhotos,
     );
@@ -41,7 +43,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
     final theme = Theme.of(context);
 
     return RefreshIndicator(
-      onRefresh: () => context.read<GetEventMediaCubit>().getEventMedia(
+      onRefresh: () => context.read<EventMediaResourceCubit>().loadMedia(
         eventUlid: eventUlid,
         model: PRFMediaModel.eventPhotos,
       ),
@@ -53,7 +55,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
             listener: (context, state) {
               state.mapOrNull(
                 loaded: (_) {
-                  context.read<GetEventMediaCubit>().getEventMedia(
+                  context.read<EventMediaResourceCubit>().loadMedia(
                     eventUlid: eventUlid,
                     model: PRFMediaModel.eventPhotos,
                   );
@@ -86,7 +88,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
           ),
 
           // Gallery
-          BlocBuilder<GetEventMediaCubit, GetEventMediaState>(
+          BlocBuilder<EventMediaResourceCubit, ResourceState<PRFMedia>>(
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: () => SliverFillRemaining(

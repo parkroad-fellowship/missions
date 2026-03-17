@@ -1,6 +1,9 @@
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/add_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
+import 'package:app/models/remote/mission/prf_mission_session.dart';
+import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
+import 'package:app/models/remote/mission/prf_mission_subscription.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/local/shared_embeds.dart';
@@ -57,10 +60,10 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
   void initState() {
     super.initState();
     _notesController.addListener(_onFormChanged);
-    context.read<GetSubscribersCubit>().getSubscriptions(
+    context.read<MissionSubscriptionResourceCubit>().loadAll(
       missionUlid: widget.missionUlid,
     );
-    context.read<GetClassGroupsCubit>().getClassGroups(
+    context.read<ClassGroupResourceCubit>().loadAll(
       missionUlid: widget.missionUlid,
     );
   }
@@ -289,16 +292,16 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                           title: l10n.classGroup,
                           child:
                               BlocBuilder<
-                                GetClassGroupsCubit,
-                                GetClassGroupsState
+                                ClassGroupResourceCubit,
+                                ResourceState<PRFClassGroup>
                               >(
                                 builder: (context, state) {
                                   return state.maybeWhen(
                                     orElse: () => const SizedBox.shrink(),
-                                    loading: () => const Center(
+                                    listLoading: () => const Center(
                                       child: LinearProgressIndicator(),
                                     ),
-                                    loaded: (classes) =>
+                                    listLoaded: (classes) =>
                                         PRFSearchableList<PRFClassGroup>(
                                           entries: classes
                                               .map(
@@ -385,7 +388,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<AddMissionSessionCubit, AddMissionSessionState>(
+              BlocConsumer<MissionSessionResourceCubit, ResourceState<PRFMissionSession>>(
                 listener: (context, state) {
                   state.mapOrNull(
                     loading: (_) {
@@ -393,7 +396,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                         _isLoading = true;
                       });
                     },
-                    loaded: (_) {
+                    listLoaded: (_) {
                       setState(() {
                         _isLoading = false;
                       });
@@ -401,7 +404,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                       Navigator.of(context).pop();
                       PRFSnackbar.success(context, l10n.sessionRecorded);
                     },
-                    error: (error) {
+                    error: (error, _) {
                       setState(() {
                         _isLoading = false;
                       });
@@ -438,7 +441,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
       return;
     }
 
-    await context.read<AddMissionSessionCubit>().addSession(
+    await context.read<MissionSessionResourceCubit>().addSession(
       missionUlid: widget.missionUlid,
       facilitatorUlid: selectedFacilitator!.ulid!,
       startsAt: startsAt!,

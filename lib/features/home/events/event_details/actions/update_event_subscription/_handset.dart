@@ -1,7 +1,9 @@
-import 'package:app/features/home/events/cubit/delete_event_subscription_cubit.dart';
-import 'package:app/features/home/events/cubit/get_events_cubit.dart';
-import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
-import 'package:app/features/home/events/cubit/update_event_subscription_cubit.dart';
+
+import 'package:app/features/home/events/cubit/event_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/features/home/events/cubit/event_subscription_resource_cubit.dart';
+import 'package:app/models/remote/event/prf_event_subscription.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/models/remote/event/prf_event_subscription.dart';
@@ -190,8 +192,8 @@ class _UpdateEventSubscriptionViewHandsetState
 
               // Update Button
               BlocConsumer<
-                    UpdateEventSubscriptionCubit,
-                    UpdateEventSubscriptionState
+                    EventSubscriptionResourceCubit,
+                    ResourceState<PRFEventSubscription>
                   >(
                     listener: (context, state) {
                       state.mapOrNull(
@@ -200,23 +202,23 @@ class _UpdateEventSubscriptionViewHandsetState
                             _isLoading = true;
                           });
                         },
-                        loaded: (_) {
+                        listLoaded: (_) {
                           setState(() {
                             _isLoading = false;
                           });
                           Gaimon.success();
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
-                          context.read<GetEventsCubit>().getEvents();
+                          context.read<EventResourceCubit>().loadAll();
                           context
-                              .read<GetMemberEventSubscriptionsCubit>()
-                              .getMemberEventSubscriptions();
+                              .read<EventSubscriptionResourceCubit>()
+                              .loadAll();
                           PRFSnackbar.success(
                             context,
                             l10n.eventRegistrationRecorded,
                           );
                         },
-                        error: (error) {
+                        error: (error, _) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -277,21 +279,21 @@ class _UpdateEventSubscriptionViewHandsetState
                               ),
                             ),
                             BlocConsumer<
-                              DeleteEventSubscriptionCubit,
-                              DeleteEventSubscriptionState
+                              EventSubscriptionResourceCubit,
+                              ResourceState<PRFEventSubscription>
                             >(
                               listener: (context, state) {
                                 state.mapOrNull(
-                                  loaded: (_) {
+                                  listLoaded: (_) {
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
-                                    context.read<GetEventsCubit>().getEvents();
+                                    context.read<EventResourceCubit>().loadAll();
                                     context
                                         .read<
-                                          GetMemberEventSubscriptionsCubit
+                                          EventSubscriptionResourceCubit
                                         >()
-                                        .getMemberEventSubscriptions();
+                                        .loadAll();
                                     PRFSnackbar.success(
                                       context,
                                       l10n.subscriptionCancelled,
@@ -307,7 +309,7 @@ class _UpdateEventSubscriptionViewHandsetState
                                 return TextButton(
                                   onPressed: () {
                                     context
-                                        .read<DeleteEventSubscriptionCubit>()
+                                        .read<EventSubscriptionResourceCubit>()
                                         .deleteSubscription(
                                           eventSubscriptionUlid:
                                               eventSubscription.ulid,
@@ -323,7 +325,7 @@ class _UpdateEventSubscriptionViewHandsetState
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    loading: () => SizedBox(
+                                    listLoading: () => SizedBox(
                                       width: PRFSpacingTokens.lg,
                                       height: 16,
                                       child: CircularProgressIndicator(
@@ -364,7 +366,7 @@ class _UpdateEventSubscriptionViewHandsetState
       return;
     }
 
-    await context.read<UpdateEventSubscriptionCubit>().updateEventSubscription(
+    await context.read<EventSubscriptionResourceCubit>().updateSubscription(
       event: widget.event,
       eventSubscription: eventSubscription,
       tickets: _ticketController.text.trim(),

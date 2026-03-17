@@ -1,7 +1,9 @@
 import 'package:app/features/home/prayer_requests/actions/add_prayer_request/add_prayer_request.dart';
-import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/prayer_request_resource_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/prayer/prf_prayer_request.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
   @override
   void initState() {
     super.initState();
-    context.read<GetPrayerRequestsCubit>().fetchPrayerRequests();
+    context.read<PrayerRequestResourceCubit>().loadAll();
   }
 
   @override
@@ -38,22 +40,23 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
               backgroundColor: theme.colorScheme.surface,
             ),
 
-            BlocBuilder<GetPrayerRequestsCubit, GetPrayerRequestsState>(
+            BlocBuilder<PrayerRequestResourceCubit,
+                ResourceState<PRFPrayerRequest>>(
               builder: (context, state) {
                 return state.maybeWhen(
                   orElse: () => const SliverFillRemaining(
                     child: Center(child: CircularProgressIndicator()),
                   ),
-                  error: (message) => SliverFillRemaining(
+                  error: (message, _) => SliverFillRemaining(
                     child: Center(child: Text(message)),
                   ),
-                  loaded: (prayerRequests) {
+                  listLoaded: (prayerRequests, _, __) {
                     if (prayerRequests.isEmpty) {
                       return SliverFillRemaining(
                         child: RefreshIndicator(
                           onRefresh: () => context
-                              .read<GetPrayerRequestsCubit>()
-                              .fetchPrayerRequests(),
+                              .read<PrayerRequestResourceCubit>()
+                              .loadAll(),
                           child: ListView(
                             physics: const AlwaysScrollableScrollPhysics(),
                             children: [
@@ -130,6 +133,6 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
         ],
       ).then((_) {
         if (!mounted) return;
-        context.read<GetPrayerRequestsCubit>().fetchPrayerRequests();
+        context.read<PrayerRequestResourceCubit>().loadAll();
       });
 }

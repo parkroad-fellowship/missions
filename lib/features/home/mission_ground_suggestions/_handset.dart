@@ -1,6 +1,8 @@
 import 'package:app/features/home/mission_ground_suggestions/actions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/actions/update_mission_ground_suggestion/update_mission_ground_suggestion.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
+import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/widgets/mission_ground_suggestion_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
@@ -26,8 +28,8 @@ class _MissionGroundSuggestionsPageHandsetState
   void initState() {
     super.initState();
     context
-        .read<GetMissionGroundSuggestionsCubit>()
-        .getMissionGroundSuggestions();
+        .read<GroundSuggestionResourceCubit>()
+        .loadAll();
   }
 
   @override
@@ -50,23 +52,23 @@ class _MissionGroundSuggestionsPageHandsetState
               padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               sliver:
                   BlocBuilder<
-                    GetMissionGroundSuggestionsCubit,
-                    GetMissionGroundSuggestionsState
+                    GroundSuggestionResourceCubit,
+                    ResourceState<PRFMissionGroundSuggestion>
                   >(
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SliverFillRemaining(
                           child: Center(child: PRFCircularProgressIndicator()),
                         ),
-                        loading: () => const SliverFillRemaining(
+                        listLoading: () => const SliverFillRemaining(
                           child: Center(child: PRFCircularProgressIndicator()),
                         ),
-                        error: (message) => SliverFillRemaining(
+                        error: (message, _) => SliverFillRemaining(
                           child: SliverFillRemaining(
                             child: RefreshIndicator(
                               onRefresh: () => context
-                                  .read<GetMissionGroundSuggestionsCubit>()
-                                  .getMissionGroundSuggestions(),
+                                  .read<GroundSuggestionResourceCubit>()
+                                  .loadAll(),
                               child: SingleChildScrollView(
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 child: PRFEmptyView(
@@ -80,8 +82,8 @@ class _MissionGroundSuggestionsPageHandsetState
                         empty: () => SliverFillRemaining(
                           child: RefreshIndicator(
                             onRefresh: () => context
-                                .read<GetMissionGroundSuggestionsCubit>()
-                                .getMissionGroundSuggestions(),
+                                .read<GroundSuggestionResourceCubit>()
+                                .loadAll(),
                             child: SingleChildScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
                               child: PRFEmptyView(
@@ -94,7 +96,7 @@ class _MissionGroundSuggestionsPageHandsetState
                             ),
                           ),
                         ),
-                        loaded: (missionGroundSuggestions) {
+                        listLoaded: (missionGroundSuggestions) {
                           return SliverPadding(
                             padding: const EdgeInsets.only(
                               bottom: 100,
@@ -239,8 +241,8 @@ class _MissionGroundSuggestionsPageHandsetState
     ).then((_) {
       if (mounted) {
         context
-            .read<GetMissionGroundSuggestionsCubit>()
-            .getMissionGroundSuggestions();
+            .read<GroundSuggestionResourceCubit>()
+            .loadAll();
       }
     });
   }
@@ -263,8 +265,8 @@ class _MissionGroundSuggestionsPageHandsetState
     ).then((_) {
       if (mounted) {
         context
-            .read<GetMissionGroundSuggestionsCubit>()
-            .getMissionGroundSuggestions();
+            .read<GroundSuggestionResourceCubit>()
+            .loadAll();
       }
     });
   }

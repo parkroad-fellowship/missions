@@ -1,6 +1,6 @@
 import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
-import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
@@ -32,7 +32,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
   void initState() {
     super.initState();
 
-    context.read<GetMissionCubit>().getMission(missionUlid: missionUlid);
+    context.read<MissionResourceCubit>().loadAll(filters: {'mission_ulid': missionUlid});
   }
 
   @override

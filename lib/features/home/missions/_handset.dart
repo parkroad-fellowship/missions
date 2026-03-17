@@ -1,5 +1,6 @@
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -38,15 +39,15 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     _missionsStream = getIt<IsarService>().missions.stream;
     _memberMissionsStream = getIt<IsarService>().memberMissions.parentStream;
 
-    context.read<GetMissionsCubit>().getMissions(refresh: true);
-    context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions(
+    context.read<MissionResourceCubit>().loadAll();
+    context.read<GetMemberMissionSubscriptionsCubit>().loadAll(
       refresh: true,
     );
 
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.index == 0) {
-        context.read<GetMissionsCubit>().getMissions();
+        context.read<MissionResourceCubit>().loadAll();
       } else {
         context.read<GetMemberMissionSubscriptionsCubit>().getSubscriptions();
       }
@@ -97,7 +98,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             ),
           ),
           actions: [
-            BlocBuilder<GetMissionsCubit, GetMissionsState>(
+            BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
               builder: (context, state) => state.maybeWhen(
                 loading: () => const SizedBox.square(
                   dimension: 24,
@@ -165,7 +166,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
         if (missions != null && missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () => context.read<GetMissionsCubit>().getMissions(),
+            onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: l10n.pleaseWait,
@@ -178,7 +179,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
         return RefreshIndicator(
-          onRefresh: () => context.read<GetMissionsCubit>().getMissions(),
+          onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -200,11 +201,11 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                         )
                         .then((_) {
                           // ignore: use_build_context_synchronously
-                          context.read<GetMissionsCubit>().getMissions();
+                          context.read<MissionResourceCubit>().loadAll();
                           // ignore: use_build_context_synchronously
                           context
                               .read<GetMemberMissionSubscriptionsCubit>()
-                              .getSubscriptions();
+                              .loadAll();
                         }),
                   )
                   .animate()
@@ -251,7 +252,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           return RefreshIndicator(
             onRefresh: () => context
                 .read<GetMemberMissionSubscriptionsCubit>()
-                .getSubscriptions(),
+                .loadAll(),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: l10n.pleaseWait,
@@ -262,7 +263,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         return RefreshIndicator(
           onRefresh: () => context
               .read<GetMemberMissionSubscriptionsCubit>()
-              .getSubscriptions(),
+              .loadAll(),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(

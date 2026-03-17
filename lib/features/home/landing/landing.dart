@@ -1,12 +1,14 @@
-import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
+import 'package:app/models/remote/expense/prf_expense_category.dart';
+import 'package:app/models/remote/member/prf_class_group.dart';
+import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
 import 'package:app/features/home/landing/_handset.dart';
 import 'package:app/features/home/landing/_tablet.dart';
 import 'package:app/features/home/landing/models/landing_action_item.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/shared/cubit/get_announcements_cubit.dart';
+import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
+import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/shared/cubit/upload_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -31,14 +33,14 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
 
-    context.read<GetClassGroupsCubit>().getClassGroups();
-    context.read<GetPaymentTypesCubit>().getPaymentTypes();
-    context.read<GetExpenseCategoriesCubit>().getExpenseCategories();
-    context.read<GetAnnouncementsCubit>().getAnnouncements();
+    context.read<ClassGroupResourceCubit>().loadAll();
+    context.read<PaymentTypeResourceCubit>().loadAll();
+    context.read<ExpenseCategoryResourceCubit>().loadAll();
+    context.read<AnnouncementResourceCubit>().loadAll();
     context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
     context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();
-    context.read<GetFaqCategoriesCubit>().getFaqCategories();
-    context.read<GetFaqsCubit>().getFaqs();
+    context.read<FaqCategoryResourceCubit>().loadAll();
+    context.read<FaqResourceCubit>().loadAll();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeNotifications();

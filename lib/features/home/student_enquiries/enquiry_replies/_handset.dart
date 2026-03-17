@@ -1,7 +1,9 @@
+import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
 import 'package:app/enums/common/prf_morph_types.dart';
-import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/common/socket_config.dart';
@@ -41,11 +43,11 @@ class _StudentEnquiryRepliesPageHandsetState
   @override
   void initState() {
     super.initState();
-    context.read<GetStudentEnquiryCubit>().getStudentEnquiry(
+    context.read<EnquiryResourceCubit>().loadAll(
       studentEnquiryUlid: enquiryUlid,
     );
     // Fetch initial replies
-    context.read<GetEnquiryRepliesCubit>().getStudentEnquiryReplies(
+    context.read<EnquiryReplyResourceCubit>().loadAll(
       enquiryUlid: enquiryUlid,
     );
     _subscribeToEnquiryReplies();
@@ -107,7 +109,7 @@ class _StudentEnquiryRepliesPageHandsetState
   Future<void> _sendReply(BuildContext context, String text) async {
     if (text.trim().isEmpty) return;
 
-    await context.read<CreateEnquiryReplyCubit>().createStudentEnquiryReply(
+    await context.read<EnquiryReplyResourceCubit>().createReply(
       studentEnquiryUlid: enquiryUlid,
       content: text.trim(),
     );
@@ -296,13 +298,13 @@ class _StudentEnquiryRepliesPageHandsetState
               ),
             ),
             const SizedBox(width: PRFSpacingTokens.md),
-            BlocConsumer<CreateEnquiryReplyCubit, CreateEnquiryReplyState>(
+            BlocConsumer<EnquiryReplyResourceCubit, ResourceState<PRFStudentEnquiryReply>>(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {
                     setState(() => _isLoading = true);
                   },
-                  loaded: (_) {
+                  listLoaded: (_) {
                     setState(() => _isLoading = false);
                     _enquiryReplyController.clear();
                     FocusScope.of(context).unfocus();
@@ -311,7 +313,7 @@ class _StudentEnquiryRepliesPageHandsetState
               },
               builder: (context, state) {
                 final loading = state.maybeWhen(
-                  loading: () => true,
+                  listLoading: () => true,
                   orElse: () => false,
                 );
 

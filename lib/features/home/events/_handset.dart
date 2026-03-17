@@ -1,5 +1,7 @@
-import 'package:app/features/home/events/cubit/get_events_cubit.dart';
-import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
+import 'package:app/features/home/events/cubit/event_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/features/home/events/cubit/event_subscription_resource_cubit.dart';
+import 'package:app/models/remote/event/prf_event_subscription.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/event/prf_event.dart';
 import 'package:prf_design/prf_design.dart';
@@ -26,19 +28,19 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
   void initState() {
     super.initState();
 
-    context.read<GetEventsCubit>().getEvents();
+    context.read<EventResourceCubit>().loadAll();
     context
-        .read<GetMemberEventSubscriptionsCubit>()
-        .getMemberEventSubscriptions();
+        .read<EventSubscriptionResourceCubit>()
+        .loadAll();
 
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       if (_tabController.index == 0) {
-        context.read<GetEventsCubit>().getEvents();
+        context.read<EventResourceCubit>().loadAll();
       } else {
         context
-            .read<GetMemberEventSubscriptionsCubit>()
-            .getMemberEventSubscriptions();
+            .read<EventSubscriptionResourceCubit>()
+            .loadAll();
       }
     });
   }
@@ -86,9 +88,9 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
             ),
           ),
           actions: [
-            BlocBuilder<GetEventsCubit, GetEventsState>(
+            BlocBuilder<EventResourceCubit, ResourceState<PRFEvent>>(
               builder: (context, state) => state.maybeWhen(
-                loading: () => const SizedBox.square(
+                listLoading: () => const SizedBox.square(
                   dimension: 24,
                   child: PRFCircularProgressIndicator(),
                 ),
@@ -97,11 +99,11 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
             ),
             const SizedBox(width: PRFSpacingTokens.sm),
             BlocBuilder<
-              GetMemberEventSubscriptionsCubit,
-              GetMemberEventSubscriptionsState
+              EventSubscriptionResourceCubit,
+              ResourceState<PRFEventSubscription>
             >(
               builder: (context, state) => state.maybeWhen(
-                loading: () => const SizedBox.square(
+                listLoading: () => const SizedBox.square(
                   dimension: 24,
                   child: PRFCircularProgressIndicator(),
                 ),
@@ -135,7 +137,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return BlocBuilder<GetEventsCubit, GetEventsState>(
+    return BlocBuilder<EventResourceCubit, ResourceState<PRFEvent>>(
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => Center(
@@ -145,7 +147,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
               ),
             ),
           ),
-          error: (message) => Center(
+          error: (message, _) => Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -164,14 +166,16 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
               ],
             ),
           ),
-          empty: () => RefreshIndicator(
-            onRefresh: () => context.read<GetEventsCubit>().getEvents(),
-            child: PRFEmptyView(
-              label: l10n.noEvents,
-              description: l10n.pleaseWaitOS,
-            ),
-          ),
-          loaded: (events) {
+          listLoaded: (events, _, __) {
+            if (events.isEmpty) {
+              return RefreshIndicator(
+                onRefresh: () => context.read<EventResourceCubit>().loadAll(),
+                child: PRFEmptyView(
+                  label: l10n.noEvents,
+                  description: l10n.pleaseWaitOS,
+                ),
+              );
+            }
             Logger().e(events);
 
             // Sort events by start date for timeline
@@ -179,7 +183,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
               ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
             return RefreshIndicator(
-              onRefresh: () => context.read<GetEventsCubit>().getEvents(),
+              onRefresh: () => context.read<EventResourceCubit>().loadAll(),
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
@@ -223,8 +227,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
     final theme = Theme.of(context);
 
     return BlocBuilder<
-      GetMemberEventSubscriptionsCubit,
-      GetMemberEventSubscriptionsState
+      EventSubscriptionResourceCubit,
+      ResourceState<PRFEventSubscription>
     >(
       builder: (context, state) {
         return state.maybeWhen(
@@ -235,7 +239,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
               ),
             ),
           ),
-          error: (message) => Center(
+          error: (message, _) => Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -254,16 +258,18 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
               ],
             ),
           ),
-          empty: () => RefreshIndicator(
-            onRefresh: () => context
-                .read<GetMemberEventSubscriptionsCubit>()
-                .getMemberEventSubscriptions(),
-            child: PRFEmptyView(
-              label: l10n.noEvents,
-              description: l10n.pleaseWaitForOS,
-            ),
-          ),
-          loaded: (eventSubscriptions) {
+          listLoaded: (eventSubscriptions, _, __) {
+            if (eventSubscriptions.isEmpty) {
+              return RefreshIndicator(
+                onRefresh: () => context
+                    .read<EventSubscriptionResourceCubit>()
+                    .loadAll(),
+                child: PRFEmptyView(
+                  label: l10n.noEvents,
+                  description: l10n.pleaseWaitForOS,
+                ),
+              );
+            }
             Logger().e(eventSubscriptions);
 
             final events =
@@ -275,8 +281,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
 
             return RefreshIndicator(
               onRefresh: () => context
-                  .read<GetMemberEventSubscriptionsCubit>()
-                  .getMemberEventSubscriptions(),
+                  .read<EventSubscriptionResourceCubit>()
+                  .loadAll(),
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(

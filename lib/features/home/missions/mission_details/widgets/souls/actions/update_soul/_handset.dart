@@ -1,6 +1,8 @@
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/enums/mission/prf_soul_decision_type.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/update_soul_cubit.dart';
+import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
+
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_soul.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
@@ -59,7 +61,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     _fullNameController.addListener(_onFormChanged);
     _admissionNumberController.addListener(_onFormChanged);
 
-    context.read<GetClassGroupsCubit>().getClassGroups(
+    context.read<ClassGroupResourceCubit>().loadAll(
       missionUlid: widget.missionUlid,
     );
   }
@@ -129,14 +131,14 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
               icon: Icons.group_outlined,
               title: l10n.classGroup,
               isRequired: true,
-              child: BlocBuilder<GetClassGroupsCubit, GetClassGroupsState>(
+              child: BlocBuilder<ClassGroupResourceCubit, ResourceState<PRFClassGroup>>(
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse: () => const SizedBox.shrink(),
-                    loading: () => const Center(
+                    listLoading: () => const Center(
                       child: LinearProgressIndicator(),
                     ),
-                    loaded: (classes) {
+                    listLoaded: (classes) {
                       // Match initial class group by ulid
                       if (selectedClassGroup == null &&
                           _initialClassGroupUlid != null) {
@@ -216,7 +218,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
             const SizedBox(height: PRFSpacingTokens.xl),
 
             // Submit Button
-            BlocConsumer<UpdateSoulCubit, UpdateSoulState>(
+            BlocConsumer<SoulResourceCubit, ResourceState<PRFSoul>>(
               listener: (context, state) {
                 state.mapOrNull(
                   loading: (_) {
@@ -224,7 +226,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                       _isLoading = true;
                     });
                   },
-                  loaded: (_) {
+                  listLoaded: (_) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -232,7 +234,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                     Navigator.of(context).pop();
                     PRFSnackbar.success(context, l10n.soulRecorded);
                   },
-                  error: (error) {
+                  error: (error, _) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -306,7 +308,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
       return;
     }
 
-    await context.read<UpdateSoulCubit>().updateSoul(
+    await context.read<SoulResourceCubit>().updateSoul(
       soulUlid: widget.soul.ulid,
       missionUlid: widget.missionUlid,
       classGroupUlid: selectedClassGroup!.ulid,
