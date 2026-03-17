@@ -42,49 +42,45 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return SingleChildScrollView(
-      child: Padding(
+    return SingleStreamWrapper<PRFLocalMission?>(
+      stream: getIt<IsarService>().missions.itemStream,
+      loading: const PRFLinearProgressIndicator(),
+      widget: (context, mission) => ListView(
         padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
-        child: SingleStreamWrapper<PRFLocalMission?>(
-          stream: getIt<IsarService>().missions.itemStream,
-          loading: const PRFLinearProgressIndicator(),
-          widget: (context, mission) => Column(
-            children: [
-              // Hero Mission Card
-              _buildHeroCard(context, mission!, l10n, theme),
-              const SizedBox(height: PRFSpacingTokens.xl),
+        children: [
+          // Hero Mission Card
+          _buildHeroCard(context, mission!, l10n, theme),
+          const SizedBox(height: PRFSpacingTokens.xl),
 
-              // Quick Actions Row
-              _buildQuickActions(context, mission, l10n, theme),
-              const SizedBox(height: PRFSpacingTokens.xl),
+          // Quick Actions Row
+          _buildQuickActions(context, mission, l10n, theme),
+          const SizedBox(height: PRFSpacingTokens.xl),
 
-              // Mission Intelligence Grid
-              _buildIntelligenceGrid(context, mission, l10n, theme),
-              const SizedBox(height: PRFSpacingTokens.xl),
+          // Mission Intelligence Grid
+          _buildIntelligenceGrid(context, mission, l10n, theme),
+          const SizedBox(height: PRFSpacingTokens.xl),
 
-              // Hide the contact center if the person isn't subscribed
-              // and when the mission date has passed
-              if (mission.loggedInMemberMissionSubscription != null &&
-                  mission.loggedInMemberMissionSubscription!.status ==
-                      PRFMissionSubscriptionStatus.approved &&
-                  mission.endDate.isAfter(
-                    DateTime.now().subtract(const Duration(days: 1)),
-                  )) ...[
-                // Contact Command Center
-                _buildContactCenter(context, mission, l10n, theme),
-                const SizedBox(height: PRFSpacingTokens.xl),
-              ],
+          // Hide the contact center if the person isn't subscribed
+          // and when the mission date has passed
+          if (mission.loggedInMemberMissionSubscription != null &&
+              mission.loggedInMemberMissionSubscription!.status ==
+                  PRFMissionSubscriptionStatus.approved &&
+              mission.endDate.isAfter(
+                DateTime.now().subtract(const Duration(days: 1)),
+              )) ...[
+            // Contact Command Center
+            _buildContactCenter(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+          ],
 
-              // Location & Navigation Hub
-              _buildLocationHub(context, mission, l10n, theme),
-              const SizedBox(height: PRFSpacingTokens.xl),
+          // Location & Navigation Hub
+          _buildLocationHub(context, mission, l10n, theme),
+          const SizedBox(height: PRFSpacingTokens.xl),
 
-              // Weather Intelligence
-              if (mission.weatherForecasts?.isNotEmpty ?? false)
-                _buildWeatherIntelligence(context, mission, l10n, theme),
-            ],
-          ),
-        ),
+          // Weather Intelligence
+          if (mission.weatherForecasts?.isNotEmpty ?? false)
+            _buildWeatherIntelligence(context, mission, l10n, theme),
+        ],
       ),
     );
   }
