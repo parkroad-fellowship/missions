@@ -6,7 +6,9 @@ class EnquiryReplyResourceCubit extends ResourceCubit<PRFStudentEnquiryReply> {
   EnquiryReplyResourceCubit({
     required StudentEnquiryReplyService studentEnquiryReplyService,
     super.dbService,
-  }) : super(service: studentEnquiryReplyService);
+  }) : super(service: studentEnquiryReplyService) {
+    subscribeToIsarUpdates();
+  }
 
   @override
   List<String> get defaultIncludes => ['studentEnquiry'];

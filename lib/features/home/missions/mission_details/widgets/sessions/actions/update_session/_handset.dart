@@ -2,7 +2,6 @@ import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
@@ -26,7 +25,7 @@ class UpdateSessionViewHandset extends StatefulWidget {
   });
 
   final String missionUlid;
-  final PRFLocalMissionSession missionSession;
+  final PRFMissionSession missionSession;
 
   @override
   State<UpdateSessionViewHandset> createState() =>
@@ -34,7 +33,7 @@ class UpdateSessionViewHandset extends StatefulWidget {
 }
 
 class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
-  PRFLocalMissionSession get missionSession => widget.missionSession;
+  PRFMissionSession get missionSession => widget.missionSession;
 
   final _notesController = TextEditingController();
   final _startDateController = TextEditingController();
@@ -75,7 +74,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     );
 
     // Initialize the fields with the current values
-    selectedFacilitatorUlid = missionSession.facilitator.ulid;
+    selectedFacilitatorUlid = missionSession.facilitator?.ulid;
     Logger().f(selectedFacilitatorUlid);
     selectedSpeakerUlid = missionSession.speaker?.ulid;
     if (missionSession.classGroup != null) {

@@ -11,7 +11,9 @@ class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
     LessonMemberService? lessonMemberService,
     super.dbService,
   }) : _lessonMemberService = lessonMemberService,
-       super(service: lessonModuleService);
+       super(service: lessonModuleService) {
+    subscribeToIsarUpdates();
+  }
 
   final LessonMemberService? _lessonMemberService;
 

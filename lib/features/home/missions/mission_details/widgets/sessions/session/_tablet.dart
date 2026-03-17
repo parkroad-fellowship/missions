@@ -5,9 +5,8 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/cubi
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/mission/prf_mission_session_transcript.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +36,6 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
   String get missionSessionUlid => widget.missionSessionUlid;
   String get missionUlid => widget.missionUlid;
 
-  Stream<PRFLocalMissionSession?> get _missionSessionStream =>
-      getIt<IsarService>().missionSessions.itemStream;
-
   @override
   void initState() {
     super.initState();
@@ -52,11 +48,11 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    const defaultLoadingWidget = SliverToBoxAdapter(
-      child: PRFCircularProgressIndicator(),
-    );
-    const defaultEmptyStateWidget = SliverToBoxAdapter(
-      child: SizedBox.shrink(),
+    // Resolve session from cubit state
+    final sessionState = context.watch<MissionSessionResourceCubit>().state;
+    final missionSession = sessionState.maybeWhen(
+      listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
+      orElse: () => null,
     );
 
     return Scaffold(
@@ -184,31 +180,18 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
               ),
 
               // Session Data
-              SingleStreamWrapper(
-                stream: _missionSessionStream,
-                nullWidget: defaultEmptyStateWidget,
-                loading: defaultLoadingWidget,
-                widget: (context, missionSession) => MissionSessionDataView(
-                  missionSession: missionSession!,
+              if (missionSession != null) ...[
+                MissionSessionDataView(
+                  missionSession: missionSession,
                   missionUlid: widget.missionUlid,
                 ),
-              ),
-
-              SingleStreamWrapper(
-                stream: _missionSessionStream,
-                nullWidget: defaultEmptyStateWidget,
-                loading: defaultLoadingWidget,
-                widget: (context, missionSession) => const SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(height: PRFSpacingTokens.xl),
                 ),
-              ),
+              ],
 
               // Recordings Section
-              SingleStreamWrapper(
-                stream: _missionSessionStream,
-                nullWidget: defaultEmptyStateWidget,
-                loading: defaultLoadingWidget,
-                widget: (context, missionSession) => SliverToBoxAdapter(
+              if (missionSession != null) SliverToBoxAdapter(
                   child:
                       Container(
                             margin: const EdgeInsets.symmetric(
@@ -309,24 +292,14 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                           .slideY(begin: 0.2)
                           .fadeIn(),
                 ),
-              ),
 
-              SingleStreamWrapper(
-                stream: _missionSessionStream,
-                nullWidget: defaultEmptyStateWidget,
-                loading: defaultLoadingWidget,
-                widget: (context, missionSession) => const SliverToBoxAdapter(
+              if (missionSession != null) ...[
+                const SliverToBoxAdapter(
                   child: SizedBox(height: PRFSpacingTokens.lg),
                 ),
-              ),
 
               // Recordings List
-              SingleStreamWrapper(
-                stream: _missionSessionStream,
-                nullWidget: defaultEmptyStateWidget,
-                loading: defaultLoadingWidget,
-                widget: (context, missionSession) =>
-                    missionSession!.transcripts.isEmpty
+                missionSession.transcripts.isEmpty
                     ? SliverFillRemaining(
                         child: Center(
                           child:
@@ -375,7 +348,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                                 .slideX(begin: 0.3)
                                 .fadeIn(),
                       ),
-              ),
+              ],
 
               const SliverToBoxAdapter(
                 child: SizedBox(height: PRFSpacingTokens.xxl),
@@ -388,7 +361,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
   }
 
   Widget _viewTranscripts(
-    PRFLocalMissionSessionTranscript transcript,
+    PRFMissionSessionTranscript transcript,
     int index,
     AppLocalizations l10n,
   ) => Container(
@@ -458,7 +431,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 title: Text(
-                  l10n.downloadTeaching(transcript.media!.humanReadableSize!),
+                  l10n.downloadTeaching(transcript.media!.humanReadableSize),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -486,7 +459,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                         ),
                         onPressed: () =>
                             context.read<DownloadFileCubit>().downloadFile(
-                              transcript.media!.temporaryURL!,
+                              transcript.media!.temporaryURL,
                             ),
                       ),
                     ),
@@ -495,7 +468,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                 ),
               ),
               const SizedBox(height: PRFSpacingTokens.md),
-              if (transcript.content?.isEmpty ?? false)
+              if (transcript.content.isEmpty)
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.md,
@@ -549,7 +522,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                     ],
                   ),
                 ),
-              if (transcript.content?.isNotEmpty ?? true)
+              if (transcript.content.isNotEmpty)
                 GestureDetector(
                   onTap: () => _viewTranscript(transcript),
                   child: Container(
@@ -622,7 +595,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
     ),
   );
 
-  void _viewTranscript(PRFLocalMissionSessionTranscript transcript) =>
+  void _viewTranscript(PRFMissionSessionTranscript transcript) =>
       WoltModalSheet.show<void>(
         context: context,
         pageListBuilder: (modalSheetContext) {
@@ -637,7 +610,7 @@ class _SessionPageTabletState extends State<SessionPageTablet> {
                     horizontal: PRFSpacingTokens.lg,
                   ),
                   child: Text(
-                    transcript.content!,
+                    transcript.content,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
@@ -660,7 +633,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
     super.key,
   });
 
-  final PRFLocalMissionSession missionSession;
+  final PRFMissionSession missionSession;
   final String missionUlid;
 
   @override
@@ -708,7 +681,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     context,
                     Icons.person,
                     l10n.facilitator,
-                    missionSession.facilitator.fullName!,
+                    missionSession.facilitator?.fullName ?? 'N/A',
                   ),
                   if (missionSession.speaker != null) ...[
                     const SizedBox(height: PRFSpacingTokens.md),
@@ -716,7 +689,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                       context,
                       Icons.mic,
                       l10n.speaker,
-                      missionSession.speaker!.fullName ?? 'N/A',
+                      missionSession.speaker!.fullName,
                     ),
                   ],
                   if (missionSession.classGroup != null) ...[
@@ -725,7 +698,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                       context,
                       Icons.group,
                       l10n.classGroup,
-                      missionSession.classGroup!.name ?? 'N/A',
+                      missionSession.classGroup!.name,
                     ),
                   ],
                   const SizedBox(height: PRFSpacingTokens.xl),

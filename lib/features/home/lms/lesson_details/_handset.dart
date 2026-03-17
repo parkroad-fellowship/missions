@@ -1,9 +1,8 @@
 import 'package:app/enums/payment/prf_completion_status.dart';
 import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/course/prf_lesson_module.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -48,236 +47,219 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
 
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            PRFNavBar(
-              title: l10n.lessonDetails,
-              backgroundColor: theme.colorScheme.surface,
-              onBack: () => context.router.popUntilRouteWithPath(
-                PRFSuperAppRouter.moduleDetailsRoute,
-              ),
-            ),
-            // Lesson name
-            SliverToBoxAdapter(
-              child: SingleStreamWrapper<PRFLocalLessonModule?>(
-                stream: getIt<IsarService>().lessonModules.itemStream,
-                widget: (context, lessonModule) {
-                  if (lessonModule == null) {
-                    return const Center(
-                      child: PRFCircularProgressIndicator(),
-                    );
-                  }
-                  final lesson = lessonModule.lesson;
-                  return Padding(
+        child: BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
+          builder: (context, state) {
+            final lessonModule = state.maybeWhen(
+              listLoaded: (items, _, _) =>
+                  items.isNotEmpty ? items.first : null,
+              orElse: () => null,
+            );
+
+            return CustomScrollView(
+              slivers: [
+                PRFNavBar(
+                  title: l10n.lessonDetails,
+                  backgroundColor: theme.colorScheme.surface,
+                  onBack: () => context.router.popUntilRouteWithPath(
+                    PRFSuperAppRouter.moduleDetailsRoute,
+                  ),
+                ),
+                // Lesson name
+                SliverToBoxAdapter(
+                  child: _buildLessonName(lessonModule, theme),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: PRFSpacingTokens.xl),
+                ),
+                // Lesson content
+                SliverToBoxAdapter(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: PRFSpacingTokens.xl,
                     ),
-                    child: Text(
-                      lesson.name!.toUpperCase(),
-                      style: theme.textTheme.headlineMedium,
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(height: PRFSpacingTokens.xl),
-            ),
-
-            // Lesson content
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.xl,
+                    child: _buildLessonContent(lessonModule, theme),
+                  ),
                 ),
-                child: SingleStreamWrapper<PRFLocalLessonModule?>(
-                  stream: getIt<IsarService>().lessonModules.itemStream,
-                  widget: (context, lessonModule) {
-                    if (lessonModule == null) {
-                      return const Center(
-                        child: PRFCircularProgressIndicator(),
-                      );
-                    }
-                    final lesson = lessonModule.lesson;
-
-                    return lesson.content != null
-                        ? HtmlWidget(
-                            lesson.content!,
-                            textStyle: theme.textTheme.bodyMedium,
-                          )
-                        : const SizedBox.shrink();
-                  },
+                // Lesson video
+                SliverToBoxAdapter(
+                  child: _buildLessonVideo(lessonModule, l10n),
                 ),
-              ),
-            ),
-            // Lesson video
-            SliverToBoxAdapter(
-              child: SingleStreamWrapper<PRFLocalLessonModule?>(
-                stream: getIt<IsarService>().lessonModules.itemStream,
-                widget: (context, lessonModule) {
-                  if (lessonModule == null) {
-                    return const Center(
-                      child: PRFCircularProgressIndicator(),
-                    );
-                  }
-                  final lesson = lessonModule.lesson;
-
-                  return lesson.videoUrl != null
-                      ? ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: PRFSpacingTokens.xl,
-                          ),
-                          title: Text(l10n.video),
-                          subtitle: Text(lesson.videoUrl!),
-                          onTap: () async {
-                            final uri = Uri.parse(lesson.videoUrl!);
-                            await UrlHelper.openUrl(uri);
-                          },
-                        )
-                      : const SizedBox.shrink();
-                },
-              ),
-            ),
-
-            // Lesson document
-            SliverToBoxAdapter(
-              child: SingleStreamWrapper<PRFLocalLessonModule?>(
-                stream: getIt<IsarService>().lessonModules.itemStream,
-                widget: (context, lessonModule) {
-                  if (lessonModule == null) {
-                    return const Center(
-                      child: PRFCircularProgressIndicator(),
-                    );
-                  }
-                  final lesson = lessonModule.lesson;
-
-                  return lesson.documentUrl != null
-                      ? ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: PRFSpacingTokens.xl,
-                          ),
-                          title: Text(l10n.document),
-                          subtitle: Text(lesson.documentUrl!),
-                          onTap: () async {
-                            final uri = Uri.parse(lesson.documentUrl!);
-                            await UrlHelper.openUrl(uri);
-                          },
-                        )
-                      : const SizedBox.shrink();
-                },
-              ),
-            ),
-            // Lesson audio
-            SliverToBoxAdapter(
-              child: SingleStreamWrapper<PRFLocalLessonModule?>(
-                stream: getIt<IsarService>().lessonModules.itemStream,
-                widget: (context, lessonModule) {
-                  if (lessonModule == null) {
-                    return const Center(
-                      child: PRFCircularProgressIndicator(),
-                    );
-                  }
-                  final lesson = lessonModule.lesson;
-
-                  return lesson.audioUrl != null
-                      ? ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: PRFSpacingTokens.xl,
-                          ),
-                          title: Text(l10n.audio),
-                          subtitle: Text(lesson.audioUrl!),
-                          onTap: () async {
-                            final uri = Uri.parse(lesson.audioUrl!);
-                            await UrlHelper.openUrl(uri);
-                          },
-                        )
-                      : const SizedBox.shrink();
-                },
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(height: PRFSpacingTokens.xxl),
-            ),
-
-            // Complete button
-            SliverToBoxAdapter(
-              child: SingleStreamWrapper(
-                stream: getIt<IsarService>().lessonModules.itemStream,
-                widget: (context, lessonModule) {
-                  if (lessonModule == null) {
-                    return const Center(
-                      child: PRFCircularProgressIndicator(),
-                    );
-                  }
-
-                  if (lessonModule.lessonMember == null ||
-                      (lessonModule.lessonMember != null &&
-                          lessonModule.lessonMember!.completionStatus !=
-                              PRFCompletionStatus.complete)) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: PRFSpacingTokens.xl,
-                      ),
-                      child:
-                          BlocConsumer<
-                            LessonResourceCubit,
-                            ResourceState<PRFLessonModule>
-                          >(
-                            listener: (context, state) {
-                              state.maybeWhen(
-                                listLoading: () => setState(() {
-                                  _isLoading = true;
-                                }),
-                                mutated: (_, _, _) {
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                  Gaimon.success();
-                                  PRFSnackbar.success(context, l10n.completed);
-                                  Navigator.of(context).pop();
-                                },
-                                error: (message, _) {
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                  Gaimon.error();
-                                  PRFSnackbar.error(context, message);
-                                },
-                                orElse: () {},
-                              );
-                            },
-                            builder: (context, state) {
-                              return state.maybeWhen(
-                                orElse: () => PRFPrimaryButton(
-                                  onPressed: () async => context
-                                      .read<LessonResourceCubit>()
-                                      .finishLesson(
-                                        data: {
-                                          'lesson_module_ulid':
-                                              lessonModuleUlid,
-                                          'course_module_ulid':
-                                              courseModuleUlid,
-                                        },
-                                      ),
-                                  title: _isLoading
-                                      ? l10n.completing
-                                      : l10n.complete,
-                                  disabled: _isLoading,
-                                  isLoading: _isLoading ? true : null,
-                                ),
-                              );
-                            },
-                          ),
-                    );
-                  }
-
-                  return const SizedBox.shrink();
-                },
-              ),
-            ),
-          ],
+                // Lesson document
+                SliverToBoxAdapter(
+                  child: _buildLessonDocument(lessonModule, l10n),
+                ),
+                // Lesson audio
+                SliverToBoxAdapter(
+                  child: _buildLessonAudio(lessonModule, l10n),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: PRFSpacingTokens.xxl),
+                ),
+                // Complete button
+                SliverToBoxAdapter(
+                  child: _buildCompleteButton(lessonModule, l10n),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  Widget _buildLessonName(PRFLessonModule? lessonModule, ThemeData theme) {
+    if (lessonModule == null) {
+      return const Center(child: PRFCircularProgressIndicator());
+    }
+    final lesson = lessonModule.lesson;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
+      child: Text(
+        (lesson?.name ?? '').toUpperCase(),
+        style: theme.textTheme.headlineMedium,
+      ),
+    );
+  }
+
+  Widget _buildLessonContent(PRFLessonModule? lessonModule, ThemeData theme) {
+    if (lessonModule == null) {
+      return const Center(child: PRFCircularProgressIndicator());
+    }
+    final lesson = lessonModule.lesson;
+    return lesson?.content != null
+        ? HtmlWidget(
+            lesson!.content!,
+            textStyle: theme.textTheme.bodyMedium,
+          )
+        : const SizedBox.shrink();
+  }
+
+  Widget _buildLessonVideo(PRFLessonModule? lessonModule,
+      AppLocalizations l10n,) {
+    if (lessonModule == null) {
+      return const Center(child: PRFCircularProgressIndicator());
+    }
+    final lesson = lessonModule.lesson;
+    return lesson?.videoUrl != null
+        ? ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.xl,
+            ),
+            title: Text(l10n.video),
+            subtitle: Text(lesson!.videoUrl!),
+            onTap: () async {
+              final uri = Uri.parse(lesson.videoUrl!);
+              await UrlHelper.openUrl(uri);
+            },
+          )
+        : const SizedBox.shrink();
+  }
+
+  Widget _buildLessonDocument(PRFLessonModule? lessonModule,
+      AppLocalizations l10n,) {
+    if (lessonModule == null) {
+      return const Center(child: PRFCircularProgressIndicator());
+    }
+    final lesson = lessonModule.lesson;
+    return lesson?.documentUrl != null
+        ? ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.xl,
+            ),
+            title: Text(l10n.document),
+            subtitle: Text(lesson!.documentUrl!),
+            onTap: () async {
+              final uri = Uri.parse(lesson.documentUrl!);
+              await UrlHelper.openUrl(uri);
+            },
+          )
+        : const SizedBox.shrink();
+  }
+
+  Widget _buildLessonAudio(PRFLessonModule? lessonModule,
+      AppLocalizations l10n,) {
+    if (lessonModule == null) {
+      return const Center(child: PRFCircularProgressIndicator());
+    }
+    final lesson = lessonModule.lesson;
+    return lesson?.audioUrl != null
+        ? ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.xl,
+            ),
+            title: Text(l10n.audio),
+            subtitle: Text(lesson!.audioUrl!),
+            onTap: () async {
+              final uri = Uri.parse(lesson.audioUrl!);
+              await UrlHelper.openUrl(uri);
+            },
+          )
+        : const SizedBox.shrink();
+  }
+
+  Widget _buildCompleteButton(PRFLessonModule? lessonModule,
+      AppLocalizations l10n,) {
+    if (lessonModule == null) {
+      return const Center(child: PRFCircularProgressIndicator());
+    }
+
+    if (lessonModule.lessonMember == null ||
+        (lessonModule.lessonMember != null &&
+            lessonModule.lessonMember!.completionStatus !=
+                PRFCompletionStatus.complete)) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.xl,
+        ),
+        child:
+            BlocConsumer<
+              LessonResourceCubit,
+              ResourceState<PRFLessonModule>
+            >(
+              listener: (context, state) {
+                state.maybeWhen(
+                  listLoading: () => setState(() {
+                    _isLoading = true;
+                  }),
+                  mutated: (_, _, _) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Gaimon.success();
+                    PRFSnackbar.success(context, l10n.completed);
+                    Navigator.of(context).pop();
+                  },
+                  error: (message, _) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Gaimon.error();
+                    PRFSnackbar.error(context, message);
+                  },
+                  orElse: () {},
+                );
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => PRFPrimaryButton(
+                    onPressed: () async => context
+                        .read<LessonResourceCubit>()
+                        .finishLesson(
+                          data: {
+                            'lesson_module_ulid': lessonModuleUlid,
+                            'course_module_ulid': courseModuleUlid,
+                          },
+                        ),
+                    title: _isLoading ? l10n.completing : l10n.complete,
+                    disabled: _isLoading,
+                    isLoading: _isLoading ? true : null,
+                  ),
+                );
+              },
+            ),
+      );
+    }
+
+    return const SizedBox.shrink();
   }
 }

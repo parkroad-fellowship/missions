@@ -2,9 +2,8 @@ import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
 import 'package:app/features/home/lms/widgets/module_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/course/prf_course_module.dart';
-import 'package:app/models/local/course/prf_lesson_module.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/course/prf_course_module.dart';
+import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -54,10 +53,17 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 PRFSuperAppRouter.courseDetailsRoute,
               ),
               actions: [
-                StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<IsarService>().courseModules.itemStream,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                BlocBuilder<
+                  ModuleResourceCubit,
+                  ResourceState<PRFCourseModule>
+                >(
+                  builder: (context, state) {
+                    final courseModule = state.maybeWhen(
+                      listLoaded: (items, _, _) =>
+                          items.isNotEmpty ? items.first : null,
+                      orElse: () => null,
+                    );
+                    if (courseModule == null) {
                       return const SizedBox(
                         width: PRFSpacingTokens.xxxl,
                         height: 36,
@@ -66,7 +72,6 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                         ),
                       );
                     }
-                    final courseModule = snapshot.data;
                     return Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: PRFSpacingTokens.md,
@@ -87,8 +92,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       ),
                       child: Text(
                         l10n.percentage(
-                          courseModule?.memberModule?.percentComplete
-                                  ?.toInt() ??
+                          courseModule.memberModule?.percentComplete.toInt() ??
                               0,
                         ),
                         style: theme.textTheme.labelLarge?.copyWith(
@@ -108,17 +112,23 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: PRFSpacingTokens.xl,
                 ),
-                child: StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<IsarService>().courseModules.itemStream,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                child: BlocBuilder<
+                  ModuleResourceCubit,
+                  ResourceState<PRFCourseModule>
+                >(
+                  builder: (context, state) {
+                    final courseModule = state.maybeWhen(
+                      listLoaded: (items, _, _) =>
+                          items.isNotEmpty ? items.first : null,
+                      orElse: () => null,
+                    );
+                    if (courseModule == null) {
                       return const Center(
                         child: PRFCircularProgressIndicator(),
                       );
                     }
-                    final courseModule = snapshot.data;
                     return Text(
-                      courseModule?.module.name ?? '',
+                      courseModule.module?.name ?? '',
                       style: theme.textTheme.headlineMedium,
                     );
                   },
@@ -131,17 +141,23 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: PRFSpacingTokens.xl,
                 ),
-                child: StreamBuilder<PRFLocalCourseModule?>(
-                  stream: getIt<IsarService>().courseModules.itemStream,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                child: BlocBuilder<
+                  ModuleResourceCubit,
+                  ResourceState<PRFCourseModule>
+                >(
+                  builder: (context, state) {
+                    final courseModule = state.maybeWhen(
+                      listLoaded: (items, _, _) =>
+                          items.isNotEmpty ? items.first : null,
+                      orElse: () => null,
+                    );
+                    if (courseModule == null) {
                       return const Center(
                         child: PRFCircularProgressIndicator(),
                       );
                     }
-                    final course = snapshot.data;
                     return Text(
-                      course?.module.description ?? '',
+                      courseModule.module?.description ?? '',
                       style: theme.textTheme.bodyMedium,
                     );
                   },
@@ -169,34 +185,37 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
               child: SizedBox(height: PRFSpacingTokens.xl),
             ),
             // Lessons list
-            StreamBuilder<List<PRFLocalLessonModule>>(
-              stream: getIt<IsarService>().lessonModules.parentStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SliverToBoxAdapter(
+            BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  listLoading: () => const SliverToBoxAdapter(
                     child: Center(child: PRFCircularProgressIndicator()),
-                  );
-                }
-
-                final lessonModules = snapshot.data;
-
-                if (lessonModules != null && lessonModules.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: PRFEmptyView(
-                      label: l10n.noLessons,
-                      description: l10n.pleaseWait,
-                    ),
-                  );
-                }
-
-                return SliverList.separated(
-                  itemCount: lessonModules!.length,
-                  itemBuilder: (context, index) => ModuleDetailsActionCard(
-                    lessonModule: lessonModules[index],
-                    courseModuleUlid: courseModuleUlid,
                   ),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: PRFSpacingTokens.lg),
+                  listLoaded: (lessonModules, _, _) {
+                    if (lessonModules.isEmpty) {
+                      return SliverToBoxAdapter(
+                        child: PRFEmptyView(
+                          label: l10n.noLessons,
+                          description: l10n.pleaseWait,
+                        ),
+                      );
+                    }
+                    return SliverList.separated(
+                      itemCount: lessonModules.length,
+                      itemBuilder: (context, index) => ModuleDetailsActionCard(
+                        lessonModule: lessonModules[index],
+                        courseModuleUlid: courseModuleUlid,
+                      ),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: PRFSpacingTokens.lg),
+                    );
+                  },
+                  error: (message, _) => SliverToBoxAdapter(
+                    child: Center(child: Text(message)),
+                  ),
+                  orElse: () => const SliverToBoxAdapter(
+                    child: SizedBox.shrink(),
+                  ),
                 );
               },
             ),

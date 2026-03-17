@@ -1,4 +1,4 @@
-import 'package:app/models/local/course/prf_lesson_module.dart';
+import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
     super.key,
   });
 
-  final PRFLocalLessonModule lessonModule;
+  final PRFLessonModule lessonModule;
   final String courseModuleUlid;
 
   @override
@@ -52,7 +52,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    lessonModule.lesson.name!.toUpperCase(),
+                    (lessonModule.lesson?.name ?? '').toUpperCase(),
                     style: theme.textTheme.headlineSmall,
                   ),
                 ),
@@ -66,7 +66,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
                     vertical: PRFSpacingTokens.xs,
                   ),
                   child: Icon(
-                    lessonModule.lessonMember?.completionStatus?.icon ??
+                    lessonModule.lessonMember?.completionStatus.icon ??
                         Icons.watch_later_outlined,
                     color: theme.colorScheme.onPrimary,
                     size: 20,
@@ -76,7 +76,7 @@ class ModuleDetailsActionCard extends StatelessWidget {
             ),
             const SizedBox(height: PRFSpacingTokens.lg),
             Text(
-              lessonModule.lesson.description ?? '',
+              lessonModule.lesson?.description ?? '',
               style: theme.textTheme.bodyMedium,
             ),
           ],

@@ -2,8 +2,8 @@ import 'package:app/enums/common/prf_morph_types.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/common/socket_config.dart';
+import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
@@ -14,7 +14,10 @@ import 'package:intl/intl.dart';
 import 'package:prf_design/prf_design.dart';
 
 class StudentEnquiryRepliesPageTablet extends StatefulWidget {
-  const StudentEnquiryRepliesPageTablet({required this.enquiryUlid, super.key});
+  const StudentEnquiryRepliesPageTablet({
+    required this.enquiryUlid,
+    super.key,
+  });
 
   final String enquiryUlid;
 
@@ -128,9 +131,12 @@ class _StudentEnquiryRepliesPageTabletState
     }
   }
 
-  Widget _buildMessageBubble(PRFLocalStudentEnquiryReply reply, int index) {
+  bool _isStudentReply(PRFStudentEnquiryReply reply) =>
+      reply.commentorableType == PRFMorphType.student;
+
+  Widget _buildMessageBubble(PRFStudentEnquiryReply reply, int index) {
     final theme = Theme.of(context);
-    final isStudent = reply.isStudent;
+    final isStudent = _isStudentReply(reply);
 
     return TweenAnimationBuilder<double>(
       duration: Duration(milliseconds: 300 + (index * 50)),
@@ -395,23 +401,31 @@ class _StudentEnquiryRepliesPageTabletState
             Expanded(
               child: FadeTransition(
                 opacity: _fadeAnimation,
-                child: StreamBuilder(
-                  stream: getIt<IsarService>().studentEnquiries.itemStream,
-                  builder: (context, asyncSnapshot) {
-                    if (!asyncSnapshot.hasData) {
-                      return const Center(
-                        child: PRFCircularProgressIndicator(),
-                      );
-                    }
-                    final enquiry = asyncSnapshot.data;
+                child: BlocBuilder<
+                  EnquiryResourceCubit,
+                  ResourceState<PRFStudentEnquiry>
+                >(
+                  builder: (context, enquiryState) {
+                    final enquiry = enquiryState.maybeWhen(
+                      listLoaded: (items, _, _) =>
+                          items.isNotEmpty ? items.first : null,
+                      orElse: () => null,
+                    );
+
                     if (enquiry == null) {
-                      return Center(
-                        child: PRFEmptyView(
-                          label: l10n.noQuestions,
-                          description: l10n.pleaseWait,
+                      return enquiryState.maybeWhen(
+                        listLoading: () => const Center(
+                          child: PRFCircularProgressIndicator(),
+                        ),
+                        orElse: () => Center(
+                          child: PRFEmptyView(
+                            label: l10n.noQuestions,
+                            description: l10n.pleaseWait,
+                          ),
                         ),
                       );
                     }
+
                     return CustomScrollView(
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
@@ -426,17 +440,22 @@ class _StudentEnquiryRepliesPageTabletState
                         const SliverToBoxAdapter(
                           child: SizedBox(height: PRFSpacingTokens.lg),
                         ),
-                        StreamBuilder<List<PRFLocalStudentEnquiryReply>>(
-                          stream: getIt<IsarService>()
-                              .studentEnquiryReplies
-                              .parentStream,
-                          builder: (context, snapshot) {
+                        BlocBuilder<
+                          EnquiryReplyResourceCubit,
+                          ResourceState<PRFStudentEnquiryReply>
+                        >(
+                          builder: (context, replyState) {
                             // Scroll to bottom when new data arrives
                             WidgetsBinding.instance.addPostFrameCallback(
                               (_) => _scrollToBottom(),
                             );
 
-                            if (!snapshot.hasData) {
+                            final replies = replyState.maybeWhen(
+                              listLoaded: (items, _, _) => items,
+                              orElse: () => null,
+                            );
+
+                            if (replies == null) {
                               return const SliverFillRemaining(
                                 child: Center(
                                   child: PRFCircularProgressIndicator(),
@@ -444,16 +463,18 @@ class _StudentEnquiryRepliesPageTabletState
                               );
                             }
 
+                            // Create synthetic first message from enquiry
+                            final syntheticFirst = PRFStudentEnquiryReply(
+                              enquiryUlid,
+                              enquiry.content,
+                              PRFMorphType.student,
+                              enquiry.createdAt,
+                              enquiry.updatedAt,
+                            );
+
                             final enquiryReplies = [
-                              PRFLocalStudentEnquiryReply(
-                                ulid: enquiryUlid,
-                                studentEnquiryUlid: enquiryUlid,
-                                content: enquiry.content,
-                                createdAt: enquiry.createdAt,
-                                commentorableType: PRFMorphType.student,
-                                isStudent: true,
-                              ),
-                              if (snapshot.data != null) ...snapshot.data!,
+                              syntheticFirst,
+                              ...replies,
                             ];
 
                             if (enquiryReplies.isEmpty) {

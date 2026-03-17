@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/api/_base_api_service.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
@@ -27,6 +29,31 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   /// Stores the last filters used by [loadAll] so that [refreshIsarStreams]
   /// can be called with the correct parent key after mutations.
   Map<String, dynamic>? _lastFilters;
+
+  /// Subscription to the Isar DB stream for reactive updates.
+  /// When external sources (e.g., socket service) write to Isar and refresh
+  /// the stream, this triggers a re-fetch so the cubit state stays current.
+  StreamSubscription<dynamic>? _isarStreamSubscription;
+
+  /// Subscribe to the Isar DB service's stream. When the stream emits
+  /// (from socket events or any other Isar write), the cubit re-fetches
+  /// data via [loadAll] using the last-used filters.
+  ///
+  /// Call this in the subclass constructor for cubits that need
+  /// real-time updates from socket-driven Isar changes.
+  void subscribeToIsarUpdates() {
+    _isarStreamSubscription = dbService?.stream.listen((_) {
+      if (!isClosed) {
+        loadAll(filters: _lastFilters);
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _isarStreamSubscription?.cancel();
+    return super.close();
+  }
 
   /// Override these in subclasses for resource-specific defaults.
   List<String> get defaultIncludes => [];

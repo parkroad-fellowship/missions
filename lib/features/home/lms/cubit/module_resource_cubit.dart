@@ -6,7 +6,9 @@ class ModuleResourceCubit extends ResourceCubit<PRFCourseModule> {
   ModuleResourceCubit({
     required CourseModuleService courseModuleService,
     super.dbService,
-  }) : super(service: courseModuleService);
+  }) : super(service: courseModuleService) {
+    subscribeToIsarUpdates();
+  }
 
   @override
   List<String> get defaultIncludes => [

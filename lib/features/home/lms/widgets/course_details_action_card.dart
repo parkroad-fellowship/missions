@@ -1,5 +1,5 @@
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/course/prf_course_module.dart';
+import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:prf_design/prf_design.dart';
 class CourseDetailsActionCard extends StatelessWidget {
   const CourseDetailsActionCard({required this.courseModule, super.key});
 
-  final PRFLocalCourseModule courseModule;
+  final PRFCourseModule courseModule;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class CourseDetailsActionCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    courseModule.module.name!,
+                    courseModule.module?.name ?? '',
                     style: theme.textTheme.headlineSmall,
                   ),
                 ),
@@ -58,7 +58,7 @@ class CourseDetailsActionCard extends StatelessWidget {
                   ),
                   child: Text(
                     l10n.percentage(
-                      courseModule.memberModule?.percentComplete?.toInt() ?? 0,
+                      courseModule.memberModule?.percentComplete.toInt() ?? 0,
                     ),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onPrimary,
@@ -69,7 +69,7 @@ class CourseDetailsActionCard extends StatelessWidget {
             ),
             const SizedBox(height: PRFSpacingTokens.lg),
             Text(
-              courseModule.module.description!,
+              courseModule.module?.description ?? '',
               style: theme.textTheme.bodyMedium,
             ),
           ],
