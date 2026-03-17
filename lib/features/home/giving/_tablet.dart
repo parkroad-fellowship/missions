@@ -3,14 +3,13 @@ import 'package:app/features/home/giving/actions/add_payment/add_payment.dart';
 import 'package:app/features/home/giving/cubit/payment_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/payment/prf_payment.dart';
-import 'package:app/utils/crud/resource_state.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class GivingPageTablet extends StatefulWidget {
@@ -78,8 +77,8 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                   BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
                     builder: (context, state) => state.maybeWhen(
                       orElse: () => const PRFLinearProgressIndicator(),
-                      error: (_, __) => const SizedBox.shrink(),
-                      listLoaded: (_, __, ___) => const SizedBox.shrink(),
+                      error: (_, _) => const SizedBox.shrink(),
+                      listLoaded: (_, _, _) => const SizedBox.shrink(),
                     ),
                   ),
             ),
@@ -122,7 +121,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                       ),
                     ),
                   ),
-                  listLoaded: (payments, _, __) {
+                  listLoaded: (payments, _, _) {
                     if (payments.isEmpty) {
                       return SliverFillRemaining(
                         child: RefreshIndicator(

@@ -1,20 +1,19 @@
-import 'package:app/models/remote/expense/prf_allocation_entry.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/payment/prf_charge_type.dart';
 import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
-
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_expense_category.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddExpenseViewHandset extends StatefulWidget {
   const AddExpenseViewHandset({required this.accountingEventUlid, super.key});
@@ -219,7 +218,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                                 orElse: () => const SizedBox.shrink(),
                                 listLoading: () =>
                                     const PRFLinearProgressIndicator(),
-                                listLoaded: (expenseCategories, _, __) =>
+                                listLoaded: (expenseCategories, _, _) =>
                                     _buildCategorySelector(
                                       expenseCategories,
                                       Theme.of(context),
@@ -590,7 +589,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
         'accounting_event_ulid': widget.accountingEventUlid,
         'expense_category_ulid': selectedExpenseCategory!.ulid,
         'entry_type': PRFEntryType.debit.apiKey,
-        'charge_type': selectedChargeType!,
+        'charge_type': selectedChargeType,
         'charge': charge,
         'unit_cost': unitCost,
         'quantity': quantity,

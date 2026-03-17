@@ -5,10 +5,9 @@ import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
-import 'package:prf_design/prf_design.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 
 enum MediaType { photos, videos }
 

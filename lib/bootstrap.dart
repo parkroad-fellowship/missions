@@ -6,6 +6,8 @@ import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/_index.dart';
+import 'package:app/utils/constants.dart';
+import 'package:app/utils/http/request_signer.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -72,6 +74,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     DIContainer.setup();
     await DIContainer.initializeDatabases();
+
+    await RequestSigner.syncWithServer(
+      PRFSuperAppConfig.instance!.values.baseUrl,
+    );
 
     try {
       await getIt<FirebaseService>().initRemoteConfig();

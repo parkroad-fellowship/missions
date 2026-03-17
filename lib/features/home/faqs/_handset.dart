@@ -4,7 +4,6 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/models/remote/content/prf_faq_category.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -101,7 +100,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
                         listLoading: PRFLinearProgressIndicator.new,
-                        listLoaded: (faqCategories, _, __) =>
+                        listLoaded: (faqCategories, _, _) =>
                             PRFCategoryChips<PRFFaqCategory>(
                               categories: faqCategories,
                               selectedCategory: _selectedCategory,
@@ -155,7 +154,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                   error: (message, _) => SliverFillRemaining(
                     child: Center(child: Text(message)),
                   ),
-                  listLoaded: (faqs, _, __) {
+                  listLoaded: (faqs, _, _) {
                     if (faqs.isEmpty) {
                       return SliverFillRemaining(
                         child: RefreshIndicator(

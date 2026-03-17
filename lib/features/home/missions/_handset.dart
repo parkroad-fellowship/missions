@@ -1,11 +1,9 @@
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
@@ -13,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:prf_design/prf_design.dart';
 
 class MissionsPageHandset extends StatefulWidget {
   const MissionsPageHandset({super.key});
@@ -64,80 +63,95 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            l10n.missions,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: theme.colorScheme.onSurface,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          leading: Container(
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-              boxShadow: [
-                BoxShadow(
-                  color: PRFColors.black.withValues(alpha: 0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            margin: const EdgeInsets.only(left: PRFSpacingTokens.sm),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: theme.colorScheme.onPrimaryContainer,
-                size: 20,
-              ),
-              onPressed: () => context.router.popUntilRouteWithPath(
-                PRFSuperAppRouter.landingRoute,
-              ),
-            ),
-          ),
-          actions: [
-            BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
-              builder: (context, state) => state.maybeWhen(
-                listLoading: () => const SizedBox.square(
-                  dimension: 24,
-                  child: PRFCircularProgressIndicator(),
-                ),
-                orElse: SizedBox.shrink,
-              ),
-            ),
-            const SizedBox(width: PRFSpacingTokens.sm),
-            BlocBuilder<
-              GetMemberMissionSubscriptionsCubit,
-              GetMemberMissionSubscriptionsState
-            >(
-              builder: (context, state) => state.maybeWhen(
-                loading: () => const SizedBox.square(
-                  dimension: 24,
-                  child: PRFCircularProgressIndicator(),
-                ),
-                orElse: SizedBox.shrink,
-              ),
-            ),
-            const SizedBox(width: PRFSpacingTokens.lg),
-          ],
-          backgroundColor: Colors.transparent,
-          bottom: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            tabs: [
-              Tab(text: l10n.all),
-              Tab(text: l10n.subscribed),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
+        backgroundColor: theme.colorScheme.surface,
+        body: Column(
           children: [
-            _buildMissionsTimeline(context),
-            _buildSubscribedMissionsTimeline(context),
+            ColoredBox(
+              color: theme.colorScheme.primary,
+              child: Column(
+                children: [
+                  PRFBrandedNavBar(
+                    title: l10n.missions,
+                    onBack: () => context.router.popUntilRouteWithPath(
+                      PRFSuperAppRouter.landingRoute,
+                    ),
+                    actions: [
+                      BlocBuilder<
+                        MissionResourceCubit,
+                        ResourceState<PRFMission>
+                      >(
+                        builder: (context, state) => state.maybeWhen(
+                          listLoading: () => const SizedBox.square(
+                            dimension: 24,
+                            child: PRFCircularProgressIndicator(),
+                          ),
+                          orElse: SizedBox.shrink,
+                        ),
+                      ),
+                      const SizedBox(width: PRFSpacingTokens.sm),
+                      BlocBuilder<
+                        GetMemberMissionSubscriptionsCubit,
+                        GetMemberMissionSubscriptionsState
+                      >(
+                        builder: (context, state) => state.maybeWhen(
+                          loading: () => const SizedBox.square(
+                            dimension: 24,
+                            child: PRFCircularProgressIndicator(),
+                          ),
+                          orElse: SizedBox.shrink,
+                        ),
+                      ),
+                      const SizedBox(width: PRFSpacingTokens.lg),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      PRFSpacingTokens.lg,
+                      0,
+                      PRFSpacingTokens.lg,
+                      PRFSpacingTokens.sm,
+                    ),
+                    child: Transform.translate(
+                      offset: const Offset(0, -6),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TabBar(
+                          controller: _tabController,
+                          isScrollable: true,
+                          labelColor: theme.colorScheme.onPrimary,
+                          unselectedLabelColor: theme.colorScheme.onPrimary
+                              .withValues(alpha: 0.65),
+                          indicatorColor: theme.colorScheme.secondary,
+                          dividerColor: theme.colorScheme.onPrimary.withValues(
+                            alpha: 0.2,
+                          ),
+                          labelStyle: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                          padding: EdgeInsets.zero,
+                          labelPadding: const EdgeInsets.symmetric(
+                            horizontal: PRFSpacingTokens.sm,
+                          ),
+                          tabs: [
+                            Tab(text: l10n.all),
+                            Tab(text: l10n.subscribed),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildMissionsTimeline(context),
+                  _buildSubscribedMissionsTimeline(context),
+                ],
+              ),
+            ),
           ],
         ),
       ),

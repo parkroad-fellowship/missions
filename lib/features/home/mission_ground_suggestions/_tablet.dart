@@ -1,17 +1,15 @@
 import 'package:app/features/home/mission_ground_suggestions/actions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/actions/update_mission_ground_suggestion/update_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
-import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/widgets/mission_ground_suggestion_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class MissionGroundSuggestionsPageTablet extends StatefulWidget {
@@ -77,7 +75,7 @@ class _MissionGroundSuggestionsPageTabletState
                             ),
                           ),
                         ),
-                        listLoaded: (missionGroundSuggestions, _, __) {
+                        listLoaded: (missionGroundSuggestions, _, _) {
                           if (missionGroundSuggestions.isEmpty) {
                             return SliverFillRemaining(
                               child: RefreshIndicator(

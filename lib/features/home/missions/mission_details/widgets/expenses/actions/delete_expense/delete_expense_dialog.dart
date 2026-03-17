@@ -1,9 +1,8 @@
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/enums/mission/prf_entry_type.dart';
-
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -133,7 +132,7 @@ class DeleteExpenseDialog extends StatelessWidget {
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              mutated: (_, __, ___) {
+              mutated: (_, _, _) {
                 Navigator.of(context).pop(true);
               },
               error: (message, _) {
@@ -143,7 +142,7 @@ class DeleteExpenseDialog extends StatelessWidget {
           },
           builder: (context, state) {
             return state.maybeWhen(
-              mutating: (_, __) => const Padding(
+              mutating: (_, _) => const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: SizedBox(
                   width: 20,

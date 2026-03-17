@@ -1,22 +1,19 @@
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/update_session/update_session.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
-
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_mission_session.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class SessionPageTablet extends StatefulWidget {
@@ -925,7 +922,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                                           title: l10n.delete,
                                           disabled: false,
                                           isLoading: state.maybeWhen(
-                                            mutating: (_, __) => true,
+                                            mutating: (_, _) => true,
                                             orElse: () => false,
                                           ),
                                         );

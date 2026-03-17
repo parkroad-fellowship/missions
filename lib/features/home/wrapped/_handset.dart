@@ -1,12 +1,12 @@
 import 'package:app/features/home/shared/cubit/member_engagement_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
-import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:app/features/home/wrapped/pages/wrapped_pages.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/models/remote/member/prf_member_engagement.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 
 class MissionsWrappedHandset extends StatefulWidget {
   const MissionsWrappedHandset({super.key});
@@ -43,12 +43,11 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
         return state.when(
           initial: () => _buildLoadingState(theme),
           listLoading: () => _buildLoadingState(theme),
-          listLoaded: (memberEngagementList, _, __) {
+          listLoaded: (memberEngagementList, _, _) {
             if (memberEngagementList.isEmpty) {
               return _buildEmptyState();
             }
             final memberEngagement = memberEngagementList.first;
-            // ignore: unused_local_variable
             final year = DateTime.now().year;
             final pages = <Widget>[
               IntroWrappedPage(
@@ -152,8 +151,8 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               ),
             );
           },
-          mutating: (_, __) => _buildLoadingState(theme),
-          mutated: (_, __, ___) => _buildLoadingState(theme),
+          mutating: (_, _) => _buildLoadingState(theme),
+          mutated: (_, _, _) => _buildLoadingState(theme),
           error: (message, _) => _buildErrorState(message),
         );
       },

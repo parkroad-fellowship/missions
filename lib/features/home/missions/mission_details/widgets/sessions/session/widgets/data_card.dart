@@ -1,5 +1,5 @@
-import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
+import 'package:prf_design/prf_design.dart';
 
 class DataCard extends StatelessWidget {
   const DataCard({required this.label, required this.value, super.key});

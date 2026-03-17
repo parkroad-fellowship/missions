@@ -4,7 +4,6 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/models/remote/payment/prf_payment_type.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
@@ -93,7 +92,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                         orElse: () => const SizedBox.shrink(),
                         listLoading: () =>
                             const Center(child: LinearProgressIndicator()),
-                        listLoaded: (classes, _, __) =>
+                        listLoaded: (classes, _, _) =>
                             PRFSearchableList<PRFPaymentType>(
                               entries: classes
                                   .map(

@@ -1,6 +1,5 @@
 import 'package:app/enums/mission/prf_soul_decision_type.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_soul.dart';

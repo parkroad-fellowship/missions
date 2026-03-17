@@ -1,17 +1,16 @@
 import 'package:app/enums/payment/prf_completion_status.dart';
-
 import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/course/prf_lesson_module.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class LessonDetailsHandset extends StatefulWidget {
   const LessonDetailsHandset({
@@ -229,7 +228,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                 listLoading: () => setState(() {
                                   _isLoading = true;
                                 }),
-                                mutated: (_, __, ___) {
+                                mutated: (_, _, _) {
                                   setState(() {
                                     _isLoading = false;
                                   });

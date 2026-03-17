@@ -1,8 +1,7 @@
 import 'package:app/models/remote/member/prf_member_engagement.dart';
-import 'package:prf_design/prf_design.dart';
-import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:prf_design/prf_design.dart';
 
 class IntroWrappedPage extends StatelessWidget {
   const IntroWrappedPage({

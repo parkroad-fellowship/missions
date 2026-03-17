@@ -1,16 +1,15 @@
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/enquiry/prf_student_enquiry.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:prf_design/prf_design.dart';
 
 class StudentEnquiriesPageTablet extends StatefulWidget {
   const StudentEnquiriesPageTablet({super.key});
@@ -74,7 +73,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                     builder: (context, state) => state.maybeWhen(
                       orElse: () => const PRFLinearProgressIndicator(),
                       error: (message, _) => const SizedBox.shrink(),
-                      listLoaded: (_, __, ___) => const SizedBox.shrink(),
+                      listLoaded: (_, _, _) => const SizedBox.shrink(),
                     ),
                   ),
             ),

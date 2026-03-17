@@ -4,7 +4,6 @@ import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.da
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_request.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -75,7 +74,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                             ),
                           ),
                         ),
-                        listLoaded: (prayerRequests, _, __) {
+                        listLoaded: (prayerRequests, _, _) {
                           if (prayerRequests.isEmpty) {
                             return SliverFillRemaining(
                               child: RefreshIndicator(

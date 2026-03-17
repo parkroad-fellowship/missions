@@ -1,5 +1,3 @@
-import 'package:app/models/remote/expense/prf_expense_category.dart';
-import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
 import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
 import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
@@ -62,6 +60,7 @@ class _LandingPageState extends State<LandingPage> {
     final l10n = context.l10n;
 
     final actions = <LandingActionItem>[
+      // Faith & Ministry
       LandingActionItem(
         title: l10n.goToAMission,
         assetPath: 'assets/svgs/missions.svg',
@@ -69,22 +68,7 @@ class _LandingPageState extends State<LandingPage> {
           PRFSuperAppRouter.missionsRoute,
         ),
         animationDelay: 0,
-      ),
-      LandingActionItem(
-        title: l10n.learnSomething,
-        assetPath: 'assets/svgs/lms.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.lmsRoute,
-        ),
-        animationDelay: 100,
-      ),
-      LandingActionItem(
-        title: l10n.studentFaqs,
-        assetPath: 'assets/svgs/explore.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.memberLearnerFaqs,
-        ),
-        animationDelay: 200,
+        deskGroup: 'Faith & Ministry',
       ),
       LandingActionItem(
         title: l10n.ministerToAStudent,
@@ -92,7 +76,8 @@ class _LandingPageState extends State<LandingPage> {
         onTap: () => context.router.pushPath(
           PRFSuperAppRouter.studentEnquiriesRoute,
         ),
-        animationDelay: 300,
+        animationDelay: 0,
+        deskGroup: 'Faith & Ministry',
       ),
       LandingActionItem(
         title: l10n.suggestAMission,
@@ -100,15 +85,39 @@ class _LandingPageState extends State<LandingPage> {
         onTap: () => context.router.pushPath(
           PRFSuperAppRouter.missionGroundSuggestionsRoute,
         ),
-        animationDelay: 400,
+        animationDelay: 0,
+        deskGroup: 'Faith & Ministry',
       ),
+
+      // Learn & Grow
+      LandingActionItem(
+        title: l10n.learnSomething,
+        assetPath: 'assets/svgs/lms.svg',
+        onTap: () => context.router.pushPath(
+          PRFSuperAppRouter.lmsRoute,
+        ),
+        animationDelay: 0,
+        deskGroup: 'Learn & Grow',
+      ),
+      LandingActionItem(
+        title: l10n.studentFaqs,
+        assetPath: 'assets/svgs/explore.svg',
+        onTap: () => context.router.pushPath(
+          PRFSuperAppRouter.memberLearnerFaqs,
+        ),
+        animationDelay: 0,
+        deskGroup: 'Learn & Grow',
+      ),
+
+      // Community
       LandingActionItem(
         title: l10n.registerForEvent,
         assetPath: 'assets/svgs/events.svg',
         onTap: () => context.router.pushPath(
           PRFSuperAppRouter.eventsRoute,
         ),
-        animationDelay: 500,
+        animationDelay: 0,
+        deskGroup: 'Community',
       ),
       LandingActionItem(
         title: l10n.submitPrayerRequest,
@@ -116,7 +125,8 @@ class _LandingPageState extends State<LandingPage> {
         onTap: () => context.router.pushPath(
           PRFSuperAppRouter.prayerRequestRoute,
         ),
-        animationDelay: 600,
+        animationDelay: 0,
+        deskGroup: 'Community',
       ),
       LandingActionItem(
         title: l10n.give,
@@ -124,8 +134,11 @@ class _LandingPageState extends State<LandingPage> {
         onTap: () => context.router.pushPath(
           PRFSuperAppRouter.givingRoute,
         ),
-        animationDelay: 700,
+        animationDelay: 0,
+        deskGroup: 'Community',
       ),
+
+      // Extras
       LandingActionItem(
         title: l10n.wrapped,
         assetPath: 'assets/svgs/wrapped.svg',
@@ -133,6 +146,8 @@ class _LandingPageState extends State<LandingPage> {
           PRFSuperAppRouter.wrappedRoute,
         ),
         animationDelay: 0,
+        isNeutralCard: true,
+        deskGroup: 'Extras',
       ),
     ];
 

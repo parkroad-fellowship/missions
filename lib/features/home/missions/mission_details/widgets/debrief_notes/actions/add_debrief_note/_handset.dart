@@ -1,13 +1,12 @@
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/utils/crud/resource_state.dart';
-
-import 'package:app/l10n/l10n.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddDebriefNoteViewHandset extends StatefulWidget {
   const AddDebriefNoteViewHandset({required this.missionUlid, super.key});

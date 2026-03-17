@@ -1,13 +1,13 @@
-import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddMissionGroundSuggestionViewHandset extends StatefulWidget {
   const AddMissionGroundSuggestionViewHandset({super.key});
@@ -337,7 +337,7 @@ class _AddMissionGroundSuggestionViewHandsetState
       data: {
         'name': _nameController.text.trim(),
         'contact_person': _contactPersonController.text.trim(),
-        'contact_number': _contactNumber!,
+        'contact_number': _contactNumber,
       },
     );
   }

@@ -2,7 +2,6 @@ import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart'
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_announcement.dart';
 import 'package:app/utils/_index.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,7 +75,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                       return state.maybeWhen(
                         listLoading: () => const PRFCircularProgressIndicator(),
                         error: (message, _) => Center(child: Text(message)),
-                        listLoaded: (announcements, _, __) {
+                        listLoaded: (announcements, _, _) {
                           if (announcements.isEmpty) {
                             return RefreshIndicator(
                               onRefresh: () => context
@@ -145,7 +144,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                                       ),
                                     ),
 
-                                    // Announcements for this date in grid layout
+                                    // Announcements in grid layout
                                     GridView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),

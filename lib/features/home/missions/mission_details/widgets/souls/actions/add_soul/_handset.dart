@@ -1,16 +1,15 @@
-import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
-import 'package:app/models/remote/prayer/prf_soul.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/enums/mission/prf_soul_decision_type.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
-
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/models/remote/prayer/prf_soul.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddSoulViewHandset extends StatefulWidget {
   const AddSoulViewHandset({required this.missionUlid, super.key});
@@ -216,7 +215,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                                 listLoading: () => const Center(
                                   child: LinearProgressIndicator(),
                                 ),
-                                listLoaded: (classes, _, __) =>
+                                listLoaded: (classes, _, _) =>
                                     PRFSearchableList<PRFClassGroup>(
                                       entries: classes
                                           .map(

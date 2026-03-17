@@ -1,13 +1,13 @@
-import 'package:app/models/remote/course/prf_course.dart';
 import 'package:app/di/_index.dart';
 import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/lms/widgets/course_action_card.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/course/prf_course.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 
 class LMSPageHandset extends StatefulWidget {
   const LMSPageHandset({super.key});

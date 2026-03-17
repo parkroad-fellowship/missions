@@ -23,8 +23,8 @@ class MemberEngagementResourceCubit
   /// Load member engagement for a given member and year.
   /// If [memberUlid] is not provided, retrieves it from HiveService.
   Future<void> loadEngagement({
-    String? memberUlid,
     required int year,
+    String? memberUlid,
   }) async {
     final ulid = memberUlid ?? _hiveService?.retrieveMember()?.ulid;
     if (ulid == null) {

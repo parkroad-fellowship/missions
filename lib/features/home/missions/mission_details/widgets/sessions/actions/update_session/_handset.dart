@@ -1,15 +1,12 @@
-import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
-import 'package:app/models/remote/mission/prf_mission_subscription.dart';
-
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/local/mission/prf_mission_session.dart';
+import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -20,6 +17,7 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:prf_design/prf_design.dart';
 
 class UpdateSessionViewHandset extends StatefulWidget {
   const UpdateSessionViewHandset({
@@ -322,7 +320,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                     listLoading: () => const Center(
                                       child: LinearProgressIndicator(),
                                     ),
-                                    listLoaded: (classes, _, __) =>
+                                    listLoaded: (classes, _, _) =>
                                         PRFSearchableList<String>(
                                           entries: classes
                                               .map(
@@ -479,7 +477,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       ulid: missionSession.ulid,
       data: {
         'mission_ulid': widget.missionUlid,
-        'facilitator_ulid': selectedFacilitatorUlid!,
+        'facilitator_ulid': selectedFacilitatorUlid,
         'starts_at': startsAt!.toIso8601String(),
         'ends_at': endsAt!.toIso8601String(),
         'notes': _notesController.text,

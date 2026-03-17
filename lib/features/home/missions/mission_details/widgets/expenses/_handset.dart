@@ -1,4 +1,3 @@
-import 'package:app/models/remote/mission/prf_mission.dart';
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:app/enums/mission/prf_entry_type.dart';
@@ -9,10 +8,9 @@ import 'package:app/features/home/missions/mission_details/widgets/expenses/acti
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_refund/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_token/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/edit_expense/_handset.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
-
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/receipt_preview.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
@@ -22,14 +20,14 @@ import 'package:app/models/remote/expense/prf_accounting_event.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_refund.dart';
 import 'package:app/models/remote/media/prf_media.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/receipt_preview.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
@@ -74,7 +72,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              listLoaded: (missions, _, __) {
+              listLoaded: (missions, _, _) {
                 if (missions.isNotEmpty) {
                   final mission = missions.first;
                   accountingEventUlid = mission.accountingEvent?.ulid;
@@ -100,7 +98,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              mutated: (_, __, ___) {
+              mutated: (_, _, _) {
                 _loadData();
                 PRFSnackbar.success(context, 'Entry added successfully');
               },
@@ -117,7 +115,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              mutated: (_, __, ___) {
+              mutated: (_, _, _) {
                 _loadData();
                 PRFSnackbar.success(context, 'Expense updated successfully');
               },
@@ -134,7 +132,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              mutated: (_, __, ___) {
+              mutated: (_, _, _) {
                 _loadData();
                 PRFSnackbar.success(context, 'Expense deleted successfully');
               },
@@ -181,7 +179,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                   child: PRFLinearProgressIndicator(),
                 ),
-                listLoaded: (entries, _, __) {
+                listLoaded: (entries, _, _) {
                   if (entries.isEmpty) {
                     return const Padding(
                       padding: EdgeInsets.symmetric(
@@ -196,13 +194,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   }
                   return _buildLoadedView(context, l10n, entries);
                 },
-                mutating: (_, __) => const Padding(
+                mutating: (_, _) => const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,
                   ),
                   child: PRFLinearProgressIndicator(),
                 ),
-                mutated: (entries, _, __) =>
+                mutated: (entries, _, _) =>
                     _buildLoadedView(context, l10n, entries),
                 error: (message, _) => Padding(
                   padding: const EdgeInsets.symmetric(
@@ -1650,7 +1648,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               listener: (context, state) {
                 state.maybeWhen(
                   orElse: () {},
-                  mutated: (_, __, ___) {
+                  mutated: (_, _, _) {
                     Navigator.of(dialogContext).pop();
                   },
                   error: (message, _) {
@@ -1660,7 +1658,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  mutating: (_, __) => const Padding(
+                  mutating: (_, _) => const Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: PRFSpacingTokens.lg,
                       vertical: PRFSpacingTokens.sm,
@@ -2295,7 +2293,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
-                  listLoaded: (_, __, ___) => const Icon(
+                  listLoaded: (_, _, _) => const Icon(
                     Icons.refresh,
                     color: Colors.white,
                   ),

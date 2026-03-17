@@ -1,5 +1,4 @@
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/mission/prf_debrief_note.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';

@@ -1,18 +1,18 @@
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/video_player_widget.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media.dart';
-import 'package:prf_design/prf_design.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class GalleryViewHandset extends StatefulWidget {
@@ -106,7 +106,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     ),
                   ),
                 ),
-                listLoaded: (mediaItems, _, __) {
+                listLoaded: (mediaItems, _, _) {
                   if (mediaItems.isEmpty) {
                     return SliverFillRemaining(
                       child: Padding(

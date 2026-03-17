@@ -4,11 +4,11 @@ import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.da
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_request.dart';
 import 'package:app/utils/crud/resource_state.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PrayerRequestHandset extends StatefulWidget {
@@ -52,7 +52,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                   error: (message, _) => SliverFillRemaining(
                     child: Center(child: Text(message)),
                   ),
-                  listLoaded: (prayerRequests, _, __) {
+                  listLoaded: (prayerRequests, _, _) {
                     if (prayerRequests.isEmpty) {
                       return SliverFillRemaining(
                         child: RefreshIndicator(
