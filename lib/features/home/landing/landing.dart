@@ -3,6 +3,7 @@ import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
 import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
 import 'package:app/features/home/landing/_handset.dart';
 import 'package:app/features/home/landing/_tablet.dart';
+import 'package:app/features/home/landing/models/landing_action_item.dart';
 import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
 import 'package:app/features/home/shared/cubit/get_announcements_cubit.dart';
@@ -58,79 +59,79 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    final actions = [
-      [
-        l10n.goToAMission,
-        'assets/svgs/missions.svg',
-        () => context.router.pushPath(
+    final actions = <LandingActionItem>[
+      LandingActionItem(
+        title: l10n.goToAMission,
+        assetPath: 'assets/svgs/missions.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.missionsRoute,
         ),
-        0,
-      ],
-      [
-        l10n.learnSomething,
-        'assets/svgs/lms.svg',
-        () => context.router.pushPath(
+        animationDelay: 0,
+      ),
+      LandingActionItem(
+        title: l10n.learnSomething,
+        assetPath: 'assets/svgs/lms.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.lmsRoute,
         ),
-        100,
-      ],
-      [
-        l10n.studentFaqs,
-        'assets/svgs/explore.svg',
-        () => context.router.pushPath(
+        animationDelay: 100,
+      ),
+      LandingActionItem(
+        title: l10n.studentFaqs,
+        assetPath: 'assets/svgs/explore.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.memberLearnerFaqs,
         ),
-        200,
-      ],
-      [
-        l10n.ministerToAStudent,
-        'assets/svgs/student_ministry.svg',
-        () => context.router.pushPath(
+        animationDelay: 200,
+      ),
+      LandingActionItem(
+        title: l10n.ministerToAStudent,
+        assetPath: 'assets/svgs/student_ministry.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.studentEnquiriesRoute,
         ),
-        300,
-      ],
-      [
-        l10n.suggestAMission,
-        'assets/svgs/chatting.svg',
-        () => context.router.pushPath(
+        animationDelay: 300,
+      ),
+      LandingActionItem(
+        title: l10n.suggestAMission,
+        assetPath: 'assets/svgs/chatting.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.missionGroundSuggestionsRoute,
         ),
-        400,
-      ],
-      [
-        l10n.registerForEvent,
-        'assets/svgs/events.svg',
-        () => context.router.pushPath(
+        animationDelay: 400,
+      ),
+      LandingActionItem(
+        title: l10n.registerForEvent,
+        assetPath: 'assets/svgs/events.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.eventsRoute,
         ),
-        500,
-      ],
-      [
-        l10n.submitPrayerRequest,
-        'assets/svgs/texting.svg',
-        () => context.router.pushPath(
+        animationDelay: 500,
+      ),
+      LandingActionItem(
+        title: l10n.submitPrayerRequest,
+        assetPath: 'assets/svgs/texting.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.prayerRequestRoute,
         ),
-        600,
-      ],
-      [
-        l10n.give,
-        'assets/svgs/giving.svg',
-        () => context.router.pushPath(
+        animationDelay: 600,
+      ),
+      LandingActionItem(
+        title: l10n.give,
+        assetPath: 'assets/svgs/giving.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.givingRoute,
         ),
-        700,
-      ],
-      [
-        l10n.wrapped,
-        'assets/svgs/wrapped.svg',
-        () => context.router.pushPath(
+        animationDelay: 700,
+      ),
+      LandingActionItem(
+        title: l10n.wrapped,
+        assetPath: 'assets/svgs/wrapped.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.wrappedRoute,
         ),
-        0,
-      ],
+        animationDelay: 0,
+      ),
     ];
 
     return AdaptiveBuilder(

@@ -4,11 +4,14 @@ import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/actions/add_debrief_note/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/get_debrief_notes_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
+import 'package:app/features/home/missions/mission_details/widgets/domain_sections/feedback_data_section.dart';
+import 'package:app/features/home/missions/mission_details/widgets/domain_sections/finance_section.dart';
+import 'package:app/features/home/missions/mission_details/widgets/domain_sections/overview_section.dart';
+import 'package:app/features/home/missions/mission_details/widgets/domain_sections/people_data_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
-import 'package:app/features/home/missions/mission_details/widgets/mission_ground/mission_ground.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/add_mission_question/add_mission_question.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/get_mission_questions_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
@@ -18,7 +21,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/sess
 import 'package:app/features/home/missions/mission_details/widgets/souls/actions/add_soul/add_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/get_souls_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/souls.dart';
-import 'package:app/features/home/missions/mission_details/widgets/subscribers/subscribers.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -39,26 +42,12 @@ class MissionsDetailsPageTablet extends StatefulWidget {
       _MissionsDetailsPageTabletState();
 }
 
-class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
-    with SingleTickerProviderStateMixin {
+class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet> {
   String get missionUlid => widget.missionUlid;
-
-  int tabCount = 8;
-
-  late TabController _tabController;
-  int _currentTab = 0;
-
-  void _changeTab() {
-    setState(() {
-      _currentTab = _tabController.index;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: tabCount, vsync: this);
-    _tabController.addListener(_changeTab);
 
     context.read<GetSubscribersCubit>().getSubscriptions(
       missionUlid: widget.missionUlid,
@@ -83,81 +72,127 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
   }
 
   @override
-  void dispose() {
-    _tabController.removeListener(_changeTab);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final sectionHeight = MediaQuery.of(context).size.height * 0.6;
 
     return Scaffold(
-      body: DefaultTabController(
-        length: tabCount,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
-            child: CustomScrollView(
-              physics: const ScrollPhysics(),
-              slivers: [
-                // Start Navigation Bar
-                PRFNavBar(
-                  title: l10n.missionDetails,
-                  onBack: () => context.router.popUntilRouteWithPath(
-                    PRFSuperAppRouter.missionsRoute,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: PRFSpacingTokens.xl,
+          ),
+          child: CustomScrollView(
+            physics: const ScrollPhysics(),
+            slivers: [
+              PRFNavBar(
+                title: l10n.missionDetails,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.missionsRoute,
+                ),
+              ),
+
+              // Overview Section (Mission Ground + Subscribers)
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: sectionHeight,
+                  child: OverviewSection(missionUlid: missionUlid),
+                ),
+              ),
+
+              const SliverToBoxAdapter(
+                child: Divider(height: PRFSpacingTokens.xxl),
+              ),
+
+              // People Data Section (Sessions + Souls)
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: sectionHeight,
+                  child: PeopleDataSection(
+                    sessionsTab: SessionsView(missionUlid: missionUlid),
+                    soulsTab: SoulsView(missionUlid: missionUlid),
                   ),
                 ),
-                // End Navigation Bar
-                PinnedHeaderSliver(
-                  child: ColoredBox(
-                    color: Colors.white,
-                    child: TabBar(
-                      controller: _tabController,
-                      onTap: (value) => setState(() {
-                        _currentTab = value;
-                      }),
-                      isScrollable: true,
-                      tabs: [
-                        Tab(text: l10n.missionGround),
-                        Tab(text: l10n.going),
-                        Tab(text: l10n.sessions),
-                        Tab(text: l10n.souls),
-                        Tab(text: l10n.debriefNotes),
-                        Tab(text: l10n.missionQuestions),
-                        Tab(text: l10n.financials),
-                        Tab(text: l10n.gallery),
-                      ],
+              ),
+
+              const SliverToBoxAdapter(
+                child: Divider(height: PRFSpacingTokens.xxl),
+              ),
+
+              // Feedback Data Section (Debrief Notes + Questions)
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: sectionHeight,
+                  child: FeedbackDataSection(
+                    debriefNotesTab: DebriefNotesView(
+                      missionUlid: missionUlid,
+                    ),
+                    questionsTab: MissionQuestionsView(
+                      missionUlid: missionUlid,
                     ),
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: PRFSpacingTokens.xl)),
-                SliverFillRemaining(
-                  fillOverscroll: true,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        MissionGroundView(missionUlid: missionUlid),
-                        SubscribersView(missionUlid: missionUlid),
-                        SessionsView(missionUlid: missionUlid),
-                        SoulsView(missionUlid: missionUlid),
-                        DebriefNotesView(missionUlid: missionUlid),
-                        MissionQuestionsView(missionUlid: missionUlid),
-                        ExpensesView(missionUlid: missionUlid),
-                        GalleryView(missionUlid: missionUlid),
-                      ],
-                    ),
+              ),
+
+              const SliverToBoxAdapter(
+                child: Divider(height: PRFSpacingTokens.xxl),
+              ),
+
+              // Finance Section (Expenses)
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: sectionHeight,
+                  child: FinanceSection(
+                    expensesTab: ExpensesView(missionUlid: missionUlid),
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              const SliverToBoxAdapter(
+                child: Divider(height: PRFSpacingTokens.xxl),
+              ),
+
+              // Gallery Section (standalone)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.xl,
+                  ),
+                  child: SizedBox(
+                    height: sectionHeight,
+                    child: GalleryView(missionUlid: missionUlid),
+                  ),
+                ),
+              ),
+
+              // Bottom spacing
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 60),
+              ),
+            ],
           ),
         ),
       ),
-      floatingActionButton: switch (_currentTab) {
-        0 || 1 => BlocConsumer<SubscribeCubit, SubscribeState>(
+      floatingActionButton: _buildFloatingActionButton(
+        context,
+        l10n,
+        theme,
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(
+    BuildContext context,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        // Subscribe FAB
+        BlocConsumer<SubscribeCubit, SubscribeState>(
           listener: (context, state) {
             state.mapOrNull(
               loaded: (_) {
@@ -166,7 +201,10 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                   missionUlid: missionUlid,
                   refresh: true,
                 );
-                PRFSnackbar.success(context, l10n.successfullySubscribed);
+                PRFSnackbar.success(
+                  context,
+                  l10n.successfullySubscribed,
+                );
               },
               error: (error) {
                 Gaimon.error();
@@ -175,228 +213,248 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
             );
           },
           builder: (context, state) {
-            final theme = Theme.of(context);
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+                borderRadius: BorderRadius.circular(
+                  PRFRadiusTokens.lg,
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    color: theme.colorScheme.primary.withValues(
+                      alpha: 0.3,
+                    ),
                     blurRadius: 16,
                     offset: const Offset(0, 6),
                   ),
                 ],
               ),
-              child:
-                  FloatingActionButton.extended(
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: theme.colorScheme.onPrimary,
-                    onPressed: () async =>
-                        context.read<SubscribeCubit>().subscribe(
-                          missionUlid: missionUlid,
-                        ),
-                    label: Text(
-                      l10n.sendMe,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: theme.colorScheme.onPrimary,
-                      ),
+              child: FloatingActionButton.extended(
+                heroTag: 'subscribe',
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: theme.colorScheme.onPrimary,
+                onPressed: () async =>
+                    context.read<SubscribeCubit>().subscribe(
+                      missionUlid: missionUlid,
                     ),
-                    icon: BlocBuilder<SubscribeCubit, SubscribeState>(
-                      builder: (context, state) => state.maybeWhen(
-                        orElse: () => const Icon(
-                          Icons.hail_rounded,
-                          size: 20,
-                        ),
-                        loading: () => const SizedBox.square(
-                          dimension: 20,
-                          child: PRFCircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ).animate(
-                    effects: [
-                      const ShimmerEffect(
-                        duration: Duration(seconds: 2),
-                        delay: PRFMotionTokens.enterShort,
-                      ),
-                      const ScaleEffect(
-                        begin: Offset(0.8, 0.8),
-                        end: Offset(1, 1),
-                        duration: PRFMotionTokens.slow,
-                      ),
-                    ],
+                label: Text(
+                  l10n.sendMe,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: theme.colorScheme.onPrimary,
                   ),
+                ),
+                icon: BlocBuilder<SubscribeCubit, SubscribeState>(
+                  builder: (context, state) => state.maybeWhen(
+                    orElse: () => const Icon(
+                      Icons.hail_rounded,
+                      size: 20,
+                    ),
+                    loading: () => const SizedBox.square(
+                      dimension: 20,
+                      child: PRFCircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ).animate(
+                effects: [
+                  const ShimmerEffect(
+                    duration: Duration(seconds: 2),
+                    delay: PRFMotionTokens.enterShort,
+                  ),
+                  const ScaleEffect(
+                    begin: Offset(0.8, 0.8),
+                    end: Offset(1, 1),
+                    duration: PRFMotionTokens.slow,
+                  ),
+                ],
+              ),
             );
           },
         ),
-        > 1 && < 8 => Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(
-                  context,
-                ).colorScheme.primary.withValues(alpha: 0.3),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: FloatingActionButton.extended(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            icon: const Icon(Icons.add_rounded, size: 20),
-            label: Text(
-              switch (_currentTab) {
-                2 => l10n.addSession,
-                3 => l10n.addSoul,
-                4 => l10n.addNote,
-                5 => l10n.addQuestion,
-                7 => l10n.addMissionPhotos,
-                _ => '',
-              },
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
-            onPressed: () {
-              if (_currentTab == 2) {
-                WoltModalSheet.show<void>(
-                  context: context,
-                  pageListBuilder: (modalSheetContext) {
-                    return [
-                      WoltModalSheetPage(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddSessionView(missionUlid: missionUlid),
-                        ),
-                      ),
-                    ];
-                  },
-                ).then((_) {
-                  if (context.mounted) {
-                    context.read<GetMissionSessionsCubit>().getMissionSessions(
-                      missionUlid: missionUlid,
-                    );
-                  }
-                });
-              }
-              if (_currentTab == 3) {
-                WoltModalSheet.show<void>(
-                  context: context,
-                  pageListBuilder: (modalSheetContext) {
-                    return [
-                      WoltModalSheetPage(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddSoulView(missionUlid: missionUlid),
-                        ),
-                      ),
-                    ];
-                  },
-                ).then((_) {
-                  if (context.mounted) {
-                    context.read<GetSoulsCubit>().getSouls(
-                      missionUlid: missionUlid,
-                    );
-                  }
-                });
-              }
-              if (_currentTab == 4) {
-                WoltModalSheet.show<void>(
-                  context: context,
-                  pageListBuilder: (modalSheetContext) {
-                    return [
-                      WoltModalSheetPage(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddDebriefNoteViewHandset(
-                            missionUlid: missionUlid,
-                          ),
-                        ),
-                      ),
-                    ];
-                  },
-                ).then((_) {
-                  if (context.mounted) {
-                    context.read<GetDebriefNotesCubit>().getDebriefNotes(
-                      missionUlid: missionUlid,
-                    );
-                  }
-                });
-              }
-              if (_currentTab == 5) {
-                WoltModalSheet.show<void>(
-                  context: context,
-                  pageListBuilder: (modalSheetContext) {
-                    return [
-                      WoltModalSheetPage(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddMissionQuestionView(
-                            missionUlid: missionUlid,
-                          ),
-                        ),
-                      ),
-                    ];
-                  },
-                ).then((_) {
-                  if (context.mounted) {
-                    context
-                        .read<GetMissionQuestionsCubit>()
-                        .getMissionQuestions(
-                          missionUlid: missionUlid,
-                        );
-                  }
-                });
-              }
 
-              if (_currentTab == 7) {
-                WoltModalSheet.show<void>(
-                  context: context,
-                  pageListBuilder: (modalSheetContext) {
-                    return [
-                      WoltModalSheetPage(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        child: SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.8,
-                          child: AddMediaView(missionUlid: missionUlid),
-                        ),
-                      ),
-                    ];
-                  },
-                ).then((_) {
-                  if (context.mounted) {
-                    context.read<GetMissionMediaCubit>().getMissionMedia(
-                      missionUlid: missionUlid,
-                      collections: [
-                        PRFMediaModel.missionPhotos,
-                        PRFMediaModel.missionVideos,
-                      ],
-                    );
-                  }
-                });
-              }
-            },
+        const SizedBox(height: PRFSpacingTokens.md),
+
+        // Quick-add actions menu
+        PopupMenuButton<int>(
+          icon: Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary,
+              borderRadius: BorderRadius.circular(
+                PRFRadiusTokens.lg,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(
+                    alpha: 0.3,
+                  ),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Icon(
+              Icons.add_rounded,
+              size: 20,
+              color: theme.colorScheme.onPrimary,
+            ),
           ),
+          onSelected: (value) => _onAddAction(context, value, l10n),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 0,
+              child: Text(l10n.addSession),
+            ),
+            PopupMenuItem(
+              value: 1,
+              child: Text(l10n.addSoul),
+            ),
+            PopupMenuItem(
+              value: 2,
+              child: Text(l10n.addNote),
+            ),
+            PopupMenuItem(
+              value: 3,
+              child: Text(l10n.addQuestion),
+            ),
+            PopupMenuItem(
+              value: 4,
+              child: Text(l10n.addMissionPhotos),
+            ),
+          ],
         ),
-        _ => null,
-      },
+      ],
     );
+  }
+
+  void _onAddAction(
+    BuildContext context,
+    int action,
+    AppLocalizations l10n,
+  ) {
+    switch (action) {
+      case 0:
+        WoltModalSheet.show<void>(
+          context: context,
+          pageListBuilder: (modalSheetContext) {
+            return [
+              WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.8,
+                  child: AddSessionView(missionUlid: missionUlid),
+                ),
+              ),
+            ];
+          },
+        ).then((_) {
+          if (context.mounted) {
+            context
+                .read<GetMissionSessionsCubit>()
+                .getMissionSessions(missionUlid: missionUlid);
+          }
+        });
+      case 1:
+        WoltModalSheet.show<void>(
+          context: context,
+          pageListBuilder: (modalSheetContext) {
+            return [
+              WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.8,
+                  child: AddSoulView(missionUlid: missionUlid),
+                ),
+              ),
+            ];
+          },
+        ).then((_) {
+          if (context.mounted) {
+            context.read<GetSoulsCubit>().getSouls(
+              missionUlid: missionUlid,
+            );
+          }
+        });
+      case 2:
+        WoltModalSheet.show<void>(
+          context: context,
+          pageListBuilder: (modalSheetContext) {
+            return [
+              WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.8,
+                  child: AddDebriefNoteViewHandset(
+                    missionUlid: missionUlid,
+                  ),
+                ),
+              ),
+            ];
+          },
+        ).then((_) {
+          if (context.mounted) {
+            context.read<GetDebriefNotesCubit>().getDebriefNotes(
+              missionUlid: missionUlid,
+            );
+          }
+        });
+      case 3:
+        WoltModalSheet.show<void>(
+          context: context,
+          pageListBuilder: (modalSheetContext) {
+            return [
+              WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.8,
+                  child: AddMissionQuestionView(
+                    missionUlid: missionUlid,
+                  ),
+                ),
+              ),
+            ];
+          },
+        ).then((_) {
+          if (context.mounted) {
+            context
+                .read<GetMissionQuestionsCubit>()
+                .getMissionQuestions(missionUlid: missionUlid);
+          }
+        });
+      case 4:
+        WoltModalSheet.show<void>(
+          context: context,
+          pageListBuilder: (modalSheetContext) {
+            return [
+              WoltModalSheetPage(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                child: SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.8,
+                  child: AddMediaView(missionUlid: missionUlid),
+                ),
+              ),
+            ];
+          },
+        ).then((_) {
+          if (context.mounted) {
+            context.read<GetMissionMediaCubit>().getMissionMedia(
+              missionUlid: missionUlid,
+              collections: [
+                PRFMediaModel.missionPhotos,
+                PRFMediaModel.missionVideos,
+              ],
+            );
+          }
+        });
+    }
   }
 }

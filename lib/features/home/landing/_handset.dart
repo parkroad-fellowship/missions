@@ -1,18 +1,19 @@
+import 'package:app/features/home/landing/models/landing_action_item.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:prf_design/prf_design.dart';
 
 class LandingPageHandset extends StatelessWidget {
   const LandingPageHandset({required this.actions, super.key});
 
-  final List<List<Object>> actions;
+  final List<LandingActionItem> actions;
 
   @override
   Widget build(BuildContext context) {
@@ -166,13 +167,17 @@ class LandingPageHandset extends StatelessWidget {
                           onTap: () => context.router.pushPath(
                             PRFSuperAppRouter.announcementsRoute,
                           ),
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
                           child: Container(
                             width: 48,
                             height: 48,
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.smd,
+                              ),
                               border: Border.all(
                                 color: theme.colorScheme.outline.withValues(
                                   alpha: 0.2,
@@ -213,7 +218,12 @@ class LandingPageHandset extends StatelessWidget {
               // Title Section
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.xl, PRFSpacingTokens.xxl),
+                  padding: const EdgeInsets.fromLTRB(
+                    PRFSpacingTokens.xl,
+                    PRFSpacingTokens.xl,
+                    PRFSpacingTokens.xl,
+                    PRFSpacingTokens.xxl,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -253,14 +263,14 @@ class LandingPageHandset extends StatelessWidget {
                                 horizontal: PRFSpacingTokens.sm,
                               ),
                               child: PRFActionCard(
-                                title: action[0] as String,
+                                title: action.title,
                                 image: SvgPicture.asset(
-                                  action[1] as String,
+                                  action.assetPath,
                                 ),
-                                onTap: action[2] as VoidCallback,
+                                onTap: action.onTap,
                               ),
                             ),
-                            delay: action[3] as int,
+                            delay: action.animationDelay,
                           ),
                         )
                         .toList(),

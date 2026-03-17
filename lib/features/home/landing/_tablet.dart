@@ -1,17 +1,18 @@
+import 'package:app/features/home/landing/models/landing_action_item.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/_index.dart';
-import 'package:prf_design/prf_design.dart';
 import 'package:app/utils/_index.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:prf_design/prf_design.dart';
 
 class LandingPageTablet extends StatelessWidget {
   const LandingPageTablet({required this.actions, super.key});
 
-  final List<List<Object>> actions;
+  final List<LandingActionItem> actions;
 
   @override
   Widget build(BuildContext context) {
@@ -166,13 +167,17 @@ class LandingPageTablet extends StatelessWidget {
                           onTap: () => context.router.pushPath(
                             PRFSuperAppRouter.announcementsRoute,
                           ),
-                          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.md,
+                          ),
                           child: Container(
                             width: 56,
                             height: 56,
                             decoration: BoxDecoration(
                               color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.md,
+                              ),
                               border: Border.all(
                                 color: theme.colorScheme.outline.withValues(
                                   alpha: 0.2,
@@ -213,7 +218,12 @@ class LandingPageTablet extends StatelessWidget {
               // Title Section
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(PRFSpacingTokens.xxl, PRFSpacingTokens.xxl, PRFSpacingTokens.xxl, 48),
+                  padding: const EdgeInsets.fromLTRB(
+                    PRFSpacingTokens.xxl,
+                    PRFSpacingTokens.xxl,
+                    PRFSpacingTokens.xxl,
+                    48,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -242,7 +252,9 @@ class LandingPageTablet extends StatelessWidget {
 
               // Action Cards Grid
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xxl),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.xxl,
+                ),
                 sliver: SliverGrid(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -254,10 +266,10 @@ class LandingPageTablet extends StatelessWidget {
                     actions
                         .map(
                           (action) => _buildTabletActionCard(
-                            title: action[0] as String,
-                            assetPath: action[1] as String,
-                            onTap: action[2] as VoidCallback,
-                            delay: action[3] as int,
+                            title: action.title,
+                            assetPath: action.assetPath,
+                            onTap: action.onTap,
+                            delay: action.animationDelay,
                           ),
                         )
                         .toList(),
