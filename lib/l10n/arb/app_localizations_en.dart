@@ -952,6 +952,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prayerRequest => 'Prayer request';
 
   @override
+  String get recentPrayerRequests => 'Recent Prayer Requests';
+
+  @override
   String get prayerRequestSubmitted =>
       'Your prayer request has been submitted.';
 
@@ -1161,6 +1164,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapForActions => 'Press for payment actions';
+
+  @override
+  String get recentPayments => 'Recent Payments';
 
   @override
   String get tapToStartRecording => 'Tap to start recording';

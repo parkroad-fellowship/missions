@@ -30,115 +30,179 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      body: Column(
-        children: [
-          ColoredBox(
-            color: theme.colorScheme.primary,
-            child: PRFBrandedNavBar(
-              title: l10n.give,
-              onBack: () => context.router.popUntilRouteWithPath(
-                PRFSuperAppRouter.landingRoute,
-              ),
-              actions: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                    boxShadow: [
-                      BoxShadow(
-                        color: PRFColors.black.withValues(alpha: 0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
+    return BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
+      builder: (context, state) {
+        final payments = state.maybeWhen(
+          listLoaded: (values, _, _) => values,
+          orElse: List<PRFPayment>.empty,
+        );
+        final successfulCount = payments
+            .where(
+              (payment) => payment.paymentStatus == PRFPaymentStatus.success,
+            )
+            .length;
+        final pendingCount = payments
+            .where(
+              (payment) =>
+                  payment.paymentStatus == PRFPaymentStatus.pending ||
+                  payment.paymentStatus == PRFPaymentStatus.initialised,
+            )
+            .length;
+
+        return Scaffold(
+          backgroundColor: theme.colorScheme.surface,
+          body: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      theme.colorScheme.primary,
+                      theme.colorScheme.primary.withValues(alpha: 0.88),
                     ],
                   ),
-                  child: IconButton(
-                    onPressed: () =>
-                        context.read<PaymentResourceCubit>().loadAll(),
-                    icon: Icon(
-                      Icons.refresh_rounded,
-                      color: theme.colorScheme.onPrimaryContainer,
-                      size: 20,
-                    ),
-                  ),
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: PRFSpacingTokens.xl),
-                ),
-
-                // Loading Indicator
-                SliverToBoxAdapter(
-                  child:
-                      BlocBuilder<
-                        PaymentResourceCubit,
-                        ResourceState<PRFPayment>
-                      >(
-                        builder: (context, state) => state.maybeWhen(
-                          orElse: () => const PRFLinearProgressIndicator(),
-                          error: (_, _) => const SizedBox.shrink(),
-                          listLoaded: (_, _, _) => const SizedBox.shrink(),
+                child: SafeArea(
+                  bottom: false,
+                  child: Column(
+                    children: [
+                      PRFBrandedNavBar(
+                        title: l10n.give,
+                        onBack: () => context.router.popUntilRouteWithPath(
+                          PRFSuperAppRouter.landingRoute,
                         ),
-                      ),
-                ),
-
-                BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      orElse: () => const SliverFillRemaining(
-                        child: Center(child: PRFCircularProgressIndicator()),
-                      ),
-                      error: (message, _) => SliverFillRemaining(
-                        child: RefreshIndicator(
-                          onRefresh: () =>
-                              context.read<PaymentResourceCubit>().loadAll(),
-                          child: SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            child: Container(
-                              height: MediaQuery.sizeOf(context).height * 0.6,
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.error_outline_rounded,
-                                    size: 64,
-                                    color: theme.colorScheme.error,
-                                  ),
-                                  const SizedBox(height: PRFSpacingTokens.lg),
-                                  Text(
-                                    message,
-                                    style: theme.textTheme.bodyLarge,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                        actions: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.onPrimary.withValues(
+                                alpha: 0.14,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.smd,
+                              ),
+                            ),
+                            child: IconButton(
+                              onPressed: () => context
+                                  .read<PaymentResourceCubit>()
+                                  .loadAll(),
+                              icon: Icon(
+                                Icons.refresh_rounded,
+                                color: theme.colorScheme.onPrimary,
+                                size: 20,
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          PRFSpacingTokens.lg,
+                          PRFSpacingTokens.xs,
+                          PRFSpacingTokens.lg,
+                          PRFSpacingTokens.lg,
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.onPrimary.withValues(
+                              alpha: 0.1,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.lg,
+                            ),
+                            border: Border.all(
+                              color: theme.colorScheme.onPrimary.withValues(
+                                alpha: 0.15,
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.startGiving,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.colorScheme.onPrimary.withValues(
+                                    alpha: 0.9,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: PRFSpacingTokens.md),
+                              Wrap(
+                                spacing: PRFSpacingTokens.xs,
+                                runSpacing: PRFSpacingTokens.xs,
+                                children: [
+                                  _GivingStatPill(
+                                    label: l10n.total,
+                                    value: payments.length,
+                                  ),
+                                  _GivingStatPill(
+                                    label: PRFPaymentStatus.pending.name,
+                                    value: pendingCount,
+                                  ),
+                                  _GivingStatPill(
+                                    label: l10n.completed,
+                                    value: successfulCount,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      listLoaded: (payments, _, _) {
-                        if (payments.isEmpty) {
-                          return SliverFillRemaining(
-                            child: RefreshIndicator(
-                              onRefresh: () => context
-                                  .read<PaymentResourceCubit>()
-                                  .loadAll(),
-                              child: SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.lg,
-                                ),
-                                child: SizedBox(
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.6,
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () =>
+                      context.read<PaymentResourceCubit>().loadAll(),
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    slivers: [
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(
+                          PRFSpacingTokens.lg,
+                          PRFSpacingTokens.lg,
+                          PRFSpacingTokens.lg,
+                          110,
+                        ),
+                        sliver: state.maybeWhen(
+                          orElse: () => const SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
+                          ),
+                          listLoading: () => const SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
+                          ),
+                          error: (message, _) => SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: PRFEmptyView(
+                                label: l10n.considerGiving,
+                                description: message,
+                                icon: Icons.error_outline_rounded,
+                              ),
+                            ),
+                          ),
+                          listLoaded: (values, _, _) {
+                            if (values.isEmpty) {
+                              return SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: Align(
+                                  alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.considerGiving,
                                     description: l10n.startGiving,
@@ -147,120 +211,140 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                     onActionPressed: _addPayment,
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }
-                        return SliverPadding(
-                          padding: const EdgeInsets.only(
-                            left: PRFSpacingTokens.lg,
-                            right: PRFSpacingTokens.lg,
-                            bottom: 100, // Space for FAB
-                          ),
-                          sliver: SliverList.separated(
-                            itemCount: payments.length,
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: PRFSpacingTokens.lg),
-                            itemBuilder: (context, index) {
-                              final payment = payments[index];
-                              return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: PRFSpacingTokens.xs,
+                              );
+                            }
+
+                            return SliverList.builder(
+                              itemCount: values.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: PRFSpacingTokens.md,
                                     ),
-                                    child: Material(
-                                      color: PRFColors.transparent,
-                                      borderRadius: BorderRadius.circular(
-                                        PRFRadiusTokens.xl,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            l10n.recentPayments,
+                                            style: theme.textTheme.titleSmall
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: theme
+                                                      .colorScheme
+                                                      .onSurface
+                                                      .withValues(alpha: 0.78),
+                                                ),
+                                          ),
+                                        ),
+                                        Text(
+                                          '${values.length}',
+                                          style: theme.textTheme.labelMedium
+                                              ?.copyWith(
+                                                color: theme
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+
+                                final paymentIndex = index - 1;
+                                final payment = values[paymentIndex];
+                                return Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom:
+                                            paymentIndex == values.length - 1
+                                            ? 0
+                                            : PRFSpacingTokens.lg,
                                       ),
-                                      child: InkWell(
-                                        onTap: () =>
-                                            _showPaymentActions(payment),
+                                      child: Material(
+                                        color: PRFColors.transparent,
                                         borderRadius: BorderRadius.circular(
                                           PRFRadiusTokens.xl,
                                         ),
-                                        splashColor: theme.colorScheme.primary
-                                            .withValues(alpha: 0.1),
-                                        highlightColor: theme
-                                            .colorScheme
-                                            .primary
-                                            .withValues(alpha: 0.05),
-                                        child: PaymentCard(payment: payment),
+                                        child: InkWell(
+                                          onTap: () =>
+                                              _showPaymentActions(payment),
+                                          borderRadius: BorderRadius.circular(
+                                            PRFRadiusTokens.xl,
+                                          ),
+                                          splashColor: theme.colorScheme.primary
+                                              .withValues(alpha: 0.1),
+                                          highlightColor: theme
+                                              .colorScheme
+                                              .primary
+                                              .withValues(alpha: 0.05),
+                                          child: PaymentCard(payment: payment),
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                  .animate(
-                                    delay: Duration(milliseconds: index * 100),
-                                  )
-                                  .fadeIn(duration: PRFMotionTokens.enterShort)
-                                  .slideY(
-                                    begin: 0.3,
-                                    end: 0,
-                                    duration: PRFMotionTokens.enterShort,
-                                    curve: Curves.easeOutCubic,
-                                  )
-                                  .scale(
-                                    begin: const Offset(0.9, 0.9),
-                                    end: const Offset(1, 1),
-                                    duration: PRFMotionTokens.enterShort,
-                                    curve: Curves.easeOutCubic,
-                                  );
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-          boxShadow: [
-            BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child:
-            FloatingActionButton.extended(
-              backgroundColor: theme.colorScheme.primary,
-              foregroundColor: theme.colorScheme.onPrimary,
-              onPressed: _addPayment,
-              icon: const Icon(Icons.add_rounded),
-              label: Text(
-                l10n.give,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onPrimary,
+                                    )
+                                    .animate(
+                                      delay: Duration(
+                                        milliseconds: 70 * paymentIndex,
+                                      ),
+                                    )
+                                    .fadeIn(
+                                      duration: PRFMotionTokens.enterShort,
+                                    )
+                                    .slideY(
+                                      begin: 0.22,
+                                      end: 0,
+                                      duration: PRFMotionTokens.enterMedium,
+                                      curve: Curves.easeOutCubic,
+                                    );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ).animate(
-              effects: [
-                const ShimmerEffect(
-                  duration: Duration(seconds: 2),
-                  delay: PRFMotionTokens.enterShort,
-                ),
-                const ScaleEffect(
-                  begin: Offset(0.8, 0.8),
-                  end: Offset(1, 1),
-                  duration: PRFMotionTokens.slow,
+            ],
+          ),
+          floatingActionButton: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.28),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
-      ),
+            child:
+                FloatingActionButton.extended(
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: theme.colorScheme.onPrimary,
+                      onPressed: _addPayment,
+                      icon: const Icon(Icons.add_rounded),
+                      label: Text(
+                        l10n.give,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onPrimary,
+                        ),
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(duration: PRFMotionTokens.enterMedium)
+                    .slideY(begin: 0.2, end: 0),
+          ),
+        );
+      },
     );
   }
 
   void _addPayment() =>
       PRFBottomSheet.show<void>(
         context,
-        title: 'Add Payment',
+        title: context.l10n.give,
         child: const AddPaymentView(),
       ).then((_) {
         if (mounted) {
@@ -366,67 +450,116 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
       symbol: 'KES ',
     ).format(payment.amount);
 
-    return PRFDetailActionCard(
-      title: formattedAmount,
-      subtitle: '',
-      backgroundColor: theme.colorScheme.surface,
-      trailing: PRFStatusBadge(
-        label: payment.paymentStatus.name.toUpperCase(),
-        color: statusColor,
-        padding: const EdgeInsets.symmetric(
-          horizontal: PRFSpacingTokens.md,
-          vertical: PRFSpacingTokens.xs,
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
         ),
-        boxShadow: const [],
-        textStyle: theme.textTheme.labelSmall?.copyWith(
-          color: PRFColors.white,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.5,
-        ),
-      ),
-      footer: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.schedule_rounded,
-                size: 16,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(width: PRFSpacingTokens.sm),
-              Text(
-                DateFormatter.formatDateTime(payment.createdAt, timezone),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
           ),
-          if (payment.authorizationUrl != null &&
-              payment.paymentStatus != PRFPaymentStatus.success) ...[
-            const SizedBox(height: PRFSpacingTokens.md),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Row(
               children: [
-                Icon(
-                  Icons.info_outline_rounded,
-                  size: 16,
-                  color: theme.colorScheme.primary,
+                Container(
+                  padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                  ),
+                  child: Icon(
+                    Icons.volunteer_activism_rounded,
+                    color: theme.colorScheme.onPrimaryContainer,
+                    size: 20,
+                  ),
                 ),
-                const SizedBox(width: PRFSpacingTokens.sm),
+                const SizedBox(width: PRFSpacingTokens.md),
                 Expanded(
                   child: Text(
-                    l10n.tapForActions,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontStyle: FontStyle.italic,
+                    formattedAmount,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
                     ),
+                  ),
+                ),
+                PRFStatusBadge(
+                  label: payment.paymentStatus.name.toUpperCase(),
+                  color: statusColor,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.md,
+                    vertical: PRFSpacingTokens.xs,
+                  ),
+                  boxShadow: const [],
+                  textStyle: theme.textTheme.labelSmall?.copyWith(
+                    color: PRFColors.white,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: PRFSpacingTokens.md),
+            Row(
+              children: [
+                Icon(
+                  Icons.schedule_rounded,
+                  size: 16,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: PRFSpacingTokens.sm),
+                Expanded(
+                  child: Text(
+                    DateFormatter.formatDateTime(payment.createdAt, timezone),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.north_east_rounded,
+                  size: 18,
+                  color: theme.colorScheme.primary,
+                ),
+              ],
+            ),
+            if (payment.authorizationUrl != null &&
+                payment.paymentStatus != PRFPaymentStatus.success) ...[
+              const SizedBox(height: PRFSpacingTokens.sm),
+              Row(
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    size: 14,
+                    color: theme.colorScheme.primary,
+                  ),
+                  const SizedBox(width: PRFSpacingTokens.xs),
+                  Expanded(
+                    child: Text(
+                      l10n.tapForActions,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -445,5 +578,48 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
       default:
         return context.colorScheme.primary;
     }
+  }
+}
+
+class _GivingStatPill extends StatelessWidget {
+  const _GivingStatPill({required this.label, required this.value});
+
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.md,
+        vertical: PRFSpacingTokens.xs,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.onPrimary.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+      ),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '$value ',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            TextSpan(
+              text: label,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

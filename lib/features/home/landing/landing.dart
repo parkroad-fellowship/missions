@@ -133,7 +133,7 @@ class _LandingPageState extends State<LandingPage> {
           PRFSuperAppRouter.givingRoute,
         ),
         animationDelay: 0,
-        deskGroup: 'Community',
+        deskGroup: 'Faith & Ministry',
       ),
 
       // Extras

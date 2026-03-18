@@ -1864,6 +1864,12 @@ abstract class AppLocalizations {
   /// **'Prayer request'**
   String get prayerRequest;
 
+  /// No description provided for @recentPrayerRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Prayer Requests'**
+  String get recentPrayerRequests;
+
   /// No description provided for @prayerRequestSubmitted.
   ///
   /// In en, this message translates to:
@@ -2247,6 +2253,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Press for payment actions'**
   String get tapForActions;
+
+  /// No description provided for @recentPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Payments'**
+  String get recentPayments;
 
   /// No description provided for @tapToStartRecording.
   ///

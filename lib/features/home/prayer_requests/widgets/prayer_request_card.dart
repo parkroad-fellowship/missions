@@ -11,8 +11,10 @@ class PrayerRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final trimmedDescription = prayerRequest.description.trim();
 
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
       onTap: () => PRFBottomSheet.show<dynamic>(
         context,
         title: prayerRequest.title,
@@ -29,7 +31,7 @@ class PrayerRequestCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primaryContainer,
                       borderRadius: BorderRadius.circular(
-                        PRFRadiusTokens.smd,
+                        PRFRadiusTokens.md,
                       ),
                     ),
                     child: Icon(
@@ -42,8 +44,10 @@ class PrayerRequestCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       prayerRequest.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         color: theme.colorScheme.onSurface,
                       ),
                     ),
@@ -61,23 +65,75 @@ class PrayerRequestCard extends StatelessWidget {
           ),
         ),
       ),
-      child: PRFDetailActionCard(
-        title: prayerRequest.title,
-        subtitle: prayerRequest.description,
-        margin: const EdgeInsets.symmetric(
-          horizontal: PRFSpacingTokens.lg,
-          vertical: PRFSpacingTokens.sm,
-        ),
-        leading: Container(
-          padding: const EdgeInsets.all(PRFSpacingTokens.md),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+          border: Border.all(
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
           ),
-          child: Icon(
-            Icons.hail_rounded,
-            color: theme.colorScheme.onPrimaryContainer,
-            size: 24,
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.primary.withValues(alpha: 0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(PRFSpacingTokens.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                    ),
+                    child: Icon(
+                      Icons.hail_rounded,
+                      color: theme.colorScheme.onPrimaryContainer,
+                      size: 22,
+                    ),
+                  ),
+                  const SizedBox(width: PRFSpacingTokens.md),
+                  Expanded(
+                    child: Text(
+                      prayerRequest.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(PRFSpacingTokens.xs),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                    ),
+                    child: Icon(
+                      Icons.north_east_rounded,
+                      size: 18,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: PRFSpacingTokens.md),
+              Text(
+                trimmedDescription,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ),
         ),
       ).animate(effects: const [SaturateEffect()]),
