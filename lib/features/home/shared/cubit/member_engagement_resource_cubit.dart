@@ -12,31 +12,28 @@ class MemberEngagementResourceCubit
     extends Cubit<ResourceState<PRFMemberEngagement>> {
   MemberEngagementResourceCubit({
     required MemberService memberService,
-    HiveService? hiveService,
+    required HiveService hiveService,
   }) : _memberService = memberService,
        _hiveService = hiveService,
        super(const ResourceState.initial());
 
-  final MemberService _memberService;
-  final HiveService? _hiveService;
+  late final MemberService _memberService;
+  late final HiveService _hiveService;
 
   /// Load member engagement for a given member and year.
-  /// If [memberUlid] is not provided, retrieves it from HiveService.
   Future<void> loadEngagement({
     required int year,
-    String? memberUlid,
   }) async {
-    final ulid = memberUlid ?? _hiveService?.retrieveMember()?.ulid;
+    final ulid =  _hiveService.retrieveMember()?.ulid;
     if (ulid == null) {
       emit(const ResourceState.error(message: 'Member not found'));
       return;
     }
-    // ignore: parameter_assignments
-    memberUlid = ulid;
+
     emit(const ResourceState.listLoading());
     try {
       final engagement = await _memberService.fetchMemberEngagement(
-        memberUlid,
+        ulid,
         year,
       );
       emit(ResourceState.listLoaded(items: [engagement]));

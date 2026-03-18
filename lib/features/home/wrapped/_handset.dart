@@ -1,5 +1,6 @@
 import 'package:app/features/home/shared/cubit/member_engagement_resource_cubit.dart';
 import 'package:app/features/home/wrapped/pages/wrapped_pages.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
@@ -19,6 +20,14 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
   late PageController _pageController;
   int _currentPage = 0;
 
+  Future<void> _skipToSummary(int summaryIndex) async {
+    await _pageController.animateToPage(
+      summaryIndex,
+      duration: const Duration(milliseconds: 550),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +43,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return BlocBuilder<
       MemberEngagementResourceCubit,
@@ -49,46 +59,79 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
             }
             final memberEngagement = memberEngagementList.first;
             final year = DateTime.now().year;
-            final pages = <Widget>[
-              IntroWrappedPage(
-                memberName: memberEngagement.memberName,
-                year: year,
+            final pageEntries = <_WrappedPageEntry>[
+              _WrappedPageEntry(
+                title: l10n.wrappedTagline,
+                page: IntroWrappedPage(
+                  memberName: memberEngagement.memberName,
+                  year: year,
+                ),
               ),
-              MissionsWrappedPage(
-                missionStats: memberEngagement.missionStats,
+              _WrappedPageEntry(
+                title: l10n.wrappedMissionsTitle,
+                page: MissionsWrappedPage(
+                  missionStats: memberEngagement.missionStats,
+                ),
               ),
-              ImpactWrappedPage(
-                impactStats: memberEngagement.impactStats,
+              _WrappedPageEntry(
+                title: l10n.wrappedImpactTitle,
+                page: ImpactWrappedPage(
+                  impactStats: memberEngagement.impactStats,
+                ),
               ),
-              LearningWrappedPage(
-                learningStats: memberEngagement.learningStats,
+              _WrappedPageEntry(
+                title: l10n.wrappedLearningTitle,
+                page: LearningWrappedPage(
+                  learningStats: memberEngagement.learningStats,
+                ),
               ),
             ];
 
             // Add prayer page if there are prayer responses
             if (memberEngagement.prayerStats.prayerResponses > 0 ||
                 memberEngagement.prayerStats.prayerConsistencyDays > 0) {
-              pages.add(
-                PrayerWrappedPage(
-                  prayerStats: memberEngagement.prayerStats,
+              pageEntries.add(
+                _WrappedPageEntry(
+                  title: l10n.wrappedPrayerTitle,
+                  page: PrayerWrappedPage(
+                    prayerStats: memberEngagement.prayerStats,
+                  ),
                 ),
               );
             }
 
             // Add events page if there are events attended
             if (memberEngagement.eventStats.eventsAttended > 0) {
-              pages.add(
-                EventsWrappedPage(
-                  eventStats: memberEngagement.eventStats,
+              pageEntries.add(
+                _WrappedPageEntry(
+                  title: l10n.wrappedEventsTitle,
+                  page: EventsWrappedPage(
+                    eventStats: memberEngagement.eventStats,
+                  ),
                 ),
               );
             }
 
             // Always add summary as the last page
-            pages.add(
-              SummaryWrappedPage(
-                memberEngagement: memberEngagement,
-                year: year,
+            pageEntries.add(
+              _WrappedPageEntry(
+                title: l10n.wrappedSummaryTitle,
+                page: SummaryWrappedPage(
+                  memberEngagement: memberEngagement,
+                  year: year,
+                ),
+              ),
+            );
+
+            final pageCount = pageEntries.length;
+            final pages = List<Widget>.generate(
+              pageEntries.length,
+              (index) => Semantics(
+                label: l10n.wrappedPageSemantics(
+                  index + 1,
+                  pageEntries[index].title,
+                ),
+                child: pageEntries[index].page,
               ),
             );
 
@@ -109,9 +152,9 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                     left: 0,
                     right: 0,
                     child:
-                        WrappedPageIndicator(
+                        WrappedStoryPageIndicator(
                               currentPage: _currentPage,
-                              pageCount: pages.length,
+                              pageCount: pageCount,
                             )
                             .animate()
                             .fadeIn(
@@ -124,21 +167,32 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                     top: 60,
                     left: 16,
                     child:
-                        IconButton(
-                              icon: Container(
-                                padding: const EdgeInsets.all(
-                                  PRFSpacingTokens.sm,
+                        Semantics(
+                              label: l10n.wrappedCloseSemantics,
+                              button: true,
+                              child: IconButton(
+                                icon: Container(
+                                  padding: const EdgeInsets.all(
+                                    PRFSpacingTokens.sm,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: PRFColors.black.withValues(
+                                      alpha: 0.35,
+                                    ),
+                                    border: Border.all(
+                                      color: PRFColors.white.withValues(
+                                        alpha: 0.24,
+                                      ),
+                                    ),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: PRFColors.white,
+                                  ),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: PRFColors.black.withValues(alpha: 0.3),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.close,
-                                  color: PRFColors.white,
-                                ),
+                                onPressed: () => context.router.maybePop(),
                               ),
-                              onPressed: () => context.router.maybePop(),
                             )
                             .animate()
                             .fadeIn(
@@ -147,6 +201,57 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                             )
                             .scale(delay: PRFMotionTokens.standard),
                   ),
+                  if (_currentPage < pageCount - 1)
+                    Positioned(
+                      top: 60,
+                      right: 16,
+                      child:
+                          Semantics(
+                                label: l10n.wrappedSkipToSummarySemantics,
+                                button: true,
+                                child: TextButton.icon(
+                                  onPressed: () =>
+                                      _skipToSummary(pageCount - 1),
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: PRFSpacingTokens.md,
+                                      vertical: PRFSpacingTokens.sm,
+                                    ),
+                                    backgroundColor: PRFColors.black.withValues(
+                                      alpha: 0.35,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        PRFRadiusTokens.xl,
+                                      ),
+                                      side: BorderSide(
+                                        color: PRFColors.white.withValues(
+                                          alpha: 0.24,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  icon: const Icon(
+                                    Icons.skip_next_rounded,
+                                    color: PRFColors.white,
+                                    size: 18,
+                                  ),
+                                  label: Text(
+                                    l10n.wrappedSkipToSummary,
+                                    style: theme.textTheme.labelLarge?.copyWith(
+                                      color: PRFColors.white,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .animate()
+                              .fadeIn(
+                                delay: 1200.ms,
+                                duration: PRFMotionTokens.enterShort,
+                              )
+                              .slideX(begin: 0.2, end: 0),
+                    ),
                 ],
               ),
             );
@@ -180,6 +285,8 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
   }
 
   Widget _buildEmptyState() {
+    final l10n = context.l10n;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -197,12 +304,10 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
             ),
             Expanded(
               child: PRFEmptyView(
-                label: 'No Impact Data Yet',
-                description:
-                    'Start participating in missions and '
-                    'activities to see your impact wrapped!',
+                label: l10n.wrappedNoImpactDataTitle,
+                description: l10n.wrappedNoImpactDataDescription,
                 icon: Icons.insights_rounded,
-                actionLabel: 'Go Back',
+                actionLabel: l10n.wrappedGoBack,
                 onActionPressed: () => context.router.maybePop(),
               ),
             ),
@@ -213,6 +318,8 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
   }
 
   Widget _buildErrorState(String message) {
+    final l10n = context.l10n;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -230,10 +337,10 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
             ),
             Expanded(
               child: PRFEmptyView(
-                label: 'Something Went Wrong',
+                label: l10n.wrappedSomethingWentWrong,
                 description: message,
                 icon: Icons.error_outline_rounded,
-                actionLabel: 'Try Again',
+                actionLabel: l10n.wrappedTryAgain,
                 onActionPressed: () {
                   context.read<MemberEngagementResourceCubit>().loadEngagement(
                     year: DateTime.now().year,
@@ -246,4 +353,14 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
       ),
     );
   }
+}
+
+class _WrappedPageEntry {
+  const _WrappedPageEntry({
+    required this.title,
+    required this.page,
+  });
+
+  final String title;
+  final Widget page;
 }

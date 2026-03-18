@@ -14,6 +14,7 @@ class MembersModule {
       BlocProvider<MemberEngagementResourceCubit>(
         create: (context) => MemberEngagementResourceCubit(
           memberService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];

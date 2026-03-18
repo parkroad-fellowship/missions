@@ -1224,6 +1224,168 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wrapped => 'View my impact';
 
   @override
+  String get wrappedTagline => 'Missions Wrapped';
+
+  @override
+  String get wrappedSwipeHint => 'Swipe to feel your journey';
+
+  @override
+  String wrappedYourYear(int year) {
+    return 'Your $year';
+  }
+
+  @override
+  String get wrappedMissionsTitle => 'Your Mission Journey';
+
+  @override
+  String get wrappedTotalMissions => 'Total Missions';
+
+  @override
+  String get wrappedSchoolsReached => 'Schools Reached';
+
+  @override
+  String get wrappedCompletion => 'Completion';
+
+  @override
+  String wrappedMissionStreakTitle(int count) {
+    return '$count mission streak';
+  }
+
+  @override
+  String get wrappedMissionStreakSubtitle => 'Consistency looks great on you';
+
+  @override
+  String get wrappedImpactTitle => 'Your Impact';
+
+  @override
+  String get wrappedSoulsTouched => 'Souls Touched';
+
+  @override
+  String wrappedMostImpactfulMissionSubtitle(int soulsCount) {
+    return 'Your most impactful mission reached $soulsCount souls';
+  }
+
+  @override
+  String get wrappedDecisionTypes => 'Decision Types';
+
+  @override
+  String get wrappedDecisionTypesSubtitle =>
+      'Top categories from your mission impact';
+
+  @override
+  String get wrappedLearningTitle => 'Your Learning Growth';
+
+  @override
+  String get wrappedCoursesCompleted => 'Courses Completed';
+
+  @override
+  String get wrappedLessonsCompleted => 'Lessons Completed';
+
+  @override
+  String get wrappedOverallProgress => 'Overall Progress';
+
+  @override
+  String wrappedLearningStreakTitle(int count) {
+    return '$count day learning streak';
+  }
+
+  @override
+  String get wrappedLearningStreakSubtitle => 'Keep the momentum alive';
+
+  @override
+  String get wrappedPrayerTitle => 'Your Prayer Journey';
+
+  @override
+  String get wrappedPrayerResponses => 'Prayer Responses';
+
+  @override
+  String wrappedPrayerConsistencyTitle(int count) {
+    return '$count days of prayer';
+  }
+
+  @override
+  String get wrappedPrayerConsistencySubtitle => 'Your faith journey continues';
+
+  @override
+  String get wrappedEventsTitle => 'Your Event Participation';
+
+  @override
+  String get wrappedEventsAttended => 'Events Attended';
+
+  @override
+  String get wrappedUpcomingEvents => 'Upcoming Events';
+
+  @override
+  String get wrappedActiveParticipantTitle => 'Active Participant';
+
+  @override
+  String get wrappedActiveParticipantSubtitle =>
+      'Thank you for being part of this community';
+
+  @override
+  String get wrappedSummaryTitle => 'What a Year!';
+
+  @override
+  String wrappedHighlightsTitle(int year) {
+    return '$year highlights';
+  }
+
+  @override
+  String get wrappedHighlightsSubtitle => 'A snapshot of your impact this year';
+
+  @override
+  String get wrappedMissionsLabel => 'Missions';
+
+  @override
+  String get wrappedCoursesLabel => 'Courses';
+
+  @override
+  String get wrappedEventsLabel => 'Events';
+
+  @override
+  String wrappedThankYouSubtitle(int year) {
+    return 'Thank you for making an impact in $year!';
+  }
+
+  @override
+  String get wrappedNextYearCta => 'Let\'s make next year even better!';
+
+  @override
+  String get wrappedNoImpactDataTitle => 'No Impact Data Yet';
+
+  @override
+  String get wrappedNoImpactDataDescription =>
+      'Start participating in missions and activities to see your impact wrapped!';
+
+  @override
+  String get wrappedGoBack => 'Go Back';
+
+  @override
+  String get wrappedSomethingWentWrong => 'Something Went Wrong';
+
+  @override
+  String get wrappedTryAgain => 'Try Again';
+
+  @override
+  String get wrappedCloseSemantics => 'Close wrapped';
+
+  @override
+  String get wrappedSkipToSummary => 'Skip';
+
+  @override
+  String get wrappedSkipToSummarySemantics => 'Skip to summary page';
+
+  @override
+  String wrappedPageSemantics(int pageNumber, String title) {
+    return 'Page $pageNumber: $title';
+  }
+
+  @override
+  String wrappedProgressSemantics(int currentPage, int totalPages) {
+    return 'Wrapped page $currentPage of $totalPages';
+  }
+
+  @override
   String impact(int year) {
     return '$year Review';
   }
