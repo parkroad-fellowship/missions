@@ -198,7 +198,7 @@ class LandingPageHandset extends StatelessWidget {
 
   Widget _buildNotificationButton(BuildContext context, ThemeData theme) {
     return Material(
-      color: Colors.transparent,
+      color: PRFColors.transparent,
       child: InkWell(
         onTap: () => context.router.pushPath(
           PRFSuperAppRouter.announcementsRoute,

@@ -46,26 +46,34 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
-          builder: (context, state) {
-            final lessonModule = state.maybeWhen(
-              listLoaded: (items, _, _) =>
-                  items.isNotEmpty ? items.first : null,
-              orElse: () => null,
-            );
+      backgroundColor: theme.colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: theme.colorScheme.primary,
+            child: PRFBrandedNavBar(
+              title: l10n.lessonDetails,
+              onBack: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.moduleDetailsRoute,
+              ),
+            ),
+          ),
+          Expanded(
+            child: BlocBuilder<
+              LessonResourceCubit,
+              ResourceState<PRFLessonModule>
+            >(
+              builder: (context, state) {
+                final lessonModule = state.maybeWhen(
+                  listLoaded: (items, _, _) =>
+                      items.isNotEmpty ? items.first : null,
+                  orElse: () => null,
+                );
 
-            return CustomScrollView(
-              slivers: [
-                PRFNavBar(
-                  title: l10n.lessonDetails,
-                  backgroundColor: theme.colorScheme.surface,
-                  onBack: () => context.router.popUntilRouteWithPath(
-                    PRFSuperAppRouter.moduleDetailsRoute,
-                  ),
-                ),
-                // Lesson name
-                SliverToBoxAdapter(
+                return CustomScrollView(
+                  slivers: [
+                    // Lesson name
+                    SliverToBoxAdapter(
                   child: _buildLessonName(lessonModule, theme),
                 ),
                 const SliverToBoxAdapter(
@@ -99,10 +107,12 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 SliverToBoxAdapter(
                   child: _buildCompleteButton(lessonModule, l10n),
                 ),
-              ],
-            );
-          },
-        ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

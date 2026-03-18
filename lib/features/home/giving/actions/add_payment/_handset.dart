@@ -91,7 +91,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
                         listLoading: () =>
-                            const Center(child: LinearProgressIndicator()),
+                            const Center(child: PRFLinearProgressIndicator()),
                         listLoaded: (classes, _, _) =>
                             PRFSearchableList<PRFPaymentType>(
                               entries: classes

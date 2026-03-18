@@ -154,8 +154,13 @@ class _StudentEnquiryRepliesPageHandsetState
         isIncoming: isStudent,
         showStatusIndicator: !isStudent,
         margin: EdgeInsets.only(
-          left: isStudent ? 16 : 80,
-          right: isStudent ? 80 : 16,
+          left: isStudent
+              ? PRFSpacingTokens.lg
+              : 80, // 80 = wide offset for outgoing bubble alignment
+          right: isStudent
+              ? 80
+              : PRFSpacingTokens
+                    .lg, // 80 = wide offset for incoming bubble alignment
           top: PRFSpacingTokens.xs,
           bottom: PRFSpacingTokens.xs,
         ),
@@ -207,74 +212,78 @@ class _StudentEnquiryRepliesPageHandsetState
 
     return FadeTransition(
       opacity: _fadeAnimation,
-      child: BlocBuilder<EnquiryResourceCubit, ResourceState<PRFStudentEnquiry>>(
-        builder: (context, enquiryState) {
-          final enquiry = enquiryState.maybeWhen(
-            listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
-            orElse: () => null,
-          );
-
-          if (enquiry == null) {
-            return enquiryState.maybeWhen(
-              listLoading: () => const Scaffold(
-                body: Center(
-                  child: PRFCircularProgressIndicator(),
-                ),
-              ),
-              orElse: () => Scaffold(
-                body: Center(
-                  child: PRFEmptyView(
-                    label: l10n.noQuestions,
-                    description: l10n.pleaseWait,
-                  ),
-                ),
-              ),
-            );
-          }
-
-          return BlocBuilder<
-            EnquiryReplyResourceCubit,
-            ResourceState<PRFStudentEnquiryReply>
-          >(
-            builder: (context, replyState) {
-              WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
-
-              final replies = replyState.maybeWhen(
-                listLoaded: (items, _, _) => items,
+      child:
+          BlocBuilder<EnquiryResourceCubit, ResourceState<PRFStudentEnquiry>>(
+            builder: (context, enquiryState) {
+              final enquiry = enquiryState.maybeWhen(
+                listLoaded: (items, _, _) =>
+                    items.isNotEmpty ? items.first : null,
                 orElse: () => null,
               );
 
-              final enquiryReplies = replies == null
-                  ? <PRFStudentEnquiryReply>[]
-                  : <PRFStudentEnquiryReply>[
-                      PRFStudentEnquiryReply(
-                        enquiryUlid,
-                        enquiry.content,
-                        PRFMorphType.student,
-                        enquiry.createdAt,
-                        enquiry.updatedAt,
+              if (enquiry == null) {
+                return enquiryState.maybeWhen(
+                  listLoading: () => const Scaffold(
+                    body: Center(
+                      child: PRFCircularProgressIndicator(),
+                    ),
+                  ),
+                  orElse: () => Scaffold(
+                    body: Center(
+                      child: PRFEmptyView(
+                        label: l10n.noQuestions,
+                        description: l10n.pleaseWait,
                       ),
-                      ...replies,
-                    ];
+                    ),
+                  ),
+                );
+              }
 
-              return PRFChatView<PRFStudentEnquiryReply>(
-                title: l10n.studentQuestions,
-                onBack: () => context.router.popUntilRouteWithPath(
-                  PRFSuperAppRouter.studentEnquiriesRoute,
-                ),
-                scrollController: _scrollController,
-                loading: replies == null,
-                emptyLabel: l10n.noQuestions,
-                emptyDescription: l10n.pleaseWait,
-                messages: enquiryReplies,
-                messageBuilder: (context, message, index) =>
-                    _buildMessageBubble(message, index),
-                composer: _buildEnhancedInputArea(),
+              return BlocBuilder<
+                EnquiryReplyResourceCubit,
+                ResourceState<PRFStudentEnquiryReply>
+              >(
+                builder: (context, replyState) {
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (_) => _scrollToBottom(),
+                  );
+
+                  final replies = replyState.maybeWhen(
+                    listLoaded: (items, _, _) => items,
+                    orElse: () => null,
+                  );
+
+                  final enquiryReplies = replies == null
+                      ? <PRFStudentEnquiryReply>[]
+                      : <PRFStudentEnquiryReply>[
+                          PRFStudentEnquiryReply(
+                            enquiryUlid,
+                            enquiry.content,
+                            PRFMorphType.student,
+                            enquiry.createdAt,
+                            enquiry.updatedAt,
+                          ),
+                          ...replies,
+                        ];
+
+                  return PRFChatView<PRFStudentEnquiryReply>(
+                    title: l10n.studentQuestions,
+                    onBack: () => context.router.popUntilRouteWithPath(
+                      PRFSuperAppRouter.studentEnquiriesRoute,
+                    ),
+                    scrollController: _scrollController,
+                    loading: replies == null,
+                    emptyLabel: l10n.noQuestions,
+                    emptyDescription: l10n.pleaseWait,
+                    messages: enquiryReplies,
+                    messageBuilder: (context, message, index) =>
+                        _buildMessageBubble(message, index),
+                    composer: _buildEnhancedInputArea(),
+                  );
+                },
               );
             },
-          );
-        },
-      ),
+          ),
     );
   }
 }

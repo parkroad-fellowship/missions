@@ -7,7 +7,6 @@ import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PendingUploadsWidget extends StatefulWidget {
   const PendingUploadsWidget({
@@ -130,20 +129,15 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                               ),
                         ),
                       ),
-                      TextButton(
+                      PRFSecondaryButton(
                         onPressed: () => _showPendingUploadsDetails(
                           context,
                           sessionUploads,
                         ),
-                        child: Text(
-                          '${sessionUploads.length} '
-                          '${sessionUploads.length == 1 ? 'recording' : 'record'
+                        title: '${sessionUploads.length} '
+                            '${sessionUploads.length == 1 ? 'recording' : 'record'
                                     'ings'}',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.error,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        disabled: false,
                       ),
                     ],
                   ),
@@ -309,96 +303,81 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
     BuildContext context,
     List<PRFFailedRecordingUpload> pendingUploads,
   ) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            navBarHeight: 8,
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            child: SizedBox(
-              height:
-                  MediaQuery.sizeOf(
-                    context,
-                  ).height *
-                  0.6,
-              child: Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Pending Uploads',
-                            style: Theme.of(context).textTheme.headlineSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Pending Uploads',
+      child: Container(
+        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Pending Uploads',
+                    style: Theme.of(context).textTheme.headlineSmall
+                        ?.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
-                        StreamBuilder<UploadRetryProgress>(
-                          stream: getIt<FailedRecordingUploadService>()
-                              .retryProgressStream,
-                          builder: (context, progressSnapshot) {
-                            final progress =
-                                progressSnapshot.data ??
-                                UploadRetryProgress.idle;
-
-                            return PRFPrimaryButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                _retryAllUploads(context);
-                              },
-                              title: progress.isRetrying
-                                  ? 'Uploading...'
-                                  : 'Retry All',
-                              disabled: progress.isRetrying,
-                              isLoading: progress.isRetrying,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-
-                    // Progress indicator in modal
-                    StreamBuilder<UploadRetryProgress>(
-                      stream: getIt<FailedRecordingUploadService>()
-                          .retryProgressStream,
-                      builder: (context, progressSnapshot) {
-                        final progress =
-                            progressSnapshot.data ?? UploadRetryProgress.idle;
-
-                        if (progress.isRetrying) {
-                          return Column(
-                            children: [
-                              const SizedBox(height: PRFSpacingTokens.sm),
-                              _buildProgressIndicator(context, progress),
-                              const SizedBox(height: PRFSpacingTokens.lg),
-                            ],
-                          );
-                        }
-                        return const SizedBox(height: PRFSpacingTokens.lg);
-                      },
-                    ),
-
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: pendingUploads.length,
-                        itemBuilder: (context, index) {
-                          final upload = pendingUploads[index];
-                          return _buildUploadItem(context, upload);
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+                StreamBuilder<UploadRetryProgress>(
+                  stream: getIt<FailedRecordingUploadService>()
+                      .retryProgressStream,
+                  builder: (context, progressSnapshot) {
+                    final progress =
+                        progressSnapshot.data ??
+                        UploadRetryProgress.idle;
+
+                    return PRFPrimaryButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _retryAllUploads(context);
+                      },
+                      title: progress.isRetrying
+                          ? 'Uploading...'
+                          : 'Retry All',
+                      disabled: progress.isRetrying,
+                      isLoading: progress.isRetrying,
+                    );
+                  },
+                ),
+              ],
+            ),
+
+            // Progress indicator in modal
+            StreamBuilder<UploadRetryProgress>(
+              stream: getIt<FailedRecordingUploadService>()
+                  .retryProgressStream,
+              builder: (context, progressSnapshot) {
+                final progress =
+                    progressSnapshot.data ?? UploadRetryProgress.idle;
+
+                if (progress.isRetrying) {
+                  return Column(
+                    children: [
+                      const SizedBox(height: PRFSpacingTokens.sm),
+                      _buildProgressIndicator(context, progress),
+                      const SizedBox(height: PRFSpacingTokens.lg),
+                    ],
+                  );
+                }
+                return const SizedBox(height: PRFSpacingTokens.lg);
+              },
+            ),
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: pendingUploads.length,
+                itemBuilder: (context, index) {
+                  final upload = pendingUploads[index];
+                  return _buildUploadItem(context, upload);
+                },
               ),
             ),
-          ),
-        ];
-      },
+          ],
+        ),
+      ),
     );
   }
 
@@ -438,7 +417,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                     ? Theme.of(
                         context,
                       ).colorScheme.primary.withValues(alpha: 0.1)
-                    : Colors.black.withValues(alpha: 0.03),
+                    : PRFColors.black.withValues(alpha: 0.03),
                 blurRadius: isCurrentlyUploading ? 8 : 4,
                 offset: const Offset(0, 2),
               ),
@@ -487,7 +466,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                       : Theme.of(
                                           context,
                                         ).textTheme.bodyMedium?.color,
-                                  letterSpacing: -0.2,
                                 ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -502,7 +480,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                     ).colorScheme.primary,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.italic,
-                                    fontSize: 11,
                                   ),
                             ),
                           ] else ...[
@@ -518,7 +495,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                           alpha: 0.6,
                                         ),
                                     fontStyle: FontStyle.italic,
-                                    fontSize: 11,
                                   ),
                             ),
                           ],
@@ -538,11 +514,8 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         child: SizedBox(
                           width: PRFSpacingTokens.lg,
                           height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).colorScheme.primary,
-                            ),
+                          child: PRFCircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       )
@@ -604,7 +577,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                 color: Theme.of(
                                   context,
                                 ).colorScheme.onSurface.withValues(alpha: 0.7),
-                                fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
@@ -631,7 +603,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                 color: upload.retryCount > 3
                                     ? Theme.of(context).colorScheme.error
                                     : Theme.of(context).colorScheme.primary,
-                                fontSize: 11,
                                 fontWeight: FontWeight.w600,
                               ),
                         ),

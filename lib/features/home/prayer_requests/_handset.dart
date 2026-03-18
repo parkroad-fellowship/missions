@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PrayerRequestHandset extends StatefulWidget {
   const PrayerRequestHandset({super.key});
@@ -31,76 +30,84 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            PRFNavBar(
+      backgroundColor: theme.colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: theme.colorScheme.primary,
+            child: PRFBrandedNavBar(
               title: l10n.prayerRequests,
               onBack: () => context.router.back(),
-              backgroundColor: theme.colorScheme.surface,
             ),
-
-            BlocBuilder<
-              PrayerRequestResourceCubit,
-              ResourceState<PRFPrayerRequest>
-            >(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () => const SliverFillRemaining(
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                  error: (message, _) => SliverFillRemaining(
-                    child: Center(child: Text(message)),
-                  ),
-                  listLoaded: (prayerRequests, _, _) {
-                    if (prayerRequests.isEmpty) {
-                      return SliverFillRemaining(
-                        child: RefreshIndicator(
-                          onRefresh: () => context
-                              .read<PrayerRequestResourceCubit>()
-                              .loadAll(),
-                          child: ListView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            children: [
-                              const SizedBox(height: 64),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.lg,
-                                ),
-                                child: PRFEmptyView(
-                                  label: l10n.noPrayerRequests,
-                                  description: l10n.noPrayerRequestsDesc,
-                                  icon: Icons.hail_rounded,
-                                  actionLabel: l10n.submitPrayerRequest,
-                                  onActionPressed: _addPrayerRequest,
-                                ),
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                BlocBuilder<
+                  PrayerRequestResourceCubit,
+                  ResourceState<PRFPrayerRequest>
+                >(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      orElse: () => const SliverFillRemaining(
+                        child: Center(child: PRFCircularProgressIndicator()),
+                      ),
+                      error: (message, _) => SliverFillRemaining(
+                        child: Center(child: Text(message)),
+                      ),
+                      listLoaded: (prayerRequests, _, _) {
+                        if (prayerRequests.isEmpty) {
+                          return SliverFillRemaining(
+                            child: RefreshIndicator(
+                              onRefresh: () => context
+                                  .read<PrayerRequestResourceCubit>()
+                                  .loadAll(),
+                              child: ListView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                children: [
+                                  const SizedBox(height: 64),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: PRFSpacingTokens.lg,
+                                    ),
+                                    child: PRFEmptyView(
+                                      label: l10n.noPrayerRequests,
+                                      description: l10n.noPrayerRequestsDesc,
+                                      icon: Icons.hail_rounded,
+                                      actionLabel: l10n.submitPrayerRequest,
+                                      onActionPressed: _addPrayerRequest,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
+                            ),
+                          );
+                        }
 
-                    return SliverList.separated(
-                      itemCount: prayerRequests.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: PRFSpacingTokens.xl),
-                      itemBuilder: (context, index) {
-                        final prayerRequest = prayerRequests[index];
-                        return PrayerRequestCard(
-                              prayerRequest: prayerRequest,
-                            )
-                            .animate(delay: Duration(milliseconds: 80 * index))
-                            .fadeIn(duration: PRFMotionTokens.enterShort)
-                            .slideY(begin: 0.1, end: 0);
+                        return SliverList.separated(
+                          itemCount: prayerRequests.length,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: PRFSpacingTokens.xl),
+                          itemBuilder: (context, index) {
+                            final prayerRequest = prayerRequests[index];
+                            return PrayerRequestCard(
+                                  prayerRequest: prayerRequest,
+                                )
+                                .animate(
+                                  delay: Duration(milliseconds: 80 * index),
+                                )
+                                .fadeIn(duration: PRFMotionTokens.enterShort)
+                                .slideY(begin: 0.1, end: 0);
+                          },
+                        );
                       },
                     );
                   },
-                );
-              },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: Animate(
         effects: const [
@@ -121,18 +128,10 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
   }
 
   void _addPrayerRequest() =>
-      WoltModalSheet.show<void>(
-        context: context,
-        pageListBuilder: (modalSheetContext) => [
-          WoltModalSheetPage(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            surfaceTintColor: Colors.transparent,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              child: const AddPrayerRequestView(),
-            ),
-          ),
-        ],
+      PRFBottomSheet.show<void>(
+        context,
+        title: 'Submit Prayer Request',
+        child: const AddPrayerRequestView(),
       ).then((_) {
         if (!mounted) return;
         context.read<PrayerRequestResourceCubit>().loadAll();

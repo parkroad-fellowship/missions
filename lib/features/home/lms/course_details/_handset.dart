@@ -39,15 +39,16 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            PRFNavBar(
+      backgroundColor: theme.colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: theme.colorScheme.primary,
+            child: PRFBrandedNavBar(
               onBack: () => context.router.popUntilRouteWithPath(
                 PRFSuperAppRouter.lmsRoute,
               ),
               title: l10n.courseDetails,
-              backgroundColor: theme.colorScheme.surface,
               actions: [
                 BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
                   builder: (context, state) {
@@ -82,7 +83,6 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: theme.colorScheme.onPrimary,
                           fontWeight: FontWeight.w600,
-                          letterSpacing: 0.2,
                         ),
                       ),
                     );
@@ -90,7 +90,11 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                 ),
               ],
             ),
-            SliverToBoxAdapter(
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
               child:
                   BlocBuilder<
                     ModuleResourceCubit,
@@ -135,8 +139,10 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                 );
               },
             ),
-          ],
-        ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

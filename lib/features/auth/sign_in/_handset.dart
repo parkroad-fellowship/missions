@@ -84,13 +84,13 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   PRFSpacingTokens.lg,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: PRFColors.white,
                                   borderRadius: BorderRadius.circular(
                                     PRFRadiusTokens.md,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withValues(
+                                      color: PRFColors.black.withValues(
                                         alpha: 0.1,
                                       ),
                                       blurRadius: 16,
@@ -114,7 +114,6 @@ class _SignInHandsetState extends State<SignInHandset> {
                               style: theme.textTheme.headlineLarge?.copyWith(
                                 color: theme.colorScheme.primary,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 32,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -125,7 +124,6 @@ class _SignInHandsetState extends State<SignInHandset> {
                               l10n.welcomeBack,
                               style: theme.textTheme.bodyLarge?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
-                                fontSize: 16,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -258,7 +256,6 @@ class _SignInHandsetState extends State<SignInHandset> {
                                                         .colorScheme
                                                         .onSurfaceVariant,
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 14,
                                                   ),
                                             ),
                                           ),
@@ -305,7 +302,6 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   ),
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
-                                    fontSize: 12,
                                   ),
                                 ),
                               ),

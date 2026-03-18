@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class EventGalleryViewHandset extends StatefulWidget {
   const EventGalleryViewHandset({required this.eventUlid, super.key});
@@ -92,7 +91,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
               return state.maybeWhen(
                 orElse: () => SliverFillRemaining(
                   child: Center(
-                    child: CircularProgressIndicator(
+                    child: PRFCircularProgressIndicator(
                       color: theme.colorScheme.primary,
                     ),
                   ),
@@ -252,7 +251,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
             borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: PRFColors.black.withValues(alpha: 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -272,9 +271,8 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                         return ColoredBox(
                           color: theme.colorScheme.surfaceContainerHighest,
                           child: Center(
-                            child: CircularProgressIndicator(
+                            child: PRFCircularProgressIndicator(
                               color: theme.colorScheme.primary,
-                              strokeWidth: 2,
                             ),
                           ),
                         );
@@ -299,8 +297,8 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.transparent,
-                        Colors.black.withValues(alpha: 0.1),
+                        PRFColors.transparent,
+                        PRFColors.black.withValues(alpha: 0.1),
                       ],
                     ),
                   ),
@@ -314,22 +312,12 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
   }
 
   void _showAddMediaModal(BuildContext context) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              child: AddEventMediaView(
-                eventUlid: eventUlid,
-              ),
-            ),
-          ),
-        ];
-      },
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Add Photos',
+      child: AddEventMediaView(
+        eventUlid: eventUlid,
+      ),
     );
   }
 }

@@ -297,7 +297,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     loading: () => const SizedBox.square(
                       dimension: 16,
                       child: PRFCircularProgressIndicator(
-                        color: Colors.white,
+                        color: PRFColors.white,
                       ),
                     ),
                   ),

@@ -27,60 +27,69 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
-          builder: (context, state) {
-            return CustomScrollView(
-              slivers: [
-                PRFNavBar(
-                  title: l10n.learn,
-                  backgroundColor: theme.colorScheme.surface,
-                ),
-                ...state.maybeWhen(
-                  listLoading: () => [
-                    const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-                        child: PRFLinearProgressIndicator(),
-                      ),
-                    ),
-                  ],
-                  listLoaded: (courses, _, _) {
-                    if (courses.isEmpty) {
-                      return [
-                        SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: PRFEmptyView(
-                            label: l10n.noCourses,
-                            description: l10n.pleaseWait,
+      backgroundColor: theme.colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: theme.colorScheme.primary,
+            child: PRFBrandedNavBar(
+              title: l10n.learn,
+            ),
+          ),
+          Expanded(
+            child: BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
+              builder: (context, state) {
+                return CustomScrollView(
+                  slivers: [
+                    ...state.maybeWhen(
+                      listLoading: () => [
+                        const SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: PRFSpacingTokens.lg,
+                            ),
+                            child: PRFLinearProgressIndicator(),
                           ),
                         ),
-                      ];
-                    }
-                    return [
-                      SliverList.separated(
-                        itemCount: courses.length,
-                        itemBuilder: (context, index) =>
-                            CourseActionCard(course: courses[index]),
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: PRFSpacingTokens.lg),
-                      ),
-                    ];
-                  },
-                  error: (message, _) => [
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(child: Text(message)),
+                      ],
+                      listLoaded: (courses, _, _) {
+                        if (courses.isEmpty) {
+                          return [
+                            SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: PRFEmptyView(
+                                label: l10n.noCourses,
+                                description: l10n.pleaseWait,
+                              ),
+                            ),
+                          ];
+                        }
+                        return [
+                          SliverList.separated(
+                            itemCount: courses.length,
+                            itemBuilder: (context, index) =>
+                                CourseActionCard(course: courses[index]),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: PRFSpacingTokens.lg),
+                          ),
+                        ];
+                      },
+                      error: (message, _) => [
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Center(child: Text(message)),
+                        ),
+                      ],
+                      orElse: () => [
+                        const SliverToBoxAdapter(child: SizedBox.shrink()),
+                      ],
                     ),
                   ],
-                  orElse: () => [
-                    const SliverToBoxAdapter(child: SizedBox.shrink()),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

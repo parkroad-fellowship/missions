@@ -1,11 +1,9 @@
-import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
-import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:prf_design/prf_design.dart';
 
 class DeleteExpenseDialog extends StatelessWidget {
   const DeleteExpenseDialog({
@@ -15,164 +13,38 @@ class DeleteExpenseDialog extends StatelessWidget {
 
   final PRFAllocationEntry entry;
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final l10n = context.l10n;
-
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.errorContainer,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              Icons.delete_outline,
-              color: theme.colorScheme.error,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              entry.entryType == PRFEntryType.credit
-                  ? 'Delete Token'
-                  : 'Delete Expense',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ],
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Are you sure you want to delete this expense?',
-            style: theme.textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 16),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: theme.colorScheme.error.withValues(alpha: 0.3),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  entry.expenseCategory?.name ?? l10n.unknownCategory,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  NumberFormat.currency(
-                    symbol: 'KES ',
-                    decimalDigits: 0,
-                  ).format(entry.amount),
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: theme.colorScheme.error,
-                  ),
-                ),
-                if (entry.narration.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    entry.narration,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontStyle: FontStyle.italic,
-                      color: theme.colorScheme.onSurface.withValues(
-                        alpha: 0.7,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'This action cannot be undone.',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.error,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(
-            'Cancel',
-            style: TextStyle(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-            ),
-          ),
-        ),
-        BlocConsumer<
-          AllocationEntryResourceCubit,
-          ResourceState<PRFAllocationEntry>
-        >(
-          listener: (context, state) {
-            state.maybeWhen(
-              orElse: () {},
-              mutated: (_, _, _) {
-                Navigator.of(context).pop(true);
-              },
-              error: (message, _) {
-                Navigator.of(context).pop(false);
-              },
-            );
-          },
-          builder: (context, state) {
-            return state.maybeWhen(
-              mutating: (_, _) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
-              orElse: () => _buildDeleteButton(theme, context),
-            );
-          },
-        ),
-      ],
+  static Future<bool?> show(
+    BuildContext context, {
+    required PRFAllocationEntry entry,
+  }) {
+    return PRFConfirmationDialog.show(
+      context,
+      title: 'Delete Expense',
+      message: 'Are you sure you want to delete this expense? '
+          'This action cannot be undone.',
+      confirmLabel: 'Delete',
+      isDestructive: true,
     );
   }
 
-  Widget _buildDeleteButton(ThemeData theme, BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: () {
-        context.read<AllocationEntryResourceCubit>().deleteEntry(entry.ulid);
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<
+      AllocationEntryResourceCubit,
+      ResourceState<PRFAllocationEntry>
+    >(
+      listener: (context, state) {
+        state.maybeWhen(
+          orElse: () {},
+          mutated: (_, _, _) {
+            Navigator.of(context).pop(true);
+          },
+          error: (message, _) {
+            Navigator.of(context).pop(false);
+          },
+        );
       },
-      icon: const Icon(Icons.delete_outline, size: 18),
-      label: const Text('Delete'),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: theme.colorScheme.error,
-        foregroundColor: theme.colorScheme.onError,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ),
+      child: const SizedBox.shrink(),
     );
   }
 }

@@ -254,10 +254,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
-              ),
+            child: PRFCircularProgressIndicator(
+              color: theme.colorScheme.primary,
             ),
           );
         }
@@ -621,110 +619,11 @@ class _TimelineCardBody extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 60,
-          child: Column(
-            children: [
-              Container(
-                width: 50,
-                height: isMultiDay ? 100 : 60,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      statusColor,
-                      statusColor.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                  boxShadow: [
-                    BoxShadow(
-                      color: statusColor.withValues(alpha: 0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (isMultiDay) ...[
-                      Text(
-                        startDate.day.toString(),
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        DateFormatter.getMonthAbbreviation(startDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Container(
-                        width: 12,
-                        height: 1,
-                        color: Colors.white.withValues(alpha: 0.7),
-                        margin: const EdgeInsets.symmetric(vertical: 2),
-                      ),
-                      Text(
-                        endDate.day.toString(),
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        DateFormatter.getMonthAbbreviation(endDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ] else ...[
-                      Text(
-                        startDate.day.toString(),
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        DateFormatter.getMonthAbbreviation(startDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              if (!isLast)
-                Container(
-                  width: 2,
-                  height: 60,
-                  margin: const EdgeInsets.symmetric(
-                    vertical: PRFSpacingTokens.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        statusColor.withValues(alpha: 0.6),
-                        theme.colorScheme.outline.withValues(alpha: 0.2),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(1),
-                  ),
-                ),
-            ],
-          ),
+        PRFTimelineDateBadge(
+          startDate: startDate,
+          endDate: isMultiDay ? endDate : null,
+          statusColor: statusColor,
+          isLast: isLast,
         ),
         const SizedBox(width: PRFSpacingTokens.lg),
         Expanded(
@@ -809,7 +708,7 @@ class _TimelineCardBody extends StatelessWidget {
                                   statusText,
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white,
+                                    color: PRFColors.white,
                                   ),
                                 ),
                               ),
@@ -974,7 +873,6 @@ class _TimelineCardBody extends StatelessWidget {
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
-                    fontSize: 10,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -988,7 +886,6 @@ class _TimelineCardBody extends StatelessWidget {
             style: theme.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
-              fontSize: 11,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,

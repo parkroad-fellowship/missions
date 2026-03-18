@@ -350,7 +350,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: PRFColors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -383,8 +383,8 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.3),
+                    PRFColors.transparent,
+                    PRFColors.black.withValues(alpha: 0.3),
                   ],
                 ),
               ),
@@ -400,7 +400,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.7),
+                    color: PRFColors.black.withValues(alpha: 0.7),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Row(
@@ -408,14 +408,14 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                     children: [
                       Icon(
                         Icons.play_arrow,
-                        color: Colors.white,
+                        color: PRFColors.white,
                         size: 12,
                       ),
                       SizedBox(width: 2),
                       Text(
                         'Video',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: PRFColors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
@@ -440,12 +440,12 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                 child: Container(
                   padding: const EdgeInsets.all(PRFSpacingTokens.xs),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
+                    color: PRFColors.black.withValues(alpha: 0.6),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.close_rounded,
-                    color: Colors.white,
+                    color: PRFColors.white,
                     size: 16,
                   ),
                 ),
@@ -508,7 +508,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
         decoration: BoxDecoration(
           color: isSelected
               ? theme.colorScheme.primary.withValues(alpha: 0.1)
-              : Colors.transparent,
+              : PRFColors.transparent,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         ),
         child: Column(

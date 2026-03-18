@@ -120,7 +120,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
     if (_isFullScreen) {
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: PRFColors.black,
         body: SafeArea(
           child: GestureDetector(
             onTap: _toggleControlsVisibility,
@@ -136,15 +136,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: PRFColors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: PRFColors.black,
+        iconTheme: const IconThemeData(color: PRFColors.white),
         elevation: 0,
         title: Text(
           'Video',
           style: theme.textTheme.titleLarge?.copyWith(
-            color: Colors.white,
+            color: PRFColors.white,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -160,11 +160,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const PRFCircularProgressIndicator(color: Colors.white),
+          const PRFCircularProgressIndicator(color: PRFColors.white),
           const SizedBox(height: PRFSpacingTokens.lg),
           Text(
             'Loading video...',
-            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white),
+            style: theme.textTheme.bodyLarge?.copyWith(color: PRFColors.white),
           ),
         ],
       );
@@ -185,7 +185,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             Text(
               'Error loading video',
               style: theme.textTheme.titleLarge?.copyWith(
-                color: Colors.white,
+                color: PRFColors.white,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -256,10 +256,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.black.withValues(alpha: 0.7),
-              Colors.transparent,
-              Colors.transparent,
-              Colors.black.withValues(alpha: 0.7),
+              PRFColors.black.withValues(alpha: 0.7),
+              PRFColors.transparent,
+              PRFColors.transparent,
+              PRFColors.black.withValues(alpha: 0.7),
             ],
             stops: const [0.0, 0.3, 0.7, 1.0],
           ),
@@ -278,7 +278,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     onPressed: _toggleFullScreen,
                     icon: const Icon(
                       Icons.fullscreen_exit,
-                      color: Colors.white,
+                      color: PRFColors.white,
                       size: 28,
                     ),
                   ),
@@ -307,7 +307,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.3),
+                          color: PRFColors.black.withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -318,7 +318,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       _controller.value.isPlaying
                           ? Icons.pause
                           : Icons.play_arrow,
-                      color: Colors.white,
+                      color: PRFColors.white,
                       size: 40,
                     ),
                   ),
@@ -350,7 +350,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       Text(
                         _formatDuration(_controller.value.position),
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: Colors.white,
+                          color: PRFColors.white,
                         ),
                       ),
                       Row(
@@ -369,7 +369,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                               _controller.value.isPlaying
                                   ? Icons.pause
                                   : Icons.play_arrow,
-                              color: Colors.white,
+                              color: PRFColors.white,
                             ),
                           ),
                           IconButton(
@@ -380,7 +380,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                             },
                             icon: const Icon(
                               Icons.replay,
-                              color: Colors.white,
+                              color: PRFColors.white,
                             ),
                           ),
                         ],
@@ -388,7 +388,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       Text(
                         _formatDuration(_controller.value.duration),
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: Colors.white,
+                          color: PRFColors.white,
                         ),
                       ),
                     ],
@@ -414,7 +414,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         });
       },
       child: ColoredBox(
-        color: Colors.transparent,
+        color: PRFColors.transparent,
         child: Stack(
           children: [
             // Center play/pause button
@@ -430,7 +430,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.3),
+                        color: PRFColors.black.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -441,7 +441,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     _controller.value.isPlaying
                         ? Icons.pause
                         : Icons.play_arrow,
-                    color: Colors.white,
+                    color: PRFColors.white,
                     size: 40,
                   ),
                 ),
@@ -455,13 +455,13 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 onTap: _toggleFullScreen,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
+                    color: PRFColors.black.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                   ),
                   padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                   child: const Icon(
                     Icons.fullscreen,
-                    color: Colors.white,
+                    color: PRFColors.white,
                     size: 20,
                   ),
                 ),
@@ -496,7 +496,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               Text(
                 _formatDuration(_controller.value.position),
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                 ),
               ),
               Row(
@@ -515,7 +515,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       _controller.value.isPlaying
                           ? Icons.pause
                           : Icons.play_arrow,
-                      color: Colors.white,
+                      color: PRFColors.white,
                     ),
                   ),
                   IconButton(
@@ -526,14 +526,14 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     },
                     icon: const Icon(
                       Icons.replay,
-                      color: Colors.white,
+                      color: PRFColors.white,
                     ),
                   ),
                   IconButton(
                     onPressed: _toggleFullScreen,
                     icon: const Icon(
                       Icons.fullscreen,
-                      color: Colors.white,
+                      color: PRFColors.white,
                     ),
                   ),
                 ],
@@ -541,7 +541,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               Text(
                 _formatDuration(_controller.value.duration),
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: Colors.white,
+                  color: PRFColors.white,
                 ),
               ),
             ],

@@ -198,18 +198,7 @@ class BeautifulSoulCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: .08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: .04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: .1),
         ),

@@ -211,7 +211,7 @@ class _AddSoulViewHandsetState extends State<AddSoulViewHandset> {
                               return state.maybeWhen(
                                 orElse: () => const SizedBox.shrink(),
                                 listLoading: () => const Center(
-                                  child: LinearProgressIndicator(),
+                                  child: PRFLinearProgressIndicator(),
                                 ),
                                 listLoaded: (classes, _, _) =>
                                     PRFSearchableList<PRFClassGroup>(

@@ -138,7 +138,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
                         listLoading: () => const Center(
-                          child: LinearProgressIndicator(),
+                          child: PRFLinearProgressIndicator(),
                         ),
                         listLoaded: (classes, _, _) {
                           // Match initial class group by ulid

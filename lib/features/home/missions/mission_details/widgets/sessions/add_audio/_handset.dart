@@ -207,7 +207,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                   const SizedBox(
                     width: PRFSpacingTokens.xl,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: PRFCircularProgressIndicator(),
                   ),
                   const SizedBox(width: PRFSpacingTokens.md),
                   Text(

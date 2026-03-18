@@ -134,35 +134,40 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     final visibleTranscripts = _sortedTranscripts(allTranscripts);
 
     return Scaffold(
-      body: SafeArea(
-        child: MultiBlocListener(
-          listeners: [
-            BlocListener<AudioRecordingCubit, AudioRecordingState>(
-              listener: (context, state) {
-                state.mapOrNull(
-                  completed: (value) {
-                    _uploadCompletedRecording(
-                      filePath: value.filePath,
-                      duration: value.duration,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: Theme.of(context).colorScheme.primary,
+            child: PRFBrandedNavBar(
+              onBack: () => context.router.back(),
+              title: l10n.sessionDetails,
+            ),
+          ),
+          Expanded(
+            child: MultiBlocListener(
+              listeners: [
+                BlocListener<AudioRecordingCubit, AudioRecordingState>(
+                  listener: (context, state) {
+                    state.mapOrNull(
+                      completed: (value) {
+                        _uploadCompletedRecording(
+                          filePath: value.filePath,
+                          duration: value.duration,
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
-          ],
-          child: RefreshIndicator(
-            onRefresh: () =>
-                context.read<MissionSessionResourceCubit>().loadAll(
-                  filters: {'mission_ulid': missionUlid},
                 ),
-            child: CustomScrollView(
-              slivers: [
-                // Navigation Header
-                PRFNavBar(
-                  onBack: () => context.router.back(),
-                  title: l10n.sessionDetails,
-                ),
-                SliverToBoxAdapter(
+              ],
+              child: RefreshIndicator(
+                onRefresh: () =>
+                    context.read<MissionSessionResourceCubit>().loadAll(
+                      filters: {'mission_ulid': missionUlid},
+                    ),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: PRFSpacingTokens.lg,
@@ -209,7 +214,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           ),
                         ),
                         child: const Center(
-                          child: LinearProgressIndicator(),
+                          child: PRFLinearProgressIndicator(),
                         ),
                       ),
                       error: (message) => Container(
@@ -259,7 +264,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               ),
                             ),
                             child: const Center(
-                              child: LinearProgressIndicator(),
+                              child: PRFLinearProgressIndicator(),
                             ),
                           ),
                           error: (message, _) => Container(
@@ -612,13 +617,15 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                     ),
                 ],
 
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: PRFSpacingTokens.xxl),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: PRFSpacingTokens.xxl),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

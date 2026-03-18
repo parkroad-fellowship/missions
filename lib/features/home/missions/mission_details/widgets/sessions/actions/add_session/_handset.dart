@@ -305,7 +305,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
                                   return state.maybeWhen(
                                     orElse: () => const SizedBox.shrink(),
                                     listLoading: () => const Center(
-                                      child: LinearProgressIndicator(),
+                                      child: PRFLinearProgressIndicator(),
                                     ),
                                     listLoaded: (classes, _, _) =>
                                         PRFSearchableList<PRFClassGroup>(

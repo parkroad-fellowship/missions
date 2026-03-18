@@ -85,7 +85,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
               listLoading: () => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(PRFSpacingTokens.xxl),
-                  child: CircularProgressIndicator(),
+                  child: PRFCircularProgressIndicator(),
                 ),
               ),
               listLoaded: (requisitions, _, _) => _buildContent(
@@ -177,7 +177,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           ),
         ),
         child: Theme(
-          data: theme.copyWith(dividerColor: Colors.transparent),
+          data: theme.copyWith(dividerColor: PRFColors.transparent),
           child: ExpansionTile(
             tilePadding: const EdgeInsets.symmetric(
               horizontal: PRFSpacingTokens.lg,

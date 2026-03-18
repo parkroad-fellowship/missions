@@ -2,7 +2,6 @@ import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
 import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
 import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
 import 'package:app/features/home/landing/_handset.dart';
-import 'package:app/features/home/landing/_tablet.dart';
 import 'package:app/features/home/landing/models/landing_action_item.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
@@ -14,7 +13,6 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
@@ -151,12 +149,6 @@ class _LandingPageState extends State<LandingPage> {
       ),
     ];
 
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) => LandingPageTablet(actions: actions),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => LandingPageHandset(actions: actions),
-        tablet: (_, _) => LandingPageTablet(actions: actions),
-      ),
-    );
+    return LandingPageHandset(actions: actions);
   }
 }

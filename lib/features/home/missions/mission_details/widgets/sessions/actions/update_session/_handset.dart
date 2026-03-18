@@ -330,7 +330,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                                   return state.maybeWhen(
                                     orElse: () => const SizedBox.shrink(),
                                     listLoading: () => const Center(
-                                      child: LinearProgressIndicator(),
+                                      child: PRFLinearProgressIndicator(),
                                     ),
                                     listLoaded: (classes, _, _) =>
                                         PRFSearchableList<String>(
@@ -440,8 +440,8 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           PRFSnackbar.success(context, l10n.sessionRecorded);
                           context.read<MissionSessionResourceCubit>().loadAll(
                             filters: {
-                              'mission_session_ulid':
-                                  widget.missionSession.ulid,
+                              'mission_ulid':
+                                  widget.missionUlid,
                             },
                           );
                         },
@@ -493,9 +493,11 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
         'starts_at': startsAt!.toIso8601String(),
         'ends_at': endsAt!.toIso8601String(),
         'notes': _notesController.text,
+        'order': 0,
         if (selectedSpeakerUlid != null) 'speaker_ulid': selectedSpeakerUlid,
         if (selectedClassGroupUlid != null)
           'class_group_ulid': selectedClassGroupUlid,
+          
       },
     );
   }

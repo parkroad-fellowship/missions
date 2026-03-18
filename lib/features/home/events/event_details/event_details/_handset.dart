@@ -99,13 +99,13 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                         vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        color: PRFColors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                       ),
                       child: Text(
                         'EVENT',
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white,
+                          color: PRFColors.white,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.2,
                         ),
@@ -115,14 +115,14 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     Container(
                       padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        color: PRFColors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(
                           PRFRadiusTokens.smd,
                         ),
                       ),
                       child: const Icon(
                         Icons.event_rounded,
-                        color: Colors.white,
+                        color: PRFColors.white,
                         size: 20,
                       ),
                     ),
@@ -132,7 +132,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 Text(
                   event.name.toUpperCase(),
                   style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.white,
+                    color: PRFColors.white,
                     fontWeight: FontWeight.w900,
                     height: 1.1,
                   ),
@@ -142,7 +142,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   Text(
                     event.venue!,
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.9),
+                      color: PRFColors.white.withValues(alpha: 0.9),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -201,18 +201,18 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
         vertical: PRFSpacingTokens.sm,
       ),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: PRFColors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 16),
+          Icon(icon, color: PRFColors.white, size: 16),
           const SizedBox(width: PRFSpacingTokens.sm),
           Text(
             text,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: Colors.white,
+              color: PRFColors.white,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -275,12 +275,12 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 20),
+            Icon(icon, color: PRFColors.white, size: 20),
             const SizedBox(width: PRFSpacingTokens.sm),
             Text(
               label,
               style: theme.textTheme.titleSmall?.copyWith(
-                color: Colors.white,
+                color: PRFColors.white,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -501,7 +501,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                       onPressed: () => _openMap(event),
                       icon: const Icon(
                         Icons.map_rounded,
-                        color: Colors.white,
+                        color: PRFColors.white,
                         size: 20,
                       ),
                     ),
@@ -523,7 +523,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
+                      color: PRFColors.black.withValues(alpha: 0.05),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -630,7 +630,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
+                            color: PRFColors.black.withValues(alpha: 0.05),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),

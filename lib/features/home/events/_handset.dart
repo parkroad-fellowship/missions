@@ -148,10 +148,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
-              ),
+            child: PRFCircularProgressIndicator(
+              color: theme.colorScheme.primary,
             ),
           ),
           error: (message, _) => Center(
@@ -240,10 +238,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
-              ),
+            child: PRFCircularProgressIndicator(
+              color: theme.colorScheme.primary,
             ),
           ),
           error: (message, _) => Center(
@@ -387,119 +383,11 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 60,
-          child: Column(
-            children: [
-              // Multi-day date badge
-              Container(
-                width: 50,
-                height: isMultiDay ? 90 : 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      statusColor,
-                      statusColor.withValues(alpha: 0.8),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                  boxShadow: [
-                    BoxShadow(
-                      color: statusColor.withValues(alpha: 0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (isMultiDay) ...[
-                      // Start date
-                      Text(
-                        startDate.day.toString(),
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        DateFormatter.getMonthAbbreviation(startDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 8,
-                        ),
-                      ),
-                      Container(
-                        width: 12,
-                        height: 1,
-                        color: Colors.white.withValues(alpha: 0.7),
-                        margin: const EdgeInsets.symmetric(vertical: 2),
-                      ),
-                      // End date
-                      Text(
-                        endDate.day.toString(),
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        DateFormatter.getMonthAbbreviation(endDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 8,
-                        ),
-                      ),
-                    ] else ...[
-                      // Single day
-                      Text(
-                        startDate.day.toString(),
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        DateFormatter.getMonthAbbreviation(startDate.month),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              // Timeline line with flexible height
-              if (!isLast)
-                Container(
-                  width: 2,
-                  height: 60,
-                  margin: const EdgeInsets.symmetric(
-                    vertical: PRFSpacingTokens.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        statusColor.withValues(alpha: 0.6),
-                        theme.colorScheme.outline.withValues(alpha: 0.2),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(1),
-                  ),
-                ),
-            ],
-          ),
+        PRFTimelineDateBadge(
+          startDate: startDate,
+          endDate: isMultiDay ? endDate : null,
+          statusColor: statusColor,
+          isLast: isLast,
         ),
 
         const SizedBox(width: PRFSpacingTokens.lg),

@@ -91,7 +91,7 @@ class ReceiptPreviewPageState extends State<ReceiptPreviewPage> {
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Center(
-                    child: CircularProgressIndicator(
+                    child: PRFCircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes!

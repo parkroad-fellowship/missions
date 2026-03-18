@@ -130,13 +130,13 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                         vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        color: PRFColors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                       ),
                       child: Text(
                         mission.status.name.toUpperCase(),
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white,
+                          color: PRFColors.white,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.2,
                         ),
@@ -146,14 +146,14 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                     Container(
                       padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
+                        color: PRFColors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(
                           PRFRadiusTokens.smd,
                         ),
                       ),
                       child: const Icon(
                         Icons.school_rounded,
-                        color: Colors.white,
+                        color: PRFColors.white,
                         size: 20,
                       ),
                     ),
@@ -163,7 +163,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 Text(
                   (mission.school?.name ?? '').toUpperCase(),
                   style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.white,
+                    color: PRFColors.white,
                     fontWeight: FontWeight.w900,
                     height: 1.1,
                   ),
@@ -172,7 +172,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 Text(
                   mission.theme!,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: PRFColors.white.withValues(alpha: 0.9),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -235,18 +235,18 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
         vertical: PRFSpacingTokens.sm,
       ),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: PRFColors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 16),
+          Icon(icon, color: PRFColors.white, size: 16),
           const SizedBox(width: PRFSpacingTokens.sm),
           Text(
             text,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: Colors.white,
+              color: PRFColors.white,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -328,12 +328,12 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 20),
+            Icon(icon, color: PRFColors.white, size: 20),
             const SizedBox(width: PRFSpacingTokens.sm),
             Text(
               label,
               style: theme.textTheme.titleSmall?.copyWith(
-                color: Colors.white,
+                color: PRFColors.white,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -510,7 +510,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.05),
+                          color: PRFColors.black.withValues(alpha: 0.05),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -571,7 +571,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                             },
                             icon: const Icon(
                               Icons.phone,
-                              color: Colors.white,
+                              color: PRFColors.white,
                               size: 20,
                             ),
                           ),
@@ -654,7 +654,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       onPressed: () => _openMap(mission),
                       icon: const Icon(
                         Icons.map_rounded,
-                        color: Colors.white,
+                        color: PRFColors.white,
                         size: 20,
                       ),
                     ),
@@ -873,7 +873,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: PRFColors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

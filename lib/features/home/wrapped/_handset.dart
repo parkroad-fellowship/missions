@@ -130,12 +130,12 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
                                   PRFSpacingTokens.sm,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.3),
+                                  color: PRFColors.black.withValues(alpha: 0.3),
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
                                   Icons.close,
-                                  color: Colors.white,
+                                  color: PRFColors.white,
                                 ),
                               ),
                               onPressed: () => context.router.maybePop(),

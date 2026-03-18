@@ -333,7 +333,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: PRFColors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -355,8 +355,8 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.3),
+                    PRFColors.transparent,
+                    PRFColors.black.withValues(alpha: 0.3),
                   ],
                 ),
               ),
@@ -377,12 +377,12 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                 child: Container(
                   padding: const EdgeInsets.all(PRFSpacingTokens.xs),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
+                    color: PRFColors.black.withValues(alpha: 0.6),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.close_rounded,
-                    color: Colors.white,
+                    color: PRFColors.white,
                     size: 16,
                   ),
                 ),

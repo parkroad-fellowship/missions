@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class EventDetailsPageHandset extends StatefulWidget {
   const EventDetailsPageHandset({required this.event, super.key});
@@ -162,20 +161,10 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
         0 => FloatingActionButton(
           onPressed: () {
             if (event.loggedInMemberEventSubscription == null) {
-              WoltModalSheet.show<void>(
-                context: context,
-                pageListBuilder: (modalSheetContext) {
-                  return [
-                    WoltModalSheetPage(
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white,
-                      child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddEventSubscriptionView(event: event),
-                      ),
-                    ),
-                  ];
-                },
+              PRFBottomSheet.show<void>(
+                context,
+                title: 'Subscribe',
+                child: AddEventSubscriptionView(event: event),
               ).then((_) {
                 // ignore: use_build_context_synchronously
                 context.read<EventResourceCubit>().loadAll();
@@ -183,20 +172,10 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
             }
 
             if (event.loggedInMemberEventSubscription != null) {
-              WoltModalSheet.show<void>(
-                context: context,
-                pageListBuilder: (modalSheetContext) {
-                  return [
-                    WoltModalSheetPage(
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white,
-                      child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: UpdateEventSubscriptionView(event: event),
-                      ),
-                    ),
-                  ];
-                },
+              PRFBottomSheet.show<void>(
+                context,
+                title: 'Update Subscription',
+                child: UpdateEventSubscriptionView(event: event),
               ).then((_) {
                 // ignore: use_build_context_synchronously
                 context.read<EventSubscriptionResourceCubit>().loadAll();
@@ -207,30 +186,20 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
             event.loggedInMemberEventSubscription == null
                 ? Icons.add
                 : Icons.edit,
-            color: Colors.white,
+            color: PRFColors.white,
           ),
         ),
         1 => FloatingActionButton(
           onPressed: () {
             if (_currentTab == 1) {
-              WoltModalSheet.show<void>(
-                context: context,
-                pageListBuilder: (modalSheetContext) {
-                  return [
-                    WoltModalSheetPage(
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white,
-                      child: SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.8,
-                        child: AddEventMediaView(eventUlid: event.ulid),
-                      ),
-                    ),
-                  ];
-                },
+              PRFBottomSheet.show<void>(
+                context,
+                title: 'Add Media',
+                child: AddEventMediaView(eventUlid: event.ulid),
               );
             }
           },
-          child: const Icon(Icons.add, color: Colors.white),
+          child: const Icon(Icons.add, color: PRFColors.white),
         ),
         _ => null,
       },

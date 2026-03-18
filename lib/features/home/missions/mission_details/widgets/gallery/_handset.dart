@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class GalleryViewHandset extends StatefulWidget {
   const GalleryViewHandset({required this.missionUlid, super.key});
@@ -101,7 +100,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
               return state.maybeWhen(
                 orElse: () => SliverFillRemaining(
                   child: Center(
-                    child: CircularProgressIndicator(
+                    child: PRFCircularProgressIndicator(
                       color: theme.colorScheme.primary,
                     ),
                   ),
@@ -262,7 +261,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: PRFColors.black.withValues(alpha: 0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -281,8 +280,8 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              Colors.transparent,
-                              Colors.black.withValues(alpha: 0.2),
+                              PRFColors.transparent,
+                              PRFColors.black.withValues(alpha: 0.2),
                             ],
                           ),
                         ),
@@ -297,7 +296,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                             vertical: PRFSpacingTokens.xs,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.8),
+                            color: PRFColors.black.withValues(alpha: 0.8),
                             borderRadius: BorderRadius.circular(
                               PRFRadiusTokens.xs,
                             ),
@@ -307,14 +306,14 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                             children: [
                               Icon(
                                 Icons.play_arrow,
-                                color: Colors.white,
+                                color: PRFColors.white,
                                 size: 14,
                               ),
                               SizedBox(width: 2),
                               Text(
                                 'Video',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: PRFColors.white,
                                   fontSize: 11,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -333,7 +332,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
+                                color: PRFColors.black.withValues(alpha: 0.3),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -342,7 +341,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                           padding: const EdgeInsets.all(PRFSpacingTokens.md),
                           child: const Icon(
                             Icons.play_arrow,
-                            color: Colors.white,
+                            color: PRFColors.white,
                             size: 32,
                           ),
                         ),
@@ -359,7 +358,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: PRFColors.black.withValues(alpha: 0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -380,9 +379,8 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                                 color:
                                     theme.colorScheme.surfaceContainerHighest,
                                 child: Center(
-                                  child: CircularProgressIndicator(
+                                  child: PRFCircularProgressIndicator(
                                     color: theme.colorScheme.primary,
-                                    strokeWidth: 2,
                                   ),
                                 ),
                               );
@@ -407,8 +405,8 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              Colors.transparent,
-                              Colors.black.withValues(alpha: 0.2),
+                              PRFColors.transparent,
+                              PRFColors.black.withValues(alpha: 0.2),
                             ],
                           ),
                         ),
@@ -474,22 +472,12 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   }
 
   void _showAddMediaModal(BuildContext context) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              child: AddMediaView(
-                missionUlid: missionUlid,
-              ),
-            ),
-          ),
-        ];
-      },
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Add Media',
+      child: AddMediaView(
+        missionUlid: missionUlid,
+      ),
     );
   }
 }

@@ -43,12 +43,13 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            PRFNavBar(
+      backgroundColor: theme.colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: theme.colorScheme.primary,
+            child: PRFBrandedNavBar(
               title: l10n.moduleDetails,
-              backgroundColor: theme.colorScheme.surface,
               onBack: () => context.router.popUntilRouteWithPath(
                 PRFSuperAppRouter.courseDetailsRoute,
               ),
@@ -68,7 +69,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                         width: PRFSpacingTokens.xxxl,
                         height: 36,
                         child: Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: PRFCircularProgressIndicator(),
                         ),
                       );
                     }
@@ -98,7 +99,6 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: theme.colorScheme.onPrimary,
                           fontWeight: FontWeight.w600,
-                          letterSpacing: 0.2,
                         ),
                       ),
                     );
@@ -106,8 +106,12 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 ),
               ],
             ),
-            // Module name
-            SliverToBoxAdapter(
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                // Module name
+                SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: PRFSpacingTokens.xl,
@@ -221,8 +225,10 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                 );
               },
             ),
-          ],
-        ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
