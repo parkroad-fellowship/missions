@@ -152,83 +152,31 @@ class _StudentEnquiryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+    return PRFDetailActionCard(
       onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-          boxShadow: [
-            BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
-            BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-          border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.1),
+      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+      backgroundColor: theme.colorScheme.surface,
+      leading: CircleAvatar(
+        radius: 20,
+        backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
+        child: Text(
+          StringFormatter.getUserNameInitials(enquiry.content),
+          style: theme.textTheme.titleSmall?.copyWith(
+            color: theme.colorScheme.primary,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Avatar
-            CircleAvatar(
-              radius: 24,
-              backgroundColor: theme.colorScheme.primary.withValues(
-                alpha: 0.08,
-              ),
-              child: Text(
-                StringFormatter.getUserNameInitials(enquiry.content),
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(width: PRFSpacingTokens.lg),
-            // Content
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    enquiry.content.length > 80
-                        ? '${enquiry.content.substring(0, 80).trim()}...'
-                        : enquiry.content,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurface,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: PRFSpacingTokens.sm),
-                  Text(
-                    DateFormatter.formatTimeFromDateTime(
-                      enquiry.createdAt,
-                      timezone,
-                    ),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Arrow
-            Icon(
-              Icons.chevron_right_rounded,
-              color: theme.colorScheme.outline,
-            ),
-          ],
-        ),
+      ),
+      trailing: Icon(
+        Icons.chevron_right_rounded,
+        color: theme.colorScheme.outline,
+      ),
+      title: enquiry.content.length > 80
+          ? '${enquiry.content.substring(0, 80).trim()}...'
+          : enquiry.content,
+      subtitle: DateFormatter.formatTimeFromDateTime(
+        enquiry.createdAt,
+        timezone,
       ),
     );
   }

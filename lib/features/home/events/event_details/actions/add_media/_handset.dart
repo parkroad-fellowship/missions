@@ -38,22 +38,9 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header
-          Text(
-            'Add Event Photos',
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: theme.colorScheme.onSurface,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          Text(
-            'Share photos and memories from this event',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.left,
+          const PRFSectionHeader(
+            title: 'Add Event Photos',
+            subtitle: 'Share photos and memories from this event',
           ),
           const SizedBox(height: PRFSpacingTokens.xxl),
 
@@ -82,10 +69,11 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: PRFSpacingTokens.lg),
-                      ElevatedButton(
+                      PRFSecondaryButton(
                         onPressed: () =>
                             _selectMedia(context, previousMedia: []),
-                        child: const Text('Try Again'),
+                        title: 'Try Again',
+                        disabled: false,
                       ),
                     ],
                   ),
@@ -148,22 +136,9 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header
-            Text(
-              'Add Event Photos',
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: theme.colorScheme.onSurface,
-              ),
-              textAlign: TextAlign.left,
-            ),
-            const SizedBox(height: PRFSpacingTokens.sm),
-            Text(
-              'Share photos and memories from this event',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.left,
+            const PRFSectionHeader(
+              title: 'Add Event Photos',
+              subtitle: 'Share photos and memories from this event',
             ),
             const SizedBox(height: PRFSpacingTokens.xxl),
 
@@ -193,10 +168,11 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: PRFSpacingTokens.lg),
-                        ElevatedButton(
+                        PRFSecondaryButton(
                           onPressed: () =>
                               _selectMedia(context, previousMedia: []),
-                          child: const Text('Try Again'),
+                          title: 'Try Again',
+                          disabled: false,
                         ),
                       ],
                     ),

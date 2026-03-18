@@ -431,25 +431,18 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                 ),
               ),
               const SizedBox(width: PRFSpacingTokens.md),
-              Container(
+              PRFStatusBadge(
+                label: payment.paymentStatus.name.toUpperCase(),
+                color: statusColor,
                 padding: const EdgeInsets.symmetric(
                   horizontal: PRFSpacingTokens.md,
                   vertical: PRFSpacingTokens.xs,
                 ),
-                decoration: BoxDecoration(
-                  color: statusColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                  border: Border.all(
-                    color: statusColor.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Text(
-                  payment.paymentStatus.name.toUpperCase(),
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: statusColor,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
-                  ),
+                boxShadow: const [],
+                textStyle: theme.textTheme.labelSmall?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.5,
                 ),
               ),
             ],
@@ -482,8 +475,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
                 ],
               ),
               if (payment.authorizationUrl != null &&
-                  (payment.paymentStatus != PRFPaymentStatus.success ||
-                      payment.paymentStatus != PRFPaymentStatus.success)) ...[
+                  payment.paymentStatus != PRFPaymentStatus.success) ...[
                 const SizedBox(height: PRFSpacingTokens.sm),
                 Row(
                   children: [

@@ -43,9 +43,6 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
 
     return Scaffold(
       body: SafeArea(
@@ -113,36 +110,12 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Date Header with your theme
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        vertical: PRFSpacingTokens.lg,
+                                    PRFSectionHeader(
+                                      title: DateFormat.yMMMMd().format(
+                                        mapAsList[index],
                                       ),
                                       padding: const EdgeInsets.symmetric(
-                                        horizontal: PRFSpacingTokens.lg,
-                                        vertical: PRFSpacingTokens.sm,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.primary.withValues(
-                                          alpha: 0.08,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          PRFRadiusTokens.smd,
-                                        ),
-                                        border: Border.all(
-                                          color: colorScheme.primary.withValues(
-                                            alpha: 0.18,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        DateFormat.yMMMMd().format(
-                                          mapAsList[index],
-                                        ),
-                                        style: textTheme.titleMedium?.copyWith(
-                                          color: colorScheme.primary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                        vertical: PRFSpacingTokens.lg,
                                       ),
                                     ),
 
@@ -185,30 +158,17 @@ class _AnnouncementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
+    final previewText = announcement.content
+        .replaceAll(RegExp('<[^>]*>'), '')
+        .trim();
+    final truncatedPreview = previewText.length > 180
+        ? '${previewText.substring(0, 180)}...'
+        : previewText;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.sm),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-          BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-        border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.10),
-        ),
-      ),
-      child: GestureDetector(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.sm),
+      child: PRFDetailActionCard(
+        margin: EdgeInsets.zero,
         onTap: () => WoltModalSheet.show<dynamic>(
           context: context,
           pageListBuilder: (modalSheetContext) => [
@@ -248,7 +208,7 @@ class _AnnouncementCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             announcement.title,
-                            style: textTheme.titleMedium?.copyWith(
+                            style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w700,
                               color: colorScheme.onSurface,
                             ),
@@ -261,7 +221,7 @@ class _AnnouncementCard extends StatelessWidget {
                     const SizedBox(height: PRFSpacingTokens.xl),
                     HtmlWidget(
                       announcement.content,
-                      textStyle: textTheme.bodyLarge?.copyWith(
+                      textStyle: theme.textTheme.bodyLarge?.copyWith(
                         color: colorScheme.onSurface,
                       ),
                     ),
@@ -271,99 +231,58 @@ class _AnnouncementCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-            PRFSpacingTokens.xl,
-            PRFSpacingTokens.xl,
-            PRFSpacingTokens.xl,
-            PRFSpacingTokens.lg,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header row with icon, title, and time
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          colorScheme.primary,
-                          colorScheme.secondary,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: [
-                        BoxShadow(
-                          color: colorScheme.primary.withValues(alpha: 0.10),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                    child: Icon(
-                      Icons.campaign_rounded,
-                      size: 24,
-                      color: colorScheme.onPrimary,
-                    ),
-                  ),
-                  const SizedBox(width: PRFSpacingTokens.lg),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          announcement.title,
-                          style: textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: colorScheme.onSurface,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: PRFSpacingTokens.xs),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.access_time_rounded,
-                              size: 16,
-                              color: colorScheme.primary.withValues(alpha: 0.7),
-                            ),
-                            const SizedBox(width: PRFSpacingTokens.xs),
-                            Text(
-                              DateFormatter.formatTimeFromDateTime(
-                                announcement.publishedAt,
-                                timezone,
-                              ),
-                              style: textTheme.labelMedium?.copyWith(
-                                color: colorScheme.primary.withValues(
-                                  alpha: 0.7,
-                                ),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: PRFSpacingTokens.lg),
-              Text(
-                announcement.content * 25,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
+        leading: Container(
+          padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                colorScheme.primary,
+                colorScheme.secondary,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+            boxShadow: [
+              BoxShadow(
+                color: colorScheme.primary.withValues(alpha: 0.12),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
+          child: Icon(
+            Icons.campaign_rounded,
+            size: 22,
+            color: colorScheme.onPrimary,
+          ),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: 14,
+          color: colorScheme.primary,
+        ),
+        title: announcement.title,
+        subtitle: truncatedPreview,
+        footer: Row(
+          children: [
+            Icon(
+              Icons.access_time_rounded,
+              size: 16,
+              color: colorScheme.primary.withValues(alpha: 0.7),
+            ),
+            const SizedBox(width: PRFSpacingTokens.xs),
+            Text(
+              DateFormatter.formatTimeFromDateTime(
+                announcement.publishedAt,
+                timezone,
+              ),
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: colorScheme.primary.withValues(alpha: 0.7),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );

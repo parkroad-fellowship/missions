@@ -17,153 +17,97 @@ class MissionGroundSuggestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow..withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-          BoxShadow(
-            color: theme.colorScheme.shadow..withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-        border: Border.all(
-          color: theme.colorScheme.outline..withValues(alpha: 0.1),
+    return PRFDetailActionCard(
+      title: missionGroundSuggestion.name,
+      subtitle: missionGroundSuggestion.contactPerson,
+      leading: Container(
+        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+        ),
+        child: Icon(
+          Icons.lightbulb_outline_rounded,
+          color: theme.colorScheme.onPrimaryContainer,
+          size: 24,
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header with icon and title
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                ),
-                child: Icon(
-                  Icons.lightbulb_outline_rounded,
+      trailing: PermissionHelper.userCan('viewAny mission ground suggestion')
+          ? Container(
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.call_rounded,
                   color: theme.colorScheme.onPrimaryContainer,
-                  size: 24,
+                  size: 20,
                 ),
+                onPressed: () async {
+                  final uri = Uri(
+                    scheme: 'tel',
+                    path: missionGroundSuggestion.contactNumber,
+                  );
+                  await UrlHelper.openUrl(uri);
+                },
               ),
-              const SizedBox(width: PRFSpacingTokens.lg),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      missionGroundSuggestion.name,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.xs),
-                    Text(
-                      missionGroundSuggestion.contactPerson,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+            ).animate(
+              effects: const [
+                ShakeEffect(
+                  duration: Duration(seconds: 2),
+                  delay: PRFMotionTokens.enterShort,
                 ),
+              ],
+            )
+          : null,
+      footer: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.md,
+              vertical: PRFSpacingTokens.xs,
+            ),
+            decoration: BoxDecoration(
+              color: _getStatusColor(
+                context,
+                missionGroundSuggestion.status,
               ),
-              // Call button
-              if (PermissionHelper.userCan('viewAny mission ground suggestion'))
-                Container(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.call_rounded,
-                      color: theme.colorScheme.onPrimaryContainer,
-                      size: 20,
-                    ),
-                    onPressed: () async {
-                      final uri = Uri(
-                        scheme: 'tel',
-                        path: missionGroundSuggestion.contactNumber,
-                      );
-                      await UrlHelper.openUrl(uri);
-                    },
-                  ),
-                ).animate(
-                  effects: const [
-                    ShakeEffect(
-                      duration: Duration(seconds: 2),
-                      delay: PRFMotionTokens.enterShort,
-                    ),
-                  ],
-                ),
-            ],
-          ),
-
-          const SizedBox(height: PRFSpacingTokens.lg),
-
-          // Status and additional info
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.md,
-                  vertical: PRFSpacingTokens.xs,
-                ),
-                decoration: BoxDecoration(
-                  color: _getStatusColor(
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _getStatusIcon(missionGroundSuggestion.status),
+                  size: 14,
+                  color: _getStatusTextColor(
                     context,
                     missionGroundSuggestion.status,
                   ),
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      _getStatusIcon(missionGroundSuggestion.status),
-                      size: 14,
-                      color: _getStatusTextColor(
-                        context,
-                        missionGroundSuggestion.status,
-                      ),
-                    ),
-                    const SizedBox(width: PRFSpacingTokens.xs),
-                    Text(
-                      missionGroundSuggestion.status.name.toUpperCase(),
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: _getStatusTextColor(
-                          context,
-                          missionGroundSuggestion.status,
-                        ),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              if (missionGroundSuggestion.contactNumber.isNotEmpty)
+                const SizedBox(width: PRFSpacingTokens.xs),
                 Text(
-                  missionGroundSuggestion.contactNumber,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                  missionGroundSuggestion.status.name.toUpperCase(),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: _getStatusTextColor(
+                      context,
+                      missionGroundSuggestion.status,
+                    ),
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-            ],
+              ],
+            ),
           ),
+          const Spacer(),
+          if (missionGroundSuggestion.contactNumber.isNotEmpty)
+            Text(
+              missionGroundSuggestion.contactNumber,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
         ],
       ),
     ).animate(effects: const [SaturateEffect()]);

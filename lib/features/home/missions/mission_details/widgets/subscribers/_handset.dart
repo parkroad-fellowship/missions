@@ -195,18 +195,17 @@ class BeautifulSubscriberCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 _buildActionButton(
-                  theme,
-                  Icons.call_outlined,
                   'Call',
                   _makeCall,
                 ),
                 const SizedBox(width: PRFSpacingTokens.md),
                 _buildActionButton(
-                  theme,
-                  Icons.visibility_outlined,
                   'View',
-                  () =>
-                      member != null ? _viewSubscriber(context, member) : null,
+                  () {
+                    if (member != null) {
+                      _viewSubscriber(context, member);
+                    }
+                  },
                 ),
               ],
             ),
@@ -324,48 +323,13 @@ class BeautifulSubscriberCard extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(
-    ThemeData theme,
-    IconData icon,
-    String label,
-    VoidCallback onPressed,
-  ) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-        onTap: onPressed,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: PRFSpacingTokens.md,
-            vertical: PRFSpacingTokens.sm,
-          ),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-            border: Border.all(
-              color: theme.colorScheme.primary.withValues(alpha: 0.2),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                size: 16,
-                color: theme.colorScheme.primary,
-              ),
-              const SizedBox(width: PRFSpacingTokens.xs),
-              Text(
-                label,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
+  Widget _buildActionButton(String label, VoidCallback onPressed) {
+    return SizedBox(
+      width: 92,
+      child: PRFSecondaryButton(
+        onPressed: onPressed,
+        title: label,
+        disabled: false,
       ),
     );
   }

@@ -124,10 +124,10 @@ class _MissionQuestionsViewHandsetState
               color: theme.colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
-          child: FilledButton.icon(
+          child: PRFPrimaryButton(
             onPressed: _showAddQuestionSheet,
-            icon: const Icon(Icons.add_rounded),
-            label: Text(l10n.addQuestion),
+            title: l10n.addQuestion,
+            disabled: false,
           ),
         ),
         Expanded(
@@ -277,47 +277,21 @@ class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
                 ),
               ),
               const SizedBox(width: PRFSpacingTokens.xs),
-              InkWell(
-                onTap: onEdit,
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: PRFSpacingTokens.sm,
-                    vertical: PRFSpacingTokens.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
-                  ),
-                  child: Text(
-                    context.l10n.edit,
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+              SizedBox(
+                width: 72,
+                child: PRFSecondaryButton(
+                  onPressed: onEdit,
+                  title: context.l10n.edit,
+                  disabled: false,
                 ),
               ),
               const SizedBox(width: PRFSpacingTokens.xs),
-              InkWell(
-                onTap: onDelete,
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: PRFSpacingTokens.sm,
-                    vertical: PRFSpacingTokens.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.errorContainer,
-                    borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
-                  ),
-                  child: Text(
-                    context.l10n.delete,
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.colorScheme.onErrorContainer,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+              SizedBox(
+                width: 76,
+                child: PRFDestroyButton(
+                  onPressed: onDelete,
+                  title: context.l10n.delete,
+                  disabled: false,
                 ),
               ),
             ],

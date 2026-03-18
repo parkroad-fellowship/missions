@@ -505,294 +505,88 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
         const SizedBox(width: PRFSpacingTokens.lg),
 
         Expanded(
-          child: GestureDetector(
+          child: PRFDetailActionCard(
             onTap: onTap,
-            child: Container(
-              margin: EdgeInsets.only(bottom: isLast ? 0 : 16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                border: Border.all(
-                  color: statusColor.withValues(alpha: 0.2),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-                    blurRadius: 12,
-                    offset: const Offset(0, 3),
+            margin: EdgeInsets.only(bottom: isLast ? 0 : PRFSpacingTokens.lg),
+            backgroundColor: theme.colorScheme.surface,
+            title: event.name,
+            subtitle: event.description.isNotEmpty
+                ? event.description.split('\n').first
+                : 'Tap to view event details',
+            trailing: PRFStatusBadge(
+              label: statusText,
+              color: statusColor,
+            ),
+            footer: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (event.venue != null) ...[
+                  PRFInfoCard(
+                    icon: Icons.location_on_rounded,
+                    label: 'Venue',
+                    value: event.venue!,
                   ),
-                  BoxShadow(
-                    color: statusColor.withValues(alpha: 0.05),
-                    blurRadius: 24,
-                    offset: const Offset(0, 6),
-                  ),
+                  const SizedBox(height: PRFSpacingTokens.sm),
                 ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                Row(
                   children: [
-                    // Premium header with gradient
-                    Container(
-                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            statusColor.withValues(alpha: 0.1),
-                            statusColor.withValues(alpha: 0.05),
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Event name and status
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  event.name,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(width: PRFSpacingTokens.sm),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.sm,
-                                  vertical: PRFSpacingTokens.xs,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: statusColor,
-                                  borderRadius: BorderRadius.circular(
-                                    PRFRadiusTokens.smd,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: statusColor.withValues(alpha: 0.3),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Text(
-                                  statusText,
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: PRFSpacingTokens.md),
-
-                          // Event venue with icon
-                          if (event.venue != null)
-                            Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(
-                                    PRFSpacingTokens.xs,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.primaryContainer,
-                                    borderRadius: BorderRadius.circular(
-                                      PRFRadiusTokens.sm,
-                                    ),
-                                  ),
-                                  child: Icon(
-                                    Icons.location_on_rounded,
-                                    size: 16,
-                                    color: theme.colorScheme.onPrimaryContainer,
-                                  ),
-                                ),
-                                const SizedBox(width: PRFSpacingTokens.sm),
-                                Expanded(
-                                  child: Text(
-                                    event.venue!,
-                                    style: theme.textTheme.titleSmall?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: theme.colorScheme.onSurface,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                        ],
+                    Expanded(
+                      child: _buildInfoChip(
+                        context,
+                        Icons.schedule_rounded,
+                        'Duration',
+                        isMultiDay ? '$duration days' : 'Single day',
                       ),
                     ),
-
-                    // Event details
-                    Padding(
-                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Duration and capacity info chips
-                          Row(
-                            children: [
-                              Flexible(
-                                child: _buildInfoChip(
-                                  context,
-                                  Icons.schedule_rounded,
-                                  'Duration',
-                                  isMultiDay ? '$duration days' : 'Single day',
-                                  theme.colorScheme.primaryContainer,
-                                  theme.colorScheme.onPrimaryContainer,
-                                ),
-                              ),
-                              const SizedBox(width: PRFSpacingTokens.sm),
-                              Flexible(
-                                child: _buildInfoChip(
-                                  context,
-                                  Icons.people_rounded,
-                                  'Capacity',
-                                  '${event.capacity} attendees',
-                                  theme.colorScheme.secondaryContainer,
-                                  theme.colorScheme.onSecondaryContainer,
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: PRFSpacingTokens.lg),
-
-                          // Date range display
-                          Container(
-                            padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(
-                                PRFRadiusTokens.smd,
-                              ),
-                              border: Border.all(
-                                color: theme.colorScheme.outline.withValues(
-                                  alpha: 0.2,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.calendar_today_rounded,
-                                  size: 20,
-                                  color: theme.colorScheme.primary,
-                                ),
-                                const SizedBox(width: PRFSpacingTokens.md),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        isMultiDay
-                                            // ignore: lines_longer_than_80_chars
-                                            ? '${DateFormatter.formatDate(startDate, timezone)} - ${DateFormatter.formatDate(endDate, timezone)}'
-                                            : DateFormatter.formatDate(
-                                                startDate,
-                                                timezone,
-                                              ),
-                                        style: theme.textTheme.titleSmall
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        // ignore: lines_longer_than_80_chars
-                                        '${DateFormatter.formatTime(event.startTime, timezone)} - ${DateFormatter.formatTime(event.endTime, timezone)} daily',
-                                        style: theme.textTheme.bodySmall
-                                            ?.copyWith(
-                                              color: theme
-                                                  .colorScheme
-                                                  .onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: PRFSpacingTokens.lg),
-
-                          // Description preview
-                          if (event.description.isNotEmpty)
-                            Text(
-                              event.description.split('\n').first,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-
-                          const SizedBox(height: PRFSpacingTokens.lg),
-
-                          // Action button
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: PRFSpacingTokens.lg,
-                              vertical: PRFSpacingTokens.md,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  statusColor.withValues(alpha: 0.1),
-                                  statusColor.withValues(alpha: 0.05),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                PRFRadiusTokens.smd,
-                              ),
-                              border: Border.all(
-                                color: statusColor.withValues(alpha: 0.3),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'View Details',
-                                  style: theme.textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: statusColor,
-                                  ),
-                                ),
-                                const SizedBox(width: PRFSpacingTokens.sm),
-                                Icon(
-                                  Icons.arrow_forward_rounded,
-                                  size: 18,
-                                  color: statusColor,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                    const SizedBox(width: PRFSpacingTokens.sm),
+                    Expanded(
+                      child: _buildInfoChip(
+                        context,
+                        Icons.people_rounded,
+                        'Capacity',
+                        '${event.capacity} attendees',
                       ),
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: PRFSpacingTokens.sm),
+                PRFInfoCard(
+                  icon: Icons.calendar_today_rounded,
+                  label: isMultiDay ? 'Date Range' : 'Date',
+                  value: isMultiDay
+                      ? '${DateFormatter.formatDate(startDate, timezone)} - '
+                            '${DateFormatter.formatDate(endDate, timezone)}'
+                      : DateFormatter.formatDate(startDate, timezone),
+                ),
+                const SizedBox(height: PRFSpacingTokens.sm),
+                PRFInfoCard(
+                  icon: Icons.access_time_rounded,
+                  label: 'Time',
+                  value:
+                      '${DateFormatter.formatTime(event.startTime, timezone)} '
+                      '- ${DateFormatter.formatTime(event.endTime, timezone)} '
+                      'daily',
+                ),
+                const SizedBox(height: PRFSpacingTokens.sm),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'View Details',
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: statusColor,
+                      ),
+                    ),
+                    const SizedBox(width: PRFSpacingTokens.xs),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      size: 18,
+                      color: statusColor,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -805,57 +599,11 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
     IconData icon,
     String label,
     String value,
-    Color backgroundColor,
-    Color textColor,
   ) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.md,
-        vertical: PRFSpacingTokens.sm,
-      ),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-        border: Border.all(
-          color: textColor.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 14,
-            color: textColor,
-          ),
-          const SizedBox(width: PRFSpacingTokens.xs),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  label,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: textColor.withValues(alpha: 0.8),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  value,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return PRFInfoCard(
+      icon: icon,
+      label: label,
+      value: value,
     );
   }
 }

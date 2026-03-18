@@ -564,42 +564,23 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     AppLocalizations l10n,
     PRFAccountingEvent accountingEvent,
   ) {
-    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: Row(
         children: [
           Expanded(
-            child: ElevatedButton.icon(
+            child: PRFPrimaryButton(
               onPressed: () => _showAddTokenModal(context, accountingEvent),
-              icon: const Icon(Icons.add_circle_outline),
-              label: Text(l10n.addToken),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.secondary,
-                foregroundColor: theme.colorScheme.onSecondary,
-                padding: const EdgeInsets.symmetric(
-                  vertical: PRFSpacingTokens.lg,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                ),
-              ),
+              title: l10n.addToken,
+              disabled: false,
             ),
           ),
           const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
-            child: OutlinedButton.icon(
+            child: PRFSecondaryButton(
               onPressed: () => _showAddExpenseModal(context),
-              icon: const Icon(Icons.receipt_long),
-              label: Text(l10n.addExpense),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  vertical: PRFSpacingTokens.lg,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                ),
-              ),
+              title: l10n.addExpense,
+              disabled: false,
             ),
           ),
         ],
@@ -1207,65 +1188,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     String allocationEntryUlid,
     PRFMedia receipt,
   ) {
-    final theme = Theme.of(context);
-
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-          ),
-          title: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer,
-                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-                ),
-                child: Icon(
-                  Icons.delete_outline,
-                  color: theme.colorScheme.error,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: PRFSpacingTokens.md),
-              const Text('Delete Receipt'),
-            ],
-          ),
-          content: const Text(
-            'Are you sure you want to delete this receipt? '
-            'This action cannot be undone.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: theme.colorScheme.onSurface),
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                context.read<DeleteReceiptCubit>().deleteReceipt(
-                  allocationEntryUlid: allocationEntryUlid,
-                  mediaUuid: receipt.uuid,
-                );
-              },
-              icon: const Icon(Icons.delete_outline, size: 18),
-              label: const Text('Delete'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.error,
-                foregroundColor: theme.colorScheme.onError,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.lg,
-                  vertical: PRFSpacingTokens.sm,
-                ),
-              ),
-            ),
-          ],
+    PRFConfirmationDialog.show(
+      context,
+      title: 'Delete Receipt',
+      message:
+          'Are you sure you want to delete this receipt? This action cannot '
+          'be undone.',
+      confirmLabel: 'Delete',
+      isDestructive: true,
+      onConfirm: () {
+        context.read<DeleteReceiptCubit>().deleteReceipt(
+          allocationEntryUlid: allocationEntryUlid,
+          mediaUuid: receipt.uuid,
         );
       },
     );
@@ -1652,14 +1586,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             ],
           ),
           actions: [
-            TextButton(
+            PRFSecondaryButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                ),
-              ),
+              title: 'Cancel',
+              disabled: false,
             ),
             BlocConsumer<
               AllocationEntryResourceCubit,
@@ -1689,7 +1619,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),
                   ),
-                  orElse: () => _buildDeleteButton(theme, context, entry),
+                  orElse: () => _buildDeleteButton(context, entry),
                 );
               },
             ),
@@ -1699,28 +1629,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     );
   }
 
-  Widget _buildDeleteButton(
-    ThemeData theme,
-    BuildContext context,
-    PRFAllocationEntry entry,
-  ) {
-    return ElevatedButton.icon(
+  Widget _buildDeleteButton(BuildContext context, PRFAllocationEntry entry) {
+    return PRFDestroyButton(
       onPressed: () {
         context.read<AllocationEntryResourceCubit>().deleteEntry(entry.ulid);
       },
-      icon: const Icon(Icons.delete_outline, size: 18),
-      label: const Text('Delete'),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: theme.colorScheme.error,
-        foregroundColor: theme.colorScheme.onError,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: PRFSpacingTokens.lg,
-          vertical: PRFSpacingTokens.sm,
-        ),
-      ),
+      title: 'Delete',
+      disabled: false,
     );
   }
 
@@ -1954,24 +1869,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       ),
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
-                    ElevatedButton.icon(
+                    PRFPrimaryButton(
                       onPressed: () =>
                           _showAddRefundModal(context, accountingEvent),
-                      icon: const Icon(Icons.account_balance_wallet),
-                      label: const Text('Add Refund'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.tertiary,
-                        foregroundColor: theme.colorScheme.onTertiary,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: PRFSpacingTokens.lg,
-                          horizontal: PRFSpacingTokens.lg,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.smd,
-                          ),
-                        ),
-                      ),
+                      title: 'Add Refund',
+                      disabled: false,
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
                     if (accountingEvent.refunds.isNotEmpty)

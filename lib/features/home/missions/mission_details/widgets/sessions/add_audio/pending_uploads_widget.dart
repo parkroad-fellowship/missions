@@ -169,57 +169,21 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   Row(
                     children: [
                       Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: progress.isRetrying
-                              ? null
-                              : () => _retryAllUploads(context),
-                          icon: progress.isRetrying
-                              ? const SizedBox(
-                                  width: PRFSpacingTokens.lg,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : const Icon(Icons.refresh, size: 16),
-                          label: Text(
-                            progress.isRetrying ? 'Uploading...' : 'Retry Now',
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.primary,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: PRFSpacingTokens.lg,
-                              vertical: PRFSpacingTokens.sm,
-                            ),
-                            minimumSize: const Size(0, 36),
-                          ),
+                        child: PRFPrimaryButton(
+                          onPressed: () => _retryAllUploads(context),
+                          title: progress.isRetrying
+                              ? 'Uploading...'
+                              : 'Retry Now',
+                          disabled: progress.isRetrying,
+                          isLoading: progress.isRetrying,
                         ),
                       ),
                       const SizedBox(width: PRFSpacingTokens.sm),
-                      OutlinedButton.icon(
-                        onPressed: progress.isRetrying
-                            ? null
-                            : () => _showPendingUploadsDetails(
-                                context,
-                                sessionUploads,
-                              ),
-                        icon: const Icon(Icons.list, size: 16),
-                        label: const Text('View All'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Theme.of(context).colorScheme.error,
-                          side: BorderSide(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: PRFSpacingTokens.lg,
-                            vertical: PRFSpacingTokens.sm,
-                          ),
-                          minimumSize: const Size(0, 36),
-                        ),
+                      PRFSecondaryButton(
+                        onPressed: () =>
+                            _showPendingUploadsDetails(context, sessionUploads),
+                        title: 'View All',
+                        disabled: progress.isRetrying,
                       ),
                     ],
                   ),
@@ -284,12 +248,10 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
           ],
         ),
         const SizedBox(height: PRFSpacingTokens.xs),
-        LinearProgressIndicator(
+        PRFLinearProgressIndicator(
           value: progress.progress,
           backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            Theme.of(context).colorScheme.primary,
-          ),
+          color: Theme.of(context).colorScheme.primary,
         ),
         if (progress.currentFileName != null) ...[
           const SizedBox(height: PRFSpacingTokens.xs),
@@ -384,27 +346,16 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                 progressSnapshot.data ??
                                 UploadRetryProgress.idle;
 
-                            return TextButton.icon(
-                              onPressed: progress.isRetrying
-                                  ? null
-                                  : () {
-                                      Navigator.of(context).pop();
-                                      _retryAllUploads(context);
-                                    },
-                              icon: progress.isRetrying
-                                  ? const SizedBox(
-                                      width: PRFSpacingTokens.lg,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const Icon(Icons.refresh),
-                              label: Text(
-                                progress.isRetrying
-                                    ? 'Uploading...'
-                                    : 'Retry All',
-                              ),
+                            return PRFPrimaryButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                _retryAllUploads(context);
+                              },
+                              title: progress.isRetrying
+                                  ? 'Uploading...'
+                                  : 'Retry All',
+                              disabled: progress.isRetrying,
+                              isLoading: progress.isRetrying,
                             );
                           },
                         ),

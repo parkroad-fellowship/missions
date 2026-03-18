@@ -1064,11 +1064,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: Text(
-                          'Session information',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
+                      const Expanded(
+                        child: PRFSectionHeader(
+                          title: 'Session information',
                         ),
                       ),
                       SizedBox(
@@ -1084,35 +1082,41 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     ],
                   ),
                   const SizedBox(height: PRFSpacingTokens.md),
-                  Wrap(
-                    spacing: PRFSpacingTokens.sm,
-                    runSpacing: PRFSpacingTokens.sm,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _buildCompactInfoChip(
-                        context,
+                      PRFInfoCard(
                         icon: Icons.access_time,
                         label: l10n.time,
                         value: timeRange,
                       ),
-                      _buildCompactInfoChip(
-                        context,
+                      const SizedBox(height: PRFSpacingTokens.sm),
+                      PRFInfoCard(
                         icon: Icons.person,
                         label: l10n.facilitator,
                         value: facilitator,
                       ),
                       if (missionSession.speaker != null)
-                        _buildCompactInfoChip(
-                          context,
-                          icon: Icons.mic,
-                          label: l10n.speaker,
-                          value: missionSession.speaker!.fullName,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: PRFSpacingTokens.sm,
+                          ),
+                          child: PRFInfoCard(
+                            icon: Icons.mic,
+                            label: l10n.speaker,
+                            value: missionSession.speaker!.fullName,
+                          ),
                         ),
                       if (missionSession.classGroup != null)
-                        _buildCompactInfoChip(
-                          context,
-                          icon: Icons.group,
-                          label: l10n.classGroup,
-                          value: missionSession.classGroup!.name,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: PRFSpacingTokens.sm,
+                          ),
+                          child: PRFInfoCard(
+                            icon: Icons.group,
+                            label: l10n.classGroup,
+                            value: missionSession.classGroup!.name,
+                          ),
                         ),
                     ],
                   ),
@@ -1192,65 +1196,6 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
           ],
         ),
       ).animate(delay: PRFMotionTokens.standard).slideY(begin: 0.2).fadeIn(),
-    );
-  }
-
-  Widget _buildCompactInfoChip(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return Container(
-      constraints: const BoxConstraints(minWidth: 140),
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.md,
-        vertical: PRFSpacingTokens.sm,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                icon,
-                size: 14,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: PRFSpacingTokens.xs),
-              Expanded(
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.7),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: PRFSpacingTokens.xs),
-          Text(
-            value,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

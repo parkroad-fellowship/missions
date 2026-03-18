@@ -40,22 +40,9 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header
-          Text(
-            l10n.addMissionPhotos,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: theme.colorScheme.onSurface,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(height: PRFSpacingTokens.sm),
-          Text(
-            l10n.addMissionPhotosDesc,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.left,
+          PRFSectionHeader(
+            title: l10n.addMissionPhotos,
+            subtitle: l10n.addMissionPhotosDesc,
           ),
           const SizedBox(height: PRFSpacingTokens.xl),
 
@@ -117,10 +104,11 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: PRFSpacingTokens.lg),
-                      ElevatedButton(
+                      PRFSecondaryButton(
                         onPressed: () =>
                             _selectMedia(context, previousMedia: []),
-                        child: const Text('Try Again'),
+                        title: 'Try Again',
+                        disabled: false,
                       ),
                     ],
                   ),

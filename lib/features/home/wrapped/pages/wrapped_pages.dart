@@ -282,55 +282,22 @@ class ImpactWrappedPage extends StatelessWidget {
               ],
               if (impactStats.decisionTypes.isNotEmpty) ...[
                 const SizedBox(height: PRFSpacingTokens.xl),
-                Container(
-                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                      decoration: BoxDecoration(
-                        color: PRFColors.white.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-                        border: Border.all(
-                          color: PRFColors.white.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
-                      ),
-                      child: Column(
+                PRFDetailActionCard(
+                      title: 'Decision Types',
+                      subtitle: 'Top categories from your mission impact',
+                      margin: EdgeInsets.zero,
+                      backgroundColor: PRFColors.white.withValues(alpha: 0.15),
+                      footer: Column(
                         children: [
-                          Text(
-                            'Decision Types',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: PRFColors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: PRFSpacingTokens.md),
-                          ...impactStats.decisionTypes
-                              .take(3)
-                              .map(
-                                (dt) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: PRFSpacingTokens.xs,
+                          ...impactStats.decisionTypes.take(3).map(
+                                (decisionType) => Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: PRFSpacingTokens.sm,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        dt.type,
-                                        style: theme.textTheme.bodyLarge
-                                            ?.copyWith(
-                                              color: PRFColors.white.withValues(
-                                                alpha: 0.9,
-                                              ),
-                                            ),
-                                      ),
-                                      Text(
-                                        dt.count.toString(),
-                                        style: theme.textTheme.titleMedium
-                                            ?.copyWith(
-                                              color: PRFColors.white,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                      ),
-                                    ],
+                                  child: PRFInfoCard(
+                                    icon: Icons.label_rounded,
+                                    label: decisionType.type,
+                                    value: decisionType.count.toString(),
                                   ),
                                 ),
                               ),
@@ -637,46 +604,45 @@ class SummaryWrappedPage extends StatelessWidget {
                   .fadeIn(duration: PRFMotionTokens.enterShort)
                   .scale(curve: Curves.easeOut),
               const SizedBox(height: 48),
-              Container(
-                    padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                    decoration: BoxDecoration(
-                      color: PRFColors.white.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
-                      border: Border.all(
-                        color: PRFColors.white.withValues(alpha: 0.3),
-                        width: 2,
-                      ),
-                    ),
-                    child: Column(
+              PRFDetailActionCard(
+                    title: '$year Highlights',
+                    subtitle: 'A snapshot of your impact this year',
+                    margin: EdgeInsets.zero,
+                    backgroundColor: PRFColors.white.withValues(alpha: 0.15),
+                    footer: Column(
                       children: [
-                        _buildSummaryRow(
-                          context,
-                          Icons.explore_rounded,
-                          'Missions',
-                          memberEngagement.missionStats.totalMissions
-                              .toString(),
+                        PRFInfoCard(
+                          icon: Icons.explore_rounded,
+                          label: 'Missions',
+                          value:
+                              memberEngagement.missionStats.totalMissions
+                                  .toString(),
                         ),
-                        const SizedBox(height: PRFSpacingTokens.lg),
-                        _buildSummaryRow(
-                          context,
-                          Icons.favorite_rounded,
-                          'Souls Touched',
-                          memberEngagement.impactStats.soulsTouched.toString(),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        PRFInfoCard(
+                          icon: Icons.favorite_rounded,
+                          label: 'Souls Touched',
+                          value:
+                              memberEngagement.impactStats.soulsTouched
+                                  .toString(),
                         ),
-                        const SizedBox(height: PRFSpacingTokens.lg),
-                        _buildSummaryRow(
-                          context,
-                          Icons.workspace_premium_rounded,
-                          'Courses',
-                          memberEngagement.learningStats.coursesCompleted
-                              .toString(),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        PRFInfoCard(
+                          icon: Icons.workspace_premium_rounded,
+                          label: 'Courses',
+                          value:
+                              memberEngagement
+                                  .learningStats
+                                  .coursesCompleted
+                                  .toString(),
                         ),
-                        const SizedBox(height: PRFSpacingTokens.lg),
-                        _buildSummaryRow(
-                          context,
-                          Icons.event_rounded,
-                          'Events',
-                          memberEngagement.eventStats.eventsAttended.toString(),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        PRFInfoCard(
+                          icon: Icons.event_rounded,
+                          label: 'Events',
+                          value:
+                              memberEngagement.eventStats.eventsAttended
+                                  .toString(),
                         ),
                       ],
                     ),
@@ -715,45 +681,4 @@ class SummaryWrappedPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryRow(
-    BuildContext context,
-    IconData icon,
-    String label,
-    String value,
-  ) {
-    final theme = Theme.of(context);
-
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(PRFSpacingTokens.md),
-          decoration: BoxDecoration(
-            color: PRFColors.white.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-          ),
-          child: Icon(
-            icon,
-            color: PRFColors.white,
-            size: 24,
-          ),
-        ),
-        const SizedBox(width: PRFSpacingTokens.lg),
-        Expanded(
-          child: Text(
-            label,
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: PRFColors.white.withValues(alpha: 0.9),
-            ),
-          ),
-        ),
-        Text(
-          value,
-          style: theme.textTheme.headlineMedium?.copyWith(
-            color: PRFColors.white,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ],
-    );
-  }
 }

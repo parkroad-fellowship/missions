@@ -44,9 +44,6 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
 
     return SafeArea(
       child: Scaffold(
@@ -111,36 +108,12 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Date Header with enhanced styling
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        vertical: PRFSpacingTokens.xl,
+                                    PRFSectionHeader(
+                                      title: DateFormat.yMMMMd().format(
+                                        mapAsList[index],
                                       ),
                                       padding: const EdgeInsets.symmetric(
-                                        horizontal: PRFSpacingTokens.xl,
-                                        vertical: PRFSpacingTokens.md,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.primary.withValues(
-                                          alpha: 0.08,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          PRFRadiusTokens.md,
-                                        ),
-                                        border: Border.all(
-                                          color: colorScheme.primary.withValues(
-                                            alpha: 0.18,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        DateFormat.yMMMMd().format(
-                                          mapAsList[index],
-                                        ),
-                                        style: textTheme.titleLarge?.copyWith(
-                                          color: colorScheme.primary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                        vertical: PRFSpacingTokens.xl,
                                       ),
                                     ),
 
@@ -212,32 +185,16 @@ class _TabletAnnouncementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
+    final previewText = announcement.content
+        .replaceAll(RegExp('<[^>]*>'), '')
+        .trim();
+    final truncatedPreview = previewText.length > 220
+        ? '${previewText.substring(0, 220)}...'
+        : previewText;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
-          ),
-          BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-        border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.10),
-        ),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => WoltModalSheet.show<dynamic>(
+    return PRFDetailActionCard(
+      margin: EdgeInsets.zero,
+      onTap: () => WoltModalSheet.show<dynamic>(
             context: context,
             pageListBuilder: (modalSheetContext) => [
               WoltModalSheetPage(
@@ -276,7 +233,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               announcement.title,
-                              style: textTheme.headlineSmall?.copyWith(
+                              style: theme.textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: colorScheme.onSurface,
                               ),
@@ -289,7 +246,7 @@ class _TabletAnnouncementCard extends StatelessWidget {
                       const SizedBox(height: PRFSpacingTokens.xxl),
                       HtmlWidget(
                         announcement.content,
-                        textStyle: textTheme.bodyLarge?.copyWith(
+                        textStyle: theme.textTheme.bodyLarge?.copyWith(
                           color: colorScheme.onSurface,
                           height: 1.6,
                         ),
@@ -300,157 +257,66 @@ class _TabletAnnouncementCard extends StatelessWidget {
               ),
             ],
           ),
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
-          child: Padding(
-            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header row with icon, title, and time
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            colorScheme.primary,
-                            colorScheme.secondary,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-                        boxShadow: [
-                          BoxShadow(
-                            color: colorScheme.primary.withValues(alpha: 0.10),
-                            blurRadius: 10,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                      child: Icon(
-                        Icons.campaign_rounded,
-                        size: 24,
-                        color: colorScheme.onPrimary,
-                      ),
-                    ),
-                    const SizedBox(width: PRFSpacingTokens.lg),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            announcement.title,
-                            style: textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: colorScheme.onSurface,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: PRFSpacingTokens.sm),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.access_time_rounded,
-                                size: 16,
-                                color: colorScheme.primary.withValues(
-                                  alpha: 0.7,
-                                ),
-                              ),
-                              const SizedBox(width: PRFSpacingTokens.xs),
-                              Text(
-                                DateFormatter.formatTimeFromDateTime(
-                                  announcement.publishedAt,
-                                  timezone,
-                                ),
-                                style: textTheme.labelMedium?.copyWith(
-                                  color: colorScheme.primary.withValues(
-                                    alpha: 0.7,
-                                  ),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: PRFSpacingTokens.xl),
-                Expanded(
-                  child: Text(
-                    announcement.content.replaceAll(RegExp('<[^>]*>'), ''),
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      height: 1.5,
-                    ),
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(height: PRFSpacingTokens.lg),
-                // Bottom action indicator
-                Row(
-                  children: [
-                    Container(
-                      width: 4,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            colorScheme.primary,
-                            colorScheme.secondary,
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: PRFSpacingTokens.md,
-                        vertical: PRFSpacingTokens.xs,
-                      ),
-                      decoration: BoxDecoration(
-                        color: colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(
-                          PRFRadiusTokens.smd,
-                        ),
-                        border: Border.all(
-                          color: colorScheme.primary.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Tap for details',
-                            style: textTheme.labelSmall?.copyWith(
-                              color: colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(width: PRFSpacingTokens.xs),
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 12,
-                            color: colorScheme.primary,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+      leading: Container(
+        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              colorScheme.primary,
+              colorScheme.secondary,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.primary.withValues(alpha: 0.12),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Icon(
+          Icons.campaign_rounded,
+          size: 24,
+          color: colorScheme.onPrimary,
+        ),
+      ),
+      title: announcement.title,
+      subtitle: truncatedPreview,
+      trailing: Icon(
+        Icons.arrow_forward_ios_rounded,
+        size: 14,
+        color: colorScheme.primary,
+      ),
+      footer: Row(
+        children: [
+          Icon(
+            Icons.access_time_rounded,
+            size: 16,
+            color: colorScheme.primary.withValues(alpha: 0.7),
+          ),
+          const SizedBox(width: PRFSpacingTokens.xs),
+          Text(
+            DateFormatter.formatTimeFromDateTime(
+              announcement.publishedAt,
+              timezone,
+            ),
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: colorScheme.primary.withValues(alpha: 0.7),
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ),
+          const Spacer(),
+          Text(
+            'Tap for details',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: colorScheme.primary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }
