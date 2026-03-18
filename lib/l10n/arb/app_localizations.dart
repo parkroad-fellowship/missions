@@ -496,6 +496,12 @@ abstract class AppLocalizations {
   /// **'Lessons'**
   String get lessons;
 
+  /// No description provided for @lessonResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
+  String get lessonResources;
+
   /// No description provided for @lessonDetails.
   ///
   /// In en, this message translates to:
@@ -549,6 +555,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No courses'**
   String get noCourses;
+
+  /// No description provided for @recentCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Courses'**
+  String get recentCourses;
 
   /// No description provided for @yetToBeEnroled.
   ///
@@ -1786,11 +1798,23 @@ abstract class AppLocalizations {
   /// **'No modules'**
   String get noModules;
 
+  /// No description provided for @recentModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Modules'**
+  String get recentModules;
+
   /// No description provided for @noLessons.
   ///
   /// In en, this message translates to:
   /// **'No lessons'**
   String get noLessons;
+
+  /// No description provided for @recentLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Lessons'**
+  String get recentLessons;
 
   /// No description provided for @noSouls.
   ///

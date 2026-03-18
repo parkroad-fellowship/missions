@@ -15,27 +15,87 @@ class CourseDetailsActionCard extends StatelessWidget {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return PRFDetailActionCard(
-      title: courseModule.module?.name ?? '',
-      subtitle: courseModule.module?.description ?? '',
-      onTap: () => context.router.push(
-        ModuleDetailsRoute(courseModuleUlid: courseModule.ulid),
-      ),
-      trailing: Container(
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primary,
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
         ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: PRFSpacingTokens.lg,
-          vertical: PRFSpacingTokens.xs,
-        ),
-        child: Text(
-          l10n.percentage(
-            courseModule.memberModule?.percentComplete.toInt() ?? 0,
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
           ),
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onPrimary,
+        ],
+      ),
+      child: Material(
+        color: PRFColors.transparent,
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+          onTap: () => context.router.push(
+            ModuleDetailsRoute(courseModuleUlid: courseModule.ulid),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(PRFSpacingTokens.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      ),
+                      child: Icon(
+                        Icons.view_module_rounded,
+                        color: theme.colorScheme.onPrimaryContainer,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: PRFSpacingTokens.md),
+                    Expanded(
+                      child: Text(
+                        courseModule.module?.name ?? '',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    PRFStatusBadge(
+                      label: l10n.percentage(
+                        courseModule.memberModule?.percentComplete.toInt() ?? 0,
+                      ),
+                      color: theme.colorScheme.primary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
+                      ),
+                      boxShadow: const [],
+                      textStyle: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: PRFSpacingTokens.md),
+                Text(
+                  courseModule.module?.description ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

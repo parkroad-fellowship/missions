@@ -224,6 +224,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lessons => 'Lessons';
 
   @override
+  String get lessonResources => 'Resources';
+
+  @override
   String get lessonDetails => 'Lesson Details';
 
   @override
@@ -249,6 +252,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noCourses => 'No courses';
+
+  @override
+  String get recentCourses => 'Recent Courses';
 
   @override
   String get yetToBeEnroled => 'You are yet to be enroled for a course';
@@ -912,7 +918,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noModules => 'No modules';
 
   @override
+  String get recentModules => 'Recent Modules';
+
+  @override
   String get noLessons => 'No lessons';
+
+  @override
+  String get recentLessons => 'Recent Lessons';
 
   @override
   String get noSouls => 'No souls';

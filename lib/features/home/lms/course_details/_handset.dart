@@ -7,6 +7,7 @@ import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -24,9 +25,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 
   @override
   void initState() {
-    context.read<CourseResourceCubit>().loadAll(
-      filters: {'course_ulid': courseUlid},
-    );
+    context.read<CourseResourceCubit>().loadAll();
     context.read<ModuleResourceCubit>().loadAll(
       filters: {'course_ulid': courseUlid},
     );
@@ -38,111 +37,330 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      body: Column(
-        children: [
-          ColoredBox(
-            color: theme.colorScheme.primary,
-            child: PRFBrandedNavBar(
-              onBack: () => context.router.popUntilRouteWithPath(
-                PRFSuperAppRouter.lmsRoute,
-              ),
-              title: l10n.courseDetails,
-              actions: [
-                BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
-                  builder: (context, state) {
-                    final course = state.maybeWhen(
-                      listLoaded: (items, _, _) =>
-                          items.isNotEmpty ? items.first : null,
-                      orElse: () => null,
-                    );
-                    if (course == null) return const SizedBox.shrink();
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: PRFSpacingTokens.md,
-                        vertical: PRFSpacingTokens.xs,
+    return BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
+      builder: (context, courseState) {
+        return BlocBuilder<ModuleResourceCubit, ResourceState<PRFCourseModule>>(
+          builder: (context, moduleState) {
+            final course = courseState.maybeWhen(
+              listLoaded: (items, _, _) =>
+                  items.isNotEmpty ? items.first : null,
+              orElse: () => null,
+            );
+            final modules = moduleState.maybeWhen(
+              listLoaded: (values, _, _) => values,
+              orElse: List<PRFCourseModule>.empty,
+            );
+            final completedCount = modules
+                .where(
+                  (module) =>
+                      (module.memberModule?.percentComplete ?? 0) >= 100,
+                )
+                .length;
+
+            return Scaffold(
+              backgroundColor: theme.colorScheme.surface,
+              body: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          theme.colorScheme.primary,
+                          theme.colorScheme.primary.withValues(alpha: 0.88),
+                        ],
                       ),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: theme.colorScheme.primary.withValues(
-                              alpha: 0.13,
+                    ),
+                    child: SafeArea(
+                      bottom: false,
+                      child: Column(
+                        children: [
+                          PRFBrandedNavBar(
+                            onBack: () => context.router.popUntilRouteWithPath(
+                              PRFSuperAppRouter.lmsRoute,
                             ),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
+                            title: l10n.courseDetails,
+                            actions: [
+                              if (course != null)
+                                _CourseProgressBadge(
+                                  value: l10n.percentage(
+                                    course.courseMember?.percentComplete
+                                            .toInt() ??
+                                        0,
+                                  ),
+                                ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              PRFSpacingTokens.lg,
+                              PRFSpacingTokens.xs,
+                              PRFSpacingTokens.lg,
+                              PRFSpacingTokens.lg,
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(
+                                PRFSpacingTokens.md,
+                              ),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.onPrimary.withValues(
+                                  alpha: 0.1,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  PRFRadiusTokens.lg,
+                                ),
+                                border: Border.all(
+                                  color: theme.colorScheme.onPrimary.withValues(
+                                    alpha: 0.15,
+                                  ),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    course?.name ?? l10n.courseDetails,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onPrimary
+                                          .withValues(alpha: 0.9),
+                                    ),
+                                  ),
+                                  const SizedBox(height: PRFSpacingTokens.md),
+                                  Wrap(
+                                    spacing: PRFSpacingTokens.xs,
+                                    runSpacing: PRFSpacingTokens.xs,
+                                    children: [
+                                      _LmsStatPill(
+                                        label: l10n.total,
+                                        value: modules.length,
+                                      ),
+                                      _LmsStatPill(
+                                        label: l10n.completed,
+                                        value: completedCount,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      child: Text(
-                        l10n.percentage(
-                          course.courseMember?.percentComplete.toInt() ?? 0,
-                        ),
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-              child:
-                  BlocBuilder<
-                    ModuleResourceCubit,
-                    ResourceState<PRFCourseModule>
-                  >(
-                    builder: (context, state) => state.maybeWhen(
-                      listLoading: () => const Padding(
-                        padding: EdgeInsets.only(bottom: PRFSpacingTokens.lg),
-                        child: PRFLinearProgressIndicator(),
-                      ),
-                      orElse: SizedBox.shrink,
                     ),
                   ),
-            ),
-            BlocBuilder<ModuleResourceCubit, ResourceState<PRFCourseModule>>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  listLoaded: (courseModules, _, _) {
-                    if (courseModules.isEmpty) {
-                      return SliverToBoxAdapter(
-                        child: PRFEmptyView(
-                          label: l10n.noModules,
-                          description: l10n.pleaseWait,
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        await context.read<CourseResourceCubit>().loadAll(
+                          filters: {'course_ulid': courseUlid},
+                        );
+                        await context.read<ModuleResourceCubit>().loadAll(
+                          filters: {'course_ulid': courseUlid},
+                        );
+                      },
+                      child: CustomScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),
                         ),
-                      );
-                    }
-                    return SliverList.separated(
-                      itemCount: courseModules.length,
-                      itemBuilder: (context, index) => CourseDetailsActionCard(
-                        courseModule: courseModules[index],
+                        slivers: [
+                          SliverPadding(
+                            padding: const EdgeInsets.fromLTRB(
+                              PRFSpacingTokens.lg,
+                              PRFSpacingTokens.lg,
+                              PRFSpacingTokens.lg,
+                              PRFSpacingTokens.xl,
+                            ),
+                            sliver: moduleState.maybeWhen(
+                              orElse: () => const SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: Center(
+                                  child: PRFCircularProgressIndicator(),
+                                ),
+                              ),
+                              listLoading: () => const SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: Center(
+                                  child: PRFCircularProgressIndicator(),
+                                ),
+                              ),
+                              error: (message, _) => SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: PRFEmptyView(
+                                    label: l10n.noModules,
+                                    description: message,
+                                  ),
+                                ),
+                              ),
+                              listLoaded: (values, _, _) {
+                                if (values.isEmpty) {
+                                  return SliverFillRemaining(
+                                    hasScrollBody: false,
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: PRFEmptyView(
+                                        label: l10n.noModules,
+                                        description: l10n.pleaseWait,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                return SliverList.builder(
+                                  itemCount: values.length + 1,
+                                  itemBuilder: (context, index) {
+                                    if (index == 0) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: PRFSpacingTokens.md,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                l10n.recentModules,
+                                                style: theme
+                                                    .textTheme
+                                                    .titleSmall
+                                                    ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: theme
+                                                          .colorScheme
+                                                          .onSurface
+                                                          .withValues(
+                                                            alpha: 0.78,
+                                                          ),
+                                                    ),
+                                              ),
+                                            ),
+                                            Text(
+                                              '${values.length}',
+                                              style: theme.textTheme.labelMedium
+                                                  ?.copyWith(
+                                                    color: theme
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+
+                                    final moduleIndex = index - 1;
+                                    return Padding(
+                                          padding: EdgeInsets.only(
+                                            bottom:
+                                                moduleIndex == values.length - 1
+                                                ? 0
+                                                : PRFSpacingTokens.lg,
+                                          ),
+                                          child: CourseDetailsActionCard(
+                                            courseModule: values[moduleIndex],
+                                          ),
+                                        )
+                                        .animate(
+                                          delay: Duration(
+                                            milliseconds: 70 * moduleIndex,
+                                          ),
+                                        )
+                                        .fadeIn(
+                                          duration: PRFMotionTokens.enterShort,
+                                        )
+                                        .slideY(begin: 0.22, end: 0);
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: PRFSpacingTokens.lg),
-                    );
-                  },
-                  error: (message, _) => SliverToBoxAdapter(
-                    child: Center(child: Text(message)),
+                    ),
                   ),
-                  orElse: () => const SliverToBoxAdapter(
-                    child: SizedBox.shrink(),
-                  ),
-                );
-              },
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _LmsStatPill extends StatelessWidget {
+  const _LmsStatPill({required this.label, required this.value});
+
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.md,
+        vertical: PRFSpacingTokens.xs,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.onPrimary.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+      ),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '$value ',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-              ],
+            TextSpan(
+              text: label,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CourseProgressBadge extends StatelessWidget {
+  const _CourseProgressBadge({required this.value});
+
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.md,
+        vertical: PRFSpacingTokens.xs,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.onPrimary.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+      ),
+      child: Text(
+        value,
+        style: theme.textTheme.labelLarge?.copyWith(
+          color: theme.colorScheme.onPrimary,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

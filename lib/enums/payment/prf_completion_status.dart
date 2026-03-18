@@ -25,4 +25,13 @@ enum PRFCompletionStatus {
         return Icons.check;
     }
   }
+
+  int get apiKey {
+    switch (this) {
+      case PRFCompletionStatus.incomplete:
+        return 1;
+      case PRFCompletionStatus.complete:
+        return 2;
+    }
+  }
 }
