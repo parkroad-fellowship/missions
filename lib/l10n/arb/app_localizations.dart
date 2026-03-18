@@ -1426,6 +1426,12 @@ abstract class AppLocalizations {
   /// **'No suggested mission grounds'**
   String get noSuggestedMissionGrounds;
 
+  /// No description provided for @recentSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Suggestions'**
+  String get recentSuggestions;
+
   /// No description provided for @missionGroundRecorded.
   ///
   /// In en, this message translates to:

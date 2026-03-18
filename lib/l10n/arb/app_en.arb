@@ -552,6 +552,8 @@
     "@suggestMissionSubTitle": {},
     "noSuggestedMissionGrounds": "No suggested mission grounds",
     "@noSuggestedMissionGrounds": {},
+    "recentSuggestions": "Recent Suggestions",
+    "@recentSuggestions": {},
     "missionGroundRecorded": "Your suggested mission to {ground} has been recorded",
     "@missionGroundRecorded": {
         "placeholders": {

@@ -17,98 +17,155 @@ class MissionGroundSuggestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return PRFDetailActionCard(
-      title: missionGroundSuggestion.name,
-      subtitle: missionGroundSuggestion.contactPerson,
-      leading: Container(
-        padding: const EdgeInsets.all(PRFSpacingTokens.md),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+    final canCall = PermissionHelper.userCan(
+      'viewAny mission ground suggestion',
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
         ),
-        child: Icon(
-          Icons.lightbulb_outline_rounded,
-          color: theme.colorScheme.onPrimaryContainer,
-          size: 24,
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      trailing: PermissionHelper.userCan('viewAny mission ground suggestion')
-          ? Container(
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.call_rounded,
-                  color: theme.colorScheme.onPrimaryContainer,
-                  size: 20,
-                ),
-                onPressed: () async {
-                  final uri = Uri(
-                    scheme: 'tel',
-                    path: missionGroundSuggestion.contactNumber,
-                  );
-                  await UrlHelper.openUrl(uri);
-                },
-              ),
-            ).animate(
-              effects: const [
-                ShakeEffect(
-                  duration: Duration(seconds: 2),
-                  delay: PRFMotionTokens.enterShort,
-                ),
-              ],
-            )
-          : null,
-      footer: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: PRFSpacingTokens.md,
-              vertical: PRFSpacingTokens.xs,
-            ),
-            decoration: BoxDecoration(
-              color: _getStatusColor(
-                context,
-                missionGroundSuggestion.status,
-              ),
-              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+      child: Padding(
+        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Icon(
-                  _getStatusIcon(missionGroundSuggestion.status),
-                  size: 14,
-                  color: _getStatusTextColor(
-                    context,
-                    missionGroundSuggestion.status,
+                Container(
+                  padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                  ),
+                  child: Icon(
+                    Icons.lightbulb_outline_rounded,
+                    color: theme.colorScheme.onPrimaryContainer,
+                    size: 22,
                   ),
                 ),
-                const SizedBox(width: PRFSpacingTokens.xs),
-                Text(
-                  missionGroundSuggestion.status.name.toUpperCase(),
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: _getStatusTextColor(
+                const SizedBox(width: PRFSpacingTokens.md),
+                Expanded(
+                  child: Text(
+                    missionGroundSuggestion.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                if (canCall && missionGroundSuggestion.contactNumber.isNotEmpty)
+                  Container(
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                    ),
+                    child: IconButton(
+                      onPressed: () async {
+                        final uri = Uri(
+                          scheme: 'tel',
+                          path: missionGroundSuggestion.contactNumber,
+                        );
+                        await UrlHelper.openUrl(uri);
+                      },
+                      icon: Icon(
+                        Icons.call_rounded,
+                        color: theme.colorScheme.onPrimaryContainer,
+                        size: 20,
+                      ),
+                    ),
+                  ).animate().shake(
+                    duration: const Duration(seconds: 2),
+                    delay: PRFMotionTokens.enterShort,
+                  ),
+              ],
+            ),
+            const SizedBox(height: PRFSpacingTokens.md),
+            Text(
+              missionGroundSuggestion.contactPerson,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: theme.colorScheme.onSurface,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            if ((missionGroundSuggestion.notes ?? '').trim().isNotEmpty) ...[
+              const SizedBox(height: PRFSpacingTokens.xs),
+              Text(
+                missionGroundSuggestion.notes!.trim(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+            const SizedBox(height: PRFSpacingTokens.md),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.md,
+                    vertical: PRFSpacingTokens.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(
                       context,
                       missionGroundSuggestion.status,
                     ),
-                    fontWeight: FontWeight.w500,
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        _getStatusIcon(missionGroundSuggestion.status),
+                        size: 14,
+                        color: _getStatusTextColor(
+                          context,
+                          missionGroundSuggestion.status,
+                        ),
+                      ),
+                      const SizedBox(width: PRFSpacingTokens.xs),
+                      Text(
+                        missionGroundSuggestion.status.name.toUpperCase(),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: _getStatusTextColor(
+                            context,
+                            missionGroundSuggestion.status,
+                          ),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                const Spacer(),
+                if (missionGroundSuggestion.contactNumber.isNotEmpty)
+                  Text(
+                    missionGroundSuggestion.contactNumber,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
               ],
             ),
-          ),
-          const Spacer(),
-          if (missionGroundSuggestion.contactNumber.isNotEmpty)
-            Text(
-              missionGroundSuggestion.contactNumber,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     ).animate(effects: const [SaturateEffect()]);
   }

@@ -716,6 +716,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSuggestedMissionGrounds => 'No suggested mission grounds';
 
   @override
+  String get recentSuggestions => 'Recent Suggestions';
+
+  @override
   String missionGroundRecorded(String ground) {
     return 'Your suggested mission to $ground has been recorded';
   }
