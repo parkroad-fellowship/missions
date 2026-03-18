@@ -53,41 +53,57 @@ class _PRFDomainTabSectionState extends State<PRFDomainTabSection>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section header
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: PRFSpacingTokens.lg,
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.fromLTRB(
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.sm,
+          ),
+          padding: const EdgeInsets.all(PRFSpacingTokens.md),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 widget.title,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: theme.colorScheme.onSurface,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               if (widget.subtitle != null) ...[
                 const SizedBox(height: PRFSpacingTokens.xs),
                 Text(
                   widget.subtitle!,
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
+              const SizedBox(height: PRFSpacingTokens.sm),
+              TabBar(
+                controller: _tabController,
+                isScrollable: true,
+                tabAlignment: TabAlignment.start,
+                padding: EdgeInsets.zero,
+                labelPadding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.sm,
+                ),
+                labelColor: theme.colorScheme.onSurface,
+                unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
+                indicatorColor: theme.colorScheme.primary,
+                tabs: widget.tabs,
+              ),
             ],
           ),
         ),
-        const SizedBox(height: PRFSpacingTokens.md),
-        // Tab bar
-        TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabs: widget.tabs,
-        ),
-        const SizedBox(height: PRFSpacingTokens.sm),
         // Tab content
         Expanded(
           child: TabBarView(

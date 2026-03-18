@@ -1,3 +1,5 @@
+import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/add_session/add_session.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/update_session/update_session.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
@@ -23,6 +25,51 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
 
+  Future<void> _showAddSessionSheet() {
+    return PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.addSession,
+      child: AddSessionView(missionUlid: missionUlid),
+    );
+  }
+
+  Future<void> _showEditSessionSheet(PRFMissionSession missionSession) {
+    return PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.edit,
+      child: UpdateSessionView(
+        missionUlid: missionUlid,
+        missionSession: missionSession,
+      ),
+    );
+  }
+
+  Future<void> _deleteSession(PRFMissionSession missionSession) async {
+    final shouldDelete = await PRFConfirmationDialog.show(
+      context,
+      title: '${context.l10n.delete} ${context.l10n.sessions}',
+      message: 'Are you sure you want to continue?',
+      confirmLabel: context.l10n.delete,
+      isDestructive: true,
+    );
+
+    if (shouldDelete != true || !mounted) return;
+
+    await context.read<MissionSessionResourceCubit>().deleteSession(
+      missionSession.ulid,
+    );
+    if (!mounted) return;
+
+    final error = context.read<MissionSessionResourceCubit>().state.mapOrNull(
+      error: (state) => state.message,
+    );
+    if (error != null) {
+      PRFSnackbar.error(context, error);
+      return;
+    }
+    PRFSnackbar.success(context, 'Session deleted');
+  }
+
   @override
   void initState() {
     context.read<MissionSessionResourceCubit>().loadAll(
@@ -34,115 +81,154 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
-      child:
-          BlocBuilder<
-            MissionSessionResourceCubit,
-            ResourceState<PRFMissionSession>
-          >(
-            builder: (context, state) {
-              return state.maybeWhen(
-                listLoading: () => const Center(
-                  child: PRFCircularProgressIndicator(),
-                ),
-                listLoaded: (sessions, _, _) {
-                  if (sessions.isEmpty) {
-                    return PRFEmptyView(
-                      label: l10n.noSessions,
-                      description: l10n.sessionsWillAppearHere,
-                      icon: Icons.event_note_outlined,
-                    );
-                  }
-
-                  // Group by startsAt date
-                  final missionSessions = col.groupBy(
-                    sessions,
-                    (session) => session.startsAt,
-                  );
-
-                  return ListView.builder(
-                    physics: const ScrollPhysics(),
-                    itemCount: missionSessions.length,
-                    itemBuilder: (context, index) {
-                      final sortedDailySessions = List<PRFMissionSession>.from(
-                        missionSessions.values.elementAt(index),
-                      )..sort((a, b) => a.startsAt.compareTo(b.startsAt));
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Timeline Date Header
-                          Container(
-                                margin: const EdgeInsets.only(
-                                  left: PRFSpacingTokens.xxl,
-                                  top: PRFSpacingTokens.lg,
-                                  bottom: PRFSpacingTokens.sm,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 4,
-                                      height: 24,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.primary,
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                    ),
-                                    const SizedBox(width: PRFSpacingTokens.md),
-                                    Text(
-                                      DateFormatter.formatMissionDate(
-                                        missionSessions.keys.elementAt(index),
-                                        timezone,
-                                      ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.primary,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .animate(delay: (index * 100).ms)
-                              .slideX(begin: -0.3)
-                              .fadeIn(),
-
-                          // Timeline Sessions
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            itemCount: sortedDailySessions.length,
-                            itemBuilder: (context, i) => TimelineSessionCard(
-                              missionSession: sortedDailySessions[i],
-                              missionUlid: missionUlid,
-                              isLast: i == sortedDailySessions.length - 1,
-                              animationDelay: (index * 100 + i * 50).ms,
-                              userTimezone: timezone,
-                            ),
-                          ),
-                          const SizedBox(height: PRFSpacingTokens.lg),
-                        ],
-                      );
-                    },
-                  );
-                },
-                error: (message, _) => PRFEmptyView(
-                  label: l10n.noSessions,
-                  description: message,
-                  icon: Icons.event_note_outlined,
-                ),
-                orElse: () => const SizedBox.shrink(),
-              );
-            },
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.fromLTRB(
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.sm,
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.md,
           ),
+          padding: const EdgeInsets.all(PRFSpacingTokens.md),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            ),
+          ),
+          child: FilledButton.icon(
+            onPressed: _showAddSessionSheet,
+            icon: const Icon(Icons.add_rounded),
+            label: Text(l10n.addSession),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.sm,
+            ),
+            child:
+                BlocBuilder<
+                  MissionSessionResourceCubit,
+                  ResourceState<PRFMissionSession>
+                >(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      listLoading: () => const Center(
+                        child: PRFCircularProgressIndicator(),
+                      ),
+                      listLoaded: (sessions, _, _) {
+                        if (sessions.isEmpty) {
+                          return PRFEmptyView(
+                            label: l10n.noSessions,
+                            description: l10n.sessionsWillAppearHere,
+                            icon: Icons.event_note_outlined,
+                          );
+                        }
+
+                        final missionSessions = col.groupBy(
+                          sessions,
+                          (session) => session.startsAt,
+                        );
+
+                        return ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: missionSessions.length,
+                          itemBuilder: (context, index) {
+                            final sortedDailySessions =
+                                List<PRFMissionSession>.from(
+                                  missionSessions.values.elementAt(index),
+                                )..sort(
+                                  (a, b) => a.startsAt.compareTo(b.startsAt),
+                                );
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                      margin: const EdgeInsets.only(
+                                        left: PRFSpacingTokens.xxl,
+                                        top: PRFSpacingTokens.lg,
+                                        bottom: PRFSpacingTokens.sm,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 4,
+                                            height: 24,
+                                            decoration: BoxDecoration(
+                                              color: theme.colorScheme.primary,
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: PRFSpacingTokens.md,
+                                          ),
+                                          Text(
+                                            DateFormatter.formatMissionDate(
+                                              missionSessions.keys.elementAt(
+                                                index,
+                                              ),
+                                              timezone,
+                                            ),
+                                            style: theme.textTheme.headlineSmall
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color:
+                                                      theme.colorScheme.primary,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .animate(delay: (index * 100).ms)
+                                    .slideX(begin: -0.3)
+                                    .fadeIn(),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: sortedDailySessions.length,
+                                  itemBuilder: (context, i) =>
+                                      TimelineSessionCard(
+                                        missionSession: sortedDailySessions[i],
+                                        missionUlid: missionUlid,
+                                        isLast:
+                                            i == sortedDailySessions.length - 1,
+                                        animationDelay:
+                                            (index * 100 + i * 50).ms,
+                                        userTimezone: timezone,
+                                        onEdit: () => _showEditSessionSheet(
+                                          sortedDailySessions[i],
+                                        ),
+                                        onDelete: () => _deleteSession(
+                                          sortedDailySessions[i],
+                                        ),
+                                      ),
+                                ),
+                                const SizedBox(height: PRFSpacingTokens.lg),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      error: (message, _) => PRFEmptyView(
+                        label: l10n.noSessions,
+                        description: message,
+                        icon: Icons.event_note_outlined,
+                      ),
+                      orElse: () => const SizedBox.shrink(),
+                    );
+                  },
+                ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -154,6 +240,8 @@ class TimelineSessionCard extends StatelessWidget {
     required this.isLast,
     required this.animationDelay,
     required this.userTimezone,
+    required this.onEdit,
+    required this.onDelete,
     super.key,
   });
 
@@ -162,6 +250,8 @@ class TimelineSessionCard extends StatelessWidget {
   final bool isLast;
   final Duration animationDelay;
   final String userTimezone;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -272,15 +362,89 @@ class TimelineSessionCard extends StatelessWidget {
                                         ),
                                   ),
                                 ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 16,
-                                  color:
-                                      Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface.withValues(
-                                        alpha: 0.5,
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 16,
+                                      color:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface.withValues(
+                                            alpha: 0.5,
+                                          ),
+                                    ),
+                                    const SizedBox(width: PRFSpacingTokens.xs),
+                                    InkWell(
+                                      onTap: onEdit,
+                                      borderRadius: BorderRadius.circular(
+                                        PRFRadiusTokens.full,
                                       ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: PRFSpacingTokens.sm,
+                                          vertical: PRFSpacingTokens.xs,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primaryContainer,
+                                          borderRadius: BorderRadius.circular(
+                                            PRFRadiusTokens.full,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          context.l10n.edit,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall
+                                              ?.copyWith(
+                                                color:
+                                                    Theme.of(
+                                                          context,
+                                                        )
+                                                        .colorScheme
+                                                        .onPrimaryContainer,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: PRFSpacingTokens.xs),
+                                    InkWell(
+                                      onTap: onDelete,
+                                      borderRadius: BorderRadius.circular(
+                                        PRFRadiusTokens.full,
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: PRFSpacingTokens.sm,
+                                          vertical: PRFSpacingTokens.xs,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.errorContainer,
+                                          borderRadius: BorderRadius.circular(
+                                            PRFRadiusTokens.full,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          context.l10n.delete,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall
+                                              ?.copyWith(
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.onErrorContainer,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

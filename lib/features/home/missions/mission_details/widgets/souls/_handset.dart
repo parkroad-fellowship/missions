@@ -1,4 +1,6 @@
 import 'package:app/enums/mission/prf_soul_decision_type.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/actions/add_soul/add_soul.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/actions/update_soul/update_soul.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
@@ -22,6 +24,49 @@ class SoulsViewHandset extends StatefulWidget {
 class _SoulsViewHandsetState extends State<SoulsViewHandset> {
   String get missionUlid => widget.missionUlid;
 
+  Future<void> _showAddSoulSheet() {
+    return PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.recordSoul,
+      child: AddSoulView(missionUlid: missionUlid),
+    );
+  }
+
+  Future<void> _showEditSoulSheet(PRFSoul soul) {
+    return PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.edit,
+      child: UpdateSoulView(
+        soul: soul,
+        missionUlid: missionUlid,
+      ),
+    );
+  }
+
+  Future<void> _deleteSoul(PRFSoul soul) async {
+    final shouldDelete = await PRFConfirmationDialog.show(
+      context,
+      title: '${context.l10n.delete} ${context.l10n.souls}',
+      message: 'Are you sure you want to continue?',
+      confirmLabel: context.l10n.delete,
+      isDestructive: true,
+    );
+
+    if (shouldDelete != true || !mounted) return;
+
+    await context.read<SoulResourceCubit>().deleteSoul(soul.ulid);
+    if (!mounted) return;
+
+    final error = context.read<SoulResourceCubit>().state.mapOrNull(
+      error: (state) => state.message,
+    );
+    if (error != null) {
+      PRFSnackbar.error(context, error);
+      return;
+    }
+    PRFSnackbar.success(context, 'Soul deleted');
+  }
+
   @override
   void initState() {
     context.read<SoulResourceCubit>().loadAll(
@@ -33,59 +78,94 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
-    return BlocBuilder<SoulResourceCubit, ResourceState<PRFSoul>>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          listLoading: () => const Center(
-            child: PRFCircularProgressIndicator(),
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.fromLTRB(
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.sm,
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.md,
           ),
-          listLoaded: (souls, _, _) {
-            if (souls.isEmpty) {
-              return Center(
-                child: PRFEmptyView(
-                  label: l10n.noSouls,
-                  description: l10n.noSoulsDesc,
-                  icon: Icons.people_outline_rounded,
-                ),
-              );
-            }
-            return RefreshIndicator(
-              onRefresh: () => context.read<SoulResourceCubit>().loadAll(
-                filters: {'mission_ulid': missionUlid},
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 64),
-                child: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: PRFSpacingTokens.lg,
-                  ),
-                  itemCount: souls.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 0),
-                  itemBuilder: (context, index) =>
-                      BeautifulSoulCard(
-                            soul: souls[index],
-                            index: index,
-                          )
-                          .animate(delay: (index * 100).ms)
-                          .fadeIn()
-                          .slideX(begin: -0.3, end: 0),
-                ),
-              ),
-            );
-          },
-          error: (message, _) => Center(
-            child: PRFEmptyView(
-              label: l10n.noSouls,
-              description: message,
-              icon: Icons.people_outline_rounded,
+          padding: const EdgeInsets.all(PRFSpacingTokens.md),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
-          orElse: () => const SizedBox.shrink(),
-        );
-      },
+          child: FilledButton.icon(
+            onPressed: _showAddSoulSheet,
+            icon: const Icon(Icons.add_rounded),
+            label: Text(l10n.recordSoul),
+          ),
+        ),
+        Expanded(
+          child: BlocBuilder<SoulResourceCubit, ResourceState<PRFSoul>>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                listLoading: () => const Center(
+                  child: PRFCircularProgressIndicator(),
+                ),
+                listLoaded: (souls, _, _) {
+                  if (souls.isEmpty) {
+                    return Center(
+                      child: PRFEmptyView(
+                        label: l10n.noSouls,
+                        description: l10n.noSoulsDesc,
+                        icon: Icons.people_outline_rounded,
+                      ),
+                    );
+                  }
+                  return RefreshIndicator(
+                    onRefresh: () => context.read<SoulResourceCubit>().loadAll(
+                      filters: {'mission_ulid': missionUlid},
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 64),
+                      child: ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: PRFSpacingTokens.lg,
+                        ),
+                        itemCount: souls.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 0),
+                        itemBuilder: (context, index) =>
+                            BeautifulSoulCard(
+                                  soul: souls[index],
+                                  index: index,
+                                  onEdit: () => _showEditSoulSheet(
+                                    souls[index],
+                                  ),
+                                  onDelete: () => _deleteSoul(
+                                    souls[index],
+                                  ),
+                                )
+                                .animate(delay: (index * 100).ms)
+                                .fadeIn()
+                                .slideX(begin: -0.3, end: 0),
+                      ),
+                    ),
+                  );
+                },
+                error: (message, _) => Center(
+                  child: PRFEmptyView(
+                    label: l10n.noSouls,
+                    description: message,
+                    icon: Icons.people_outline_rounded,
+                  ),
+                ),
+                orElse: () => const SizedBox.shrink(),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -94,11 +174,15 @@ class BeautifulSoulCard extends StatelessWidget {
   const BeautifulSoulCard({
     required this.soul,
     required this.index,
+    required this.onEdit,
+    required this.onDelete,
     super.key,
   });
 
   final PRFSoul soul;
   final int index;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +247,50 @@ class BeautifulSoulCard extends StatelessWidget {
               ),
               // Decision Type Badge
               _buildDecisionTypeBadge(theme),
+              const SizedBox(width: PRFSpacingTokens.xs),
+              InkWell(
+                onTap: onEdit,
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.sm,
+                    vertical: PRFSpacingTokens.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                  ),
+                  child: Text(
+                    context.l10n.edit,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onPrimaryContainer,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: PRFSpacingTokens.xs),
+              InkWell(
+                onTap: onDelete,
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.sm,
+                    vertical: PRFSpacingTokens.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.errorContainer,
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                  ),
+                  child: Text(
+                    context.l10n.delete,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onErrorContainer,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
 

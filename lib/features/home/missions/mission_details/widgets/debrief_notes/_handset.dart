@@ -1,3 +1,5 @@
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/actions/add_debrief_note/add_debrief_note.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/actions/update_debrief_note/update_debrief_note.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_debrief_note.dart';
@@ -20,6 +22,51 @@ class DebriefNotesViewHandset extends StatefulWidget {
 class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   String get missionUlid => widget.missionUlid;
 
+  Future<void> _showAddDebriefNoteSheet() {
+    return PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.addDebriefNote,
+      child: AddDebriefNoteView(missionUlid: missionUlid),
+    );
+  }
+
+  Future<void> _showEditDebriefNoteSheet(PRFDebriefNote debriefNote) {
+    return PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.edit,
+      child: UpdateDebriefNoteView(
+        debriefNote: debriefNote,
+        missionUlid: missionUlid,
+      ),
+    );
+  }
+
+  Future<void> _deleteDebriefNote(PRFDebriefNote debriefNote) async {
+    final shouldDelete = await PRFConfirmationDialog.show(
+      context,
+      title: '${context.l10n.delete} ${context.l10n.note}',
+      message: 'Are you sure you want to continue?',
+      confirmLabel: context.l10n.delete,
+      isDestructive: true,
+    );
+
+    if (shouldDelete != true || !mounted) return;
+
+    await context.read<DebriefNoteResourceCubit>().deleteDebriefNote(
+      debriefNote.ulid,
+    );
+    if (!mounted) return;
+
+    final error = context.read<DebriefNoteResourceCubit>().state.mapOrNull(
+      error: (state) => state.message,
+    );
+    if (error != null) {
+      PRFSnackbar.error(context, error);
+      return;
+    }
+    PRFSnackbar.success(context, 'Debrief note deleted');
+  }
+
   @override
   void initState() {
     context.read<DebriefNoteResourceCubit>().loadAll(
@@ -31,55 +78,95 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
 
-    return BlocBuilder<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          listLoading: () => const Center(
-            child: PRFCircularProgressIndicator(),
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.fromLTRB(
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.sm,
+            PRFSpacingTokens.lg,
+            PRFSpacingTokens.md,
           ),
-          listLoaded: (debriefNotes, _, _) {
-            if (debriefNotes.isEmpty) {
-              return PRFEmptyView(
-                label: l10n.noNotes,
-                description: l10n.noNotesDesc,
-                icon: Icons.note_add_outlined,
-              );
-            }
-            return RefreshIndicator(
-              onRefresh: () => context.read<DebriefNoteResourceCubit>().loadAll(
-                filters: {'mission_ulid': missionUlid},
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 64),
-                child: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: PRFSpacingTokens.lg,
-                  ),
-                  itemCount: debriefNotes.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 0),
-                  itemBuilder: (context, index) =>
-                      BeautifulDebriefNoteCard(
-                            debriefNote: debriefNotes[index],
-                            index: index,
-                          )
-                          .animate(delay: (index * 100).ms)
-                          .fadeIn()
-                          .slideX(begin: -0.3, end: 0),
-                ),
-              ),
-            );
-          },
-          error: (message, _) => PRFEmptyView(
-            label: l10n.noNotes,
-            description: message,
-            icon: Icons.note_add_outlined,
+          padding: const EdgeInsets.all(PRFSpacingTokens.md),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            ),
           ),
-          orElse: () => const SizedBox.shrink(),
-        );
-      },
+          child: FilledButton.icon(
+            onPressed: _showAddDebriefNoteSheet,
+            icon: const Icon(Icons.add_rounded),
+            label: Text(l10n.addDebriefNote),
+          ),
+        ),
+        Expanded(
+          child:
+              BlocBuilder<
+                DebriefNoteResourceCubit,
+                ResourceState<PRFDebriefNote>
+              >(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    listLoading: () => const Center(
+                      child: PRFCircularProgressIndicator(),
+                    ),
+                    listLoaded: (debriefNotes, _, _) {
+                      if (debriefNotes.isEmpty) {
+                        return PRFEmptyView(
+                          label: l10n.noNotes,
+                          description: l10n.noNotesDesc,
+                          icon: Icons.note_add_outlined,
+                        );
+                      }
+                      return RefreshIndicator(
+                        onRefresh: () =>
+                            context.read<DebriefNoteResourceCubit>().loadAll(
+                              filters: {'mission_ulid': missionUlid},
+                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 64),
+                          child: ListView.separated(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: PRFSpacingTokens.lg,
+                            ),
+                            itemCount: debriefNotes.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 0),
+                            itemBuilder: (context, index) =>
+                                BeautifulDebriefNoteCard(
+                                      debriefNote: debriefNotes[index],
+                                      index: index,
+                                      onEdit: () => _showEditDebriefNoteSheet(
+                                        debriefNotes[index],
+                                      ),
+                                      onDelete: () => _deleteDebriefNote(
+                                        debriefNotes[index],
+                                      ),
+                                    )
+                                    .animate(delay: (index * 100).ms)
+                                    .fadeIn()
+                                    .slideX(begin: -0.3, end: 0),
+                          ),
+                        ),
+                      );
+                    },
+                    error: (message, _) => PRFEmptyView(
+                      label: l10n.noNotes,
+                      description: message,
+                      icon: Icons.note_add_outlined,
+                    ),
+                    orElse: () => const SizedBox.shrink(),
+                  );
+                },
+              ),
+        ),
+      ],
     );
   }
 }
@@ -88,11 +175,15 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
   const BeautifulDebriefNoteCard({
     required this.debriefNote,
     required this.index,
+    required this.onEdit,
+    required this.onDelete,
     super.key,
   });
 
   final PRFDebriefNote debriefNote;
   final int index;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +246,50 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
                     const SizedBox(height: PRFSpacingTokens.xs),
                     _buildTimestampChip(theme),
                   ],
+                ),
+              ),
+              const SizedBox(width: PRFSpacingTokens.xs),
+              InkWell(
+                onTap: onEdit,
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.sm,
+                    vertical: PRFSpacingTokens.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                  ),
+                  child: Text(
+                    context.l10n.edit,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onPrimaryContainer,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: PRFSpacingTokens.xs),
+              InkWell(
+                onTap: onDelete,
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.sm,
+                    vertical: PRFSpacingTokens.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.errorContainer,
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                  ),
+                  child: Text(
+                    context.l10n.delete,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onErrorContainer,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
             ],

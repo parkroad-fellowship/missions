@@ -7,6 +7,7 @@ import 'package:app/features/home/missions/mission_details/widgets/domain_sectio
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/finance_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/overview_section.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/expenses.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/gallery.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_ground/mission_ground.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/mission_questions/mission_questions.dart';
@@ -143,7 +144,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                         ),
                         tabs: const [
                           Tab(text: 'Overview'),
-                          Tab(text: 'Feedback'),
+                          Tab(text: 'Feedback Data'),
                           Tab(text: 'Finance'),
                         ],
                       ),
@@ -212,6 +213,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                         missionUlid: missionUlid,
                       ),
                       questionsTab: MissionQuestionsView(
+                        missionUlid: missionUlid,
+                      ),
+                      galleryTab: GalleryView(
                         missionUlid: missionUlid,
                       ),
                     ),

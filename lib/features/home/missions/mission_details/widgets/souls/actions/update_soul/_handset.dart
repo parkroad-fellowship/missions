@@ -2,7 +2,6 @@ import 'package:app/enums/mission/prf_soul_decision_type.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_soul.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -18,7 +17,7 @@ class UpdateSoulViewHandset extends StatefulWidget {
     super.key,
   });
 
-  final PRFLocalSoul soul;
+  final PRFSoul soul;
   final String missionUlid;
 
   @override
@@ -56,7 +55,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     _admissionNumberController.text = widget.soul.admissionNumber ?? '';
     _notesController.text = widget.soul.notes ?? '';
     selectedDecisionType = widget.soul.decisionType;
-    _initialClassGroupUlid = widget.soul.classGroup.ulid;
+    _initialClassGroupUlid = widget.soul.classGroup?.ulid;
 
     _fullNameController.addListener(_onFormChanged);
     _admissionNumberController.addListener(_onFormChanged);

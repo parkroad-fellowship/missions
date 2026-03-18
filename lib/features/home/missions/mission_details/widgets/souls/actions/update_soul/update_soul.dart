@@ -1,5 +1,5 @@
 import 'package:app/features/home/missions/mission_details/widgets/souls/actions/update_soul/_handset.dart';
-import 'package:app/models/local/mission/prf_soul.dart';
+import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 
@@ -10,7 +10,7 @@ class UpdateSoulView extends StatelessWidget {
     super.key,
   });
 
-  final PRFLocalSoul soul;
+  final PRFSoul soul;
   final String missionUlid;
 
   @override
