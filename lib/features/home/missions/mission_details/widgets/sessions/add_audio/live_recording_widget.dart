@@ -10,10 +10,12 @@ import 'package:prf_design/prf_design.dart';
 class LiveRecordingWidget extends StatefulWidget {
   const LiveRecordingWidget({
     required this.onRecordingCompleted,
+    this.onMinimize,
     super.key,
   });
 
   final void Function(String filePath, Duration duration) onRecordingCompleted;
+  final VoidCallback? onMinimize;
 
   @override
   State<LiveRecordingWidget> createState() => _LiveRecordingWidgetState();
@@ -251,6 +253,15 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
 
         const SizedBox(height: PRFSpacingTokens.xxl),
 
+        if (widget.onMinimize != null) ...[
+          FilledButton.tonalIcon(
+            onPressed: widget.onMinimize,
+            icon: const Icon(Icons.open_in_new_rounded),
+            label: const Text('Use app while recording'),
+          ),
+          const SizedBox(height: PRFSpacingTokens.lg),
+        ],
+
         // Control buttons
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -343,6 +354,15 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         ),
 
         const SizedBox(height: PRFSpacingTokens.xxl),
+
+        if (widget.onMinimize != null) ...[
+          FilledButton.tonalIcon(
+            onPressed: widget.onMinimize,
+            icon: const Icon(Icons.open_in_new_rounded),
+            label: const Text('Use app while paused'),
+          ),
+          const SizedBox(height: PRFSpacingTokens.lg),
+        ],
 
         // Control buttons
         Row(

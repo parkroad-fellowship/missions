@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
@@ -8,7 +5,6 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/add_
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
-import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -241,22 +237,14 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         : MediaQuery.of(context).size.height * 0.6,
                   ),
                   child: LiveRecordingWidget(
-                    onRecordingCompleted: (filePath, duration) async {
-                      final file = File(filePath);
-                      if (file.existsSync()) {
-                        await context
-                            .read<RecordingUploadCubit>()
-                            .uploadRecording(
-                              PRFMediaDTO(
-                                model:
-                                    PRFMediaModel.missionSessionLiveRecordings,
-                                modelUlid: widget.missionSessionUlid,
-                                path: file.path,
-                                name: StringFormatter.getFileName(file.path),
-                              ),
-                            );
-                      }
+                    onMinimize: () {
+                      Navigator.of(context).pop();
+                      PRFSnackbar.info(
+                        context,
+                        'Recording continues in the background.',
+                      );
                     },
+                    onRecordingCompleted: (_, _) {},
                   ),
                 );
               },

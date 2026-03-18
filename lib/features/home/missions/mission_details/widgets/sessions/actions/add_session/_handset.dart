@@ -60,9 +60,7 @@ class _AddSessionViewHandsetState extends State<AddSessionViewHandset> {
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
     );
-    context.read<ClassGroupResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
-    );
+    context.read<ClassGroupResourceCubit>().loadAll();
   }
 
   void _onFormChanged() {
