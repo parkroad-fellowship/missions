@@ -1597,7 +1597,7 @@ abstract class AppLocalizations {
   /// No description provided for @viewTranscript.
   ///
   /// In en, this message translates to:
-  /// **'View transcript'**
+  /// **'Transcript'**
   String get viewTranscript;
 
   /// No description provided for @transcriptProcessing.

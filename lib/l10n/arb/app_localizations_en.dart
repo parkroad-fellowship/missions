@@ -805,7 +805,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transcript => 'Transcript';
 
   @override
-  String get viewTranscript => 'View transcript';
+  String get viewTranscript => 'Transcript';
 
   @override
   String get transcriptProcessing => 'Transcript processing. Please wait.';

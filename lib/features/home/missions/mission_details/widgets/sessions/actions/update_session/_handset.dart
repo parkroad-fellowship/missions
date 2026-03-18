@@ -70,7 +70,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
       filters: {'mission_ulid': widget.missionUlid},
     );
     context.read<ClassGroupResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
     );
 
     // Initialize the fields with the current values

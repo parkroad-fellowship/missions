@@ -61,7 +61,6 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     _admissionNumberController.addListener(_onFormChanged);
 
     context.read<ClassGroupResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
     );
   }
 

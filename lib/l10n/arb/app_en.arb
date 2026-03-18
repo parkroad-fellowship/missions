@@ -620,7 +620,7 @@
     },
     "transcript": "Transcript",
     "@transcript": {},
-    "viewTranscript": "View transcript",
+    "viewTranscript": "Transcript",
     "@viewTranscript": {},
     "transcriptProcessing": "Transcript processing. Please wait.",
     "@transcriptProcessing": {},
