@@ -285,6 +285,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get faq => 'FAQs';
 
   @override
+  String get recentFaqs => 'Recent FAQs';
+
+  @override
   String get noFaqs => 'No FAQs';
 
   @override

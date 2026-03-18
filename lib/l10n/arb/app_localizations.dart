@@ -610,6 +610,12 @@ abstract class AppLocalizations {
   /// **'FAQs'**
   String get faq;
 
+  /// No description provided for @recentFaqs.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent FAQs'**
+  String get recentFaqs;
+
   /// No description provided for @noFaqs.
   ///
   /// In en, this message translates to:

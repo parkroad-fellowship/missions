@@ -223,6 +223,8 @@
     },
     "faq": "FAQs",
     "@faq": {},
+    "recentFaqs": "Recent FAQs",
+    "@recentFaqs": {},
     "noFaqs": "No FAQs",
     "@noFaqs": {},
     "myQuestions": "My Questions",
