@@ -1,5 +1,4 @@
-import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/add_session/add_session.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/update_session/update_session.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/session_form/session_form.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
@@ -29,7 +28,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.addSession,
-      child: AddSessionView(missionUlid: missionUlid),
+      child: SessionFormView(missionUlid: missionUlid),
     );
   }
 
@@ -37,7 +36,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.edit,
-      child: UpdateSessionView(
+      child: SessionFormView(
         missionUlid: missionUlid,
         missionSession: missionSession,
       ),
@@ -98,7 +97,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              color: theme.colorScheme.outline.withValues(alpha: 0.4),
             ),
           ),
           child: FilledButton.icon(
@@ -314,17 +313,8 @@ class TimelineSessionCard extends StatelessWidget {
                           border: Border.all(
                             color: Theme.of(
                               context,
-                            ).colorScheme.outline.withValues(alpha: 0.2),
+                            ).colorScheme.outline.withValues(alpha: 0.38),
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.shadow.withValues(alpha: 0.1),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,83 +355,54 @@ class TimelineSessionCard extends StatelessWidget {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 16,
-                                      color:
-                                          Theme.of(
-                                            context,
-                                          ).colorScheme.onSurface.withValues(
-                                            alpha: 0.5,
-                                          ),
-                                    ),
-                                    const SizedBox(width: PRFSpacingTokens.xs),
-                                    InkWell(
-                                      onTap: onEdit,
-                                      borderRadius: BorderRadius.circular(
-                                        PRFRadiusTokens.full,
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: PRFSpacingTokens.sm,
-                                          vertical: PRFSpacingTokens.xs,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.primaryContainer,
-                                          borderRadius: BorderRadius.circular(
-                                            PRFRadiusTokens.full,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          context.l10n.edit,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall
-                                              ?.copyWith(
-                                                color:
-                                                    Theme.of(
-                                                          context,
-                                                        )
-                                                        .colorScheme
-                                                        .onPrimaryContainer,
-                                                fontWeight: FontWeight.w700,
+                                    Tooltip(
+                                      message: context.l10n.edit,
+                                      child: GestureDetector(
+                                        onTap: onEdit,
+                                        child: Container(
+                                          padding:
+                                              const EdgeInsets.symmetric(
+                                                horizontal:
+                                                    PRFSpacingTokens.sm,
+                                                vertical:
+                                                    PRFSpacingTokens.xs,
                                               ),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                                .withValues(alpha: 0.11),
+                                            borderRadius:
+                                                BorderRadius.circular(
+                                                  PRFRadiusTokens.full,
+                                                ),
+                                          ),
+                                          child: Text(
+                                            context.l10n.edit,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                     const SizedBox(width: PRFSpacingTokens.xs),
-                                    InkWell(
-                                      onTap: onDelete,
-                                      borderRadius: BorderRadius.circular(
-                                        PRFRadiusTokens.full,
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: PRFSpacingTokens.sm,
-                                          vertical: PRFSpacingTokens.xs,
+                                    Tooltip(
+                                      message: context.l10n.delete,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error,
                                         ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.errorContainer,
-                                          borderRadius: BorderRadius.circular(
-                                            PRFRadiusTokens.full,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          context.l10n.delete,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall
-                                              ?.copyWith(
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.onErrorContainer,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                        ),
+                                        onPressed: onDelete,
                                       ),
                                     ),
                                   ],

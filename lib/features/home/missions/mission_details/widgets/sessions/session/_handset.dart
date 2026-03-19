@@ -4,7 +4,7 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/update_session/update_session.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/session_form/session_form.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
@@ -1004,7 +1004,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
       title: context.l10n.edit,
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.8,
-        child: UpdateSessionView(
+        child: SessionFormView(
           missionUlid: missionUlid,
           missionSession: missionSession,
         ),

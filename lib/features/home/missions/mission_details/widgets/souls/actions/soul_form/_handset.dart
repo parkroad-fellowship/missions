@@ -11,26 +11,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:prf_design/prf_design.dart';
 
-class UpdateSoulViewHandset extends StatefulWidget {
-  const UpdateSoulViewHandset({
-    required this.soul,
+class SoulFormViewHandset extends StatefulWidget {
+  const SoulFormViewHandset({
     required this.missionUlid,
+    this.soul,
     super.key,
   });
 
-  final PRFSoul soul;
   final String missionUlid;
+  final PRFSoul? soul;
 
   @override
-  State<UpdateSoulViewHandset> createState() => _UpdateSoulViewHandsetState();
+  State<SoulFormViewHandset> createState() => _SoulFormViewHandsetState();
 }
 
-class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
+class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
   final _fullNameController = TextEditingController();
   final _admissionNumberController = TextEditingController();
   final _notesController = TextEditingController();
 
   bool _isLoading = false;
+  bool get _isEditing => widget.soul != null;
 
   PRFClassGroup? selectedClassGroup;
   PRFSoulDecisionType? selectedDecisionType;
@@ -52,11 +53,15 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
   void initState() {
     super.initState();
 
-    _fullNameController.text = widget.soul.fullName;
-    _admissionNumberController.text = widget.soul.admissionNumber ?? '';
-    _notesController.text = widget.soul.notes ?? '';
-    selectedDecisionType = widget.soul.decisionType;
-    _initialClassGroupUlid = widget.soul.classGroup?.ulid;
+    if (_isEditing) {
+      _fullNameController.text = widget.soul!.fullName;
+      _admissionNumberController.text = widget.soul!.admissionNumber ?? '';
+      _notesController.text = widget.soul!.notes ?? '';
+      selectedDecisionType = widget.soul!.decisionType;
+      _initialClassGroupUlid = widget.soul!.classGroup?.ulid;
+    } else {
+      selectedDecisionType = PRFSoulDecisionType.salvation;
+    }
 
     _fullNameController.addListener(_onFormChanged);
     _admissionNumberController.addListener(_onFormChanged);
@@ -109,7 +114,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Update Soul',
+              _isEditing ? 'Update Soul' : l10n.recordSoul,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -141,7 +146,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
                           child: PRFLinearProgressIndicator(),
                         ),
                         listLoaded: (classes, _, _) {
-                          // Match initial class group by ulid
+                          // Match initial class group by ulid when editing
                           if (selectedClassGroup == null &&
                               _initialClassGroupUlid != null) {
                             final match = classes
@@ -248,7 +253,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
               builder: (context, state) {
                 return PRFPrimaryButton(
                   onPressed: _submitForm,
-                  title: 'Update',
+                  title: _isEditing ? 'Update' : l10n.record,
                   disabled: !_isFormValid,
                   isLoading: _isLoading,
                 );
@@ -310,16 +315,22 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
       return;
     }
 
-    await context.read<SoulResourceCubit>().updateSoul(
-      ulid: widget.soul.ulid,
-      data: PRFSoulDTO(
-        missionUlid: widget.missionUlid,
-        classGroupUlid: selectedClassGroup!.ulid,
-        fullName: _fullNameController.text.trim(),
-        decisionType: selectedDecisionType!.apiKey,
-        notes: _notesController.text.trim(),
-        admissionNumber: _admissionNumberController.text.trim(),
-      ),
+    final dto = PRFSoulDTO(
+      missionUlid: widget.missionUlid,
+      classGroupUlid: selectedClassGroup!.ulid,
+      fullName: _fullNameController.text.trim(),
+      admissionNumber: _admissionNumberController.text.trim(),
+      decisionType: selectedDecisionType!.apiKey,
+      notes: _notesController.text.trim(),
     );
+
+    if (_isEditing) {
+      await context.read<SoulResourceCubit>().updateSoul(
+        ulid: widget.soul!.ulid,
+        data: dto,
+      );
+    } else {
+      await context.read<SoulResourceCubit>().createSoul(data: dto);
+    }
   }
 }

@@ -7,25 +7,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:prf_design/prf_design.dart';
 
-class UpdateDebriefNoteViewHandset extends StatefulWidget {
-  const UpdateDebriefNoteViewHandset({
-    required this.debriefNote,
+class DebriefNoteFormViewHandset extends StatefulWidget {
+  const DebriefNoteFormViewHandset({
     required this.missionUlid,
+    this.debriefNote,
     super.key,
   });
 
-  final PRFDebriefNote debriefNote;
   final String missionUlid;
+  final PRFDebriefNote? debriefNote;
 
   @override
-  State<UpdateDebriefNoteViewHandset> createState() =>
-      _UpdateDebriefNoteViewHandsetState();
+  State<DebriefNoteFormViewHandset> createState() =>
+      _DebriefNoteFormViewHandsetState();
 }
 
-class _UpdateDebriefNoteViewHandsetState
-    extends State<UpdateDebriefNoteViewHandset> {
+class _DebriefNoteFormViewHandsetState
+    extends State<DebriefNoteFormViewHandset> {
   final _noteController = TextEditingController();
   bool _isLoading = false;
+
+  bool get _isEditing => widget.debriefNote != null;
 
   // Structured validation
   bool _showValidation = false;
@@ -36,7 +38,9 @@ class _UpdateDebriefNoteViewHandsetState
   @override
   void initState() {
     super.initState();
-    _noteController.text = widget.debriefNote.note;
+    if (_isEditing) {
+      _noteController.text = widget.debriefNote!.note;
+    }
     _noteController.addListener(_onFormChanged);
   }
 
@@ -74,7 +78,7 @@ class _UpdateDebriefNoteViewHandsetState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Update Note',
+              _isEditing ? 'Update Note' : l10n.addDebriefNote,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -129,7 +133,7 @@ class _UpdateDebriefNoteViewHandsetState
               builder: (context, state) {
                 return PRFPrimaryButton(
                   onPressed: _submitForm,
-                  title: 'Update',
+                  title: _isEditing ? 'Update' : l10n.record,
                   disabled: !_isFormValid,
                   isLoading: _isLoading,
                 );
@@ -151,10 +155,17 @@ class _UpdateDebriefNoteViewHandsetState
       return;
     }
 
-    await context.read<DebriefNoteResourceCubit>().updateDebriefNote(
-      ulid: widget.debriefNote.ulid,
-      missionUlid: widget.missionUlid,
-      note: _noteController.text.trim(),
-    );
+    if (_isEditing) {
+      await context.read<DebriefNoteResourceCubit>().updateDebriefNote(
+        ulid: widget.debriefNote!.ulid,
+        missionUlid: widget.missionUlid,
+        note: _noteController.text.trim(),
+      );
+    } else {
+      await context.read<DebriefNoteResourceCubit>().addDebriefNote(
+        missionUlid: widget.missionUlid,
+        note: _noteController.text.trim(),
+      );
+    }
   }
 }
