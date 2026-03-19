@@ -106,15 +106,15 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
           items: [
             for (int index = 0; index < souls.length; index++)
               MissionResourceCard(
-                title: souls[index].fullName,
-                subtitle: souls[index].notes?.trim().isNotEmpty ?? false
-                    ? souls[index].notes
-                    : 'Captured ${DateFormatter.formatDateTime(souls[index].createdAt, timezone)}',
-                editTooltip: 'Edit soul',
-                onEdit: () => _showEditSoulSheet(souls[index]),
-                deleteTooltip: 'Delete soul',
-                onDelete: () => _deleteSoul(souls[index]),
-              )
+                    title: souls[index].fullName,
+                    subtitle: souls[index].notes?.trim().isNotEmpty ?? false
+                        ? souls[index].notes
+                        : 'Captured ${DateFormatter.formatDateTime(souls[index].createdAt, timezone)}',
+                    editTooltip: 'Edit soul',
+                    onEdit: () => _showEditSoulSheet(souls[index]),
+                    deleteTooltip: 'Delete soul',
+                    onDelete: () => _deleteSoul(souls[index]),
+                  )
                   .animate(delay: (index * 100).ms)
                   .fadeIn()
                   .slideX(begin: -0.3, end: 0),

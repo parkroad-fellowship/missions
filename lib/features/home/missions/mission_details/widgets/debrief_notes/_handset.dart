@@ -80,8 +80,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<DebriefNoteResourceCubit,
-        ResourceState<PRFDebriefNote>>(
+    return BlocBuilder<DebriefNoteResourceCubit, ResourceState<PRFDebriefNote>>(
       builder: (context, state) {
         final debriefNotes = state.maybeWhen(
           listLoaded: (items, _, _) => items,
@@ -102,10 +101,9 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
           isLoading: isLoading,
           error: error,
           isEmpty: debriefNotes.isEmpty,
-          onRefresh: () =>
-              context.read<DebriefNoteResourceCubit>().loadAll(
-                filters: {'mission_ulid': missionUlid},
-              ),
+          onRefresh: () => context.read<DebriefNoteResourceCubit>().loadAll(
+            filters: {'mission_ulid': missionUlid},
+          ),
           onAdd: _showAddDebriefNoteSheet,
           addButtonLabel: l10n.addDebriefNote,
           addButtonIcon: Icons.rate_review_outlined,
@@ -125,10 +123,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
               onEdit: () => _showEditDebriefNoteSheet(debriefNote),
               deleteTooltip: 'Delete debrief note',
               onDelete: () => _deleteDebriefNote(debriefNote),
-            )
-                .animate(delay: (index * 100).ms)
-                .fadeIn()
-                .slideX(begin: -0.3, end: 0);
+            ).animate(delay: (index * 100).ms).fadeIn().slideX(begin: -0.3, end: 0);
           }).toList(),
         );
       },

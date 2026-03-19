@@ -108,8 +108,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
             children: [
               MissionSectionCard(
                 title: 'Mission Subscribers',
-                subtitle:
-                    'Members subscribed to this mission.',
+                subtitle: 'Members subscribed to this mission.',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -135,12 +134,14 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
                         ),
                         child: Text(
                           error,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(
-                            color:
-                                Theme.of(context).colorScheme.onErrorContainer,
-                          ),
+                          style:
+                              Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onErrorContainer,
+                              ),
                         ),
                       ),
                     if (subscriptions.isEmpty)

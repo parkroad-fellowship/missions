@@ -54,66 +54,63 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                     ],
                   ),
                 ),
-                child: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      PRFBrandedNavBar(title: l10n.learn),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          PRFSpacingTokens.lg,
-                          PRFSpacingTokens.xs,
-                          PRFSpacingTokens.lg,
-                          PRFSpacingTokens.lg,
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                          decoration: BoxDecoration(
+                child: Column(
+                  children: [
+                    PRFBrandedNavBar(title: l10n.learn),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.xs,
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.lg,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.onPrimary.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.lg,
+                          ),
+                          border: Border.all(
                             color: theme.colorScheme.onPrimary.withValues(
-                              alpha: 0.1,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              PRFRadiusTokens.lg,
-                            ),
-                            border: Border.all(
-                              color: theme.colorScheme.onPrimary.withValues(
-                                alpha: 0.15,
-                              ),
+                              alpha: 0.15,
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                l10n.learnSomething,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onPrimary.withValues(
-                                    alpha: 0.9,
-                                  ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.learnSomething,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimary.withValues(
+                                  alpha: 0.9,
                                 ),
                               ),
-                              const SizedBox(height: PRFSpacingTokens.md),
-                              Wrap(
-                                spacing: PRFSpacingTokens.xs,
-                                runSpacing: PRFSpacingTokens.xs,
-                                children: [
-                                  _LmsStatPill(
-                                    label: l10n.total,
-                                    value: courses.length,
-                                  ),
-                                  _LmsStatPill(
-                                    label: l10n.completed,
-                                    value: completedCount,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: PRFSpacingTokens.md),
+                            Wrap(
+                              spacing: PRFSpacingTokens.xs,
+                              runSpacing: PRFSpacingTokens.xs,
+                              children: [
+                                _LmsStatPill(
+                                  label: l10n.total,
+                                  value: courses.length,
+                                ),
+                                _LmsStatPill(
+                                  label: l10n.completed,
+                                  value: completedCount,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(

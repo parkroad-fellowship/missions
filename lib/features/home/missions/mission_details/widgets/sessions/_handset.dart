@@ -360,22 +360,18 @@ class TimelineSessionCard extends StatelessWidget {
                                       child: GestureDetector(
                                         onTap: onEdit,
                                         child: Container(
-                                          padding:
-                                              const EdgeInsets.symmetric(
-                                                horizontal:
-                                                    PRFSpacingTokens.sm,
-                                                vertical:
-                                                    PRFSpacingTokens.xs,
-                                              ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: PRFSpacingTokens.sm,
+                                            vertical: PRFSpacingTokens.xs,
+                                          ),
                                           decoration: BoxDecoration(
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .primary
                                                 .withValues(alpha: 0.11),
-                                            borderRadius:
-                                                BorderRadius.circular(
-                                                  PRFRadiusTokens.full,
-                                                ),
+                                            borderRadius: BorderRadius.circular(
+                                              PRFRadiusTokens.full,
+                                            ),
                                           ),
                                           child: Text(
                                             context.l10n.edit,
@@ -383,9 +379,9 @@ class TimelineSessionCard extends StatelessWidget {
                                                 .textTheme
                                                 .labelSmall
                                                 ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.primary,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                           ),
@@ -398,9 +394,9 @@ class TimelineSessionCard extends StatelessWidget {
                                       child: IconButton(
                                         icon: Icon(
                                           Icons.delete_outline,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .error,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.error,
                                         ),
                                         onPressed: onDelete,
                                       ),

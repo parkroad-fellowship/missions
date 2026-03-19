@@ -97,85 +97,82 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                         ],
                       ),
                     ),
-                    child: SafeArea(
-                      bottom: false,
-                      child: Column(
-                        children: [
-                          PRFBrandedNavBar(
-                            title: l10n.moduleDetails,
-                            onBack: () => context.router.popUntilRouteWithPath(
-                              PRFSuperAppRouter.courseDetailsRoute,
-                            ),
-                            actions: [
-                              if (courseModule != null)
-                                _ModuleProgressBadge(
-                                  value: l10n.percentage(
-                                    courseModule.memberModule?.percentComplete
-                                            .toInt() ??
-                                        0,
-                                  ),
-                                ),
-                            ],
+                    child: Column(
+                      children: [
+                        PRFBrandedNavBar(
+                          title: l10n.moduleDetails,
+                          onBack: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.courseDetailsRoute,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                              PRFSpacingTokens.lg,
-                              PRFSpacingTokens.xs,
-                              PRFSpacingTokens.lg,
-                              PRFSpacingTokens.lg,
-                            ),
-                            child: Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(
-                                PRFSpacingTokens.md,
+                          actions: [
+                            if (courseModule != null)
+                              _ModuleProgressBadge(
+                                value: l10n.percentage(
+                                  courseModule.memberModule?.percentComplete
+                                          .toInt() ??
+                                      0,
+                                ),
                               ),
-                              decoration: BoxDecoration(
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            PRFSpacingTokens.lg,
+                            PRFSpacingTokens.xs,
+                            PRFSpacingTokens.lg,
+                            PRFSpacingTokens.lg,
+                          ),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(
+                              PRFSpacingTokens.md,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.onPrimary.withValues(
+                                alpha: 0.1,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.lg,
+                              ),
+                              border: Border.all(
                                 color: theme.colorScheme.onPrimary.withValues(
-                                  alpha: 0.1,
+                                  alpha: 0.15,
                                 ),
-                                borderRadius: BorderRadius.circular(
-                                  PRFRadiusTokens.lg,
-                                ),
-                                border: Border.all(
-                                  color: theme.colorScheme.onPrimary.withValues(
-                                    alpha: 0.15,
-                                  ),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    courseModule?.module?.name ??
-                                        l10n.moduleDetails,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onPrimary
-                                          .withValues(alpha: 0.9),
-                                    ),
-                                  ),
-                                  const SizedBox(height: PRFSpacingTokens.md),
-                                  Wrap(
-                                    spacing: PRFSpacingTokens.xs,
-                                    runSpacing: PRFSpacingTokens.xs,
-                                    children: [
-                                      _LmsStatPill(
-                                        label: l10n.total,
-                                        value: lessonModules.length,
-                                      ),
-                                      _LmsStatPill(
-                                        label: l10n.completed,
-                                        value: completedCount,
-                                      ),
-                                    ],
-                                  ),
-                                ],
                               ),
                             ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  courseModule?.module?.name ??
+                                      l10n.moduleDetails,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onPrimary
+                                        .withValues(alpha: 0.9),
+                                  ),
+                                ),
+                                const SizedBox(height: PRFSpacingTokens.md),
+                                Wrap(
+                                  spacing: PRFSpacingTokens.xs,
+                                  runSpacing: PRFSpacingTokens.xs,
+                                  children: [
+                                    _LmsStatPill(
+                                      label: l10n.total,
+                                      value: lessonModules.length,
+                                    ),
+                                    _LmsStatPill(
+                                      label: l10n.completed,
+                                      value: completedCount,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(

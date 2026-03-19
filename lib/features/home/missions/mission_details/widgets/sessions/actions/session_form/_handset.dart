@@ -155,8 +155,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () =>
-                            const PRFLinearProgressIndicator(),
+                        listLoading: () => const PRFLinearProgressIndicator(),
                         listLoaded: (subscribers, _, _) =>
                             PRFSearchableList<String>(
                               entries: subscribers
@@ -194,8 +193,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () =>
-                            const PRFLinearProgressIndicator(),
+                        listLoading: () => const PRFLinearProgressIndicator(),
                         listLoaded: (subscribers, _, _) =>
                             PRFSearchableList<String>(
                               entries: subscribers
@@ -246,10 +244,9 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                                         ),
                                   )
                                   .toList(),
-                              onSelected: (classGroup) =>
-                                  setState(() {
-                                    selectedClassGroupUlid = classGroup;
-                                  }),
+                              onSelected: (classGroup) => setState(() {
+                                selectedClassGroupUlid = classGroup;
+                              }),
                               selection: selectedClassGroupUlid,
                               hintText: l10n.classGroup,
                               emptyText: 'No class groups found',

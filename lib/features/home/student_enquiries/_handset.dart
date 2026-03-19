@@ -49,13 +49,10 @@ class _StudentEnquiriesPageHandsetState
                 ],
               ),
             ),
-            child: SafeArea(
-              bottom: false,
-              child: PRFBrandedNavBar(
-                title: l10n.studentQuestions,
-                onBack: () => context.router.popUntilRouteWithPath(
-                  PRFSuperAppRouter.landingRoute,
-                ),
+            child: PRFBrandedNavBar(
+              title: l10n.studentQuestions,
+              onBack: () => context.router.popUntilRouteWithPath(
+                PRFSuperAppRouter.landingRoute,
               ),
             ),
           ),

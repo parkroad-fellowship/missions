@@ -78,73 +78,70 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                     ],
                   ),
                 ),
-                child: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      PRFBrandedNavBar(
-                        title: l10n.lessonDetails,
-                        onBack: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.moduleDetailsRoute,
-                        ),
+                child: Column(
+                  children: [
+                    PRFBrandedNavBar(
+                      title: l10n.lessonDetails,
+                      onBack: () => context.router.popUntilRouteWithPath(
+                        PRFSuperAppRouter.moduleDetailsRoute,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          PRFSpacingTokens.lg,
-                          PRFSpacingTokens.xs,
-                          PRFSpacingTokens.lg,
-                          PRFSpacingTokens.lg,
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                          decoration: BoxDecoration(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.xs,
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.lg,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.onPrimary.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.lg,
+                          ),
+                          border: Border.all(
                             color: theme.colorScheme.onPrimary.withValues(
-                              alpha: 0.1,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              PRFRadiusTokens.lg,
-                            ),
-                            border: Border.all(
-                              color: theme.colorScheme.onPrimary.withValues(
-                                alpha: 0.15,
-                              ),
+                              alpha: 0.15,
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                lesson?.name ?? l10n.lessonDetails,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onPrimary.withValues(
-                                    alpha: 0.9,
-                                  ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              lesson?.name ?? l10n.lessonDetails,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimary.withValues(
+                                  alpha: 0.9,
                                 ),
                               ),
-                              const SizedBox(height: PRFSpacingTokens.md),
-                              Wrap(
-                                spacing: PRFSpacingTokens.xs,
-                                runSpacing: PRFSpacingTokens.xs,
-                                children: [
-                                  _LessonStatPill(
-                                    label: l10n.total,
-                                    value: mediaCount,
-                                  ),
-                                  _LessonStatPill(
-                                    label: l10n.completed,
-                                    value: isCompleted ? 1 : 0,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: PRFSpacingTokens.md),
+                            Wrap(
+                              spacing: PRFSpacingTokens.xs,
+                              runSpacing: PRFSpacingTokens.xs,
+                              children: [
+                                _LessonStatPill(
+                                  label: l10n.total,
+                                  value: mediaCount,
+                                ),
+                                _LessonStatPill(
+                                  label: l10n.completed,
+                                  value: isCompleted ? 1 : 0,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(

@@ -64,97 +64,93 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                     ],
                   ),
                 ),
-                child: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      PRFBrandedNavBar(
-                        title: l10n.give,
-                        onBack: () => context.router.popUntilRouteWithPath(
-                          PRFSuperAppRouter.landingRoute,
-                        ),
-                        actions: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.onPrimary.withValues(
-                                alpha: 0.14,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                PRFRadiusTokens.smd,
-                              ),
-                            ),
-                            child: IconButton(
-                              onPressed: () => context
-                                  .read<PaymentResourceCubit>()
-                                  .loadAll(),
-                              icon: Icon(
-                                Icons.refresh_rounded,
-                                color: theme.colorScheme.onPrimary,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
+                child: Column(
+                  children: [
+                    PRFBrandedNavBar(
+                      title: l10n.give,
+                      onBack: () => context.router.popUntilRouteWithPath(
+                        PRFSuperAppRouter.landingRoute,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          PRFSpacingTokens.lg,
-                          PRFSpacingTokens.xs,
-                          PRFSpacingTokens.lg,
-                          PRFSpacingTokens.lg,
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                      actions: [
+                        Container(
                           decoration: BoxDecoration(
                             color: theme.colorScheme.onPrimary.withValues(
-                              alpha: 0.1,
+                              alpha: 0.14,
                             ),
                             borderRadius: BorderRadius.circular(
-                              PRFRadiusTokens.lg,
-                            ),
-                            border: Border.all(
-                              color: theme.colorScheme.onPrimary.withValues(
-                                alpha: 0.15,
-                              ),
+                              PRFRadiusTokens.smd,
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                l10n.startGiving,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onPrimary.withValues(
-                                    alpha: 0.9,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: PRFSpacingTokens.md),
-                              Wrap(
-                                spacing: PRFSpacingTokens.xs,
-                                runSpacing: PRFSpacingTokens.xs,
-                                children: [
-                                  _GivingStatPill(
-                                    label: l10n.total,
-                                    value: payments.length,
-                                  ),
-                                  _GivingStatPill(
-                                    label: PRFPaymentStatus.pending.name,
-                                    value: pendingCount,
-                                  ),
-                                  _GivingStatPill(
-                                    label: l10n.completed,
-                                    value: successfulCount,
-                                  ),
-                                ],
-                              ),
-                            ],
+                          child: IconButton(
+                            onPressed: () =>
+                                context.read<PaymentResourceCubit>().loadAll(),
+                            icon: Icon(
+                              Icons.refresh_rounded,
+                              color: theme.colorScheme.onPrimary,
+                              size: 20,
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.xs,
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.lg,
                       ),
-                    ],
-                  ),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.onPrimary.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.lg,
+                          ),
+                          border: Border.all(
+                            color: theme.colorScheme.onPrimary.withValues(
+                              alpha: 0.15,
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.startGiving,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimary.withValues(
+                                  alpha: 0.9,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: PRFSpacingTokens.md),
+                            Wrap(
+                              spacing: PRFSpacingTokens.xs,
+                              runSpacing: PRFSpacingTokens.xs,
+                              children: [
+                                _GivingStatPill(
+                                  label: l10n.total,
+                                  value: payments.length,
+                                ),
+                                _GivingStatPill(
+                                  label: PRFPaymentStatus.pending.name,
+                                  value: pendingCount,
+                                ),
+                                _GivingStatPill(
+                                  label: l10n.completed,
+                                  value: successfulCount,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(

@@ -75,72 +75,69 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                         ],
                       ),
                     ),
-                    child: SafeArea(
-                      bottom: false,
-                      child: Column(
-                        children: [
-                          PRFBrandedNavBar(
-                            title: l10n.questions,
-                            onBack: () => context.router.popUntilRouteWithPath(
-                              PRFSuperAppRouter.landingRoute,
-                            ),
+                    child: Column(
+                      children: [
+                        PRFBrandedNavBar(
+                          title: l10n.questions,
+                          onBack: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                              PRFSpacingTokens.lg,
-                              PRFSpacingTokens.xs,
-                              PRFSpacingTokens.lg,
-                              PRFSpacingTokens.lg,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            PRFSpacingTokens.lg,
+                            PRFSpacingTokens.xs,
+                            PRFSpacingTokens.lg,
+                            PRFSpacingTokens.lg,
+                          ),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(
+                              PRFSpacingTokens.md,
                             ),
-                            child: Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(
-                                PRFSpacingTokens.md,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.onPrimary.withValues(
+                                alpha: 0.1,
                               ),
-                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                PRFRadiusTokens.lg,
+                              ),
+                              border: Border.all(
                                 color: theme.colorScheme.onPrimary.withValues(
-                                  alpha: 0.1,
+                                  alpha: 0.15,
                                 ),
-                                borderRadius: BorderRadius.circular(
-                                  PRFRadiusTokens.lg,
-                                ),
-                                border: Border.all(
-                                  color: theme.colorScheme.onPrimary.withValues(
-                                    alpha: 0.15,
-                                  ),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n.whatWouldYouLikeToKnow,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onPrimary
-                                          .withValues(alpha: 0.9),
-                                    ),
-                                  ),
-                                  const SizedBox(height: PRFSpacingTokens.md),
-                                  Wrap(
-                                    spacing: PRFSpacingTokens.xs,
-                                    runSpacing: PRFSpacingTokens.xs,
-                                    children: [
-                                      _FaqStatPill(
-                                        label: l10n.total,
-                                        value: faqs.length,
-                                      ),
-                                      _FaqStatPill(
-                                        label: l10n.categories,
-                                        value: categories.length,
-                                      ),
-                                    ],
-                                  ),
-                                ],
                               ),
                             ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.whatWouldYouLikeToKnow,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onPrimary
+                                        .withValues(alpha: 0.9),
+                                  ),
+                                ),
+                                const SizedBox(height: PRFSpacingTokens.md),
+                                Wrap(
+                                  spacing: PRFSpacingTokens.xs,
+                                  runSpacing: PRFSpacingTokens.xs,
+                                  children: [
+                                    _FaqStatPill(
+                                      label: l10n.total,
+                                      value: faqs.length,
+                                    ),
+                                    _FaqStatPill(
+                                      label: l10n.categories,
+                                      value: categories.length,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(

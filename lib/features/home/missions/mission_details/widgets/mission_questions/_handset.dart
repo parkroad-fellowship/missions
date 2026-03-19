@@ -20,7 +20,8 @@ class MissionQuestionsViewHandset extends StatefulWidget {
 }
 
 class _MissionQuestionsViewHandsetState
-    extends State<MissionQuestionsViewHandset> with TimezoneMixin {
+    extends State<MissionQuestionsViewHandset>
+    with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
 
   Future<void> _showAddQuestionSheet() {
@@ -130,24 +131,23 @@ class _MissionQuestionsViewHandsetState
           isLoading: isLoading,
           error: error,
           isEmpty: questions.isEmpty,
-          onRefresh: () =>
-              context.read<MissionQuestionResourceCubit>().loadAll(
-                filters: {'mission_ulid': missionUlid},
-              ),
+          onRefresh: () => context.read<MissionQuestionResourceCubit>().loadAll(
+            filters: {'mission_ulid': missionUlid},
+          ),
           onAdd: _showAddQuestionSheet,
           items: [
             for (int index = 0; index < questions.length; index++)
               MissionResourceCard(
-                title: questions[index].question.isEmpty
-                    ? 'Untitled question'
-                    : questions[index].question,
-                subtitle:
-                    'Captured ${DateFormatter.formatDateTime(questions[index].createdAt, timezone)}',
-                editTooltip: 'Edit question',
-                onEdit: () => _updateQuestion(questions[index]),
-                deleteTooltip: 'Delete question',
-                onDelete: () => _deleteQuestion(questions[index]),
-              )
+                    title: questions[index].question.isEmpty
+                        ? 'Untitled question'
+                        : questions[index].question,
+                    subtitle:
+                        'Captured ${DateFormatter.formatDateTime(questions[index].createdAt, timezone)}',
+                    editTooltip: 'Edit question',
+                    onEdit: () => _updateQuestion(questions[index]),
+                    deleteTooltip: 'Delete question',
+                    onDelete: () => _deleteQuestion(questions[index]),
+                  )
                   .animate(delay: (index * 100).ms)
                   .fadeIn()
                   .slideX(begin: -0.3, end: 0),
