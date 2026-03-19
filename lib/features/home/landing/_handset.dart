@@ -62,7 +62,7 @@ class LandingPageHandset extends StatelessWidget {
                       _buildProfilePicture(context, theme, 56),
                       const SizedBox(width: PRFSpacingTokens.lg),
                       _buildGreeting(context, l10n, theme),
-                      _buildNotificationButton(context, theme),
+                      // _buildNotificationButton(context, theme),
                     ],
                   ),
                 ),
@@ -196,7 +196,7 @@ class LandingPageHandset extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationButton(BuildContext context, ThemeData theme) {
+  Widget buildNotificationButton(BuildContext context, ThemeData theme) {
     return Material(
       color: PRFColors.transparent,
       child: InkWell(
