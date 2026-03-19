@@ -91,8 +91,9 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                               Text(
                                 l10n.submitPrayerRequestDesc,
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onPrimary
-                                      .withValues(alpha: 0.9),
+                                  color: theme.colorScheme.onPrimary.withValues(
+                                    alpha: 0.9,
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: PRFSpacingTokens.md),
@@ -202,7 +203,8 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                                           '${requests.length}',
                                           style: theme.textTheme.labelMedium
                                               ?.copyWith(
-                                                color: theme.colorScheme
+                                                color: theme
+                                                    .colorScheme
                                                     .onSurfaceVariant,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -216,8 +218,8 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                                 final prayerRequest = requests[requestIndex];
                                 return Padding(
                                       padding: EdgeInsets.only(
-                                        bottom: requestIndex ==
-                                                requests.length - 1
+                                        bottom:
+                                            requestIndex == requests.length - 1
                                             ? 0
                                             : PRFSpacingTokens.lg,
                                       ),

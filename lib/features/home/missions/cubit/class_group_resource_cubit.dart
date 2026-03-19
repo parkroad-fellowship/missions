@@ -10,7 +10,6 @@ class ClassGroupResourceCubit extends ResourceCubit<PRFClassGroup> {
     super.dbService,
   }) : super(service: classGroupService);
 
-
   Future<void> loadActiveForInstitutionType(
     PRFInstitutionType institutionType,
   ) {

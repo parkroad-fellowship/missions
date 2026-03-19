@@ -60,8 +60,7 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
     _fullNameController.addListener(_onFormChanged);
     _admissionNumberController.addListener(_onFormChanged);
 
-    context.read<ClassGroupResourceCubit>().loadAll(
-    );
+    context.read<ClassGroupResourceCubit>().loadAll();
   }
 
   void _onFormChanged() {

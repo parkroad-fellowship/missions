@@ -1092,9 +1092,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                     end: Alignment.bottomCenter,
                                                     colors: [
                                                       PRFColors.transparent,
-                                                      PRFColors.black.withValues(
-                                                        alpha: 0.1,
-                                                      ),
+                                                      PRFColors.black
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          ),
                                                     ],
                                                   ),
                                                 ),
@@ -1149,7 +1150,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                   width: 70,
                                   height: 70,
                                   decoration: BoxDecoration(
-                                    color: PRFColors.black.withValues(alpha: 0.5),
+                                    color: PRFColors.black.withValues(
+                                      alpha: 0.5,
+                                    ),
                                     borderRadius: BorderRadius.circular(
                                       PRFRadiusTokens.md,
                                     ),

@@ -622,13 +622,13 @@ class WrappedSectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-        color: PRFColors.white,
-        fontWeight: FontWeight.w900,
-      ),
-    )
+          title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+            color: PRFColors.white,
+            fontWeight: FontWeight.w900,
+          ),
+        )
         .animate(delay: delay)
         .fadeIn(duration: 420.ms)
         .slideY(begin: -0.18, end: 0, duration: 420.ms);
@@ -934,7 +934,7 @@ class _LottiePulse extends StatelessWidget {
             repeat: true,
             animate: true,
             fit: BoxFit.contain,
-            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+            errorBuilder: (_, _, _) => const SizedBox.shrink(),
           ),
         )
         .animate(delay: delay)

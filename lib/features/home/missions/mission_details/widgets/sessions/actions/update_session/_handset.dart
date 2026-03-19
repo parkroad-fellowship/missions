@@ -69,8 +69,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
     );
-    context.read<ClassGroupResourceCubit>().loadAll(
-    );
+    context.read<ClassGroupResourceCubit>().loadAll();
 
     // Initialize the fields with the current values
     selectedFacilitatorUlid = missionSession.facilitator?.ulid;
@@ -440,8 +439,7 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
                           PRFSnackbar.success(context, l10n.sessionRecorded);
                           context.read<MissionSessionResourceCubit>().loadAll(
                             filters: {
-                              'mission_ulid':
-                                  widget.missionUlid,
+                              'mission_ulid': widget.missionUlid,
                             },
                           );
                         },
@@ -497,7 +495,6 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
         if (selectedSpeakerUlid != null) 'speaker_ulid': selectedSpeakerUlid,
         if (selectedClassGroupUlid != null)
           'class_group_ulid': selectedClassGroupUlid,
-          
       },
     );
   }

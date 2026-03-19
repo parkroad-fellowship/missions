@@ -134,9 +134,11 @@ class _StudentEnquiryRepliesPageHandsetState
 
   Widget _buildMessageBubble(PRFStudentEnquiryReply reply, int index) {
     final isStudent = _isStudentReply(reply);
+    final l10n = context.l10n;
+    final semanticRole = isStudent ? l10n.unread : l10n.replied;
 
     return TweenAnimationBuilder<double>(
-      duration: Duration(milliseconds: 300 + (index * 50)),
+      duration: Duration(milliseconds: 220 + (index * 35)),
       tween: Tween(begin: 0, end: 1),
       curve: Curves.easeOutBack,
       builder: (context, value, child) {
@@ -148,23 +150,27 @@ class _StudentEnquiryRepliesPageHandsetState
           ),
         );
       },
-      child: PRFMessageBubble(
-        message: reply.content,
-        timestamp: _formatTimestamp(reply.createdAt),
-        isIncoming: isStudent,
-        showStatusIndicator: !isStudent,
-        margin: EdgeInsets.only(
-          left: isStudent
-              ? PRFSpacingTokens.lg
-              : 80, // 80 = wide offset for outgoing bubble alignment
-          right: isStudent
-              ? 80
-              : PRFSpacingTokens
-                    .lg, // 80 = wide offset for incoming bubble alignment
-          top: PRFSpacingTokens.xs,
-          bottom: PRFSpacingTokens.xs,
+      child: Semantics(
+        label:
+            '$semanticRole: ${reply.content}. ${_formatTimestamp(reply.createdAt)}',
+        child: PRFMessageBubble(
+          message: reply.content,
+          timestamp: _formatTimestamp(reply.createdAt),
+          isIncoming: isStudent,
+          showStatusIndicator: !isStudent,
+          margin: EdgeInsets.only(
+            left: isStudent
+                ? PRFSpacingTokens.lg
+                : 76, // 76 keeps outgoing alignment while reducing crowding
+            right: isStudent
+                ? 76
+                : PRFSpacingTokens
+                      .lg, // 76 keeps incoming alignment while reducing crowding
+            top: PRFSpacingTokens.xs,
+            bottom: PRFSpacingTokens.xs,
+          ),
+          maxWidth: MediaQuery.sizeOf(context).width * 0.77,
         ),
-        maxWidth: MediaQuery.sizeOf(context).width * 0.75,
       ),
     );
   }
@@ -181,25 +187,44 @@ class _StudentEnquiryRepliesPageHandsetState
           mutated: (_) {
             _enquiryReplyController.clear();
             FocusScope.of(context).unfocus();
+            PRFSnackbar.success(context, context.l10n.replySent);
           },
         );
       },
       builder: (context, state) {
         final loading = state.maybeWhen(
           listLoading: () => true,
+          mutating: (_, _) => true,
           orElse: () => false,
         );
 
-        return PRFReplyComposer(
-          controller: _enquiryReplyController,
-          hintText: l10n.reply,
-          isComposing: _isComposing,
-          isLoading: loading,
-          hasFocus: _focusNode.hasFocus,
-          bottomInset: MediaQuery.of(context).viewInsets.bottom,
-          onSend: () => _sendReply(
-            context,
-            _enquiryReplyController.text,
+        return AnimatedContainer(
+          duration: PRFMotionTokens.standard,
+          curve: Curves.easeOut,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            boxShadow: [
+              if (_focusNode.hasFocus)
+                BoxShadow(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.12),
+                  blurRadius: 18,
+                  offset: const Offset(0, -2),
+                ),
+            ],
+          ),
+          child: PRFReplyComposer(
+            controller: _enquiryReplyController,
+            hintText: l10n.reply,
+            isComposing: _isComposing,
+            isLoading: loading,
+            hasFocus: _focusNode.hasFocus,
+            bottomInset: MediaQuery.of(context).viewInsets.bottom,
+            onSend: () => _sendReply(
+              context,
+              _enquiryReplyController.text,
+            ),
           ),
         );
       },

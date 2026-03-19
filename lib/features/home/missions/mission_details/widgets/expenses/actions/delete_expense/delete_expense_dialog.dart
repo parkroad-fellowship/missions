@@ -20,7 +20,8 @@ class DeleteExpenseDialog extends StatelessWidget {
     return PRFConfirmationDialog.show(
       context,
       title: 'Delete Expense',
-      message: 'Are you sure you want to delete this expense? '
+      message:
+          'Are you sure you want to delete this expense? '
           'This action cannot be undone.',
       confirmLabel: 'Delete',
       isDestructive: true,

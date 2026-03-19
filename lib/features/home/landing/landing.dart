@@ -68,15 +68,15 @@ class _LandingPageState extends State<LandingPage> {
         animationDelay: 0,
         deskGroup: 'Faith & Ministry',
       ),
-      LandingActionItem(
-        title: l10n.ministerToAStudent,
-        assetPath: 'assets/svgs/student_ministry.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.studentEnquiriesRoute,
-        ),
-        animationDelay: 0,
-        deskGroup: 'Faith & Ministry',
-      ),
+      // LandingActionItem(
+      //   title: l10n.ministerToAStudent,
+      //   assetPath: 'assets/svgs/student_ministry.svg',
+      //   onTap: () => context.router.pushPath(
+      //     PRFSuperAppRouter.studentEnquiriesRoute,
+      //   ),
+      //   animationDelay: 0,
+      //   deskGroup: 'Faith & Ministry',
+      // ),
       LandingActionItem(
         title: l10n.suggestAMission,
         assetPath: 'assets/svgs/chatting.svg',

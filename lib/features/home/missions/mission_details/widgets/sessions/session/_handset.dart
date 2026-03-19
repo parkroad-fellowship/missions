@@ -168,97 +168,49 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: PRFSpacingTokens.lg,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.lg,
+                        ),
+                        child: _RecordingStatusCard(
+                          missionSessionUlid: missionSessionUlid,
+                          onOpenRecorder: _showAddAudioSheet,
+                        ),
+                      ),
                     ),
-                    child: _RecordingStatusCard(
-                      missionSessionUlid: missionSessionUlid,
-                      onOpenRecorder: _showAddAudioSheet,
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: PRFSpacingTokens.md),
                     ),
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: PRFSpacingTokens.md),
-                ),
-                // Upload Status
-                SliverToBoxAdapter(
-                  child: BlocConsumer<UploadMediaCubit, UploadMediaState>(
-                    listener: (context, state) {
-                      state.mapOrNull(
-                        loaded: (_) {
-                          context.read<MissionSessionResourceCubit>().loadAll(
-                            filters: {
-                              'mission_ulid': missionUlid,
+                    // Upload Status
+                    SliverToBoxAdapter(
+                      child: BlocConsumer<UploadMediaCubit, UploadMediaState>(
+                        listener: (context, state) {
+                          state.mapOrNull(
+                            loaded: (_) {
+                              context
+                                  .read<MissionSessionResourceCubit>()
+                                  .loadAll(
+                                    filters: {
+                                      'mission_ulid': missionUlid,
+                                    },
+                                  );
+                              PRFSnackbar.success(context, l10n.doneUploading);
+                            },
+                            error: (error) {
+                              PRFSnackbar.error(context, error.message);
                             },
                           );
-                          PRFSnackbar.success(context, l10n.doneUploading);
                         },
-                        error: (error) {
-                          PRFSnackbar.error(context, error.message);
-                        },
-                      );
-                    },
-                    builder: (context, state) => state.maybeWhen(
-                      loading: () => Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: PRFSpacingTokens.lg,
-                        ),
-                        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                        decoration: BoxDecoration(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.smd,
-                          ),
-                        ),
-                        child: const Center(
-                          child: PRFLinearProgressIndicator(),
-                        ),
-                      ),
-                      error: (message) => Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: PRFSpacingTokens.lg,
-                        ),
-                        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                        decoration: BoxDecoration(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.error.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.smd,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            message,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                          ),
-                        ),
-                      ),
-                      orElse: () => const SizedBox(),
-                    ),
-                  ),
-                ),
-
-                // Session Loading State
-                SliverToBoxAdapter(
-                  child:
-                      BlocBuilder<
-                        MissionSessionResourceCubit,
-                        ResourceState<PRFMissionSession>
-                      >(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => Container(
+                          loading: () => Container(
                             margin: const EdgeInsets.symmetric(
                               horizontal: PRFSpacingTokens.lg,
                             ),
                             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(
                                 PRFRadiusTokens.smd,
                               ),
@@ -267,7 +219,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               child: PRFLinearProgressIndicator(),
                             ),
                           ),
-                          error: (message, _) => Container(
+                          error: (message) => Container(
                             margin: const EdgeInsets.symmetric(
                               horizontal: PRFSpacingTokens.lg,
                             ),
@@ -292,139 +244,89 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           orElse: () => const SizedBox(),
                         ),
                       ),
-                ),
-
-                // Session Data
-                if (missionSession != null) ...[
-                  MissionSessionDataView(
-                    missionSession: missionSession,
-                    missionUlid: widget.missionUlid,
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: PRFSpacingTokens.xl),
-                  ),
-                ],
-
-                // Recordings Section
-                if (missionSession != null)
-                  SliverToBoxAdapter(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: PRFSpacingTokens.lg,
-                      ),
-                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(
-                          PRFRadiusTokens.md,
-                        ),
-                        border: Border.all(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.outline.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(
-                              PRFSpacingTokens.sm,
-                            ),
-                            decoration: BoxDecoration(
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.primary.withValues(
-                                    alpha: 0.12,
-                                  ),
-                              borderRadius: BorderRadius.circular(
-                                PRFRadiusTokens.sm,
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.audiotrack_outlined,
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: PRFSpacingTokens.md),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  l10n.recordings,
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                                const SizedBox(
-                                  height: PRFSpacingTokens.xs,
-                                ),
-                                Text(
-                                  '${allTranscripts.length} total · '
-                                  '${readyTranscripts.length} ready · '
-                                  '${processingTranscripts.length} processing',
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface
-                                            .withValues(alpha: 0.7),
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 140,
-                            child: PRFPrimaryButton(
-                              onPressed: () async {
-                                await _showAddAudioSheet();
-                              },
-                              title: 'Record',
-                              disabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                  ),
 
-                // Pending / queued recordings for this session
-                if (missionSession != null)
-                  StreamBuilder<List<PRFFailedRecordingUpload>>(
-                    stream: getIt<FailedRecordingUploadService>()
-                        .pendingUploadsStream,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const SliverToBoxAdapter(child: SizedBox());
-                      }
+                    // Session Loading State
+                    SliverToBoxAdapter(
+                      child:
+                          BlocBuilder<
+                            MissionSessionResourceCubit,
+                            ResourceState<PRFMissionSession>
+                          >(
+                            builder: (context, state) => state.maybeWhen(
+                              listLoading: () => Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: PRFSpacingTokens.lg,
+                                ),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.lg,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.smd,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: PRFLinearProgressIndicator(),
+                                ),
+                              ),
+                              error: (message, _) => Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: PRFSpacingTokens.lg,
+                                ),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.lg,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.error.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.smd,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    message,
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              orElse: () => const SizedBox(),
+                            ),
+                          ),
+                    ),
 
-                      final sessionUploads = snapshot.data!
-                          .where(
-                            (upload) => upload.modelUlid == missionSessionUlid,
-                          )
-                          .toList();
+                    // Session Data
+                    if (missionSession != null) ...[
+                      MissionSessionDataView(
+                        missionSession: missionSession,
+                        missionUlid: widget.missionUlid,
+                      ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: PRFSpacingTokens.xl),
+                      ),
+                    ],
 
-                      if (sessionUploads.isEmpty) {
-                        return const SliverToBoxAdapter(child: SizedBox());
-                      }
-
-                      return SliverToBoxAdapter(
+                    // Recordings Section
+                    if (missionSession != null)
+                      SliverToBoxAdapter(
                         child: Container(
                           margin: const EdgeInsets.symmetric(
                             horizontal: PRFSpacingTokens.lg,
-                            vertical: PRFSpacingTokens.md,
                           ),
                           padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(
-                              PRFRadiusTokens.smd,
+                              PRFRadiusTokens.md,
                             ),
                             border: Border.all(
                               color: Theme.of(
@@ -432,190 +334,314 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               ).colorScheme.outline.withValues(alpha: 0.2),
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.cloud_upload_outlined,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
+                              Container(
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.sm,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.primary.withValues(
+                                        alpha: 0.12,
+                                      ),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.sm,
                                   ),
-                                  const SizedBox(width: PRFSpacingTokens.sm),
-                                  Expanded(
-                                    child: Text(
-                                      'Queued recordings for this session',
+                                ),
+                                child: Icon(
+                                  Icons.audiotrack_outlined,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: PRFSpacingTokens.md),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      l10n.recordings,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium
                                           ?.copyWith(
-                                            fontWeight: FontWeight.w600,
+                                            fontWeight: FontWeight.w700,
                                           ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 120,
-                                    child: PRFSecondaryButton(
-                                      onPressed: () =>
-                                          getIt<FailedRecordingUploadService>()
-                                              .retryAllUploadsForSession(
-                                                missionSessionUlid,
-                                              ),
-                                      title: 'Retry all',
-                                      disabled: false,
+                                    const SizedBox(
+                                      height: PRFSpacingTokens.xs,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      '${allTranscripts.length} total · '
+                                      '${readyTranscripts.length} ready · '
+                                      '${processingTranscripts.length} processing',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withValues(alpha: 0.7),
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(height: PRFSpacingTokens.sm),
-                              ...sessionUploads.map(
-                                (upload) => Container(
-                                  margin: const EdgeInsets.only(
-                                    bottom: PRFSpacingTokens.sm,
-                                  ),
-                                  padding: const EdgeInsets.all(
-                                    PRFSpacingTokens.md,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surfaceContainerHighest,
-                                    borderRadius: BorderRadius.circular(
-                                      PRFRadiusTokens.sm,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.audiotrack,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.primary,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(
-                                        width: PRFSpacingTokens.md,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              upload.name,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(
-                                              height: PRFSpacingTokens.xs,
-                                            ),
-                                            Text(
-                                              'Queued • Will upload when '
-                                              'online',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall
-                                                  ?.copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onSurface
-                                                        .withValues(
-                                                          alpha: 0.6,
-                                                        ),
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 90,
-                                        child: PRFSecondaryButton(
-                                          onPressed: () =>
-                                              getIt<
-                                                    FailedRecordingUploadService
-                                                  >()
-                                                  .retrySpecificUpload(upload),
-                                          title: 'Retry',
-                                          disabled: false,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                              SizedBox(
+                                width: 140,
+                                child: PRFPrimaryButton(
+                                  onPressed: () async {
+                                    await _showAddAudioSheet();
+                                  },
+                                  title: 'Record',
+                                  disabled: false,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      );
-                    },
-                  ),
-
-                if (missionSession != null) ...[
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: PRFSpacingTokens.lg),
-                  ),
-
-                  // Recordings List
-                  if (allTranscripts.isEmpty)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child:
-                            Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.music_off_outlined,
-                                      size: 64,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withValues(alpha: 0.5),
-                                    ),
-                                    const SizedBox(
-                                      height: PRFSpacingTokens.lg,
-                                    ),
-                                    Text(
-                                      l10n.noRecordings,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface
-                                                .withValues(alpha: 0.6),
-                                          ),
-                                    ),
-                                  ],
-                                )
-                                .animate()
-                                .fadeIn(duration: PRFMotionTokens.enterShort)
-                                .scale(begin: const Offset(0.8, 0.8)),
                       ),
-                    )
-                  else
-                    SliverList.builder(
-                      itemCount: visibleTranscripts.length,
-                      itemBuilder: (context, index) =>
-                          _viewTranscripts(
-                                visibleTranscripts[index],
-                                index,
-                                l10n,
+
+                    // Pending / queued recordings for this session
+                    if (missionSession != null)
+                      StreamBuilder<List<PRFFailedRecordingUpload>>(
+                        stream: getIt<FailedRecordingUploadService>()
+                            .pendingUploadsStream,
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return const SliverToBoxAdapter(child: SizedBox());
+                          }
+
+                          final sessionUploads = snapshot.data!
+                              .where(
+                                (upload) =>
+                                    upload.modelUlid == missionSessionUlid,
                               )
-                              .animate(delay: (index * 100).ms)
-                              .slideX(begin: 0.3)
-                              .fadeIn(),
-                    ),
-                ],
+                              .toList();
+
+                          if (sessionUploads.isEmpty) {
+                            return const SliverToBoxAdapter(child: SizedBox());
+                          }
+
+                          return SliverToBoxAdapter(
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: PRFSpacingTokens.lg,
+                                vertical: PRFSpacingTokens.md,
+                              ),
+                              padding: const EdgeInsets.all(
+                                PRFSpacingTokens.lg,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                borderRadius: BorderRadius.circular(
+                                  PRFRadiusTokens.smd,
+                                ),
+                                border: Border.all(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withValues(alpha: 0.2),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.cloud_upload_outlined,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
+                                      const SizedBox(
+                                        width: PRFSpacingTokens.sm,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          'Queued recordings for this session',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 120,
+                                        child: PRFSecondaryButton(
+                                          onPressed: () =>
+                                              getIt<
+                                                    FailedRecordingUploadService
+                                                  >()
+                                                  .retryAllUploadsForSession(
+                                                    missionSessionUlid,
+                                                  ),
+                                          title: 'Retry all',
+                                          disabled: false,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: PRFSpacingTokens.sm),
+                                  ...sessionUploads.map(
+                                    (upload) => Container(
+                                      margin: const EdgeInsets.only(
+                                        bottom: PRFSpacingTokens.sm,
+                                      ),
+                                      padding: const EdgeInsets.all(
+                                        PRFSpacingTokens.md,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.surfaceContainerHighest,
+                                        borderRadius: BorderRadius.circular(
+                                          PRFRadiusTokens.sm,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.audiotrack,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                            size: 20,
+                                          ),
+                                          const SizedBox(
+                                            width: PRFSpacingTokens.md,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  upload.name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                const SizedBox(
+                                                  height: PRFSpacingTokens.xs,
+                                                ),
+                                                Text(
+                                                  'Queued • Will upload when '
+                                                  'online',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurface
+                                                            .withValues(
+                                                              alpha: 0.6,
+                                                            ),
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 90,
+                                            child: PRFSecondaryButton(
+                                              onPressed: () =>
+                                                  getIt<
+                                                        FailedRecordingUploadService
+                                                      >()
+                                                      .retrySpecificUpload(
+                                                        upload,
+                                                      ),
+                                              title: 'Retry',
+                                              disabled: false,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                    if (missionSession != null) ...[
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: PRFSpacingTokens.lg),
+                      ),
+
+                      // Recordings List
+                      if (allTranscripts.isEmpty)
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Center(
+                            child:
+                                Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.music_off_outlined,
+                                          size: 64,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withValues(alpha: 0.5),
+                                        ),
+                                        const SizedBox(
+                                          height: PRFSpacingTokens.lg,
+                                        ),
+                                        Text(
+                                          l10n.noRecordings,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface
+                                                    .withValues(alpha: 0.6),
+                                              ),
+                                        ),
+                                      ],
+                                    )
+                                    .animate()
+                                    .fadeIn(
+                                      duration: PRFMotionTokens.enterShort,
+                                    )
+                                    .scale(begin: const Offset(0.8, 0.8)),
+                          ),
+                        )
+                      else
+                        SliverList.builder(
+                          itemCount: visibleTranscripts.length,
+                          itemBuilder: (context, index) =>
+                              _viewTranscripts(
+                                    visibleTranscripts[index],
+                                    index,
+                                    l10n,
+                                  )
+                                  .animate(delay: (index * 100).ms)
+                                  .slideX(begin: 0.3)
+                                  .fadeIn(),
+                        ),
+                    ],
 
                     const SliverToBoxAdapter(
                       child: SizedBox(height: PRFSpacingTokens.xxl),

@@ -24,7 +24,7 @@ class MemberEngagementResourceCubit
   Future<void> loadEngagement({
     required int year,
   }) async {
-    final ulid =  _hiveService.retrieveMember()?.ulid;
+    final ulid = _hiveService.retrieveMember()?.ulid;
     if (ulid == null) {
       emit(const ResourceState.error(message: 'Member not found'));
       return;

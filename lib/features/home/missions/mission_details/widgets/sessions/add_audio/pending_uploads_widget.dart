@@ -134,9 +134,10 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                           context,
                           sessionUploads,
                         ),
-                        title: '${sessionUploads.length} '
+                        title:
+                            '${sessionUploads.length} '
                             '${sessionUploads.length == 1 ? 'recording' : 'record'
-                                    'ings'}',
+                                      'ings'}',
                         disabled: false,
                       ),
                     ],
@@ -315,28 +316,24 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                 Expanded(
                   child: Text(
                     'Pending Uploads',
-                    style: Theme.of(context).textTheme.headlineSmall
-                        ?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 StreamBuilder<UploadRetryProgress>(
-                  stream: getIt<FailedRecordingUploadService>()
-                      .retryProgressStream,
+                  stream:
+                      getIt<FailedRecordingUploadService>().retryProgressStream,
                   builder: (context, progressSnapshot) {
                     final progress =
-                        progressSnapshot.data ??
-                        UploadRetryProgress.idle;
+                        progressSnapshot.data ?? UploadRetryProgress.idle;
 
                     return PRFPrimaryButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                         _retryAllUploads(context);
                       },
-                      title: progress.isRetrying
-                          ? 'Uploading...'
-                          : 'Retry All',
+                      title: progress.isRetrying ? 'Uploading...' : 'Retry All',
                       disabled: progress.isRetrying,
                       isLoading: progress.isRetrying,
                     );
@@ -347,8 +344,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
             // Progress indicator in modal
             StreamBuilder<UploadRetryProgress>(
-              stream: getIt<FailedRecordingUploadService>()
-                  .retryProgressStream,
+              stream: getIt<FailedRecordingUploadService>().retryProgressStream,
               builder: (context, progressSnapshot) {
                 final progress =
                     progressSnapshot.data ?? UploadRetryProgress.idle;

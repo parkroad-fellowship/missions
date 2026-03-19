@@ -1,8 +1,8 @@
+import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
 import 'package:app/features/home/mission_ground_suggestions/actions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/actions/update_mission_ground_suggestion/update_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/widgets/mission_ground_suggestion_card.dart';
-import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/_index.dart';
@@ -260,9 +260,7 @@ class _MissionGroundSuggestionsPageHandsetState
                                           borderRadius: BorderRadius.circular(
                                             PRFRadiusTokens.xl,
                                           ),
-                                          splashColor: theme
-                                              .colorScheme
-                                              .primary
+                                          splashColor: theme.colorScheme.primary
                                               .withValues(alpha: 0.1),
                                           highlightColor: theme
                                               .colorScheme

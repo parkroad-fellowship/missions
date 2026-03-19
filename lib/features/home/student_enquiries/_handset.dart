@@ -1,4 +1,6 @@
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
+import 'package:app/features/home/student_enquiries/widgets/student_enquiry_filter_header.dart';
+import 'package:app/features/home/student_enquiries/widgets/student_enquiry_preview_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
 import 'package:app/utils/_index.dart';
@@ -36,157 +38,135 @@ class _StudentEnquiriesPageHandsetState
       backgroundColor: theme.colorScheme.surface,
       body: Column(
         children: [
-          ColoredBox(
-            color: theme.colorScheme.primary,
-            child: PRFBrandedNavBar(
-              title: l10n.studentQuestions,
-              onBack: () => context.router.popUntilRouteWithPath(
-                PRFSuperAppRouter.landingRoute,
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primary.withValues(alpha: 0.84),
+                ],
+              ),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: PRFBrandedNavBar(
+                title: l10n.studentQuestions,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.landingRoute,
+                ),
               ),
             ),
           ),
           Expanded(
-            child: CustomScrollView(
-              slivers: [
-                // Reply Status Filter
-                SliverToBoxAdapter(
-                  child: ReplyStatusView(
-                    unreadLabel: l10n.unread,
-                    repliedLabel: l10n.replied,
-                    onStatusSelected: ({required status}) {
-                      setState(() {
-                        _selectedReplyStatus = status;
-                      });
-                    },
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: PRFSpacingTokens.lg),
-                ),
+            child: RefreshIndicator(
+              onRefresh: () => context.read<EnquiryResourceCubit>().loadAll(),
+              child:
+                  BlocBuilder<
+                    EnquiryResourceCubit,
+                    ResourceState<PRFStudentEnquiry>
+                  >(
+                    builder: (context, state) {
+                      final allEnquiries = state.maybeWhen(
+                        listLoaded: (items, _, _) => items,
+                        orElse: () => <PRFStudentEnquiry>[],
+                      );
 
-                // Loading Indicator
-                SliverToBoxAdapter(
-                  child:
-                      BlocBuilder<
-                        EnquiryResourceCubit,
-                        ResourceState<PRFStudentEnquiry>
-                      >(
-                        builder: (context, state) => state.maybeWhen(
-                          orElse: () => const PRFLinearProgressIndicator(),
-                          error: (message, _) => const SizedBox.shrink(),
-                          listLoaded: (_, _, _) => const SizedBox.shrink(),
+                      final unreadCount = allEnquiries
+                          .where((e) => !e.hasReplies)
+                          .length;
+                      final repliedCount = allEnquiries
+                          .where((e) => e.hasReplies)
+                          .length;
+
+                      return CustomScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),
                         ),
-                      ),
-                ),
-
-                // Enquiries List
-                BlocBuilder<
-                  EnquiryResourceCubit,
-                  ResourceState<PRFStudentEnquiry>
-                >(
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      listLoaded: (allEnquiries, _, _) {
-                        final enquiries = allEnquiries
-                            .where(
-                              (e) => e.hasReplies == _selectedReplyStatus,
-                            )
-                            .toList();
-                        if (enquiries.isEmpty) {
-                          return SliverFillRemaining(
-                            child: RefreshIndicator(
-                              onRefresh: () => context
-                                  .read<EnquiryResourceCubit>()
-                                  .loadAll(),
-                              child: PRFEmptyView(
-                                label: l10n.noQuestions,
-                                description: l10n.pleaseWait,
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: StudentEnquiryFilterHeader(
+                              unreadCount: unreadCount,
+                              repliedCount: repliedCount,
+                              onStatusSelected: (status) {
+                                setState(() {
+                                  _selectedReplyStatus = status;
+                                });
+                              },
+                            ),
+                          ),
+                          state.maybeWhen(
+                            listLoading: () => const SliverToBoxAdapter(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: PRFSpacingTokens.lg,
+                                ),
+                                child: PRFLinearProgressIndicator(),
                               ),
                             ),
-                          );
-                        }
-                        return SliverList.separated(
-                          itemCount: enquiries.length,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: PRFSpacingTokens.lg),
-                          itemBuilder: (context, index) {
-                            final enquiry = enquiries[index];
-                            return _StudentEnquiryCard(
-                              enquiry: enquiry,
-                              timezone: timezone,
-                              onTap: () => context.router.push(
-                                StudentEnquiryRepliesRoute(
-                                  enquiryUlid: enquiry.ulid,
+                            error: (message, _) => SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: PRFEmptyView(
+                                  label: l10n.noQuestions,
+                                  description: message,
                                 ),
                               ),
-                            );
-                          },
-                        );
-                      },
-                      error: (message, _) => SliverFillRemaining(
-                        child: PRFEmptyView(
-                          label: l10n.noQuestions,
-                          description: message,
-                        ),
-                      ),
-                      orElse: () => const SliverToBoxAdapter(
-                        child: SizedBox.shrink(),
-                      ),
-                    );
-                  },
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: PRFSpacingTokens.xl),
-                ),
-              ],
+                            ),
+                            listLoaded: (loadedEnquiries, _, _) {
+                              final enquiries = loadedEnquiries
+                                  .where(
+                                    (e) => e.hasReplies == _selectedReplyStatus,
+                                  )
+                                  .toList();
+
+                              if (enquiries.isEmpty) {
+                                return SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: PRFEmptyView(
+                                      label: l10n.noQuestions,
+                                      description: l10n.pleaseWait,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              return SliverList.separated(
+                                itemCount: enquiries.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: PRFSpacingTokens.md),
+                                itemBuilder: (context, index) {
+                                  final enquiry = enquiries[index];
+                                  return StudentEnquiryPreviewCard(
+                                    enquiry: enquiry,
+                                    timezone: timezone,
+                                    onTap: () => context.router.push(
+                                      StudentEnquiryRepliesRoute(
+                                        enquiryUlid: enquiry.ulid,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            orElse: () => const SliverToBoxAdapter(
+                              child: SizedBox.shrink(),
+                            ),
+                          ),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: PRFSpacingTokens.xl),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _StudentEnquiryCard extends StatelessWidget {
-  const _StudentEnquiryCard({
-    required this.enquiry,
-    required this.timezone,
-    this.onTap,
-  });
-
-  final PRFStudentEnquiry enquiry;
-  final String timezone;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return PRFDetailActionCard(
-      onTap: onTap,
-      margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
-      backgroundColor: theme.colorScheme.surface,
-      leading: CircleAvatar(
-        radius: 20,
-        backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
-        child: Text(
-          StringFormatter.getUserNameInitials(enquiry.content),
-          style: theme.textTheme.titleSmall?.copyWith(
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      trailing: Icon(
-        Icons.chevron_right_rounded,
-        color: theme.colorScheme.outline,
-      ),
-      title: enquiry.content.length > 80
-          ? '${enquiry.content.substring(0, 80).trim()}...'
-          : enquiry.content,
-      subtitle: DateFormatter.formatTimeFromDateTime(
-        enquiry.createdAt,
-        timezone,
       ),
     );
   }
