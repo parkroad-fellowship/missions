@@ -234,9 +234,15 @@ class BeautifulSoulCard extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(width: PRFSpacingTokens.xs),
               // Decision Type Badge
               _buildDecisionTypeBadge(theme),
-              const SizedBox(width: PRFSpacingTokens.xs),
+            ],
+          ),
+          const SizedBox(height: PRFSpacingTokens.sm),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
               SizedBox(
                 width: 72,
                 child: PRFSecondaryButton(

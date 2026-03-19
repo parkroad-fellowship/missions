@@ -237,7 +237,12 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
                   ],
                 ),
               ),
-              const SizedBox(width: PRFSpacingTokens.xs),
+            ],
+          ),
+          const SizedBox(height: PRFSpacingTokens.sm),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
               SizedBox(
                 width: 72,
                 child: PRFSecondaryButton(
@@ -304,11 +309,14 @@ class BeautifulDebriefNoteCard extends StatelessWidget with TimezoneMixin {
             color: theme.colorScheme.secondary,
           ),
           const SizedBox(width: PRFSpacingTokens.xs),
-          Text(
-            DateFormatter.formatDateTime(debriefNote.createdAt, timezone),
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.secondary,
-              fontWeight: FontWeight.w600,
+          Flexible(
+            child: Text(
+              DateFormatter.formatDateTime(debriefNote.createdAt, timezone),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.secondary,
+                fontWeight: FontWeight.w600,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 import 'package:prf_design/prf_design.dart';
 
 class UpdateMissionGroundSuggestionViewHandset extends StatefulWidget {
@@ -31,10 +31,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
 
   final _nameController = TextEditingController();
   final _contactPersonController = TextEditingController();
-  final _contactNumberController = TextEditingController();
+  late final PhoneController _phoneController;
   final _notesController = TextEditingController();
 
-  PhoneNumber? contactNumber;
   PRFMissionGroundSuggestionStatus? _selectedStatus;
 
   bool _isLoading = false;
@@ -49,7 +48,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
   bool get _isFormValid {
     return _nameController.text.isNotEmpty &&
         _contactPersonController.text.isNotEmpty &&
-        _contactNumberController.text.isNotEmpty &&
+        _phoneController.value.isValid() &&
         _selectedStatus != null;
   }
 
@@ -58,13 +57,16 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     super.initState();
     _nameController.text = missionGroundSuggestion.name;
     _contactPersonController.text = missionGroundSuggestion.contactPerson;
-    _contactNumberController.text = missionGroundSuggestion.contactNumber;
     _notesController.text = missionGroundSuggestion.notes ?? '';
     _selectedStatus = missionGroundSuggestion.status;
 
+    _phoneController = PhoneController(
+      initialValue: PhoneNumber.parse(missionGroundSuggestion.contactNumber),
+    );
+
     _nameController.addListener(_onFormChanged);
     _contactPersonController.addListener(_onFormChanged);
-    _contactNumberController.addListener(_onFormChanged);
+    _phoneController.addListener(_onFormChanged);
   }
 
   void _onFormChanged() {
@@ -72,6 +74,15 @@ class _UpdateMissionGroundSuggestionViewHandsetState
       _validateForm();
     }
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _contactPersonController.dispose();
+    _phoneController.dispose();
+    _notesController.dispose();
+    super.dispose();
   }
 
   void _clearErrors() {
@@ -90,7 +101,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     if (_contactPersonController.text.trim().isEmpty) {
       _contactPersonError = 'Contact person is required';
     }
-    if (_contactNumberController.text.trim().isEmpty) {
+    if (!_phoneController.value.isValid()) {
       _contactNumberError = 'Contact number is required';
     }
     if (_selectedStatus == null) {
@@ -241,43 +252,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           icon: Icons.phone_outlined,
                           title: l10n.contactNumber,
                           isRequired: true,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(
-                                PRFRadiusTokens.smd,
-                              ),
-                              border: Border.all(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.outline.withValues(alpha: 0.2),
-                              ),
-                            ),
-                            child: InternationalPhoneNumberInput(
-                              textFieldController: _contactNumberController,
-                              countries: const ['KE'],
-                              onInputChanged: (phoneNumber) => setState(() {
-                                contactNumber = phoneNumber;
-                                if (_showValidation) _validateForm();
-                              }),
-                              textStyle: Theme.of(context).textTheme.bodyMedium,
-                              inputDecoration: InputDecoration(
-                                hintText: '+254 712 345 678',
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurfaceVariant,
-                                    ),
-                                border: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.lg,
-                                  vertical: PRFSpacingTokens.lg,
-                                ),
-                              ),
-                            ),
+                          child: PRFPhoneInput(
+                            hintText: '712345678',
+                            controller: _phoneController,
                           ),
                         )
                         .animate(delay: PRFMotionTokens.slow)
@@ -404,7 +381,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
         name: _nameController.text.trim(),
         suggestorUlid: missionGroundSuggestion.suggestor!.ulid,
         contactPerson: _contactPersonController.text.trim(),
-        contactNumber: _contactNumberController.text.trim(),
+        contactNumber: _phoneController.value.international,
         status: _selectedStatus!,
         notes: _notesController.text,
       ),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 import 'package:prf_design/prf_design.dart';
 
 class AddMissionGroundSuggestionViewHandset extends StatefulWidget {
@@ -21,7 +21,9 @@ class _AddMissionGroundSuggestionViewHandsetState
     extends State<AddMissionGroundSuggestionViewHandset> {
   final _nameController = TextEditingController();
   final _contactPersonController = TextEditingController();
-  PhoneNumber? _contactNumber;
+  final _phoneController = PhoneController(
+    initialValue: const PhoneNumber(isoCode: IsoCode.KE, nsn: ''),
+  );
 
   bool _isLoading = false;
 
@@ -34,7 +36,7 @@ class _AddMissionGroundSuggestionViewHandsetState
   bool get _isFormValid {
     return _nameController.text.isNotEmpty &&
         _contactPersonController.text.isNotEmpty &&
-        _contactNumber != null;
+        _phoneController.value.isValid();
   }
 
   @override
@@ -42,6 +44,7 @@ class _AddMissionGroundSuggestionViewHandsetState
     super.initState();
     _nameController.addListener(_onFormChanged);
     _contactPersonController.addListener(_onFormChanged);
+    _phoneController.addListener(_onFormChanged);
   }
 
   void _onFormChanged() {
@@ -55,6 +58,7 @@ class _AddMissionGroundSuggestionViewHandsetState
   void dispose() {
     _nameController.dispose();
     _contactPersonController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -73,7 +77,7 @@ class _AddMissionGroundSuggestionViewHandsetState
     if (_contactPersonController.text.trim().isEmpty) {
       _contactPersonError = 'Contact person is required';
     }
-    if (_contactNumber == null) {
+    if (!_phoneController.value.isValid()) {
       _contactNumberError = 'Contact number is required';
     }
 
@@ -220,43 +224,9 @@ class _AddMissionGroundSuggestionViewHandsetState
                           icon: Icons.phone_outlined,
                           title: l10n.contactNumber,
                           isRequired: true,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(
-                                PRFRadiusTokens.smd,
-                              ),
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.outline
-                                    .withValues(
-                                      alpha: 0.2,
-                                    ),
-                              ),
-                            ),
-                            child: InternationalPhoneNumberInput(
-                              countries: const ['KE'],
-                              onInputChanged: (phoneNumber) => setState(() {
-                                _contactNumber = phoneNumber;
-                                if (_showValidation) _validateForm();
-                              }),
-                              textStyle: Theme.of(context).textTheme.bodyMedium,
-                              inputDecoration: InputDecoration(
-                                hintText: '0712345678',
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurfaceVariant,
-                                    ),
-                                border: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.lg,
-                                  vertical: PRFSpacingTokens.lg,
-                                ),
-                              ),
-                            ),
+                          child: PRFPhoneInput(
+                            hintText: '712345678',
+                            controller: _phoneController,
                           ),
                         )
                         .animate(delay: PRFMotionTokens.slow)
@@ -336,7 +306,7 @@ class _AddMissionGroundSuggestionViewHandsetState
     await context.read<GroundSuggestionResourceCubit>().createSuggestion(
       name: _nameController.text.trim(),
       contactPerson: _contactPersonController.text.trim(),
-      contactNumber: _contactNumber!.phoneNumber ?? '',
+      contactNumber: _phoneController.value.international,
     );
   }
 }
