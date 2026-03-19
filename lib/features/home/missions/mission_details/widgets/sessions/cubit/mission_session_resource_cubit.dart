@@ -1,4 +1,5 @@
 import 'package:app/models/remote/mission/prf_mission_session.dart';
+import 'package:app/models/remote/mission/prf_mission_session_dto.dart';
 import 'package:app/services/api/mission_session_service.dart';
 import 'package:app/services/local_storage/isar/mission_session_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
@@ -30,18 +31,18 @@ class MissionSessionResourceCubit extends ResourceCubit<PRFMissionSession> {
   ];
 
   /// Create a mission session.
-  Future<void> addSession({required Map<String, dynamic> data}) async {
-    await create(data: data);
+  Future<void> addSession({required PRFMissionSessionDTO data}) async {
+    await create(data: data.toJson());
   }
 
   /// Update a mission session.
   Future<void> updateSession({
     required String ulid,
-    required Map<String, dynamic> data,
+    required PRFMissionSessionDTO data,
   }) async {
     await update(
       id: ulid,
-      data: data,
+      data: data.toJson(),
       matchById: (s) => s.ulid == ulid,
     );
   }

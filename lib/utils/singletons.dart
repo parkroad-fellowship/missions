@@ -205,6 +205,7 @@ class Singletons {
       BlocProvider<GroundSuggestionResourceCubit>(
         create: (context) => GroundSuggestionResourceCubit(
           missionGroundSuggestionService: getIt(),
+          hiveService: getIt(),
         ),
       ),
 
@@ -240,6 +241,7 @@ class Singletons {
         create: (context) => AllocationEntryResourceCubit(
           allocationEntryService: getIt(),
           mediaService: getIt(),
+          hiveService: getIt(),
           refundService: getIt(),
         ),
       ),
@@ -276,6 +278,7 @@ class Singletons {
       BlocProvider<LessonResourceCubit>(
         create: (context) => LessonResourceCubit(
           lessonModuleService: getIt(),
+          hiveService: getIt(),
           lessonMemberService: getIt(),
         ),
       ),
@@ -297,6 +300,7 @@ class Singletons {
       BlocProvider<EnquiryReplyResourceCubit>(
         create: (context) => EnquiryReplyResourceCubit(
           studentEnquiryReplyService: getIt(),
+          hiveService: getIt(),
         ),
       ),
 
@@ -331,12 +335,16 @@ class Singletons {
       BlocProvider<PrayerRequestResourceCubit>(
         create: (context) => PrayerRequestResourceCubit(
           prayerRequestService: getIt(),
+          hiveService: getIt(),
         ),
       ),
 
       // --- ResourceCubit replacements: Payments ---
       BlocProvider<PaymentResourceCubit>(
-        create: (context) => PaymentResourceCubit(paymentService: getIt()),
+        create: (context) => PaymentResourceCubit(
+          paymentService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<PaymentTypeResourceCubit>(
         create: (context) => PaymentTypeResourceCubit(
@@ -370,6 +378,7 @@ class Singletons {
       BlocProvider<EventSubscriptionResourceCubit>(
         create: (context) => EventSubscriptionResourceCubit(
           eventSubscriptionService: getIt(),
+          hiveService: getIt(),
         ),
       ),
 

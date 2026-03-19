@@ -177,10 +177,8 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                     });
 
                     await context.read<PaymentResourceCubit>().addPayment(
-                      data: {
-                        'amount': _amountController.text.trim(),
-                        'payment_type_ulid': selectedPaymentType!.ulid,
-                      },
+                      paymentTypeUlid: selectedPaymentType!.ulid,
+                      amount: int.parse(_amountController.text.trim()),
                     );
                   },
                 );

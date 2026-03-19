@@ -153,10 +153,8 @@ class _UpdateDebriefNoteViewHandsetState
 
     await context.read<DebriefNoteResourceCubit>().updateDebriefNote(
       ulid: widget.debriefNote.ulid,
-      data: {
-        'mission_ulid': widget.missionUlid,
-        'note': _noteController.text.trim(),
-      },
+      missionUlid: widget.missionUlid,
+      note: _noteController.text.trim(),
     );
   }
 }

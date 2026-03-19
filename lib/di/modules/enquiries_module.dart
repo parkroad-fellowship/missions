@@ -45,6 +45,7 @@ class EnquiriesModule {
       BlocProvider<EnquiryReplyResourceCubit>(
         create: (context) => EnquiryReplyResourceCubit(
           studentEnquiryReplyService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];

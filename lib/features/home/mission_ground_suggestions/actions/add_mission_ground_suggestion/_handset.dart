@@ -334,11 +334,9 @@ class _AddMissionGroundSuggestionViewHandsetState
     }
 
     await context.read<GroundSuggestionResourceCubit>().createSuggestion(
-      data: {
-        'name': _nameController.text.trim(),
-        'contact_person': _contactPersonController.text.trim(),
-        'contact_number': _contactNumber,
-      },
+      name: _nameController.text.trim(),
+      contactPerson: _contactPersonController.text.trim(),
+      contactNumber: _contactNumber!.phoneNumber ?? '',
     );
   }
 }

@@ -277,10 +277,8 @@ class _AddPrayerRequestViewHandsetState
     });
 
     await context.read<PrayerRequestResourceCubit>().createPrayerRequest(
-      data: {
-        'title': _titleController.text.trim(),
-        'description': _requestController.text.trim(),
-      },
+      title: _titleController.text.trim(),
+      description: _requestController.text.trim(),
     );
   }
 }

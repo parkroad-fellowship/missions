@@ -36,6 +36,7 @@ class LmsModule {
       BlocProvider<LessonResourceCubit>(
         create: (context) => LessonResourceCubit(
           lessonModuleService: getIt(),
+          hiveService: getIt(),
           lessonMemberService: getIt(),
         ),
       ),

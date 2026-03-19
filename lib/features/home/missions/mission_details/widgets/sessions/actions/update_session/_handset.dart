@@ -4,6 +4,7 @@ import 'package:app/features/home/missions/mission_details/widgets/sessions/cubi
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
+import 'package:app/models/remote/mission/prf_mission_session_dto.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
@@ -485,17 +486,15 @@ class _UpdateSessionViewHandsetState extends State<UpdateSessionViewHandset> {
 
     await context.read<MissionSessionResourceCubit>().updateSession(
       ulid: missionSession.ulid,
-      data: {
-        'mission_ulid': widget.missionUlid,
-        'facilitator_ulid': selectedFacilitatorUlid,
-        'starts_at': startsAt!.toIso8601String(),
-        'ends_at': endsAt!.toIso8601String(),
-        'notes': _notesController.text,
-        'order': 0,
-        if (selectedSpeakerUlid != null) 'speaker_ulid': selectedSpeakerUlid,
-        if (selectedClassGroupUlid != null)
-          'class_group_ulid': selectedClassGroupUlid,
-      },
+      data: PRFMissionSessionDTO(
+        missionUlid: widget.missionUlid,
+        facilitatorUlid: selectedFacilitatorUlid!,
+        startsAt: startsAt!.toIso8601String(),
+        endsAt: endsAt!.toIso8601String(),
+        notes: _notesController.text,
+        speakerUlid: selectedSpeakerUlid,
+        classGroupUlid: selectedClassGroupUlid,
+      ),
     );
   }
 

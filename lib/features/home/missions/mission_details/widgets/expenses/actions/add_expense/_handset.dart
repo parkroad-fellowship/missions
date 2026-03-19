@@ -6,6 +6,7 @@ import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry_dto.dart';
 import 'package:app/models/remote/expense/prf_expense_category.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -585,17 +586,18 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     );
 
     await context.read<AllocationEntryResourceCubit>().addEntry(
-      data: {
-        'accounting_event_ulid': widget.accountingEventUlid,
-        'expense_category_ulid': selectedExpenseCategory!.ulid,
-        'entry_type': PRFEntryType.debit.apiKey,
-        'charge_type': selectedChargeType,
-        'charge': charge,
-        'unit_cost': unitCost,
-        'quantity': quantity,
-        'narration': _narrationController.text,
-        'confirmation_message': _confirmationMessageController.text,
-      },
+      data: PRFAllocationEntryDTO(
+        accountingEventUlid: widget.accountingEventUlid,
+        expenseCategoryUlid: selectedExpenseCategory!.ulid,
+        memberUlid: '',
+        entryType: PRFEntryType.debit,
+        chargeType: selectedChargeType!,
+        charge: charge,
+        unitCost: unitCost,
+        quantity: quantity,
+        narration: _narrationController.text,
+        confirmationMessage: _confirmationMessageController.text,
+      ),
       receiptDTOs: uploadedMedia,
     );
   }

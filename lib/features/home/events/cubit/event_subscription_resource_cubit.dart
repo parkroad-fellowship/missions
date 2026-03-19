@@ -1,13 +1,19 @@
 import 'package:app/models/remote/event/prf_event_subscription.dart';
+import 'package:app/models/remote/event/prf_event_subscription_dto.dart';
 import 'package:app/services/api/event_subscription_service.dart';
+import 'package:app/services/local_storage/_index.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class EventSubscriptionResourceCubit
     extends ResourceCubit<PRFEventSubscription> {
   EventSubscriptionResourceCubit({
     required EventSubscriptionService eventSubscriptionService,
+    required HiveService hiveService,
     super.dbService,
-  }) : super(service: eventSubscriptionService);
+  }) : _hiveService = hiveService,
+       super(service: eventSubscriptionService);
+
+  final HiveService _hiveService;
 
   @override
   List<String> get defaultIncludes => [
@@ -17,18 +23,32 @@ class EventSubscriptionResourceCubit
   ];
 
   /// Create an event subscription.
-  Future<void> addSubscription({required Map<String, dynamic> data}) async {
-    await create(data: data);
+  Future<void> addSubscription({
+    required String eventUlid,
+    required int numberOfAttendees,
+  }) async {
+    final dto = PRFEventSubscriptionDTO(
+      eventUlid: eventUlid,
+      memberUlid: _hiveService.retrieveMember()!.ulid,
+      numberOfAttendees: numberOfAttendees,
+    );
+    await create(data: dto.toJson());
   }
 
   /// Update an event subscription.
   Future<void> updateSubscription({
     required String ulid,
-    required Map<String, dynamic> data,
+    required String eventUlid,
+    required int numberOfAttendees,
   }) async {
+    final dto = PRFEventSubscriptionDTO(
+      eventUlid: eventUlid,
+      memberUlid: _hiveService.retrieveMember()!.ulid,
+      numberOfAttendees: numberOfAttendees,
+    );
     await update(
       id: ulid,
-      data: data,
+      data: dto.toJson(),
       matchById: (s) => s.ulid == ulid,
     );
   }

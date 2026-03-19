@@ -47,6 +47,7 @@ class PrayerModule {
       BlocProvider<PrayerRequestResourceCubit>(
         create: (context) => PrayerRequestResourceCubit(
           prayerRequestService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];

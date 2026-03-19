@@ -107,10 +107,8 @@ class _StudentEnquiryRepliesPageHandsetState
     if (text.trim().isEmpty) return;
 
     await context.read<EnquiryReplyResourceCubit>().createReply(
-      data: {
-        'student_enquiry_ulid': enquiryUlid,
-        'content': text.trim(),
-      },
+      studentEnquiryUlid: enquiryUlid,
+      content: text.trim(),
     );
   }
 

@@ -1,27 +1,37 @@
+import 'package:app/enums/payment/prf_completion_status.dart';
 import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/course/prf_lesson_member_dto.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/services/api/lesson_member_service.dart';
 import 'package:app/services/api/lesson_module_service.dart';
+import 'package:app/services/local_storage/_index.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
 
 class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
   LessonResourceCubit({
     required LessonModuleService lessonModuleService,
+    required HiveService hiveService,
     LessonMemberService? lessonMemberService,
     super.dbService,
-  }) : _lessonMemberService = lessonMemberService,
+  }) : _hiveService = hiveService,
+       _lessonMemberService = lessonMemberService,
        super(service: lessonModuleService) {
     subscribeToIsarUpdates();
   }
 
+  final HiveService _hiveService;
   final LessonMemberService? _lessonMemberService;
 
   @override
   List<String> get defaultIncludes => ['lesson', 'lessonMember', 'module'];
 
   /// Mark a lesson as finished by creating a LessonMember record.
-  Future<void> finishLesson({required Map<String, dynamic> data}) async {
+  Future<void> finishLesson({
+    required String lessonUlid,
+    required String moduleUlid,
+    required String courseUlid,
+  }) async {
     emit(
       ResourceState.mutating(
         items: currentItems,
@@ -33,7 +43,14 @@ class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
       if (_lessonMemberService == null) {
         throw Exception('LessonMemberService not provided');
       }
-      await _lessonMemberService.create(data: data);
+      final dto = PRFLessonMemberDTO(
+        lessonUlid: lessonUlid,
+        moduleUlid: moduleUlid,
+        courseUlid: courseUlid,
+        memberUlid: _hiveService.retrieveMember()!.ulid,
+        completionStatus: PRFCompletionStatus.complete,
+      );
+      await _lessonMemberService.create(data: dto.toJson());
       emit(
         ResourceState.mutated(
           items: currentItems,

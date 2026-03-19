@@ -38,6 +38,7 @@ class ExpensesModule {
         create: (context) => AllocationEntryResourceCubit(
           allocationEntryService: getIt(),
           mediaService: getIt(),
+          hiveService: getIt(),
           refundService: getIt(),
         ),
       ),

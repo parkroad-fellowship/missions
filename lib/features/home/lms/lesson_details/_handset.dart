@@ -4,7 +4,6 @@ import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
-import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,6 @@ class LessonDetailsHandset extends StatefulWidget {
 class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
   String get lessonModuleUlid => widget.lessonModuleUlid;
   String get courseModuleUlid => widget.courseModuleUlid;
-  String? get memberUlid => getIt<HiveService>().retrieveMember()?.ulid;
 
   @override
   void initState() {
@@ -367,12 +365,10 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                 return state.maybeWhen(
                   orElse: () => PRFPrimaryButton(
                     onPressed: () async {
-                      final resolvedMemberUlid = memberUlid;
                       final moduleUlid = lessonModule.module?.ulid;
                       final lessonUlid = lessonModule.lesson?.ulid;
 
-                      if (resolvedMemberUlid == null ||
-                          courseUlid == null ||
+                      if (courseUlid == null ||
                           moduleUlid == null ||
                           lessonUlid == null) {
                         PRFSnackbar.error(context, l10n.pleaseWait);
@@ -380,14 +376,9 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       }
 
                       await context.read<LessonResourceCubit>().finishLesson(
-                        data: {
-                          'course_ulid': courseUlid,
-                          'lesson_ulid': lessonUlid,
-                          'module_ulid': moduleUlid,
-                          'member_ulid': resolvedMemberUlid,
-                          'completion_status':
-                              PRFCompletionStatus.complete.apiKey,
-                        },
+                        lessonUlid: lessonUlid,
+                        moduleUlid: moduleUlid,
+                        courseUlid: courseUlid,
                       );
                     },
                     title: _isLoading ? l10n.completing : l10n.complete,

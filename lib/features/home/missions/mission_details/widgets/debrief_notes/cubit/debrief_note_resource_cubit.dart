@@ -1,4 +1,5 @@
 import 'package:app/models/remote/content/prf_debrief_note.dart';
+import 'package:app/models/remote/content/prf_debrief_note_dto.dart';
 import 'package:app/services/api/debrief_note_service.dart';
 import 'package:app/services/local_storage/isar/debrief_note_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
@@ -22,18 +23,24 @@ class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   List<String> get defaultIncludes => ['mission'];
 
   /// Create a debrief note.
-  Future<void> addDebriefNote({required Map<String, dynamic> data}) async {
-    await create(data: data);
+  Future<void> addDebriefNote({
+    required String missionUlid,
+    required String note,
+  }) async {
+    final dto = PRFDebriefNoteDTO(missionUlid: missionUlid, note: note);
+    await create(data: dto.toJson());
   }
 
   /// Update a debrief note.
   Future<void> updateDebriefNote({
     required String ulid,
-    required Map<String, dynamic> data,
+    required String missionUlid,
+    required String note,
   }) async {
+    final dto = PRFDebriefNoteDTO(missionUlid: missionUlid, note: note);
     await update(
       id: ulid,
-      data: data,
+      data: dto.toJson(),
       matchById: (n) => n.ulid == ulid,
     );
   }

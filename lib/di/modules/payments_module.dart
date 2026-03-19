@@ -20,7 +20,10 @@ class PaymentsModule {
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
       BlocProvider<PaymentResourceCubit>(
-        create: (context) => PaymentResourceCubit(paymentService: getIt()),
+        create: (context) => PaymentResourceCubit(
+          paymentService: getIt(),
+          hiveService: getIt(),
+        ),
       ),
       BlocProvider<PaymentTypeResourceCubit>(
         create: (context) => PaymentTypeResourceCubit(

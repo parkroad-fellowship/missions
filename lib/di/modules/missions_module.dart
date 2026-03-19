@@ -103,6 +103,7 @@ class MissionsModule {
       BlocProvider<GroundSuggestionResourceCubit>(
         create: (context) => GroundSuggestionResourceCubit(
           missionGroundSuggestionService: getIt(),
+          hiveService: getIt(),
         ),
       ),
 

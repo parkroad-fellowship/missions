@@ -4,6 +4,7 @@ import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/s
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/prayer/prf_soul.dart';
+import 'package:app/models/remote/prayer/prf_soul_dto.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -311,14 +312,14 @@ class _UpdateSoulViewHandsetState extends State<UpdateSoulViewHandset> {
 
     await context.read<SoulResourceCubit>().updateSoul(
       ulid: widget.soul.ulid,
-      data: {
-        'mission_ulid': widget.missionUlid,
-        'class_group_ulid': selectedClassGroup!.ulid,
-        'full_name': _fullNameController.text.trim(),
-        'decision_type': selectedDecisionType!.apiKey,
-        'notes': _notesController.text.trim(),
-        'admission_number': _admissionNumberController.text.trim(),
-      },
+      data: PRFSoulDTO(
+        missionUlid: widget.missionUlid,
+        classGroupUlid: selectedClassGroup!.ulid,
+        fullName: _fullNameController.text.trim(),
+        decisionType: selectedDecisionType!.apiKey,
+        notes: _notesController.text.trim(),
+        admissionNumber: _admissionNumberController.text.trim(),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:app/models/remote/prayer/prf_soul.dart';
+import 'package:app/models/remote/prayer/prf_soul_dto.dart';
 import 'package:app/services/api/soul_service.dart';
 import 'package:app/services/local_storage/isar/soul_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
@@ -22,18 +23,18 @@ class SoulResourceCubit extends ResourceCubit<PRFSoul> {
   }
 
   /// Create a soul.
-  Future<void> createSoul({required Map<String, dynamic> data}) async {
-    await create(data: data);
+  Future<void> createSoul({required PRFSoulDTO data}) async {
+    await create(data: data.toJson());
   }
 
   /// Update a soul.
   Future<void> updateSoul({
     required String ulid,
-    required Map<String, dynamic> data,
+    required PRFSoulDTO data,
   }) async {
     await update(
       id: ulid,
-      data: data,
+      data: data.toJson(),
       matchById: (s) => s.ulid == ulid,
     );
   }

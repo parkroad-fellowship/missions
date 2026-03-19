@@ -49,10 +49,8 @@ class _MissionQuestionsViewHandsetState
 
     await context.read<MissionQuestionResourceCubit>().updateMissionQuestion(
       ulid: missionQuestion.ulid,
-      data: {
-        'mission_ulid': missionUlid,
-        'question': question.trim(),
-      },
+      missionUlid: missionUlid,
+      question: question.trim(),
     );
 
     if (!mounted) return;

@@ -2,6 +2,7 @@ import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
 import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
+import 'package:app/models/remote/mission/prf_mission_ground_suggestion_dto.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -399,13 +400,14 @@ class _UpdateMissionGroundSuggestionViewHandsetState
 
     await context.read<GroundSuggestionResourceCubit>().updateSuggestion(
       ulid: missionGroundSuggestion.ulid,
-      data: {
-        'name': _nameController.text.trim(),
-        'contact_person': _contactPersonController.text.trim(),
-        'contact_number': _contactNumberController.text.trim(),
-        'status': _selectedStatus,
-        'notes': _notesController.text,
-      },
+      data: PRFMissionGroundSuggestionDTO(
+        name: _nameController.text.trim(),
+        suggestorUlid: missionGroundSuggestion.suggestor!.ulid,
+        contactPerson: _contactPersonController.text.trim(),
+        contactNumber: _contactNumberController.text.trim(),
+        status: _selectedStatus!,
+        notes: _notesController.text,
+      ),
     );
   }
 }

@@ -251,10 +251,8 @@ class _AddEventSubscriptionViewHandsetState
     }
 
     await context.read<EventSubscriptionResourceCubit>().addSubscription(
-      data: {
-        'event_ulid': widget.event.ulid,
-        'tickets': _ticketController.text.trim(),
-      },
+      eventUlid: widget.event.ulid,
+      numberOfAttendees: int.parse(_ticketController.text.trim()),
     );
   }
 }

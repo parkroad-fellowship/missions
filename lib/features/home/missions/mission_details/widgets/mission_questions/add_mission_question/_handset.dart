@@ -241,10 +241,8 @@ class _AddMissionQuestionViewHandsetState
     }
 
     await context.read<MissionQuestionResourceCubit>().addMissionQuestion(
-      data: {
-        'mission_ulid': widget.missionUlid,
-        'question': _questionController.text.trim(),
-      },
+      missionUlid: widget.missionUlid,
+      question: _questionController.text.trim(),
     );
   }
 }

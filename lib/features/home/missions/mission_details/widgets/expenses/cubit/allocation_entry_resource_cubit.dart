@@ -1,9 +1,11 @@
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry_dto.dart';
+import 'package:app/models/remote/expense/prf_refund_dto.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/api/allocation_entry_service.dart';
 import 'package:app/services/api/refund_service.dart';
+import 'package:app/services/local_storage/_index.dart';
 import 'package:app/services/media_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -12,15 +14,18 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
   AllocationEntryResourceCubit({
     required AllocationEntryService allocationEntryService,
     required MediaService mediaService,
+    required HiveService hiveService,
     RefundService? refundService,
     super.dbService,
   }) : _allocationEntryService = allocationEntryService,
        _mediaService = mediaService,
+       _hiveService = hiveService,
        _refundService = refundService,
        super(service: allocationEntryService);
 
   final AllocationEntryService _allocationEntryService;
   final MediaService _mediaService;
+  final HiveService _hiveService;
   final RefundService? _refundService;
 
   @override
@@ -35,7 +40,7 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
 
   /// Create an allocation entry with optional receipt uploads.
   Future<void> addEntry({
-    required Map<String, dynamic> data,
+    required PRFAllocationEntryDTO data,
     List<PRFMediaDTO> receiptDTOs = const [],
   }) async {
     emit(
@@ -46,7 +51,10 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
     );
 
     try {
-      final entry = await _allocationEntryService.create(data: data);
+      final dto = data.copyWith(
+        memberUlid: _hiveService.retrieveMember()!.ulid,
+      );
+      final entry = await _allocationEntryService.create(data: dto.toJson());
 
       for (final receiptDTO in receiptDTOs) {
         await _mediaService.uploadFile(
@@ -72,7 +80,7 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
   /// Update an allocation entry with optional receipt uploads.
   Future<void> editEntry({
     required String ulid,
-    required Map<String, dynamic> data,
+    required PRFAllocationEntryDTO data,
     List<PRFMediaDTO> receiptDTOs = const [],
   }) async {
     emit(
@@ -83,9 +91,12 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
     );
 
     try {
+      final dto = data.copyWith(
+        memberUlid: _hiveService.retrieveMember()!.ulid,
+      );
       final entry = await _allocationEntryService.update(
         id: ulid,
-        data: data,
+        data: dto.toJson(),
       );
 
       for (final receiptDTO in receiptDTOs) {
@@ -145,7 +156,7 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
   }
 
   /// Add a mission refund (uses RefundService).
-  Future<void> addRefund({required Map<String, dynamic> data}) async {
+  Future<void> addRefund({required PRFRefundDTO data}) async {
     emit(
       ResourceState.mutating(
         items: currentItems,
@@ -157,7 +168,7 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
       if (_refundService == null) {
         throw Exception('RefundService not provided');
       }
-      await _refundService.create(data: data);
+      await _refundService.create(data: data.toJson());
       emit(
         ResourceState.mutated(
           items: currentItems,

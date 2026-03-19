@@ -29,6 +29,7 @@ class EventsModule {
       BlocProvider<EventSubscriptionResourceCubit>(
         create: (context) => EventSubscriptionResourceCubit(
           eventSubscriptionService: getIt(),
+          hiveService: getIt(),
         ),
       ),
     ];

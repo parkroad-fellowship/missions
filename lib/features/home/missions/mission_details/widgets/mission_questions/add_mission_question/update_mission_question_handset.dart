@@ -153,10 +153,8 @@ class _UpdateMissionQuestionViewHandsetState
 
     await context.read<MissionQuestionResourceCubit>().updateMissionQuestion(
       ulid: widget.missionQuestion.ulid,
-      data: {
-        'mission_ulid': widget.missionUlid,
-        'question': _questionController.text.trim(),
-      },
+      missionUlid: widget.missionUlid,
+      question: _questionController.text.trim(),
     );
   }
 }
