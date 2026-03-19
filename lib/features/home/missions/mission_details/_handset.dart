@@ -53,9 +53,13 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
     _tabController = TabController(length: _tabCount, vsync: this);
 
-    context.read<MissionResourceCubit>().loadAll(
-      filters: {'ulid': missionUlid},
+    final missionCubit = context.read<MissionResourceCubit>();
+    final alreadyHasMission = missionCubit.currentItems.any(
+      (m) => m.ulid == missionUlid,
     );
+    if (!alreadyHasMission) {
+      missionCubit.loadAll();
+    }
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
     );

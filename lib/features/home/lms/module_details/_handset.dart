@@ -31,29 +31,28 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
 
   @override
   void initState() {
-    context
-        .read<ModuleResourceCubit>()
-        .loadAll(
-          filters: {
-            'ulid': courseModuleUlid,
-          },
-        )
-        .then((_) {
-          final module = context
-              .read<ModuleResourceCubit>()
-              .currentItems
-              .firstWhereOrNull(
-                (module) => module.ulid == courseModuleUlid,
-              );
-          if (module != null) {
-            context.read<LessonResourceCubit>().loadAll(
-              filters: {
-                'module_ulid': module.module?.ulid,
-                // 'course_ulid': module.course?.ulid,
-              },
-            );
-          }
-        });
+    final moduleCubit = context.read<ModuleResourceCubit>();
+    final existingModule = moduleCubit.currentItems.firstWhereOrNull(
+      (m) => m.ulid == courseModuleUlid,
+    );
+
+    if (existingModule != null) {
+      context.read<LessonResourceCubit>().loadAll(
+        filters: {'module_ulid': existingModule.module?.ulid},
+      );
+    } else {
+      moduleCubit.loadAll().then((_) {
+        final module = moduleCubit.currentItems.firstWhereOrNull(
+          (m) => m.ulid == courseModuleUlid,
+        );
+        if (module != null) {
+          // ignore: use_build_context_synchronously
+          context.read<LessonResourceCubit>().loadAll(
+            filters: {'module_ulid': module.module?.ulid},
+          );
+        }
+      });
+    }
     super.initState();
   }
 

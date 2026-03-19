@@ -34,9 +34,10 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
   void initState() {
     super.initState();
 
-    context.read<LessonResourceCubit>().loadAll(
-      filters: {'ulid': lessonModuleUlid},
-    );
+    final lessonCubit = context.read<LessonResourceCubit>();
+    if (!lessonCubit.currentItems.any((l) => l.ulid == lessonModuleUlid)) {
+      lessonCubit.loadAll();
+    }
   }
 
   bool _isLoading = false;
