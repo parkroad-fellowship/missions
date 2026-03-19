@@ -64,7 +64,10 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
       title: context.l10n.recordings,
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.8,
-        child: AddAudioView(missionSessionUlid: missionSessionUlid),
+        child: AddAudioView(
+          missionUlid: missionUlid,
+          missionSessionUlid: missionSessionUlid,
+        ),
       ),
     );
   }

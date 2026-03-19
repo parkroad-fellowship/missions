@@ -12,9 +12,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class AddAudioViewHandset extends StatefulWidget {
-  const AddAudioViewHandset({required this.missionSessionUlid, super.key});
+  const AddAudioViewHandset({
+    required this.missionUlid,
+    required this.missionSessionUlid,
+    super.key,
+  });
 
   final String missionSessionUlid;
+  final String missionUlid;
 
   @override
   State<AddAudioViewHandset> createState() => _AddAudioViewHandsetState();
@@ -169,7 +174,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                   '${l10n.upload} ${l10n.recordingCompleted}',
                 );
                 context.read<MissionSessionResourceCubit>().loadAll(
-                  filters: {'mission_session_ulid': widget.missionSessionUlid},
+                  filters: {'mission_ulid': widget.missionUlid},
                 );
                 Navigator.of(context).pop();
               },
