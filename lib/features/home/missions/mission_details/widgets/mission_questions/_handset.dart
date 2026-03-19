@@ -119,6 +119,8 @@ class _MissionQuestionsViewHandsetState
         );
         final questions = state.maybeWhen(
           listLoaded: (items, _, _) => items,
+          mutating: (items, _) => items,
+          mutated: (items, _, _) => items,
           orElse: () => <PRFMissionQuestion>[],
         );
 
