@@ -105,7 +105,9 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
       final tempDir = await getTemporaryDirectory();
       final ext = item.isVideo ? 'mp4' : 'jpg';
-      final file = File('${tempDir.path}/prf_media_${DateTime.now().millisecondsSinceEpoch}.$ext');
+      final file = File(
+        '${tempDir.path}/prf_media_${DateTime.now().millisecondsSinceEpoch}.$ext',
+      );
       await file.writeAsBytes(response.bodyBytes);
 
       if (!mounted) return;
@@ -222,35 +224,36 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                             onTap: () => _openCarousel(mediaItems, index),
                             imageBuilder: (context, url) =>
                                 ExtendedImage.network(
-                              url,
-                              fit: BoxFit.cover,
-                              loadStateChanged: (state) {
-                                switch (state.extendedImageLoadState) {
-                                  case LoadState.loading:
-                                    return ColoredBox(
-                                      color: theme
-                                          .colorScheme
-                                          .surfaceContainerHighest,
-                                      child: Center(
-                                        child: PRFCircularProgressIndicator(
-                                          color: theme.colorScheme.primary,
-                                        ),
-                                      ),
-                                    );
-                                  case LoadState.failed:
-                                    return ColoredBox(
-                                      color: theme.colorScheme.errorContainer,
-                                      child: Icon(
-                                        Icons.broken_image_outlined,
-                                        color: theme.colorScheme.error,
-                                        size: 32,
-                                      ),
-                                    );
-                                  case LoadState.completed:
-                                    return null;
-                                }
-                              },
-                            ),
+                                  url,
+                                  fit: BoxFit.cover,
+                                  loadStateChanged: (state) {
+                                    switch (state.extendedImageLoadState) {
+                                      case LoadState.loading:
+                                        return ColoredBox(
+                                          color: theme
+                                              .colorScheme
+                                              .surfaceContainerHighest,
+                                          child: Center(
+                                            child: PRFCircularProgressIndicator(
+                                              color: theme.colorScheme.primary,
+                                            ),
+                                          ),
+                                        );
+                                      case LoadState.failed:
+                                        return ColoredBox(
+                                          color:
+                                              theme.colorScheme.errorContainer,
+                                          child: Icon(
+                                            Icons.broken_image_outlined,
+                                            color: theme.colorScheme.error,
+                                            size: 32,
+                                          ),
+                                        );
+                                      case LoadState.completed:
+                                        return null;
+                                    }
+                                  },
+                                ),
                           );
                         },
                       ),

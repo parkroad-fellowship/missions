@@ -64,7 +64,6 @@ class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
     );
     try {
       await _missionService.deleteChild(
-        
         parentId: missionUlid,
         childPath: 'media',
         childId: mediaUuid,
