@@ -45,7 +45,7 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.38.5
+          flutter-version: 3.41.1
       - name: 🐦 Setup Shorebird
         uses: shorebirdtech/setup-shorebird@main
 
@@ -86,7 +86,7 @@ jobs:
       - name: 🚀 Shorebird Release (Android)
         uses: shorebirdtech/shorebird-release@main
         with:
-          flutter-version: 3.38.5
+          flutter-version: 3.41.1
           platform: android
           args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols -v
 

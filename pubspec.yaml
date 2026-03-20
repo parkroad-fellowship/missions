@@ -1,6 +1,6 @@
 name: app
 description: The PRF Super App
-version: 2.77.00+27700
+version: 2.80.00+28000
 publish_to: none
 
 environment:
@@ -71,8 +71,8 @@ dependencies:
   phone_form_field: ^10.0.17
   posthog_flutter: ^5.20.0
   pretty_dio_logger: ^1.4.0
-  prf_design: #^0.4.0
-    path: ../../prf_design_system
+  prf_design: ^0.6.0
+    # path: ../../prf_design_system
   record: ^6.2.0
   shorebird_code_push: ^2.0.5
   timezone: ^0.11.0
