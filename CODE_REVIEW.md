@@ -508,7 +508,7 @@ apk:
 **Files:**
 
 - `pubspec.yaml:8` requires `^3.41.1`
-- All CI workflows pin `flutter-version: 3.38.5`
+- All CI workflows pin `flutter-version: 3.41.1`
 
 **Problem:**
 

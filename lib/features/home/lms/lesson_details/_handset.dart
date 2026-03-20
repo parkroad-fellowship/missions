@@ -48,6 +48,11 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
     final theme = Theme.of(context);
 
     return BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
+      buildWhen: (previous, current) => current.maybeWhen(
+        mutating: (_, _) => false,
+        mutated: (_, _, _) => false,
+        orElse: () => true,
+      ),
       builder: (context, state) {
         final lessonModule = state.maybeWhen(
           listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
@@ -338,7 +343,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
             BlocConsumer<LessonResourceCubit, ResourceState<PRFLessonModule>>(
               listener: (context, state) {
                 state.maybeWhen(
-                  listLoading: () => setState(() {
+                  mutating: (_, _) => setState(() {
                     _isLoading = true;
                   }),
                   mutated: (_, _, _) {

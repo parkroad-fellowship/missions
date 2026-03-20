@@ -57,6 +57,10 @@ class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
           operation: ResourceOperation.update,
         ),
       );
+      // Reload to transition back to listLoaded with updated lessonMember data.
+      // Unlike base class mutations, finishLesson creates a different entity
+      // (LessonMember), so Isar streams won't auto-trigger a refresh.
+      await loadAll(filters: {'module_ulid': moduleUlid});
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
