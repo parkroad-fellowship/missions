@@ -2,17 +2,15 @@
 
 import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
+import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_expense/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_refund/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_token/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/edit_expense/_handset.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/receipt_preview.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
@@ -22,14 +20,15 @@ import 'package:app/models/remote/expense/prf_accounting_event.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_refund.dart';
 import 'package:app/models/remote/media/prf_media.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:prf_design/prf_design.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
   const ExpensesViewHandset({
@@ -57,8 +56,29 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   }
 
   void _loadData() {
-    context.read<GetMissionCubit>().getMissionSync(missionUlid: missionUlid);
-    context.read<GetExpenseCategoriesCubit>().getExpenseCategories();
+    // Don't re-fetch mission — parent already loaded it.
+    // Extract accountingEventUlid from existing cubit state.
+    final missionState = context.read<MissionResourceCubit>().state;
+    final mission = missionState.maybeWhen(
+      listLoaded: (items, _, _) => items.firstWhereOrNull(
+        (m) => m.ulid == missionUlid,
+      ),
+      mutated: (items, _, _) => items.firstWhereOrNull(
+        (m) => m.ulid == missionUlid,
+      ),
+      orElse: () => null,
+    );
+
+    if (mission != null) {
+      accountingEventUlid = mission.accountingEvent?.ulid;
+      if (accountingEventUlid != null) {
+        context.read<AllocationEntryResourceCubit>().loadAll(
+          filters: {'accounting_event_ulid': accountingEventUlid},
+        );
+      }
+    }
+
+    context.read<ExpenseCategoryResourceCubit>().loadAll();
   }
 
   @override
@@ -67,62 +87,75 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<GetMissionCubit, GetMissionState>(
+        BlocListener<MissionResourceCubit, ResourceState<PRFMission>>(
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              loadedSync: (mission) {
-                accountingEventUlid = mission.accountingEventUlid;
-                context.read<GetAllocationEntriesCubit>().getAllocationEntries(
-                  accountingEventUlid: mission.accountingEventUlid,
-                );
+              listLoaded: (missions, _, _) {
+                if (missions.isNotEmpty) {
+                  final mission = missions.first;
+                  accountingEventUlid = mission.accountingEvent?.ulid;
+                  if (accountingEventUlid != null) {
+                    context.read<AllocationEntryResourceCubit>().loadAll(
+                      filters: {
+                        'accounting_event_ulid': accountingEventUlid,
+                      },
+                    );
+                  }
+                }
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, 'Failed to load mission: $message');
               },
             );
           },
         ),
-        BlocListener<AddAllocationEntryCubit, AddAllocationEntryState>(
+        BlocListener<
+          AllocationEntryResourceCubit,
+          ResourceState<PRFAllocationEntry>
+        >(
           listener: (context, state) {
-            state.when(
-              initial: () {},
-              loading: () {},
-              loaded: () {
+            state.maybeWhen(
+              orElse: () {},
+              mutated: (_, _, _) {
                 _loadData();
                 PRFSnackbar.success(context, 'Entry added successfully');
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
             );
           },
         ),
-        BlocListener<EditAllocationEntryCubit, EditAllocationEntryState>(
+        BlocListener<
+          AllocationEntryResourceCubit,
+          ResourceState<PRFAllocationEntry>
+        >(
           listener: (context, state) {
-            state.when(
-              initial: () {},
-              loading: () {},
-              loaded: () {
+            state.maybeWhen(
+              orElse: () {},
+              mutated: (_, _, _) {
                 _loadData();
                 PRFSnackbar.success(context, 'Expense updated successfully');
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
             );
           },
         ),
-        BlocListener<DeleteAllocationEntryCubit, DeleteAllocationEntryState>(
+        BlocListener<
+          AllocationEntryResourceCubit,
+          ResourceState<PRFAllocationEntry>
+        >(
           listener: (context, state) {
-            state.when(
-              initial: () {},
-              loading: () {},
-              loaded: () {
+            state.maybeWhen(
+              orElse: () {},
+              mutated: (_, _, _) {
                 _loadData();
                 PRFSnackbar.success(context, 'Expense deleted successfully');
               },
-              error: (message) {
+              error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
             );
@@ -146,39 +179,63 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           },
         ),
       ],
-      child: BlocBuilder<GetAllocationEntriesCubit, GetAllocationEntriesState>(
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: PRFLinearProgressIndicator(),
-            ),
-            loading: () => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: PRFLinearProgressIndicator(),
-            ),
-            loaded: (entries) => _buildLoadedView(context, l10n, entries),
-            empty: () => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: PRFEmptyView(
-                label: 'No Expenses Yet',
-                description: 'Start by adding your first expense',
-                icon: Icons.receipt_long_outlined,
-              ),
-            ),
-            error: (message) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: PRFEmptyView(
-                label: 'Error',
-                description: message,
-                icon: Icons.error_outline,
-                actionLabel: 'Retry',
-                onActionPressed: _loadData,
-              ),
-            ),
-          );
-        },
-      ),
+      child:
+          BlocBuilder<
+            AllocationEntryResourceCubit,
+            ResourceState<PRFAllocationEntry>
+          >(
+            builder: (context, state) {
+              return state.when(
+                initial: () => const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFLinearProgressIndicator(),
+                ),
+                listLoading: () => const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFLinearProgressIndicator(),
+                ),
+                listLoaded: (entries, _, _) {
+                  if (entries.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.lg,
+                      ),
+                      child: PRFEmptyView(
+                        label: 'No Expenses Yet',
+                        description: 'Start by adding your first expense',
+                        icon: Icons.receipt_long_outlined,
+                      ),
+                    );
+                  }
+                  return _buildLoadedView(context, l10n, entries);
+                },
+                mutating: (_, _) => const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFLinearProgressIndicator(),
+                ),
+                mutated: (entries, _, _) =>
+                    _buildLoadedView(context, l10n, entries),
+                error: (message, _) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFEmptyView(
+                    label: 'Error',
+                    description: message,
+                    icon: Icons.error_outline,
+                    actionLabel: 'Retry',
+                    onActionPressed: _loadData,
+                  ),
+                ),
+              );
+            },
+          ),
     );
   }
 
@@ -202,20 +259,28 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ),
         // Financial Overview Header
         SliverToBoxAdapter(
-          child: _buildFinancialOverview(
-            context,
-            l10n,
-            accountingEvent,
-          ).animate().slideY(begin: -0.3).fadeIn(duration: 600.ms),
+          child:
+              _buildFinancialOverview(
+                    context,
+                    l10n,
+                    accountingEvent,
+                  )
+                  .animate()
+                  .slideY(begin: -0.3)
+                  .fadeIn(duration: PRFMotionTokens.enterShort),
         ),
 
         // Quick Actions
         SliverToBoxAdapter(
-          child: _buildQuickActions(
-            context,
-            l10n,
-            accountingEvent,
-          ).animate(delay: 200.ms).slideY(begin: 0.3).fadeIn(),
+          child:
+              _buildQuickActions(
+                    context,
+                    l10n,
+                    accountingEvent,
+                  )
+                  .animate(delay: PRFMotionTokens.standard)
+                  .slideY(begin: 0.3)
+                  .fadeIn(),
         ),
 
         // Refund Information (show when balance > 0)
@@ -232,20 +297,20 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           child: _buildBreakdownToggle(
             context,
             entries,
-          ).animate(delay: 400.ms).slideX(begin: -0.2).fadeIn(),
+          ).animate(delay: PRFMotionTokens.slow).slideX(begin: -0.2).fadeIn(),
         ),
 
         // Expenses List (if breakdown is shown)
         if (_showBreakdown && entries.isNotEmpty)
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   return _buildExpenseCard(context, entries[index])
                       .animate()
                       .fadeIn(
-                        duration: 300.ms,
+                        duration: PRFMotionTokens.slow,
                         delay: (index * 50).ms,
                       )
                       .slideX(begin: 0.2, end: 0);
@@ -262,7 +327,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               label: 'No Expenses Yet',
               description: 'Start by adding your first expense',
               icon: Icons.receipt_long_outlined,
-            ).animate().fadeIn(duration: 600.ms),
+            ).animate().fadeIn(duration: PRFMotionTokens.enterShort),
           ),
 
         // Bottom spacing
@@ -284,97 +349,102 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         : 0.0;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
       child: Column(
         children: [
           // Main Balance Card
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  theme.colorScheme.primary,
-                  theme.colorScheme.primary.withValues(alpha: 0.8),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
+                width: double.infinity,
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      theme.colorScheme.primary,
+                      theme.colorScheme.primary.withValues(alpha: 0.8),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.currentBalance,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: PRFColors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: PRFSpacingTokens.md,
+                            vertical: PRFSpacingTokens.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: PRFColors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
+                          ),
+                          child: Text(
+                            '${(spentPercentage * 100).toStringAsFixed(1)}% spent',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: PRFColors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
                     Text(
-                      l10n.currentBalance,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.9),
+                      NumberFormat.currency(
+                        locale: 'en_KE',
+                        symbol: 'KES ',
+                      ).format(accountingEvent.balance),
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: PRFColors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    const SizedBox(height: PRFSpacingTokens.lg),
+                    // Progress bar
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
+                      height: 6,
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        color: PRFColors.white.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(3),
                       ),
-                      child: Text(
-                        '${(spentPercentage * 100).toStringAsFixed(1)}% spent',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: spentPercentage.clamp(0.0, 1.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: PRFColors.white,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  NumberFormat.currency(
-                    locale: 'en_KE',
-                    symbol: 'KES ',
-                  ).format(accountingEvent.balance),
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Progress bar
-                Container(
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: FractionallySizedBox(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: spentPercentage.clamp(0.0, 1.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.3, end: 0),
+              )
+              .animate()
+              .fadeIn(duration: PRFMotionTokens.enterShort)
+              .slideY(begin: 0.3, end: 0),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
 
           // Financial Stats Grid
           Row(
@@ -391,7 +461,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   theme.colorScheme.secondary,
                 ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: PRFSpacingTokens.xs),
               Expanded(
                 child: _buildStatCard(
                   context,
@@ -404,7 +474,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   theme.colorScheme.error,
                 ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: PRFSpacingTokens.xs),
               Expanded(
                 child: _buildStatCard(
                   context,
@@ -436,10 +506,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     final theme = Theme.of(context);
     return Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(PRFSpacingTokens.sm),
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
               color: theme.colorScheme.outline.withValues(alpha: 0.2),
             ),
@@ -450,10 +520,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: color.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       icon,
@@ -464,7 +534,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   const Spacer(),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: PRFSpacingTokens.md),
               Text(
                 '$title\n',
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -472,7 +542,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 maxLines: 2,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: PRFSpacingTokens.xs),
               Text(
                 '$value\n',
                 style: theme.textTheme.titleMedium?.copyWith(
@@ -484,7 +554,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           ),
         )
         .animate()
-        .fadeIn(delay: 200.ms, duration: 400.ms)
+        .fadeIn(delay: PRFMotionTokens.standard, duration: PRFMotionTokens.slow)
         .slideX(begin: 0.3, end: 0);
   }
 
@@ -493,38 +563,23 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     AppLocalizations l10n,
     PRFAccountingEvent accountingEvent,
   ) {
-    final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: Row(
         children: [
           Expanded(
-            child: ElevatedButton.icon(
+            child: PRFPrimaryButton(
               onPressed: () => _showAddTokenModal(context, accountingEvent),
-              icon: const Icon(Icons.add_circle_outline),
-              label: Text(l10n.addToken),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.secondary,
-                foregroundColor: theme.colorScheme.onSecondary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+              title: l10n.addToken,
+              disabled: false,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
-            child: OutlinedButton.icon(
+            child: PRFSecondaryButton(
               onPressed: () => _showAddExpenseModal(context),
-              icon: const Icon(Icons.receipt_long),
-              label: Text(l10n.addExpense),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+              title: l10n.addExpense,
+              disabled: false,
             ),
           ),
         ],
@@ -539,16 +594,16 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: Material(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         elevation: 1,
         child: InkWell(
           onTap: () => setState(() => _showBreakdown = !_showBreakdown),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             child: Row(
               children: [
                 Icon(
@@ -556,7 +611,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   color: theme.colorScheme.onSurface,
                   size: 24,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: PRFSpacingTokens.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -581,7 +636,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                 ),
                 AnimatedRotation(
-                  duration: const Duration(milliseconds: 200),
+                  duration: PRFMotionTokens.standard,
                   turns: _showBreakdown ? 0.5 : 0,
                   child: Icon(
                     Icons.keyboard_arrow_down,
@@ -604,10 +659,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     final missingReceipt = !isCredit && !hasReceipts;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.2),
         ),
@@ -620,9 +675,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ],
       ),
       child: Material(
-        color: Colors.transparent,
+        color: PRFColors.transparent,
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -631,7 +686,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: isCredit
                           ? theme.colorScheme.primaryContainer.withValues(
@@ -640,7 +695,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                           : theme.colorScheme.errorContainer.withValues(
                               alpha: 0.3,
                             ),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       isCredit ? Icons.trending_up : Icons.trending_down,
@@ -650,7 +705,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                           : theme.colorScheme.error,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Expanded(
                     flex: 3,
                     child: Column(
@@ -665,7 +720,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                           overflow: TextOverflow.ellipsis,
                         ),
                         if (entry.member?.fullName != null) ...[
-                          const SizedBox(height: 4),
+                          const SizedBox(height: PRFSpacingTokens.xs),
                           Text(
                             entry.member!.fullName,
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -678,7 +733,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       ],
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: PRFSpacingTokens.sm),
                   Expanded(
                     flex: 2,
                     child: Column(
@@ -699,7 +754,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.end,
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
                           DateFormat('MMM dd, yyyy').format(entry.createdAt),
                           style: theme.textTheme.bodySmall?.copyWith(
@@ -714,19 +769,23 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                   // Delete Button for Debit Entries Only
                   if (!isCredit) ...[
-                    const SizedBox(width: 8),
+                    const SizedBox(width: PRFSpacingTokens.sm),
                     Material(
-                      color: Colors.transparent,
+                      color: PRFColors.transparent,
                       child: InkWell(
                         onTap: () => _showDeleteConfirmation(context, entry),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         child: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.errorContainer.withValues(
                               alpha: 0.5,
                             ),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
                             border: Border.all(
                               color: theme.colorScheme.error.withValues(
                                 alpha: 0.3,
@@ -743,19 +802,21 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     ),
                   ],
                   // Edit Button
-                  const SizedBox(width: 8),
+                  const SizedBox(width: PRFSpacingTokens.sm),
                   Material(
-                    color: Colors.transparent,
+                    color: PRFColors.transparent,
                     child: InkWell(
                       onTap: () => _showExpenseDetails(context, entry),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       child: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.primaryContainer.withValues(
                             alpha: 0.5,
                           ),
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.smd,
+                          ),
                           border: Border.all(
                             color: theme.colorScheme.primary.withValues(
                               alpha: 0.3,
@@ -775,7 +836,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
               // Description Row (if exists)
               if (entry.narration.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: PRFSpacingTokens.sm),
                 Text(
                   entry.narration,
                   style: theme.textTheme.bodySmall?.copyWith(
@@ -786,7 +847,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
               ],
 
-              const SizedBox(height: 12),
+              const SizedBox(height: PRFSpacingTokens.md),
 
               if (hasReceipts) ...[
                 _buildReceiptAttachments(context, entry.ulid, entry.receipts),
@@ -822,10 +883,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         decoration: BoxDecoration(
           color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
             color: theme.colorScheme.primary.withValues(alpha: 0.2),
           ),
@@ -836,10 +897,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(PRFSpacingTokens.xs),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Icon(
                     Icons.receipt_long,
@@ -847,7 +908,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     color: theme.colorScheme.primary,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: PRFSpacingTokens.sm),
                 Text(
                   '${receipts.length} '
                   'Attachment${receipts.length == 1 ? '' : 's'}',
@@ -858,7 +919,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: PRFSpacingTokens.md),
             SizedBox(
               height: 80,
               child: ListView.builder(
@@ -878,7 +939,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       );
 
                       return Padding(
-                        padding: const EdgeInsets.only(right: 12),
+                        padding: const EdgeInsets.only(
+                          right: PRFSpacingTokens.md,
+                        ),
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
@@ -897,7 +960,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                 width: 70,
                                 height: 70,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.md,
+                                  ),
                                   border: Border.all(
                                     color: theme.colorScheme.primary.withValues(
                                       alpha: 0.3,
@@ -943,7 +1008,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                     color: theme
                                                         .colorScheme
                                                         .onSurface,
-                                                    fontSize: 10,
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),
@@ -994,10 +1058,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                           .surfaceContainerHighest,
                                                       child: Center(
                                                         child: SizedBox(
-                                                          width: 20,
+                                                          width:
+                                                              PRFSpacingTokens
+                                                                  .xl,
                                                           height: 20,
-                                                          child: CircularProgressIndicator(
-                                                            strokeWidth: 2,
+                                                          child: PRFCircularProgressIndicator(
                                                             color: theme
                                                                 .colorScheme
                                                                 .primary,
@@ -1026,10 +1091,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
                                                     colors: [
-                                                      Colors.transparent,
-                                                      Colors.black.withValues(
-                                                        alpha: 0.1,
-                                                      ),
+                                                      PRFColors.transparent,
+                                                      PRFColors.black
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          ),
                                                     ],
                                                   ),
                                                 ),
@@ -1084,16 +1150,19 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                   width: 70,
                                   height: 70,
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withValues(alpha: 0.5),
-                                    borderRadius: BorderRadius.circular(16),
+                                    color: PRFColors.black.withValues(
+                                      alpha: 0.5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.md,
+                                    ),
                                   ),
                                   child: const Center(
                                     child: SizedBox(
-                                      width: 20,
+                                      width: PRFSpacingTokens.xl,
                                       height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
+                                      child: PRFCircularProgressIndicator(
+                                        color: PRFColors.white,
                                       ),
                                     ),
                                   ),
@@ -1118,65 +1187,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     String allocationEntryUlid,
     PRFMedia receipt,
   ) {
-    final theme = Theme.of(context);
-
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.delete_outline,
-                  color: theme.colorScheme.error,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text('Delete Receipt'),
-            ],
-          ),
-          content: const Text(
-            'Are you sure you want to delete this receipt? '
-            'This action cannot be undone.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: theme.colorScheme.onSurface),
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                context.read<DeleteReceiptCubit>().deleteReceipt(
-                  allocationEntryUlid: allocationEntryUlid,
-                  mediaUuid: receipt.uuid,
-                );
-              },
-              icon: const Icon(Icons.delete_outline, size: 18),
-              label: const Text('Delete'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.error,
-                foregroundColor: theme.colorScheme.onError,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-              ),
-            ),
-          ],
+    PRFConfirmationDialog.show(
+      context,
+      title: 'Delete Receipt',
+      message:
+          'Are you sure you want to delete this receipt? This action cannot '
+          'be undone.',
+      confirmLabel: 'Delete',
+      isDestructive: true,
+      onConfirm: () {
+        context.read<DeleteReceiptCubit>().deleteReceipt(
+          allocationEntryUlid: allocationEntryUlid,
+          mediaUuid: receipt.uuid,
         );
       },
     );
@@ -1189,10 +1211,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
           color: theme.colorScheme.error.withValues(alpha: 0.3),
         ),
@@ -1200,10 +1222,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
             decoration: BoxDecoration(
               color: theme.colorScheme.error.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
             ),
             child: Icon(
               Icons.receipt_outlined,
@@ -1211,7 +1233,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               color: theme.colorScheme.error,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1241,7 +1263,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     // Attach Image Button
                     Material(
                       color: theme.colorScheme.error,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       child: InkWell(
                         onTap: () async {
                           try {
@@ -1275,11 +1297,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             }
                           }
                         },
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
+                            horizontal: PRFSpacingTokens.md,
+                            vertical: PRFSpacingTokens.sm,
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -1289,7 +1313,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                 size: 16,
                                 color: theme.colorScheme.onError,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: PRFSpacingTokens.xs),
                               Text(
                                 'Image',
                                 style: theme.textTheme.bodySmall?.copyWith(
@@ -1302,11 +1326,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: PRFSpacingTokens.sm),
                     // Attach PDF Button
                     Material(
                       color: theme.colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       child: InkWell(
                         onTap: () async {
                           try {
@@ -1338,11 +1362,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             }
                           }
                         },
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
+                            horizontal: PRFSpacingTokens.md,
+                            vertical: PRFSpacingTokens.sm,
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -1352,7 +1378,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                 size: 16,
                                 color: theme.colorScheme.onTertiary,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: PRFSpacingTokens.xs),
                               Text(
                                 'PDF',
                                 style: theme.textTheme.bodySmall?.copyWith(
@@ -1368,7 +1394,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ],
                 ),
                 loading: () => SizedBox(
-                  width: 16,
+                  width: PRFSpacingTokens.lg,
                   height: 16,
                   child: PRFCircularProgressIndicator(
                     color: theme.colorScheme.primary,
@@ -1410,250 +1436,57 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
   void _showAddExpenseModal(BuildContext context) {
     context.read<SelectMediaCubit>().clearMedia();
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (context) => [
-        _buildAddExpenseModalPage(context),
-      ],
-    );
-  }
-
-  WoltModalSheetPage _buildAddExpenseModalPage(BuildContext context) {
-    return WoltModalSheetPage(
-      child: SizedBox(
-        height: MediaQuery.sizeOf(context).height * 0.8,
-        child: accountingEventUlid != null
-            ? AddExpenseViewHandset(
-                accountingEventUlid: accountingEventUlid!,
-              )
-            : const SizedBox.shrink(),
-      ),
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Add Expense',
+      child: accountingEventUlid != null
+          ? AddExpenseViewHandset(
+              accountingEventUlid: accountingEventUlid!,
+            )
+          : const SizedBox.shrink(),
     );
   }
 
   void _showExpenseDetails(BuildContext context, PRFAllocationEntry entry) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (context) => [
-        _buildExpenseDetailsModalPage(context, entry),
-      ],
-    );
-  }
-
-  WoltModalSheetPage _buildExpenseDetailsModalPage(
-    BuildContext context,
-    PRFAllocationEntry entry,
-  ) {
-    return WoltModalSheetPage(
-      child: SizedBox(
-        height: MediaQuery.sizeOf(context).height * 0.8,
-        child: EditExpenseViewHandset(
-          allocationEntry: entry,
-        ),
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Edit Expense',
+      child: EditExpenseViewHandset(
+        allocationEntry: entry,
       ),
     );
   }
 
-  void _showDeleteConfirmation(
+  Future<void> _showDeleteConfirmation(
     BuildContext context,
     PRFAllocationEntry entry,
-  ) {
-    final theme = Theme.of(context);
-
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.delete_outline,
-                  color: theme.colorScheme.error,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  'Delete Expense',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Are you sure you want to delete this expense?',
-                style: theme.textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 16),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer.withValues(
-                    alpha: 0.3,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: theme.colorScheme.error.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      entry.expenseCategory?.name ?? 'Unknown Category',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      NumberFormat.currency(
-                        symbol: 'KES ',
-                        decimalDigits: 0,
-                      ).format(entry.amount),
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: theme.colorScheme.error,
-                      ),
-                    ),
-                    if (entry.narration.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        entry.narration,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontStyle: FontStyle.italic,
-                          color: theme.colorScheme.onSurface.withValues(
-                            alpha: 0.7,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'This action cannot be undone.',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.error,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                ),
-              ),
-            ),
-            BlocConsumer<
-              DeleteAllocationEntryCubit,
-              DeleteAllocationEntryState
-            >(
-              listener: (context, state) {
-                state.when(
-                  initial: () {},
-                  loading: () {},
-                  loaded: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  error: (message) {
-                    Navigator.of(dialogContext).pop();
-                  },
-                );
-              },
-              builder: (context, state) {
-                return state.when(
-                  loading: () => const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ),
-                  initial: () => _buildDeleteButton(theme, context, entry),
-                  loaded: () => _buildDeleteButton(theme, context, entry),
-                  error: (message) => _buildDeleteButton(theme, context, entry),
-                );
-              },
-            ),
-          ],
-        );
-      },
+  ) async {
+    final confirmed = await PRFConfirmationDialog.show(
+      context,
+      title: 'Delete Expense',
+      message: 'Are you sure you want to delete this expense?',
+      confirmLabel: 'Delete',
+      isDestructive: true,
     );
-  }
-
-  Widget _buildDeleteButton(
-    ThemeData theme,
-    BuildContext context,
-    PRFAllocationEntry entry,
-  ) {
-    return ElevatedButton.icon(
-      onPressed: () {
-        context.read<DeleteAllocationEntryCubit>().deleteAllocationEntry(
-          allocationEntryUlid: entry.ulid,
-        );
-      },
-      icon: const Icon(Icons.delete_outline, size: 18),
-      label: const Text('Delete'),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: theme.colorScheme.error,
-        foregroundColor: theme.colorScheme.onError,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ),
-    );
+    if (confirmed != true) return;
+    if (!context.mounted) return;
+    await context.read<AllocationEntryResourceCubit>().deleteEntry(entry.ulid);
   }
 
   void _showAddTokenModal(
     BuildContext context,
     PRFAccountingEvent accountingEvent,
   ) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              child: AddTokenViewHandset(
-                accountingEventUlid: accountingEvent.ulid,
-              ),
-            ),
-          ),
-        ];
-      },
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Add Token',
+      child: AddTokenViewHandset(
+        accountingEventUlid: accountingEvent.ulid,
+      ),
     ).then((_) {
       if (context.mounted) {
-        context.read<GetAllocationEntriesCubit>().getAllocationEntries(
-          accountingEventUlid: accountingEvent.ulid,
+        context.read<AllocationEntryResourceCubit>().loadAll(
+          filters: {'accounting_event_ulid': accountingEvent.ulid},
         );
       }
     });
@@ -1663,26 +1496,16 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     BuildContext context,
     PRFAccountingEvent accountingEvent,
   ) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              child: AddRefundViewHandset(
-                accountingEventUlid: accountingEvent.ulid,
-              ),
-            ),
-          ),
-        ];
-      },
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Add Refund',
+      child: AddRefundViewHandset(
+        accountingEventUlid: accountingEvent.ulid,
+      ),
     ).then((_) {
       if (context.mounted) {
-        context.read<GetAllocationEntriesCubit>().getAllocationEntries(
-          accountingEventUlid: accountingEvent.ulid,
+        context.read<AllocationEntryResourceCubit>().loadAll(
+          filters: {'accounting_event_ulid': accountingEvent.ulid},
         );
       }
     });
@@ -1695,183 +1518,192 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              theme.colorScheme.tertiary.withValues(alpha: 0.1),
-              theme.colorScheme.tertiary.withValues(alpha: 0.05),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.account_balance_wallet,
-                    color: theme.colorScheme.tertiary,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.refundInformation,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.tertiary,
-                        ),
-                      ),
-                      Text(
-                        l10n.refundDesc,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+      child:
+          Container(
+                padding: const EdgeInsets.all(PRFSpacingTokens.xl),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      theme.colorScheme.tertiary.withValues(alpha: 0.1),
+                      theme.colorScheme.tertiary.withValues(alpha: 0.05),
                     ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                  border: Border.all(
+                    color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    NumberFormat.currency(
-                      locale: 'en_KE',
-                      symbol: 'KES ',
-                    ).format(
-                      accountingEvent.latestRefund?.deficitAmount ??
-                          accountingEvent.amountToRefund,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.tertiary.withValues(
+                              alpha: 0.2,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.sm,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.account_balance_wallet,
+                            color: theme.colorScheme.tertiary,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: PRFSpacingTokens.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.refundInformation,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.colorScheme.tertiary,
+                                ),
+                              ),
+                              Text(
+                                l10n.refundDesc,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: PRFSpacingTokens.md,
+                            vertical: PRFSpacingTokens.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.tertiary,
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
+                          ),
+                          child: Text(
+                            NumberFormat.currency(
+                              locale: 'en_KE',
+                              symbol: 'KES ',
+                            ).format(
+                              accountingEvent.latestRefund?.deficitAmount ??
+                                  accountingEvent.amountToRefund,
+                            ),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: PRFColors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.payment,
-                        color: theme.colorScheme.primary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        l10n.refundDetails,
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                    const SizedBox(height: PRFSpacingTokens.lg),
+                    Container(
+                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
+                        border: Border.all(
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.2,
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  _buildRefundDetailRow(
-                    context,
-                    l10n.paybillNumber,
-                    '4088159',
-                    Icons.numbers,
-                  ),
-                  const SizedBox(height: 8),
-                  _buildRefundDetailRow(
-                    context,
-                    l10n.accountNumber,
-                    'REFUND',
-                    Icons.account_balance,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(
-                  alpha: 0.3,
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: theme.colorScheme.primary,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      l10n.refundText,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.payment,
+                                color: theme.colorScheme.primary,
+                                size: 20,
+                              ),
+                              const SizedBox(width: PRFSpacingTokens.sm),
+                              Text(
+                                l10n.refundDetails,
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: PRFSpacingTokens.md),
+                          _buildRefundDetailRow(
+                            context,
+                            l10n.paybillNumber,
+                            '4088159',
+                            Icons.numbers,
+                          ),
+                          const SizedBox(height: PRFSpacingTokens.sm),
+                          _buildRefundDetailRow(
+                            context,
+                            l10n.accountNumber,
+                            'REFUND',
+                            Icons.account_balance,
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              onPressed: () => _showAddRefundModal(context, accountingEvent),
-              icon: const Icon(Icons.account_balance_wallet),
-              label: const Text('Add Refund'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.tertiary,
-                foregroundColor: theme.colorScheme.onTertiary,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 16,
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    Container(
+                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer.withValues(
+                          alpha: 0.3,
+                        ),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            color: theme.colorScheme.primary,
+                            size: 16,
+                          ),
+                          const SizedBox(width: PRFSpacingTokens.sm),
+                          Expanded(
+                            child: Text(
+                              l10n.refundText,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    PRFPrimaryButton(
+                      onPressed: () =>
+                          _showAddRefundModal(context, accountingEvent),
+                      title: 'Add Refund',
+                      disabled: false,
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    if (accountingEvent.refunds.isNotEmpty)
+                      _buildRefundEntriesList(
+                        context,
+                        theme,
+                        accountingEvent.refunds,
+                      ),
+                    if (accountingEvent.refunds.isNotEmpty)
+                      const SizedBox(height: PRFSpacingTokens.md),
+                  ],
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            if (accountingEvent.refunds.isNotEmpty)
-              _buildRefundEntriesList(context, theme, accountingEvent.refunds),
-            if (accountingEvent.refunds.isNotEmpty) const SizedBox(height: 12),
-          ],
-        ),
-      ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
+              )
+              .animate()
+              .fadeIn(duration: PRFMotionTokens.enterShort)
+              .slideY(begin: 0.2, end: 0),
     );
   }
 
@@ -1881,10 +1713,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     List<PRFRefund> refunds,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.2),
         ),
@@ -1899,22 +1731,22 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 color: theme.colorScheme.primary,
                 size: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: PRFSpacingTokens.sm),
               Text(
                 'Refund Entries',
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: PRFSpacingTokens.sm),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
+                  horizontal: PRFSpacingTokens.sm,
+                  vertical: PRFSpacingTokens.xs,
                 ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Text(
                   '${refunds.length}',
@@ -1926,7 +1758,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: PRFSpacingTokens.md),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -1958,12 +1790,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           children: [
             Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 4,
+                horizontal: PRFSpacingTokens.sm,
+                vertical: PRFSpacingTokens.xs,
               ),
               decoration: BoxDecoration(
                 color: theme.colorScheme.secondaryContainer,
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
               ),
               child: Text(
                 '#$entryNumber',
@@ -1973,7 +1805,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: PRFSpacingTokens.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1999,7 +1831,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: PRFSpacingTokens.sm),
         _buildRefundDetailValue(
           context,
           theme,
@@ -2008,7 +1840,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             refund.deficitAmount,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: PRFSpacingTokens.sm),
         _buildRefundDetailValue(
           context,
           theme,
@@ -2016,7 +1848,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           refund.confirmationMessage,
           isCopyable: true,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: PRFSpacingTokens.sm),
         _buildRefundDetailValue(
           context,
           theme,
@@ -2046,7 +1878,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: PRFSpacingTokens.xs),
               Text(
                 value,
                 style: theme.textTheme.bodySmall?.copyWith(
@@ -2069,7 +1901,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               size: 16,
               color: theme.colorScheme.primary,
             ),
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(PRFSpacingTokens.xs),
             constraints: const BoxConstraints(
               minWidth: 24,
               minHeight: 24,
@@ -2093,7 +1925,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           size: 16,
           color: theme.colorScheme.onSurfaceVariant,
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: PRFSpacingTokens.sm),
         Expanded(
           child: Text(
             label,
@@ -2109,12 +1941,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 4,
+              horizontal: PRFSpacingTokens.sm,
+              vertical: PRFSpacingTokens.xs,
             ),
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.3),
               ),
@@ -2129,7 +1961,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     fontFamily: 'monospace',
                   ),
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: PRFSpacingTokens.xs),
                 Icon(
                   Icons.copy,
                   size: 12,
@@ -2152,7 +1984,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: Row(
         children: [
           Expanded(
@@ -2165,7 +1997,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: PRFSpacingTokens.xs),
                 Text(
                   l10n.financialOverview,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -2175,27 +2007,31 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ],
             ),
           ),
-          BlocBuilder<GetAllocationEntriesCubit, GetAllocationEntriesState>(
+          BlocBuilder<
+            AllocationEntryResourceCubit,
+            ResourceState<PRFAllocationEntry>
+          >(
             builder: (context, state) {
               return IconButton.filled(
-                onPressed: () => context
-                    .read<GetAllocationEntriesCubit>()
-                    .getAllocationEntries(
-                      accountingEventUlid: accountingEvent.ulid,
+                onPressed: () =>
+                    context.read<AllocationEntryResourceCubit>().loadAll(
+                      filters: {
+                        'accounting_event_ulid': accountingEvent.ulid,
+                      },
                     ),
                 icon: state.maybeWhen(
                   orElse: () => const Icon(
                     Icons.refresh,
-                    color: Colors.white,
+                    color: PRFColors.white,
                   ),
-                  loading: () => const SizedBox(
-                    width: 20,
+                  listLoading: () => const SizedBox(
+                    width: PRFSpacingTokens.xl,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: PRFCircularProgressIndicator(),
                   ),
-                  loaded: (_) => const Icon(
+                  listLoaded: (_, _, _) => const Icon(
                     Icons.refresh,
-                    color: Colors.white,
+                    color: PRFColors.white,
                   ),
                 ),
                 style: IconButton.styleFrom(

@@ -1,16 +1,12 @@
-import 'package:app/enums/mission/prf_mission_role.dart';
-import 'package:app/enums/mission/prf_mission_subscription_status.dart';
-import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/record_sections.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
-import 'package:app/models/local/shared_embeds.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:app/models/remote/member/prf_member.dart';
+import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:prf_design/prf_design.dart';
 
 class SubscribersViewHandset extends StatefulWidget {
   const SubscribersViewHandset({required this.missionUlid, super.key});
@@ -21,60 +17,152 @@ class SubscribersViewHandset extends StatefulWidget {
   State<SubscribersViewHandset> createState() => _SubscribersViewHandsetState();
 }
 
-class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
+class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
+    with TimezoneMixin {
   @override
   void initState() {
-    context.read<GetSubscribersCubit>().getSubscriptions(
-      missionUlid: widget.missionUlid,
+    context.read<MissionSubscriptionResourceCubit>().loadAll(
+      filters: {'mission_ulid': widget.missionUlid},
     );
     super.initState();
+  }
+
+  Future<void> _onRefresh() {
+    return context.read<MissionSubscriptionResourceCubit>().loadAll(
+      filters: {'mission_ulid': widget.missionUlid},
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return StreamBuilder<List<PRFLocalMissionSubscription>>(
-      stream: getIt<IsarService>().missionSubscriptions.parentStream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const PRFCircularProgressIndicator();
+    return BlocBuilder<
+      MissionSubscriptionResourceCubit,
+      ResourceState<PRFMissionSubscription>
+    >(
+      builder: (context, state) {
+        final subscriptions = state.maybeWhen(
+          listLoaded: (items, _, _) => items,
+          mutating: (items, _) => items,
+          mutated: (items, _, _) => items,
+          error: (_, items) => items,
+          orElse: () => <PRFMissionSubscription>[],
+        );
+        final error = state.mapOrNull(
+          error: (state) => state.message,
+        );
+        final isLoading = state.maybeWhen(
+          listLoading: () => true,
+          orElse: () => false,
+        );
+
+        if (isLoading && subscriptions.isEmpty) {
+          return const Center(child: PRFCircularProgressIndicator());
         }
 
-        final subscriptions = snapshot.data;
-
-        if (subscriptions != null && subscriptions.isEmpty) {
-          return RefreshIndicator(
-            onRefresh: () =>
-                context.read<GetSubscribersCubit>().getSubscriptions(
-                  missionUlid: widget.missionUlid,
+        if (error != null && subscriptions.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.error,
                 ),
-            child: PRFEmptyView(
-              label: l10n.noSubscribers,
-              description: l10n.pleaseWait,
+                const SizedBox(height: PRFSpacingTokens.lg),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.xl,
+                  ),
+                  child: Text(
+                    error,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: PRFSpacingTokens.lg),
+                FilledButton.icon(
+                  onPressed: _onRefresh,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('Retry'),
+                ),
+              ],
             ),
           );
         }
 
         return RefreshIndicator(
-          onRefresh: () => context.read<GetSubscribersCubit>().getSubscriptions(
-            missionUlid: widget.missionUlid,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 64),
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              itemCount: subscriptions!.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 0),
-              itemBuilder: (context, index) =>
-                  BeautifulSubscriberCard(
-                        subscription: subscriptions[index],
-                        index: index,
-                      )
-                      .animate(delay: (index * 100).ms)
-                      .fadeIn()
-                      .slideX(begin: -0.3, end: 0),
+          onRefresh: _onRefresh,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(
+              PRFSpacingTokens.lg,
+              PRFSpacingTokens.lg,
+              PRFSpacingTokens.lg,
+              PRFSpacingTokens.xxxl,
             ),
+            children: [
+              MissionSectionCard(
+                title: 'Mission Subscribers',
+                subtitle: 'Members subscribed to this mission.',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${subscriptions.length} subscribed',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    if (error != null)
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(
+                          bottom: PRFSpacingTokens.md,
+                        ),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.errorContainer,
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.md,
+                          ),
+                        ),
+                        child: Text(
+                          error,
+                          style:
+                              Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onErrorContainer,
+                              ),
+                        ),
+                      ),
+                    if (subscriptions.isEmpty)
+                      PRFEmptyView(
+                        label: l10n.noSubscribers,
+                        description: l10n.pleaseWait,
+                      )
+                    else
+                      ...subscriptions.map(
+                        (subscription) => _SubscriptionCard(
+                          subscription: subscription,
+                          subtitle:
+                              '${subscription.missionRole.name} · '
+                              '${subscription.status.name} · '
+                              'Subscribed ${DateFormatter.formatDateTime(subscription.createdAt, timezone)}',
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -82,392 +170,205 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset> {
   }
 }
 
-class BeautifulSubscriberCard extends StatelessWidget {
-  const BeautifulSubscriberCard({
+class _SubscriptionCard extends StatelessWidget {
+  const _SubscriptionCard({
     required this.subscription,
-    required this.index,
-    super.key,
+    required this.subtitle,
   });
 
-  final PRFLocalMissionSubscription subscription;
-  final int index;
+  final PRFMissionSubscription subscription;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isLeader = subscription.missionRole != PRFMissionRole.member;
+    final member = subscription.member;
 
-    return GestureDetector(
-      onTap: () => _viewSubscriber(context, subscription.member),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: PRFSpacingTokens.sm),
       child: Container(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: PRFSpacingTokens.md,
+          vertical: PRFSpacingTokens.md,
+        ),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: .08),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
-            BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: .04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: .1),
+            color: theme.colorScheme.outline.withValues(alpha: 0.38),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            // Header with avatar and name
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    member?.fullName ?? 'N/A',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                  child: _buildAvatarIcon(theme),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              subscription.member.fullName!,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: theme.colorScheme.onSurface,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          if (isLeader) ...[
-                            const SizedBox(width: 8),
-                            _buildRoleBadge(theme),
-                          ],
-                        ],
+                  if (member != null)
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        alignment: Alignment.centerLeft,
+                        foregroundColor: theme.colorScheme.primary,
                       ),
-                      const SizedBox(height: 4),
-                      _buildStatusChip(theme),
-                    ],
+                      onPressed: () => _viewSubscriber(context, member),
+                      child: const Text('View details'),
+                    ),
+                  Text(
+                    subtitle,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-
-            const SizedBox(height: 16),
-
-            // Action buttons row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _buildActionButton(
-                  theme,
-                  Icons.call_outlined,
-                  'Call',
-                  _makeCall,
-                ),
-                const SizedBox(width: 12),
-                _buildActionButton(
-                  theme,
+            if (member != null)
+              IconButton(
+                tooltip: 'View subscriber',
+                onPressed: () => _viewSubscriber(context, member),
+                icon: Icon(
                   Icons.visibility_outlined,
-                  'View',
-                  () => _viewSubscriber(context, subscription.member),
+                  color: theme.colorScheme.primary,
                 ),
-              ],
-            ),
-          ],
-        ),
-      ).animate(effects: const [SaturateEffect()]),
-    );
-  }
-
-  Widget _buildAvatarIcon(ThemeData theme) {
-    if (subscription.member.profilePictureUrl != null &&
-        subscription.member.profilePictureUrl!.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.network(
-          subscription.member.profilePictureUrl!,
-          width: 24,
-          height: 24,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => Icon(
-            Icons.person_rounded,
-            color: theme.colorScheme.onPrimaryContainer,
-            size: 24,
-          ),
-        ),
-      );
-    }
-
-    return Icon(
-      Icons.person_rounded,
-      color: theme.colorScheme.onPrimaryContainer,
-      size: 24,
-    );
-  }
-
-  Widget _buildRoleBadge(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.secondary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.secondary.withValues(alpha: 0.3),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.star,
-            size: 12,
-            color: theme.colorScheme.secondary,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            subscription.missionRole.name.toUpperCase(),
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.secondary,
-              fontWeight: FontWeight.w600,
-              fontSize: 10,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatusChip(ThemeData theme) {
-    final isApproved =
-        subscription.status == PRFMissionSubscriptionStatus.approved;
-    final isPending =
-        subscription.status == PRFMissionSubscriptionStatus.pending;
-
-    Color backgroundColor;
-    Color textColor;
-    Color borderColor;
-
-    if (isApproved) {
-      backgroundColor = theme.colorScheme.primary.withValues(alpha: 0.1);
-      textColor = theme.colorScheme.primary;
-      borderColor = theme.colorScheme.primary.withValues(alpha: 0.3);
-    } else if (isPending) {
-      backgroundColor = theme.colorScheme.secondary.withValues(alpha: 0.1);
-      textColor = theme.colorScheme.secondary;
-      borderColor = theme.colorScheme.secondary.withValues(alpha: 0.3);
-    } else {
-      backgroundColor = theme.colorScheme.outline.withValues(alpha: 0.1);
-      textColor = theme.colorScheme.onSurfaceVariant;
-      borderColor = theme.colorScheme.outline.withValues(alpha: 0.3);
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: borderColor),
-      ),
-      child: Text(
-        subscription.status.name,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: textColor,
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton(
-    ThemeData theme,
-    IconData icon,
-    String label,
-    VoidCallback onPressed,
-  ) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: onPressed,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: theme.colorScheme.primary.withValues(alpha: 0.2),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                size: 16,
+              ),
+            IconButton(
+              tooltip: 'Call subscriber',
+              onPressed: () => _makeCall(member),
+              icon: Icon(
+                Icons.phone_outlined,
                 color: theme.colorScheme.primary,
               ),
-              const SizedBox(width: 4),
-              Text(
-                label,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Future<void> _makeCall() async {
+  Future<void> _makeCall(PRFMember? member) async {
     final uri = Uri(
       scheme: 'tel',
-      path: subscription.member.phoneNumber,
+      path: member?.phoneNumber,
     );
     await UrlHelper.openUrl(uri);
   }
 
   void _viewSubscriber(
     BuildContext context,
-    PRFLocalMember member,
-  ) => WoltModalSheet.show<void>(
-    context: context,
-    pageListBuilder: (modalSheetContext) {
-      return [
-        WoltModalSheetPage(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          child: SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.6,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            Theme.of(context).colorScheme.primary,
-                            Theme.of(context).colorScheme.secondary,
-                          ],
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.primary.withValues(alpha: 0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Container(
-                        margin: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: ClipOval(
-                          child:
-                              member.profilePictureUrl != null &&
-                                  member.profilePictureUrl!.isNotEmpty
-                              ? Image.network(
-                                  member.profilePictureUrl!,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      _buildProfileFallback(
-                                        Theme.of(context),
-                                        member,
-                                      ),
-                                )
-                              : _buildProfileFallback(
-                                  Theme.of(context),
-                                  member,
-                                ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Member Name
-                    Text(
-                      member.fullName!,
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Bio Section
-                    if (member.bio != null && member.bio!.isNotEmpty) ...[
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.outline.withValues(alpha: 0.2),
-                          ),
-                        ),
-                        child: Text(
-                          member.bio!,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-
-                    // Contact Actions
-                    Row(
-                      children: [
-                        Expanded(
-                          child: PRFPrimaryButton(
-                            onPressed: _makeCall,
-                            title: 'Call Member',
-                            disabled: false,
-                          ),
-                        ),
-                      ],
-                    ),
+    PRFMember member,
+  ) => PRFBottomSheet.show<void>(
+    context,
+    title: member.fullName,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.lg,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
                   ],
                 ),
               ),
+              child: Container(
+                margin: const EdgeInsets.all(PRFSpacingTokens.xs),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: PRFColors.white,
+                ),
+                child: ClipOval(
+                  child:
+                      member.profilePicture?.temporaryURL != null &&
+                          member.profilePicture!.temporaryURL.isNotEmpty
+                      ? Image.network(
+                          member.profilePicture!.temporaryURL,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              _buildProfileFallback(
+                                Theme.of(context),
+                                member,
+                              ),
+                        )
+                      : _buildProfileFallback(
+                          Theme.of(context),
+                          member,
+                        ),
+                ),
+              ),
             ),
-          ),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Member Name
+            Text(
+              member.fullName,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: PRFSpacingTokens.lg),
+
+            // Bio Section
+            if (member.bio != null && member.bio!.isNotEmpty) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(
+                    PRFRadiusTokens.smd,
+                  ),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Text(
+                  member.bio!,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: PRFSpacingTokens.xl),
+            ],
+
+            // Contact Actions
+            Row(
+              children: [
+                Expanded(
+                  child: PRFPrimaryButton(
+                    onPressed: () => _makeCall(member),
+                    title: 'Call Member',
+                    disabled: false,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-      ];
-    },
+      ),
+    ),
   );
 
-  Widget _buildProfileFallback(ThemeData theme, PRFLocalMember member) {
+  Widget _buildProfileFallback(ThemeData theme, PRFMember member) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -479,9 +380,9 @@ class BeautifulSubscriberCard extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          member.fullName![0].toUpperCase(),
+          member.fullName[0].toUpperCase(),
           style: theme.textTheme.displayLarge?.copyWith(
-            color: Colors.white,
+            color: PRFColors.white,
             fontWeight: FontWeight.w700,
           ),
         ),

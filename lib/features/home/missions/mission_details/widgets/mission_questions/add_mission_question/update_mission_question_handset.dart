@@ -1,10 +1,11 @@
-import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/update_mission_question_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_question.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class UpdateMissionQuestionViewHandset extends StatefulWidget {
   const UpdateMissionQuestionViewHandset({
@@ -26,16 +27,39 @@ class _UpdateMissionQuestionViewHandsetState
   final _questionController = TextEditingController();
   bool _isLoading = false;
 
+  // Structured validation
+  bool _showValidation = false;
+  String? _questionError;
+
   bool get _isFormValid => _questionController.text.trim().isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-
-    // Pre-populate with existing question data
     _questionController.text = widget.missionQuestion.question;
+    _questionController.addListener(_onFormChanged);
+  }
 
-    _questionController.addListener(() => setState(() {}));
+  void _onFormChanged() {
+    if (_showValidation) {
+      _validateForm();
+    }
+    setState(() {});
+  }
+
+  void _clearErrors() {
+    _questionError = null;
+  }
+
+  bool _validateForm() {
+    _clearErrors();
+
+    if (_questionController.text.trim().isEmpty) {
+      _questionError = 'Question is required';
+    }
+
+    setState(() => _showValidation = true);
+    return _questionError == null;
   }
 
   @override
@@ -44,7 +68,7 @@ class _UpdateMissionQuestionViewHandsetState
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,10 +79,11 @@ class _UpdateMissionQuestionViewHandsetState
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Question
-            _buildFormSection(
+            PRFFormSection(
+              icon: Icons.help_outline,
               title: l10n.addQuestion,
               isRequired: true,
               child: PRFTextAreaInput(
@@ -66,24 +91,25 @@ class _UpdateMissionQuestionViewHandsetState
                 controller: _questionController,
                 enabled: !_isLoading,
                 maxLines: 6,
+                errorText: _showValidation ? _questionError : null,
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
             // Submit Button
             BlocConsumer<
-              UpdateMissionQuestionCubit,
-              UpdateMissionQuestionState
+              MissionQuestionResourceCubit,
+              ResourceState<PRFMissionQuestion>
             >(
               listener: (context, state) {
                 state.mapOrNull(
-                  loading: (_) {
+                  mutating: (_) {
                     setState(() {
                       _isLoading = true;
                     });
                   },
-                  loaded: (_) {
+                  mutated: (_) {
                     setState(() {
                       _isLoading = false;
                     });
@@ -115,64 +141,18 @@ class _UpdateMissionQuestionViewHandsetState
     );
   }
 
-  Widget _buildFormSection({
-    required String title,
-    required Widget child,
-    bool isRequired = false,
-  }) {
-    final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(
-            alpha: 0.06,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              if (isRequired)
-                Text(
-                  ' *',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.error,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          child,
-        ],
-      ),
-    );
-  }
-
   Future<void> _submitForm() async {
-    final l10n = context.l10n;
-
-    if (_questionController.text.trim().isEmpty) {
-      PRFSnackbar.warning(context, l10n.enterQuestion);
+    if (!_validateForm()) {
       Gaimon.warning();
+      PRFSnackbar.error(
+        context,
+        'Please fix the highlighted fields and try again.',
+      );
       return;
     }
 
-    await context.read<UpdateMissionQuestionCubit>().updateMissionQuestion(
-      missionQuestionUlid: widget.missionQuestion.ulid,
+    await context.read<MissionQuestionResourceCubit>().updateMissionQuestion(
+      ulid: widget.missionQuestion.ulid,
       missionUlid: widget.missionUlid,
       question: _questionController.text.trim(),
     );

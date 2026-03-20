@@ -3,70 +3,44 @@ import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
-import 'package:app/features/home/events/cubit/add_event_subscription_cubit.dart';
-import 'package:app/features/home/events/cubit/delete_event_subscription_cubit.dart';
-import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
-import 'package:app/features/home/events/cubit/get_events_cubit.dart';
-import 'package:app/features/home/events/cubit/get_member_event_subscriptions_cubit.dart';
-import 'package:app/features/home/events/cubit/update_event_subscription_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
-import 'package:app/features/home/giving/cubit/add_payment_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payments_cubit.dart';
-import 'package:app/features/home/lms/cubit/finish_lesson_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_course_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_course_modules_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_courses_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_lesson_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_lesson_modules_cubit.dart';
-import 'package:app/features/home/lms/cubit/get_module_cubit.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/add_mission_ground_suggestion_cubit.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/update_mission_ground_suggestion_cubit.dart';
+import 'package:app/features/home/events/cubit/event_media_resource_cubit.dart';
+import 'package:app/features/home/events/cubit/event_resource_cubit.dart';
+import 'package:app/features/home/events/cubit/event_subscription_resource_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_resource_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
+import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
+import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
+import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
+import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
+import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_missions_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_subscribers_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/add_debrief_note_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/get_debrief_notes_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_entry_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_token_entry_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_mission_refund_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_allocation_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/delete_receipt_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/edit_allocation_entry_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/get_allocation_entries_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/add_mission_question_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/get_mission_questions_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/add_mission_session_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/delete_mission_session_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/get_mission_sessions_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/update_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/add_soul_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/get_souls_cubit.dart';
-import 'package:app/features/home/prayer_requests/cubit/add_prayer_request_cubit.dart';
-import 'package:app/features/home/prayer_requests/cubit/get_prayer_requests_cubit.dart';
-import 'package:app/features/home/shared/cubit/get_announcements_cubit.dart';
-import 'package:app/features/home/shared/cubit/get_member_engagement_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
+import 'package:app/features/home/prayer_requests/cubit/prayer_request_resource_cubit.dart';
+import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/get_prayer_prompts_cubit.dart';
+import 'package:app/features/home/shared/cubit/member_engagement_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/save_prayer_response_cubit.dart';
 import 'package:app/features/home/shared/cubit/upload_prayer_response_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/create_student_enquiry_reply_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_enquiries_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_cubit.dart';
-import 'package:app/features/home/student_enquiries/cubit/get_student_enquiry_replies_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
+import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -169,6 +143,7 @@ class Singletons {
 
   static List<BlocProvider> registerCubits() {
     return <BlocProvider>[
+      // --- Auth cubits (keep as-is) ---
       BlocProvider<SigninCubit>(
         create: (context) => SigninCubit(
           authService: getIt(),
@@ -189,24 +164,52 @@ class Singletons {
         create: (context) =>
             SignOutCubit(hiveService: getIt(), isarService: getIt()),
       ),
-      BlocProvider<GetMissionsCubit>(
-        create: (context) => GetMissionsCubit(
-          missionService: getIt(),
-          isarService: getIt(),
-        ),
+
+      // --- ResourceCubit replacements: Missions ---
+      BlocProvider<MissionResourceCubit>(
+        create: (context) => MissionResourceCubit(missionService: getIt()),
       ),
-      BlocProvider<GetMissionCubit>(
-        create: (context) => GetMissionCubit(
-          missionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetSubscribersCubit>(
-        create: (context) => GetSubscribersCubit(
+      BlocProvider<MissionSubscriptionResourceCubit>(
+        create: (context) => MissionSubscriptionResourceCubit(
           missionSubscriptionService: getIt(),
-          isarService: getIt(),
         ),
       ),
+      BlocProvider<ClassGroupResourceCubit>(
+        create: (context) => ClassGroupResourceCubit(
+          classGroupService: getIt(),
+        ),
+      ),
+      BlocProvider<SoulResourceCubit>(
+        create: (context) => SoulResourceCubit(soulService: getIt()),
+      ),
+      BlocProvider<DebriefNoteResourceCubit>(
+        create: (context) => DebriefNoteResourceCubit(
+          debriefNoteService: getIt(),
+        ),
+      ),
+      BlocProvider<MissionQuestionResourceCubit>(
+        create: (context) => MissionQuestionResourceCubit(
+          missionQuestionService: getIt(),
+        ),
+      ),
+      BlocProvider<MissionSessionResourceCubit>(
+        create: (context) => MissionSessionResourceCubit(
+          missionSessionService: getIt(),
+        ),
+      ),
+      BlocProvider<MissionMediaResourceCubit>(
+        create: (context) => MissionMediaResourceCubit(
+          missionService: getIt(),
+        ),
+      ),
+      BlocProvider<GroundSuggestionResourceCubit>(
+        create: (context) => GroundSuggestionResourceCubit(
+          missionGroundSuggestionService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+
+      // --- Keep-as-is: Mission subscription/withdraw ---
       BlocProvider<SubscribeCubit>(
         create: (context) => SubscribeCubit(
           missionSubscriptionService: getIt(),
@@ -227,130 +230,88 @@ class Singletons {
           isarService: getIt(),
         ),
       ),
-      BlocProvider<GetSoulsCubit>(
-        create: (context) =>
-            GetSoulsCubit(soulService: getIt(), isarService: getIt()),
+
+      // --- ResourceCubit replacements: Expenses ---
+      BlocProvider<ExpenseCategoryResourceCubit>(
+        create: (context) => ExpenseCategoryResourceCubit(
+          expenseCategoriesService: getIt(),
+        ),
       ),
-      BlocProvider<GetClassGroupsCubit>(
-        create: (context) => GetClassGroupsCubit(
-          classGroupService: getIt(),
+      BlocProvider<AllocationEntryResourceCubit>(
+        create: (context) => AllocationEntryResourceCubit(
+          allocationEntryService: getIt(),
+          mediaService: getIt(),
           hiveService: getIt(),
+          refundService: getIt(),
+        ),
+      ),
+      // Keep-as-is: DeleteReceiptCubit
+      BlocProvider<DeleteReceiptCubit>(
+        create: (context) => DeleteReceiptCubit(
+          allocationEntryService: getIt(),
+        ),
+      ),
+
+      // --- Keep-as-is: Media cubits ---
+      BlocProvider<SelectMediaCubit>(
+        create: (context) => SelectMediaCubit(
+          mediaService: getIt(),
           isarService: getIt(),
         ),
       ),
-      BlocProvider<AddSoulCubit>(
-        create: (context) =>
-            AddSoulCubit(soulService: getIt(), isarService: getIt()),
-      ),
-      BlocProvider<GetDebriefNotesCubit>(
-        create: (context) => GetDebriefNotesCubit(
-          debriefNoteService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<AddDebriefNoteCubit>(
-        create: (context) => AddDebriefNoteCubit(
-          debriefNoteService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetCoursesCubit>(
-        create: (context) => GetCoursesCubit(
-          courseService: getIt(),
-          isarService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetCourseCubit>(
-        create: (context) => GetCourseCubit(
-          courseService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetCourseModulesCubit>(
-        create: (context) => GetCourseModulesCubit(
-          courseModuleService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetModuleCubit>(
-        create: (context) => GetModuleCubit(
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetLessonModulesCubit>(
-        create: (context) => GetLessonModulesCubit(
-          lessonModuleService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetLessonCubit>(
-        create: (context) => GetLessonCubit(
+      BlocProvider<UploadMediaCubit>(
+        create: (context) => UploadMediaCubit(
+          mediaService: getIt(),
           isarService: getIt(),
         ),
       ),
 
-      BlocProvider<FinishLessonCubit>(
-        create: (context) => FinishLessonCubit(
+      // --- ResourceCubit replacements: LMS ---
+      BlocProvider<CourseResourceCubit>(
+        create: (context) => CourseResourceCubit(courseService: getIt()),
+      ),
+      BlocProvider<ModuleResourceCubit>(
+        create: (context) => ModuleResourceCubit(
+          courseModuleService: getIt(),
+        ),
+      ),
+      BlocProvider<LessonResourceCubit>(
+        create: (context) => LessonResourceCubit(
+          lessonModuleService: getIt(),
+          hiveService: getIt(),
           lessonMemberService: getIt(),
-          hiveService: getIt(),
-          isarService: getIt(),
         ),
       ),
-      BlocProvider<GetFaqsCubit>(
-        create: (context) =>
-            GetFaqsCubit(missionFaqService: getIt(), isarService: getIt()),
+
+      // --- ResourceCubit replacements: FAQs & Enquiries ---
+      BlocProvider<FaqResourceCubit>(
+        create: (context) => FaqResourceCubit(missionFaqService: getIt()),
       ),
-      BlocProvider<GetFaqCategoriesCubit>(
-        create: (context) => GetFaqCategoriesCubit(
+      BlocProvider<FaqCategoryResourceCubit>(
+        create: (context) => FaqCategoryResourceCubit(
           missionFaqCategoryService: getIt(),
-          isarService: getIt(),
         ),
       ),
-      BlocProvider<GetEnquiriesCubit>(
-        create: (context) => GetEnquiriesCubit(
+      BlocProvider<EnquiryResourceCubit>(
+        create: (context) => EnquiryResourceCubit(
           studentEnquiryService: getIt(),
-          isarService: getIt(),
         ),
       ),
-      BlocProvider<GetStudentEnquiryCubit>(
-        create: (context) => GetStudentEnquiryCubit(
-          studentEnquiryService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<CreateEnquiryReplyCubit>(
-        create: (context) => CreateEnquiryReplyCubit(
-          studentEnquiryService: getIt(),
+      BlocProvider<EnquiryReplyResourceCubit>(
+        create: (context) => EnquiryReplyResourceCubit(
+          studentEnquiryReplyService: getIt(),
           hiveService: getIt(),
-          isarService: getIt(),
         ),
       ),
-      BlocProvider<GetEnquiryRepliesCubit>(
-        create: (context) => GetEnquiryRepliesCubit(
-          studentEnquiryService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetAnnouncementsCubit>(
-        create: (context) => GetAnnouncementsCubit(
+
+      // --- ResourceCubit replacements: Announcements ---
+      BlocProvider<AnnouncementResourceCubit>(
+        create: (context) => AnnouncementResourceCubit(
           announcementService: getIt(),
-          isarService: getIt(),
-          hiveService: getIt(),
         ),
       ),
-      BlocProvider<GetMissionQuestionsCubit>(
-        create: (context) => GetMissionQuestionsCubit(
-          missionQuestionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<AddMissionQuestionCubit>(
-        create: (context) => AddMissionQuestionCubit(
-          missionQuestionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
+
+      // --- Keep-as-is: Prayer ---
       BlocProvider<GetPrayerPromptsCubit>(
         create: (context) => GetPrayerPromptsCubit(
           prayerPromptService: getIt(),
@@ -369,178 +330,31 @@ class Singletons {
           prayerResponseService: getIt(),
         ),
       ),
-      BlocProvider<GetExpenseCategoriesCubit>(
-        create: (context) => GetExpenseCategoriesCubit(
-          expenseCategoriesService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetAllocationEntriesCubit>(
-        create: (context) => GetAllocationEntriesCubit(
-          allocationEntryService: getIt(),
-        ),
-      ),
-      BlocProvider<AddAllocationEntryCubit>(
-        create: (context) => AddAllocationEntryCubit(
-          allocationEntryService: getIt(),
-          hiveService: getIt(),
-          mediaService: getIt(),
-        ),
-      ),
-      BlocProvider<AddAllocationTokenEntryCubit>(
-        create: (context) => AddAllocationTokenEntryCubit(
-          allocationEntryService: getIt(),
+
+      // --- ResourceCubit replacements: Prayer Requests ---
+      BlocProvider<PrayerRequestResourceCubit>(
+        create: (context) => PrayerRequestResourceCubit(
+          prayerRequestService: getIt(),
           hiveService: getIt(),
         ),
       ),
 
-      BlocProvider<DeleteAllocationEntryCubit>(
-        create: (context) => DeleteAllocationEntryCubit(
-          allocationEntryService: getIt(),
-        ),
-      ),
-      BlocProvider<DeleteReceiptCubit>(
-        create: (context) => DeleteReceiptCubit(
-          allocationEntryService: getIt(),
-        ),
-      ),
-      BlocProvider<EditAllocationEntryCubit>(
-        create: (context) => EditAllocationEntryCubit(
-          allocationEntryService: getIt(),
-          hiveService: getIt(),
-          mediaService: getIt(),
-        ),
-      ),
-      BlocProvider<AddMissionRefundCubit>(
-        create: (context) => AddMissionRefundCubit(refundService: getIt()),
-      ),
-      BlocProvider<SelectMediaCubit>(
-        create: (context) => SelectMediaCubit(
-          mediaService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<UploadMediaCubit>(
-        create: (context) => UploadMediaCubit(
-          mediaService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetMissionMediaCubit>(
-        create: (context) => GetMissionMediaCubit(missionService: getIt()),
-      ),
-      BlocProvider<GetMissionSessionsCubit>(
-        create: (context) => GetMissionSessionsCubit(
-          missionSessionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<AddMissionSessionCubit>(
-        create: (context) => AddMissionSessionCubit(
-          missionSessionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<UpdateMissionSessionCubit>(
-        create: (context) => UpdateMissionSessionCubit(
-          missionSessionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<DeleteMissionSessionCubit>(
-        create: (context) => DeleteMissionSessionCubit(
-          missionSessionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
-      BlocProvider<GetMissionGroundSuggestionsCubit>(
-        create: (context) => GetMissionGroundSuggestionsCubit(
-          missionGroundSuggestionService: getIt(),
+      // --- ResourceCubit replacements: Payments ---
+      BlocProvider<PaymentResourceCubit>(
+        create: (context) => PaymentResourceCubit(
+          paymentService: getIt(),
           hiveService: getIt(),
         ),
       ),
-      BlocProvider<AddMissionGroundSuggestionCubit>(
-        create: (context) => AddMissionGroundSuggestionCubit(
-          missionGroundSuggestionService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<UpdateMissionGroundSuggestionCubit>(
-        create: (context) => UpdateMissionGroundSuggestionCubit(
-          missionGroundSuggestionService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetPaymentsCubit>(
-        create: (context) =>
-            GetPaymentsCubit(paymentService: getIt(), hiveService: getIt()),
-      ),
-      BlocProvider<GetPaymentTypesCubit>(
-        create: (context) => GetPaymentTypesCubit(
+      BlocProvider<PaymentTypeResourceCubit>(
+        create: (context) => PaymentTypeResourceCubit(
           paymentTypeService: getIt(),
-          hiveService: getIt(),
         ),
       ),
-      BlocProvider<AddPaymentCubit>(
-        create: (context) =>
-            AddPaymentCubit(paymentService: getIt(), hiveService: getIt()),
-      ),
-      BlocProvider<GetMissionSessionCubit>(
-        create: (context) => GetMissionSessionCubit(
-          missionSessionService: getIt(),
-          isarService: getIt(),
-        ),
-      ),
+
+      // --- Keep-as-is: Download/Audio ---
       BlocProvider<DownloadFileCubit>(
         create: (context) => DownloadFileCubit(mediaService: getIt()),
-      ),
-      BlocProvider<GetEventsCubit>(
-        create: (context) => GetEventsCubit(eventService: getIt()),
-      ),
-      BlocProvider<GetMemberEventSubscriptionsCubit>(
-        create: (context) => GetMemberEventSubscriptionsCubit(
-          eventSubscriptionService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetEventMediaCubit>(
-        create: (context) => GetEventMediaCubit(eventService: getIt()),
-      ),
-      BlocProvider<AddEventSubscriptionCubit>(
-        create: (context) => AddEventSubscriptionCubit(
-          eventSubscriptionService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<UpdateEventSubscriptionCubit>(
-        create: (context) => UpdateEventSubscriptionCubit(
-          eventSubscriptionService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<DeleteEventSubscriptionCubit>(
-        create: (context) =>
-            DeleteEventSubscriptionCubit(eventSubscriptionService: getIt()),
-      ),
-      BlocProvider<ChangeProfilePictureCubit>(
-        create: (context) => ChangeProfilePictureCubit(
-          mediaService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-
-      BlocProvider<AddPrayerRequestCubit>(
-        create: (context) => AddPrayerRequestCubit(
-          prayerRequestService: getIt(),
-          hiveService: getIt(),
-        ),
-      ),
-
-      BlocProvider<GetPrayerRequestsCubit>(
-        create: (context) => GetPrayerRequestsCubit(
-          prayerRequestService: getIt(),
-          hiveService: getIt(),
-        ),
       ),
       BlocProvider<AudioRecordingCubit>(
         create: (context) => AudioRecordingCubit(
@@ -553,8 +367,32 @@ class Singletons {
           failedUploadService: getIt(),
         ),
       ),
-      BlocProvider<GetMemberEngagementCubit>(
-        create: (context) => GetMemberEngagementCubit(
+
+      // --- ResourceCubit replacements: Events ---
+      BlocProvider<EventResourceCubit>(
+        create: (context) => EventResourceCubit(eventService: getIt()),
+      ),
+      BlocProvider<EventMediaResourceCubit>(
+        create: (context) => EventMediaResourceCubit(eventService: getIt()),
+      ),
+      BlocProvider<EventSubscriptionResourceCubit>(
+        create: (context) => EventSubscriptionResourceCubit(
+          eventSubscriptionService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+
+      // --- Keep-as-is: Account ---
+      BlocProvider<ChangeProfilePictureCubit>(
+        create: (context) => ChangeProfilePictureCubit(
+          mediaService: getIt(),
+          hiveService: getIt(),
+        ),
+      ),
+
+      // --- ResourceCubit replacements: Members ---
+      BlocProvider<MemberEngagementResourceCubit>(
+        create: (context) => MemberEngagementResourceCubit(
           memberService: getIt(),
           hiveService: getIt(),
         ),

@@ -496,6 +496,12 @@ abstract class AppLocalizations {
   /// **'Lessons'**
   String get lessons;
 
+  /// No description provided for @lessonResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
+  String get lessonResources;
+
   /// No description provided for @lessonDetails.
   ///
   /// In en, this message translates to:
@@ -549,6 +555,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No courses'**
   String get noCourses;
+
+  /// No description provided for @recentCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Courses'**
+  String get recentCourses;
 
   /// No description provided for @yetToBeEnroled.
   ///
@@ -609,6 +621,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'FAQs'**
   String get faq;
+
+  /// No description provided for @recentFaqs.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent FAQs'**
+  String get recentFaqs;
 
   /// No description provided for @noFaqs.
   ///
@@ -1426,6 +1444,12 @@ abstract class AppLocalizations {
   /// **'No suggested mission grounds'**
   String get noSuggestedMissionGrounds;
 
+  /// No description provided for @recentSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Suggestions'**
+  String get recentSuggestions;
+
   /// No description provided for @missionGroundRecorded.
   ///
   /// In en, this message translates to:
@@ -1597,7 +1621,7 @@ abstract class AppLocalizations {
   /// No description provided for @viewTranscript.
   ///
   /// In en, this message translates to:
-  /// **'View transcript'**
+  /// **'Transcript'**
   String get viewTranscript;
 
   /// No description provided for @transcriptProcessing.
@@ -1774,11 +1798,23 @@ abstract class AppLocalizations {
   /// **'No modules'**
   String get noModules;
 
+  /// No description provided for @recentModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Modules'**
+  String get recentModules;
+
   /// No description provided for @noLessons.
   ///
   /// In en, this message translates to:
   /// **'No lessons'**
   String get noLessons;
+
+  /// No description provided for @recentLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Lessons'**
+  String get recentLessons;
 
   /// No description provided for @noSouls.
   ///
@@ -1857,6 +1893,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Prayer request'**
   String get prayerRequest;
+
+  /// No description provided for @recentPrayerRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Prayer Requests'**
+  String get recentPrayerRequests;
 
   /// No description provided for @prayerRequestSubmitted.
   ///
@@ -2242,6 +2284,12 @@ abstract class AppLocalizations {
   /// **'Press for payment actions'**
   String get tapForActions;
 
+  /// No description provided for @recentPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Payments'**
+  String get recentPayments;
+
   /// No description provided for @tapToStartRecording.
   ///
   /// In en, this message translates to:
@@ -2319,6 +2367,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View my impact'**
   String get wrapped;
+
+  /// No description provided for @wrappedTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Missions Wrapped'**
+  String get wrappedTagline;
+
+  /// No description provided for @wrappedSwipeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe to feel your journey'**
+  String get wrappedSwipeHint;
+
+  /// No description provided for @wrappedYourYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {year}'**
+  String wrappedYourYear(int year);
+
+  /// No description provided for @wrappedMissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Mission Journey'**
+  String get wrappedMissionsTitle;
+
+  /// No description provided for @wrappedTotalMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Missions'**
+  String get wrappedTotalMissions;
+
+  /// No description provided for @wrappedSchoolsReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Schools Reached'**
+  String get wrappedSchoolsReached;
+
+  /// No description provided for @wrappedCompletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion'**
+  String get wrappedCompletion;
+
+  /// No description provided for @wrappedMissionStreakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} mission streak'**
+  String wrappedMissionStreakTitle(int count);
+
+  /// No description provided for @wrappedMissionStreakSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency looks great on you'**
+  String get wrappedMissionStreakSubtitle;
+
+  /// No description provided for @wrappedImpactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Impact'**
+  String get wrappedImpactTitle;
+
+  /// No description provided for @wrappedSoulsTouched.
+  ///
+  /// In en, this message translates to:
+  /// **'Souls Touched'**
+  String get wrappedSoulsTouched;
+
+  /// No description provided for @wrappedMostImpactfulMissionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your most impactful mission reached {soulsCount} souls'**
+  String wrappedMostImpactfulMissionSubtitle(int soulsCount);
+
+  /// No description provided for @wrappedDecisionTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision Types'**
+  String get wrappedDecisionTypes;
+
+  /// No description provided for @wrappedDecisionTypesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top categories from your mission impact'**
+  String get wrappedDecisionTypesSubtitle;
+
+  /// No description provided for @wrappedLearningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Learning Growth'**
+  String get wrappedLearningTitle;
+
+  /// No description provided for @wrappedCoursesCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses Completed'**
+  String get wrappedCoursesCompleted;
+
+  /// No description provided for @wrappedLessonsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons Completed'**
+  String get wrappedLessonsCompleted;
+
+  /// No description provided for @wrappedOverallProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Progress'**
+  String get wrappedOverallProgress;
+
+  /// No description provided for @wrappedLearningStreakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} day learning streak'**
+  String wrappedLearningStreakTitle(int count);
+
+  /// No description provided for @wrappedLearningStreakSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the momentum alive'**
+  String get wrappedLearningStreakSubtitle;
+
+  /// No description provided for @wrappedPrayerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Prayer Journey'**
+  String get wrappedPrayerTitle;
+
+  /// No description provided for @wrappedPrayerResponses.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Responses'**
+  String get wrappedPrayerResponses;
+
+  /// No description provided for @wrappedPrayerConsistencyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days of prayer'**
+  String wrappedPrayerConsistencyTitle(int count);
+
+  /// No description provided for @wrappedPrayerConsistencySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your faith journey continues'**
+  String get wrappedPrayerConsistencySubtitle;
+
+  /// No description provided for @wrappedEventsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Event Participation'**
+  String get wrappedEventsTitle;
+
+  /// No description provided for @wrappedEventsAttended.
+  ///
+  /// In en, this message translates to:
+  /// **'Events Attended'**
+  String get wrappedEventsAttended;
+
+  /// No description provided for @wrappedUpcomingEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Events'**
+  String get wrappedUpcomingEvents;
+
+  /// No description provided for @wrappedActiveParticipantTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Participant'**
+  String get wrappedActiveParticipantTitle;
+
+  /// No description provided for @wrappedActiveParticipantSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for being part of this community'**
+  String get wrappedActiveParticipantSubtitle;
+
+  /// No description provided for @wrappedSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What a Year!'**
+  String get wrappedSummaryTitle;
+
+  /// No description provided for @wrappedHighlightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{year} highlights'**
+  String wrappedHighlightsTitle(int year);
+
+  /// No description provided for @wrappedHighlightsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A snapshot of your impact this year'**
+  String get wrappedHighlightsSubtitle;
+
+  /// No description provided for @wrappedMissionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Missions'**
+  String get wrappedMissionsLabel;
+
+  /// No description provided for @wrappedCoursesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get wrappedCoursesLabel;
+
+  /// No description provided for @wrappedEventsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get wrappedEventsLabel;
+
+  /// No description provided for @wrappedThankYouSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for making an impact in {year}!'**
+  String wrappedThankYouSubtitle(int year);
+
+  /// No description provided for @wrappedNextYearCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make next year even better!'**
+  String get wrappedNextYearCta;
+
+  /// No description provided for @wrappedNoImpactDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Impact Data Yet'**
+  String get wrappedNoImpactDataTitle;
+
+  /// No description provided for @wrappedNoImpactDataDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Start participating in missions and activities to see your impact wrapped!'**
+  String get wrappedNoImpactDataDescription;
+
+  /// No description provided for @wrappedGoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back'**
+  String get wrappedGoBack;
+
+  /// No description provided for @wrappedSomethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something Went Wrong'**
+  String get wrappedSomethingWentWrong;
+
+  /// No description provided for @wrappedTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get wrappedTryAgain;
+
+  /// No description provided for @wrappedCloseSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Close wrapped'**
+  String get wrappedCloseSemantics;
+
+  /// No description provided for @wrappedSkipToSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get wrappedSkipToSummary;
+
+  /// No description provided for @wrappedSkipToSummarySemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip to summary page'**
+  String get wrappedSkipToSummarySemantics;
+
+  /// No description provided for @wrappedPageSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {pageNumber}: {title}'**
+  String wrappedPageSemantics(int pageNumber, String title);
+
+  /// No description provided for @wrappedProgressSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrapped page {currentPage} of {totalPages}'**
+  String wrappedProgressSemantics(int currentPage, int totalPages);
 
   /// No description provided for @impact.
   ///

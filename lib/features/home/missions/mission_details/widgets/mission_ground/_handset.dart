@@ -1,12 +1,13 @@
 import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
-import 'package:app/features/home/missions/cubit/get_mission_cubit.dart';
+import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_mission.dart';
-import 'package:app/models/local/shared_embeds.dart';
+import 'package:app/models/remote/media/prf_weather_forecast.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,67 +30,70 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
   String get memberUlid => getIt<HiveService>().retrieveMember()!.ulid;
 
   @override
-  void initState() {
-    super.initState();
-
-    context.read<GetMissionCubit>().getMission(missionUlid: missionUlid);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: SingleStreamWrapper<PRFLocalMission?>(
-          stream: getIt<IsarService>().missions.itemStream,
-          loading: const PRFLinearProgressIndicator(),
-          widget: (context, mission) => Column(
-            children: [
-              // Hero Mission Card
-              _buildHeroCard(context, mission!, l10n, theme),
-              const SizedBox(height: 24),
-
-              // Quick Actions Row
-              _buildQuickActions(context, mission, l10n, theme),
-              const SizedBox(height: 24),
-
-              // Mission Intelligence Grid
-              _buildIntelligenceGrid(context, mission, l10n, theme),
-              const SizedBox(height: 24),
-
-              // Hide the contact center if the person isn't subscribed
-              // and when the mission date has passed
-              if (mission.loggedInMemberMissionSubscription != null &&
-                  mission.loggedInMemberMissionSubscription!.status ==
-                      PRFMissionSubscriptionStatus.approved &&
-                  mission.endDate.isAfter(
-                    DateTime.now().subtract(const Duration(days: 1)),
-                  )) ...[
-                // Contact Command Center
-                _buildContactCenter(context, mission, l10n, theme),
-                const SizedBox(height: 24),
-              ],
-
-              // Location & Navigation Hub
-              _buildLocationHub(context, mission, l10n, theme),
-              const SizedBox(height: 24),
-
-              // Weather Intelligence
-              if (mission.weatherForecasts?.isNotEmpty ?? false)
-                _buildWeatherIntelligence(context, mission, l10n, theme),
-            ],
+    return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
+      builder: (context, state) {
+        final mission = state.maybeWhen(
+          listLoaded: (items, _, _) => items.firstWhereOrNull(
+            (m) => m.ulid == missionUlid,
           ),
-        ),
-      ),
+          mutating: (items, _) => items.firstWhereOrNull(
+            (m) => m.ulid == missionUlid,
+          ),
+          orElse: () => null,
+        );
+
+        if (mission == null) {
+          return const Center(child: PRFCircularProgressIndicator());
+        }
+
+        return ListView(
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.sm),
+          children: [
+            // Hero Mission Card
+            _buildHeroCard(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Quick Actions Row
+            _buildQuickActions(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Mission Intelligence Grid
+            _buildIntelligenceGrid(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Hide the contact center if the person isn't subscribed
+            // and when the mission date has passed
+            if (mission.loggedInMemberMissionSubscription != null &&
+                mission.loggedInMemberMissionSubscription!.status ==
+                    PRFMissionSubscriptionStatus.approved &&
+                mission.endDate.isAfter(
+                  DateTime.now().subtract(const Duration(days: 1)),
+                )) ...[
+              // Contact Command Center
+              _buildContactCenter(context, mission, l10n, theme),
+              const SizedBox(height: PRFSpacingTokens.xl),
+            ],
+
+            // Location & Navigation Hub
+            _buildLocationHub(context, mission, l10n, theme),
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Weather Intelligence
+            if (mission.weatherForecasts.isNotEmpty)
+              _buildWeatherIntelligence(context, mission, l10n, theme),
+          ],
+        );
+      },
     );
   }
 
   Widget _buildHeroCard(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -104,7 +108,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 theme.colorScheme.primary.withValues(alpha: 0.8),
               ],
             ),
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
             boxShadow: [
               BoxShadow(
                 color: theme.colorScheme.primary.withValues(alpha: 0.3),
@@ -114,7 +118,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(PRFSpacingTokens.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -122,17 +126,17 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(20),
+                        color: PRFColors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                       ),
                       child: Text(
                         mission.status.name.toUpperCase(),
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: Colors.white,
+                          color: PRFColors.white,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.2,
                         ),
@@ -140,37 +144,39 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                     ),
                     const Spacer(),
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
+                        color: PRFColors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: const Icon(
                         Icons.school_rounded,
-                        color: Colors.white,
+                        color: PRFColors.white,
                         size: 20,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: PRFSpacingTokens.lg),
                 Text(
-                  mission.school!.name!.toUpperCase(),
+                  (mission.school?.name ?? '').toUpperCase(),
                   style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.white,
+                    color: PRFColors.white,
                     fontWeight: FontWeight.w900,
                     height: 1.1,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: PRFSpacingTokens.sm),
                 Text(
                   mission.theme!,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.9),
+                    color: PRFColors.white.withValues(alpha: 0.9),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: PRFSpacingTokens.xl),
                 Row(
                   children: [
                     _buildDateTimeChip(
@@ -187,7 +193,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: PRFSpacingTokens.sm),
                 Row(
                   children: [
                     _buildDateTimeChip(
@@ -205,7 +211,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   ],
                 ),
                 if (mission.missionPrepNotes?.isNotEmpty ?? false) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: PRFSpacingTokens.lg),
                   _buildPrepNotes(context, mission, l10n, theme),
                 ],
               ],
@@ -213,7 +219,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
           ),
         )
         .animate()
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -224,20 +230,23 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.md,
+        vertical: PRFSpacingTokens.sm,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(16),
+        color: PRFColors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 16),
-          const SizedBox(width: 8),
+          Icon(icon, color: PRFColors.white, size: 16),
+          const SizedBox(width: PRFSpacingTokens.sm),
           Text(
             text,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: Colors.white,
+              color: PRFColors.white,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -248,7 +257,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildQuickActions(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -272,7 +281,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 mission.loggedInMemberMissionSubscription != null &&
                 mission.loggedInMemberMissionSubscription!.status ==
                     PRFMissionSubscriptionStatus.approved)
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
             Expanded(
               child: _buildActionButton(
                 context,
@@ -285,8 +294,8 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
             ),
           ],
         )
-        .animate(delay: const Duration(milliseconds: 200))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .animate(delay: PRFMotionTokens.standard)
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -301,10 +310,13 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+          vertical: PRFSpacingTokens.lg,
+          horizontal: PRFSpacingTokens.xl,
+        ),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           boxShadow: [
             BoxShadow(
               color: color.withValues(alpha: 0.3),
@@ -316,12 +328,12 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
+            Icon(icon, color: PRFColors.white, size: 20),
+            const SizedBox(width: PRFSpacingTokens.sm),
             Text(
               label,
               style: theme.textTheme.titleSmall?.copyWith(
-                color: Colors.white,
+                color: PRFColors.white,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -333,7 +345,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildIntelligenceGrid(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
@@ -346,7 +358,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -355,12 +367,12 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               crossAxisSpacing: 12,
               childAspectRatio: 1.2,
               children: [
-                if (mission.school!.totalStudents != 0)
+                if ((mission.school?.totalStudents ?? 0) != 0)
                   _buildStatCard(
                     context,
                     Icons.people_rounded,
                     l10n.population,
-                    mission.school!.totalStudents!.toString(),
+                    (mission.school?.totalStudents ?? 0).toString(),
                     theme.colorScheme.primary,
                     theme,
                   ),
@@ -384,7 +396,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   context,
                   Icons.route_rounded,
                   l10n.estimatedDistance,
-                  mission.school!.distance ?? 'N/A',
+                  mission.school?.distance ?? 'N/A',
                   theme.colorScheme.error,
                   theme,
                 ),
@@ -392,8 +404,8 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
             ),
           ],
         )
-        .animate(delay: const Duration(milliseconds: 400))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .animate(delay: PRFMotionTokens.slow)
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -406,10 +418,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
           color: color.withValues(alpha: 0.2),
         ),
@@ -418,10 +430,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
@@ -447,16 +459,16 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildContactCenter(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
     return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
               color: theme.colorScheme.outline.withValues(alpha: 0.1),
             ),
@@ -467,10 +479,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       Icons.contact_phone_rounded,
@@ -478,7 +490,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Text(
                     l10n.contactPersons,
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -487,18 +499,18 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              ...mission.school!.contacts!.map(
+              const SizedBox(height: PRFSpacingTokens.lg),
+              ...(mission.school?.contacts ?? []).map(
                 (contact) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.surface,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.05),
+                          color: PRFColors.black.withValues(alpha: 0.05),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -511,26 +523,26 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                             alpha: 0.1,
                           ),
                           child: Text(
-                            contact.name!.substring(0, 1).toUpperCase(),
+                            contact.name.substring(0, 1).toUpperCase(),
                             style: TextStyle(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: PRFSpacingTokens.md),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                contact.name!,
+                                contact.name,
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               Text(
-                                contact.contactType!.name!,
+                                contact.contactType?.name ?? '',
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.onSurfaceVariant,
                                 ),
@@ -541,7 +553,9 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                         Container(
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primary,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.sm,
+                            ),
                           ),
                           child: IconButton(
                             onPressed: () async {
@@ -557,7 +571,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                             },
                             icon: const Icon(
                               Icons.phone,
-                              color: Colors.white,
+                              color: PRFColors.white,
                               size: 20,
                             ),
                           ),
@@ -565,7 +579,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                           effects: const [
                             ShakeEffect(
                               duration: Duration(seconds: 2),
-                              delay: Duration(milliseconds: 500),
+                              delay: PRFMotionTokens.enterShort,
                             ),
                           ],
                         ),
@@ -577,20 +591,20 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
             ],
           ),
         )
-        .animate(delay: const Duration(milliseconds: 600))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .animate(delay: PRFMotionTokens.enterShort)
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
   Widget _buildLocationHub(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
     return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -600,7 +614,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 theme.colorScheme.tertiary.withValues(alpha: 0.05),
               ],
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
               color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
             ),
@@ -611,10 +625,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.tertiary.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       Icons.location_on_rounded,
@@ -622,7 +636,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Expanded(
                     child: Text(
                       l10n.address,
@@ -634,13 +648,13 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   Container(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: IconButton(
                       onPressed: () => _openMap(mission),
                       icon: const Icon(
                         Icons.map_rounded,
-                        color: Colors.white,
+                        color: PRFColors.white,
                         size: 20,
                       ),
                     ),
@@ -648,32 +662,32 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                     effects: const [
                       ShakeEffect(
                         duration: Duration(seconds: 2),
-                        delay: Duration(milliseconds: 500),
+                        delay: PRFMotionTokens.enterShort,
                       ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      mission.school!.address!,
+                      mission.school?.address ?? '',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if (mission.school!.directions?.isNotEmpty ?? false) ...[
-                      const SizedBox(height: 8),
+                    if (mission.school?.directions.isNotEmpty ?? false) ...[
+                      const SizedBox(height: PRFSpacingTokens.sm),
                       Text(
-                        mission.school!.directions!,
+                        mission.school!.directions,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
@@ -682,7 +696,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: PRFSpacingTokens.lg),
               Row(
                 children: [
                   Expanded(
@@ -690,28 +704,28 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       context,
                       Icons.straighten_rounded,
                       l10n.estimatedDistance,
-                      mission.school!.distance ?? 'N/A',
+                      mission.school?.distance ?? 'N/A',
                       theme,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Expanded(
                     child: _buildTravelInfo(
                       context,
                       Icons.schedule_rounded,
                       'Travel Time',
-                      mission.school!.staticDuration ?? 'N/A',
+                      mission.school?.staticDuration ?? 'N/A',
                       theme,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: PRFSpacingTokens.md),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(PRFSpacingTokens.md),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Row(
                   children: [
@@ -720,7 +734,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       size: 16,
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: PRFSpacingTokens.sm),
                     Expanded(
                       child: Text(
                         l10n.estimationDisclaimer,
@@ -736,7 +750,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
           ),
         )
         .animate(delay: const Duration(milliseconds: 800))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
@@ -748,15 +762,15 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(PRFSpacingTokens.md),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
       ),
       child: Column(
         children: [
           Icon(icon, color: theme.colorScheme.tertiary, size: 20),
-          const SizedBox(height: 4),
+          const SizedBox(height: PRFSpacingTokens.xs),
           Text(
             value,
             style: theme.textTheme.titleMedium?.copyWith(
@@ -777,13 +791,13 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildWeatherIntelligence(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
     return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -793,7 +807,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 theme.colorScheme.secondary.withValues(alpha: 0.05),
               ],
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
               color: theme.colorScheme.secondary.withValues(alpha: 0.2),
             ),
@@ -804,10 +818,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.secondary.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
                       Icons.wb_sunny_rounded,
@@ -815,7 +829,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Text(
                     l10n.weather,
                     style: theme.textTheme.titleLarge?.copyWith(
@@ -824,10 +838,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              ...mission.weatherForecasts!.asMap().entries.map(
+              const SizedBox(height: PRFSpacingTokens.lg),
+              ...mission.weatherForecasts.asMap().entries.map(
                 (entry) => Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(bottom: PRFSpacingTokens.lg),
                   child: _buildWeatherCard(
                     context,
                     entry.key + 1,
@@ -841,25 +855,25 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
           ),
         )
         .animate(delay: const Duration(milliseconds: 1000))
-        .fadeIn(duration: const Duration(milliseconds: 600))
+        .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }
 
   Widget _buildWeatherCard(
     BuildContext context,
     int day,
-    PRFLocalWeatherForecast forecast,
+    PRFWeatherForecast forecast,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: PRFColors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -871,10 +885,13 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.sm,
+                  vertical: PRFSpacingTokens.xs,
+                ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                 ),
                 child: Text(
                   'Day $day',
@@ -884,10 +901,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: PRFSpacingTokens.sm),
               Expanded(
                 child: Text(
-                  forecast.weatherCodeDescription!,
+                  forecast.weatherCodeDescription,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -895,14 +912,14 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: PRFSpacingTokens.md),
           Row(
             children: [
               Expanded(
                 child: _buildWeatherStat(
                   context,
                   l10n.temperature,
-                  '${forecast.temperature!.apparentAvg!}°',
+                  '${forecast.temperature.apparentAvg}\u00B0',
                   theme,
                 ),
               ),
@@ -910,7 +927,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 child: _buildWeatherStat(
                   context,
                   l10n.humidity,
-                  forecast.humidity!.avg!,
+                  forecast.humidity.avg,
                   theme,
                 ),
               ),
@@ -918,19 +935,19 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                 child: _buildWeatherStat(
                   context,
                   l10n.rain,
-                  forecast.precipitationProbability!.avg!,
+                  forecast.precipitationProbability.avg,
                   theme,
                 ),
               ),
             ],
           ),
-          if (forecast.dressingRecommendations?.isNotEmpty ?? false) ...[
-            const SizedBox(height: 12),
+          if (forecast.dressingRecommendations.isNotEmpty) ...[
+            const SizedBox(height: PRFSpacingTokens.md),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(PRFSpacingTokens.md),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
               ),
               child: Row(
                 children: [
@@ -939,10 +956,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                     size: 16,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: PRFSpacingTokens.sm),
                   Expanded(
                     child: Text(
-                      forecast.dressingRecommendations!,
+                      forecast.dressingRecommendations,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -984,16 +1001,16 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
 
   Widget _buildPrepNotes(
     BuildContext context,
-    PRFLocalMission mission,
+    PRFMission mission,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.1),
         ),
@@ -1004,10 +1021,10 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Icon(
                   Icons.note_alt_rounded,
@@ -1015,7 +1032,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: PRFSpacingTokens.md),
               Text(
                 l10n.missionPrepNotes,
                 style: theme.textTheme.titleLarge?.copyWith(
@@ -1024,12 +1041,12 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
             ),
             child: Text(
               mission.missionPrepNotes!,
@@ -1043,8 +1060,9 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     );
   }
 
-  Future<void> _openMap(PRFLocalMission mission) async {
-    final school = mission.school!;
+  Future<void> _openMap(PRFMission mission) async {
+    final school = mission.school;
+    if (school == null) return;
 
     final mapTypes = [MapType.google, MapType.googleGo, MapType.apple];
 
@@ -1053,8 +1071,8 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
       if (isAvailable) {
         await MapLauncher.showMarker(
           mapType: mapType,
-          coords: Coords(school.latitude!, school.longitude!),
-          title: school.name!,
+          coords: Coords(school.latitude, school.longitude),
+          title: school.name,
         );
         return;
       }

@@ -1,18 +1,20 @@
+import 'dart:io';
+
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
-import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/get_mission_media_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/video_player_widget.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:full_screen_image/full_screen_image.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:prf_design/prf_design.dart';
 
 class GalleryViewHandset extends StatefulWidget {
   const GalleryViewHandset({required this.missionUlid, super.key});
@@ -28,7 +30,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
   @override
   void initState() {
-    context.read<GetMissionMediaCubit>().getMissionMedia(
+    context.read<MissionMediaResourceCubit>().loadMedia(
       missionUlid: missionUlid,
       collections: [
         PRFMediaModel.missionPhotos,
@@ -38,34 +40,122 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     super.initState();
   }
 
+  List<PRFMediaModel> get _collections => [
+    PRFMediaModel.missionPhotos,
+    PRFMediaModel.missionVideos,
+  ];
+
+  Future<void> _refreshMedia() =>
+      context.read<MissionMediaResourceCubit>().loadMedia(
+        missionUlid: missionUlid,
+        collections: _collections,
+      );
+
+  void _openCarousel(List<PRFMedia> mediaItems, int index) {
+    final items = mediaItems
+        .map(
+          (m) => PRFCarouselItem(
+            url: m.temporaryURL,
+            isVideo: _isVideoFile(m.temporaryURL),
+            id: m.uuid,
+          ),
+        )
+        .toList();
+
+    PRFMediaCarousel.show(
+      context,
+      items: items,
+      initialIndex: index,
+      onDelete: (i) => _deleteMedia(mediaItems[i]),
+      onSave: _saveMedia,
+      videoBuilder: (context, item) => VideoPlayerWidget(videoUrl: item.url),
+    );
+  }
+
+  Future<bool> _deleteMedia(PRFMedia media) async {
+    final l10n = context.l10n;
+
+    final confirmed = await PRFConfirmationDialog.show(
+      context,
+      title: l10n.delete,
+      message: 'Are you sure you want to delete this media?',
+      confirmLabel: l10n.delete,
+      isDestructive: true,
+    );
+
+    if (confirmed != true || !mounted) return false;
+
+    await context.read<MissionMediaResourceCubit>().deleteMedia(
+      missionUlid: missionUlid,
+      mediaUuid: media.uuid,
+    );
+
+    if (!mounted) return false;
+
+    Gaimon.success();
+    PRFSnackbar.success(context, 'Media deleted');
+    await _refreshMedia();
+    return true;
+  }
+
+  Future<void> _saveMedia(PRFCarouselItem item) async {
+    try {
+      final response = await http.get(Uri.parse(item.url));
+      if (response.statusCode != 200) throw Exception('Download failed');
+
+      final tempDir = await getTemporaryDirectory();
+      final ext = item.isVideo ? 'mp4' : 'jpg';
+      final file = File(
+        '${tempDir.path}/prf_media_${DateTime.now().millisecondsSinceEpoch}.$ext',
+      );
+      await file.writeAsBytes(response.bodyBytes);
+
+      if (!mounted) return;
+      Gaimon.success();
+      PRFSnackbar.success(context, 'Saved to device');
+    } catch (e) {
+      if (!mounted) return;
+      Gaimon.error();
+      PRFSnackbar.error(context, 'Failed to save');
+    }
+  }
+
+  void _showAddMediaModal() {
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Add Media',
+      child: AddMediaView(missionUlid: missionUlid),
+    );
+  }
+
+  bool _isVideoFile(String url) {
+    final lowercaseUrl = url.toLowerCase();
+    return lowercaseUrl.contains('.mp4') ||
+        lowercaseUrl.contains('.mov') ||
+        lowercaseUrl.contains('.avi') ||
+        lowercaseUrl.contains('.mkv') ||
+        lowercaseUrl.contains('.webm') ||
+        lowercaseUrl.contains('.m4v');
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return RefreshIndicator(
-      onRefresh: () => context.read<GetMissionMediaCubit>().getMissionMedia(
-        missionUlid: missionUlid,
-        collections: [
-          PRFMediaModel.missionPhotos,
-          PRFMediaModel.missionVideos,
-        ],
-      ),
+      onRefresh: _refreshMedia,
       child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
         slivers: [
-          // Progress indicator for images uploading in the background
+          // Upload progress
           BlocConsumer<UploadMediaCubit, UploadMediaState>(
             listener: (context, state) {
               state.mapOrNull(
                 loaded: (_) {
-                  context.read<GetMissionMediaCubit>().getMissionMedia(
-                    missionUlid: missionUlid,
-                    collections: [
-                      PRFMediaModel.missionPhotos,
-                      PRFMediaModel.missionVideos,
-                    ],
-                  );
+                  _refreshMedia();
                   Gaimon.success();
                   PRFSnackbar.success(context, l10n.doneUploading);
                 },
@@ -80,11 +170,11 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                 child: state.maybeWhen(
                   loading: () => Container(
                     margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                      horizontal: PRFSpacingTokens.lg,
+                      vertical: PRFSpacingTokens.sm,
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       child: const PRFLinearProgressIndicator(),
                     ),
                   ),
@@ -94,58 +184,83 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             },
           ),
 
-          // Gallery
-          BlocBuilder<GetMissionMediaCubit, GetMissionMediaState>(
+          // Gallery grid
+          BlocBuilder<MissionMediaResourceCubit, ResourceState<PRFMedia>>(
             builder: (context, state) {
               return state.maybeWhen(
-                orElse: () => SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-                ),
-                empty: () => SliverFillRemaining(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: PRFEmptyView(
-                      label: l10n.addMissionPhotos,
-                      description: l10n.addMissionPhotosDesc,
-                      icon: Icons.photo_camera_outlined,
-                      actionLabel: l10n.addMissionPhotos,
-                      onActionPressed: () => _showAddMediaModal(context),
-                    ),
-                  ),
-                ),
-                loaded: (mediaItems) {
-                  return SliverPadding(
-                    padding: const EdgeInsets.all(16),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                          ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          if (index == 0) {
-                            return _buildAddPhotoTile(context, theme);
-                          }
+                orElse: () => _buildShimmerLoading(theme),
+                listLoaded: (mediaItems, _, _) {
+                  if (mediaItems.isEmpty) {
+                    return SliverFillRemaining(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.xxl,
+                        ),
+                        child: PRFEmptyView(
+                          label: l10n.addMissionPhotos,
+                          description: l10n.addMissionPhotosDesc,
+                          icon: Icons.photo_camera_outlined,
+                          actionLabel: l10n.addMissionPhotos,
+                          onActionPressed: _showAddMediaModal,
+                        ),
+                      ),
+                    );
+                  }
 
-                          final mediaIndex = index - 1;
-                          return _buildPhotoTile(
-                            context,
-                            mediaItems[mediaIndex],
-                            mediaIndex,
+                  return SliverPadding(
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                    sliver: SliverToBoxAdapter(
+                      child: PRFMediaGrid(
+                        itemCount: mediaItems.length,
+                        onAdd: _showAddMediaModal,
+                        itemBuilder: (context, index) {
+                          final media = mediaItems[index];
+                          final isVideo = _isVideoFile(media.temporaryURL);
+
+                          return PRFMediaTile(
+                            url: media.temporaryURL,
+                            isVideo: isVideo,
+                            height: _tileHeight(index),
+                            onTap: () => _openCarousel(mediaItems, index),
+                            imageBuilder: (context, url) =>
+                                ExtendedImage.network(
+                                  url,
+                                  fit: BoxFit.cover,
+                                  loadStateChanged: (state) {
+                                    switch (state.extendedImageLoadState) {
+                                      case LoadState.loading:
+                                        return ColoredBox(
+                                          color: theme
+                                              .colorScheme
+                                              .surfaceContainerHighest,
+                                          child: Center(
+                                            child: PRFCircularProgressIndicator(
+                                              color: theme.colorScheme.primary,
+                                            ),
+                                          ),
+                                        );
+                                      case LoadState.failed:
+                                        return ColoredBox(
+                                          color:
+                                              theme.colorScheme.errorContainer,
+                                          child: Icon(
+                                            Icons.broken_image_outlined,
+                                            color: theme.colorScheme.error,
+                                            size: 32,
+                                          ),
+                                        );
+                                      case LoadState.completed:
+                                        return null;
+                                    }
+                                  },
+                                ),
                           );
                         },
-                        childCount: mediaItems.length + 1,
                       ),
                     ),
                   );
                 },
-                error: (error) => SliverFillRemaining(
+                error: (error, _) => SliverFillRemaining(
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -155,14 +270,14 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                           size: 64,
                           color: theme.colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
                           'Error loading media',
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.error,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
                           error,
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -182,307 +297,52 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     );
   }
 
-  Widget _buildAddPhotoTile(BuildContext context, ThemeData theme) {
-    return Animate(
-      effects: const [
-        FadeEffect(duration: Duration(milliseconds: 300)),
-        ScaleEffect(duration: Duration(milliseconds: 300)),
-      ],
-      child: GestureDetector(
-        onTap: () => _showAddMediaModal(context),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              width: 2,
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                theme.colorScheme.primary.withValues(alpha: 0.05),
-                theme.colorScheme.primary.withValues(alpha: 0.1),
-              ],
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                ),
-                child: Icon(
-                  Icons.add_a_photo_outlined,
-                  size: 32,
-                  color: theme.colorScheme.primary,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Add Media',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  /// Vary tile heights for the masonry effect.
+  double _tileHeight(int index) {
+    const heights = [180.0, 220.0, 160.0, 200.0, 190.0, 240.0];
+    return heights[index % heights.length];
   }
 
-  Widget _buildPhotoTile(BuildContext context, PRFMedia mediaItem, int index) {
-    final theme = Theme.of(context);
-    final isVideo = _isVideoFile(mediaItem.temporaryURL);
-
-    return Animate(
-      delay: Duration(milliseconds: 100 * (index + 1)),
-      effects: const [
-        FadeEffect(duration: Duration(milliseconds: 400)),
-        SlideEffect(
-          begin: Offset(0, 0.3),
-          duration: Duration(milliseconds: 400),
-        ),
-      ],
-      child: isVideo
-          ? GestureDetector(
-              onTap: () => _openVideoPlayer(context, mediaItem.temporaryURL),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      _buildVideoPlaceholder(theme),
-                      // Gradient overlay for better visual appeal
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withValues(alpha: 0.2),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Video indicator
-                      Positioned(
-                        bottom: 8,
-                        right: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.8),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.play_arrow,
-                                color: Colors.white,
-                                size: 14,
-                              ),
-                              SizedBox(width: 2),
-                              Text(
-                                'Video',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Tap indicator for videos
-                      Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.primary.withValues(
-                              alpha: 0.9,
-                            ),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.all(12),
-                          child: const Icon(
-                            Icons.play_arrow,
-                            color: Colors.white,
-                            size: 32,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : FullScreenWidget(
-              disposeLevel: DisposeLevel.High,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      ExtendedImage.network(
-                        mediaItem.temporaryURL,
-                        fit: BoxFit.cover,
-                        loadStateChanged: (state) {
-                          switch (state.extendedImageLoadState) {
-                            case LoadState.loading:
-                              return ColoredBox(
-                                color:
-                                    theme.colorScheme.surfaceContainerHighest,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: theme.colorScheme.primary,
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                              );
-                            case LoadState.failed:
-                              return ColoredBox(
-                                color: theme.colorScheme.errorContainer,
-                                child: Icon(
-                                  Icons.broken_image_outlined,
-                                  color: theme.colorScheme.error,
-                                  size: 32,
-                                ),
-                              );
-                            case LoadState.completed:
-                              return null;
-                          }
-                        },
-                      ),
-                      // Gradient overlay for better visual appeal
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withValues(alpha: 0.2),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-    );
-  }
-
-  Widget _buildVideoPlaceholder(ThemeData theme) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            theme.colorScheme.surfaceContainerHigh,
-            theme.colorScheme.surfaceContainer,
-          ],
-        ),
-      ),
-      child: Center(
+  SliverToBoxAdapter _buildShimmerLoading(ThemeData theme) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.videocam,
-              size: 32,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Video File',
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  bool _isVideoFile(String url) {
-    final lowercaseUrl = url.toLowerCase();
-    return lowercaseUrl.contains('.mp4') ||
-        lowercaseUrl.contains('.mov') ||
-        lowercaseUrl.contains('.avi') ||
-        lowercaseUrl.contains('.mkv') ||
-        lowercaseUrl.contains('.webm') ||
-        lowercaseUrl.contains('.m4v');
-  }
-
-  void _openVideoPlayer(BuildContext context, String videoUrl) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => VideoPlayerWidget(videoUrl: videoUrl),
-      ),
-    );
-  }
-
-  void _showAddMediaModal(BuildContext context) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              child: AddMediaView(
-                missionUlid: missionUlid,
+          children: List.generate(
+            4,
+            (index) => Padding(
+              padding: const EdgeInsets.only(bottom: PRFSpacingTokens.sm),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: index.isEven ? 180 : 160,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.md,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: PRFSpacingTokens.sm),
+                  Expanded(
+                    child: Container(
+                      height: index.isEven ? 160 : 200,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.md,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        ];
-      },
+        ),
+      ),
     );
   }
 }

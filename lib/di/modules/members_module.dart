@@ -1,4 +1,4 @@
-import 'package:app/features/home/shared/cubit/get_member_engagement_cubit.dart';
+import 'package:app/features/home/shared/cubit/member_engagement_resource_cubit.dart';
 import 'package:app/services/api/member_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -11,8 +11,8 @@ class MembersModule {
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
-      BlocProvider<GetMemberEngagementCubit>(
-        create: (context) => GetMemberEngagementCubit(
+      BlocProvider<MemberEngagementResourceCubit>(
+        create: (context) => MemberEngagementResourceCubit(
           memberService: getIt(),
           hiveService: getIt(),
         ),

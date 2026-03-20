@@ -1,74 +1,102 @@
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/course/prf_course.dart';
+import 'package:app/models/remote/course/prf_course.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:prf_design/prf_design.dart';
 
 class CourseActionCard extends StatelessWidget {
   const CourseActionCard({required this.course, super.key});
 
-  final PRFLocalCourse course;
+  final PRFCourse course;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return GestureDetector(
-      onTap: () => context.router.push(
-        CourseDetailsRoute(courseUlid: course.ulid),
-      ),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.secondary.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Material(
+        color: PRFColors.transparent,
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
+          onTap: () => context.router.push(
+            CourseDetailsRoute(courseUlid: course.ulid),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(PRFSpacingTokens.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    course.name,
-                    style: theme.textTheme.headlineSmall,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                      ),
+                      child: Icon(
+                        Icons.school_rounded,
+                        color: theme.colorScheme.onPrimaryContainer,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: PRFSpacingTokens.md),
+                    Expanded(
+                      child: Text(
+                        course.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    PRFStatusBadge(
+                      label: l10n.percentage(
+                        course.courseMember?.percentComplete.toInt() ?? 0,
+                      ),
+                      color: theme.colorScheme.primary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.md,
+                        vertical: PRFSpacingTokens.xs,
+                      ),
+                      boxShadow: const [],
+                      textStyle: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  child: Text(
-                    l10n.percentage(
-                      course.courseMember?.percentComplete?.toInt() ?? 0,
-                    ),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                    ),
+                const SizedBox(height: PRFSpacingTokens.md),
+                Text(
+                  course.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              course.description,
-              style: theme.textTheme.bodyMedium,
-            ),
-          ],
+          ),
         ),
       ),
     );

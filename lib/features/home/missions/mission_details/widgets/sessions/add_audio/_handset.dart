@@ -1,24 +1,25 @@
-import 'dart:io';
-
-import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/live_recording_widget.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/pending_uploads_widget.dart';
-import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/get_mission_session_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
-import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
-import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddAudioViewHandset extends StatefulWidget {
-  const AddAudioViewHandset({required this.missionSessionUlid, super.key});
+  const AddAudioViewHandset({
+    required this.missionUlid,
+    required this.missionSessionUlid,
+    super.key,
+  });
 
   final String missionSessionUlid;
+  final String missionUlid;
 
   @override
   State<AddAudioViewHandset> createState() => _AddAudioViewHandsetState();
@@ -72,11 +73,14 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
             final uploadsToShow = sessionUploads.take(3).toList();
 
             return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.lg,
+                vertical: PRFSpacingTokens.sm,
+              ),
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 border: Border.all(
                   color: Theme.of(
                     context,
@@ -92,7 +96,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         Icons.library_music_outlined,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: PRFSpacingTokens.sm),
                       Expanded(
                         child: Text(
                           'Queued recordings',
@@ -113,14 +117,16 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: PRFSpacingTokens.md),
                   ...uploadsToShow.map(
                     (upload) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(
+                        bottom: PRFSpacingTokens.sm,
+                      ),
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                             decoration: BoxDecoration(
                               color: Theme.of(
                                 context,
@@ -133,7 +139,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: PRFSpacingTokens.md),
                           Expanded(
                             child: Text(
                               upload.name,
@@ -142,7 +148,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: PRFSpacingTokens.sm),
                           const Chip(
                             label: Text('Queued'),
                             padding: EdgeInsets.zero,
@@ -167,9 +173,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                   context,
                   '${l10n.upload} ${l10n.recordingCompleted}',
                 );
-                context.read<GetMissionSessionCubit>().getMissionSession(
-                  missionSessionUlid: widget.missionSessionUlid,
-                  refresh: true,
+                context.read<MissionSessionResourceCubit>().loadAll(
+                  filters: {'mission_ulid': widget.missionUlid},
                 );
                 Navigator.of(context).pop();
               },
@@ -194,22 +199,22 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
           },
           builder: (context, state) => state.maybeWhen(
             loading: () => Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(PRFSpacingTokens.lg),
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
                 color: Theme.of(
                   context,
                 ).colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               ),
               child: Row(
                 children: [
                   const SizedBox(
-                    width: 20,
+                    width: PRFSpacingTokens.xl,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: PRFCircularProgressIndicator(),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: PRFSpacingTokens.md),
                   Text(
                     '${l10n.upload}...',
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -224,7 +229,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
         // Live Recording Widget
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return ConstrainedBox(
@@ -237,22 +242,14 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                         : MediaQuery.of(context).size.height * 0.6,
                   ),
                   child: LiveRecordingWidget(
-                    onRecordingCompleted: (filePath, duration) async {
-                      final file = File(filePath);
-                      if (file.existsSync()) {
-                        await context
-                            .read<RecordingUploadCubit>()
-                            .uploadRecording(
-                              PRFMediaDTO(
-                                model:
-                                    PRFMediaModel.missionSessionLiveRecordings,
-                                modelUlid: widget.missionSessionUlid,
-                                path: file.path,
-                                name: StringFormatter.getFileName(file.path),
-                              ),
-                            );
-                      }
+                    onMinimize: () {
+                      Navigator.of(context).pop();
+                      PRFSnackbar.info(
+                        context,
+                        'Recording continues in the background.',
+                      );
                     },
+                    onRecordingCompleted: (_, _) {},
                   ),
                 );
               },

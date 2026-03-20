@@ -1,17 +1,17 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/events/cubit/get_event_media_cubit.dart';
+import 'package:app/features/home/events/cubit/event_media_resource_cubit.dart';
 import 'package:app/features/home/events/event_details/actions/add_media/add_media.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/upload_media_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media.dart';
-import 'package:app/shared_widgets/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 import 'package:gaimon/gaimon.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:prf_design/prf_design.dart';
 
 class EventGalleryViewHandset extends StatefulWidget {
   const EventGalleryViewHandset({required this.eventUlid, super.key});
@@ -28,7 +28,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
 
   @override
   void initState() {
-    context.read<GetEventMediaCubit>().getEventMedia(
+    context.read<EventMediaResourceCubit>().loadMedia(
       eventUlid: eventUlid,
       model: PRFMediaModel.eventPhotos,
     );
@@ -41,7 +41,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
     final theme = Theme.of(context);
 
     return RefreshIndicator(
-      onRefresh: () => context.read<GetEventMediaCubit>().getEventMedia(
+      onRefresh: () => context.read<EventMediaResourceCubit>().loadMedia(
         eventUlid: eventUlid,
         model: PRFMediaModel.eventPhotos,
       ),
@@ -53,7 +53,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
             listener: (context, state) {
               state.mapOrNull(
                 loaded: (_) {
-                  context.read<GetEventMediaCubit>().getEventMedia(
+                  context.read<EventMediaResourceCubit>().loadMedia(
                     eventUlid: eventUlid,
                     model: PRFMediaModel.eventPhotos,
                   );
@@ -71,11 +71,11 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                 child: state.maybeWhen(
                   loading: () => Container(
                     margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                      horizontal: PRFSpacingTokens.lg,
+                      vertical: PRFSpacingTokens.sm,
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       child: const PRFLinearProgressIndicator(),
                     ),
                   ),
@@ -86,31 +86,35 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
           ),
 
           // Gallery
-          BlocBuilder<GetEventMediaCubit, GetEventMediaState>(
+          BlocBuilder<EventMediaResourceCubit, ResourceState<PRFMedia>>(
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: () => SliverFillRemaining(
                   child: Center(
-                    child: CircularProgressIndicator(
+                    child: PRFCircularProgressIndicator(
                       color: theme.colorScheme.primary,
                     ),
                   ),
                 ),
-                empty: () => SliverFillRemaining(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: PRFEmptyView(
-                      label: l10n.addPhotos,
-                      description: l10n.addEventPhotos,
-                      icon: Icons.photo_camera_outlined,
-                      actionLabel: l10n.addPhotos,
-                      onActionPressed: () => _showAddMediaModal(context),
-                    ),
-                  ),
-                ),
-                loaded: (mediaItems) {
+                listLoaded: (mediaItems, _, _) {
+                  if (mediaItems.isEmpty) {
+                    return SliverFillRemaining(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.xxl,
+                        ),
+                        child: PRFEmptyView(
+                          label: l10n.addPhotos,
+                          description: l10n.addEventPhotos,
+                          icon: Icons.photo_camera_outlined,
+                          actionLabel: l10n.addPhotos,
+                          onActionPressed: () => _showAddMediaModal(context),
+                        ),
+                      ),
+                    );
+                  }
                   return SliverPadding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -137,7 +141,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                     ),
                   );
                 },
-                error: (error) => SliverFillRemaining(
+                error: (error, _) => SliverFillRemaining(
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -147,14 +151,14 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                           size: 64,
                           color: theme.colorScheme.error,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
                           l10n.errorLoadingPhotos,
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.error,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
                           error,
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -177,14 +181,14 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
   Widget _buildAddPhotoTile(BuildContext context, ThemeData theme) {
     return Animate(
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 300)),
-        ScaleEffect(duration: Duration(milliseconds: 300)),
+        FadeEffect(duration: PRFMotionTokens.slow),
+        ScaleEffect(duration: PRFMotionTokens.slow),
       ],
       child: GestureDetector(
         onTap: () => _showAddMediaModal(context),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
               color: theme.colorScheme.primary.withValues(alpha: 0.3),
               width: 2,
@@ -202,7 +206,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: theme.colorScheme.primary.withValues(alpha: 0.1),
@@ -213,7 +217,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                   color: theme.colorScheme.primary,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: PRFSpacingTokens.md),
               Text(
                 'Add Photos',
                 style: theme.textTheme.titleMedium?.copyWith(
@@ -234,27 +238,27 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
     return Animate(
       delay: Duration(milliseconds: 100 * (index + 1)),
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 400)),
+        FadeEffect(duration: PRFMotionTokens.slow),
         SlideEffect(
           begin: Offset(0, 0.3),
-          duration: Duration(milliseconds: 400),
+          duration: PRFMotionTokens.slow,
         ),
       ],
       child: FullScreenWidget(
         disposeLevel: DisposeLevel.High,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: PRFColors.black.withValues(alpha: 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -267,9 +271,8 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                         return ColoredBox(
                           color: theme.colorScheme.surfaceContainerHighest,
                           child: Center(
-                            child: CircularProgressIndicator(
+                            child: PRFCircularProgressIndicator(
                               color: theme.colorScheme.primary,
-                              strokeWidth: 2,
                             ),
                           ),
                         );
@@ -294,8 +297,8 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.transparent,
-                        Colors.black.withValues(alpha: 0.1),
+                        PRFColors.transparent,
+                        PRFColors.black.withValues(alpha: 0.1),
                       ],
                     ),
                   ),
@@ -309,22 +312,12 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
   }
 
   void _showAddMediaModal(BuildContext context) {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.8,
-              child: AddEventMediaView(
-                eventUlid: eventUlid,
-              ),
-            ),
-          ),
-        ];
-      },
+    PRFBottomSheet.show<void>(
+      context,
+      title: 'Add Photos',
+      child: AddEventMediaView(
+        eventUlid: eventUlid,
+      ),
     );
   }
 }

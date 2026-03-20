@@ -1,11 +1,11 @@
-import 'package:app/features/home/faqs/cubit/get_faq_categories_cubit.dart';
-import 'package:app/features/home/faqs/cubit/get_faqs_cubit.dart';
-import 'package:app/features/home/giving/cubit/get_payment_types_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
+import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
+import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
 import 'package:app/features/home/landing/_handset.dart';
-import 'package:app/features/home/landing/_tablet.dart';
-import 'package:app/features/home/missions/cubit/get_class_groups_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_expense_categories_cubit.dart';
-import 'package:app/features/home/shared/cubit/get_announcements_cubit.dart';
+import 'package:app/features/home/landing/models/landing_action_item.dart';
+import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
+import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
+import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/shared/cubit/upload_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
@@ -13,7 +13,6 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
@@ -30,14 +29,14 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
 
-    context.read<GetClassGroupsCubit>().getClassGroups();
-    context.read<GetPaymentTypesCubit>().getPaymentTypes();
-    context.read<GetExpenseCategoriesCubit>().getExpenseCategories();
-    context.read<GetAnnouncementsCubit>().getAnnouncements();
+    context.read<ClassGroupResourceCubit>().loadAll();
+    context.read<PaymentTypeResourceCubit>().loadAll();
+    context.read<ExpenseCategoryResourceCubit>().loadAll();
+    context.read<AnnouncementResourceCubit>().loadAll();
     context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
     context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();
-    context.read<GetFaqCategoriesCubit>().getFaqCategories();
-    context.read<GetFaqsCubit>().getFaqs();
+    context.read<FaqCategoryResourceCubit>().loadAll();
+    context.read<FaqResourceCubit>().loadAll();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeNotifications();
@@ -58,87 +57,98 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    final actions = [
-      [
-        l10n.goToAMission,
-        'assets/svgs/missions.svg',
-        () => context.router.pushPath(
+    final actions = <LandingActionItem>[
+      // Faith & Ministry
+      LandingActionItem(
+        title: l10n.goToAMission,
+        assetPath: 'assets/svgs/missions.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.missionsRoute,
         ),
-        0,
-      ],
-      [
-        l10n.learnSomething,
-        'assets/svgs/lms.svg',
-        () => context.router.pushPath(
-          PRFSuperAppRouter.lmsRoute,
-        ),
-        100,
-      ],
-      [
-        l10n.studentFaqs,
-        'assets/svgs/explore.svg',
-        () => context.router.pushPath(
-          PRFSuperAppRouter.memberLearnerFaqs,
-        ),
-        200,
-      ],
-      [
-        l10n.ministerToAStudent,
-        'assets/svgs/student_ministry.svg',
-        () => context.router.pushPath(
-          PRFSuperAppRouter.studentEnquiriesRoute,
-        ),
-        300,
-      ],
-      [
-        l10n.suggestAMission,
-        'assets/svgs/chatting.svg',
-        () => context.router.pushPath(
+        animationDelay: 0,
+        deskGroup: 'Faith & Ministry',
+      ),
+      // LandingActionItem(
+      //   title: l10n.ministerToAStudent,
+      //   assetPath: 'assets/svgs/student_ministry.svg',
+      //   onTap: () => context.router.pushPath(
+      //     PRFSuperAppRouter.studentEnquiriesRoute,
+      //   ),
+      //   animationDelay: 0,
+      //   deskGroup: 'Faith & Ministry',
+      // ),
+      LandingActionItem(
+        title: l10n.suggestAMission,
+        assetPath: 'assets/svgs/chatting.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.missionGroundSuggestionsRoute,
         ),
-        400,
-      ],
-      [
-        l10n.registerForEvent,
-        'assets/svgs/events.svg',
-        () => context.router.pushPath(
-          PRFSuperAppRouter.eventsRoute,
+        animationDelay: 0,
+        deskGroup: 'Faith & Ministry',
+      ),
+
+      // Learn & Grow
+      LandingActionItem(
+        title: l10n.learnSomething,
+        assetPath: 'assets/svgs/lms.svg',
+        onTap: () => context.router.pushPath(
+          PRFSuperAppRouter.lmsRoute,
         ),
-        500,
-      ],
-      [
-        l10n.submitPrayerRequest,
-        'assets/svgs/texting.svg',
-        () => context.router.pushPath(
+        animationDelay: 0,
+        deskGroup: 'Learn & Grow',
+      ),
+      LandingActionItem(
+        title: l10n.studentFaqs,
+        assetPath: 'assets/svgs/explore.svg',
+        onTap: () => context.router.pushPath(
+          PRFSuperAppRouter.memberLearnerFaqs,
+        ),
+        animationDelay: 0,
+        deskGroup: 'Learn & Grow',
+      ),
+
+      // Community
+      // LandingActionItem(
+      //   title: l10n.registerForEvent,
+      //   assetPath: 'assets/svgs/events.svg',
+      //   onTap: () => context.router.pushPath(
+      //     PRFSuperAppRouter.eventsRoute,
+      //   ),
+      //   animationDelay: 0,
+      //   deskGroup: 'Community',
+      // ),
+      LandingActionItem(
+        title: l10n.submitPrayerRequest,
+        assetPath: 'assets/svgs/texting.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.prayerRequestRoute,
         ),
-        600,
-      ],
-      [
-        l10n.give,
-        'assets/svgs/giving.svg',
-        () => context.router.pushPath(
+        animationDelay: 0,
+        deskGroup: 'Community',
+      ),
+      LandingActionItem(
+        title: l10n.give,
+        assetPath: 'assets/svgs/giving.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.givingRoute,
         ),
-        700,
-      ],
-      [
-        l10n.wrapped,
-        'assets/svgs/wrapped.svg',
-        () => context.router.pushPath(
+        animationDelay: 0,
+        deskGroup: 'Faith & Ministry',
+      ),
+
+      // Extras
+      LandingActionItem(
+        title: l10n.wrapped,
+        assetPath: 'assets/svgs/wrapped.svg',
+        onTap: () => context.router.pushPath(
           PRFSuperAppRouter.wrappedRoute,
         ),
-        0,
-      ],
+        animationDelay: 0,
+        isNeutralCard: true,
+        deskGroup: 'Extras',
+      ),
     ];
 
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) => LandingPageTablet(actions: actions),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => LandingPageHandset(actions: actions),
-        tablet: (_, _) => LandingPageTablet(actions: actions),
-      ),
-    );
+    return LandingPageHandset(actions: actions);
   }
 }

@@ -32,8 +32,7 @@ class ThemeCubit extends Cubit<ThemeState> {
   /// Get the current theme mode, defaulting to system if not loaded yet.
   PRFThemeMode get currentThemeMode => state.maybeWhen(
     loaded: (themeMode) => themeMode,
-    // orElse: () => PRFThemeMode.system,
-    orElse: () => PRFThemeMode.light,
+    orElse: () => PRFThemeMode.system,
   );
 
   /// Whether the current theme is dark mode.
@@ -55,14 +54,12 @@ class ThemeCubit extends Cubit<ThemeState> {
   ///
   /// If currently in system mode, switches to light mode.
   void toggleTheme() {
-    _setAndPersistTheme(currentThemeMode);
-    return;
-    // final newMode = switch (currentThemeMode) {
-    //   PRFThemeMode.light => PRFThemeMode.dark,
-    //   PRFThemeMode.dark => PRFThemeMode.light,
-    //   PRFThemeMode.system => PRFThemeMode.light,
-    // };
-    // _setAndPersistTheme(newMode);
+    final newMode = switch (currentThemeMode) {
+      PRFThemeMode.light => PRFThemeMode.dark,
+      PRFThemeMode.dark => PRFThemeMode.light,
+      PRFThemeMode.system => PRFThemeMode.light,
+    };
+    _setAndPersistTheme(newMode);
   }
 
   /// Set a specific theme mode.

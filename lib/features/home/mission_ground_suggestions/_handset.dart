@@ -1,17 +1,16 @@
+import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
 import 'package:app/features/home/mission_ground_suggestions/actions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
 import 'package:app/features/home/mission_ground_suggestions/actions/update_mission_ground_suggestion/update_mission_ground_suggestion.dart';
-import 'package:app/features/home/mission_ground_suggestions/cubit/get_mission_ground_suggestions_cubit.dart';
+import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/features/home/mission_ground_suggestions/widgets/mission_ground_suggestion_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
-import 'package:app/shared_widgets/_index.dart';
-import 'package:app/shared_widgets/navbar/navbar.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:prf_design/prf_design.dart';
 
 class MissionGroundSuggestionsPageHandset extends StatefulWidget {
   const MissionGroundSuggestionsPageHandset({super.key});
@@ -26,9 +25,7 @@ class _MissionGroundSuggestionsPageHandsetState
   @override
   void initState() {
     super.initState();
-    context
-        .read<GetMissionGroundSuggestionsCubit>()
-        .getMissionGroundSuggestions();
+    context.read<GroundSuggestionResourceCubit>().loadAll();
   }
 
   @override
@@ -36,91 +33,229 @@ class _MissionGroundSuggestionsPageHandsetState
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            PRFNavBar(
-              title: l10n.suggestAMission,
-              onBack: () => context.router.back(),
-              backgroundColor: theme.colorScheme.surface,
-            ),
-            // Content
-            SliverPadding(
-              padding: const EdgeInsets.all(16),
-              sliver:
-                  BlocBuilder<
-                    GetMissionGroundSuggestionsCubit,
-                    GetMissionGroundSuggestionsState
-                  >(
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        orElse: () => const SliverFillRemaining(
-                          child: Center(child: PRFCircularProgressIndicator()),
+    return BlocBuilder<
+      GroundSuggestionResourceCubit,
+      ResourceState<PRFMissionGroundSuggestion>
+    >(
+      builder: (context, state) {
+        final missionGroundSuggestions = state.maybeWhen(
+          listLoaded: (suggestions, _, _) => suggestions,
+          orElse: List<PRFMissionGroundSuggestion>.empty,
+        );
+        final pendingCount = missionGroundSuggestions
+            .where(
+              (suggestion) =>
+                  suggestion.status == PRFMissionGroundSuggestionStatus.pending,
+            )
+            .length;
+        final completedCount = missionGroundSuggestions
+            .where(
+              (suggestion) =>
+                  suggestion.status ==
+                  PRFMissionGroundSuggestionStatus.completed,
+            )
+            .length;
+
+        return Scaffold(
+          backgroundColor: theme.colorScheme.surface,
+          body: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      theme.colorScheme.primary,
+                      theme.colorScheme.primary.withValues(alpha: 0.88),
+                    ],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    PRFBrandedNavBar(
+                      title: l10n.suggestAMission,
+                      onBack: () => context.router.back(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.xs,
+                        PRFSpacingTokens.lg,
+                        PRFSpacingTokens.lg,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.onPrimary.withValues(
+                            alpha: 0.1,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.lg,
+                          ),
+                          border: Border.all(
+                            color: theme.colorScheme.onPrimary.withValues(
+                              alpha: 0.15,
+                            ),
+                          ),
                         ),
-                        loading: () => const SliverFillRemaining(
-                          child: Center(child: PRFCircularProgressIndicator()),
-                        ),
-                        error: (message) => SliverFillRemaining(
-                          child: SliverFillRemaining(
-                            child: RefreshIndicator(
-                              onRefresh: () => context
-                                  .read<GetMissionGroundSuggestionsCubit>()
-                                  .getMissionGroundSuggestions(),
-                              child: SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                child: PRFEmptyView(
-                                  label: l10n.noSuggestedMissionGrounds,
-                                  description: message,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.suggestMissionSubTitle,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimary.withValues(
+                                  alpha: 0.9,
                                 ),
                               ),
                             ),
-                          ),
+                            const SizedBox(height: PRFSpacingTokens.md),
+                            Wrap(
+                              spacing: PRFSpacingTokens.xs,
+                              runSpacing: PRFSpacingTokens.xs,
+                              children: [
+                                _StatPill(
+                                  label: l10n.total,
+                                  value: missionGroundSuggestions.length,
+                                ),
+                                _StatPill(
+                                  label: PRFMissionGroundSuggestionStatus
+                                      .pending
+                                      .name,
+                                  value: pendingCount,
+                                ),
+                                _StatPill(
+                                  label: l10n.completed,
+                                  value: completedCount,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        empty: () => SliverFillRemaining(
-                          child: RefreshIndicator(
-                            onRefresh: () => context
-                                .read<GetMissionGroundSuggestionsCubit>()
-                                .getMissionGroundSuggestions(),
-                            child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () =>
+                      context.read<GroundSuggestionResourceCubit>().loadAll(),
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    slivers: [
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(
+                          PRFSpacingTokens.lg,
+                          PRFSpacingTokens.lg,
+                          PRFSpacingTokens.lg,
+                          110,
+                        ),
+                        sliver: state.maybeWhen(
+                          orElse: () => const SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
+                          ),
+                          listLoading: () => const SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
+                          ),
+                          error: (message, _) => SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Align(
+                              alignment: Alignment.topCenter,
                               child: PRFEmptyView(
-                                label: l10n.suggestAMission,
-                                description: l10n.suggestMissionDescription,
-
-                                actionLabel: l10n.suggestAMission,
-                                onActionPressed: _addMissionGroundSuggestion,
+                                label: l10n.noSuggestedMissionGrounds,
+                                description: message,
                               ),
                             ),
                           ),
-                        ),
-                        loaded: (missionGroundSuggestions) {
-                          return SliverPadding(
-                            padding: const EdgeInsets.only(
-                              bottom: 100,
-                            ), // Space for FAB
-                            sliver: SliverList.separated(
-                              itemCount: missionGroundSuggestions.length,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 16),
+                          listLoaded: (suggestions, _, _) {
+                            if (suggestions.isEmpty) {
+                              return SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: PRFEmptyView(
+                                    label: l10n.suggestAMission,
+                                    description: l10n.suggestMissionDescription,
+                                    actionLabel: l10n.suggestAMission,
+                                    onActionPressed:
+                                        _addMissionGroundSuggestion,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return SliverList.builder(
+                              itemCount: suggestions.length + 1,
                               itemBuilder: (context, index) {
-                                final suggestion =
-                                    missionGroundSuggestions[index];
-                                return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 4,
+                                if (index == 0) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: PRFSpacingTokens.md,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            l10n.recentSuggestions,
+                                            style: theme.textTheme.titleSmall
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: theme
+                                                      .colorScheme
+                                                      .onSurface
+                                                      .withValues(alpha: 0.78),
+                                                ),
+                                          ),
+                                        ),
+                                        Text(
+                                          '${suggestions.length}',
+                                          style: theme.textTheme.labelMedium
+                                              ?.copyWith(
+                                                color: theme
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+
+                                final suggestionIndex = index - 1;
+                                final suggestion = suggestions[suggestionIndex];
+                                return Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom:
+                                            suggestionIndex ==
+                                                suggestions.length - 1
+                                            ? 0
+                                            : PRFSpacingTokens.lg,
                                       ),
                                       child: Material(
-                                        color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(20),
+                                        color: PRFColors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                          PRFRadiusTokens.xl,
+                                        ),
                                         child: InkWell(
-                                          onLongPress: () async =>
-                                              _updateMissionGroundSuggestion(
-                                                suggestion,
-                                              ),
+                                          onLongPress: () async {
+                                            await _updateMissionGroundSuggestion(
+                                              suggestion,
+                                            );
+                                          },
                                           borderRadius: BorderRadius.circular(
-                                            20,
+                                            PRFRadiusTokens.xl,
                                           ),
                                           splashColor: theme.colorScheme.primary
                                               .withValues(alpha: 0.1),
@@ -136,79 +271,60 @@ class _MissionGroundSuggestionsPageHandsetState
                                     )
                                     .animate(
                                       delay: Duration(
-                                        milliseconds: index * 100,
+                                        milliseconds: 70 * suggestionIndex,
                                       ),
                                     )
                                     .fadeIn(
-                                      duration: const Duration(
-                                        milliseconds: 600,
-                                      ),
+                                      duration: PRFMotionTokens.enterShort,
                                     )
                                     .slideY(
-                                      begin: 0.3,
+                                      begin: 0.22,
                                       end: 0,
-                                      duration: const Duration(
-                                        milliseconds: 500,
-                                      ),
-                                      curve: Curves.easeOutCubic,
-                                    )
-                                    .scale(
-                                      begin: const Offset(0.9, 0.9),
-                                      end: const Offset(1, 1),
-                                      duration: const Duration(
-                                        milliseconds: 500,
-                                      ),
+                                      duration: PRFMotionTokens.enterMedium,
                                       curve: Curves.easeOutCubic,
                                     );
                               },
-                            ),
-                          );
-                        },
-                      );
-                    },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child:
-            FloatingActionButton.extended(
-              backgroundColor: theme.colorScheme.primary,
-              foregroundColor: theme.colorScheme.onPrimary,
-              onPressed: _addMissionGroundSuggestion,
-              icon: const Icon(Icons.add_rounded),
-              label: Text(
-                l10n.suggestAMission,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onPrimary,
                 ),
               ),
-            ).animate(
-              effects: [
-                const ShimmerEffect(
-                  duration: Duration(seconds: 2),
-                  delay: Duration(milliseconds: 500),
-                ),
-                const ScaleEffect(
-                  begin: Offset(0.8, 0.8),
-                  end: Offset(1, 1),
-                  duration: Duration(milliseconds: 400),
+            ],
+          ),
+          floatingActionButton: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.28),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
-      ),
+            child:
+                FloatingActionButton.extended(
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: theme.colorScheme.onPrimary,
+                      onPressed: _addMissionGroundSuggestion,
+                      icon: const Icon(Icons.add_rounded),
+                      label: Text(
+                        l10n.suggestAMission,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onPrimary,
+                        ),
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(duration: PRFMotionTokens.enterMedium)
+                    .slideY(begin: 0.2, end: 0),
+          ),
+        );
+      },
     );
   }
 
@@ -219,52 +335,71 @@ class _MissionGroundSuggestionsPageHandsetState
       return;
     }
 
-    await WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            surfaceTintColor: Colors.transparent,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.85,
-              child: UpdateMissionGroundSuggestionView(
-                missionGroundSuggestion: missionGroundSuggestion,
-              ),
-            ),
-          ),
-        ];
-      },
+    await PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.editMissionSuggestion,
+      child: UpdateMissionGroundSuggestionView(
+        missionGroundSuggestion: missionGroundSuggestion,
+      ),
     ).then((_) {
       if (mounted) {
-        context
-            .read<GetMissionGroundSuggestionsCubit>()
-            .getMissionGroundSuggestions();
+        context.read<GroundSuggestionResourceCubit>().loadAll();
       }
     });
   }
 
   void _addMissionGroundSuggestion() {
-    WoltModalSheet.show<void>(
-      context: context,
-      pageListBuilder: (modalSheetContext) {
-        return [
-          WoltModalSheetPage(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            surfaceTintColor: Colors.transparent,
-            child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.85,
-              child: const AddMissionGroundSuggestionView(),
-            ),
-          ),
-        ];
-      },
+    PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.suggestAMission,
+      child: const AddMissionGroundSuggestionView(),
     ).then((_) {
       if (mounted) {
-        context
-            .read<GetMissionGroundSuggestionsCubit>()
-            .getMissionGroundSuggestions();
+        context.read<GroundSuggestionResourceCubit>().loadAll();
       }
     });
+  }
+}
+
+class _StatPill extends StatelessWidget {
+  const _StatPill({required this.label, required this.value});
+
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PRFSpacingTokens.md,
+        vertical: PRFSpacingTokens.xs,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.onPrimary.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+      ),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '$value ',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            TextSpan(
+              text: label,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

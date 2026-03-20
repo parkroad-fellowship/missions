@@ -21,6 +21,7 @@ abstract class BaseAPIService<T> {
     Map<String, dynamic>? filters,
     List<String>? includes,
     int? limit,
+    int? page,
     String? orderBy,
     String? orderDirection,
   }) async {
@@ -44,6 +45,11 @@ abstract class BaseAPIService<T> {
       // Add limit if provided
       if (limit != null) {
         queryParameters['limit'] = limit;
+      }
+
+      // Add page if provided
+      if (page != null) {
+        queryParameters['page'] = page;
       }
 
       // Add ordering if provided
@@ -232,10 +238,12 @@ abstract class BaseAPIService<T> {
     required String parentId,
     required String childPath,
     required String childId,
+    required String apiVersion,
   }) async {
     try {
       await _networkUtil.delete(
         '$endpoint/$parentId/$childPath/$childId',
+        apiVersion: apiVersion,
       );
     } catch (e) {
       rethrow;

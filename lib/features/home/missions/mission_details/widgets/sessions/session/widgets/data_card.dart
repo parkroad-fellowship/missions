@@ -1,5 +1,5 @@
-import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
+import 'package:prf_design/prf_design.dart';
 
 class DataCard extends StatelessWidget {
   const DataCard({required this.label, required this.value, super.key});
@@ -13,12 +13,16 @@ class DataCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: FormFieldLabel(label: label, isBold: true),
+          padding: const EdgeInsets.symmetric(
+            horizontal: PRFSpacingTokens.xxxl,
+          ),
+          child: PRFFormFieldLabel(label: label, isBold: true),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: PRFSpacingTokens.xs),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(
+            horizontal: PRFSpacingTokens.xxxl,
+          ),
           child: PRFTextInput(
             hintText: '',
             controller: TextEditingController(text: value),

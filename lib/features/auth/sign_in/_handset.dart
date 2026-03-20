@@ -3,7 +3,6 @@ import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/firebase_service.dart';
-import 'package:app/shared_widgets/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:prf_design/prf_design.dart';
 
 class SignInHandset extends StatefulWidget {
   const SignInHandset({super.key});
@@ -70,7 +70,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                     ),
                     child: IntrinsicHeight(
                       child: Padding(
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -80,13 +80,17 @@ class _SignInHandsetState extends State<SignInHandset> {
                             // Logo
                             Center(
                               child: Container(
-                                padding: const EdgeInsets.all(16),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.lg,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16),
+                                  color: PRFColors.white,
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.md,
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withValues(
+                                      color: PRFColors.black.withValues(
                                         alpha: 0.1,
                                       ),
                                       blurRadius: 16,
@@ -110,18 +114,16 @@ class _SignInHandsetState extends State<SignInHandset> {
                               style: theme.textTheme.headlineLarge?.copyWith(
                                 color: theme.colorScheme.primary,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 32,
                               ),
                               textAlign: TextAlign.center,
                             ),
 
-                            const SizedBox(height: 8),
+                            const SizedBox(height: PRFSpacingTokens.sm),
 
                             Text(
                               l10n.welcomeBack,
                               style: theme.textTheme.bodyLarge?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
-                                fontSize: 16,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -144,7 +146,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         enabled: !_isLoading,
                                       ),
 
-                                      const SizedBox(height: 16),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.lg,
+                                      ),
 
                                       // Password Input
                                       PRFPasswordInput(
@@ -155,7 +159,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         enabled: !_isLoading,
                                       ),
 
-                                      const SizedBox(height: 32),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.xxl,
+                                      ),
 
                                       // Sign In Button
                                       BlocConsumer<SigninCubit, SignInState>(
@@ -225,7 +231,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         },
                                       ),
 
-                                      const SizedBox(height: 32),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.xxl,
+                                      ),
 
                                       // Divider
                                       Row(
@@ -238,7 +246,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(
-                                              horizontal: 16,
+                                              horizontal: PRFSpacingTokens.lg,
                                             ),
                                             child: Text(
                                               'OR',
@@ -248,7 +256,6 @@ class _SignInHandsetState extends State<SignInHandset> {
                                                         .colorScheme
                                                         .onSurfaceVariant,
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 14,
                                                   ),
                                             ),
                                           ),
@@ -261,7 +268,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         ],
                                       ),
 
-                                      const SizedBox(height: 32),
+                                      const SizedBox(
+                                        height: PRFSpacingTokens.xxl,
+                                      ),
                                     ],
 
                                     // Google Sign In Button
@@ -277,13 +286,15 @@ class _SignInHandsetState extends State<SignInHandset> {
                             Center(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
+                                  horizontal: PRFSpacingTokens.lg,
+                                  vertical: PRFSpacingTokens.sm,
                                 ),
                                 decoration: BoxDecoration(
                                   color:
                                       theme.colorScheme.surfaceContainerHighest,
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.lg,
+                                  ),
                                 ),
                                 child: Text(
                                   l10n.version(
@@ -291,7 +302,6 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   ),
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
-                                    fontSize: 12,
                                   ),
                                 ),
                               ),
@@ -347,7 +357,7 @@ class GoogleSignInButton extends StatelessWidget {
                   ),
                 );
 
-                return GoogleAuthButton(
+                return PRFGoogleAuthButton(
                   onPressed: () =>
                       context.read<GoogleSignInCubit>().signInwithGoogle(),
                   title: title,

@@ -1,7 +1,8 @@
-import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/get_mission_questions_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/add_mission_question/add_mission_question.dart';
+import 'package:app/features/home/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/record_sections.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/mission/prf_mission_question.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -19,13 +20,83 @@ class MissionQuestionsViewHandset extends StatefulWidget {
 }
 
 class _MissionQuestionsViewHandsetState
-    extends State<MissionQuestionsViewHandset> {
+    extends State<MissionQuestionsViewHandset>
+    with TimezoneMixin {
   String get missionUlid => widget.missionUlid;
+
+  Future<void> _showAddQuestionSheet() {
+    return PRFBottomSheet.show<void>(
+      context,
+      title: context.l10n.addQuestion,
+      child: AddMissionQuestionView(missionUlid: missionUlid),
+    );
+  }
+
+  Future<String?> _showEditQuestionSheet(PRFMissionQuestion missionQuestion) {
+    return PRFBottomSheet.show<String>(
+      context,
+      title: context.l10n.edit,
+      child: _MissionQuestionFormBody(
+        initialValue: missionQuestion.question,
+        submitLabel: 'Update',
+      ),
+    );
+  }
+
+  Future<void> _updateQuestion(PRFMissionQuestion missionQuestion) async {
+    final question = await _showEditQuestionSheet(missionQuestion);
+    if (question == null || question.trim().isEmpty || !mounted) {
+      return;
+    }
+
+    await context.read<MissionQuestionResourceCubit>().updateMissionQuestion(
+      ulid: missionQuestion.ulid,
+      missionUlid: missionUlid,
+      question: question.trim(),
+    );
+
+    if (!mounted) return;
+
+    final error = context.read<MissionQuestionResourceCubit>().state.mapOrNull(
+      error: (state) => state.message,
+    );
+    if (error != null) {
+      PRFSnackbar.error(context, error);
+      return;
+    }
+    PRFSnackbar.success(context, 'Question updated');
+  }
+
+  Future<void> _deleteQuestion(PRFMissionQuestion missionQuestion) async {
+    final shouldDelete = await PRFConfirmationDialog.show(
+      context,
+      title: '${context.l10n.delete} ${context.l10n.missionQuestion}',
+      message: 'Are you sure you want to continue?',
+      confirmLabel: context.l10n.delete,
+      isDestructive: true,
+    );
+
+    if (shouldDelete != true || !mounted) return;
+
+    await context.read<MissionQuestionResourceCubit>().deleteMissionQuestion(
+      missionQuestion.ulid,
+    );
+    if (!mounted) return;
+
+    final error = context.read<MissionQuestionResourceCubit>().state.mapOrNull(
+      error: (state) => state.message,
+    );
+    if (error != null) {
+      PRFSnackbar.error(context, error);
+      return;
+    }
+    PRFSnackbar.success(context, 'Question deleted');
+  }
 
   @override
   void initState() {
-    context.read<GetMissionQuestionsCubit>().getMissionQuestions(
-      missionUlid: missionUlid,
+    context.read<MissionQuestionResourceCubit>().loadAll(
+      filters: {'mission_ulid': missionUlid},
     );
     super.initState();
   }
@@ -34,183 +105,122 @@ class _MissionQuestionsViewHandsetState
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleStreamWrapper(
-      stream: getIt<IsarService>().missionQuestions.parentStream,
-      nullWidget: PRFEmptyView(
-        label: l10n.noQuestions,
-        description: l10n.questionsWillAppearHere,
-        icon: Icons.help_outline_rounded,
-      ),
-      widget: (context, missionQuestions) => RefreshIndicator(
-        onRefresh: () =>
-            context.read<GetMissionQuestionsCubit>().getMissionQuestions(
-              missionUlid: missionUlid,
-            ),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 64),
-          child: ListView.separated(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            itemCount: missionQuestions.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 0),
-            itemBuilder: (context, index) =>
-                BeautifulMissionQuestionCard(
-                      missionQuestion: missionQuestions[index],
-                      index: index,
-                    )
-                    .animate(delay: (index * 100).ms)
-                    .fadeIn()
-                    .slideX(begin: -0.3, end: 0),
+    return BlocBuilder<
+      MissionQuestionResourceCubit,
+      ResourceState<PRFMissionQuestion>
+    >(
+      builder: (context, state) {
+        final isLoading = state.maybeWhen(
+          listLoading: () => true,
+          orElse: () => false,
+        );
+        final error = state.mapOrNull(
+          error: (s) => s.message,
+        );
+        final questions = state.maybeWhen(
+          listLoaded: (items, _, _) => items,
+          mutating: (items, _) => items,
+          mutated: (items, _, _) => items,
+          orElse: () => <PRFMissionQuestion>[],
+        );
+
+        return MissionResourceTabView(
+          sectionTitle: 'Mission Questions',
+          addButtonLabel: l10n.addQuestion,
+          addButtonIcon: Icons.add_comment_outlined,
+          emptyLabel: l10n.noQuestions,
+          emptyDescription: l10n.questionsWillAppearHere,
+          isLoading: isLoading,
+          error: error,
+          isEmpty: questions.isEmpty,
+          onRefresh: () => context.read<MissionQuestionResourceCubit>().loadAll(
+            filters: {'mission_ulid': missionUlid},
           ),
-        ),
-      ),
+          onAdd: _showAddQuestionSheet,
+          items: [
+            for (int index = 0; index < questions.length; index++)
+              MissionResourceCard(
+                    title: questions[index].question.isEmpty
+                        ? 'Untitled question'
+                        : questions[index].question,
+                    subtitle:
+                        'Captured ${DateFormatter.formatDateTime(questions[index].createdAt, timezone)}',
+                    editTooltip: 'Edit question',
+                    onEdit: () => _updateQuestion(questions[index]),
+                    deleteTooltip: 'Delete question',
+                    onDelete: () => _deleteQuestion(questions[index]),
+                  )
+                  .animate(delay: (index * 100).ms)
+                  .fadeIn()
+                  .slideX(begin: -0.3, end: 0),
+          ],
+        );
+      },
     );
   }
 }
 
-class BeautifulMissionQuestionCard extends StatelessWidget with TimezoneMixin {
-  const BeautifulMissionQuestionCard({
-    required this.missionQuestion,
-    required this.index,
-    super.key,
+class _MissionQuestionFormBody extends StatefulWidget {
+  const _MissionQuestionFormBody({
+    required this.initialValue,
+    required this.submitLabel,
   });
 
-  final PRFLocalMissionQuestion missionQuestion;
-  final int index;
+  final String initialValue;
+  final String submitLabel;
+
+  @override
+  State<_MissionQuestionFormBody> createState() =>
+      _MissionQuestionFormBodyState();
+}
+
+class _MissionQuestionFormBodyState extends State<_MissionQuestionFormBody> {
+  late final TextEditingController _controller;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final l10n = context.l10n;
-
-    return Container(
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: .08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: .04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: .1),
-        ),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with question icon and type
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.quiz_outlined,
-                  color: theme.colorScheme.onPrimaryContainer,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.missionQuestion,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    _buildTimestampChip(theme),
-                  ],
-                ),
-              ),
-            ],
+          PRFTextAreaInput(
+            hintText: context.l10n.addQuestionDesc,
+            controller: _controller,
+            maxLines: 6,
+            errorText: _error,
           ),
-
-          // Question content
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest.withValues(
-                alpha: 0.3,
-              ),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: theme.colorScheme.outline.withValues(alpha: 0.2),
-              ),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.help_outline,
-                  color: theme.colorScheme.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    missionQuestion.question,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface,
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ).animate(effects: const [SaturateEffect()]);
-  }
-
-  Widget _buildTimestampChip(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.secondary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.secondary.withValues(alpha: 0.3),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.access_time,
-            size: 12,
-            color: theme.colorScheme.secondary,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            DateFormatter.formatDateTime(missionQuestion.createdAt, timezone),
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.secondary,
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-            ),
+          const SizedBox(height: PRFSpacingTokens.lg),
+          PRFPrimaryButton(
+            onPressed: _submit,
+            title: widget.submitLabel,
+            disabled: false,
           ),
         ],
       ),
     );
+  }
+
+  void _submit() {
+    final value = _controller.text.trim();
+    if (value.isEmpty) {
+      setState(() => _error = 'Question is required');
+      return;
+    }
+    Navigator.of(context).pop(value);
   }
 }

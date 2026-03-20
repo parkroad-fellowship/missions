@@ -1,4 +1,4 @@
-import 'package:app/features/home/shared/cubit/get_member_engagement_cubit.dart';
+import 'package:app/features/home/shared/cubit/member_engagement_resource_cubit.dart';
 import 'package:app/features/home/wrapped/_handset.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class _MissionsWrappedPageState extends State<MissionsWrappedPage> {
   void initState() {
     super.initState();
 
-    context.read<GetMemberEngagementCubit>().getMemberEngagement(
+    context.read<MemberEngagementResourceCubit>().loadEngagement(
       year: DateTime.now().year,
     );
   }

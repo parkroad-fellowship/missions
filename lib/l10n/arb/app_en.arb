@@ -176,6 +176,8 @@
     "@moduleDetails": {},
     "lessons": "Lessons",
     "@lessons": {},
+    "lessonResources": "Resources",
+    "@lessonResources": {},
     "lessonDetails": "Lesson Details",
     "@lessonDetails": {},
     "content": "Content",
@@ -194,6 +196,8 @@
     "@completed": {},
     "noCourses": "No courses",
     "@noCourses": {},
+    "recentCourses": "Recent Courses",
+    "@recentCourses": {},
     "yetToBeEnroled": "You are yet to be enroled for a course",
     "@yetToBeEnroled": {},
     "registerStudent": "Register as a new student",
@@ -223,6 +227,8 @@
     },
     "faq": "FAQs",
     "@faq": {},
+    "recentFaqs": "Recent FAQs",
+    "@recentFaqs": {},
     "noFaqs": "No FAQs",
     "@noFaqs": {},
     "myQuestions": "My Questions",
@@ -552,6 +558,8 @@
     "@suggestMissionSubTitle": {},
     "noSuggestedMissionGrounds": "No suggested mission grounds",
     "@noSuggestedMissionGrounds": {},
+    "recentSuggestions": "Recent Suggestions",
+    "@recentSuggestions": {},
     "missionGroundRecorded": "Your suggested mission to {ground} has been recorded",
     "@missionGroundRecorded": {
         "placeholders": {
@@ -620,7 +628,7 @@
     },
     "transcript": "Transcript",
     "@transcript": {},
-    "viewTranscript": "View transcript",
+    "viewTranscript": "Transcript",
     "@viewTranscript": {},
     "transcriptProcessing": "Transcript processing. Please wait.",
     "@transcriptProcessing": {},
@@ -704,8 +712,12 @@
     "@replied": {},
     "noModules": "No modules",
     "@noModules": {},
+    "recentModules": "Recent Modules",
+    "@recentModules": {},
     "noLessons": "No lessons",
     "@noLessons": {},
+    "recentLessons": "Recent Lessons",
+    "@recentLessons": {},
     "noSouls": "No souls",
     "@noSouls": {},
     "noSoulsDesc": "Please record any decisions for Jesus here",
@@ -732,6 +744,8 @@
     "@prayerRequests": {},
     "prayerRequest": "Prayer request",
     "@prayerRequest": {},
+    "recentPrayerRequests": "Recent Prayer Requests",
+    "@recentPrayerRequests": {},
     "prayerRequestSubmitted": "Your prayer request has been submitted.",
     "@prayerRequestSubmitted": {},
     "submit": "Submit",
@@ -866,6 +880,8 @@
     "@startGiving": {},
     "tapForActions": "Press for payment actions",
     "@tapForActions": {},
+    "recentPayments": "Recent Payments",
+    "@recentPayments": {},
     "tapToStartRecording": "Tap to start recording",
     "@tapToStartRecording": {},
     "recordingWillContinueInBackground": "Recording will continue even when the app goes to background",
@@ -892,6 +908,160 @@
     "@tryAgain": {},
     "wrapped": "View my impact",
     "@wrapped": {},
+    "wrappedTagline": "Missions Wrapped",
+    "@wrappedTagline": {},
+    "wrappedSwipeHint": "Swipe to feel your journey",
+    "@wrappedSwipeHint": {},
+    "wrappedYourYear": "Your {year}",
+    "@wrappedYourYear": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedMissionsTitle": "Your Mission Journey",
+    "@wrappedMissionsTitle": {},
+    "wrappedTotalMissions": "Total Missions",
+    "@wrappedTotalMissions": {},
+    "wrappedSchoolsReached": "Schools Reached",
+    "@wrappedSchoolsReached": {},
+    "wrappedCompletion": "Completion",
+    "@wrappedCompletion": {},
+    "wrappedMissionStreakTitle": "{count} mission streak",
+    "@wrappedMissionStreakTitle": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedMissionStreakSubtitle": "Consistency looks great on you",
+    "@wrappedMissionStreakSubtitle": {},
+    "wrappedImpactTitle": "Your Impact",
+    "@wrappedImpactTitle": {},
+    "wrappedSoulsTouched": "Souls Touched",
+    "@wrappedSoulsTouched": {},
+    "wrappedMostImpactfulMissionSubtitle": "Your most impactful mission reached {soulsCount} souls",
+    "@wrappedMostImpactfulMissionSubtitle": {
+        "placeholders": {
+            "soulsCount": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedDecisionTypes": "Decision Types",
+    "@wrappedDecisionTypes": {},
+    "wrappedDecisionTypesSubtitle": "Top categories from your mission impact",
+    "@wrappedDecisionTypesSubtitle": {},
+    "wrappedLearningTitle": "Your Learning Growth",
+    "@wrappedLearningTitle": {},
+    "wrappedCoursesCompleted": "Courses Completed",
+    "@wrappedCoursesCompleted": {},
+    "wrappedLessonsCompleted": "Lessons Completed",
+    "@wrappedLessonsCompleted": {},
+    "wrappedOverallProgress": "Overall Progress",
+    "@wrappedOverallProgress": {},
+    "wrappedLearningStreakTitle": "{count} day learning streak",
+    "@wrappedLearningStreakTitle": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedLearningStreakSubtitle": "Keep the momentum alive",
+    "@wrappedLearningStreakSubtitle": {},
+    "wrappedPrayerTitle": "Your Prayer Journey",
+    "@wrappedPrayerTitle": {},
+    "wrappedPrayerResponses": "Prayer Responses",
+    "@wrappedPrayerResponses": {},
+    "wrappedPrayerConsistencyTitle": "{count} days of prayer",
+    "@wrappedPrayerConsistencyTitle": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedPrayerConsistencySubtitle": "Your faith journey continues",
+    "@wrappedPrayerConsistencySubtitle": {},
+    "wrappedEventsTitle": "Your Event Participation",
+    "@wrappedEventsTitle": {},
+    "wrappedEventsAttended": "Events Attended",
+    "@wrappedEventsAttended": {},
+    "wrappedUpcomingEvents": "Upcoming Events",
+    "@wrappedUpcomingEvents": {},
+    "wrappedActiveParticipantTitle": "Active Participant",
+    "@wrappedActiveParticipantTitle": {},
+    "wrappedActiveParticipantSubtitle": "Thank you for being part of this community",
+    "@wrappedActiveParticipantSubtitle": {},
+    "wrappedSummaryTitle": "What a Year!",
+    "@wrappedSummaryTitle": {},
+    "wrappedHighlightsTitle": "{year} highlights",
+    "@wrappedHighlightsTitle": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedHighlightsSubtitle": "A snapshot of your impact this year",
+    "@wrappedHighlightsSubtitle": {},
+    "wrappedMissionsLabel": "Missions",
+    "@wrappedMissionsLabel": {},
+    "wrappedCoursesLabel": "Courses",
+    "@wrappedCoursesLabel": {},
+    "wrappedEventsLabel": "Events",
+    "@wrappedEventsLabel": {},
+    "wrappedThankYouSubtitle": "Thank you for making an impact in {year}!",
+    "@wrappedThankYouSubtitle": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedNextYearCta": "Let's make next year even better!",
+    "@wrappedNextYearCta": {},
+    "wrappedNoImpactDataTitle": "No Impact Data Yet",
+    "@wrappedNoImpactDataTitle": {},
+    "wrappedNoImpactDataDescription": "Start participating in missions and activities to see your impact wrapped!",
+    "@wrappedNoImpactDataDescription": {},
+    "wrappedGoBack": "Go Back",
+    "@wrappedGoBack": {},
+    "wrappedSomethingWentWrong": "Something Went Wrong",
+    "@wrappedSomethingWentWrong": {},
+    "wrappedTryAgain": "Try Again",
+    "@wrappedTryAgain": {},
+    "wrappedCloseSemantics": "Close wrapped",
+    "@wrappedCloseSemantics": {},
+    "wrappedSkipToSummary": "Skip",
+    "@wrappedSkipToSummary": {},
+    "wrappedSkipToSummarySemantics": "Skip to summary page",
+    "@wrappedSkipToSummarySemantics": {},
+    "wrappedPageSemantics": "Page {pageNumber}: {title}",
+    "@wrappedPageSemantics": {
+        "placeholders": {
+            "pageNumber": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "wrappedProgressSemantics": "Wrapped page {currentPage} of {totalPages}",
+    "@wrappedProgressSemantics": {
+        "placeholders": {
+            "currentPage": {
+                "type": "int"
+            },
+            "totalPages": {
+                "type": "int"
+            }
+        }
+    },
     "impact": "{year} Review",
     "@impact": {
         "placeholders": {

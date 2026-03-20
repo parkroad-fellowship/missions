@@ -1,4 +1,4 @@
-import 'package:app/features/home/shared/cubit/get_announcements_cubit.dart';
+import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart';
 import 'package:app/services/api/announcement_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -10,11 +10,9 @@ class AnnouncementsModule {
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
-      BlocProvider<GetAnnouncementsCubit>(
-        create: (context) => GetAnnouncementsCubit(
+      BlocProvider<AnnouncementResourceCubit>(
+        create: (context) => AnnouncementResourceCubit(
           announcementService: getIt(),
-          isarService: getIt(),
-          hiveService: getIt(),
         ),
       ),
     ];

@@ -1,0 +1,10 @@
+import 'package:app/models/remote/content/prf_faq_category.dart';
+import 'package:app/services/api/mission_faq_category_service.dart';
+import 'package:app/utils/crud/resource_cubit.dart';
+
+class FaqCategoryResourceCubit extends ResourceCubit<PRFFaqCategory> {
+  FaqCategoryResourceCubit({
+    required MissionFaqCategoryService missionFaqCategoryService,
+    super.dbService,
+  }) : super(service: missionFaqCategoryService);
+}

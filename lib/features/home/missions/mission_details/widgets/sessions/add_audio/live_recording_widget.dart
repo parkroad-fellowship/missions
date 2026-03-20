@@ -3,17 +3,19 @@ import 'dart:io';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/shared_widgets/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prf_design/prf_design.dart';
 
 class LiveRecordingWidget extends StatefulWidget {
   const LiveRecordingWidget({
     required this.onRecordingCompleted,
+    this.onMinimize,
     super.key,
   });
 
   final void Function(String filePath, Duration duration) onRecordingCompleted;
+  final VoidCallback? onMinimize;
 
   @override
   State<LiveRecordingWidget> createState() => _LiveRecordingWidgetState();
@@ -98,7 +100,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         return LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.sm,
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: state.when(
@@ -131,7 +135,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             shape: BoxShape.circle,
@@ -142,7 +146,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
             color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: PRFSpacingTokens.xl),
         Text(
           l10n.tapToStartRecording,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -150,7 +154,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: PRFSpacingTokens.md),
         Text(
           l10n.recordingWillContinueInBackground,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -160,7 +164,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: PRFSpacingTokens.sm),
         Text(
           'Recordings are saved locally and will upload when you are online.',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -170,19 +174,11 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 32),
-        ElevatedButton.icon(
+        const SizedBox(height: PRFSpacingTokens.xxl),
+        PRFDestroyButton(
           onPressed: () => context.read<AudioRecordingCubit>().startRecording(),
-          icon: const Icon(Icons.fiber_manual_record),
-          label: Text(l10n.startRecording),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.error,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-          ),
+          title: l10n.startRecording,
+          disabled: false,
         ),
       ],
     );
@@ -222,7 +218,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: PRFSpacingTokens.xl),
 
         // Recording duration
         Text(
@@ -233,7 +229,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: PRFSpacingTokens.md),
 
         Text(
           l10n.liveRecording,
@@ -244,7 +240,16 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 32),
+        const SizedBox(height: PRFSpacingTokens.xxl),
+
+        if (widget.onMinimize != null) ...[
+          PRFSecondaryButton(
+            onPressed: widget.onMinimize!,
+            title: 'Use app while recording',
+            disabled: false,
+          ),
+          const SizedBox(height: PRFSpacingTokens.lg),
+        ],
 
         // Control buttons
         Row(
@@ -252,39 +257,23 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           children: [
             // Pause button
             Flexible(
-              child: ElevatedButton.icon(
+              child: PRFSecondaryButton(
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().pauseRecording(),
-                icon: const Icon(Icons.pause),
-                label: Text(l10n.pause),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
+                title: l10n.pause,
+                disabled: false,
               ),
             ),
 
-            const SizedBox(width: 16),
+            const SizedBox(width: PRFSpacingTokens.lg),
 
             // Stop button
             Flexible(
-              child: ElevatedButton.icon(
+              child: PRFPrimaryButton(
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().stopRecording(),
-                icon: const Icon(Icons.stop),
-                label: Text(l10n.stop),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
+                title: l10n.stop,
+                disabled: false,
               ),
             ),
           ],
@@ -302,7 +291,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             color: Theme.of(
               context,
@@ -316,7 +305,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: PRFSpacingTokens.xl),
 
         Text(
           _formatDuration(duration),
@@ -326,7 +315,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: PRFSpacingTokens.md),
 
         Text(
           l10n.recordingPaused,
@@ -337,7 +326,16 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 32),
+        const SizedBox(height: PRFSpacingTokens.xxl),
+
+        if (widget.onMinimize != null) ...[
+          PRFSecondaryButton(
+            onPressed: widget.onMinimize!,
+            title: 'Use app while paused',
+            disabled: false,
+          ),
+          const SizedBox(height: PRFSpacingTokens.lg),
+        ],
 
         // Control buttons
         Row(
@@ -345,37 +343,21 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           children: [
             // Resume button
             Flexible(
-              child: ElevatedButton.icon(
+              child: PRFDestroyButton(
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().resumeRecording(),
-                icon: const Icon(Icons.play_arrow),
-                label: Text(l10n.resume),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
+                title: l10n.resume,
+                disabled: false,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: PRFSpacingTokens.lg),
             // Stop button
             Flexible(
-              child: ElevatedButton.icon(
+              child: PRFPrimaryButton(
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().stopRecording(),
-                icon: const Icon(Icons.stop),
-                label: Text(l10n.stop),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
+                title: l10n.stop,
+                disabled: false,
               ),
             ),
           ],
@@ -397,7 +379,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             shape: BoxShape.circle,
@@ -409,7 +391,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: PRFSpacingTokens.xl),
 
         Text(
           l10n.recordingCompleted,
@@ -419,13 +401,13 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           textAlign: TextAlign.center,
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: PRFSpacingTokens.md),
 
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(PRFSpacingTokens.lg),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
             border: Border.all(
               color: Theme.of(
                 context,
@@ -441,7 +423,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                     size: 20,
                     color: Theme.of(context).colorScheme.primary,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: PRFSpacingTokens.sm),
                   Expanded(
                     child: Text(
                       fileName,
@@ -453,7 +435,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: PRFSpacingTokens.sm),
               Row(
                 children: [
                   Icon(
@@ -463,7 +445,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                       context,
                     ).colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: PRFSpacingTokens.xs),
                   Text(
                     'Duration: ${_formatDuration(duration)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -478,17 +460,12 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 32),
+        const SizedBox(height: PRFSpacingTokens.xxl),
 
-        ElevatedButton.icon(
+        PRFPrimaryButton(
           onPressed: () => context.read<AudioRecordingCubit>().resetRecording(),
-          icon: const Icon(Icons.refresh),
-          label: Text(l10n.recordAnother),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          ),
+          title: l10n.recordAnother,
+          disabled: false,
         ),
       ],
     );
@@ -505,7 +482,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
             shape: BoxShape.circle,
@@ -517,7 +494,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           ),
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: PRFSpacingTokens.xl),
 
         Text(
           isPermissionError ? 'Permission Required' : l10n.recordingError,
@@ -528,7 +505,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           textAlign: TextAlign.center,
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: PRFSpacingTokens.md),
 
         Text(
           message,
@@ -540,34 +517,22 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           textAlign: TextAlign.center,
         ),
 
-        const SizedBox(height: 32),
+        const SizedBox(height: PRFSpacingTokens.xxl),
 
         if (isPermissionError) ...[
-          ElevatedButton.icon(
+          PRFPrimaryButton(
             onPressed: () =>
                 context.read<AudioRecordingCubit>().requestPermissions(),
-            icon: const Icon(Icons.settings),
-            label: Text(l10n.allow),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            ),
+            title: l10n.allow,
+            disabled: false,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: PRFSpacingTokens.lg),
         ],
 
-        ElevatedButton.icon(
+        PRFPrimaryButton(
           onPressed: () => context.read<AudioRecordingCubit>().resetRecording(),
-          icon: const Icon(Icons.refresh),
-          label: Text(l10n.tryAgain),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: isPermissionError
-                ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          ),
+          title: l10n.tryAgain,
+          disabled: false,
         ),
       ],
     );
