@@ -108,15 +108,15 @@ class _LandingPageState extends State<LandingPage> {
       ),
 
       // Community
-      LandingActionItem(
-        title: l10n.registerForEvent,
-        assetPath: 'assets/svgs/events.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.eventsRoute,
-        ),
-        animationDelay: 0,
-        deskGroup: 'Community',
-      ),
+      // LandingActionItem(
+      //   title: l10n.registerForEvent,
+      //   assetPath: 'assets/svgs/events.svg',
+      //   onTap: () => context.router.pushPath(
+      //     PRFSuperAppRouter.eventsRoute,
+      //   ),
+      //   animationDelay: 0,
+      //   deskGroup: 'Community',
+      // ),
       LandingActionItem(
         title: l10n.submitPrayerRequest,
         assetPath: 'assets/svgs/texting.svg',
