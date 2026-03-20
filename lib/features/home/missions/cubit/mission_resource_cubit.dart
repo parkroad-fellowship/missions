@@ -30,6 +30,9 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
   ];
 
   @override
+  Map<String, dynamic> get defaultFilters => {'upcoming': true};
+
+  @override
   String? get defaultOrderBy => 'start_date';
 
   @override
