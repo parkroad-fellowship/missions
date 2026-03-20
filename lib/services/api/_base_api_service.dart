@@ -238,10 +238,12 @@ abstract class BaseAPIService<T> {
     required String parentId,
     required String childPath,
     required String childId,
+    required String apiVersion,
   }) async {
     try {
       await _networkUtil.delete(
         '$endpoint/$parentId/$childPath/$childId',
+        apiVersion: apiVersion,
       );
     } catch (e) {
       rethrow;

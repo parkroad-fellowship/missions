@@ -64,9 +64,11 @@ class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
     );
     try {
       await _missionService.deleteChild(
+        
         parentId: missionUlid,
         childPath: 'media',
         childId: mediaUuid,
+        apiVersion: 'v2',
       );
       final updated = currentItems.where((m) => m.uuid != mediaUuid).toList();
       emit(
