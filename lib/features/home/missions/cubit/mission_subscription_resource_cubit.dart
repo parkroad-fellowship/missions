@@ -26,6 +26,7 @@ class MissionSubscriptionResourceCubit
   List<String> get defaultIncludes => [
     'member.profilePicture',
     'mission.school',
+    'mission.schoolTerm',
     'mission.missionType',
     'mission.school.schoolContacts.contactType',
     'mission.loggedInMemberMissionSubscription',

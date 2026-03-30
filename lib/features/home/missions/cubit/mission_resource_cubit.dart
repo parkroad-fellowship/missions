@@ -57,13 +57,12 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
   @override
   List<String> get defaultIncludes => [
     'school',
+    'schoolTerm',
     'missionType',
     'school.schoolContacts.contactType',
     'loggedInMemberMissionSubscription',
     'weatherForecasts',
     'accountingEvent',
-    'accountingEvent.refunds',
-    'accountingEvent.latestRefund',
   ];
 
   @override

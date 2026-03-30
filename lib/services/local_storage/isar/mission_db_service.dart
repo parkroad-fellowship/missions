@@ -6,6 +6,7 @@ import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar_community/isar.dart';
+import 'package:logger/logger.dart';
 
 class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
   MissionDbService({required super.prfDBInstance});
@@ -15,6 +16,9 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
 
   @override
   PRFLocalMission remoteToLocal(PRFMission remote) {
+    Logger().f('Converting PRFMission with ulid ${remote.ulid} to PRFLocalMission');
+    Logger().w(remote.toJson());
+
     final missionType = remote.missionType!;
     final school = remote.school!;
     final contacts = remote.school!.contacts!;

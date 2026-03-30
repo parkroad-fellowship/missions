@@ -17,9 +17,12 @@ class PastMissionResourceCubit extends ResourceCubit<PRFMission> {
   @override
   List<String> get defaultIncludes => [
     'school',
+    'schoolTerm',
     'missionType',
+    'school.schoolContacts.contactType',
     'loggedInMemberMissionSubscription',
     'weatherForecasts',
+    'accountingEvent',
   ];
 
   @override
