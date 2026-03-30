@@ -48,14 +48,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
   @override
   void initState() {
     super.initState();
-    // Sessions are already loaded by the parent mission details page.
-    // If not loaded yet, fetch all sessions for this mission.
-    final state = context.read<MissionSessionResourceCubit>().state;
-    if (state is ResourceInitial<PRFMissionSession>) {
-      context.read<MissionSessionResourceCubit>().loadAll(
-        filters: {'mission_ulid': missionUlid},
-      );
-    }
+    context.read<MissionSessionResourceCubit>().loadSession(
+      missionSessionUlid: missionSessionUlid,
+    );
   }
 
   Future<void> _showAddAudioSheet() {
@@ -121,9 +116,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     // Resolve session from cubit state
     final sessionState = context.watch<MissionSessionResourceCubit>().state;
     final missionSession = sessionState.maybeWhen(
+      itemLoaded: (item, _) => item,
       listLoaded: (items, _, _) => items.firstWhereOrNull(
         (item) => item.ulid == missionSessionUlid,
       ),
+      itemLoading: (_, item) => item,
+      itemError: (_, __, item) => item,
       orElse: () => null,
     );
     final allTranscripts =
@@ -165,8 +163,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
               ],
               child: RefreshIndicator(
                 onRefresh: () =>
-                    context.read<MissionSessionResourceCubit>().loadAll(
-                      filters: {'mission_ulid': missionUlid},
+                    context.read<MissionSessionResourceCubit>().loadSession(
+                      missionSessionUlid: missionSessionUlid,
+                      refresh: true,
                     ),
                 child: CustomScrollView(
                   slivers: [
@@ -192,10 +191,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             loaded: (_) {
                               context
                                   .read<MissionSessionResourceCubit>()
-                                  .loadAll(
-                                    filters: {
-                                      'mission_ulid': missionUlid,
-                                    },
+                                  .loadSession(
+                                    missionSessionUlid: missionSessionUlid,
+                                    refresh: true,
                                   );
                               PRFSnackbar.success(context, l10n.doneUploading);
                             },
@@ -257,6 +255,23 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             ResourceState<PRFMissionSession>
                           >(
                             builder: (context, state) => state.maybeWhen(
+                              itemLoading: (_, __) => Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: PRFSpacingTokens.lg,
+                                ),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.lg,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.smd,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: PRFLinearProgressIndicator(),
+                                ),
+                              ),
                               listLoading: () => Container(
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: PRFSpacingTokens.lg,
@@ -275,6 +290,32 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                 ),
                               ),
                               error: (message, _) => Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: PRFSpacingTokens.lg,
+                                ),
+                                padding: const EdgeInsets.all(
+                                  PRFSpacingTokens.lg,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.error.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(
+                                    PRFRadiusTokens.smd,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    message,
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              itemError: (message, _, __) => Container(
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: PRFSpacingTokens.lg,
                                 ),
@@ -878,8 +919,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     );
 
     if (!mounted) return;
-    await context.read<MissionSessionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+    await context.read<MissionSessionResourceCubit>().loadSession(
+      missionSessionUlid: missionSessionUlid,
+      refresh: true,
     );
   }
 }
@@ -1042,8 +1084,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
       return;
     }
 
-    await context.read<MissionSessionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+    await context.read<MissionSessionResourceCubit>().loadSession(
+      missionSessionUlid: missionSession.ulid,
+      refresh: true,
     );
     if (!context.mounted) return;
 

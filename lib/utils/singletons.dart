@@ -167,11 +167,15 @@ class Singletons {
 
       // --- ResourceCubit replacements: Missions ---
       BlocProvider<MissionResourceCubit>(
-        create: (context) => MissionResourceCubit(missionService: getIt()),
+        create: (context) => MissionResourceCubit(
+          missionService: getIt(),
+          dbService: getIt<IsarService>().missions,
+        ),
       ),
       BlocProvider<MissionSubscriptionResourceCubit>(
         create: (context) => MissionSubscriptionResourceCubit(
           missionSubscriptionService: getIt(),
+          dbService: getIt<IsarService>().missionSubscriptions,
         ),
       ),
       BlocProvider<ClassGroupResourceCubit>(
@@ -180,21 +184,27 @@ class Singletons {
         ),
       ),
       BlocProvider<SoulResourceCubit>(
-        create: (context) => SoulResourceCubit(soulService: getIt()),
+        create: (context) => SoulResourceCubit(
+          soulService: getIt(),
+          dbService: getIt<IsarService>().souls,
+        ),
       ),
       BlocProvider<DebriefNoteResourceCubit>(
         create: (context) => DebriefNoteResourceCubit(
           debriefNoteService: getIt(),
+          dbService: getIt<IsarService>().debriefNotes,
         ),
       ),
       BlocProvider<MissionQuestionResourceCubit>(
         create: (context) => MissionQuestionResourceCubit(
           missionQuestionService: getIt(),
+          dbService: getIt<IsarService>().missionQuestions,
         ),
       ),
       BlocProvider<MissionSessionResourceCubit>(
         create: (context) => MissionSessionResourceCubit(
           missionSessionService: getIt(),
+          dbService: getIt<IsarService>().missionSessions,
         ),
       ),
       BlocProvider<MissionMediaResourceCubit>(

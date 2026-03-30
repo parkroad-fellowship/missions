@@ -53,13 +53,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
     _tabController = TabController(length: _tabCount, vsync: this);
 
-    final missionCubit = context.read<MissionResourceCubit>();
-    final alreadyHasMission = missionCubit.currentItems.any(
-      (m) => m.ulid == missionUlid,
-    );
-    if (!alreadyHasMission) {
-      missionCubit.loadAll();
-    }
+    context.read<MissionResourceCubit>().loadMission(missionUlid: missionUlid);
+
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
     );
@@ -107,7 +102,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       ResourceState<PRFMission>
                     >(
                       builder: (context, state) => state.maybeWhen(
-                        listLoading: () => const SizedBox.square(
+                        itemLoading: (_, __) => const SizedBox.square(
                           dimension: 24,
                           child: PRFCircularProgressIndicator(),
                         ),
@@ -162,26 +157,29 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             child: BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
               builder: (context, state) {
                 final mission = state.maybeWhen(
+                  itemLoaded: (item, _) => item,
                   listLoaded: (items, _, _) => items.firstWhereOrNull(
                     (m) => m.ulid == missionUlid,
                   ),
+                  itemLoading: (_, item) => item,
                   mutating: (items, _) => items.firstWhereOrNull(
                     (m) => m.ulid == missionUlid,
                   ),
                   mutated: (items, _, _) => items.firstWhereOrNull(
                     (m) => m.ulid == missionUlid,
                   ),
+                  itemError: (_, __, item) => item,
                   orElse: () => null,
                 );
 
-                if (state is ResourceListLoading<PRFMission> &&
+                if (state is ResourceItemLoading<PRFMission> &&
                     mission == null) {
                   return const Center(
                     child: PRFCircularProgressIndicator(),
                   );
                 }
 
-                if (mission == null && state is ResourceError<PRFMission>) {
+                if (mission == null && state is ResourceItemError<PRFMission>) {
                   return Center(
                     child: PRFErrorView.fromMessage(
                       message: state.message,

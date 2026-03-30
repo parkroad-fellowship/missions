@@ -65,12 +65,50 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   /// Extracts the current list from whatever state we are in.
   List<T> get currentItems {
     return state.maybeWhen(
+      itemLoading: (items, _) => items,
       listLoaded: (items, _, _) => items,
+      itemLoaded: (_, items) => items,
       mutating: (items, _) => items,
       mutated: (items, _, _) => items,
       error: (_, items) => items,
+      itemError: (_, items, __) => items,
       orElse: () => [],
     );
+  }
+
+  T? get currentItem {
+    return state.maybeWhen(
+      itemLoading: (_, item) => item,
+      itemLoaded: (item, _) => item,
+      mutated: (_, _, item) => item,
+      itemError: (_, __, item) => item,
+      orElse: () => null,
+    );
+  }
+
+  T? _firstWhereOrNull(
+    List<T> source,
+    bool Function(T item) predicate,
+  ) {
+    for (final item in source) {
+      if (predicate(item)) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  List<T> _upsertCurrentItems(
+    T item,
+    bool Function(T existing) matchById,
+  ) {
+    final items = [...currentItems];
+    final index = items.indexWhere(matchById);
+    if (index >= 0) {
+      items[index] = item;
+      return items;
+    }
+    return [item, ...items];
   }
 
   /// Override in subclasses to refresh Isar streams after data persistence.
@@ -84,6 +122,11 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   }) async {
     await dbService?.refreshStream();
   }
+
+  /// Override in subclasses when local cache types differ from remote models.
+  ///
+  /// Return a hydrated remote entity for [id] from local storage when possible.
+  Future<T?> loadCachedItem(String id) async => null;
 
   /// Fetch the full list of resources.
   /// On API failure with Isar available, falls back to cached data.
@@ -168,6 +211,95 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       _logger.e('Error loading more resources', error: e, stackTrace: s);
       emit(ResourceState.error(message: e.toString(), items: currentItems));
     }
+  }
+
+  /// Fetch a single resource for detail screens while preserving CRUD list state.
+  Future<T?> loadOne({
+    required String id,
+    required bool Function(T item) matchById,
+    List<String>? includes,
+    bool refresh = false,
+  }) async {
+    final existing = _firstWhereOrNull(currentItems, matchById);
+
+    if (existing != null && !refresh) {
+      emit(ResourceState.itemLoaded(item: existing, items: currentItems));
+      return existing;
+    }
+
+    if (!refresh) {
+      final cached = await loadCachedItem(id);
+      if (cached != null) {
+        emit(
+          ResourceState.itemLoaded(
+            item: cached,
+            items: _upsertCurrentItems(cached, matchById),
+          ),
+        );
+        return cached;
+      }
+    }
+
+    emit(ResourceState.itemLoading(items: currentItems, item: existing));
+
+    try {
+      final item = await _service.get(
+        ulid: id,
+        includes: includes ?? defaultIncludes,
+      );
+
+      await dbService?.persistEntity(item);
+      await refreshIsarStreams(filters: _lastFilters);
+
+      emit(
+        ResourceState.itemLoaded(
+          item: item,
+          items: _upsertCurrentItems(item, matchById),
+        ),
+      );
+      return item;
+    } on Failure catch (e) {
+      final cached = await loadCachedItem(id);
+      if (cached != null) {
+        emit(
+          ResourceState.itemLoaded(
+            item: cached,
+            items: _upsertCurrentItems(cached, matchById),
+          ),
+        );
+        return cached;
+      }
+
+      emit(
+        ResourceState.itemError(
+          message: e.message,
+          items: currentItems,
+          item: existing,
+        ),
+      );
+    } catch (e, s) {
+      final cached = await loadCachedItem(id);
+      if (cached != null) {
+        emit(
+          ResourceState.itemLoaded(
+            item: cached,
+            items: _upsertCurrentItems(cached, matchById),
+          ),
+        );
+        return cached;
+      }
+
+      _logger.e('Error loading single resource', error: e, stackTrace: s);
+      emit(
+        ResourceState.itemError(
+          message: e.toString(),
+          items: currentItems,
+          item: existing,
+        ),
+      );
+    }
+
+    return existing;
   }
 
   /// Create a new resource and prepend it to the in-memory list.

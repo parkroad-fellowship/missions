@@ -60,12 +60,15 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     // Extract accountingEventUlid from existing cubit state.
     final missionState = context.read<MissionResourceCubit>().state;
     final mission = missionState.maybeWhen(
+      itemLoaded: (item, _) => item,
       listLoaded: (items, _, _) => items.firstWhereOrNull(
         (m) => m.ulid == missionUlid,
       ),
+      itemLoading: (_, item) => item,
       mutated: (items, _, _) => items.firstWhereOrNull(
         (m) => m.ulid == missionUlid,
       ),
+      itemError: (_, __, item) => item,
       orElse: () => null,
     );
 
@@ -91,9 +94,24 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
+              itemLoaded: (mission, _) {
+                accountingEventUlid = mission.accountingEvent?.ulid;
+                if (accountingEventUlid != null) {
+                  context.read<AllocationEntryResourceCubit>().loadAll(
+                    filters: {
+                      'accounting_event_ulid': accountingEventUlid,
+                    },
+                  );
+                }
+              },
               listLoaded: (missions, _, _) {
                 if (missions.isNotEmpty) {
-                  final mission = missions.first;
+                  final mission = missions.firstWhereOrNull(
+                    (item) => item.ulid == missionUlid,
+                  );
+                  if (mission == null) {
+                    return;
+                  }
                   accountingEventUlid = mission.accountingEvent?.ulid;
                   if (accountingEventUlid != null) {
                     context.read<AllocationEntryResourceCubit>().loadAll(
@@ -198,6 +216,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                   child: PRFLinearProgressIndicator(),
                 ),
+                itemLoading: (_, __) => const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFLinearProgressIndicator(),
+                ),
                 listLoaded: (entries, _, _) {
                   if (entries.isEmpty) {
                     return const Padding(
@@ -213,6 +237,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   }
                   return _buildLoadedView(context, l10n, entries);
                 },
+                itemLoaded: (_, entries) => _buildLoadedView(
+                  context,
+                  l10n,
+                  entries,
+                ),
                 mutating: (_, _) => const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,
@@ -222,6 +251,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 mutated: (entries, _, _) =>
                     _buildLoadedView(context, l10n, entries),
                 error: (message, _) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.lg,
+                  ),
+                  child: PRFEmptyView(
+                    label: 'Error',
+                    description: message,
+                    icon: Icons.error_outline,
+                    actionLabel: 'Retry',
+                    onActionPressed: _loadData,
+                  ),
+                ),
+                itemError: (message, _, __) => Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,
                   ),

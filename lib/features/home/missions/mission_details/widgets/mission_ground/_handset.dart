@@ -37,12 +37,15 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
       builder: (context, state) {
         final mission = state.maybeWhen(
+          itemLoaded: (item, _) => item,
           listLoaded: (items, _, _) => items.firstWhereOrNull(
             (m) => m.ulid == missionUlid,
           ),
+          itemLoading: (_, item) => item,
           mutating: (items, _) => items.firstWhereOrNull(
             (m) => m.ulid == missionUlid,
           ),
+          itemError: (_, __, item) => item,
           orElse: () => null,
         );
 

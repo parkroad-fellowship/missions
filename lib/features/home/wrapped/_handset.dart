@@ -53,6 +53,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
         return state.when(
           initial: () => _buildLoadingState(theme),
           listLoading: () => _buildLoadingState(theme),
+          itemLoading: (_, __) => _buildLoadingState(theme),
           listLoaded: (memberEngagementList, _, _) {
             if (memberEngagementList.isEmpty) {
               return _buildEmptyState();
@@ -256,9 +257,16 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               ),
             );
           },
+          itemLoaded: (_, memberEngagementList) {
+            if (memberEngagementList.isEmpty) {
+              return _buildEmptyState();
+            }
+            return _buildLoadingState(theme);
+          },
           mutating: (_, _) => _buildLoadingState(theme),
           mutated: (_, _, _) => _buildLoadingState(theme),
           error: (message, _) => _buildErrorState(message),
+          itemError: (message, _, __) => _buildErrorState(message),
         );
       },
     );
