@@ -1,7 +1,6 @@
 import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/past_mission_resource_cubit.dart';
@@ -24,6 +23,7 @@ import 'package:app/services/api/mission_service.dart';
 import 'package:app/services/api/mission_session_service.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:app/services/api/soul_service.dart';
+import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -58,16 +58,19 @@ class MissionsModule {
       BlocProvider<MissionResourceCubit>(
         create: (context) => MissionResourceCubit(
           missionService: getIt(),
+          dbService: getIt<IsarService>().missions,
         ),
       ),
       BlocProvider<PastMissionResourceCubit>(
         create: (context) => PastMissionResourceCubit(
           missionService: getIt(),
+          dbService: getIt<IsarService>().missions,
         ),
       ),
       BlocProvider<MissionSubscriptionResourceCubit>(
         create: (context) => MissionSubscriptionResourceCubit(
           missionSubscriptionService: getIt(),
+          dbService: getIt<IsarService>().missionSubscriptions,
         ),
       ),
       BlocProvider<ClassGroupResourceCubit>(
@@ -78,21 +81,25 @@ class MissionsModule {
       BlocProvider<SoulResourceCubit>(
         create: (context) => SoulResourceCubit(
           soulService: getIt(),
+          dbService: getIt<IsarService>().souls,
         ),
       ),
       BlocProvider<DebriefNoteResourceCubit>(
         create: (context) => DebriefNoteResourceCubit(
           debriefNoteService: getIt(),
+          dbService: getIt<IsarService>().debriefNotes,
         ),
       ),
       BlocProvider<MissionQuestionResourceCubit>(
         create: (context) => MissionQuestionResourceCubit(
           missionQuestionService: getIt(),
+          dbService: getIt<IsarService>().missionQuestions,
         ),
       ),
       BlocProvider<MissionSessionResourceCubit>(
         create: (context) => MissionSessionResourceCubit(
           missionSessionService: getIt(),
+          dbService: getIt<IsarService>().missionSessions,
         ),
       ),
       BlocProvider<MissionMediaResourceCubit>(
@@ -119,13 +126,6 @@ class MissionsModule {
         create: (context) => WithdrawCubit(
           missionSubscriptionService: getIt(),
           hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetMemberMissionSubscriptionsCubit>(
-        create: (context) => GetMemberMissionSubscriptionsCubit(
-          missionSubscriptionService: getIt(),
-          hiveService: getIt(),
-          isarService: getIt(),
         ),
       ),
       BlocProvider<SelectMediaCubit>(

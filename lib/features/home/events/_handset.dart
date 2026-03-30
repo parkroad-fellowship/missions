@@ -183,10 +183,6 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
             }
             Logger().e(events);
 
-            // Sort events by start date for timeline
-            final sortedEvents = List<PRFEvent>.from(events)
-              ..sort((a, b) => a.startDate.compareTo(b.startDate));
-
             return RefreshIndicator(
               onRefresh: () => context.read<EventResourceCubit>().loadAll(),
               child: ListView.builder(
@@ -195,10 +191,10 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                   horizontal: PRFSpacingTokens.lg,
                   vertical: PRFSpacingTokens.xl,
                 ),
-                itemCount: sortedEvents.length,
+                itemCount: events.length,
                 itemBuilder: (context, index) {
-                  final event = sortedEvents[index];
-                  final isLast = index == sortedEvents.length - 1;
+                  final event = events[index];
+                  final isLast = index == events.length - 1;
 
                   return TimelineEventCard(
                         event: event,
@@ -274,12 +270,10 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
             }
             Logger().e(eventSubscriptions);
 
-            final events =
-                eventSubscriptions
-                    .map((subscription) => subscription.event)
-                    .whereType<PRFEvent>()
-                    .toList()
-                  ..sort((a, b) => a.startDate.compareTo(b.startDate));
+            final events = eventSubscriptions
+                .map((subscription) => subscription.event)
+                .whereType<PRFEvent>()
+                .toList();
 
             return RefreshIndicator(
               onRefresh: () =>

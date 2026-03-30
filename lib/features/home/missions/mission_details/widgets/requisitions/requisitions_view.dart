@@ -38,10 +38,13 @@ class _RequisitionsViewState extends State<RequisitionsView> {
   void _loadRequisitions() {
     final missionState = context.read<MissionResourceCubit>().state;
     final mission = missionState.maybeWhen(
+      itemLoaded: (item, _) => item,
       listLoaded: (items, _, _) =>
           items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
+      itemLoading: (_, item) => item,
       mutated: (items, _, _) =>
           items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
+      itemError: (_, _, item) => item,
       orElse: () => null,
     );
 
@@ -58,10 +61,13 @@ class _RequisitionsViewState extends State<RequisitionsView> {
     return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
       builder: (context, missionState) {
         final mission = missionState.maybeWhen(
+          itemLoaded: (item, _) => item,
           listLoaded: (items, _, _) =>
               items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
+          itemLoading: (_, item) => item,
           mutated: (items, _, _) =>
               items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
+          itemError: (_, _, item) => item,
           orElse: () => null,
         );
 
@@ -88,7 +94,18 @@ class _RequisitionsViewState extends State<RequisitionsView> {
                   child: PRFCircularProgressIndicator(),
                 ),
               ),
+              itemLoading: (_, _) => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(PRFSpacingTokens.xxl),
+                  child: PRFCircularProgressIndicator(),
+                ),
+              ),
               listLoaded: (requisitions, _, _) => _buildContent(
+                context,
+                accountingEvent: accountingEvent,
+                requisitions: requisitions,
+              ),
+              itemLoaded: (_, requisitions) => _buildContent(
                 context,
                 accountingEvent: accountingEvent,
                 requisitions: requisitions,
@@ -104,6 +121,12 @@ class _RequisitionsViewState extends State<RequisitionsView> {
                 requisitions: requisitions,
               ),
               error: (message, requisitions) => _buildContent(
+                context,
+                accountingEvent: accountingEvent,
+                requisitions: requisitions,
+                errorMessage: message,
+              ),
+              itemError: (message, requisitions, _) => _buildContent(
                 context,
                 accountingEvent: accountingEvent,
                 requisitions: requisitions,

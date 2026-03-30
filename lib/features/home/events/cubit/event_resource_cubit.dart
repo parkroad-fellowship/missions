@@ -18,10 +18,7 @@ class EventResourceCubit extends ResourceCubit<PRFEvent> {
   ];
 
   @override
-  String? get defaultOrderBy => 'start_date';
-
-  @override
-  String? get defaultOrderDirection => 'asc';
+  String? get defaultSortBy => '-start_date';
 
   @override
   Map<String, dynamic> get defaultFilters => {

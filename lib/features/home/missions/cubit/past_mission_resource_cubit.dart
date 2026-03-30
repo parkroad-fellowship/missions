@@ -1,3 +1,4 @@
+import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart'
     show MissionResourceCubit;
 import 'package:app/models/remote/mission/prf_mission.dart';
@@ -16,17 +17,24 @@ class PastMissionResourceCubit extends ResourceCubit<PRFMission> {
   @override
   List<String> get defaultIncludes => [
     'school',
+    'schoolTerm',
     'missionType',
+    'school.schoolContacts.contactType',
     'loggedInMemberMissionSubscription',
     'weatherForecasts',
+    'accountingEvent',
   ];
 
   @override
-  Map<String, dynamic> get defaultFilters => {'past': true};
+  Map<String, dynamic> get defaultFilters => {
+    'past': true,
+    'status_keys': [
+      PRFMissionStatus.approved.apiKey,
+      PRFMissionStatus.fullySubscribed.apiKey,
+      PRFMissionStatus.serviced.apiKey,
+    ].join(','),
+  };
 
   @override
-  String? get defaultOrderBy => 'start_date';
-
-  @override
-  String? get defaultOrderDirection => 'desc';
+  String? get defaultSortBy => '-start_date';
 }
