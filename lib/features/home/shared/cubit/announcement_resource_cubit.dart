@@ -9,8 +9,5 @@ class AnnouncementResourceCubit extends ResourceCubit<PRFAnnouncement> {
   }) : super(service: announcementService);
 
   @override
-  String? get defaultOrderBy => 'published_at';
-
-  @override
-  String? get defaultOrderDirection => 'desc';
+  String? get defaultSortBy => '-published_at';
 }

@@ -42,8 +42,5 @@ class MissionSubscriptionResourceCubit
   };
 
   @override
-  String? get defaultOrderDirection => 'desc';
-
-  @override
-  String? get defaultOrderBy => 'created_at';
+  String? get defaultSortBy => '-created_at';
 }

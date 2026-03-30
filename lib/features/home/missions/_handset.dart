@@ -188,9 +188,6 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               );
             }
 
-            final sortedMissions = List<PRFMission>.from(missions)
-              ..sort((a, b) => a.startDate.compareTo(b.startDate));
-
             return RefreshIndicator(
               onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
               child: ListView.builder(
@@ -199,10 +196,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                   horizontal: PRFSpacingTokens.lg,
                   vertical: PRFSpacingTokens.xl,
                 ),
-                itemCount: sortedMissions.length,
+                itemCount: missions.length,
                 itemBuilder: (context, index) {
-                  final mission = sortedMissions[index];
-                  final isLast = index == sortedMissions.length - 1;
+                  final mission = missions[index];
+                  final isLast = index == missions.length - 1;
                   return _buildTimelineMissionCard(
                         context,
                         mission: mission,
@@ -266,15 +263,13 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             child: PRFCircularProgressIndicator(),
           ),
           listLoaded: (subscriptions, _, _) {
-            final missions =
-                subscriptions
-                    .map((subscription) => subscription.mission)
-                    .whereType<PRFMission>()
-                    .groupListsBy((mission) => mission.ulid)
-                    .values
-                    .map((missionGroup) => missionGroup.first)
-                    .toList()
-                  ..sort((a, b) => a.startDate.compareTo(b.startDate));
+            final missions = subscriptions
+                .map((subscription) => subscription.mission)
+                .whereType<PRFMission>()
+                .groupListsBy((mission) => mission.ulid)
+                .values
+                .map((missionGroup) => missionGroup.first)
+                .toList();
 
             if (missions.isEmpty) {
               return RefreshIndicator(

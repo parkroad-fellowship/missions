@@ -75,10 +75,7 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
   };
 
   @override
-  String? get defaultOrderBy => 'start_date';
-
-  @override
-  String? get defaultOrderDirection => 'asc';
+  String? get defaultSortBy => '-start_date';
 
   PRFMission _toRemoteMission(PRFLocalMission local) {
     final school = local.school;

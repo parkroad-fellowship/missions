@@ -36,8 +36,5 @@ class PastMissionResourceCubit extends ResourceCubit<PRFMission> {
   };
 
   @override
-  String? get defaultOrderBy => 'start_date';
-
-  @override
-  String? get defaultOrderDirection => 'desc';
+  String? get defaultSortBy => '-start_date';
 }

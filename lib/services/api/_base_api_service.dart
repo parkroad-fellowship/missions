@@ -22,8 +22,7 @@ abstract class BaseAPIService<T> {
     List<String>? includes,
     int? limit,
     int? page,
-    String? orderBy,
-    String? orderDirection,
+    String? sortBy,
   }) async {
     try {
       final queryParameters = <String, dynamic>{};
@@ -53,11 +52,8 @@ abstract class BaseAPIService<T> {
       }
 
       // Add ordering if provided
-      if (orderBy != null) {
-        queryParameters['order_by'] = orderBy;
-      }
-      if (orderDirection != null) {
-        queryParameters['order_direction'] = orderDirection;
+      if (sortBy != null) {
+        queryParameters['sort'] = sortBy;
       }
 
       final res = await _networkUtil.get(

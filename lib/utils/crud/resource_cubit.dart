@@ -59,8 +59,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   List<String> get defaultIncludes => [];
   Map<String, dynamic> get defaultFilters => {};
   int? get defaultLimit => null;
-  String? get defaultOrderBy => null;
-  String? get defaultOrderDirection => null;
+  String? get defaultSortBy => null;
 
   /// Extracts the current list from whatever state we are in.
   List<T> get currentItems {
@@ -135,8 +134,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     List<String>? includes,
     int? limit,
     int? page,
-    String? orderBy,
-    String? orderDirection,
+    String? sortBy,
   }) async {
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
@@ -148,8 +146,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         includes: includes ?? defaultIncludes,
         limit: limit ?? defaultLimit,
         page: page,
-        orderBy: orderBy ?? defaultOrderBy,
-        orderDirection: orderDirection ?? defaultOrderDirection,
+        sortBy: sortBy ?? defaultSortBy,
       );
 
       await dbService?.persistEntities(items);
@@ -181,8 +178,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     Map<String, dynamic>? filters,
     List<String>? includes,
     int? limit,
-    String? orderBy,
-    String? orderDirection,
+    String? sortBy,
   }) async {
     final mergedFilters = {...defaultFilters, ...?filters};
     try {
@@ -191,8 +187,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         includes: includes ?? defaultIncludes,
         limit: limit ?? defaultLimit,
         page: page,
-        orderBy: orderBy ?? defaultOrderBy,
-        orderDirection: orderDirection ?? defaultOrderDirection,
+        sortBy: sortBy ?? defaultSortBy,
       );
 
       await dbService?.persistEntities(newItems);
