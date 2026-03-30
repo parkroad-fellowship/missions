@@ -44,7 +44,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
       itemLoading: (_, item) => item,
       mutated: (items, _, _) =>
           items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
-      itemError: (_, __, item) => item,
+      itemError: (_, _, item) => item,
       orElse: () => null,
     );
 
@@ -67,7 +67,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           itemLoading: (_, item) => item,
           mutated: (items, _, _) =>
               items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
-          itemError: (_, __, item) => item,
+          itemError: (_, _, item) => item,
           orElse: () => null,
         );
 
@@ -94,7 +94,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
                   child: PRFCircularProgressIndicator(),
                 ),
               ),
-              itemLoading: (_, __) => const Center(
+              itemLoading: (_, _) => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(PRFSpacingTokens.xxl),
                   child: PRFCircularProgressIndicator(),

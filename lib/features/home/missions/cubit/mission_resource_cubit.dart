@@ -1,6 +1,7 @@
 import 'package:app/enums/member/prf_institution_type.dart';
 import 'package:app/enums/member/prf_responsible_desk.dart';
 import 'package:app/enums/mission/prf_mission_role.dart';
+import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/models/local/mission/prf_member_mission.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
@@ -66,7 +67,13 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
   ];
 
   @override
-  Map<String, dynamic> get defaultFilters => {'upcoming': true};
+  Map<String, dynamic> get defaultFilters => {
+    'upcoming': true,
+    'status_keys': [
+      PRFMissionStatus.approved.apiKey,
+      PRFMissionStatus.fullySubscribed.apiKey,
+    ].join(','),
+  };
 
   @override
   String? get defaultOrderBy => 'start_date';

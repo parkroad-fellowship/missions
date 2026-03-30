@@ -71,7 +71,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       mutating: (items, _) => items,
       mutated: (items, _, _) => items,
       error: (_, items) => items,
-      itemError: (_, items, __) => items,
+      itemError: (_, items, _) => items,
       orElse: () => [],
     );
   }
@@ -81,7 +81,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       itemLoading: (_, item) => item,
       itemLoaded: (item, _) => item,
       mutated: (_, _, item) => item,
-      itemError: (_, __, item) => item,
+      itemError: (_, _, item) => item,
       orElse: () => null,
     );
   }

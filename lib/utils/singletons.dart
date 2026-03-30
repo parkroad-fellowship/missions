@@ -17,7 +17,6 @@ import 'package:app/features/home/mission_ground_suggestions/cubit/ground_sugges
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
@@ -231,13 +230,6 @@ class Singletons {
         create: (context) => WithdrawCubit(
           missionSubscriptionService: getIt(),
           hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetMemberMissionSubscriptionsCubit>(
-        create: (context) => GetMemberMissionSubscriptionsCubit(
-          missionSubscriptionService: getIt(),
-          hiveService: getIt(),
-          isarService: getIt(),
         ),
       ),
 

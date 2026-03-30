@@ -102,7 +102,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       ResourceState<PRFMission>
                     >(
                       builder: (context, state) => state.maybeWhen(
-                        itemLoading: (_, __) => const SizedBox.square(
+                        itemLoading: (_, _) => const SizedBox.square(
                           dimension: 24,
                           child: PRFCircularProgressIndicator(),
                         ),
@@ -168,7 +168,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   mutated: (items, _, _) => items.firstWhereOrNull(
                     (m) => m.ulid == missionUlid,
                   ),
-                  itemError: (_, __, item) => item,
+                  itemError: (_, _, item) => item,
                   orElse: () => null,
                 );
 

@@ -45,7 +45,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
           mutating: (items, _) => items.firstWhereOrNull(
             (m) => m.ulid == missionUlid,
           ),
-          itemError: (_, __, item) => item,
+          itemError: (_, _, item) => item,
           orElse: () => null,
         );
 

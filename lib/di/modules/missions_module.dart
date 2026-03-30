@@ -1,7 +1,6 @@
 import 'package:app/features/home/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
-import 'package:app/features/home/missions/cubit/get_member_mission_subscriptions_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/past_mission_resource_cubit.dart';
@@ -127,13 +126,6 @@ class MissionsModule {
         create: (context) => WithdrawCubit(
           missionSubscriptionService: getIt(),
           hiveService: getIt(),
-        ),
-      ),
-      BlocProvider<GetMemberMissionSubscriptionsCubit>(
-        create: (context) => GetMemberMissionSubscriptionsCubit(
-          missionSubscriptionService: getIt(),
-          hiveService: getIt(),
-          isarService: getIt(),
         ),
       ),
       BlocProvider<SelectMediaCubit>(

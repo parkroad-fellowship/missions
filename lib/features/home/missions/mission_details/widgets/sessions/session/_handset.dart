@@ -121,7 +121,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
         (item) => item.ulid == missionSessionUlid,
       ),
       itemLoading: (_, item) => item,
-      itemError: (_, __, item) => item,
+      itemError: (_, _, item) => item,
       orElse: () => null,
     );
     final allTranscripts =
@@ -255,7 +255,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             ResourceState<PRFMissionSession>
                           >(
                             builder: (context, state) => state.maybeWhen(
-                              itemLoading: (_, __) => Container(
+                              itemLoading: (_, _) => Container(
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: PRFSpacingTokens.lg,
                                 ),
@@ -315,7 +315,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   ),
                                 ),
                               ),
-                              itemError: (message, _, __) => Container(
+                              itemError: (message, _, _) => Container(
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: PRFSpacingTokens.lg,
                                 ),

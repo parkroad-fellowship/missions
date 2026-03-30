@@ -68,7 +68,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       mutated: (items, _, _) => items.firstWhereOrNull(
         (m) => m.ulid == missionUlid,
       ),
-      itemError: (_, __, item) => item,
+      itemError: (_, _, item) => item,
       orElse: () => null,
     );
 
@@ -216,7 +216,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                   child: PRFLinearProgressIndicator(),
                 ),
-                itemLoading: (_, __) => const Padding(
+                itemLoading: (_, _) => const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,
                   ),
@@ -262,7 +262,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     onActionPressed: _loadData,
                   ),
                 ),
-                itemError: (message, _, __) => Padding(
+                itemError: (message, _, _) => Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,
                   ),
