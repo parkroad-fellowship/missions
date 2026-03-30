@@ -28,6 +28,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         SingleTickerProviderStateMixin,
         TimezoneMixin {
   late TabController _tabController;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   PRFMember? get member => getIt<HiveService>().retrieveMember();
 
@@ -57,9 +59,16 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             },
           );
         case 2:
-          context.read<PastMissionResourceCubit>().loadAll();
+          context.read<PastMissionResourceCubit>().loadAll(limit: 30);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -149,6 +158,23 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      PRFSpacingTokens.lg,
+                      0,
+                      PRFSpacingTokens.lg,
+                      PRFSpacingTokens.lg,
+                    ),
+                    child: PRFTextInput(
+                      hintText: l10n.missionsSearchHint,
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value.trim();
+                        });
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -178,7 +204,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             child: PRFCircularProgressIndicator(),
           ),
           listLoaded: (missions, _, _) {
-            if (missions.isEmpty) {
+            final filteredMissions = _filterMissions(missions);
+
+            if (filteredMissions.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
                 child: PRFEmptyView(
@@ -196,10 +224,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                   horizontal: PRFSpacingTokens.lg,
                   vertical: PRFSpacingTokens.xl,
                 ),
-                itemCount: missions.length,
+                itemCount: filteredMissions.length,
                 itemBuilder: (context, index) {
-                  final mission = missions[index];
-                  final isLast = index == missions.length - 1;
+                  final mission = filteredMissions[index];
+                  final isLast = index == filteredMissions.length - 1;
                   return _buildTimelineMissionCard(
                         context,
                         mission: mission,
@@ -270,8 +298,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                 .values
                 .map((missionGroup) => missionGroup.first)
                 .toList();
+            final filteredMissions = _filterMissions(missions);
 
-            if (missions.isEmpty) {
+            if (filteredMissions.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () =>
                     context.read<MissionSubscriptionResourceCubit>().loadAll(
@@ -299,10 +328,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                   horizontal: PRFSpacingTokens.lg,
                   vertical: PRFSpacingTokens.xl,
                 ),
-                itemCount: missions.length,
+                itemCount: filteredMissions.length,
                 itemBuilder: (context, index) {
-                  final mission = missions[index];
-                  final isLast = index == missions.length - 1;
+                  final mission = filteredMissions[index];
+                  final isLast = index == filteredMissions.length - 1;
 
                   return _buildTimelineMissionCard(
                         context,
@@ -357,10 +386,12 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             child: PRFCircularProgressIndicator(),
           ),
           listLoaded: (missions, _, _) {
-            if (missions.isEmpty) {
+            final filteredMissions = _filterMissions(missions);
+
+            if (filteredMissions.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () =>
-                    context.read<PastMissionResourceCubit>().loadAll(),
+                    context.read<PastMissionResourceCubit>().loadAll(limit: 30),
                 child: PRFEmptyView(
                   label: l10n.noMissions,
                   description: 'No past missions found.',
@@ -370,17 +401,17 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
             return RefreshIndicator(
               onRefresh: () =>
-                  context.read<PastMissionResourceCubit>().loadAll(),
+                  context.read<PastMissionResourceCubit>().loadAll(limit: 30),
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
                   horizontal: PRFSpacingTokens.lg,
                   vertical: PRFSpacingTokens.xl,
                 ),
-                itemCount: missions.length,
+                itemCount: filteredMissions.length,
                 itemBuilder: (context, index) {
-                  final mission = missions[index];
-                  final isLast = index == missions.length - 1;
+                  final mission = filteredMissions[index];
+                  final isLast = index == filteredMissions.length - 1;
 
                   return _buildTimelineMissionCard(
                         context,
@@ -405,7 +436,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             );
           },
           error: (message, _) => RefreshIndicator(
-            onRefresh: () => context.read<PastMissionResourceCubit>().loadAll(),
+            onRefresh: () =>
+                context.read<PastMissionResourceCubit>().loadAll(limit: 30),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: message,
@@ -480,5 +512,23 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       default:
         return theme.colorScheme.primary;
     }
+  }
+
+  List<PRFMission> _filterMissions(List<PRFMission> missions) {
+    if (_searchQuery.isEmpty) {
+      return missions;
+    }
+
+    final query = _searchQuery.toLowerCase();
+
+    return missions.where((mission) {
+      final schoolName = mission.school?.name.toLowerCase() ?? '';
+      final missionTypeName = mission.missionType?.name.toLowerCase() ?? '';
+      final statusName = mission.status.name.toLowerCase();
+
+      return schoolName.contains(query) ||
+          missionTypeName.contains(query) ||
+          statusName.contains(query);
+    }).toList();
   }
 }
