@@ -25,6 +25,7 @@ Future<void> main() async {
       appId: 'prf-missions',
       appSecret:
           'AEfl8jFAz2lBkbSjZrT0fZ1obDKIGGs4XBjoTcJb7JeLZ0nhhD08x9LOmgT5n7rB',
+      hiveEncryptionKey: 'random_local',
     ),
   );
 

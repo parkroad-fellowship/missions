@@ -10,21 +10,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  EncryptionHelper.ensureRequiredDefines(EncryptionHelper.requiredProduction);
+
   PRFSuperAppConfig(
     values: PRFSuperAppValues(
       environment: PRFEnvironment.production,
       hiveBox: 'prf-missions--${AppVersionHelper.getSluggedAppVersion()}',
-      baseDomain: 'api.parkroadfellowship.org',
+      baseDomain: EncryptionHelper.requiredDefine(EncryptionHelper.baseDomain),
       urlScheme: 'https',
-      socketDomain: 'ws.parkroadfellowship.org',
-      socketKey: 'yvnlkaqadqiadutrs9sa',
+      socketDomain: EncryptionHelper.requiredDefine(
+        EncryptionHelper.socketDomain,
+      ),
+      socketKey: EncryptionHelper.requiredDefine(EncryptionHelper.socketKey),
       socketScheme: 'wss',
       socketPort: 443,
-      azureConnString:
-          'DefaultEndpointsProtocol=https;AccountName=prfcorestorage;AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0TA4TNOV4TYqU1QONfaQOrrs7+ASteXMXPA==;EndpointSuffix=core.windows.net',
-      appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
-      appSecret:
-          'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
+      azureConnString: EncryptionHelper.requiredDefine(
+        EncryptionHelper.azureConnString,
+      ),
+      appId: EncryptionHelper.requiredDefine(EncryptionHelper.appId),
+      appSecret: EncryptionHelper.requiredDefine(EncryptionHelper.appSecret),
+      hiveEncryptionKey: EncryptionHelper.requiredDefine(
+        EncryptionHelper.hiveEncryptionKey,
+      ),
     ),
   );
 
