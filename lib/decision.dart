@@ -1,10 +1,10 @@
+import 'package:app/di/_index.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
-import 'package:app/di/_index.dart';
 
 @RoutePage()
 class DecisionPage extends StatefulWidget {

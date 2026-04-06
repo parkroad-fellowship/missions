@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/past_mission_resource_cubit.dart';
@@ -14,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:app/di/_index.dart';
 
 class MissionsPageHandset extends StatefulWidget {
   const MissionsPageHandset({super.key});

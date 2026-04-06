@@ -2,10 +2,6 @@ import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
 import 'package:app/features/home/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/services/api/course_module_service.dart';
-import 'package:app/services/api/course_service.dart';
-import 'package:app/services/api/lesson_member_service.dart';
-import 'package:app/services/api/lesson_module_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -27,7 +23,10 @@ class LmsModule {
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
       BlocProvider<CourseResourceCubit>(
-        create: (context) => CourseResourceCubit(courseService: getIt(), dbService: getIt<IsarService>().courses),
+        create: (context) => CourseResourceCubit(
+          courseService: getIt(),
+          dbService: getIt<IsarService>().courses,
+        ),
       ),
       BlocProvider<ModuleResourceCubit>(
         create: (context) => ModuleResourceCubit(

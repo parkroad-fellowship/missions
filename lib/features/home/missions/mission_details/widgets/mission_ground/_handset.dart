@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/features/home/missions/mission_details/cubit/mission_details_resource_cubit.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:app/di/_index.dart';
 
 class MissionGroundViewHandset extends StatefulWidget {
   const MissionGroundViewHandset({required this.missionUlid, super.key});

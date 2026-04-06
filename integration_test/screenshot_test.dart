@@ -7,7 +7,7 @@ import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart' hide getIt;
+import 'package:app/utils/_index.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
+import 'package:app/di/_index.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/router/router.gr.dart';
-import 'package:app/di/_index.dart';
 import 'package:auto_route/auto_route.dart';
 
 class AuthGuard extends AutoRouteGuard {

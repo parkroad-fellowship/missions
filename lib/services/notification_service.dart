@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/enums/common/prf_notification_type.dart';
 import 'package:app/enums/mission/prf_time_of_day.dart';
 import 'package:app/features/home/shared/cubit/save_prayer_response_cubit.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:app/di/_index.dart';
 
 abstract class NotificationService {
   Future<void> init();

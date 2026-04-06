@@ -171,7 +171,11 @@ class ResourceCubit<TRemote, TLocal extends Object?>
           final cached = await dbService!.list();
           if (cached.isNotEmpty) {
             _logger.w('API failed, using ${cached.length} cached items');
-            _emitIfOpen(ResourceState.listLoaded(items: dbService!.localToRemoteList(cached), page: 1));
+            _emitIfOpen(
+              ResourceState.listLoaded(
+                items: dbService!.localToRemoteList(cached),
+              ),
+            );
             return;
           }
         } catch (_) {
