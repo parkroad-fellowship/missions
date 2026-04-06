@@ -7,6 +7,7 @@ import 'package:app/features/home/missions/cubit/past_mission_resource_cubit.dar
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/home/missions/cubit/withdraw_cubit.dart';
+import 'package:app/features/home/missions/mission_details/cubit/mission_details_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit/select_media_cubit.dart';
@@ -150,6 +151,12 @@ class MissionsModule {
         create: (context) => RecordingUploadCubit(
           mediaService: getIt(),
           failedUploadService: getIt(),
+        ),
+      ),
+      BlocProvider<MissionDetailsResourceCubit>(
+        create: (context) => MissionDetailsResourceCubit(
+          missionService: getIt(),
+          dbService: getIt<IsarService>().missions,
         ),
       ),
     ];

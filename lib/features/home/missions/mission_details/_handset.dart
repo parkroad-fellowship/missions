@@ -1,6 +1,6 @@
-import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/home/missions/mission_details/cubit/mission_details_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/debrief_notes/debrief_notes.dart';
 import 'package:app/features/home/missions/mission_details/widgets/domain_sections/feedback_data_section.dart';
@@ -53,7 +53,9 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
     _tabController = TabController(length: _tabCount, vsync: this);
 
-    context.read<MissionResourceCubit>().loadMission(missionUlid: missionUlid);
+    context.read<MissionDetailsResourceCubit>().loadMission(
+      missionUlid: missionUlid,
+    );
 
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
@@ -98,7 +100,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   ),
                   actions: [
                     BlocBuilder<
-                      MissionResourceCubit,
+                      MissionDetailsResourceCubit,
                       ResourceState<PRFMission>
                     >(
                       builder: (context, state) => state.maybeWhen(
@@ -154,85 +156,90 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             ),
           ),
           Expanded(
-            child: BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
-              builder: (context, state) {
-                final mission = state.maybeWhen(
-                  itemLoaded: (item, _) => item,
-                  listLoaded: (items, _, _) => items.firstWhereOrNull(
-                    (m) => m.ulid == missionUlid,
-                  ),
-                  itemLoading: (_, item) => item,
-                  mutating: (items, _) => items.firstWhereOrNull(
-                    (m) => m.ulid == missionUlid,
-                  ),
-                  mutated: (items, _, _) => items.firstWhereOrNull(
-                    (m) => m.ulid == missionUlid,
-                  ),
-                  itemError: (_, _, item) => item,
-                  orElse: () => null,
-                );
+            child:
+                BlocBuilder<
+                  MissionDetailsResourceCubit,
+                  ResourceState<PRFMission>
+                >(
+                  builder: (context, state) {
+                    final mission = state.maybeWhen(
+                      itemLoaded: (item, _) => item,
+                      listLoaded: (items, _, _) => items.firstWhereOrNull(
+                        (m) => m.ulid == missionUlid,
+                      ),
+                      itemLoading: (_, item) => item,
+                      mutating: (items, _) => items.firstWhereOrNull(
+                        (m) => m.ulid == missionUlid,
+                      ),
+                      mutated: (items, _, _) => items.firstWhereOrNull(
+                        (m) => m.ulid == missionUlid,
+                      ),
+                      itemError: (_, _, item) => item,
+                      orElse: () => null,
+                    );
 
-                if (state is ResourceItemLoading<PRFMission> &&
-                    mission == null) {
-                  return const Center(
-                    child: PRFCircularProgressIndicator(),
-                  );
-                }
+                    if (state is ResourceItemLoading<PRFMission> &&
+                        mission == null) {
+                      return const Center(
+                        child: PRFCircularProgressIndicator(),
+                      );
+                    }
 
-                if (mission == null && state is ResourceItemError<PRFMission>) {
-                  return Center(
-                    child: PRFErrorView.fromMessage(
-                      message: state.message,
-                    ),
-                  );
-                }
+                    if (mission == null &&
+                        state is ResourceItemError<PRFMission>) {
+                      return Center(
+                        child: PRFErrorView.fromMessage(
+                          message: state.message,
+                        ),
+                      );
+                    }
 
-                if (mission == null) {
-                  return const Center(
-                    child: PRFCircularProgressIndicator(),
-                  );
-                }
+                    if (mission == null) {
+                      return const Center(
+                        child: PRFCircularProgressIndicator(),
+                      );
+                    }
 
-                return TabBarView(
-                  controller: _tabController,
-                  children: [
-                    OverviewSection(
-                      missionGround: MissionGroundView(
-                        missionUlid: missionUlid,
-                      ),
-                      subscribers: SubscribersView(
-                        missionUlid: missionUlid,
-                      ),
-                      sessions: SessionsView(
-                        missionUlid: missionUlid,
-                      ),
-                    ),
-                    FeedbackDataSection(
-                      debriefNotesTab: DebriefNotesView(
-                        missionUlid: missionUlid,
-                      ),
-                      soulsTab: SoulsView(
-                        missionUlid: missionUlid,
-                      ),
-                      questionsTab: MissionQuestionsView(
-                        missionUlid: missionUlid,
-                      ),
-                      galleryTab: GalleryView(
-                        missionUlid: missionUlid,
-                      ),
-                    ),
-                    FinanceSection(
-                      requisitionsTab: RequisitionsView(
-                        missionUlid: missionUlid,
-                      ),
-                      expensesTab: ExpensesView(
-                        missionUlid: missionUlid,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                    return TabBarView(
+                      controller: _tabController,
+                      children: [
+                        OverviewSection(
+                          missionGround: MissionGroundView(
+                            missionUlid: missionUlid,
+                          ),
+                          subscribers: SubscribersView(
+                            missionUlid: missionUlid,
+                          ),
+                          sessions: SessionsView(
+                            missionUlid: missionUlid,
+                          ),
+                        ),
+                        FeedbackDataSection(
+                          debriefNotesTab: DebriefNotesView(
+                            missionUlid: missionUlid,
+                          ),
+                          soulsTab: SoulsView(
+                            missionUlid: missionUlid,
+                          ),
+                          questionsTab: MissionQuestionsView(
+                            missionUlid: missionUlid,
+                          ),
+                          galleryTab: GalleryView(
+                            missionUlid: missionUlid,
+                          ),
+                        ),
+                        FinanceSection(
+                          requisitionsTab: RequisitionsView(
+                            missionUlid: missionUlid,
+                          ),
+                          expensesTab: ExpensesView(
+                            missionUlid: missionUlid,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
           ),
         ],
       ),

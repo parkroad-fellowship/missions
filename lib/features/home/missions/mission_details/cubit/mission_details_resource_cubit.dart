@@ -1,19 +1,18 @@
-import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/api/mission_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class MissionResourceCubit extends ResourceCubit<PRFMission, PRFLocalMission> {
-  MissionResourceCubit({
+/// Cubit dedicated to mission details screen state.
+///
+/// Keeping this separate from the upcoming list cubit prevents detail page
+/// fetches from mutating the list tab state.
+class MissionDetailsResourceCubit
+    extends ResourceCubit<PRFMission, PRFLocalMission> {
+  MissionDetailsResourceCubit({
     required MissionService missionService,
     super.dbService,
   }) : super(service: missionService);
-
-  @override
-  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    await dbService?.refreshStream();
-  }
 
   @override
   List<String> get defaultIncludes => [
@@ -26,15 +25,14 @@ class MissionResourceCubit extends ResourceCubit<PRFMission, PRFLocalMission> {
     'accountingEvent',
   ];
 
-  @override
-  Map<String, dynamic> get defaultFilters => {
-    'upcoming': true,
-    'status_keys': [
-      PRFMissionStatus.approved.apiKey,
-      PRFMissionStatus.fullySubscribed.apiKey,
-    ].join(','),
-  };
-
-  @override
-  String? get defaultSortBy => '-start_date';
+  Future<void> loadMission({
+    required String missionUlid,
+    bool refresh = false,
+  }) async {
+    await loadOne(
+      id: missionUlid,
+      refresh: refresh,
+      matchById: (mission) => mission.ulid == missionUlid,
+    );
+  }
 }

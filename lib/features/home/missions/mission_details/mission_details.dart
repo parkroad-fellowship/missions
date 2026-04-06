@@ -17,11 +17,15 @@ class MissionsDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MissionSubscriptionResourceCubit>(
-      create: (_) => MissionSubscriptionResourceCubit(
-        missionSubscriptionService: getIt<MissionSubscriptionService>(),
-        dbService: getIt<IsarService>().missionSubscriptions,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MissionSubscriptionResourceCubit>(
+          create: (_) => MissionSubscriptionResourceCubit(
+            missionSubscriptionService: getIt<MissionSubscriptionService>(),
+            dbService: getIt<IsarService>().missionSubscriptions,
+          ),
+        ),
+      ],
       child: MissionsDetailsPageHandset(missionUlid: missionUlid),
     );
   }
