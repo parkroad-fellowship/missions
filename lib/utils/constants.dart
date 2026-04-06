@@ -13,6 +13,7 @@ class PRFSuperAppValues {
     required this.azureConnString,
     required this.appId,
     required this.appSecret,
+    this.hiveEncryptionKey = '',
   });
 
   final PRFEnvironment environment;
@@ -26,6 +27,7 @@ class PRFSuperAppValues {
   final String azureConnString;
   final String appId;
   final String appSecret;
+  final String hiveEncryptionKey;
 
   String get baseUrl => '$urlScheme://$baseDomain';
   String get globalHiveAuthBox => 'prf-super-app-auth-';

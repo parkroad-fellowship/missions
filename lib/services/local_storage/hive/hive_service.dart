@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:app/hive/hive_registrar.g.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/services/local_storage/hive/auth_hive_service.dart';
 import 'package:app/services/local_storage/hive/data_hive_service.dart';
 import 'package:app/services/local_storage/hive/settings_hive_service.dart';
 import 'package:app/utils/_index.dart';
+import 'package:crypto/crypto.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class HiveService {
@@ -33,14 +37,23 @@ class HiveService {
     final globalAuthBoxName =
         PRFSuperAppConfig.instance!.values.globalHiveAuthBox;
 
+    // Open boxes
+    final cipher = _buildCipher();
+
     await _runLegacyAdapterMigrationIfNeeded(
       appBoxName: appBoxName,
       globalAuthBoxName: globalAuthBoxName,
     );
 
     // Open boxes
-    await Hive.openBox<dynamic>(appBoxName);
-    await Hive.openBox<dynamic>(globalAuthBoxName);
+    await _openBoxSafe(
+      appBoxName,
+      cipher: cipher,
+    );
+    await _openBoxSafe(
+      globalAuthBoxName,
+      cipher: cipher,
+    );
 
     // Initialize services & sub-services
     _auth = AuthHiveService();
@@ -50,11 +63,40 @@ class HiveService {
     _data.initialize();
   }
 
+  HiveAesCipher? _buildCipher() {
+    final key = PRFSuperAppConfig.instance!.values.hiveEncryptionKey;
+    if (key.isEmpty) {
+      return null;
+    }
+
+    try {
+      final decodedKey = base64Decode(key);
+      return HiveAesCipher(Uint8List.fromList(decodedKey));
+    } catch (_) {
+      // Fallback for plain-text keys: derive a stable 32-byte key.
+    }
+
+    final hashedKey = sha256.convert(utf8.encode(key)).bytes;
+    return HiveAesCipher(Uint8List.fromList(hashedKey));
+  }
+
+  Future<Box<dynamic>> _openBoxSafe(
+    String name, {
+    HiveAesCipher? cipher,
+  }) async {
+    try {
+      return await Hive.openBox<dynamic>(name, encryptionCipher: cipher);
+    } catch (_) {
+      await Hive.deleteBoxFromDisk(name);
+      return Hive.openBox<dynamic>(name, encryptionCipher: cipher);
+    }
+  }
+
   Future<void> _runLegacyAdapterMigrationIfNeeded({
     required String appBoxName,
     required String globalAuthBoxName,
   }) async {
-    final migrationBox = await Hive.openBox<dynamic>(_migrationMetaBoxName);
+    final migrationBox = await _openBoxSafe(_migrationMetaBoxName);
     final hasMigrated =
         migrationBox.get(_binaryAdapterMigrationMarker) as bool? ?? false;
     if (hasMigrated) {
