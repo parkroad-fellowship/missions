@@ -139,7 +139,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: () => const SliverFillRemaining(
+                          listLoading: (_) => const SliverFillRemaining(
                             hasScrollBody: false,
                             child: Center(
                               child: PRFCircularProgressIndicator(),

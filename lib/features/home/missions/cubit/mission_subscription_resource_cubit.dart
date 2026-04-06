@@ -1,11 +1,12 @@
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
+import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:app/services/local_storage/isar/mission_subscription_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class MissionSubscriptionResourceCubit
-    extends ResourceCubit<PRFMissionSubscription> {
+    extends ResourceCubit<PRFMissionSubscription, PRFLocalMissionSubscription> {
   MissionSubscriptionResourceCubit({
     required MissionSubscriptionService missionSubscriptionService,
     super.dbService,

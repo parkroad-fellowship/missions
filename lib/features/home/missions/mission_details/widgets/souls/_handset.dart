@@ -94,7 +94,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
           emptyLabel: l10n.noSouls,
           emptyDescription: l10n.noSoulsDesc,
           isLoading: state.maybeWhen(
-            listLoading: () => true,
+            listLoading: (_) => true,
             orElse: () => false,
           ),
           error: state.mapOrNull(error: (e) => e.message),

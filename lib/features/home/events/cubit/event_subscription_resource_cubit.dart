@@ -5,7 +5,7 @@ import 'package:app/services/local_storage/_index.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class EventSubscriptionResourceCubit
-    extends ResourceCubit<PRFEventSubscription> {
+    extends ResourceCubit<PRFEventSubscription, Null> {
   EventSubscriptionResourceCubit({
     required EventSubscriptionService eventSubscriptionService,
     required HiveService hiveService,

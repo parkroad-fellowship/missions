@@ -7,6 +7,8 @@ class FaqCategoryDbService
     extends BaseLocalDBService<PRFFaqCategory, PRFLocalFaqCategory> {
   FaqCategoryDbService({required super.prfDBInstance});
 
+  static final DateTime _fallbackDate = DateTime.fromMillisecondsSinceEpoch(0);
+
   @override
   IsarCollection<PRFLocalFaqCategory> get collection =>
       dbInstance.pRFLocalFaqCategorys;
@@ -17,5 +19,10 @@ class FaqCategoryDbService
       ulid: remote.ulid,
       name: remote.name,
     );
+  }
+
+  @override
+  PRFFaqCategory localToRemote(PRFLocalFaqCategory local) {
+    return PRFFaqCategory(local.ulid, local.name, _fallbackDate, _fallbackDate);
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app/di/_index.dart';
 import 'package:app/enums/event/prf_event.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/models/remote/course/prf_course.dart';

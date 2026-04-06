@@ -1,10 +1,12 @@
+import 'package:app/models/local/mission/prf_mission_question.dart';
 import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/models/remote/mission/prf_mission_question_dto.dart';
 import 'package:app/services/api/mission_question_service.dart';
 import 'package:app/services/local_storage/isar/mission_question_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
+class MissionQuestionResourceCubit
+    extends ResourceCubit<PRFMissionQuestion, PRFLocalMissionQuestion> {
   MissionQuestionResourceCubit({
     required MissionQuestionService missionQuestionService,
     super.dbService,

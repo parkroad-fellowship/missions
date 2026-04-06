@@ -1,4 +1,4 @@
-import 'package:app/models/local/adapters.dart';
+import 'package:app/hive/hive_registrar.g.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/services/local_storage/hive/auth_hive_service.dart';
 import 'package:app/services/local_storage/hive/data_hive_service.dart';
@@ -11,6 +11,9 @@ class HiveService {
   HiveService._();
 
   static HiveService? instance;
+  static const String _binaryAdapterMigrationMarker =
+      'hive_binary_adapter_migration_v1';
+  static const String _migrationMetaBoxName = 'hive_migration_meta';
 
   late final AuthHiveService _auth;
   late final DataHiveService _data;
@@ -23,19 +26,21 @@ class HiveService {
   Future<void> initBoxes() async {
     await Hive.initFlutter();
 
-    // Register adapters
-    Hive
-      ..registerAdapter(PRFUserAdapter())
-      ..registerAdapter(PRFClassGroupResponseAdapter())
-      ..registerAdapter(PRFSoulsAdapter())
-      ..registerAdapter(PRFExpenseCategoryResponseAdapter())
-      ..registerAdapter(PRFPaymentTypeResponseAdapter());
+    // Register generated adapters.
+    Hive.registerAdapters();
+
+    final appBoxName = PRFSuperAppConfig.instance!.values.hiveBox;
+    final globalAuthBoxName =
+        PRFSuperAppConfig.instance!.values.globalHiveAuthBox;
+
+    await _runLegacyAdapterMigrationIfNeeded(
+      appBoxName: appBoxName,
+      globalAuthBoxName: globalAuthBoxName,
+    );
 
     // Open boxes
-    await Hive.openBox<dynamic>(PRFSuperAppConfig.instance!.values.hiveBox);
-    await Hive.openBox<dynamic>(
-      PRFSuperAppConfig.instance!.values.globalHiveAuthBox,
-    );
+    await Hive.openBox<dynamic>(appBoxName);
+    await Hive.openBox<dynamic>(globalAuthBoxName);
 
     // Initialize services & sub-services
     _auth = AuthHiveService();
@@ -43,6 +48,32 @@ class HiveService {
 
     _data = DataHiveService();
     _data.initialize();
+  }
+
+  Future<void> _runLegacyAdapterMigrationIfNeeded({
+    required String appBoxName,
+    required String globalAuthBoxName,
+  }) async {
+    final migrationBox = await Hive.openBox<dynamic>(_migrationMetaBoxName);
+    final hasMigrated =
+        migrationBox.get(_binaryAdapterMigrationMarker) as bool? ?? false;
+    if (hasMigrated) {
+      await migrationBox.close();
+      return;
+    }
+
+    // Legacy adapters used JSON-string payloads. Generated adapters use
+    // binary fields, so reset once before opening app/global boxes.
+    if (await Hive.boxExists(appBoxName)) {
+      await Hive.deleteBoxFromDisk(appBoxName);
+    }
+
+    if (await Hive.boxExists(globalAuthBoxName)) {
+      await Hive.deleteBoxFromDisk(globalAuthBoxName);
+    }
+
+    await migrationBox.put(_binaryAdapterMigrationMarker, true);
+    await migrationBox.close();
   }
 
   // Convenience methods that delegate to appropriate services

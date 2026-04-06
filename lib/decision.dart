@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';

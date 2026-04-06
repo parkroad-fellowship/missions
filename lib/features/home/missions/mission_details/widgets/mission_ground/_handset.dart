@@ -1,6 +1,7 @@
+import 'package:app/di/_index.dart';
 import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
-import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
+import 'package:app/features/home/missions/mission_details/cubit/mission_details_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_weather_forecast.dart';
@@ -34,7 +35,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
+    return BlocBuilder<MissionDetailsResourceCubit, ResourceState<PRFMission>>(
       builder: (context, state) {
         final mission = state.maybeWhen(
           itemLoaded: (item, _) => item,

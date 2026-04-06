@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/cubit/past_mission_resource_cubit.dart';
@@ -40,28 +41,63 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
   void initState() {
     super.initState();
 
-    context.read<MissionResourceCubit>().loadAll();
-    context.read<MissionSubscriptionResourceCubit>().loadAll(
-      filters: {
-        'member_ulid': member?.ulid,
-      },
-    );
-
     _tabController = TabController(length: 3, vsync: this);
+    _loadTabData(0, force: true); // initial tab
+
     _tabController.addListener(() {
-      switch (_tabController.index) {
-        case 0:
-          context.read<MissionResourceCubit>().loadAll();
-        case 1:
-          context.read<MissionSubscriptionResourceCubit>().loadAll(
-            filters: {
-              'member_ulid': member?.ulid,
-            },
-          );
-        case 2:
-          context.read<PastMissionResourceCubit>().loadAll(limit: 30);
-      }
+      // Prevent duplicate calls during tab animation
+      if (_tabController.indexIsChanging) return;
+
+      final index = _tabController.index;
+      if (index == _lastTabIndex) return;
+
+      _lastTabIndex = index;
+      _loadTabData(index);
     });
+
+    _searchController.addListener(() {
+      final newQuery = _searchController.text.trim();
+      if (newQuery == _searchQuery) return;
+
+      setState(() {
+        _searchQuery = newQuery;
+        _loadedTabs.clear(); // Clear loaded tabs to force reload with new query
+      });
+
+      // Reload current tab data with new search query
+      _loadTabData(_tabController.index, force: true);
+    });
+  }
+
+  int _lastTabIndex = 0;
+  final Set<int> _loadedTabs = {};
+
+  void _loadTabData(int index, {bool force = false}) {
+    if (!force && _loadedTabs.contains(index)) return;
+
+    switch (index) {
+      case 0:
+        context.read<MissionResourceCubit>().loadAll(
+          filters: {
+            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
+          },
+        );
+      case 1:
+        context.read<MissionSubscriptionResourceCubit>().loadAll(
+          filters: {
+            'member_ulid': member?.ulid,
+            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
+          },
+        );
+      case 2:
+        context.read<PastMissionResourceCubit>().loadAll(
+          filters: {
+            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
+          },
+        );
+    }
+
+    _loadedTabs.add(index);
   }
 
   @override
@@ -98,7 +134,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                         ResourceState<PRFMission>
                       >(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => const SizedBox.square(
+                          listLoading: (_) => const SizedBox.square(
                             dimension: 24,
                             child: PRFCircularProgressIndicator(),
                           ),
@@ -111,7 +147,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                         ResourceState<PRFMissionSubscription>
                       >(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => const SizedBox.square(
+                          listLoading: (_) => const SizedBox.square(
                             dimension: 24,
                             child: PRFCircularProgressIndicator(),
                           ),
@@ -199,80 +235,65 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
     return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
       builder: (context, state) {
-        return state.maybeWhen(
-          listLoading: () => const Center(
+        final missions = context.read<MissionResourceCubit>().currentItems;
+
+        final showInitialLoader =
+            state is ResourceListLoading<PRFMission> && missions.isEmpty;
+
+        if (showInitialLoader) {
+          return const Center(
             child: PRFCircularProgressIndicator(),
-          ),
-          listLoaded: (missions, _, _) {
-            final filteredMissions = _filterMissions(missions);
+          );
+        }
 
-            if (filteredMissions.isEmpty) {
-              return RefreshIndicator(
-                onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
-                child: PRFEmptyView(
-                  label: l10n.noMissions,
-                  description: l10n.pleaseWait,
-                ),
-              );
-            }
-
-            return RefreshIndicator(
-              onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.lg,
-                  vertical: PRFSpacingTokens.xl,
-                ),
-                itemCount: filteredMissions.length,
-                itemBuilder: (context, index) {
-                  final mission = filteredMissions[index];
-                  final isLast = index == filteredMissions.length - 1;
-                  return _buildTimelineMissionCard(
-                        context,
-                        mission: mission,
-                        isLast: isLast,
-                        onTap: () => context.router
-                            .push(
-                              MissionsDetailsRoute(
-                                missionUlid: mission.ulid,
-                              ),
-                            )
-                            .then((_) {
-                              // ignore: use_build_context_synchronously
-                              context.read<MissionResourceCubit>().loadAll();
-                              // ignore: use_build_context_synchronously
-                              context
-                                  .read<MissionSubscriptionResourceCubit>()
-                                  .loadAll(
-                                    filters: {
-                                      'member_ulid': member?.ulid,
-                                    },
-                                  );
-                            }),
-                      )
-                      .animate()
-                      .fadeIn(
-                        delay: Duration(milliseconds: index * 100),
-                        duration: PRFMotionTokens.enterShort,
-                      )
-                      .slideX(
-                        begin: 0.3,
-                        end: 0,
-                        curve: Curves.easeOutCubic,
-                      );
-                },
-              ),
-            );
-          },
-          error: (message, _) => RefreshIndicator(
+        if (missions.isEmpty) {
+          return RefreshIndicator(
             onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
             child: PRFEmptyView(
               label: l10n.noMissions,
-              description: message,
+              description: state.maybeWhen(
+                error: (message, _) => message,
+                itemError: (message, _, _) => message,
+                orElse: () => l10n.pleaseWait,
+              ),
             ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.xl,
+            ),
+            itemCount: missions.length,
+            itemBuilder: (context, index) {
+              final mission = missions[index];
+              final isLast = index == missions.length - 1;
+              return _buildTimelineMissionCard(
+                    context,
+                    mission: mission,
+                    isLast: isLast,
+                    onTap: () => context.router.push(
+                      MissionsDetailsRoute(
+                        missionUlid: mission.ulid,
+                      ),
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(
+                    delay: Duration(milliseconds: index * 100),
+                    duration: PRFMotionTokens.enterShort,
+                  )
+                  .slideX(
+                    begin: 0.3,
+                    end: 0,
+                    curve: Curves.easeOutCubic,
+                  );
+            },
           ),
-          orElse: () => const SizedBox.shrink(),
         );
       },
     );
@@ -286,79 +307,30 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       ResourceState<PRFMissionSubscription>
     >(
       builder: (context, state) {
-        return state.maybeWhen(
-          listLoading: () => const Center(
+        final subscriptions = context
+            .read<MissionSubscriptionResourceCubit>()
+            .currentItems;
+
+        final missions = subscriptions
+            .map((subscription) => subscription.mission)
+            .whereType<PRFMission>()
+            .groupListsBy((mission) => mission.ulid)
+            .values
+            .map((missionGroup) => missionGroup.first)
+            .toList();
+
+        final showInitialLoader =
+            state is ResourceListLoading<PRFMissionSubscription> &&
+            missions.isEmpty;
+
+        if (showInitialLoader) {
+          return const Center(
             child: PRFCircularProgressIndicator(),
-          ),
-          listLoaded: (subscriptions, _, _) {
-            final missions = subscriptions
-                .map((subscription) => subscription.mission)
-                .whereType<PRFMission>()
-                .groupListsBy((mission) => mission.ulid)
-                .values
-                .map((missionGroup) => missionGroup.first)
-                .toList();
-            final filteredMissions = _filterMissions(missions);
+          );
+        }
 
-            if (filteredMissions.isEmpty) {
-              return RefreshIndicator(
-                onRefresh: () =>
-                    context.read<MissionSubscriptionResourceCubit>().loadAll(
-                      filters: {
-                        'member_ulid': member?.ulid,
-                      },
-                    ),
-                child: PRFEmptyView(
-                  label: l10n.noMissions,
-                  description: l10n.pleaseWait,
-                ),
-              );
-            }
-
-            return RefreshIndicator(
-              onRefresh: () =>
-                  context.read<MissionSubscriptionResourceCubit>().loadAll(
-                    filters: {
-                      'member_ulid': member?.ulid,
-                    },
-                  ),
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.lg,
-                  vertical: PRFSpacingTokens.xl,
-                ),
-                itemCount: filteredMissions.length,
-                itemBuilder: (context, index) {
-                  final mission = filteredMissions[index];
-                  final isLast = index == filteredMissions.length - 1;
-
-                  return _buildTimelineMissionCard(
-                        context,
-                        mission: mission,
-                        isLast: isLast,
-                        isSubscribed: true,
-                        onTap: () => context.router.push(
-                          MissionsDetailsRoute(
-                            missionUlid: mission.ulid,
-                          ),
-                        ),
-                      )
-                      .animate()
-                      .fadeIn(
-                        delay: Duration(milliseconds: index * 100),
-                        duration: PRFMotionTokens.enterShort,
-                      )
-                      .slideX(
-                        begin: 0.3,
-                        end: 0,
-                        curve: Curves.easeOutCubic,
-                      );
-                },
-              ),
-            );
-          },
-          error: (message, _) => RefreshIndicator(
+        if (missions.isEmpty) {
+          return RefreshIndicator(
             onRefresh: () =>
                 context.read<MissionSubscriptionResourceCubit>().loadAll(
                   filters: {
@@ -367,10 +339,56 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                 ),
             child: PRFEmptyView(
               label: l10n.noMissions,
-              description: message,
+              description: state.maybeWhen(
+                error: (message, _) => message,
+                itemError: (message, _, _) => message,
+                orElse: () => l10n.pleaseWait,
+              ),
             ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () =>
+              context.read<MissionSubscriptionResourceCubit>().loadAll(
+                filters: {
+                  'member_ulid': member?.ulid,
+                },
+              ),
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.xl,
+            ),
+            itemCount: missions.length,
+            itemBuilder: (context, index) {
+              final mission = missions[index];
+              final isLast = index == missions.length - 1;
+
+              return _buildTimelineMissionCard(
+                    context,
+                    mission: mission,
+                    isLast: isLast,
+                    isSubscribed: true,
+                    onTap: () => context.router.push(
+                      MissionsDetailsRoute(
+                        missionUlid: mission.ulid,
+                      ),
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(
+                    delay: Duration(milliseconds: index * 100),
+                    duration: PRFMotionTokens.enterShort,
+                  )
+                  .slideX(
+                    begin: 0.3,
+                    end: 0,
+                    curve: Curves.easeOutCubic,
+                  );
+            },
           ),
-          orElse: () => const SizedBox.shrink(),
         );
       },
     );
@@ -381,69 +399,65 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
     return BlocBuilder<PastMissionResourceCubit, ResourceState<PRFMission>>(
       builder: (context, state) {
-        return state.maybeWhen(
-          listLoading: () => const Center(
+        final missions = context.read<PastMissionResourceCubit>().currentItems;
+        final showInitialLoader =
+            state is ResourceListLoading<PRFMission> && missions.isEmpty;
+
+        if (showInitialLoader) {
+          return const Center(
             child: PRFCircularProgressIndicator(),
-          ),
-          listLoaded: (missions, _, _) {
-            final filteredMissions = _filterMissions(missions);
+          );
+        }
 
-            if (filteredMissions.isEmpty) {
-              return RefreshIndicator(
-                onRefresh: () =>
-                    context.read<PastMissionResourceCubit>().loadAll(limit: 30),
-                child: PRFEmptyView(
-                  label: l10n.noMissions,
-                  description: 'No past missions found.',
-                ),
-              );
-            }
-
-            return RefreshIndicator(
-              onRefresh: () =>
-                  context.read<PastMissionResourceCubit>().loadAll(limit: 30),
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.lg,
-                  vertical: PRFSpacingTokens.xl,
-                ),
-                itemCount: filteredMissions.length,
-                itemBuilder: (context, index) {
-                  final mission = filteredMissions[index];
-                  final isLast = index == filteredMissions.length - 1;
-
-                  return _buildTimelineMissionCard(
-                        context,
-                        mission: mission,
-                        isLast: isLast,
-                        onTap: () => context.router.push(
-                          MissionsDetailsRoute(missionUlid: mission.ulid),
-                        ),
-                      )
-                      .animate()
-                      .fadeIn(
-                        delay: Duration(milliseconds: index * 100),
-                        duration: PRFMotionTokens.enterShort,
-                      )
-                      .slideX(
-                        begin: 0.3,
-                        end: 0,
-                        curve: Curves.easeOutCubic,
-                      );
-                },
-              ),
-            );
-          },
-          error: (message, _) => RefreshIndicator(
+        if (missions.isEmpty) {
+          return RefreshIndicator(
             onRefresh: () =>
                 context.read<PastMissionResourceCubit>().loadAll(limit: 30),
             child: PRFEmptyView(
               label: l10n.noMissions,
-              description: message,
+              description: state.maybeWhen(
+                error: (message, _) => message,
+                itemError: (message, _, _) => message,
+                orElse: () => 'No past missions found.',
+              ),
             ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () =>
+              context.read<PastMissionResourceCubit>().loadAll(limit: 30),
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.xl,
+            ),
+            itemCount: missions.length,
+            itemBuilder: (context, index) {
+              final mission = missions[index];
+              final isLast = index == missions.length - 1;
+
+              return _buildTimelineMissionCard(
+                    context,
+                    mission: mission,
+                    isLast: isLast,
+                    onTap: () => context.router.push(
+                      MissionsDetailsRoute(missionUlid: mission.ulid),
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(
+                    delay: Duration(milliseconds: index * 100),
+                    duration: PRFMotionTokens.enterShort,
+                  )
+                  .slideX(
+                    begin: 0.3,
+                    end: 0,
+                    curve: Curves.easeOutCubic,
+                  );
+            },
           ),
-          orElse: () => const SizedBox.shrink(),
         );
       },
     );
@@ -512,23 +526,5 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       default:
         return theme.colorScheme.primary;
     }
-  }
-
-  List<PRFMission> _filterMissions(List<PRFMission> missions) {
-    if (_searchQuery.isEmpty) {
-      return missions;
-    }
-
-    final query = _searchQuery.toLowerCase();
-
-    return missions.where((mission) {
-      final schoolName = mission.school?.name.toLowerCase() ?? '';
-      final missionTypeName = mission.missionType?.name.toLowerCase() ?? '';
-      final statusName = mission.status.name.toLowerCase();
-
-      return schoolName.contains(query) ||
-          missionTypeName.contains(query) ||
-          statusName.contains(query);
-    }).toList();
   }
 }

@@ -22,6 +22,18 @@ class AnnouncementDbService
         publishedAt: remote.publishedAt,
       );
 
+  @override
+  PRFAnnouncement localToRemote(PRFLocalAnnouncement local) {
+    return PRFAnnouncement(
+      local.ulid,
+      local.title,
+      local.content,
+      local.createdAt,
+      local.updatedAt,
+      local.publishedAt,
+    );
+  }
+
   Stream<Map<DateTime, List<PRFLocalAnnouncement>>> getAnnouncementsGrouped() {
     return getGroupedBy<DateTime>((announcement) => announcement.publishedAt);
   }

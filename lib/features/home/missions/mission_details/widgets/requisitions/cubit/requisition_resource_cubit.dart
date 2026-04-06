@@ -3,7 +3,7 @@ import 'package:app/models/remote/expense/prf_requisition.dart';
 import 'package:app/services/api/requisition_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class RequisitionResourceCubit extends ResourceCubit<PRFRequisition> {
+class RequisitionResourceCubit extends ResourceCubit<PRFRequisition, Null> {
   RequisitionResourceCubit({
     required RequisitionService requisitionService,
   }) : super(service: requisitionService);

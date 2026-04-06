@@ -1,6 +1,10 @@
+import 'package:app/di/di_container.dart';
+import 'package:app/features/home/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/_handset.dart';
+import 'package:app/services/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class MissionsDetailsPage extends StatelessWidget {
@@ -13,6 +17,16 @@ class MissionsDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MissionsDetailsPageHandset(missionUlid: missionUlid);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MissionSubscriptionResourceCubit>(
+          create: (_) => MissionSubscriptionResourceCubit(
+            missionSubscriptionService: getIt<MissionSubscriptionService>(),
+            dbService: getIt<IsarService>().missionSubscriptions,
+          ),
+        ),
+      ],
+      child: MissionsDetailsPageHandset(missionUlid: missionUlid),
+    );
   }
 }

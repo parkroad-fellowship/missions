@@ -52,7 +52,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
       builder: (context, state) {
         return state.when(
           initial: () => _buildLoadingState(theme),
-          listLoading: () => _buildLoadingState(theme),
+          listLoading: (_) => _buildLoadingState(theme),
           itemLoading: (_, _) => _buildLoadingState(theme),
           listLoaded: (memberEngagementList, _, _) {
             if (memberEngagementList.isEmpty) {

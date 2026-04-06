@@ -88,7 +88,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           builder: (context, requisitionState) {
             return requisitionState.when(
               initial: () => const SizedBox.shrink(),
-              listLoading: () => const Center(
+              listLoading: (_) => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(PRFSpacingTokens.xxl),
                   child: PRFCircularProgressIndicator(),

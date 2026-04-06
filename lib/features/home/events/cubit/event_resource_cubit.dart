@@ -3,7 +3,7 @@ import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/services/api/event_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class EventResourceCubit extends ResourceCubit<PRFEvent> {
+class EventResourceCubit extends ResourceCubit<PRFEvent, Null> {
   EventResourceCubit({
     required EventService eventService,
     super.dbService,

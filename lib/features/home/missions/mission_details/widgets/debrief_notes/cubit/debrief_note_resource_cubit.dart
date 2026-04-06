@@ -1,10 +1,12 @@
+import 'package:app/models/local/mission/prf_debrief_note.dart';
 import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/models/remote/content/prf_debrief_note_dto.dart';
 import 'package:app/services/api/debrief_note_service.dart';
 import 'package:app/services/local_storage/isar/debrief_note_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
+class DebriefNoteResourceCubit
+    extends ResourceCubit<PRFDebriefNote, PRFLocalDebriefNote> {
   DebriefNoteResourceCubit({
     required DebriefNoteService debriefNoteService,
     super.dbService,

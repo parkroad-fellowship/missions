@@ -53,7 +53,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
           error: (state) => state.message,
         );
         final isLoading = state.maybeWhen(
-          listLoading: () => true,
+          listLoading: (_) => true,
           orElse: () => false,
         );
 

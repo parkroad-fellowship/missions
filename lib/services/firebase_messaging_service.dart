@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:app/di/_index.dart';
 import 'package:app/enums/common/prf_supported_platform.dart';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/di/_index.dart';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/audio_recording_cubit.dart';
 import 'package:app/features/home/missions/cubit/recording_upload_cubit.dart';
@@ -272,7 +273,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   child: PRFLinearProgressIndicator(),
                                 ),
                               ),
-                              listLoading: () => Container(
+                              listLoading: (_) => Container(
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: PRFSpacingTokens.lg,
                                 ),

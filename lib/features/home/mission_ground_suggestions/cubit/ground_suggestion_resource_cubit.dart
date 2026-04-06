@@ -5,7 +5,7 @@ import 'package:app/services/local_storage/_index.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class GroundSuggestionResourceCubit
-    extends ResourceCubit<PRFMissionGroundSuggestion> {
+    extends ResourceCubit<PRFMissionGroundSuggestion, Null> {
   GroundSuggestionResourceCubit({
     required MissionGroundSuggestionService missionGroundSuggestionService,
     required HiveService hiveService,

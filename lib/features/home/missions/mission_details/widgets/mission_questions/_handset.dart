@@ -111,7 +111,7 @@ class _MissionQuestionsViewHandsetState
     >(
       builder: (context, state) {
         final isLoading = state.maybeWhen(
-          listLoading: () => true,
+          listLoading: (_) => true,
           orElse: () => false,
         );
         final error = state.mapOrNull(

@@ -155,7 +155,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () => const PRFLinearProgressIndicator(),
+                        listLoading: (_) => const PRFLinearProgressIndicator(),
                         listLoaded: (subscribers, _, _) =>
                             PRFSearchableList<String>(
                               entries: subscribers
@@ -193,7 +193,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () => const PRFLinearProgressIndicator(),
+                        listLoading: (_) => const PRFLinearProgressIndicator(),
                         listLoaded: (subscribers, _, _) =>
                             PRFSearchableList<String>(
                               entries: subscribers
@@ -230,7 +230,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () => const Center(
+                        listLoading: (_) => const Center(
                           child: PRFLinearProgressIndicator(),
                         ),
                         listLoaded: (classes, _, _) =>
@@ -394,6 +394,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
         itemStyle: Theme.of(context).textTheme.headlineSmall!,
         doneStyle: Theme.of(context).textTheme.headlineSmall!,
         cancelStyle: Theme.of(context).textTheme.headlineSmall!,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       onConfirm: (date) {
         setState(() {
@@ -417,6 +418,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
         itemStyle: Theme.of(context).textTheme.headlineSmall!,
         doneStyle: Theme.of(context).textTheme.headlineSmall!,
         cancelStyle: Theme.of(context).textTheme.headlineSmall!,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       onConfirm: (date) {
         setState(() {

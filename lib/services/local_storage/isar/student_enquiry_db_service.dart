@@ -21,6 +21,17 @@ class StudentEnquiryDbService
     );
   }
 
+  @override
+  PRFStudentEnquiry localToRemote(PRFLocalStudentEnquiry local) {
+    return PRFStudentEnquiry(
+      local.ulid,
+      local.content,
+      local.createdAt,
+      local.createdAt,
+      hasReplies: local.hasReplies,
+    );
+  }
+
   Stream<List<PRFLocalStudentEnquiry>> filter({
     bool replyStatus = false,
   }) {

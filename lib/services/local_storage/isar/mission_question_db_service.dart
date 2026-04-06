@@ -23,6 +23,16 @@ class MissionQuestionDbService
     );
   }
 
+  @override
+  PRFMissionQuestion localToRemote(PRFLocalMissionQuestion local) {
+    return PRFMissionQuestion(
+      local.ulid,
+      local.question,
+      local.createdAt,
+      local.createdAt,
+    );
+  }
+
   Future<List<PRFLocalMissionQuestion>> listParentMissionQuestions(
     String parentKey,
   ) async {

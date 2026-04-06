@@ -25,7 +25,10 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 
   @override
   void initState() {
-    context.read<CourseResourceCubit>().loadAll();
+    context.read<CourseResourceCubit>().loadOne(
+      id: courseUlid,
+      matchById: (course) => course.ulid == courseUlid,
+    );
     context.read<ModuleResourceCubit>().loadAll(
       filters: {'course_ulid': courseUlid},
     );
@@ -152,8 +155,9 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await context.read<CourseResourceCubit>().loadAll(
-                          filters: {'course_ulid': courseUlid},
+                        await context.read<CourseResourceCubit>().loadOne(
+                          id: courseUlid,
+                          matchById: (course) => course.ulid == courseUlid,
                         );
                         await context.read<ModuleResourceCubit>().loadAll(
                           filters: {'course_ulid': courseUlid},
@@ -178,7 +182,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: () => const SliverFillRemaining(
+                              listLoading: (_) => const SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Center(
                                   child: PRFCircularProgressIndicator(),

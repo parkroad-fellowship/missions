@@ -226,7 +226,7 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                             builder: (context, state) {
                               return state.maybeWhen(
                                 orElse: () => const SizedBox.shrink(),
-                                listLoading: () =>
+                                listLoading: (_) =>
                                     const PRFLinearProgressIndicator(),
                                 listLoaded: (expenseCategories, _, _) =>
                                     _buildCategorySelector(

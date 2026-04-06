@@ -23,6 +23,16 @@ class DebriefNoteDbService
     );
   }
 
+  @override
+  PRFDebriefNote localToRemote(PRFLocalDebriefNote local) {
+    return PRFDebriefNote(
+      local.ulid,
+      local.note,
+      local.createdAt,
+      local.createdAt,
+    );
+  }
+
   Future<List<PRFLocalDebriefNote>> listParentNotes(
     String parentKey,
   ) async {

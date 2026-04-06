@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/enums/common/prf_morph_types.dart';
 import 'package:app/models/local/enquiry/prf_student_enquiry_reply.dart';
+import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar_community/isar.dart';
@@ -27,6 +28,24 @@ class StudentEnquiryReplyDbService
       createdAt: remote.createdAt,
       commentorableType: remote.commentorableType,
       isStudent: remote.commentorableType == PRFMorphType.student,
+    );
+  }
+
+  @override
+  PRFStudentEnquiryReply localToRemote(PRFLocalStudentEnquiryReply local) {
+    return PRFStudentEnquiryReply(
+      local.ulid,
+      local.content,
+      local.commentorableType,
+      local.createdAt,
+      local.createdAt,
+      studentEnquiry: PRFStudentEnquiry(
+        local.studentEnquiryUlid,
+        local.content,
+        local.createdAt,
+        local.createdAt,
+        hasReplies: true,
+      ),
     );
   }
 

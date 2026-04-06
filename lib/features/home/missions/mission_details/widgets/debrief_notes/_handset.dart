@@ -93,7 +93,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
           error: (state) => state.message,
         );
         final isLoading = state.maybeWhen(
-          listLoading: () => true,
+          listLoading: (_) => true,
           orElse: () => false,
         );
 

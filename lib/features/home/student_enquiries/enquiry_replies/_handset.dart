@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/enums/common/prf_morph_types.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
@@ -191,7 +192,7 @@ class _StudentEnquiryRepliesPageHandsetState
       },
       builder: (context, state) {
         final loading = state.maybeWhen(
-          listLoading: () => true,
+          listLoading: (_) => true,
           mutating: (_, _) => true,
           orElse: () => false,
         );
@@ -246,7 +247,7 @@ class _StudentEnquiryRepliesPageHandsetState
 
               if (enquiry == null) {
                 return enquiryState.maybeWhen(
-                  listLoading: () => const Scaffold(
+                  listLoading: (_) => const Scaffold(
                     body: Center(
                       child: PRFCircularProgressIndicator(),
                     ),

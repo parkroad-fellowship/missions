@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/features/home/shared/cubit/theme_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/utils/_index.dart' hide DeviceHelper;

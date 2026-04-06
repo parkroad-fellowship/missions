@@ -15,15 +15,16 @@ import 'package:logger/logger.dart';
 ///   2. Optionally override [defaultIncludes], [defaultFilters], etc.
 ///   3. Optionally override [refreshIsarStreams] for parent-filtered streams.
 ///   4. Add resource-specific convenience methods.
-class ResourceCubit<T> extends Cubit<ResourceState<T>> {
+class ResourceCubit<TRemote, TLocal extends Object?>
+    extends Cubit<ResourceState<TRemote>> {
   ResourceCubit({
-    required BaseAPIService<T> service,
+    required BaseAPIService<TRemote> service,
     this.dbService,
   }) : _service = service,
        super(const ResourceState.initial());
 
-  final BaseAPIService<T> _service;
-  final BaseLocalDBService<T, dynamic>? dbService;
+  final BaseAPIService<TRemote> _service;
+  final BaseLocalDBService<TRemote, TLocal>? dbService;
   final _logger = Logger();
 
   /// Stores the last filters used by [loadAll] so that [refreshIsarStreams]
@@ -58,13 +59,14 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   /// Override these in subclasses for resource-specific defaults.
   List<String> get defaultIncludes => [];
   Map<String, dynamic> get defaultFilters => {};
-  int? get defaultLimit => null;
+  int get defaultLimit => 15;
   String? get defaultSortBy => null;
 
   /// Extracts the current list from whatever state we are in.
-  List<T> get currentItems {
+  List<TRemote> get currentItems {
     return state.maybeWhen(
       itemLoading: (items, _) => items,
+      listLoading: (items) => items,
       listLoaded: (items, _, _) => items,
       itemLoaded: (_, items) => items,
       mutating: (items, _) => items,
@@ -75,7 +77,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     );
   }
 
-  T? get currentItem {
+  TRemote? get currentItem {
     return state.maybeWhen(
       itemLoading: (_, item) => item,
       itemLoaded: (item, _) => item,
@@ -85,9 +87,9 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     );
   }
 
-  T? _firstWhereOrNull(
-    List<T> source,
-    bool Function(T item) predicate,
+  TRemote? _firstWhereOrNull(
+    List<TRemote> source,
+    bool Function(TRemote item) predicate,
   ) {
     for (final item in source) {
       if (predicate(item)) {
@@ -97,9 +99,9 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     return null;
   }
 
-  List<T> _upsertCurrentItems(
-    T item,
-    bool Function(T existing) matchById,
+  List<TRemote> _upsertCurrentItems(
+    TRemote item,
+    bool Function(TRemote existing) matchById,
   ) {
     final items = [...currentItems];
     final index = items.indexWhere(matchById);
@@ -125,7 +127,16 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   /// Override in subclasses when local cache types differ from remote models.
   ///
   /// Return a hydrated remote entity for [id] from local storage when possible.
-  Future<T?> loadCachedItem(String id) async => null;
+  Future<TRemote?> loadCachedItem(String id) async {
+    if (dbService == null) return null;
+    try {
+      final item = await dbService!.get(id);
+      return item != null ? dbService!.localToRemote(item) : null;
+    } catch (e, s) {
+      _logger.e('Error loading cached item', error: e, stackTrace: s);
+      return null;
+    }
+  }
 
   /// Fetch the full list of resources.
   /// On API failure with Isar available, falls back to cached data.
@@ -139,36 +150,104 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
 
-    emit(const ResourceState.listLoading());
+    var hasLocalSeed = false;
+    final startPage = page ?? 1;
+
+    _emitIfOpen(ResourceState.listLoading(items: currentItems));
+
+    // Cache-first: immediately hydrate UI with local data when available.
+    if (dbService != null) {
+      try {
+        final cached = await dbService!.list();
+        if (cached.isNotEmpty) {
+          hasLocalSeed = true;
+          _emitIfOpen(
+            ResourceState.listLoaded(
+              items: dbService!.localToRemoteList(cached),
+              page: startPage,
+              hasMore: true,
+            ),
+          );
+        }
+      } catch (e, s) {
+        _logger.w('Error loading cached list', error: e, stackTrace: s);
+      }
+    }
+
     try {
-      final items = await _service.list(
-        filters: mergedFilters,
-        includes: includes ?? defaultIncludes,
-        limit: limit ?? defaultLimit,
-        page: page,
-        sortBy: sortBy ?? defaultSortBy,
-      );
+      var nextPage = startPage;
+      final allItems = <TRemote>[];
 
-      await dbService?.persistEntities(items);
+      while (true) {
+        final batch = await _service.list(
+          filters: mergedFilters,
+          includes: includes ?? defaultIncludes,
+          limit: defaultLimit,
+          page: nextPage,
+          sortBy: sortBy ?? defaultSortBy,
+        );
+
+        if (batch.isEmpty) {
+          _emitIfOpen(
+            ResourceState.listLoaded(
+              items: allItems,
+              page: nextPage == startPage ? startPage : nextPage - 1,
+            ),
+          );
+          break;
+        }
+
+        allItems.addAll(batch);
+        await dbService?.persistEntities(batch);
+
+        final hasMore = batch.length >= defaultLimit;
+        _emitIfOpen(
+          ResourceState.listLoaded(
+            items: allItems,
+            page: nextPage,
+            hasMore: hasMore,
+          ),
+        );
+
+        if (!hasMore) {
+          break;
+        }
+
+        nextPage++;
+      }
+
       await refreshIsarStreams(filters: mergedFilters);
-
-      emit(ResourceState.listLoaded(items: items, page: page ?? 1));
     } on Failure catch (e) {
+      if (hasLocalSeed) {
+        _emitIfOpen(
+          ResourceState.error(message: e.message, items: currentItems),
+        );
+        return;
+      }
+
       // Offline fallback: try Isar cache
       if (dbService != null) {
         try {
           final cached = await dbService!.list();
           if (cached.isNotEmpty) {
             _logger.w('API failed, using ${cached.length} cached items');
+            _emitIfOpen(
+              ResourceState.listLoaded(
+                items: dbService!.localToRemoteList(cached),
+              ),
+            );
+            return;
           }
         } catch (_) {
           // Isar fallback also failed, emit original error
         }
       }
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error loading resources', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
@@ -193,7 +272,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       await dbService?.persistEntities(newItems);
       await refreshIsarStreams(filters: mergedFilters);
 
-      emit(
+      _emitIfOpen(
         ResourceState.listLoaded(
           items: [...currentItems, ...newItems],
           page: page,
@@ -201,31 +280,35 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error loading more resources', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
   /// Fetch a single resource for detail screens while preserving CRUD list state.
-  Future<T?> loadOne({
+  Future<TRemote?> loadOne({
     required String id,
-    required bool Function(T item) matchById,
+    required bool Function(TRemote item) matchById,
     List<String>? includes,
     bool refresh = false,
   }) async {
     final existing = _firstWhereOrNull(currentItems, matchById);
 
     if (existing != null && !refresh) {
-      emit(ResourceState.itemLoaded(item: existing, items: currentItems));
+      _emitIfOpen(
+        ResourceState.itemLoaded(item: existing, items: currentItems),
+      );
       return existing;
     }
 
     if (!refresh) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
-        emit(
+        _emitIfOpen(
           ResourceState.itemLoaded(
             item: cached,
             items: _upsertCurrentItems(cached, matchById),
@@ -235,7 +318,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       }
     }
 
-    emit(ResourceState.itemLoading(items: currentItems, item: existing));
+    _emitIfOpen(ResourceState.itemLoading(items: currentItems, item: existing));
 
     try {
       final item = await _service.get(
@@ -246,7 +329,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       await dbService?.persistEntity(item);
       await refreshIsarStreams(filters: _lastFilters);
 
-      emit(
+      _emitIfOpen(
         ResourceState.itemLoaded(
           item: item,
           items: _upsertCurrentItems(item, matchById),
@@ -256,7 +339,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     } on Failure catch (e) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
-        emit(
+        _emitIfOpen(
           ResourceState.itemLoaded(
             item: cached,
             items: _upsertCurrentItems(cached, matchById),
@@ -265,7 +348,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         return cached;
       }
 
-      emit(
+      _emitIfOpen(
         ResourceState.itemError(
           message: e.message,
           items: currentItems,
@@ -275,7 +358,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     } catch (e, s) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
-        emit(
+        _emitIfOpen(
           ResourceState.itemLoaded(
             item: cached,
             items: _upsertCurrentItems(cached, matchById),
@@ -285,7 +368,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       }
 
       _logger.e('Error loading single resource', error: e, stackTrace: s);
-      emit(
+      _emitIfOpen(
         ResourceState.itemError(
           message: e.toString(),
           items: currentItems,
@@ -302,7 +385,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     required Map<String, dynamic> data,
     List<String>? includes,
   }) async {
-    emit(
+    _emitIfOpen(
       ResourceState.mutating(
         items: currentItems,
         operation: ResourceOperation.create,
@@ -317,7 +400,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       await refreshIsarStreams(filters: _lastFilters);
 
       final updated = [item, ...currentItems];
-      emit(
+      _emitIfOpen(
         ResourceState.mutated(
           items: updated,
           operation: ResourceOperation.create,
@@ -325,10 +408,12 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error creating resource', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
@@ -336,10 +421,10 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   Future<void> update({
     required String id,
     required Map<String, dynamic> data,
-    required bool Function(T item) matchById,
+    required bool Function(TRemote item) matchById,
     List<String>? includes,
   }) async {
-    emit(
+    _emitIfOpen(
       ResourceState.mutating(
         items: currentItems,
         operation: ResourceOperation.update,
@@ -357,7 +442,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       final updated = currentItems.map((existing) {
         return matchById(existing) ? item : existing;
       }).toList();
-      emit(
+      _emitIfOpen(
         ResourceState.mutated(
           items: updated,
           operation: ResourceOperation.update,
@@ -365,19 +450,21 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error updating resource', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
   /// Delete a resource and remove it from the in-memory list.
   Future<void> delete({
     required String ulid,
-    required bool Function(T item) matchById,
+    required bool Function(TRemote item) matchById,
   }) async {
-    emit(
+    _emitIfOpen(
       ResourceState.mutating(
         items: currentItems,
         operation: ResourceOperation.delete,
@@ -389,20 +476,27 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
       await refreshIsarStreams(filters: _lastFilters);
 
       final updated = currentItems.where((item) => !matchById(item)).toList();
-      emit(
+      _emitIfOpen(
         ResourceState.mutated(
           items: updated,
           operation: ResourceOperation.delete,
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error deleting resource', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
   /// Reset to initial state.
-  void reset() => emit(const ResourceState.initial());
+  void reset() => _emitIfOpen(const ResourceState.initial());
+
+  void _emitIfOpen(ResourceState<TRemote> nextState) {
+    if (isClosed) return;
+    emit(nextState);
+  }
 }
