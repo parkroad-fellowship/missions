@@ -44,9 +44,7 @@ dependencies:
   gaimon: ^1.4.2
   get_it: ^9.2.1
   google_fonts: ^8.0.2
-  google_sign_in: ^6.3.0
-  google_sign_in_ios: ^5.9.0
-  google_sign_in_web: ^0.12.4+4
+  google_sign_in: ^7.2.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
   http: ^1.6.0
