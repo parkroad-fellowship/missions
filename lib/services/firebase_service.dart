@@ -133,7 +133,7 @@ class FirebaseServiceImpl implements FirebaseService {
 
   @override
   RemoteConfig getReviewConfig() {
-    final config = remoteConfig.getValue('prf_missions_in_review_v2');
+    final config = remoteConfig.getValue('prf_missions_in_review');
 
     return RemoteConfig.fromJson(
       json.decode(config.asString()) as Map<String, dynamic>,
