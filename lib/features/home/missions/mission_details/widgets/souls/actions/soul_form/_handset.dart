@@ -142,7 +142,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () => const Center(
+                        listLoading: (_) => const Center(
                           child: PRFLinearProgressIndicator(),
                         ),
                         listLoaded: (classes, _, _) {

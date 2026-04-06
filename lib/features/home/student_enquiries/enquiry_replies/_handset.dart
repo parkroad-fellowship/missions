@@ -191,7 +191,7 @@ class _StudentEnquiryRepliesPageHandsetState
       },
       builder: (context, state) {
         final loading = state.maybeWhen(
-          listLoading: () => true,
+          listLoading: (_) => true,
           mutating: (_, _) => true,
           orElse: () => false,
         );
@@ -246,7 +246,7 @@ class _StudentEnquiryRepliesPageHandsetState
 
               if (enquiry == null) {
                 return enquiryState.maybeWhen(
-                  listLoading: () => const Scaffold(
+                  listLoading: (_) => const Scaffold(
                     body: Center(
                       child: PRFCircularProgressIndicator(),
                     ),

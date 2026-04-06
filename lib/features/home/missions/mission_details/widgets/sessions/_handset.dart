@@ -118,7 +118,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                 >(
                   builder: (context, state) {
                     return state.maybeWhen(
-                      listLoading: () => const Center(
+                      listLoading: (_) => const Center(
                         child: PRFCircularProgressIndicator(),
                       ),
                       listLoaded: (sessions, _, _) {

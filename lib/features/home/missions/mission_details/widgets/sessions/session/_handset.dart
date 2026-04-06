@@ -272,7 +272,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   child: PRFLinearProgressIndicator(),
                                 ),
                               ),
-                              listLoading: () => Container(
+                              listLoading: (_) => Container(
                                 margin: const EdgeInsets.symmetric(
                                   horizontal: PRFSpacingTokens.lg,
                                 ),

@@ -173,7 +173,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: () => const SliverFillRemaining(
+                          listLoading: (_) => const SliverFillRemaining(
                             hasScrollBody: false,
                             child: Center(
                               child: PRFCircularProgressIndicator(),

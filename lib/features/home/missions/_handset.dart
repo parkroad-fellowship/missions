@@ -109,7 +109,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                         ResourceState<PRFMission>
                       >(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => const SizedBox.square(
+                          listLoading: (_) => const SizedBox.square(
                             dimension: 24,
                             child: PRFCircularProgressIndicator(),
                           ),
@@ -122,7 +122,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                         ResourceState<PRFMissionSubscription>
                       >(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => const SizedBox.square(
+                          listLoading: (_) => const SizedBox.square(
                             dimension: 24,
                             child: PRFCircularProgressIndicator(),
                           ),

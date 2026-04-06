@@ -5,7 +5,9 @@ part 'resource_state.freezed.dart';
 @Freezed(genericArgumentFactories: true)
 abstract class ResourceState<T> with _$ResourceState<T> {
   const factory ResourceState.initial() = ResourceInitial<T>;
-  const factory ResourceState.listLoading() = ResourceListLoading<T>;
+  const factory ResourceState.listLoading({
+  @Default([]) List<T> items,
+}) = ResourceListLoading<T>;
   const factory ResourceState.itemLoading({
     @Default([]) List<T> items,
     T? item,

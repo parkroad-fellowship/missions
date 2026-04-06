@@ -155,7 +155,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () => const PRFLinearProgressIndicator(),
+                        listLoading: (_) => const PRFLinearProgressIndicator(),
                         listLoaded: (subscribers, _, _) =>
                             PRFSearchableList<String>(
                               entries: subscribers
@@ -193,7 +193,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () => const PRFLinearProgressIndicator(),
+                        listLoading: (_) => const PRFLinearProgressIndicator(),
                         listLoaded: (subscribers, _, _) =>
                             PRFSearchableList<String>(
                               entries: subscribers
@@ -230,7 +230,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: () => const Center(
+                        listLoading: (_) => const Center(
                           child: PRFLinearProgressIndicator(),
                         ),
                         listLoaded: (classes, _, _) =>

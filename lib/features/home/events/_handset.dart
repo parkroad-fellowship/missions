@@ -63,7 +63,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                     actions: [
                       BlocBuilder<EventResourceCubit, ResourceState<PRFEvent>>(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => const SizedBox.square(
+                          listLoading: (_) => const SizedBox.square(
                             dimension: 24,
                             child: PRFCircularProgressIndicator(),
                           ),
@@ -76,7 +76,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                         ResourceState<PRFEventSubscription>
                       >(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => const SizedBox.square(
+                          listLoading: (_) => const SizedBox.square(
                             dimension: 24,
                             child: PRFCircularProgressIndicator(),
                           ),

@@ -66,6 +66,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
   List<TRemote> get currentItems {
     return state.maybeWhen(
       itemLoading: (items, _) => items,
+      listLoading: (items) => items,
       listLoaded: (items, _, _) => items,
       itemLoaded: (_, items) => items,
       mutating: (items, _) => items,
@@ -149,7 +150,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
 
-    emit(const ResourceState.listLoading());
+    emit(ResourceState.listLoading(items: currentItems));
     try {
       final items = await _service.list(
         filters: mergedFilters,

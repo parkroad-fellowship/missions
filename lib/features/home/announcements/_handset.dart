@@ -65,7 +65,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                         ResourceState<PRFAnnouncement>
                       >(
                         builder: (context, state) => state.maybeWhen(
-                          listLoading: () => const Padding(
+                          listLoading: (_) => const Padding(
                             padding: EdgeInsets.only(
                               bottom: PRFSpacingTokens.lg,
                             ),
@@ -83,7 +83,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                       >(
                         builder: (context, state) {
                           return state.maybeWhen(
-                            listLoading: () =>
+                            listLoading: (_) =>
                                 const PRFCircularProgressIndicator(),
                             error: (message, _) => Center(child: Text(message)),
                             listLoaded: (announcements, _, _) {

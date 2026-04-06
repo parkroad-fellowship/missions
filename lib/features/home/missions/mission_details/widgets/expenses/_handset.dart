@@ -210,7 +210,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                   child: PRFLinearProgressIndicator(),
                 ),
-                listLoading: () => const Padding(
+                listLoading: (_) => const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,
                   ),
@@ -2065,7 +2065,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     Icons.refresh,
                     color: PRFColors.white,
                   ),
-                  listLoading: () => const SizedBox(
+                  listLoading: (_) => const SizedBox(
                     width: PRFSpacingTokens.xl,
                     height: 20,
                     child: PRFCircularProgressIndicator(),

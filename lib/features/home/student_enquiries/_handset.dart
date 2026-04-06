@@ -94,7 +94,7 @@ class _StudentEnquiriesPageHandsetState
                             ),
                           ),
                           state.maybeWhen(
-                            listLoading: () => const SliverToBoxAdapter(
+                            listLoading: (_) => const SliverToBoxAdapter(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: PRFSpacingTokens.lg,
