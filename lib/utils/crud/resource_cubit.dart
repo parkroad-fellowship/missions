@@ -59,7 +59,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
   /// Override these in subclasses for resource-specific defaults.
   List<String> get defaultIncludes => [];
   Map<String, dynamic> get defaultFilters => {};
-  int? get defaultLimit => null;
+  int get defaultLimit => 15;
   String? get defaultSortBy => null;
 
   /// Extracts the current list from whatever state we are in.
@@ -150,21 +150,81 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
 
+    var hasLocalSeed = false;
+    final startPage = page ?? 1;
+
     _emitIfOpen(ResourceState.listLoading(items: currentItems));
+
+    // Cache-first: immediately hydrate UI with local data when available.
+    if (dbService != null) {
+      try {
+        final cached = await dbService!.list();
+        if (cached.isNotEmpty) {
+          hasLocalSeed = true;
+          _emitIfOpen(
+            ResourceState.listLoaded(
+              items: dbService!.localToRemoteList(cached),
+              page: startPage,
+              hasMore: true,
+            ),
+          );
+        }
+      } catch (e, s) {
+        _logger.w('Error loading cached list', error: e, stackTrace: s);
+      }
+    }
+
     try {
-      final items = await _service.list(
-        filters: mergedFilters,
-        includes: includes ?? defaultIncludes,
-        limit: limit ?? defaultLimit,
-        page: page,
-        sortBy: sortBy ?? defaultSortBy,
-      );
+      var nextPage = startPage;
+      final allItems = <TRemote>[];
 
-      await dbService?.persistEntities(items);
+      while (true) {
+        final batch = await _service.list(
+          filters: mergedFilters,
+          includes: includes ?? defaultIncludes,
+          limit: defaultLimit,
+          page: nextPage,
+          sortBy: sortBy ?? defaultSortBy,
+        );
+
+        if (batch.isEmpty) {
+          _emitIfOpen(
+            ResourceState.listLoaded(
+              items: allItems,
+              page: nextPage == startPage ? startPage : nextPage - 1,
+            ),
+          );
+          break;
+        }
+
+        allItems.addAll(batch);
+        await dbService?.persistEntities(batch);
+
+        final hasMore = batch.length >= defaultLimit;
+        _emitIfOpen(
+          ResourceState.listLoaded(
+            items: allItems,
+            page: nextPage,
+            hasMore: hasMore,
+          ),
+        );
+
+        if (!hasMore) {
+          break;
+        }
+
+        nextPage++;
+      }
+
       await refreshIsarStreams(filters: mergedFilters);
-
-      _emitIfOpen(ResourceState.listLoaded(items: items, page: page ?? 1));
     } on Failure catch (e) {
+      if (hasLocalSeed) {
+        _emitIfOpen(
+          ResourceState.error(message: e.message, items: currentItems),
+        );
+        return;
+      }
+
       // Offline fallback: try Isar cache
       if (dbService != null) {
         try {

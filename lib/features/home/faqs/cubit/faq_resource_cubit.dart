@@ -11,7 +11,4 @@ class FaqResourceCubit extends ResourceCubit<PRFFaq, PRFLocalFaq> {
 
   @override
   List<String> get defaultIncludes => ['missionFaqCategory'];
-
-  @override
-  int? get defaultLimit => 500;
 }

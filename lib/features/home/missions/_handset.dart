@@ -54,6 +54,19 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       _lastTabIndex = index;
       _loadTabData(index);
     });
+
+    _searchController.addListener(() {
+      final newQuery = _searchController.text.trim();
+      if (newQuery == _searchQuery) return;
+
+      setState(() {
+        _searchQuery = newQuery;
+        _loadedTabs.clear(); // Clear loaded tabs to force reload with new query
+      });
+
+      // Reload current tab data with new search query
+      _loadTabData(_tabController.index, force: true);
+    });
   }
 
   int _lastTabIndex = 0;
@@ -64,13 +77,24 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
     switch (index) {
       case 0:
-        context.read<MissionResourceCubit>().loadAll();
+        context.read<MissionResourceCubit>().loadAll(
+          filters: {
+            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
+          },
+        );
       case 1:
         context.read<MissionSubscriptionResourceCubit>().loadAll(
-          filters: {'member_ulid': member?.ulid},
+          filters: {
+            'member_ulid': member?.ulid,
+            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
+          },
         );
       case 2:
-        context.read<PastMissionResourceCubit>().loadAll(limit: 30);
+        context.read<PastMissionResourceCubit>().loadAll(
+          filters: {
+            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
+          },
+        );
     }
 
     _loadedTabs.add(index);
@@ -213,10 +237,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       builder: (context, state) {
         final missions = context.read<MissionResourceCubit>().currentItems;
 
-        final filteredMissions = _filterMissions(missions);
         final showInitialLoader =
-            state is ResourceListLoading<PRFMission> &&
-            filteredMissions.isEmpty;
+            state is ResourceListLoading<PRFMission> && missions.isEmpty;
 
         if (showInitialLoader) {
           return const Center(
@@ -224,7 +246,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           );
         }
 
-        if (filteredMissions.isEmpty) {
+        if (missions.isEmpty) {
           return RefreshIndicator(
             onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
             child: PRFEmptyView(
@@ -246,10 +268,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               horizontal: PRFSpacingTokens.lg,
               vertical: PRFSpacingTokens.xl,
             ),
-            itemCount: filteredMissions.length,
+            itemCount: missions.length,
             itemBuilder: (context, index) {
-              final mission = filteredMissions[index];
-              final isLast = index == filteredMissions.length - 1;
+              final mission = missions[index];
+              final isLast = index == missions.length - 1;
               return _buildTimelineMissionCard(
                     context,
                     mission: mission,
@@ -297,10 +319,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             .map((missionGroup) => missionGroup.first)
             .toList();
 
-        final filteredMissions = _filterMissions(missions);
         final showInitialLoader =
             state is ResourceListLoading<PRFMissionSubscription> &&
-            filteredMissions.isEmpty;
+            missions.isEmpty;
 
         if (showInitialLoader) {
           return const Center(
@@ -308,7 +329,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           );
         }
 
-        if (filteredMissions.isEmpty) {
+        if (missions.isEmpty) {
           return RefreshIndicator(
             onRefresh: () =>
                 context.read<MissionSubscriptionResourceCubit>().loadAll(
@@ -340,10 +361,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               horizontal: PRFSpacingTokens.lg,
               vertical: PRFSpacingTokens.xl,
             ),
-            itemCount: filteredMissions.length,
+            itemCount: missions.length,
             itemBuilder: (context, index) {
-              final mission = filteredMissions[index];
-              final isLast = index == filteredMissions.length - 1;
+              final mission = missions[index];
+              final isLast = index == missions.length - 1;
 
               return _buildTimelineMissionCard(
                     context,
@@ -379,11 +400,8 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     return BlocBuilder<PastMissionResourceCubit, ResourceState<PRFMission>>(
       builder: (context, state) {
         final missions = context.read<PastMissionResourceCubit>().currentItems;
-
-        final filteredMissions = _filterMissions(missions);
         final showInitialLoader =
-            state is ResourceListLoading<PRFMission> &&
-            filteredMissions.isEmpty;
+            state is ResourceListLoading<PRFMission> && missions.isEmpty;
 
         if (showInitialLoader) {
           return const Center(
@@ -391,7 +409,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           );
         }
 
-        if (filteredMissions.isEmpty) {
+        if (missions.isEmpty) {
           return RefreshIndicator(
             onRefresh: () =>
                 context.read<PastMissionResourceCubit>().loadAll(limit: 30),
@@ -415,10 +433,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               horizontal: PRFSpacingTokens.lg,
               vertical: PRFSpacingTokens.xl,
             ),
-            itemCount: filteredMissions.length,
+            itemCount: missions.length,
             itemBuilder: (context, index) {
-              final mission = filteredMissions[index];
-              final isLast = index == filteredMissions.length - 1;
+              final mission = missions[index];
+              final isLast = index == missions.length - 1;
 
               return _buildTimelineMissionCard(
                     context,
@@ -508,23 +526,5 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
       default:
         return theme.colorScheme.primary;
     }
-  }
-
-  List<PRFMission> _filterMissions(List<PRFMission> missions) {
-    if (_searchQuery.isEmpty) {
-      return missions;
-    }
-
-    final query = _searchQuery.toLowerCase();
-
-    return missions.where((mission) {
-      final schoolName = mission.school?.name.toLowerCase() ?? '';
-      final missionTypeName = mission.missionType?.name.toLowerCase() ?? '';
-      final statusName = mission.status.name.toLowerCase();
-
-      return schoolName.contains(query) ||
-          missionTypeName.contains(query) ||
-          statusName.contains(query);
-    }).toList();
   }
 }

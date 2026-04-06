@@ -8,7 +8,4 @@ class ExpenseCategoryResourceCubit
     required ExpenseCategoriesService expenseCategoriesService,
     super.dbService,
   }) : super(service: expenseCategoriesService);
-
-  @override
-  int? get defaultLimit => 100;
 }

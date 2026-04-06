@@ -9,7 +9,4 @@ class EnquiryResourceCubit
     required StudentEnquiryService studentEnquiryService,
     super.dbService,
   }) : super(service: studentEnquiryService);
-
-  @override
-  int? get defaultLimit => 100;
 }

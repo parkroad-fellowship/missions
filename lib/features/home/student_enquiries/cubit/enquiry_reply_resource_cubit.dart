@@ -22,9 +22,6 @@ class EnquiryReplyResourceCubit
   @override
   List<String> get defaultIncludes => ['studentEnquiry'];
 
-  @override
-  int? get defaultLimit => 1000;
-
   /// Create a reply.
   Future<void> createReply({
     required String studentEnquiryUlid,
