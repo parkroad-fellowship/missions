@@ -150,7 +150,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
 
-    emit(ResourceState.listLoading(items: currentItems));
+    _emitIfOpen(ResourceState.listLoading(items: currentItems));
     try {
       final items = await _service.list(
         filters: mergedFilters,
@@ -163,7 +163,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       await dbService?.persistEntities(items);
       await refreshIsarStreams(filters: mergedFilters);
 
-      emit(ResourceState.listLoaded(items: items, page: page ?? 1));
+      _emitIfOpen(ResourceState.listLoaded(items: items, page: page ?? 1));
     } on Failure catch (e) {
       // Offline fallback: try Isar cache
       if (dbService != null) {
@@ -176,10 +176,12 @@ class ResourceCubit<TRemote, TLocal extends Object?>
           // Isar fallback also failed, emit original error
         }
       }
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error loading resources', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
@@ -204,7 +206,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       await dbService?.persistEntities(newItems);
       await refreshIsarStreams(filters: mergedFilters);
 
-      emit(
+      _emitIfOpen(
         ResourceState.listLoaded(
           items: [...currentItems, ...newItems],
           page: page,
@@ -212,10 +214,12 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error loading more resources', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
@@ -229,14 +233,16 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     final existing = _firstWhereOrNull(currentItems, matchById);
 
     if (existing != null && !refresh) {
-      emit(ResourceState.itemLoaded(item: existing, items: currentItems));
+      _emitIfOpen(
+        ResourceState.itemLoaded(item: existing, items: currentItems),
+      );
       return existing;
     }
 
     if (!refresh) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
-        emit(
+        _emitIfOpen(
           ResourceState.itemLoaded(
             item: cached,
             items: _upsertCurrentItems(cached, matchById),
@@ -246,7 +252,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       }
     }
 
-    emit(ResourceState.itemLoading(items: currentItems, item: existing));
+    _emitIfOpen(ResourceState.itemLoading(items: currentItems, item: existing));
 
     try {
       final item = await _service.get(
@@ -257,7 +263,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       await dbService?.persistEntity(item);
       await refreshIsarStreams(filters: _lastFilters);
 
-      emit(
+      _emitIfOpen(
         ResourceState.itemLoaded(
           item: item,
           items: _upsertCurrentItems(item, matchById),
@@ -267,7 +273,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     } on Failure catch (e) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
-        emit(
+        _emitIfOpen(
           ResourceState.itemLoaded(
             item: cached,
             items: _upsertCurrentItems(cached, matchById),
@@ -276,7 +282,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         return cached;
       }
 
-      emit(
+      _emitIfOpen(
         ResourceState.itemError(
           message: e.message,
           items: currentItems,
@@ -286,7 +292,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     } catch (e, s) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
-        emit(
+        _emitIfOpen(
           ResourceState.itemLoaded(
             item: cached,
             items: _upsertCurrentItems(cached, matchById),
@@ -296,7 +302,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       }
 
       _logger.e('Error loading single resource', error: e, stackTrace: s);
-      emit(
+      _emitIfOpen(
         ResourceState.itemError(
           message: e.toString(),
           items: currentItems,
@@ -313,7 +319,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     required Map<String, dynamic> data,
     List<String>? includes,
   }) async {
-    emit(
+    _emitIfOpen(
       ResourceState.mutating(
         items: currentItems,
         operation: ResourceOperation.create,
@@ -328,7 +334,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       await refreshIsarStreams(filters: _lastFilters);
 
       final updated = [item, ...currentItems];
-      emit(
+      _emitIfOpen(
         ResourceState.mutated(
           items: updated,
           operation: ResourceOperation.create,
@@ -336,10 +342,12 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error creating resource', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
@@ -350,7 +358,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     required bool Function(TRemote item) matchById,
     List<String>? includes,
   }) async {
-    emit(
+    _emitIfOpen(
       ResourceState.mutating(
         items: currentItems,
         operation: ResourceOperation.update,
@@ -368,7 +376,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       final updated = currentItems.map((existing) {
         return matchById(existing) ? item : existing;
       }).toList();
-      emit(
+      _emitIfOpen(
         ResourceState.mutated(
           items: updated,
           operation: ResourceOperation.update,
@@ -376,10 +384,12 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error updating resource', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
@@ -388,7 +398,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     required String ulid,
     required bool Function(TRemote item) matchById,
   }) async {
-    emit(
+    _emitIfOpen(
       ResourceState.mutating(
         items: currentItems,
         operation: ResourceOperation.delete,
@@ -400,20 +410,27 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       await refreshIsarStreams(filters: _lastFilters);
 
       final updated = currentItems.where((item) => !matchById(item)).toList();
-      emit(
+      _emitIfOpen(
         ResourceState.mutated(
           items: updated,
           operation: ResourceOperation.delete,
         ),
       );
     } on Failure catch (e) {
-      emit(ResourceState.error(message: e.message, items: currentItems));
+      _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error deleting resource', error: e, stackTrace: s);
-      emit(ResourceState.error(message: e.toString(), items: currentItems));
+      _emitIfOpen(
+        ResourceState.error(message: e.toString(), items: currentItems),
+      );
     }
   }
 
   /// Reset to initial state.
-  void reset() => emit(const ResourceState.initial());
+  void reset() => _emitIfOpen(const ResourceState.initial());
+
+  void _emitIfOpen(ResourceState<TRemote> nextState) {
+    if (isClosed) return;
+    emit(nextState);
+  }
 }

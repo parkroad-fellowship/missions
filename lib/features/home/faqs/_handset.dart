@@ -171,7 +171,8 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                           SliverToBoxAdapter(
                             child: categoryState.maybeWhen(
                               orElse: () => const SizedBox.shrink(),
-                              listLoading: (_) => const PRFLinearProgressIndicator(),
+                              listLoading: (_) =>
+                                  const PRFLinearProgressIndicator(),
                               listLoaded: (faqCategories, _, _) =>
                                   PRFCategoryChips<PRFFaqCategory>(
                                     categories: faqCategories,
