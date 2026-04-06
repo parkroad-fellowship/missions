@@ -18,7 +18,7 @@ import 'package:app/services/api/mission_service.dart';
 import 'package:app/services/local_storage/isar/mission_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class MissionResourceCubit extends ResourceCubit<PRFMission> {
+class MissionResourceCubit extends ResourceCubit<PRFMission, PRFLocalMission> {
   MissionResourceCubit({
     required MissionService missionService,
     super.dbService,

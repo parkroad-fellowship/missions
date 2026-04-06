@@ -15,15 +15,16 @@ import 'package:logger/logger.dart';
 ///   2. Optionally override [defaultIncludes], [defaultFilters], etc.
 ///   3. Optionally override [refreshIsarStreams] for parent-filtered streams.
 ///   4. Add resource-specific convenience methods.
-class ResourceCubit<T> extends Cubit<ResourceState<T>> {
+class ResourceCubit<TRemote, TLocal extends Object?>
+    extends Cubit<ResourceState<TRemote>> {
   ResourceCubit({
-    required BaseAPIService<T> service,
+    required BaseAPIService<TRemote> service,
     this.dbService,
   }) : _service = service,
        super(const ResourceState.initial());
 
-  final BaseAPIService<T> _service;
-  final BaseLocalDBService<T, dynamic>? dbService;
+  final BaseAPIService<TRemote> _service;
+  final BaseLocalDBService<TRemote, TLocal>? dbService;
   final _logger = Logger();
 
   /// Stores the last filters used by [loadAll] so that [refreshIsarStreams]
@@ -62,7 +63,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   String? get defaultSortBy => null;
 
   /// Extracts the current list from whatever state we are in.
-  List<T> get currentItems {
+  List<TRemote> get currentItems {
     return state.maybeWhen(
       itemLoading: (items, _) => items,
       listLoaded: (items, _, _) => items,
@@ -75,7 +76,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     );
   }
 
-  T? get currentItem {
+  TRemote? get currentItem {
     return state.maybeWhen(
       itemLoading: (_, item) => item,
       itemLoaded: (item, _) => item,
@@ -85,9 +86,9 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     );
   }
 
-  T? _firstWhereOrNull(
-    List<T> source,
-    bool Function(T item) predicate,
+  TRemote? _firstWhereOrNull(
+    List<TRemote> source,
+    bool Function(TRemote item) predicate,
   ) {
     for (final item in source) {
       if (predicate(item)) {
@@ -97,9 +98,9 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
     return null;
   }
 
-  List<T> _upsertCurrentItems(
-    T item,
-    bool Function(T existing) matchById,
+  List<TRemote> _upsertCurrentItems(
+    TRemote item,
+    bool Function(TRemote existing) matchById,
   ) {
     final items = [...currentItems];
     final index = items.indexWhere(matchById);
@@ -125,7 +126,16 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   /// Override in subclasses when local cache types differ from remote models.
   ///
   /// Return a hydrated remote entity for [id] from local storage when possible.
-  Future<T?> loadCachedItem(String id) async => null;
+  Future<TRemote?> loadCachedItem(String id) async {
+    if (dbService == null) return null;
+    try {
+      final item = await dbService!.get(id);
+      return item != null ? dbService!.localToRemote(item) : null;
+    } catch (e, s) {
+      _logger.e('Error loading cached item', error: e, stackTrace: s);
+      return null;
+    }
+  }
 
   /// Fetch the full list of resources.
   /// On API failure with Isar available, falls back to cached data.
@@ -209,9 +219,9 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   }
 
   /// Fetch a single resource for detail screens while preserving CRUD list state.
-  Future<T?> loadOne({
+  Future<TRemote?> loadOne({
     required String id,
-    required bool Function(T item) matchById,
+    required bool Function(TRemote item) matchById,
     List<String>? includes,
     bool refresh = false,
   }) async {
@@ -336,7 +346,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   Future<void> update({
     required String id,
     required Map<String, dynamic> data,
-    required bool Function(T item) matchById,
+    required bool Function(TRemote item) matchById,
     List<String>? includes,
   }) async {
     emit(
@@ -375,7 +385,7 @@ class ResourceCubit<T> extends Cubit<ResourceState<T>> {
   /// Delete a resource and remove it from the in-memory list.
   Future<void> delete({
     required String ulid,
-    required bool Function(T item) matchById,
+    required bool Function(TRemote item) matchById,
   }) async {
     emit(
       ResourceState.mutating(

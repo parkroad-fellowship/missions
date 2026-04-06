@@ -1,8 +1,10 @@
+import 'package:app/models/local/course/prf_course_module.dart';
 import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/services/api/course_module_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class ModuleResourceCubit extends ResourceCubit<PRFCourseModule> {
+class ModuleResourceCubit
+    extends ResourceCubit<PRFCourseModule, PRFLocalCourseModule> {
   ModuleResourceCubit({
     required CourseModuleService courseModuleService,
     super.dbService,

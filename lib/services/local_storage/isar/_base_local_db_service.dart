@@ -18,6 +18,9 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// Convert remote model to local model
   TLocal remoteToLocal(TRemote remote);
 
+  /// Convert local model to remote model
+  TRemote localToRemote(TLocal local);
+
   /// Get the Isar collection for this entity type
   IsarCollection<TLocal> get collection;
 

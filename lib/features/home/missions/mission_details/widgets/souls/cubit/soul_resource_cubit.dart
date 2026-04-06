@@ -1,10 +1,11 @@
+import 'package:app/models/local/mission/prf_soul.dart';
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/models/remote/prayer/prf_soul_dto.dart';
 import 'package:app/services/api/soul_service.dart';
 import 'package:app/services/local_storage/isar/soul_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class SoulResourceCubit extends ResourceCubit<PRFSoul> {
+class SoulResourceCubit extends ResourceCubit<PRFSoul, PRFLocalSoul> {
   SoulResourceCubit({
     required SoulService soulService,
     super.dbService,

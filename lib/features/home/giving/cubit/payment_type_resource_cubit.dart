@@ -2,7 +2,7 @@ import 'package:app/models/remote/payment/prf_payment_type.dart';
 import 'package:app/services/api/payment_type_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class PaymentTypeResourceCubit extends ResourceCubit<PRFPaymentType> {
+class PaymentTypeResourceCubit extends ResourceCubit<PRFPaymentType, Null> {
   PaymentTypeResourceCubit({
     required PaymentTypeService paymentTypeService,
     super.dbService,

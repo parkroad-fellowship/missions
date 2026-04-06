@@ -4,7 +4,7 @@ import 'package:app/services/api/prayer_request_service.dart';
 import 'package:app/services/local_storage/_index.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest> {
+class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest, Null> {
   PrayerRequestResourceCubit({
     required PrayerRequestService prayerRequestService,
     required HiveService hiveService,

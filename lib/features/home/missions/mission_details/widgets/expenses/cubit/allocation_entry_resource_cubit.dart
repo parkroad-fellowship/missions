@@ -10,7 +10,8 @@ import 'package:app/services/media_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
 
-class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
+class AllocationEntryResourceCubit
+    extends ResourceCubit<PRFAllocationEntry, Null> {
   AllocationEntryResourceCubit({
     required AllocationEntryService allocationEntryService,
     required MediaService mediaService,
