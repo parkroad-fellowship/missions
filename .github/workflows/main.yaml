@@ -77,7 +77,7 @@ jobs:
         with:
           flutter-version: 3.41.1
           platform: android
-          args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols -v
+          args: --flavor production --target lib/main_production.dart --split-debug-info=debug-symbols
 
       - name: 🚀 Shorebird Patch
         uses: shorebirdtech/shorebird-patch@main
