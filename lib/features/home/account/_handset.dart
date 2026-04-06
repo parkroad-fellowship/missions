@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/enums/common/prf_theme_mode.dart';
 import 'package:app/enums/member/prf_membership_type.dart';
 import 'package:app/enums/prf_media_model.dart';

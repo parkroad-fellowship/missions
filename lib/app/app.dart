@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:prf_design/prf_design.dart';
+import 'package:app/di/_index.dart';
 
 class PRFSuperApp extends StatelessWidget {
   const PRFSuperApp({super.key});

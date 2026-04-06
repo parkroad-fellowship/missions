@@ -9,6 +9,7 @@ import 'package:app/utils/_index.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logger/logger.dart';
+import 'package:app/di/_index.dart';
 
 /// Top-level function required for FCM background message handling
 @pragma('vm:entry-point')

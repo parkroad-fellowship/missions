@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:prf_design/prf_design.dart';
+import 'package:app/di/_index.dart';
 
 class StudentEnquiryRepliesPageHandset extends StatefulWidget {
   const StudentEnquiryRepliesPageHandset({

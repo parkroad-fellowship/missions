@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';

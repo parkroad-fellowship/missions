@@ -11,6 +11,7 @@ import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
+import 'package:app/di/_index.dart';
 
 abstract class SocketService {
   SocketConfig defaultConfig();

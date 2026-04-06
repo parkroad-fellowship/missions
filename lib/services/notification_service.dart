@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:app/di/_index.dart';
 
 abstract class NotificationService {
   Future<void> init();

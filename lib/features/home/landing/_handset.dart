@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/features/home/landing/models/landing_action_item.dart';
 import 'package:app/features/home/landing/widgets/landing_action_tile.dart';
 import 'package:app/l10n/arb/app_localizations.dart';

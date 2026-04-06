@@ -21,6 +21,10 @@ abstract class BaseLocalDBService<TRemote, TLocal> {
   /// Convert local model to remote model
   TRemote localToRemote(TLocal local);
 
+  List<TRemote> localToRemoteList(List<TLocal> localList) {
+    return localList.map(localToRemote).toList();
+  }
+
   /// Get the Isar collection for this entity type
   IsarCollection<TLocal> get collection;
 

@@ -1,3 +1,4 @@
+import 'package:app/di/_index.dart';
 import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
 import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
 import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';

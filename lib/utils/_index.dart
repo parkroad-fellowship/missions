@@ -13,7 +13,5 @@ export 'helpers/_index.dart';
 export 'http/_index.dart';
 export 'mixins/_index.dart';
 export 'router/_index.dart';
-export 'single_stream_wrapper.dart';
-export 'singletons.dart';
 export 'slugify.dart';
 export 'theme/_index.dart';

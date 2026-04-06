@@ -1,12 +1,11 @@
 import 'package:app/enums/member/prf_institution_type.dart';
 import 'package:app/enums/prf_active_status.dart';
-import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/services/api/class_group_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class ClassGroupResourceCubit
-    extends ResourceCubit<PRFClassGroup, PRFLocalClassGroup> {
+    extends ResourceCubit<PRFClassGroup, Null> {
   ClassGroupResourceCubit({
     required ClassGroupService classGroupService,
     super.dbService,
