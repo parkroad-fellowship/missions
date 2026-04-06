@@ -18,9 +18,7 @@ class LessonResourceCubit
     super.dbService,
   }) : _hiveService = hiveService,
        _lessonMemberService = lessonMemberService,
-       super(service: lessonModuleService) {
-    subscribeToIsarUpdates();
-  }
+       super(service: lessonModuleService);
 
   final HiveService _hiveService;
   final LessonMemberService? _lessonMemberService;

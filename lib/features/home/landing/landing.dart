@@ -89,15 +89,15 @@ class _LandingPageState extends State<LandingPage> {
       ),
 
       // Learn & Grow
-      LandingActionItem(
-        title: l10n.learnSomething,
-        assetPath: 'assets/svgs/lms.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.lmsRoute,
-        ),
-        animationDelay: 0,
-        deskGroup: 'Learn & Grow',
-      ),
+      // LandingActionItem(
+      //   title: l10n.learnSomething,
+      //   assetPath: 'assets/svgs/lms.svg',
+      //   onTap: () => context.router.pushPath(
+      //     PRFSuperAppRouter.lmsRoute,
+      //   ),
+      //   animationDelay: 0,
+      //   deskGroup: 'Learn & Grow',
+      // ),
       LandingActionItem(
         title: l10n.studentFaqs,
         assetPath: 'assets/svgs/explore.svg',

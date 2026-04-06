@@ -7,9 +7,7 @@ class CourseResourceCubit extends ResourceCubit<PRFCourse, PRFLocalCourse> {
   CourseResourceCubit({
     required CourseService courseService,
     super.dbService,
-  }) : super(service: courseService) {
-    subscribeToIsarUpdates();
-  }
+  }) : super(service: courseService);
 
   @override
   List<String> get defaultIncludes => ['thumbnail', 'courseMember'];

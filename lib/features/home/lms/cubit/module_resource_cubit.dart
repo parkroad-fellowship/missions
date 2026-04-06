@@ -8,9 +8,7 @@ class ModuleResourceCubit
   ModuleResourceCubit({
     required CourseModuleService courseModuleService,
     super.dbService,
-  }) : super(service: courseModuleService) {
-    subscribeToIsarUpdates();
-  }
+  }) : super(service: courseModuleService);
 
   @override
   List<String> get defaultIncludes => [
