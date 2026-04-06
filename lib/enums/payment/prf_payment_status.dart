@@ -24,7 +24,7 @@ enum PRFPaymentStatus {
       case PRFPaymentStatus.cancelled:
         return 'Cancelled';
       case PRFPaymentStatus.failed:
-        return 'Failied';
+        return 'Failed';
     }
   }
 }
