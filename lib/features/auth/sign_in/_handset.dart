@@ -3,7 +3,7 @@ import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/services/firebase_service.dart';
+import 'package:app/services/firebase/firebase_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
