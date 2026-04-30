@@ -2,15 +2,18 @@
 
 ![coverage][coverage_badge]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[![License: PolyForm Noncommercial][license_badge]][license_link]
 
 A Flutter-based mobile application built with a clean, modular architecture. Supports iOS, Android, Web, and Windows.
 
 ## Maintenance & Support
 
-- This project is maintained & sponsored by [FROG Technology](https://frog.ke).
-- Fellowship website: [Park Road Fellowship](https://parkroadfellowship.org).
+- This project is maintained & sponsored by [FROG Technologies](https://frog.ke).
+- Fellowship website: [Parkroad Fellowship](https://parkroadfellowship.org).
 - To get hosting & setup assistance, email `engineering@parkroadfellowship.org` or open an issue on GitHub.
+
+## App Links
+- [Google Play Store](https://play.google.com/store/apps/details?id=org.parkroadfellowship.app)
+- [Apple App Store](https://apps.apple.com/us/app/prf-missions/id6746665088)
 
 ## Community Links
 
@@ -69,7 +72,5 @@ This project is licensed under [PolyForm Noncommercial 1.0.0](./LICENSE).
 For setup and hosting assistance, contact `engineering@parkroadfellowship.org`.
 
 [coverage_badge]: coverage_badge.svg
-[license_badge]: https://img.shields.io/badge/license-PolyForm%20Noncommercial-blue.svg
-[license_link]: ./LICENSE
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
