@@ -3,7 +3,7 @@
 ![coverage][coverage_badge]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 
-A Flutter-based mobile application built with a clean, modular architecture. Supports iOS, Android, Web, and Windows.
+A Flutter-based mobile application built with a clean, modular architecture. Supports iOS and Android.
 
 ## Maintenance & Support
 
