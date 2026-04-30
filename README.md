@@ -55,7 +55,7 @@ See [docs/mobile-architecture.md](docs/mobile-architecture.md) for full architec
 
 ## License
 
-This project is licensed under [PolyForm Noncommercial 1.0.0](./LICENSE).
+This project is licensed under [Parkroad Fellowship Public Ministry License 1.0](./LICENSE).
 
 ### Allowed
 
