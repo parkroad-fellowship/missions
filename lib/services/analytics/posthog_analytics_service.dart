@@ -25,12 +25,11 @@ class PostHogAnalyticsService implements AnalyticsService {
       return;
     }
 
-    final config =
-        PostHogConfig(PRFSuperAppConfig.instance!.values.postHogKey)
-          ..host = 'https://eu.i.posthog.com'
-          ..debug = false
-          ..captureApplicationLifecycleEvents = true
-          ..sessionReplay = true;
+    final config = PostHogConfig(PRFSuperAppConfig.instance!.values.postHogKey)
+      ..host = 'https://eu.i.posthog.com'
+      ..debug = false
+      ..captureApplicationLifecycleEvents = true
+      ..sessionReplay = true;
 
     config.sessionReplayConfig.maskAllTexts = false;
     config.sessionReplayConfig.maskAllImages = false;
