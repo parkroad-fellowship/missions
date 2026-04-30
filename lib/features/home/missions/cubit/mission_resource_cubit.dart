@@ -36,5 +36,5 @@ class MissionResourceCubit extends ResourceCubit<PRFMission, PRFLocalMission> {
   };
 
   @override
-  String? get defaultSortBy => '-start_date';
+  String? get defaultSortBy => 'start_date';
 }

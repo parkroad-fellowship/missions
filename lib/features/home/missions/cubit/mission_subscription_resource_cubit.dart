@@ -39,6 +39,7 @@ class MissionSubscriptionResourceCubit
   Map<String, dynamic> get defaultFilters => {
     'status_keys': [
       PRFMissionSubscriptionStatus.approved.apiKey,
+      PRFMissionSubscriptionStatus.fullySubscribed.apiKey,
     ].join(','),
   };
 
