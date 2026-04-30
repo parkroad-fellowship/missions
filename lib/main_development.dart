@@ -20,8 +20,7 @@ Future<void> main() async {
       socketKey: 'yvnlkaqadqiadutrs9sa',
       socketScheme: 'wss',
       socketPort: 443,
-      azureConnString:
-          'DefaultEndpointsProtocol=https;AccountName=prfcorestorage;AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0TA4TNOV4TYqU1QONfaQOrrs7+ASteXMXPA==;EndpointSuffix=core.windows.net',
+      azureConnString: '',
       appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
       appSecret:
           'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
