@@ -9,7 +9,7 @@ For hosting and setup assistance:
 
 ## Maintained By
 
-- Sponsored and maintained by [FROG Technologies](https://frog.ke)
+- Development sponsored and maintained by [FROG Technologies](https://frog.ke)
 - Fellowship website: [Parkroad Fellowship](https://parkroadfellowship.org)
 
 ## Social Media
