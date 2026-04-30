@@ -26,7 +26,7 @@ class PostHogAnalyticsService implements AnalyticsService {
     }
 
     final config =
-        PostHogConfig('phc_qMm6StosFNCMhAkrmcoJAOlX5kOhvVTR6dsCFCIkE3g')
+        PostHogConfig(PRFSuperAppConfig.instance!.values.postHogKey)
           ..host = 'https://eu.i.posthog.com'
           ..debug = false
           ..captureApplicationLifecycleEvents = true

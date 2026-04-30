@@ -11,6 +11,7 @@ const _appSecretDefine = String.fromEnvironment(EncryptionHelper.appSecret);
 const _hiveEncryptionKeyDefine = String.fromEnvironment(
   EncryptionHelper.hiveEncryptionKey,
 );
+const _postHogKeyDefine = String.fromEnvironment(EncryptionHelper.postHogKey);
 
 class EncryptionHelper {
   EncryptionHelper._();
@@ -22,6 +23,7 @@ class EncryptionHelper {
   static const appId = 'APP_ID';
   static const appSecret = 'APP_SECRET';
   static const hiveEncryptionKey = 'HIVE_ENCRYPTION_KEY';
+  static const postHogKey = 'POSTHOG_KEY';
 
   static const requiredProduction = <String>[
     baseDomain,
@@ -31,6 +33,7 @@ class EncryptionHelper {
     appId,
     appSecret,
     hiveEncryptionKey,
+    postHogKey,
   ];
 
   static String requiredDefine(String key) {
@@ -49,6 +52,8 @@ class EncryptionHelper {
         return _requiredConstDefine(key, _appSecretDefine);
       case hiveEncryptionKey:
         return _requiredConstDefine(key, _hiveEncryptionKeyDefine);
+      case postHogKey:
+        return _requiredConstDefine(key, _postHogKeyDefine);
       default:
         throw ArgumentError('Unsupported --dart-define key: $key');
     }
@@ -93,6 +98,8 @@ class EncryptionHelper {
         return _appSecretDefine;
       case hiveEncryptionKey:
         return _hiveEncryptionKeyDefine;
+      case postHogKey:
+        return _postHogKeyDefine;
       default:
         throw ArgumentError('Unsupported --dart-define key: $key');
     }
