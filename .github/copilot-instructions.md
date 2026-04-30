@@ -4,7 +4,7 @@ This document provides guidance for GitHub Copilot when working on this Flutter 
 
 ## Project Overview
 
-This is a Flutter application (PRF Super App) created with Very Good CLI. The app supports multiple platforms (iOS, Android, Web, and Windows) and uses a feature-based architecture with BLoC state management.
+This is a Flutter application (PRF Missions) created with Very Good CLI. The app supports multiple platforms (iOS, Android, Web, and Windows) and uses a feature-based architecture with BLoC state management.
 
 ## Architecture
 

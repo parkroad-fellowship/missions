@@ -14,6 +14,7 @@ class PRFSuperAppValues {
     required this.appId,
     required this.appSecret,
     this.hiveEncryptionKey = '',
+    this.postHogKey = '',
   });
 
   final PRFEnvironment environment;
@@ -28,6 +29,7 @@ class PRFSuperAppValues {
   final String appId;
   final String appSecret;
   final String hiveEncryptionKey;
+  final String postHogKey;
 
   String get baseUrl => '$urlScheme://$baseDomain';
   String get globalHiveAuthBox => 'prf-super-app-auth-';
