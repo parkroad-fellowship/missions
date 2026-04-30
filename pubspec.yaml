@@ -1,6 +1,6 @@
 name: app
-description: The PRF Super App
-version: 2.92.00+29200
+description: The PRF Missions app
+version: 2.93.00+29300
 publish_to: none
 
 environment:
