@@ -23,6 +23,8 @@
 - [ ] `flutter analyze`
 - [ ] Screenshots/recording added for UI changes (if applicable)
 
+Build the APK via an action and download the APK from Firebase App Distribution via the following link: https://appdistribution.firebase.dev/i/0d8820b0a1f93d92
+
 ## Release Notes
 
 - [ ] Environment or flavor changes included

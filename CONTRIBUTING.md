@@ -25,6 +25,7 @@ Thank you for contributing to PRF Missions.
   - `dart format .`
   - `flutter analyze`
   - `flutter test`
+- Build the APK via an action and download the APK from Firebase App Distribution via the following link: https://appdistribution.firebase.dev/i/0d8820b0a1f93d92
 
 ## Commit Guidance
 
