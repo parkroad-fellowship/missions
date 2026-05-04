@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:app/enums/common/prf_environment.dart';
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/remote_config.dart';
 import 'package:app/utils/_index.dart';
@@ -150,10 +151,14 @@ class FirebaseServiceImpl implements FirebaseService {
 
     // Check if current platform and version is in review
     return reviewConfig.reviewConfigs.any(
-      (config) =>
-          config.isInReview &&
-          config.appVersion == currentVersion &&
-          (config.appStore == currentPlatform.name),
-    );
+          (config) =>
+              config.isInReview &&
+              config.appVersion == currentVersion &&
+              (config.appStore == currentPlatform.name),
+        ) ||
+        ([
+          PRFEnvironment.staging,
+          PRFEnvironment.development,
+        ].contains(PRFSuperAppConfig.instance?.values.environment));
   }
 }
