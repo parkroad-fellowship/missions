@@ -47,6 +47,31 @@ class MemberMissionDbService
       accountingEventUlid: mission.accountingEvent!.ulid,
       createdAt: mission.createdAt,
       updatedAt: mission.updatedAt,
+      accountingEvent: PRFLocalAccountingEvent(
+        ulid: mission.accountingEvent?.ulid,
+        name: mission.accountingEvent?.name,
+        dueDate: mission.accountingEvent?.dueDate,
+        responsibleDesk: mission.accountingEvent?.responsibleDesk,
+        credits: mission.accountingEvent?.credits,
+        debits: mission.accountingEvent?.debits,
+        balance: mission.accountingEvent?.balance,
+        refundCharge: mission.accountingEvent?.refundCharge,
+        amountToRefund: mission.accountingEvent?.amountToRefund,
+        createdAt: mission.accountingEvent?.createdAt,
+        updatedAt: mission.accountingEvent?.updatedAt,
+        refunds: mission.accountingEvent?.refunds
+            .map(
+              (refund) => PRFLocalRefund(
+                ulid: refund.ulid,
+                amount: refund.amount,
+                deficitAmount: refund.deficitAmount,
+                confirmationMessage: refund.confirmationMessage,
+                createdAt: refund.createdAt,
+                updatedAt: refund.updatedAt,
+              ),
+            )
+            .toList(),
+      ),
       loggedInMemberMissionSubscription: PRFLocalMissionMemberSubscription(
         ulid: remote.ulid,
         status: remote.status,
@@ -305,7 +330,31 @@ class MemberMissionDbService
       capacity: mission.capacity,
       status: mission.status,
       missionSubscriptionsNeeded: mission.missionSubscriptionsNeeded,
-      accountingEventUlid: mission.accountingEventUlid,
+      accountingEvent: PRFLocalAccountingEvent(
+        ulid: mission.accountingEvent.ulid,
+        name: mission.accountingEvent.name,
+        dueDate: mission.accountingEvent.dueDate,
+        responsibleDesk: mission.accountingEvent.responsibleDesk,
+        credits: mission.accountingEvent.credits,
+        debits: mission.accountingEvent.debits,
+        balance: mission.accountingEvent.balance,
+        refundCharge: mission.accountingEvent.refundCharge,
+        amountToRefund: mission.accountingEvent.amountToRefund,
+        createdAt: mission.accountingEvent.createdAt,
+        updatedAt: mission.accountingEvent.updatedAt,
+        refunds: mission.accountingEvent.refunds
+            ?.map(
+              (refund) => PRFLocalRefund(
+                ulid: refund.ulid,
+                amount: refund.amount,
+                deficitAmount: refund.deficitAmount,
+                confirmationMessage: refund.confirmationMessage,
+                createdAt: refund.createdAt,
+                updatedAt: refund.updatedAt,
+              ),
+            )
+            .toList(),
+      ),
       createdAt: mission.createdAt,
       updatedAt: mission.updatedAt,
       loggedInMemberMissionSubscription: PRFLocalMissionMemberSubscription(

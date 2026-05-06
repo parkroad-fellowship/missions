@@ -7,6 +7,7 @@ import 'package:app/models/local/mission/prf_member_mission.dart';
 import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/course/prf_school.dart';
+import 'package:app/models/remote/expense/prf_accounting_event.dart';
 import 'package:app/models/remote/media/prf_weather_forecast.dart';
 import 'package:app/models/remote/member/prf_contact.dart';
 import 'package:app/models/remote/member/prf_contact_type.dart';
@@ -42,7 +43,31 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
       capacity: remote.capacity,
       status: remote.status,
       missionSubscriptionsNeeded: remote.missionSubscriptionsNeeded,
-      accountingEventUlid: remote.accountingEvent!.ulid,
+      accountingEvent: PRFLocalAccountingEvent(
+        ulid: remote.accountingEvent?.ulid,
+        name: remote.accountingEvent?.name,
+        dueDate: remote.accountingEvent?.dueDate,
+        responsibleDesk: remote.accountingEvent?.responsibleDesk,
+        credits: remote.accountingEvent?.credits,
+        debits: remote.accountingEvent?.debits,
+        balance: remote.accountingEvent?.balance,
+        refundCharge: remote.accountingEvent?.refundCharge,
+        amountToRefund: remote.accountingEvent?.amountToRefund,
+        createdAt: remote.accountingEvent?.createdAt,
+        updatedAt: remote.accountingEvent?.updatedAt,
+        refunds: remote.accountingEvent?.refunds
+            .map(
+              (refund) => PRFLocalRefund(
+                ulid: refund.ulid,
+                amount: refund.amount,
+                deficitAmount: refund.deficitAmount,
+                confirmationMessage: refund.confirmationMessage,
+                createdAt: refund.createdAt,
+                updatedAt: refund.updatedAt,
+              ),
+            )
+            .toList(),
+      ),
       createdAt: remote.createdAt,
       updatedAt: remote.updatedAt,
       missionType: PRFLocalMissionType(
@@ -235,6 +260,22 @@ class MissionDbService extends BaseLocalDBService<PRFMission, PRFLocalMission> {
             ),
           )
           .toList(),
+      accountingEvent: local.accountingEvent.ulid == null
+          ? null
+          : PRFAccountingEvent(
+              local.accountingEvent.ulid!,
+              local.accountingEvent.name!,
+              local.accountingEvent.dueDate!,
+              local.accountingEvent.responsibleDesk!,
+              local.accountingEvent.credits!,
+              local.accountingEvent.debits!,
+              local.accountingEvent.balance!,
+              local.accountingEvent.refundCharge!,
+              local.accountingEvent.amountToRefund!,
+              local.accountingEvent.createdAt!,
+              local.accountingEvent.updatedAt!,
+              refunds: [],
+            ),
     );
   }
 

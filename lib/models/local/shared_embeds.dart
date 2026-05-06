@@ -1,4 +1,5 @@
 import 'package:app/enums/member/prf_institution_type.dart';
+import 'package:app/enums/member/prf_responsible_desk.dart';
 import 'package:isar_community/isar.dart';
 
 part 'shared_embeds.g.dart';
@@ -209,4 +210,60 @@ class PRFLocalHumidity {
   String? avg;
   String? max;
   String? min;
+}
+
+@embedded
+class PRFLocalAccountingEvent {
+  PRFLocalAccountingEvent({
+    this.ulid,
+    this.name,
+    this.dueDate,
+    this.responsibleDesk,
+    this.credits,
+    this.debits,
+    this.balance,
+    this.refundCharge,
+    this.amountToRefund,
+    this.createdAt,
+    this.updatedAt,
+    this.refunds,
+    this.latestRefund,
+  });
+
+  final String? ulid;
+  final String? name;
+  final DateTime? dueDate;
+
+  @Enumerated(EnumType.ordinal32)
+  final PRFResponsibleDesk? responsibleDesk;
+
+  final int? credits;
+  final int? debits;
+  final int? balance;
+  final int? refundCharge;
+  final int? amountToRefund;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  final List<PRFLocalRefund>? refunds;
+  final PRFLocalRefund? latestRefund;
+}
+
+@embedded
+class PRFLocalRefund {
+  PRFLocalRefund({
+    this.ulid,
+    this.amount,
+    this.deficitAmount,
+    this.confirmationMessage,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  final String? ulid;
+  final int? amount;
+  final int? deficitAmount;
+  final String? confirmationMessage;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 }

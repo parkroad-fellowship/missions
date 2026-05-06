@@ -1,12 +1,8 @@
 import 'package:app/enums/expense/prf_approval_status.dart';
-import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/requisitions/cubit/requisition_resource_cubit.dart';
-import 'package:app/models/remote/expense/prf_accounting_event.dart';
 import 'package:app/models/remote/expense/prf_requisition.dart';
 import 'package:app/models/remote/expense/prf_requisition_item.dart';
-import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -15,9 +11,9 @@ import 'package:prf_design/prf_design.dart';
 /// Read-only view showing the mission's financial allocation summary and
 /// requisition line items so members can see how mission funds are allocated.
 class RequisitionsView extends StatefulWidget {
-  const RequisitionsView({required this.missionUlid, super.key});
+  const RequisitionsView({required this.accountingEventUlid, super.key});
 
-  final String missionUlid;
+  final String? accountingEventUlid;
 
   @override
   State<RequisitionsView> createState() => _RequisitionsViewState();
@@ -35,113 +31,77 @@ class _RequisitionsViewState extends State<RequisitionsView> {
     _loadRequisitions();
   }
 
-  void _loadRequisitions() {
-    final missionState = context.read<MissionResourceCubit>().state;
-    final mission = missionState.maybeWhen(
-      itemLoaded: (item, _) => item,
-      listLoaded: (items, _, _) =>
-          items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
-      itemLoading: (_, item) => item,
-      mutated: (items, _, _) =>
-          items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
-      itemError: (_, _, item) => item,
-      orElse: () => null,
-    );
-
-    final accountingEventUlid = mission?.accountingEvent?.ulid;
-    if (accountingEventUlid != null) {
-      context.read<RequisitionResourceCubit>().loadForAccountingEvent(
-        accountingEventUlid: accountingEventUlid,
+  Future<void> _loadRequisitions() async {
+    if (widget.accountingEventUlid != null) {
+      await context.read<RequisitionResourceCubit>().loadForAccountingEvent(
+        accountingEventUlid: widget.accountingEventUlid!,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
-      builder: (context, missionState) {
-        final mission = missionState.maybeWhen(
-          itemLoaded: (item, _) => item,
-          listLoaded: (items, _, _) =>
-              items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
-          itemLoading: (_, item) => item,
-          mutated: (items, _, _) =>
-              items.firstWhereOrNull((m) => m.ulid == widget.missionUlid),
-          itemError: (_, _, item) => item,
-          orElse: () => null,
-        );
-
-        final accountingEvent = mission?.accountingEvent;
-
-        if (accountingEvent == null) {
-          return const PRFEmptyView(
+    return widget.accountingEventUlid == null
+        ? const PRFEmptyView(
             label: 'Requisitions',
             description: 'No financial data available for this mission.',
             icon: Icons.receipt_long_outlined,
-          );
-        }
+          )
+        : BlocBuilder<RequisitionResourceCubit, ResourceState<PRFRequisition>>(
+            builder: (context, requisitionState) {
+              return requisitionState.when(
+                initial: () => const SizedBox.shrink(),
+                listLoading: (_) => const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(PRFSpacingTokens.xxl),
+                    child: PRFCircularProgressIndicator(),
+                  ),
+                ),
+                itemLoading: (_, _) => const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(PRFSpacingTokens.xxl),
+                    child: PRFCircularProgressIndicator(),
+                  ),
+                ),
+                listLoaded: (requisitions, _, _) => _buildContent(
+                  context,
 
-        return BlocBuilder<
-          RequisitionResourceCubit,
-          ResourceState<PRFRequisition>
-        >(
-          builder: (context, requisitionState) {
-            return requisitionState.when(
-              initial: () => const SizedBox.shrink(),
-              listLoading: (_) => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(PRFSpacingTokens.xxl),
-                  child: PRFCircularProgressIndicator(),
+                  requisitions: requisitions,
                 ),
-              ),
-              itemLoading: (_, _) => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(PRFSpacingTokens.xxl),
-                  child: PRFCircularProgressIndicator(),
+                itemLoaded: (_, requisitions) => _buildContent(
+                  context,
+
+                  requisitions: requisitions,
                 ),
-              ),
-              listLoaded: (requisitions, _, _) => _buildContent(
-                context,
-                accountingEvent: accountingEvent,
-                requisitions: requisitions,
-              ),
-              itemLoaded: (_, requisitions) => _buildContent(
-                context,
-                accountingEvent: accountingEvent,
-                requisitions: requisitions,
-              ),
-              mutating: (requisitions, _) => _buildContent(
-                context,
-                accountingEvent: accountingEvent,
-                requisitions: requisitions,
-              ),
-              mutated: (requisitions, _, _) => _buildContent(
-                context,
-                accountingEvent: accountingEvent,
-                requisitions: requisitions,
-              ),
-              error: (message, requisitions) => _buildContent(
-                context,
-                accountingEvent: accountingEvent,
-                requisitions: requisitions,
-                errorMessage: message,
-              ),
-              itemError: (message, requisitions, _) => _buildContent(
-                context,
-                accountingEvent: accountingEvent,
-                requisitions: requisitions,
-                errorMessage: message,
-              ),
-            );
-          },
-        );
-      },
-    );
+                mutating: (requisitions, _) => _buildContent(
+                  context,
+
+                  requisitions: requisitions,
+                ),
+                mutated: (requisitions, _, _) => _buildContent(
+                  context,
+
+                  requisitions: requisitions,
+                ),
+                error: (message, requisitions) => _buildContent(
+                  context,
+
+                  requisitions: requisitions,
+                  errorMessage: message,
+                ),
+                itemError: (message, requisitions, _) => _buildContent(
+                  context,
+
+                  requisitions: requisitions,
+                  errorMessage: message,
+                ),
+              );
+            },
+          );
   }
 
   Widget _buildContent(
     BuildContext context, {
-    required PRFAccountingEvent accountingEvent,
     required List<PRFRequisition> requisitions,
     String? errorMessage,
   }) {

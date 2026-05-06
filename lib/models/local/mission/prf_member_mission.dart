@@ -20,6 +20,7 @@ class PRFLocalMemberMission {
     required this.accountingEventUlid,
     required this.createdAt,
     required this.updatedAt,
+    required this.accountingEvent,
     this.missionPrepNotes,
     this.theme,
     this.whatsAppLink,
@@ -54,6 +55,7 @@ class PRFLocalMemberMission {
   final PRFLocalSchool? school;
   final PRFLocalMissionType? missionType;
   final List<PRFLocalWeatherForecast>? weatherForecasts;
+  final PRFLocalAccountingEvent accountingEvent;
 }
 
 @embedded

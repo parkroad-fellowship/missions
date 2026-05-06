@@ -3,7 +3,6 @@
 import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
-import 'package:app/features/home/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_expense/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_refund/_handset.dart';
 import 'package:app/features/home/missions/mission_details/widgets/expenses/actions/add_token/_handset.dart';
@@ -20,9 +19,7 @@ import 'package:app/models/remote/expense/prf_accounting_event.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_refund.dart';
 import 'package:app/models/remote/media/prf_media.dart';
-import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -32,11 +29,11 @@ import 'package:prf_design/prf_design.dart';
 
 class ExpensesViewHandset extends StatefulWidget {
   const ExpensesViewHandset({
-    required this.missionUlid,
+    required this.accountingEventUlid,
     super.key,
   });
 
-  final String missionUlid;
+  final String? accountingEventUlid;
 
   @override
   State<ExpensesViewHandset> createState() => _ExpensesViewHandsetState();
@@ -45,9 +42,7 @@ class ExpensesViewHandset extends StatefulWidget {
 class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     with TimezoneMixin {
   bool _showBreakdown = true;
-  String get missionUlid => widget.missionUlid;
-
-  String? accountingEventUlid;
+  String? get accountingEventUlid => widget.accountingEventUlid;
 
   @override
   void initState() {
@@ -56,29 +51,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   }
 
   void _loadData() {
-    // Don't re-fetch mission — parent already loaded it.
-    // Extract accountingEventUlid from existing cubit state.
-    final missionState = context.read<MissionResourceCubit>().state;
-    final mission = missionState.maybeWhen(
-      itemLoaded: (item, _) => item,
-      listLoaded: (items, _, _) => items.firstWhereOrNull(
-        (m) => m.ulid == missionUlid,
-      ),
-      itemLoading: (_, item) => item,
-      mutated: (items, _, _) => items.firstWhereOrNull(
-        (m) => m.ulid == missionUlid,
-      ),
-      itemError: (_, _, item) => item,
-      orElse: () => null,
-    );
-
-    if (mission != null) {
-      accountingEventUlid = mission.accountingEvent?.ulid;
-      if (accountingEventUlid != null) {
-        context.read<AllocationEntryResourceCubit>().loadAll(
-          filters: {'accounting_event_ulid': accountingEventUlid},
-        );
-      }
+    if (accountingEventUlid != null) {
+      context.read<AllocationEntryResourceCubit>().loadAll(
+        filters: {'accounting_event_ulid': accountingEventUlid},
+      );
     }
 
     context.read<ExpenseCategoryResourceCubit>().loadAll();
@@ -90,44 +66,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<MissionResourceCubit, ResourceState<PRFMission>>(
-          listener: (context, state) {
-            state.maybeWhen(
-              orElse: () {},
-              itemLoaded: (mission, _) {
-                accountingEventUlid = mission.accountingEvent?.ulid;
-                if (accountingEventUlid != null) {
-                  context.read<AllocationEntryResourceCubit>().loadAll(
-                    filters: {
-                      'accounting_event_ulid': accountingEventUlid,
-                    },
-                  );
-                }
-              },
-              listLoaded: (missions, _, _) {
-                if (missions.isNotEmpty) {
-                  final mission = missions.firstWhereOrNull(
-                    (item) => item.ulid == missionUlid,
-                  );
-                  if (mission == null) {
-                    return;
-                  }
-                  accountingEventUlid = mission.accountingEvent?.ulid;
-                  if (accountingEventUlid != null) {
-                    context.read<AllocationEntryResourceCubit>().loadAll(
-                      filters: {
-                        'accounting_event_ulid': accountingEventUlid,
-                      },
-                    );
-                  }
-                }
-              },
-              error: (message, _) {
-                PRFSnackbar.error(context, 'Failed to load mission: $message');
-              },
-            );
-          },
-        ),
         BlocListener<
           AllocationEntryResourceCubit,
           ResourceState<PRFAllocationEntry>

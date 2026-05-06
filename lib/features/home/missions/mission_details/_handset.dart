@@ -27,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
+import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 
 class MissionsDetailsPageHandset extends StatefulWidget {
@@ -200,6 +201,8 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                       );
                     }
 
+                    Logger().f(mission.accountingEvent);
+
                     return TabBarView(
                       controller: _tabController,
                       children: [
@@ -230,10 +233,10 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                         ),
                         FinanceSection(
                           requisitionsTab: RequisitionsView(
-                            missionUlid: missionUlid,
+                            accountingEventUlid: mission.accountingEvent?.ulid,
                           ),
                           expensesTab: ExpensesView(
-                            missionUlid: missionUlid,
+                            accountingEventUlid: mission.accountingEvent?.ulid,
                           ),
                         ),
                       ],
