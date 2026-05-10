@@ -87,7 +87,24 @@ class _LandingPageState extends State<LandingPage> {
         animationDelay: 0,
         deskGroup: 'Faith & Ministry',
       ),
-
+      LandingActionItem(
+        title: l10n.give,
+        assetPath: 'assets/svgs/giving.svg',
+        onTap: () => context.router.pushPath(
+          PRFSuperAppRouter.givingRoute,
+        ),
+        animationDelay: 0,
+        deskGroup: 'Faith & Ministry',
+      ),
+      LandingActionItem(
+        title: l10n.answerFaqs,
+        assetPath: 'assets/svgs/recording.svg',
+        onTap: () => context.router.pushPath(
+          PRFSuperAppRouter.answerFAQsRoute,
+        ),
+        animationDelay: 0,
+        deskGroup: 'Faith & Ministry',
+      ),
       // Learn & Grow
       // LandingActionItem(
       //   title: l10n.learnSomething,
@@ -127,16 +144,6 @@ class _LandingPageState extends State<LandingPage> {
         animationDelay: 0,
         deskGroup: 'Community',
       ),
-      LandingActionItem(
-        title: l10n.give,
-        assetPath: 'assets/svgs/giving.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.givingRoute,
-        ),
-        animationDelay: 0,
-        deskGroup: 'Faith & Ministry',
-      ),
-
       // Extras
       LandingActionItem(
         title: l10n.wrapped,

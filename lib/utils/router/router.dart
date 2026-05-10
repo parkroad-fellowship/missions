@@ -39,6 +39,7 @@ class PRFSuperAppRouter extends RootStackRouter {
 
   // Wrapped
   static const String wrappedRoute = '/wrapped';
+  static const String answerFAQsRoute = '/answer-faqs';
 
   @override
   List<AutoRoute> get routes => [
@@ -169,6 +170,13 @@ class PRFSuperAppRouter extends RootStackRouter {
     CustomRoute<dynamic>(
       page: MissionsWrappedRoute.page,
       path: wrappedRoute,
+      guards: [AuthGuard()],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+
+    CustomRoute<dynamic>(
+      page: AnswerFAQsRoute.page,
+      path: answerFAQsRoute,
       guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
