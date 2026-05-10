@@ -1,8 +1,8 @@
 import 'package:app/services/analytics/analytics_service.dart';
 import 'package:app/services/analytics/posthog_analytics_service.dart';
-import 'package:app/services/error_handler_service.dart';
 import 'package:app/services/firebase/crashlytics_service.dart';
 import 'package:app/services/firebase/crashlytics_service_impl.dart';
+import 'package:app/services/firebase/error_handler_service.dart';
 import 'package:app/services/firebase/firebase_analytics_service.dart';
 import 'package:app/services/firebase/firebase_analytics_service_impl.dart';
 import 'package:app/services/firebase/firebase_messaging_service.dart';
