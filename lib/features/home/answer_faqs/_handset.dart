@@ -302,9 +302,10 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                           title:
                                               'Answers (${item.questionMediaAnswers.isNotEmpty ? item.questionMediaAnswers.length : item.transcripts.where((t) => t.media != null).length})',
                                           disabled:
-                                              item.questionMediaAnswers
-                                                      .isEmpty &&
-                                                  item.transcripts.isEmpty,
+                                              item
+                                                  .questionMediaAnswers
+                                                  .isEmpty &&
+                                              item.transcripts.isEmpty,
                                         ),
                                       ),
                                     ],

@@ -60,5 +60,6 @@ class AudioPlaybackService {
 
   Future<void> stop(SoundHandle handle) => _soloud.stop(handle);
 
-  Future<void> disposeSource(AudioSource source) => _soloud.disposeSource(source);
+  Future<void> disposeSource(AudioSource source) =>
+      _soloud.disposeSource(source);
 }

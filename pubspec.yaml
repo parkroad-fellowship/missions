@@ -22,12 +22,12 @@ dependencies:
   dio: ^5.9.2
   extended_image: ^10.0.1
   file_picker: ^11.0.2
-  firebase_analytics: ^12.3.0
-  firebase_auth: ^6.4.0
-  firebase_core: ^4.7.0
-  firebase_crashlytics: ^5.2.0
-  firebase_messaging: ^16.2.0
-  firebase_remote_config: ^6.4.0
+  firebase_analytics: ^12.4.1
+  firebase_auth: ^6.5.1
+  firebase_core: ^4.9.0
+  firebase_crashlytics: ^5.2.2
+  firebase_messaging: ^16.2.2
+  firebase_remote_config: ^6.5.1
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
