@@ -24,7 +24,7 @@ import 'package:get_it/get_it.dart';
 class FirebaseModule {
   static void register(GetIt getIt) {
     getIt
-      ..registerSingleton<FirebaseService>(FirebaseServiceImpl())
+      ..registerSingleton<PRFFirebaseService>(FirebaseServiceImpl())
       ..registerSingleton<FirebaseMessagingService>(
         FirebaseMessagingServiceImpl(),
       )

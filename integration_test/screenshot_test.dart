@@ -87,7 +87,7 @@ void main() {
       await DIContainer.initializeDatabases();
 
       try {
-        await getIt<FirebaseService>().initRemoteConfig();
+        await getIt<PRFFirebaseService>().initRemoteConfig();
       } catch (e) {
         Logger().e(e);
       }

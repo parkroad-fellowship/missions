@@ -11,14 +11,14 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 
-abstract class FirebaseService {
+abstract class PRFFirebaseService {
   Future<SocialAuthDTO> signInWithGoogle();
   Future<void> initRemoteConfig();
   RemoteConfig getReviewConfig();
   Future<bool> canShowAuth();
 }
 
-class FirebaseServiceImpl implements FirebaseService {
+class FirebaseServiceImpl implements PRFFirebaseService {
   final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
