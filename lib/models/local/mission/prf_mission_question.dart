@@ -1,3 +1,4 @@
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:isar_community/isar.dart';
 
 part 'prf_mission_question.g.dart';
@@ -9,6 +10,7 @@ class PRFLocalMissionQuestion {
     required this.question,
     required this.createdAt,
     required this.missionUlid,
+    required this.transcripts,
   });
 
   Id id = Isar.autoIncrement;
@@ -18,4 +20,5 @@ class PRFLocalMissionQuestion {
   final DateTime createdAt;
   @Index()
   final String missionUlid;
+  final List<PRFLocalTranscript> transcripts;
 }

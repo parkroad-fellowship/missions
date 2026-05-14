@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
 import 'package:app/models/local/media/upload_retry_progress.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
@@ -12,14 +13,18 @@ class FailedRecordingUploadService {
   FailedRecordingUploadService({
     required IsarService isarService,
     required MediaService mediaService,
+    required HiveService hiveService,
   }) {
     _isarService = isarService;
     _mediaService = mediaService;
+    _hiveService = hiveService;
     _startConnectivityMonitoring();
+    streamPendingUploads();
   }
 
   late IsarService _isarService;
   late MediaService _mediaService;
+  late HiveService _hiveService;
   Timer? _connectivityTimer;
   bool _isRetrying = false;
 
@@ -115,6 +120,25 @@ class FailedRecordingUploadService {
         .findAll();
   }
 
+  Future<List<PRFFailedRecordingUpload>> getPendingUploadsForTarget({
+    required String modelUlid,
+    PRFMediaModel? model,
+  }) async {
+    final base = _isarService.prfDBInstance.pRFFailedRecordingUploads
+        .filter()
+        .modelUlidEqualTo(modelUlid);
+
+    if (model == null) {
+      return base.findAll();
+    }
+
+    return base.modelEqualTo(model).findAll();
+  }
+
+  Future<void> retryAllUploads() async {
+    await _checkAndRetryFailedUploads();
+  }
+
   Future<void> _checkAndRetryFailedUploads() async {
     if (_isRetrying) return;
 
@@ -169,7 +193,10 @@ class FailedRecordingUploadService {
             name: failedUpload.name,
           );
 
-          await _mediaService.uploadFile(imageDTO: mediaDTO);
+          await _mediaService.uploadFile(
+            imageDTO: mediaDTO,
+            memberUlid: _hiveService.retrieveMember()!.ulid,
+          );
 
           // Upload successful, remove from failed uploads
           await _removeFailedUpload(failedUpload.id);
@@ -242,7 +269,10 @@ class FailedRecordingUploadService {
         name: failedUpload.name,
       );
 
-      await _mediaService.uploadFile(imageDTO: mediaDTO);
+      await _mediaService.uploadFile(
+        imageDTO: mediaDTO,
+        memberUlid: _hiveService.retrieveMember()!.ulid,
+      );
       await _removeFailedUpload(failedUpload.id);
       _notifyPendingUploadsChanged();
     } catch (e) {
@@ -291,6 +321,51 @@ class FailedRecordingUploadService {
     _retryProgressController.add(UploadRetryProgress.complete);
 
     // Reset to idle after a short delay
+    Timer(const Duration(seconds: 2), () {
+      _retryProgressController.add(UploadRetryProgress.idle);
+    });
+  }
+
+  Future<void> retryUploadsForTarget({
+    required String modelUlid,
+    PRFMediaModel? model,
+  }) async {
+    final failedUploads = await getPendingUploadsForTarget(
+      modelUlid: modelUlid,
+      model: model,
+    );
+
+    if (failedUploads.isEmpty) return;
+
+    _retryProgressController.add(
+      UploadRetryProgress(
+        isRetrying: true,
+        currentIndex: 0,
+        totalCount: failedUploads.length,
+      ),
+    );
+
+    for (var i = 0; i < failedUploads.length; i++) {
+      final failedUpload = failedUploads[i];
+
+      _retryProgressController.add(
+        UploadRetryProgress(
+          isRetrying: true,
+          currentIndex: i + 1,
+          totalCount: failedUploads.length,
+          currentFileName: failedUpload.name,
+        ),
+      );
+
+      try {
+        await retrySpecificUpload(failedUpload);
+      } catch (e) {
+        Logger().e('Failed to retry upload for ${failedUpload.name}: $e');
+      }
+    }
+
+    _retryProgressController.add(UploadRetryProgress.complete);
+
     Timer(const Duration(seconds: 2), () {
       _retryProgressController.add(UploadRetryProgress.idle);
     });

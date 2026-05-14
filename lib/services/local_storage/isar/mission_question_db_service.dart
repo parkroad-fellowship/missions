@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/models/local/mission/prf_mission_question.dart';
+import 'package:app/models/local/shared_embeds.dart';
 import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:isar_community/isar.dart';
@@ -20,6 +21,25 @@ class MissionQuestionDbService
       question: remote.question,
       createdAt: remote.createdAt,
       missionUlid: remote.mission!.ulid,
+      transcripts: remote.transcripts
+          .map(
+            (transcript) => PRFLocalTranscript(
+              ulid: transcript.ulid,
+              content: transcript.content,
+              media: PRFLocalMedia(
+                collectionName: transcript.media?.collectionName,
+                fileName: transcript.media?.fileName,
+                temporaryURL: transcript.media?.temporaryURL,
+                size: transcript.media?.size,
+                humanReadableSize: transcript.media?.humanReadableSize,
+                mimeType: transcript.media?.mimeType,
+                name: transcript.media?.name,
+                createdAt: transcript.media?.createdAt,
+                updatedAt: transcript.media?.updatedAt,
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 

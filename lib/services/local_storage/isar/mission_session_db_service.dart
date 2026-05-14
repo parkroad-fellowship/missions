@@ -8,7 +8,7 @@ import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
-import 'package:app/models/remote/mission/prf_mission_session_transcript.dart';
+import 'package:app/models/remote/mission/prf_transcript.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
 import 'package:collection/collection.dart' as col;
 import 'package:isar_community/isar.dart';
@@ -47,7 +47,7 @@ class MissionSessionDbService
       ),
       transcripts: remote.transcripts
           .map(
-            (transcript) => PRFLocalMissionSessionTranscript(
+            (transcript) => PRFLocalTranscript(
               ulid: transcript.ulid,
               content: transcript.content,
               media: PRFLocalMedia(
@@ -104,7 +104,7 @@ class MissionSessionDbService
       ),
       transcripts: local.transcripts
           .map(
-            (transcript) => PRFMissionSessionTranscript(
+            (transcript) => PRFTranscript(
               transcript.ulid ?? '',
               content: transcript.content ?? '',
             ),

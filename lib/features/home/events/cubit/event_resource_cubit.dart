@@ -15,6 +15,7 @@ class EventResourceCubit extends ResourceCubit<PRFEvent, Null> {
     'eventSubscriptions',
     'loggedInMemberEventSubscription',
     'posters',
+    'transcripts.media',
   ];
 
   @override

@@ -1,5 +1,6 @@
 import 'package:app/di/_index.dart';
 import 'package:app/features/home/shared/cubit/theme_cubit.dart';
+import 'package:app/features/home/shared/widgets/global_recording_uploads_bar.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/utils/_index.dart' hide DeviceHelper;
 import 'package:flutter/material.dart';
@@ -28,6 +29,18 @@ class PRFSuperApp extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             routerConfig: getIt<PRFSuperAppRouter>().config(),
+            builder: (context, child) {
+              if (child == null) return const SizedBox.shrink();
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  child,
+                  const Positioned.fill(
+                    child: GlobalRecordingUploadsBar(),
+                  ),
+                ],
+              );
+            },
           );
         },
       ),

@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, lines_longer_than_80_chars
 
 import 'package:app/di/_index.dart';
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
 import 'package:app/models/local/media/upload_retry_progress.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
@@ -10,11 +11,13 @@ import 'package:prf_design/prf_design.dart';
 
 class PendingUploadsWidget extends StatefulWidget {
   const PendingUploadsWidget({
-    required this.missionSessionUlid,
+    this.model,
+    this.modelUlid,
     super.key,
   });
 
-  final String missionSessionUlid;
+  final PRFMediaModel? model;
+  final String? modelUlid;
 
   @override
   State<PendingUploadsWidget> createState() => _PendingUploadsWidgetState();
@@ -36,11 +39,18 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
         // Filter pending uploads by this mission session ULID
         final allPendingUploads = snapshot.data!;
-        final sessionUploads = allPendingUploads
-            .where((upload) => upload.modelUlid == widget.missionSessionUlid)
-            .toList();
+        final filteredUploads = allPendingUploads.where((upload) {
+          if (widget.modelUlid != null &&
+              upload.modelUlid != widget.modelUlid) {
+            return false;
+          }
+          if (widget.model != null && upload.model != widget.model) {
+            return false;
+          }
+          return true;
+        }).toList();
 
-        if (sessionUploads.isEmpty) {
+        if (filteredUploads.isEmpty) {
           return StreamBuilder<UploadRetryProgress>(
             stream: getIt<FailedRecordingUploadService>().retryProgressStream,
             builder: (context, progressSnapshot) {
@@ -73,7 +83,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                     const SizedBox(width: PRFSpacingTokens.sm),
                     Expanded(
                       child: Text(
-                        'No pending uploads for this session',
+                        'No pending uploads',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(
                             context,
@@ -129,16 +139,19 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                               ),
                         ),
                       ),
-                      PRFSecondaryButton(
-                        onPressed: () => _showPendingUploadsDetails(
-                          context,
-                          sessionUploads,
+                      SizedBox(
+                        width: 140,
+                        child: PRFSecondaryButton(
+                          onPressed: () => _showPendingUploadsDetails(
+                            context,
+                            filteredUploads,
+                          ),
+                          title:
+                              '${filteredUploads.length} '
+                              '${filteredUploads.length == 1 ? 'recording' : 'record'
+                                        'ings'}',
+                          disabled: false,
                         ),
-                        title:
-                            '${sessionUploads.length} '
-                            '${sessionUploads.length == 1 ? 'recording' : 'record'
-                                      'ings'}',
-                        disabled: false,
                       ),
                     ],
                   ),
@@ -174,11 +187,16 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         ),
                       ),
                       const SizedBox(width: PRFSpacingTokens.sm),
-                      PRFSecondaryButton(
-                        onPressed: () =>
-                            _showPendingUploadsDetails(context, sessionUploads),
-                        title: 'View All',
-                        disabled: progress.isRetrying,
+                      SizedBox(
+                        width: 120,
+                        child: PRFSecondaryButton(
+                          onPressed: () => _showPendingUploadsDetails(
+                            context,
+                            filteredUploads,
+                          ),
+                          title: 'View All',
+                          disabled: progress.isRetrying,
+                        ),
                       ),
                     ],
                   ),
@@ -193,18 +211,33 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
   Future<void> _retryAllUploads(BuildContext context) async {
     try {
-      // Get current pending uploads for this session
-      final pendingUploads = await getIt<FailedRecordingUploadService>()
-          .getPendingUploadsForSession(widget.missionSessionUlid);
+      final service = getIt<FailedRecordingUploadService>();
 
-      if (pendingUploads.isEmpty) {
-        PRFSnackbar.info(context, 'No pending uploads for this session');
+      if (widget.modelUlid != null) {
+        final pendingUploads = await service.getPendingUploadsForTarget(
+          modelUlid: widget.modelUlid!,
+          model: widget.model,
+        );
+
+        if (pendingUploads.isEmpty) {
+          PRFSnackbar.info(context, 'No pending uploads');
+          return;
+        }
+
+        await service.retryUploadsForTarget(
+          modelUlid: widget.modelUlid!,
+          model: widget.model,
+        );
         return;
       }
 
-      await getIt<FailedRecordingUploadService>().retryAllUploadsForSession(
-        widget.missionSessionUlid,
-      );
+      final pendingUploads = await service.getPendingUploads();
+      if (pendingUploads.isEmpty) {
+        PRFSnackbar.info(context, 'No pending uploads');
+        return;
+      }
+
+      await service.retryAllUploads();
     } catch (e) {
       if (mounted) {
         PRFSnackbar.error(
@@ -328,14 +361,19 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                     final progress =
                         progressSnapshot.data ?? UploadRetryProgress.idle;
 
-                    return PRFPrimaryButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        _retryAllUploads(context);
-                      },
-                      title: progress.isRetrying ? 'Uploading...' : 'Retry All',
-                      disabled: progress.isRetrying,
-                      isLoading: progress.isRetrying,
+                    return SizedBox(
+                      width: 120,
+                      child: PRFPrimaryButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _retryAllUploads(context);
+                        },
+                        title: progress.isRetrying
+                            ? 'Uploading...'
+                            : 'Retry All',
+                        disabled: progress.isRetrying,
+                        isLoading: progress.isRetrying,
+                      ),
                     );
                   },
                 ),

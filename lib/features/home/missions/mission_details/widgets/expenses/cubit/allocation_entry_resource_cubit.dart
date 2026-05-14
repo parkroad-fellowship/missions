@@ -60,6 +60,7 @@ class AllocationEntryResourceCubit
       for (final receiptDTO in receiptDTOs) {
         await _mediaService.uploadFile(
           imageDTO: receiptDTO.copyWith(modelUlid: entry.ulid),
+          memberUlid: _hiveService.retrieveMember()!.ulid,
         );
       }
 
@@ -103,6 +104,7 @@ class AllocationEntryResourceCubit
       for (final receiptDTO in receiptDTOs) {
         await _mediaService.uploadFile(
           imageDTO: receiptDTO.copyWith(modelUlid: entry.ulid),
+          memberUlid: _hiveService.retrieveMember()!.ulid,
         );
       }
 

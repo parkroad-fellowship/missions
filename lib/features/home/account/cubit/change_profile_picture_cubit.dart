@@ -44,6 +44,7 @@ class ChangeProfilePictureCubit extends Cubit<ChangeProfilePictureState> {
 
       final profilePicture = await _mediaService.uploadFile(
         imageDTO: media.first,
+        memberUlid: _hiveService.retrieveMember()!.ulid,
       );
 
       final user = _hiveService.auth.retrieveProfile()!;

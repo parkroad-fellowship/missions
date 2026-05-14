@@ -14,7 +14,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/media/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
-import 'package:app/models/remote/mission/prf_mission_session_transcript.dart';
+import 'package:app/models/remote/mission/prf_transcript.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
@@ -96,8 +96,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     );
   }
 
-  List<PRFMissionSessionTranscript> _sortedTranscripts(
-    List<PRFMissionSessionTranscript> transcripts,
+  List<PRFTranscript> _sortedTranscripts(
+    List<PRFTranscript> transcripts,
   ) => [...transcripts]
     ..sort((a, b) {
       final aDate = a.media?.createdAt;
@@ -126,7 +126,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
       orElse: () => null,
     );
     final allTranscripts =
-        missionSession?.transcripts ?? const <PRFMissionSessionTranscript>[];
+        missionSession?.transcripts ?? const <PRFTranscript>[];
     final readyTranscripts = allTranscripts.where(
       (item) => item.content.isNotEmpty,
     );
@@ -702,7 +702,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
   }
 
   Widget _viewTranscripts(
-    PRFMissionSessionTranscript transcript,
+    PRFTranscript transcript,
     int index,
     AppLocalizations l10n,
   ) {
@@ -903,7 +903,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     );
   }
 
-  Future<void> _viewTranscript(PRFMissionSessionTranscript transcript) async {
+  Future<void> _viewTranscript(PRFTranscript transcript) async {
     await PRFBottomSheet.show<void>(
       context,
       title: context.l10n.viewTranscript,

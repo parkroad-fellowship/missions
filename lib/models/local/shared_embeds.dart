@@ -267,3 +267,20 @@ class PRFLocalRefund {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 }
+
+@embedded
+class PRFLocalTranscript {
+  PRFLocalTranscript({
+    this.ulid,
+    this.content,
+    this.media,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  final String? ulid;
+  final String? content;
+  final PRFLocalMedia? media;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+}

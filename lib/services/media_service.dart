@@ -19,7 +19,10 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class MediaService {
-  Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO});
+  Future<PRFMedia?> uploadFile({
+    required PRFMediaDTO imageDTO,
+    required String memberUlid,
+  });
   Future<List<PRFMediaDTO>> getAssets(
     BuildContext context, {
     required String modelUlid,
@@ -58,7 +61,10 @@ class MediaServiceImpl implements MediaService {
   final _picker = ImagePicker();
 
   @override
-  Future<PRFMedia?> uploadFile({required PRFMediaDTO imageDTO}) async {
+  Future<PRFMedia?> uploadFile({
+    required PRFMediaDTO imageDTO,
+    required String memberUlid,
+  }) async {
     final url = StringBuffer('/');
     Logger().d(imageDTO);
 
@@ -76,6 +82,8 @@ class MediaServiceImpl implements MediaService {
         url.write('members');
       case PRFMediaModel.allocationEntryReceipts:
         url.write('allocation-entries');
+      case PRFMediaModel.missionQuestions:
+        url.write('mission-questions');
     }
 
     url.write('/${imageDTO.modelUlid}/media');
@@ -98,6 +106,7 @@ class MediaServiceImpl implements MediaService {
         body: json.encode({
           'media_file_storage_path': imageDTO.name,
           'collection': imageDTO.model.collection,
+          'member_ulid': memberUlid,
         }),
         apiVersion: 'v2',
       );

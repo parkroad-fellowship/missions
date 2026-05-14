@@ -30,22 +30,5 @@ class PRFLocalMissionSession {
   final PRFLocalClassGroup? classGroup;
   @Index()
   final String missionUlid;
-  final List<PRFLocalMissionSessionTranscript> transcripts;
-}
-
-@embedded
-class PRFLocalMissionSessionTranscript {
-  PRFLocalMissionSessionTranscript({
-    this.ulid,
-    this.content,
-    this.media,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  final String? ulid;
-  final String? content;
-  final PRFLocalMedia? media;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  final List<PRFLocalTranscript> transcripts;
 }

@@ -10,7 +10,7 @@ import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/models/remote/mission/prf_mission_session_dto.dart';
-import 'package:app/models/remote/mission/prf_mission_session_transcript.dart';
+import 'package:app/models/remote/mission/prf_transcript.dart';
 import 'package:app/services/api/mission_session_service.dart';
 import 'package:app/services/local_storage/isar/mission_session_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
@@ -52,7 +52,7 @@ class MissionSessionResourceCubit
     'facilitator',
     'speaker',
     'classGroup',
-    'missionSessionTranscripts.media',
+    'transcripts.media',
     'mission',
   ];
 
@@ -103,7 +103,7 @@ class MissionSessionResourceCubit
       mission: _placeholderMission(local),
       transcripts: local.transcripts
           .map(
-            (transcript) => PRFMissionSessionTranscript(
+            (transcript) => PRFTranscript(
               transcript.ulid ?? 'cached-transcript',
               content: transcript.content ?? '',
               media: _toRemoteMedia(transcript.media),

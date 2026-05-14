@@ -13,13 +13,16 @@ class RecordingUploadCubit extends Cubit<RecordingUploadState> {
   RecordingUploadCubit({
     required MediaService mediaService,
     required FailedRecordingUploadService failedUploadService,
+    required HiveService hiveService,
   }) : super(const RecordingUploadState.initial()) {
     _mediaService = mediaService;
     _failedUploadService = failedUploadService;
+    _hiveService = hiveService;
   }
 
   late MediaService _mediaService;
   late FailedRecordingUploadService _failedUploadService;
+  late HiveService _hiveService;
 
   Future<void> uploadRecording(PRFMediaDTO mediaDTO) async {
     emit(const RecordingUploadState.loading());
@@ -28,7 +31,10 @@ class RecordingUploadCubit extends Cubit<RecordingUploadState> {
       await _failedUploadService.storePendingUpload(mediaDTO);
 
       Logger().d('Uploading recording: ${mediaDTO.name}');
-      final result = await _mediaService.uploadFile(imageDTO: mediaDTO);
+      final result = await _mediaService.uploadFile(
+        imageDTO: mediaDTO,
+        memberUlid: _hiveService.retrieveMember()!.ulid,
+      );
       if (result != null) {
         Logger().d('Recording upload successful: ${mediaDTO.name}');
         await _failedUploadService.removeFailedUploadByPath(mediaDTO.path);
@@ -71,7 +77,10 @@ class RecordingUploadCubit extends Cubit<RecordingUploadState> {
         Logger().d('Uploading recording: ${mediaDTO.name}');
         try {
           await _failedUploadService.storePendingUpload(mediaDTO);
-          await _mediaService.uploadFile(imageDTO: mediaDTO);
+          await _mediaService.uploadFile(
+            imageDTO: mediaDTO,
+            memberUlid: _hiveService.retrieveMember()!.ulid,
+          );
           await _failedUploadService.removeFailedUploadByPath(mediaDTO.path);
           uploadedFiles.add(mediaDTO);
         } on Failure catch (e) {

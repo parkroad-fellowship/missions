@@ -13,7 +13,7 @@ dependencies:
   auto_route: ^11.1.0
   awesome_notifications: ^0.11.0
   awesome_notifications_core: ^0.10.1
-  bloc: ^9.2.0
+  bloc: ^9.2.1
   build_version: ^2.1.1
   collection: ^1.19.1
   crypto: ^3.0.7
@@ -37,7 +37,8 @@ dependencies:
   flutter_downloader: ^1.12.0
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.2.4
+  flutter_soloud: ^4.0.5
+  flutter_svg: ^2.3.0
   flutter_widget_from_html: ^0.17.2
   freezed_annotation: ^3.1.0
   full_screen_image: ^2.0.0
@@ -70,7 +71,7 @@ dependencies:
   posthog_flutter: ^5.24.2
   pretty_dio_logger: ^1.4.0
   prf_design: ^0.8.3
-    # path: ../../prf_design_system
+  # path: ../../prf_design_system
   record: ^6.2.0
   shorebird_code_push: ^2.0.6
   timezone: ^0.11.0

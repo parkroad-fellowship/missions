@@ -12,13 +12,16 @@ class UploadMediaCubit extends Cubit<UploadMediaState> {
   UploadMediaCubit({
     required MediaService mediaService,
     required IsarService isarService,
+    required HiveService hiveService,
   }) : super(const UploadMediaState.initial()) {
     _mediaService = mediaService;
     _isarService = isarService;
+    _hiveService = hiveService;
   }
 
   late MediaService _mediaService;
   late IsarService _isarService;
+  late HiveService _hiveService;
 
   Future<void> uploadMedia() async {
     emit(const UploadMediaState.loading());
@@ -26,7 +29,10 @@ class UploadMediaCubit extends Cubit<UploadMediaState> {
       final imageDTOs = await _isarService.mediaUploads.getAllFuture();
       Logger().d(imageDTOs);
       for (final imageDTO in imageDTOs) {
-        await _mediaService.uploadFile(imageDTO: imageDTO);
+        await _mediaService.uploadFile(
+          imageDTO: imageDTO,
+          memberUlid: _hiveService.retrieveMember()!.ulid,
+        );
         await _isarService.mediaUploads.deleteByKeys(
           imageDTO.modelUlid,
           imageDTO.path,

@@ -139,6 +139,7 @@ class MissionsModule {
         create: (context) => UploadMediaCubit(
           mediaService: getIt(),
           isarService: getIt(),
+          hiveService: getIt(),
         ),
       ),
       BlocProvider<DownloadFileCubit>(
@@ -151,6 +152,7 @@ class MissionsModule {
         create: (context) => RecordingUploadCubit(
           mediaService: getIt(),
           failedUploadService: getIt(),
+          hiveService: getIt(),
         ),
       ),
       BlocProvider<MissionDetailsResourceCubit>(

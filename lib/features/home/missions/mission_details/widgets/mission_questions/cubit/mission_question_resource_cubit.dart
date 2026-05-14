@@ -24,7 +24,10 @@ class MissionQuestionResourceCubit
   }
 
   @override
-  List<String> get defaultIncludes => ['mission'];
+  List<String> get defaultIncludes => [
+    'mission',
+    'transcripts.media',
+  ];
 
   /// Create a mission question.
   Future<void> addMissionQuestion({

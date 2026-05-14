@@ -51,7 +51,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
       children: [
         // Pending uploads widget
         PendingUploadsWidget(
-          missionSessionUlid: widget.missionSessionUlid,
+          modelUlid: widget.missionSessionUlid,
         ),
 
         // Local queued recordings preview
