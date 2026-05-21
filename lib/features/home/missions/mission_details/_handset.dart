@@ -22,7 +22,6 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,10 +52,6 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     super.initState();
 
     _tabController = TabController(length: _tabCount, vsync: this);
-
-    context.read<MissionDetailsResourceCubit>().loadMission(
-      missionUlid: missionUlid,
-    );
 
     context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
@@ -165,16 +160,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                   builder: (context, state) {
                     final mission = state.maybeWhen(
                       itemLoaded: (item, _) => item,
-                      listLoaded: (items, _, _) => items.firstWhereOrNull(
-                        (m) => m.ulid == missionUlid,
-                      ),
                       itemLoading: (_, item) => item,
-                      mutating: (items, _) => items.firstWhereOrNull(
-                        (m) => m.ulid == missionUlid,
-                      ),
-                      mutated: (items, _, _) => items.firstWhereOrNull(
-                        (m) => m.ulid == missionUlid,
-                      ),
                       itemError: (_, _, item) => item,
                       orElse: () => null,
                     );

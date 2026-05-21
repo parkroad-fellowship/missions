@@ -8,7 +8,6 @@ import 'package:app/models/remote/media/prf_weather_forecast.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/_index.dart';
 import 'package:app/utils/_index.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,13 +38,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
       builder: (context, state) {
         final mission = state.maybeWhen(
           itemLoaded: (item, _) => item,
-          listLoaded: (items, _, _) => items.firstWhereOrNull(
-            (m) => m.ulid == missionUlid,
-          ),
           itemLoading: (_, item) => item,
-          mutating: (items, _) => items.firstWhereOrNull(
-            (m) => m.ulid == missionUlid,
-          ),
           itemError: (_, _, item) => item,
           orElse: () => null,
         );

@@ -9,29 +9,30 @@ import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
-import 'package:app/models/remote/mission/prf_mission_session_dto.dart';
 import 'package:app/models/remote/mission/prf_transcript.dart';
 import 'package:app/services/api/mission_session_service.dart';
 import 'package:app/services/local_storage/isar/mission_session_db_service.dart';
-import 'package:app/utils/crud/resource_cubit.dart';
+import 'package:app/utils/crud/single_resource_cubit.dart';
 
-class MissionSessionResourceCubit
-    extends ResourceCubit<PRFMissionSession, PRFLocalMissionSession> {
-  MissionSessionResourceCubit({
+/// Dedicated cubit for mission session detail screens.
+///
+/// Detail loading stays isolated from [MissionSessionResourceCubit], which is
+/// used by list and mutation flows in the mission sessions tab.
+class MissionSessionDetailsResourceCubit
+    extends SingleResourceCubit<PRFMissionSession, PRFLocalMissionSession> {
+  MissionSessionDetailsResourceCubit({
     required MissionSessionService missionSessionService,
     super.dbService,
   }) : super(service: missionSessionService);
 
   @override
-  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is MissionSessionDbService) {
-      await (dbService! as MissionSessionDbService).refreshParentStream(
-        parentKey,
-      );
-    }
-    await dbService?.refreshStream();
-  }
+  List<String> get defaultIncludes => [
+    'facilitator',
+    'speaker',
+    'classGroup',
+    'transcripts.media',
+    'mission',
+  ];
 
   @override
   Future<PRFMissionSession?> loadCachedItem(String id) async {
@@ -47,35 +48,15 @@ class MissionSessionResourceCubit
     return _toRemoteSession(localSession);
   }
 
-  @override
-  List<String> get defaultIncludes => [
-    'facilitator',
-    'speaker',
-    'classGroup',
-    'transcripts.media',
-    'mission',
-  ];
-
-  /// Create a mission session.
-  Future<void> addSession({required PRFMissionSessionDTO data}) async {
-    await create(data: data.toJson());
-  }
-
-  /// Update a mission session.
-  Future<void> updateSession({
-    required String ulid,
-    required PRFMissionSessionDTO data,
+  Future<void> loadSession({
+    required String missionSessionUlid,
+    bool refresh = false,
   }) async {
-    await update(
-      id: ulid,
-      data: data.toJson(),
-      matchById: (s) => s.ulid == ulid,
+    await loadOne(
+      id: missionSessionUlid,
+      refresh: refresh,
+      matchById: (session) => session.ulid == missionSessionUlid,
     );
-  }
-
-  /// Delete a mission session.
-  Future<void> deleteSession(String ulid) async {
-    await delete(ulid: ulid, matchById: (s) => s.ulid == ulid);
   }
 
   PRFMissionSession _toRemoteSession(PRFLocalMissionSession local) {

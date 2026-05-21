@@ -1,5 +1,5 @@
-import 'package:app/features/home/lms/cubit/course_resource_cubit.dart';
 import 'package:app/features/home/lms/cubit/module_resource_cubit.dart';
+import 'package:app/features/home/lms/course_details/cubit/course_details_resource_cubit.dart';
 import 'package:app/features/home/lms/widgets/course_details_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_course.dart';
@@ -25,10 +25,6 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
 
   @override
   void initState() {
-    context.read<CourseResourceCubit>().loadOne(
-      id: courseUlid,
-      matchById: (course) => course.ulid == courseUlid,
-    );
     context.read<ModuleResourceCubit>().loadAll(
       filters: {'course_ulid': courseUlid},
     );
@@ -40,13 +36,14 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
+    return BlocBuilder<CourseDetailsResourceCubit, ResourceState<PRFCourse>>(
       builder: (context, courseState) {
         return BlocBuilder<ModuleResourceCubit, ResourceState<PRFCourseModule>>(
           builder: (context, moduleState) {
             final course = courseState.maybeWhen(
-              listLoaded: (items, _, _) =>
-                  items.isNotEmpty ? items.first : null,
+              itemLoaded: (item, _) => item,
+              itemLoading: (_, item) => item,
+              itemError: (_, __, item) => item,
               orElse: () => null,
             );
             final modules = moduleState.maybeWhen(
@@ -155,10 +152,12 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await context.read<CourseResourceCubit>().loadOne(
-                          id: courseUlid,
-                          matchById: (course) => course.ulid == courseUlid,
-                        );
+                        await context
+                            .read<CourseDetailsResourceCubit>()
+                            .loadCourse(
+                              courseUlid: courseUlid,
+                              refresh: true,
+                            );
                         await context.read<ModuleResourceCubit>().loadAll(
                           filters: {'course_ulid': courseUlid},
                         );

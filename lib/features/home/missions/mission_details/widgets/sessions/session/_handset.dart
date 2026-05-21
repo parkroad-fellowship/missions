@@ -8,6 +8,7 @@ import 'package:app/features/home/missions/mission_details/widgets/gallery/cubit
 import 'package:app/features/home/missions/mission_details/widgets/sessions/actions/session_form/session_form.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/add_audio/add_audio.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/mission_session_details_resource_cubit.dart';
 import 'package:app/features/home/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
@@ -18,7 +19,6 @@ import 'package:app/models/remote/mission/prf_transcript.dart';
 import 'package:app/services/failed_recording_upload_service.dart';
 import 'package:app/utils/_index.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,9 +49,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
   @override
   void initState() {
     super.initState();
-    context.read<MissionSessionResourceCubit>().loadSession(
-      missionSessionUlid: missionSessionUlid,
-    );
   }
 
   Future<void> _showAddAudioSheet() {
@@ -115,12 +112,11 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     final l10n = context.l10n;
 
     // Resolve session from cubit state
-    final sessionState = context.watch<MissionSessionResourceCubit>().state;
+    final sessionState = context
+        .watch<MissionSessionDetailsResourceCubit>()
+        .state;
     final missionSession = sessionState.maybeWhen(
       itemLoaded: (item, _) => item,
-      listLoaded: (items, _, _) => items.firstWhereOrNull(
-        (item) => item.ulid == missionSessionUlid,
-      ),
       itemLoading: (_, item) => item,
       itemError: (_, _, item) => item,
       orElse: () => null,
@@ -163,8 +159,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 ),
               ],
               child: RefreshIndicator(
-                onRefresh: () =>
-                    context.read<MissionSessionResourceCubit>().loadSession(
+                onRefresh: () => context
+                    .read<MissionSessionDetailsResourceCubit>()
+                    .loadSession(
                       missionSessionUlid: missionSessionUlid,
                       refresh: true,
                     ),
@@ -191,7 +188,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           state.mapOrNull(
                             loaded: (_) {
                               context
-                                  .read<MissionSessionResourceCubit>()
+                                  .read<MissionSessionDetailsResourceCubit>()
                                   .loadSession(
                                     missionSessionUlid: missionSessionUlid,
                                     refresh: true,
@@ -252,7 +249,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                     SliverToBoxAdapter(
                       child:
                           BlocBuilder<
-                            MissionSessionResourceCubit,
+                            MissionSessionDetailsResourceCubit,
                             ResourceState<PRFMissionSession>
                           >(
                             builder: (context, state) => state.maybeWhen(
@@ -920,7 +917,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     );
 
     if (!mounted) return;
-    await context.read<MissionSessionResourceCubit>().loadSession(
+    await context.read<MissionSessionDetailsResourceCubit>().loadSession(
       missionSessionUlid: missionSessionUlid,
       refresh: true,
     );
@@ -1085,7 +1082,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
       return;
     }
 
-    await context.read<MissionSessionResourceCubit>().loadSession(
+    await context.read<MissionSessionDetailsResourceCubit>().loadSession(
       missionSessionUlid: missionSession.ulid,
       refresh: true,
     );
