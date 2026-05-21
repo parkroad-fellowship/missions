@@ -1,3 +1,4 @@
+import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry_dto.dart';
@@ -16,7 +17,7 @@ class AllocationEntryResourceCubit
     required AllocationEntryService allocationEntryService,
     required MediaService mediaService,
     required HiveService hiveService,
-    RefundService? refundService,
+    required RefundService refundService,
     super.dbService,
   }) : _allocationEntryService = allocationEntryService,
        _mediaService = mediaService,
@@ -27,7 +28,7 @@ class AllocationEntryResourceCubit
   final AllocationEntryService _allocationEntryService;
   final MediaService _mediaService;
   final HiveService _hiveService;
-  final RefundService? _refundService;
+  final RefundService _refundService;
 
   @override
   List<String> get defaultIncludes => [
@@ -132,7 +133,9 @@ class AllocationEntryResourceCubit
 
   /// Add a token entry (uses custom endpoint).
   Future<void> addTokenEntry({
-    required PRFAllocationTokenEntryDTO data,
+    required String accountingEventUlid,
+    required int amount,
+    required String confirmationMessage,
   }) async {
     emit(
       ResourceState.mutating(
@@ -142,6 +145,14 @@ class AllocationEntryResourceCubit
     );
 
     try {
+      final data = PRFAllocationTokenEntryDTO(
+        accountingEventUlid: accountingEventUlid,
+        entryType: PRFEntryType.credit, // Always credit for tokens
+        unitCost: amount, // Use amount as unit cost
+        narration: 'Token from the school',
+        confirmationMessage: confirmationMessage.trim(),
+        memberUlid: _hiveService.retrieveMember()!.ulid,
+      );
       final entry = await _allocationEntryService.addToken(data: data);
       final updated = [entry, ...currentItems];
       emit(
@@ -168,9 +179,6 @@ class AllocationEntryResourceCubit
     );
 
     try {
-      if (_refundService == null) {
-        throw Exception('RefundService not provided');
-      }
       await _refundService.create(data: data.toJson());
       emit(
         ResourceState.mutated(
