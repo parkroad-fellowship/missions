@@ -1,7 +1,8 @@
-import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/payment/prf_charge_type.dart';
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_allocation_token_entry_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
+import 'package:app/utils/_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -230,28 +231,27 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
 
               // Submit Button
               BlocConsumer<
-                    AddAllocationTokenEntryCubit,
-                    AddAllocationTokenEntryState
+                    AllocationEntryResourceCubit,
+                    ResourceState<PRFAllocationEntry>
                   >(
                     listener: (context, state) {
-                      state.when(
-                        initial: () {},
-                        loading: () {
+                      state.mapOrNull(
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        loaded: () {
+                        mutated: (_) {
                           setState(() {
                             _isLoading = false;
                           });
                           Navigator.of(context).pop();
                         },
-                        error: (message) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
-                          PRFSnackbar.error(context, message);
+                          PRFSnackbar.error(context, error.message);
                         },
                       );
                     },
@@ -377,12 +377,10 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
 
     final amount = double.parse(_amountController.text).round();
 
-    context.read<AddAllocationTokenEntryCubit>().addAllocationEntry(
+    context.read<AllocationEntryResourceCubit>().addTokenEntry(
       accountingEventUlid: widget.accountingEventUlid,
-      entryType: PRFEntryType.credit, // Always credit for tokens
-      unitCost: amount, // Use amount as unit cost
-      narration: 'Token from the school',
-      confirmationMessage: _confirmationController.text.trim(),
+      amount: amount,
+      confirmationMessage: _confirmationController.text,
     );
   }
 

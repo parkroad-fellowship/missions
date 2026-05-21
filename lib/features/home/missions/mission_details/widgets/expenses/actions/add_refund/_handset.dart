@@ -1,4 +1,7 @@
-import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/add_mission_refund_cubit.dart';
+import 'package:app/features/home/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
+import 'package:app/models/remote/expense/prf_allocation_entry.dart';
+import 'package:app/models/remote/expense/prf_refund_dto.dart';
+import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -213,16 +216,18 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Submit Button
-              BlocConsumer<AddMissionRefundCubit, AddMissionRefundState>(
+              BlocConsumer<
+                    AllocationEntryResourceCubit,
+                    ResourceState<PRFAllocationEntry>
+                  >(
                     listener: (context, state) {
-                      state.when(
-                        initial: () {},
-                        loading: () {
+                      state.mapOrNull(
+                        mutating: (_) {
                           setState(() {
                             _isLoading = true;
                           });
                         },
-                        loaded: (refund) {
+                        mutated: (refund) {
                           setState(() {
                             _isLoading = false;
                           });
@@ -232,11 +237,11 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                             'Refund entry added successfully',
                           );
                         },
-                        error: (message) {
+                        error: (error) {
                           setState(() {
                             _isLoading = false;
                           });
-                          PRFSnackbar.error(context, message);
+                          PRFSnackbar.error(context, error.message);
                         },
                       );
                     },
@@ -295,10 +300,12 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
     final amount = double.parse(_amountController.text).round();
     final confirmationMessage = _confirmationController.text.trim();
 
-    context.read<AddMissionRefundCubit>().addMissionRefund(
-      accountingEventUlid: widget.accountingEventUlid,
-      amount: amount,
-      confirmationMessage: confirmationMessage,
+    context.read<AllocationEntryResourceCubit>().addRefund(
+      data: PRFRefundDTO(
+        accountingEventUlid: widget.accountingEventUlid,
+        amount: amount,
+        confirmationMessage: confirmationMessage,
+      ),
     );
   }
 
