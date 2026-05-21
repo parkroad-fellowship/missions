@@ -727,10 +727,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_soloud
-      sha256: b3597bfa5893694892306998922837f0336517ec61426c6e6ff82fdf47fb76b4
+      sha256: "054d7baf7effb3fa6765387d7d3f236961e558573e9a0ad2523b081fac5fa988"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.5"
+    version: "4.0.6"
   flutter_staggered_grid_view:
     dependency: transitive
     description:
@@ -1177,18 +1177,18 @@ packages:
     dependency: "direct main"
     description:
       name: json_annotation
-      sha256: cb09e7dac6210041fad964ed7fbee004f14258b4eca4040f72d1234062ace4c8
+      sha256: "2a743920d81b7910627f68ee2c9ac1fc0bfee32b9fc3403587d7c6791ca12f80"
       url: "https://pub.dev"
     source: hosted
-    version: "4.11.0"
+    version: "4.12.0"
   json_serializable:
     dependency: "direct dev"
     description:
       name: json_serializable
-      sha256: "2c15e78e1cc6e62aadecf59f81566fd56829713d96a8c4177699e2b2e17f20db"
+      sha256: ffcd10cde35a93b2abbbcc26bd9971f4ca93763e8abe78d855e3c4177797e501
       url: "https://pub.dev"
     source: hosted
-    version: "6.13.2"
+    version: "6.14.0"
   just_audio:
     dependency: transitive
     description:
@@ -2006,10 +2006,10 @@ packages:
     dependency: "direct main"
     description:
       name: upgrader
-      sha256: a9ab8cabe01c98c12b3c381a3bc8693413cb64a2a3ec7395ce0f53844ef30a2f
+      sha256: e05ddce3799a73b76470d8d239951038f5759f116e89fe0c909e30ac2856310b
       url: "https://pub.dev"
     source: hosted
-    version: "13.2.0"
+    version: "13.3.0"
   url_launcher:
     dependency: "direct main"
     description:
