@@ -1,7 +1,7 @@
 import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/models/remote/payment/prf_payment_dto.dart';
 import 'package:app/services/api/payment_service.dart';
-import 'package:app/services/local_storage/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class PaymentResourceCubit extends ResourceCubit<PRFPayment, Null> {

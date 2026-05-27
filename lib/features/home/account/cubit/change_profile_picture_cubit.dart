@@ -1,13 +1,14 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
+import 'package:app/enums/prf_media_type.dart';
 import 'package:app/models/remote/common/failure.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/services/media/media_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'change_profile_picture_state.dart';
 part 'change_profile_picture_cubit.freezed.dart';
+part 'change_profile_picture_state.dart';
 
 class ChangeProfilePictureCubit extends Cubit<ChangeProfilePictureState> {
   ChangeProfilePictureCubit({
@@ -25,7 +26,7 @@ class ChangeProfilePictureCubit extends Cubit<ChangeProfilePictureState> {
     required BuildContext context,
     required String modelUlid,
     required PRFMediaModel model,
-    required MediaType mediaType,
+    required PRFMediaType mediaType,
   }) async {
     try {
       emit(const ChangeProfilePictureState.loading());

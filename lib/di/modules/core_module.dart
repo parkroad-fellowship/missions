@@ -1,4 +1,3 @@
-import 'package:app/features/home/shared/cubit/theme_cubit.dart';
 import 'package:app/services/local_auth_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/services/local_storage/isar/isar_service.dart';
@@ -13,7 +12,6 @@ import 'package:get_it/get_it.dart';
 /// - Hive (local key-value storage)
 /// - Isar (local database)
 /// - Local authentication
-/// - Theme management
 class CoreModule {
   static void register(GetIt getIt) {
     getIt
@@ -29,10 +27,6 @@ class CoreModule {
   }
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
-    return [
-      BlocProvider<ThemeCubit>(
-        create: (context) => ThemeCubit(hiveService: getIt()),
-      ),
-    ];
+    return [];
   }
 }

@@ -2,52 +2,25 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFInstitutionType {
   @JsonValue(1)
-  highSchool,
+  highSchool('High School', 1),
   @JsonValue(2)
-  primarySchool,
+  primarySchool('Primary School', 2),
   @JsonValue(3)
-  college,
+  college('College', 3),
   @JsonValue(4)
-  university,
+  university('University', 4),
   @JsonValue(5)
-  community,
+  community('Community', 5),
   @JsonValue(6)
-  juniorSecondarySchool
+  juniorSecondarySchool('Junior Secondary School', 6),
+  @JsonValue(7)
+  seniorSecondarySchool('Senior Secondary School', 7)
   ;
 
-  String get label {
-    switch (this) {
-      case PRFInstitutionType.highSchool:
-        return 'High School';
-      case PRFInstitutionType.primarySchool:
-        return 'Primary School';
-      case PRFInstitutionType.college:
-        return 'College';
-      case PRFInstitutionType.university:
-        return 'University';
-      case PRFInstitutionType.community:
-        return 'Community';
-      case PRFInstitutionType.juniorSecondarySchool:
-        return 'Junior Secondary School';
-    }
-  }
+  const PRFInstitutionType(this.label, this.value);
 
-  int get value {
-    switch (this) {
-      case PRFInstitutionType.highSchool:
-        return 1;
-      case PRFInstitutionType.primarySchool:
-        return 2;
-      case PRFInstitutionType.college:
-        return 3;
-      case PRFInstitutionType.university:
-        return 4;
-      case PRFInstitutionType.community:
-        return 5;
-      case PRFInstitutionType.juniorSecondarySchool:
-        return 6;
-    }
-  }
+  final String label;
+  final int value;
 
   static PRFInstitutionType fromValue(int value) {
     switch (value) {

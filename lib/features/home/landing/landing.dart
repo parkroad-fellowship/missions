@@ -1,17 +1,16 @@
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
 import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
 import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart';
 import 'package:app/features/home/landing/_handset.dart';
 import 'package:app/features/home/landing/models/landing_action_item.dart';
-import 'package:app/features/home/missions/cubit/class_group_resource_cubit.dart';
-import 'package:app/features/home/missions/cubit/expense_category_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/shared/cubit/upload_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/firebase/firebase_messaging_service.dart';
+import 'package:app/services/notification_service.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,9 +29,7 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
 
-    context.read<ClassGroupResourceCubit>().loadAll();
     context.read<PaymentTypeResourceCubit>().loadAll();
-    context.read<ExpenseCategoryResourceCubit>().loadAll();
     context.read<AnnouncementResourceCubit>().loadAll();
     context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
     context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();

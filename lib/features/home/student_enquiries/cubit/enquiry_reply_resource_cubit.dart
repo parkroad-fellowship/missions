@@ -3,7 +3,7 @@ import 'package:app/models/local/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply_dto.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
-import 'package:app/services/local_storage/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class EnquiryReplyResourceCubit

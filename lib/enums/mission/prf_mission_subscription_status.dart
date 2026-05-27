@@ -2,44 +2,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFMissionSubscriptionStatus {
   @JsonValue(1)
-  pending,
+  pending(1, 'Pending'),
   @JsonValue(2)
-  approved,
+  approved(2, 'Approved'),
   @JsonValue(3)
-  withdrawn,
+  withdrawn(3, 'Withdrawn'),
   @JsonValue(4)
-  fullySubscribed,
+  fullySubscribed(4, 'Fully Subscribed'),
   @JsonValue(5)
-  conflict
+  conflict(5, 'Conflict')
   ;
 
-  String get name {
-    switch (this) {
-      case PRFMissionSubscriptionStatus.pending:
-        return 'Pending';
-      case PRFMissionSubscriptionStatus.approved:
-        return 'Approved';
-      case PRFMissionSubscriptionStatus.withdrawn:
-        return 'Withdrawn';
-      case PRFMissionSubscriptionStatus.fullySubscribed:
-        return 'Fully subscribed';
-      case PRFMissionSubscriptionStatus.conflict:
-        return 'Conflict';
-    }
-  }
-
-  int get apiKey {
-    switch (this) {
-      case PRFMissionSubscriptionStatus.pending:
-        return 1;
-      case PRFMissionSubscriptionStatus.approved:
-        return 2;
-      case PRFMissionSubscriptionStatus.withdrawn:
-        return 3;
-      case PRFMissionSubscriptionStatus.fullySubscribed:
-        return 4;
-      case PRFMissionSubscriptionStatus.conflict:
-        return 5;
-    }
-  }
+  const PRFMissionSubscriptionStatus(this.apiKey, this.name);
+  final int apiKey;
+  final String name;
 }

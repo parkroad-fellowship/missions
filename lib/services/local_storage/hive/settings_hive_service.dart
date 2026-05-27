@@ -1,6 +1,6 @@
 import 'package:app/enums/common/prf_theme_mode.dart';
 import 'package:app/services/local_storage/hive/_base_hive_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/constants.dart';
 
 class SettingsHiveService extends BaseHiveService {
   @override

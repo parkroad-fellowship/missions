@@ -1,16 +1,18 @@
-import 'package:app/di/modules/announcements_module.dart';
-import 'package:app/di/modules/auth_module.dart';
 import 'package:app/di/modules/core_module.dart';
-import 'package:app/di/modules/enquiries_module.dart';
-import 'package:app/di/modules/events_module.dart';
-import 'package:app/di/modules/expenses_module.dart';
 import 'package:app/di/modules/firebase_module.dart';
-import 'package:app/di/modules/lms_module.dart';
 import 'package:app/di/modules/media_module.dart';
-import 'package:app/di/modules/members_module.dart';
-import 'package:app/di/modules/missions_module.dart';
-import 'package:app/di/modules/payments_module.dart';
-import 'package:app/di/modules/prayer_module.dart';
+import 'package:app/features/auth/di/auth_module.dart';
+import 'package:app/features/events/di/events_module.dart';
+import 'package:app/features/home/di/account_module.dart';
+import 'package:app/features/home/di/announcements_module.dart';
+import 'package:app/features/home/di/enquiries_module.dart';
+import 'package:app/features/home/di/home_shared_module.dart';
+import 'package:app/features/home/di/members_module.dart';
+import 'package:app/features/home/di/payments_module.dart';
+import 'package:app/features/home/di/prayer_module.dart';
+import 'package:app/features/lms/di/lms_module.dart';
+import 'package:app/features/missions/di/expenses_module.dart';
+import 'package:app/features/missions/di/missions_module.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -44,11 +46,13 @@ class DIContainer {
     MediaModule.register(getIt);
 
     // Domain-specific modules (alphabetical)
+    AccountModule.register(getIt);
     AnnouncementsModule.register(getIt);
     AuthModule.register(getIt);
     EnquiriesModule.register(getIt);
     EventsModule.register(getIt);
     ExpensesModule.register(getIt);
+    HomeSharedModule.register(getIt);
     LmsModule.register(getIt);
     MembersModule.register(getIt);
     MissionsModule.register(getIt);
@@ -71,7 +75,9 @@ class DIContainer {
     return [
       // Core cubits (must be first - theme is needed by MaterialApp)
       ...CoreModule.registerCubits(getIt),
+      ...HomeSharedModule.registerCubits(getIt),
       // Domain-specific cubits
+      ...AccountModule.registerCubits(getIt),
       ...AuthModule.registerCubits(getIt),
       ...MissionsModule.registerCubits(getIt),
       ...LmsModule.registerCubits(getIt),

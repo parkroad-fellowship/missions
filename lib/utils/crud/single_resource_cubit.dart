@@ -1,6 +1,7 @@
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/api/_base_api_service.dart';
 import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
+import 'package:app/utils/crud/resource_cubit.dart' show ResourceCubit;
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:logger/logger.dart';

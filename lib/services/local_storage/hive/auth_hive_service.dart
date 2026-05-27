@@ -1,6 +1,6 @@
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/services/local_storage/hive/_base_hive_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/constants.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 

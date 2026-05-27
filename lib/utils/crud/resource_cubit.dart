@@ -87,31 +87,6 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     );
   }
 
-  TRemote? _firstWhereOrNull(
-    List<TRemote> source,
-    bool Function(TRemote item) predicate,
-  ) {
-    for (final item in source) {
-      if (predicate(item)) {
-        return item;
-      }
-    }
-    return null;
-  }
-
-  List<TRemote> _upsertCurrentItems(
-    TRemote item,
-    bool Function(TRemote existing) matchById,
-  ) {
-    final items = [...currentItems];
-    final index = items.indexWhere(matchById);
-    if (index >= 0) {
-      items[index] = item;
-      return items;
-    }
-    return [item, ...items];
-  }
-
   /// Override in subclasses to refresh Isar streams after data persistence.
   /// Called after persistEntities/persistEntity/deleteByKey.
   ///
@@ -287,97 +262,6 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         ResourceState.error(message: e.toString(), items: currentItems),
       );
     }
-  }
-
-  /// Fetch a single resource for detail screens while preserving CRUD list state.
-  Future<TRemote?> loadOne({
-    required String id,
-    required bool Function(TRemote item) matchById,
-    List<String>? includes,
-    bool refresh = false,
-  }) async {
-    final existing = _firstWhereOrNull(currentItems, matchById);
-
-    if (existing != null && !refresh) {
-      _emitIfOpen(
-        ResourceState.itemLoaded(item: existing, items: currentItems),
-      );
-      return existing;
-    }
-
-    if (!refresh) {
-      final cached = await loadCachedItem(id);
-      if (cached != null) {
-        _emitIfOpen(
-          ResourceState.itemLoaded(
-            item: cached,
-            items: _upsertCurrentItems(cached, matchById),
-          ),
-        );
-        return cached;
-      }
-    }
-
-    _emitIfOpen(ResourceState.itemLoading(items: currentItems, item: existing));
-
-    try {
-      final item = await _service.get(
-        ulid: id,
-        includes: includes ?? defaultIncludes,
-      );
-
-      await dbService?.persistEntity(item);
-      await refreshIsarStreams(filters: _lastFilters);
-
-      _emitIfOpen(
-        ResourceState.itemLoaded(
-          item: item,
-          items: _upsertCurrentItems(item, matchById),
-        ),
-      );
-      return item;
-    } on Failure catch (e) {
-      final cached = await loadCachedItem(id);
-      if (cached != null) {
-        _emitIfOpen(
-          ResourceState.itemLoaded(
-            item: cached,
-            items: _upsertCurrentItems(cached, matchById),
-          ),
-        );
-        return cached;
-      }
-
-      _emitIfOpen(
-        ResourceState.itemError(
-          message: e.message,
-          items: currentItems,
-          item: existing,
-        ),
-      );
-    } catch (e, s) {
-      final cached = await loadCachedItem(id);
-      if (cached != null) {
-        _emitIfOpen(
-          ResourceState.itemLoaded(
-            item: cached,
-            items: _upsertCurrentItems(cached, matchById),
-          ),
-        );
-        return cached;
-      }
-
-      _logger.e('Error loading single resource', error: e, stackTrace: s);
-      _emitIfOpen(
-        ResourceState.itemError(
-          message: e.toString(),
-          items: currentItems,
-          item: existing,
-        ),
-      );
-    }
-
-    return existing;
   }
 
   /// Create a new resource and prepend it to the in-memory list.

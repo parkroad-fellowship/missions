@@ -1,10 +1,7 @@
-import 'package:app/services/analytics/analytics_service.dart';
-import 'package:app/services/analytics/posthog_analytics_service.dart';
-import 'package:app/services/firebase/crashlytics_service.dart';
-import 'package:app/services/firebase/crashlytics_service_impl.dart';
-import 'package:app/services/firebase/error_handler_service.dart';
-import 'package:app/services/firebase/firebase_analytics_service.dart';
-import 'package:app/services/firebase/firebase_analytics_service_impl.dart';
+import 'package:app/services/analytics/_analytics_service.dart';
+import 'package:app/services/analytics/unified_analytics_service.dart';
+import 'package:app/services/errors/_error_reporting_service.dart';
+import 'package:app/services/errors/unified_error_reporting_service.dart';
 import 'package:app/services/firebase/firebase_messaging_service.dart';
 import 'package:app/services/firebase/firebase_service.dart';
 import 'package:app/services/notification_service.dart';
@@ -32,15 +29,10 @@ class FirebaseModule {
       ..registerSingleton<SocketService>(
         SocketServiceImpl(isarService: getIt()),
       )
-      ..registerSingleton<AnalyticsService>(PostHogAnalyticsService())
-      ..registerSingleton<FirebaseAnalyticsService>(
-        FirebaseAnalyticsServiceImpl(),
-      )
-      ..registerSingleton<CrashlyticsService>(CrashlyticsServiceImpl())
-      ..registerSingleton<ErrorHandlerService>(
-        ErrorHandlerServiceImpl(
-          analyticsService: getIt(),
-          crashlyticsService: getIt(),
+      ..registerSingleton<AnalyticsService>(UnifiedAnalyticsService())
+      ..registerSingleton<ErrorReportingService>(
+        UnifiedErrorReportingService(
+          analyticsService: getIt<AnalyticsService>(),
         ),
       );
   }

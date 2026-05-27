@@ -1,43 +1,19 @@
 enum PrfRole {
-  superAdmin,
-  chairperson,
-  viceChairperson,
-  organisingSecretary,
-  missionCoordinator,
-  viceMissionCoordinator,
-  followUp,
-  treasurer,
-  member,
-  student,
-  missionsCommitteeMember
+  superAdmin('super admin'),
+  chairperson('chairperson'),
+  viceChairperson('vice chairperson'),
+  organisingSecretary('organising secretary'),
+  missionCoordinator('mission coordinator'),
+  viceMissionCoordinator('vice mission coordinator'),
+  followUp('follow up'),
+  treasurer('treasurer'),
+  member('member'),
+  student('student'),
+  missionsCommitteeMember('missions committee member')
   ;
 
-  String get label {
-    switch (this) {
-      case PrfRole.superAdmin:
-        return 'super admin';
-      case PrfRole.chairperson:
-        return 'chairperson';
-      case PrfRole.viceChairperson:
-        return 'vice chairperson';
-      case PrfRole.organisingSecretary:
-        return 'organising secretary';
-      case PrfRole.missionCoordinator:
-        return 'mission coordinator';
-      case PrfRole.viceMissionCoordinator:
-        return 'vice mission coordinator';
-      case PrfRole.followUp:
-        return 'follow up';
-      case PrfRole.treasurer:
-        return 'treasurer';
-      case PrfRole.member:
-        return 'member';
-      case PrfRole.student:
-        return 'student';
-      case PrfRole.missionsCommitteeMember:
-        return 'missions committee member';
-    }
-  }
+  const PrfRole(this.label);
+  final String label;
 
   static PrfRole fromLabel(String label) {
     switch (label) {

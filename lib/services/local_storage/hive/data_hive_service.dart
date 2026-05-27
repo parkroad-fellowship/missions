@@ -5,7 +5,7 @@ import 'package:app/services/local_storage/hive/_base_hive_service.dart';
 import 'package:app/services/local_storage/hive/models/class_group_hive_service.dart';
 import 'package:app/services/local_storage/hive/models/expense_hive_service.dart';
 import 'package:app/services/local_storage/hive/models/payment_type_hive_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/constants.dart';
 
 class DataHiveService extends BaseHiveService {
   @override

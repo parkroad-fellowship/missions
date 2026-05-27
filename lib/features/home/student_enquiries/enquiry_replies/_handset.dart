@@ -1,4 +1,4 @@
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/enums/common/prf_morph_types.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
@@ -6,8 +6,9 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
-import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/socket_service.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,8 +1,8 @@
 import 'package:app/models/local/media/prf_media_upload.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/local_storage/isar/_base_min_local_db_service.dart';
-import 'package:app/utils/_index.dart';
 import 'package:isar_community/isar.dart';
+import 'package:prf_design/prf_design.dart' show StringFormatter;
 
 class MediaDTODbService
     extends BaseMinLocalDBService<PRFMediaDTO, PRFLocalMediaUpload> {

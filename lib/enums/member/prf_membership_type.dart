@@ -1,19 +1,11 @@
 enum PrfMembershipType {
-  friend,
-  yearlyMember,
-  lifetimeMember
+  friend('Friend'),
+  yearlyMember('Yearly Member'),
+  lifetimeMember('Lifetime Member')
   ;
 
-  String get name {
-    switch (this) {
-      case PrfMembershipType.friend:
-        return 'Friend';
-      case PrfMembershipType.yearlyMember:
-        return 'Yearly Member';
-      case PrfMembershipType.lifetimeMember:
-        return 'Lifetime Member';
-    }
-  }
+  const PrfMembershipType(this.name);
+  final String name;
 
   static PrfMembershipType fromIndex(int index) {
     switch (index) {

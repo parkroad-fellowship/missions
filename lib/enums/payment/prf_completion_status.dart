@@ -3,35 +3,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFCompletionStatus {
   @JsonValue(1)
-  incomplete,
+  incomplete(1, 'Incomplete', Icons.watch_later_outlined),
   @JsonValue(2)
-  complete
+  complete(2, 'Complete', Icons.check)
   ;
 
-  String get name {
-    switch (this) {
-      case PRFCompletionStatus.incomplete:
-        return 'Incomplete';
-      case PRFCompletionStatus.complete:
-        return 'Complete';
-    }
-  }
+  const PRFCompletionStatus(this.apiKey, this.name, this.icon);
 
-  IconData get icon {
-    switch (this) {
-      case PRFCompletionStatus.incomplete:
-        return Icons.watch_later_outlined;
-      case PRFCompletionStatus.complete:
-        return Icons.check;
-    }
-  }
-
-  int get apiKey {
-    switch (this) {
-      case PRFCompletionStatus.incomplete:
-        return 1;
-      case PRFCompletionStatus.complete:
-        return 2;
-    }
-  }
+  final int apiKey;
+  final String name;
+  final IconData icon;
 }

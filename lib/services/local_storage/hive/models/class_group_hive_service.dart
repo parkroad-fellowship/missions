@@ -1,6 +1,6 @@
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/services/local_storage/hive/_base_hive_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/constants.dart';
 
 class ClassGroupHiveService extends BaseHiveService {
   @override

@@ -5,12 +5,18 @@ import 'package:app/di/di_container.dart';
 import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/socket_config.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/analytics/_analytics_service.dart';
+import 'package:app/services/api/auth_service.dart';
+import 'package:app/services/errors/_error_reporting_service.dart';
+import 'package:app/services/firebase/firebase_messaging_service.dart';
+import 'package:app/services/firebase/firebase_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/services/media/media_service.dart';
+import 'package:app/services/socket_service.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/http/request_signer.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -55,25 +61,30 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     // Ensure timezone data is loaded
     await Future<dynamic>.delayed(const Duration(milliseconds: 100));
 
-    // Report errors to Crashlytics in release mode only
+    DIContainer.setup();
+    await DIContainer.initializeDatabases();
+
     if (kReleaseMode) {
       final patch = await ShorebirdUpdater().readCurrentPatch();
-      await FirebaseCrashlytics.instance.setCustomKey(
+      await getIt<ErrorReportingService>().setCustomKey(
         'shorebird_patch_number',
         '${patch?.number}',
       );
 
       FlutterError.onError =
-          FirebaseCrashlytics.instance.recordFlutterFatalError;
+          getIt<ErrorReportingService>().recordFlutterFatalError;
 
       PlatformDispatcher.instance.onError = (error, stack) {
-        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        unawaited(
+          getIt<ErrorReportingService>().recordError(
+            error,
+            stack,
+            fatal: true,
+          ),
+        );
         return true;
       };
     }
-
-    DIContainer.setup();
-    await DIContainer.initializeDatabases();
 
     await RequestSigner.syncWithServer(
       PRFSuperAppConfig.instance!.values.baseUrl,
@@ -104,6 +115,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       }
 
       await getIt<AnalyticsService>().identifyUser(user: user);
+      await getIt<ErrorReportingService>().setUserId(user.email);
 
       try {
         final fcmToken = await getIt<FirebaseMessagingService>()

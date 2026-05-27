@@ -1,7 +1,7 @@
-import 'package:app/services/audio_playback_service.dart';
-import 'package:app/services/audio_recording_service.dart';
-import 'package:app/services/failed_recording_upload_service.dart';
-import 'package:app/services/media_service.dart';
+import 'package:app/services/media/audio_playback_service.dart';
+import 'package:app/services/media/audio_recording_service.dart';
+import 'package:app/services/media/failed_recording_upload_service.dart';
+import 'package:app/services/media/media_service.dart';
 import 'package:get_it/get_it.dart';
 
 /// Media module for registering media-related services.

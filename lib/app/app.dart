@@ -1,8 +1,9 @@
-import 'package:app/di/_index.dart';
-import 'package:app/features/home/shared/cubit/theme_cubit.dart';
-import 'package:app/features/home/shared/widgets/global_recording_uploads_bar.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
-import 'package:app/utils/_index.dart' hide DeviceHelper;
+import 'package:app/services/analytics/_analytics_service.dart';
+import 'package:app/shared/media_upload/widgets/global_recording_uploads_bar.dart';
+import 'package:app/shared/theme/cubit/theme_cubit.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
@@ -28,7 +29,10 @@ class PRFSuperApp extends StatelessWidget {
             themeMode: themeMode.toFlutterThemeMode(),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            routerConfig: getIt<PRFSuperAppRouter>().config(),
+            routerConfig: getIt<PRFSuperAppRouter>().config(
+              navigatorObservers: () =>
+                  getIt<AnalyticsService>().navigatorObservers,
+            ),
             builder: (context, child) {
               if (child == null) return const SizedBox.shrink();
               return Stack(

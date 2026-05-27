@@ -6,7 +6,7 @@ import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/services/local_storage/hive/auth_hive_service.dart';
 import 'package:app/services/local_storage/hive/data_hive_service.dart';
 import 'package:app/services/local_storage/hive/settings_hive_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/constants.dart';
 import 'package:crypto/crypto.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 

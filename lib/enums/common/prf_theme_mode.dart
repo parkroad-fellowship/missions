@@ -15,22 +15,4 @@ enum PRFThemeMode {
       PRFThemeMode.dark => ThemeMode.dark,
     };
   }
-
-  /// Create from Flutter's ThemeMode.
-  static PRFThemeMode fromFlutterThemeMode(ThemeMode mode) {
-    return switch (mode) {
-      ThemeMode.system => PRFThemeMode.system,
-      ThemeMode.light => PRFThemeMode.light,
-      ThemeMode.dark => PRFThemeMode.dark,
-    };
-  }
-
-  /// Parse from string value (for storage).
-  static PRFThemeMode fromString(String value) {
-    return switch (value) {
-      'light' => PRFThemeMode.light,
-      'dark' => PRFThemeMode.dark,
-      _ => PRFThemeMode.system,
-    };
-  }
 }

@@ -1,6 +1,6 @@
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/services/local_storage/hive/_base_hive_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/constants.dart';
 
 class SoulHiveService extends BaseHiveService {
   @override

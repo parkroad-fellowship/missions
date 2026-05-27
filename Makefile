@@ -10,6 +10,12 @@ gen:
 fmt:
 		dart fix --apply && dart format lib test
 
+arch-check:
+		bash scripts/architecture_guardrails.sh
+
+arch-edges:
+		bash scripts/feature_import_edges.sh
+
 l10n:
 		flutter gen-l10n
 
