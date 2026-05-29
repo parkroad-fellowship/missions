@@ -11,19 +11,20 @@ import 'package:app/services/media/media_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
 
-class AllocationEntryResourceCubit
-    extends ResourceCubit<PRFAllocationEntry, Null> {
+class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
   AllocationEntryResourceCubit({
     required AllocationEntryService allocationEntryService,
     required MediaService mediaService,
     required HiveService hiveService,
     required RefundService refundService,
-    super.dbService,
   }) : _allocationEntryService = allocationEntryService,
        _mediaService = mediaService,
        _hiveService = hiveService,
        _refundService = refundService,
-       super(service: allocationEntryService);
+       super(
+         service: allocationEntryService,
+         dbService: hiveService.allocationEntries,
+       );
 
   final AllocationEntryService _allocationEntryService;
   final MediaService _mediaService;

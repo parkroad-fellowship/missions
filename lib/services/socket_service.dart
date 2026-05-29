@@ -9,7 +9,6 @@ import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/utils/constants.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
@@ -22,11 +21,11 @@ abstract class SocketService {
 }
 
 class SocketServiceImpl implements SocketService {
-  SocketServiceImpl({required IsarService isarService}) {
-    _isarService = isarService;
+  SocketServiceImpl({required HiveService hiveService}) {
+    _hiveService = hiveService;
   }
 
-  late IsarService _isarService;
+  late HiveService _hiveService;
   PusherChannelsClient? _client;
   final StreamController<bool> _connectionStateController =
       StreamController<bool>.broadcast();
@@ -212,10 +211,10 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.courses.persistEntities(<PRFCourse>[courseData]).then((
+            _hiveService.courses.persistEntities(<PRFCourse>[courseData]).then((
               _,
             ) {
-              _isarService.courseModules.refreshStream();
+              _hiveService.courseModules.refreshStream();
             });
 
           case PRFEvent.memberModuleUpdated:
@@ -224,11 +223,11 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.courseModules.persistEntity(courseModuleData).then((
+            _hiveService.courseModules.persistEntity(courseModuleData).then((
               _,
             ) {
               if (courseModuleData.course != null) {
-                _isarService.courseModules.refreshParentStream(
+                _hiveService.courseModules.refreshParentStream(
                   courseModuleData.course!.ulid,
                 );
               }
@@ -240,11 +239,11 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.lessonModules.persistEntity(lessonModuleData).then((
+            _hiveService.lessonModules.persistEntity(lessonModuleData).then((
               _,
             ) {
               if (lessonModuleData.module != null) {
-                _isarService.lessonModules.refreshParentStream(
+                _hiveService.lessonModules.refreshParentStream(
                   lessonModuleData.module!.ulid,
                 );
               }
@@ -256,13 +255,13 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.studentEnquiryReplies
+            _hiveService.studentEnquiryReplies
                 .persistEntity(
                   studentEnquiryReplyData,
                 )
                 .then((_) {
                   if (studentEnquiryReplyData.studentEnquiry != null) {
-                    _isarService.studentEnquiryReplies.refreshParentStream(
+                    _hiveService.studentEnquiryReplies.refreshParentStream(
                       studentEnquiryReplyData.studentEnquiry!.ulid,
                     );
                   }

@@ -9,7 +9,7 @@ import 'package:app/features/missions/mission_details/widgets/sessions/session/c
 import 'package:app/features/missions/mission_details/widgets/sessions/session/cubit/mission_session_details_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/media/prf_failed_recording_upload.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/models/remote/mission/prf_transcript.dart';

@@ -1,18 +1,18 @@
 import 'package:app/enums/mission/prf_mission_status.dart';
-import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/api/mission_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class MissionResourceCubit extends ResourceCubit<PRFMission, PRFLocalMission> {
+class MissionResourceCubit extends ResourceCubit<PRFMission> {
   MissionResourceCubit({
     required MissionService missionService,
-    super.dbService,
-  }) : super(service: missionService);
+    required HiveService hiveService,
+  }) : super(service: missionService, dbService: hiveService.missions);
 
   @override
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    await dbService?.refreshStream();
+    await dbService.refreshStream();
   }
 
   @override

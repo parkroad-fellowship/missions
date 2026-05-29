@@ -1,15 +1,15 @@
-import 'package:app/models/local/mission/prf_soul.dart';
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/models/remote/prayer/prf_soul_dto.dart';
 import 'package:app/services/api/soul_service.dart';
-import 'package:app/services/local_storage/isar/soul_db_service.dart';
+import 'package:app/services/local_storage/hive/db/soul_hive_db_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class SoulResourceCubit extends ResourceCubit<PRFSoul, PRFLocalSoul> {
+class SoulResourceCubit extends ResourceCubit<PRFSoul> {
   SoulResourceCubit({
     required SoulService soulService,
-    super.dbService,
-  }) : super(service: soulService);
+    required HiveService hiveService,
+  }) : super(service: soulService, dbService: hiveService.souls);
 
   @override
   List<String> get defaultIncludes => ['classGroup', 'mission'];
@@ -17,10 +17,10 @@ class SoulResourceCubit extends ResourceCubit<PRFSoul, PRFLocalSoul> {
   @override
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is SoulDbService) {
-      await (dbService! as SoulDbService).refreshParentStream(parentKey);
+    if (parentKey != null && dbService is SoulHiveDbService) {
+      await (dbService as SoulHiveDbService).refreshParentStream(parentKey);
     }
-    await dbService?.refreshStream();
+    await dbService.refreshStream();
   }
 
   /// Create a soul.

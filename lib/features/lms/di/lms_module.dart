@@ -5,7 +5,7 @@ import 'package:app/services/api/course_module_service.dart';
 import 'package:app/services/api/course_service.dart';
 import 'package:app/services/api/lesson_member_service.dart';
 import 'package:app/services/api/lesson_module_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -24,21 +24,20 @@ class LmsModule {
       BlocProvider<CourseResourceCubit>(
         create: (context) => CourseResourceCubit(
           courseService: getIt(),
-          dbService: getIt<IsarService>().courses,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<ModuleResourceCubit>(
         create: (context) => ModuleResourceCubit(
           courseModuleService: getIt(),
-          dbService: getIt<IsarService>().courseModules,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<LessonResourceCubit>(
         create: (context) => LessonResourceCubit(
           lessonModuleService: getIt(),
-          hiveService: getIt(),
+          hiveService: getIt<HiveService>(),
           lessonMemberService: getIt(),
-          dbService: getIt<IsarService>().lessonModules,
         ),
       ),
     ];

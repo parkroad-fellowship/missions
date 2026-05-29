@@ -5,6 +5,7 @@ import 'package:app/features/home/shared/cubit/upload_prayer_response_cubit.dart
 import 'package:app/services/api/prayer_prompt_service.dart';
 import 'package:app/services/api/prayer_request_service.dart';
 import 'package:app/services/api/prayer_response_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -27,20 +28,19 @@ class PrayerModule {
       ),
       BlocProvider<SavePrayerResponseCubit>(
         create: (context) => SavePrayerResponseCubit(
-          isarService: getIt(),
           hiveService: getIt(),
         ),
       ),
       BlocProvider<UploadPrayerResponseCubit>(
         create: (context) => UploadPrayerResponseCubit(
-          isarService: getIt(),
+          hiveService: getIt(),
           prayerResponseService: getIt(),
         ),
       ),
       BlocProvider<PrayerRequestResourceCubit>(
         create: (context) => PrayerRequestResourceCubit(
           prayerRequestService: getIt(),
-          hiveService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
     ];

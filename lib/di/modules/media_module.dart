@@ -18,7 +18,6 @@ class MediaModule {
       ..registerSingleton<AudioRecordingService>(AudioRecordingService())
       ..registerSingleton<FailedRecordingUploadService>(
         FailedRecordingUploadService(
-          isarService: getIt(),
           mediaService: getIt(),
           hiveService: getIt(),
         ),

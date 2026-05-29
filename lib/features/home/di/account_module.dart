@@ -12,7 +12,6 @@ class AccountModule {
       BlocProvider<SignOutCubit>(
         create: (context) => SignOutCubit(
           hiveService: getIt(),
-          isarService: getIt(),
         ),
       ),
       BlocProvider<ChangeProfilePictureCubit>(

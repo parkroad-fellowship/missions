@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/api/_base_api_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
+import 'package:app/services/local_storage/hive/db/_base_hive_db_service.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:logger/logger.dart';
@@ -15,16 +15,16 @@ import 'package:logger/logger.dart';
 ///   2. Optionally override [defaultIncludes], [defaultFilters], etc.
 ///   3. Optionally override [refreshIsarStreams] for parent-filtered streams.
 ///   4. Add resource-specific convenience methods.
-class ResourceCubit<TRemote, TLocal extends Object?>
-    extends Cubit<ResourceState<TRemote>> {
+class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   ResourceCubit({
     required BaseAPIService<TRemote> service,
-    this.dbService,
+    required this.dbService,
   }) : _service = service,
+  
        super(const ResourceState.initial());
 
   final BaseAPIService<TRemote> _service;
-  final BaseLocalDBService<TRemote, TLocal>? dbService;
+  final BaseHiveDbService<TRemote> dbService;
   final _logger = Logger();
 
   /// Stores the last filters used by [loadAll] so that [refreshIsarStreams]
@@ -43,7 +43,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
   /// Call this in the subclass constructor for cubits that need
   /// real-time updates from socket-driven Isar changes.
   void subscribeToIsarUpdates() {
-    _isarStreamSubscription = dbService?.stream.listen((_) {
+    _isarStreamSubscription = dbService.stream.listen((_) {
       if (!isClosed) {
         loadAll(filters: _lastFilters);
       }
@@ -96,17 +96,16 @@ class ResourceCubit<TRemote, TLocal extends Object?>
   Future<void> refreshIsarStreams({
     Map<String, dynamic>? filters,
   }) async {
-    await dbService?.refreshStream();
+    await dbService.refreshStream();
   }
 
   /// Override in subclasses when local cache types differ from remote models.
   ///
   /// Return a hydrated remote entity for [id] from local storage when possible.
   Future<TRemote?> loadCachedItem(String id) async {
-    if (dbService == null) return null;
     try {
-      final item = await dbService!.get(id);
-      return item != null ? dbService!.localToRemote(item) : null;
+      final item = await dbService.get(id);
+      return item != null ? dbService.localToRemote(item) : null;
     } catch (e, s) {
       _logger.e('Error loading cached item', error: e, stackTrace: s);
       return null;
@@ -131,22 +130,20 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     _emitIfOpen(ResourceState.listLoading(items: currentItems));
 
     // Cache-first: immediately hydrate UI with local data when available.
-    if (dbService != null) {
-      try {
-        final cached = await dbService!.list();
-        if (cached.isNotEmpty) {
-          hasLocalSeed = true;
-          _emitIfOpen(
-            ResourceState.listLoaded(
-              items: dbService!.localToRemoteList(cached),
-              page: startPage,
-              hasMore: true,
-            ),
-          );
-        }
-      } catch (e, s) {
-        _logger.w('Error loading cached list', error: e, stackTrace: s);
+    try {
+      final cached = await dbService.list();
+      if (cached.isNotEmpty) {
+        hasLocalSeed = true;
+        _emitIfOpen(
+          ResourceState.listLoaded(
+            items: dbService.localToRemoteList(cached),
+            page: startPage,
+            hasMore: true,
+          ),
+        );
       }
+    } catch (e, s) {
+      _logger.w('Error loading cached list', error: e, stackTrace: s);
     }
 
     try {
@@ -173,7 +170,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         }
 
         allItems.addAll(batch);
-        await dbService?.persistEntities(batch);
+        await dbService.persistEntities(batch);
 
         final hasMore = batch.length >= defaultLimit;
         _emitIfOpen(
@@ -201,21 +198,19 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       }
 
       // Offline fallback: try Isar cache
-      if (dbService != null) {
-        try {
-          final cached = await dbService!.list();
-          if (cached.isNotEmpty) {
-            _logger.w('API failed, using ${cached.length} cached items');
-            _emitIfOpen(
-              ResourceState.listLoaded(
-                items: dbService!.localToRemoteList(cached),
-              ),
-            );
-            return;
-          }
-        } catch (_) {
-          // Isar fallback also failed, emit original error
+      try {
+        final cached = await dbService.list();
+        if (cached.isNotEmpty) {
+          _logger.w('API failed, using ${cached.length} cached items');
+          _emitIfOpen(
+            ResourceState.listLoaded(
+              items: dbService.localToRemoteList(cached),
+            ),
+          );
+          return;
         }
+      } catch (_) {
+        // Isar fallback also failed, emit original error
       }
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -244,7 +239,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         sortBy: sortBy ?? defaultSortBy,
       );
 
-      await dbService?.persistEntities(newItems);
+      await dbService.persistEntities(newItems);
       await refreshIsarStreams(filters: mergedFilters);
 
       _emitIfOpen(
@@ -280,7 +275,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         data: data,
         includes: includes ?? defaultIncludes,
       );
-      await dbService?.persistEntity(item);
+      await dbService.persistEntity(item);
       await refreshIsarStreams(filters: _lastFilters);
 
       final updated = [item, ...currentItems];
@@ -320,7 +315,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         data: data,
         includes: includes ?? defaultIncludes,
       );
-      await dbService?.persistEntity(item);
+      await dbService.persistEntity(item);
       await refreshIsarStreams(filters: _lastFilters);
 
       final updated = currentItems.map((existing) {
@@ -356,7 +351,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     );
     try {
       await _service.delete(ulid: ulid);
-      await dbService?.deleteByKey(ulid);
+      await dbService.deleteByKey(ulid);
       await refreshIsarStreams(filters: _lastFilters);
 
       final updated = currentItems.where((item) => !matchById(item)).toList();

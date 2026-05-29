@@ -5,13 +5,15 @@ import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class GroundSuggestionResourceCubit
-    extends ResourceCubit<PRFMissionGroundSuggestion, Null> {
+    extends ResourceCubit<PRFMissionGroundSuggestion> {
   GroundSuggestionResourceCubit({
     required MissionGroundSuggestionService missionGroundSuggestionService,
     required HiveService hiveService,
-    super.dbService,
   }) : _hiveService = hiveService,
-       super(service: missionGroundSuggestionService);
+       super(
+         service: missionGroundSuggestionService,
+         dbService: hiveService.missionGroundSuggestions,
+       );
 
   final HiveService _hiveService;
 

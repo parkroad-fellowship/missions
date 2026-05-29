@@ -1,6 +1,6 @@
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/api/_base_api_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
+import 'package:app/services/local_storage/hive/db/_base_hive_db_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart' show ResourceCubit;
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:bloc/bloc.dart';
@@ -10,16 +10,15 @@ import 'package:logger/logger.dart';
 ///
 /// Unlike [ResourceCubit], this cubit never owns list state. It is intended
 /// for detail routes that load one record by id.
-class SingleResourceCubit<TRemote, TLocal extends Object?>
-    extends Cubit<ResourceState<TRemote>> {
+class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   SingleResourceCubit({
     required BaseAPIService<TRemote> service,
-    this.dbService,
+    required this.dbService,
   }) : _service = service,
        super(const ResourceState.initial());
 
   final BaseAPIService<TRemote> _service;
-  final BaseLocalDBService<TRemote, TLocal>? dbService;
+  final BaseHiveDbService<TRemote>? dbService;
   final _logger = Logger();
 
   List<String> get defaultIncludes => [];

@@ -1,13 +1,14 @@
 import 'package:app/enums/event/prf_event_type.dart';
 import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/services/api/event_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class EventResourceCubit extends ResourceCubit<PRFEvent, Null> {
+class EventResourceCubit extends ResourceCubit<PRFEvent> {
   EventResourceCubit({
     required EventService eventService,
-    super.dbService,
-  }) : super(service: eventService);
+    required HiveService hiveService,
+  }) : super(service: eventService, dbService: hiveService.events);
 
   @override
   List<String> get defaultIncludes => [

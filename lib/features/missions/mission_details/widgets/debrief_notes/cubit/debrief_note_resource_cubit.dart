@@ -1,24 +1,25 @@
-import 'package:app/models/local/mission/prf_debrief_note.dart';
 import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/models/remote/content/prf_debrief_note_dto.dart';
 import 'package:app/services/api/debrief_note_service.dart';
-import 'package:app/services/local_storage/isar/debrief_note_db_service.dart';
+import 'package:app/services/local_storage/hive/db/debrief_note_hive_db_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class DebriefNoteResourceCubit
-    extends ResourceCubit<PRFDebriefNote, PRFLocalDebriefNote> {
+class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   DebriefNoteResourceCubit({
     required DebriefNoteService debriefNoteService,
-    super.dbService,
-  }) : super(service: debriefNoteService);
+    required HiveService hiveService,
+  }) : super(service: debriefNoteService, dbService: hiveService.debriefNotes);
 
   @override
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is DebriefNoteDbService) {
-      await (dbService! as DebriefNoteDbService).refreshParentStream(parentKey);
+    if (parentKey != null && dbService is DebriefNoteHiveDbService) {
+      await (dbService as DebriefNoteHiveDbService).refreshParentStream(
+        parentKey,
+      );
     }
-    await dbService?.refreshStream();
+    await dbService.refreshStream();
   }
 
   @override

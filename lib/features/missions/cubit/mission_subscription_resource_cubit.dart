@@ -1,26 +1,29 @@
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
-import 'package:app/models/local/mission/prf_local_mission_subscription.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
-import 'package:app/services/local_storage/isar/mission_subscription_db_service.dart';
+import 'package:app/services/local_storage/hive/db/mission_subscription_hive_db_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class MissionSubscriptionResourceCubit
-    extends ResourceCubit<PRFMissionSubscription, PRFLocalMissionSubscription> {
+    extends ResourceCubit<PRFMissionSubscription> {
   MissionSubscriptionResourceCubit({
     required MissionSubscriptionService missionSubscriptionService,
-    super.dbService,
-  }) : super(service: missionSubscriptionService);
+    required HiveService hiveService,
+  }) : super(
+         service: missionSubscriptionService,
+         dbService: hiveService.missionSubscriptions,
+       );
 
   @override
   Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
     final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is MissionSubscriptionDbService) {
-      await (dbService! as MissionSubscriptionDbService).refreshParentStream(
+    if (parentKey != null && dbService is MissionSubscriptionHiveDbService) {
+      await (dbService as MissionSubscriptionHiveDbService).refreshParentStream(
         parentKey,
       );
     }
-    await dbService?.refreshStream();
+    await dbService.refreshStream();
   }
 
   @override

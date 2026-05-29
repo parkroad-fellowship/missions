@@ -1,14 +1,16 @@
-import 'package:app/models/local/course/prf_course_module.dart';
 import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/services/api/course_module_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class ModuleResourceCubit
-    extends ResourceCubit<PRFCourseModule, PRFLocalCourseModule> {
+class ModuleResourceCubit extends ResourceCubit<PRFCourseModule> {
   ModuleResourceCubit({
     required CourseModuleService courseModuleService,
-    super.dbService,
-  }) : super(service: courseModuleService);
+    required HiveService hiveService,
+  }) : super(
+         service: courseModuleService,
+         dbService: hiveService.courseModules,
+       );
 
   @override
   List<String> get defaultIncludes => [

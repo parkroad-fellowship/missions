@@ -5,13 +5,15 @@ import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 class EventSubscriptionResourceCubit
-    extends ResourceCubit<PRFEventSubscription, Null> {
+    extends ResourceCubit<PRFEventSubscription> {
   EventSubscriptionResourceCubit({
     required EventSubscriptionService eventSubscriptionService,
     required HiveService hiveService,
-    super.dbService,
   }) : _hiveService = hiveService,
-       super(service: eventSubscriptionService);
+       super(
+         service: eventSubscriptionService,
+         dbService: hiveService.eventSubscriptions,
+       );
 
   final HiveService _hiveService;
 

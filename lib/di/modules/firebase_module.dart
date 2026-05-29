@@ -27,7 +27,7 @@ class FirebaseModule {
       )
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SocketService>(
-        SocketServiceImpl(isarService: getIt()),
+        SocketServiceImpl(hiveService: getIt()),
       )
       ..registerSingleton<AnalyticsService>(UnifiedAnalyticsService())
       ..registerSingleton<ErrorReportingService>(

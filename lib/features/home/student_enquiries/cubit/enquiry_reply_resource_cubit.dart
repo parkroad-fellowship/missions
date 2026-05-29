@@ -1,19 +1,19 @@
 import 'package:app/enums/common/prf_morph_types.dart';
-import 'package:app/models/local/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply_dto.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class EnquiryReplyResourceCubit
-    extends ResourceCubit<PRFStudentEnquiryReply, PRFLocalStudentEnquiryReply> {
+class EnquiryReplyResourceCubit extends ResourceCubit<PRFStudentEnquiryReply> {
   EnquiryReplyResourceCubit({
     required StudentEnquiryReplyService studentEnquiryReplyService,
     required HiveService hiveService,
-    super.dbService,
   }) : _hiveService = hiveService,
-       super(service: studentEnquiryReplyService) {
+       super(
+         service: studentEnquiryReplyService,
+         dbService: hiveService.studentEnquiryReplies,
+       ) {
     subscribeToIsarUpdates();
   }
 

@@ -1,12 +1,14 @@
 import 'package:app/enums/expense/prf_approval_status.dart';
 import 'package:app/models/remote/expense/prf_requisition.dart';
 import 'package:app/services/api/requisition_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class RequisitionResourceCubit extends ResourceCubit<PRFRequisition, Null> {
+class RequisitionResourceCubit extends ResourceCubit<PRFRequisition> {
   RequisitionResourceCubit({
     required RequisitionService requisitionService,
-  }) : super(service: requisitionService);
+    required HiveService hiveService,
+  }) : super(service: requisitionService, dbService: hiveService.requisitions);
 
   @override
   List<String> get defaultIncludes => ['requisitionItems.expenseCategory'];

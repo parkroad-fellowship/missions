@@ -2,29 +2,24 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/models/local/media/prf_failed_recording_upload.dart';
-import 'package:app/models/local/media/upload_retry_progress.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
+import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:app/services/media/media_service.dart';
-import 'package:isar_community/isar.dart';
 import 'package:logger/logger.dart';
 
 class FailedRecordingUploadService {
   FailedRecordingUploadService({
-    required IsarService isarService,
     required MediaService mediaService,
     required HiveService hiveService,
   }) {
-    _isarService = isarService;
     _mediaService = mediaService;
     _hiveService = hiveService;
     _startConnectivityMonitoring();
     streamPendingUploads();
   }
 
-  late IsarService _isarService;
   late MediaService _mediaService;
   late HiveService _hiveService;
   Timer? _connectivityTimer;
@@ -41,29 +36,12 @@ class FailedRecordingUploadService {
       _pendingUploadsController.stream;
 
   Future<void> _removeUploadByPath(String path) async {
-    final existing = await _isarService.prfDBInstance.pRFFailedRecordingUploads
-        .filter()
-        .pathEqualTo(path)
-        .findAll();
-
-    if (existing.isEmpty) return;
-
-    await _isarService.prfDBInstance.writeTxn(() async {
-      for (final upload in existing) {
-        await _isarService.prfDBInstance.pRFFailedRecordingUploads.delete(
-          upload.id,
-        );
-      }
-    });
+    await _hiveService.failedRecordingUploads.deleteByPath(path);
   }
 
   Future<void> _putUpload(PRFFailedRecordingUpload upload) async {
-    // Ensure we do not accumulate duplicates for the same file path.
     await _removeUploadByPath(upload.path);
-
-    await _isarService.prfDBInstance.writeTxn(() async {
-      await _isarService.prfDBInstance.pRFFailedRecordingUploads.put(upload);
-    });
+    await _hiveService.failedRecordingUploads.put(upload);
   }
 
   Future<void> storePendingUpload(PRFMediaDTO mediaDTO) async {
@@ -108,33 +86,25 @@ class FailedRecordingUploadService {
   }
 
   Future<List<PRFFailedRecordingUpload>> getPendingUploads() async {
-    return _isarService.prfDBInstance.pRFFailedRecordingUploads
-        .where()
-        .findAll();
+    return _hiveService.failedRecordingUploads.getAll();
   }
 
   Future<List<PRFFailedRecordingUpload>> getPendingUploadsForSession(
     String missionSessionUlid,
   ) async {
-    return _isarService.prfDBInstance.pRFFailedRecordingUploads
-        .filter()
-        .modelUlidEqualTo(missionSessionUlid)
-        .findAll();
+    return _hiveService.failedRecordingUploads.getByModelUlid(
+      missionSessionUlid,
+    );
   }
 
   Future<List<PRFFailedRecordingUpload>> getPendingUploadsForTarget({
     required String modelUlid,
     PRFMediaModel? model,
   }) async {
-    final base = _isarService.prfDBInstance.pRFFailedRecordingUploads
-        .filter()
-        .modelUlidEqualTo(modelUlid);
-
-    if (model == null) {
-      return base.findAll();
-    }
-
-    return base.modelEqualTo(model).findAll();
+    return _hiveService.failedRecordingUploads.getByTarget(
+      modelUlid: modelUlid,
+      modelName: model?.name,
+    );
   }
 
   Future<void> retryAllUploads() async {
@@ -147,7 +117,6 @@ class FailedRecordingUploadService {
     try {
       _isRetrying = true;
 
-      // Check if we have internet connectivity
       if (!await _hasInternetConnection()) {
         return;
       }
@@ -157,7 +126,6 @@ class FailedRecordingUploadService {
 
       Logger().d('Found ${failedUploads.length} failed uploads to retry');
 
-      // Emit initial progress
       _retryProgressController.add(
         UploadRetryProgress(
           isRetrying: true,
@@ -169,7 +137,6 @@ class FailedRecordingUploadService {
       for (var i = 0; i < failedUploads.length; i++) {
         final failedUpload = failedUploads[i];
 
-        // Update progress with current file
         _retryProgressController.add(
           UploadRetryProgress(
             isRetrying: true,
@@ -179,11 +146,9 @@ class FailedRecordingUploadService {
           ),
         );
 
-        // Check if file still exists
         final file = File(failedUpload.path);
         if (!file.existsSync()) {
-          // File doesn't exist anymore, remove from failed uploads
-          await _removeFailedUpload(failedUpload.id);
+          await _removeUploadByPath(failedUpload.path);
           continue;
         }
 
@@ -200,23 +165,19 @@ class FailedRecordingUploadService {
             memberUlid: _hiveService.retrieveMember()!.ulid,
           );
 
-          // Upload successful, remove from failed uploads
-          await _removeFailedUpload(failedUpload.id);
+          await _removeUploadByPath(failedUpload.path);
           Logger().d('Successfully retried upload for: ${failedUpload.name}');
         } catch (e) {
-          // Update retry count
           await _updateFailedUploadRetryCount(failedUpload);
           Logger().e('Retry failed for ${failedUpload.name}: $e');
         }
       }
 
-      // Emit completion
       _retryProgressController.add(UploadRetryProgress.complete);
 
       _notifyPendingUploadsChanged();
     } finally {
       _isRetrying = false;
-      // Reset to idle after a short delay
       Timer(const Duration(seconds: 2), () {
         _retryProgressController.add(UploadRetryProgress.idle);
       });
@@ -232,25 +193,12 @@ class FailedRecordingUploadService {
     }
   }
 
-  Future<void> _removeFailedUpload(Id id) async {
-    await _isarService.prfDBInstance.writeTxn(() async {
-      await _isarService.prfDBInstance.pRFFailedRecordingUploads.delete(id);
-    });
-  }
-
   Future<void> _updateFailedUploadRetryCount(
     PRFFailedRecordingUpload failedUpload,
   ) async {
-    final updatedUpload = failedUpload.copyWith(
-      id: failedUpload.id,
-      retryCount: failedUpload.retryCount + 1,
+    await _hiveService.failedRecordingUploads.update(
+      failedUpload.copyWith(retryCount: failedUpload.retryCount + 1),
     );
-
-    await _isarService.prfDBInstance.writeTxn(() async {
-      await _isarService.prfDBInstance.pRFFailedRecordingUploads.put(
-        updatedUpload,
-      );
-    });
   }
 
   Future<void> retrySpecificUpload(
@@ -258,7 +206,7 @@ class FailedRecordingUploadService {
   ) async {
     final file = File(failedUpload.path);
     if (!file.existsSync()) {
-      await _removeFailedUpload(failedUpload.id);
+      await _removeUploadByPath(failedUpload.path);
       _notifyPendingUploadsChanged();
       throw Exception('File no longer exists');
     }
@@ -275,7 +223,7 @@ class FailedRecordingUploadService {
         imageDTO: mediaDTO,
         memberUlid: _hiveService.retrieveMember()!.ulid,
       );
-      await _removeFailedUpload(failedUpload.id);
+      await _removeUploadByPath(failedUpload.path);
       _notifyPendingUploadsChanged();
     } catch (e) {
       await _updateFailedUploadRetryCount(failedUpload);
@@ -289,7 +237,6 @@ class FailedRecordingUploadService {
 
     if (failedUploads.isEmpty) return;
 
-    // Emit initial progress
     _retryProgressController.add(
       UploadRetryProgress(
         isRetrying: true,
@@ -301,7 +248,6 @@ class FailedRecordingUploadService {
     for (var i = 0; i < failedUploads.length; i++) {
       final failedUpload = failedUploads[i];
 
-      // Update progress with current file
       _retryProgressController.add(
         UploadRetryProgress(
           isRetrying: true,
@@ -315,14 +261,11 @@ class FailedRecordingUploadService {
         await retrySpecificUpload(failedUpload);
       } catch (e) {
         Logger().e('Failed to retry upload for ${failedUpload.name}: $e');
-        // Continue with other uploads even if one fails
       }
     }
 
-    // Emit completion
     _retryProgressController.add(UploadRetryProgress.complete);
 
-    // Reset to idle after a short delay
     Timer(const Duration(seconds: 2), () {
       _retryProgressController.add(UploadRetryProgress.idle);
     });
@@ -374,9 +317,7 @@ class FailedRecordingUploadService {
   }
 
   Future<void> removeAllFailedUploads() async {
-    await _isarService.prfDBInstance.writeTxn(() async {
-      await _isarService.prfDBInstance.pRFFailedRecordingUploads.clear();
-    });
+    await _hiveService.failedRecordingUploads.clearAll();
     _notifyPendingUploadsChanged();
   }
 
@@ -386,19 +327,14 @@ class FailedRecordingUploadService {
     final uploadsToDelete = await getPendingUploadsForSession(
       missionSessionUlid,
     );
-
-    await _isarService.prfDBInstance.writeTxn(() async {
-      for (final upload in uploadsToDelete) {
-        await _isarService.prfDBInstance.pRFFailedRecordingUploads.delete(
-          upload.id,
-        );
-      }
-    });
+    for (final upload in uploadsToDelete) {
+      await _removeUploadByPath(upload.path);
+    }
     _notifyPendingUploadsChanged();
   }
 
-  Future<void> removeFailedUpload(Id id) async {
-    await _removeFailedUpload(id);
+  Future<void> removeFailedUpload(String path) async {
+    await _removeUploadByPath(path);
     _notifyPendingUploadsChanged();
   }
 

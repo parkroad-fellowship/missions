@@ -1,7 +1,7 @@
 import 'package:app/di/di_container.dart';
 import 'package:app/features/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/local/media/prf_failed_recording_upload.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
 import 'package:app/shared/media_upload/cubit/recording_upload_cubit.dart';
 import 'package:app/shared/media_upload/cubit/select_media_cubit.dart';

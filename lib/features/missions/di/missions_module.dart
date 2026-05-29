@@ -19,7 +19,7 @@ import 'package:app/services/api/mission_service.dart';
 import 'package:app/services/api/mission_session_service.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:app/services/api/soul_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/shared/media_upload/cubit/audio_recording_cubit.dart';
 import 'package:app/shared/media_upload/cubit/recording_upload_cubit.dart';
 import 'package:app/shared/media_upload/cubit/select_media_cubit.dart';
@@ -50,48 +50,49 @@ class MissionsModule {
       BlocProvider<MissionResourceCubit>(
         create: (context) => MissionResourceCubit(
           missionService: getIt(),
-          dbService: getIt<IsarService>().missions,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<PastMissionResourceCubit>(
         create: (context) => PastMissionResourceCubit(
           missionService: getIt(),
-          dbService: getIt<IsarService>().missions,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<MissionSubscriptionResourceCubit>(
         create: (context) => MissionSubscriptionResourceCubit(
           missionSubscriptionService: getIt(),
-          dbService: getIt<IsarService>().missionSubscriptions,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<ClassGroupResourceCubit>(
         create: (context) => ClassGroupResourceCubit(
           classGroupService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<SoulResourceCubit>(
         create: (context) => SoulResourceCubit(
           soulService: getIt(),
-          dbService: getIt<IsarService>().souls,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<DebriefNoteResourceCubit>(
         create: (context) => DebriefNoteResourceCubit(
           debriefNoteService: getIt(),
-          dbService: getIt<IsarService>().debriefNotes,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<MissionQuestionResourceCubit>(
         create: (context) => MissionQuestionResourceCubit(
           missionQuestionService: getIt(),
-          dbService: getIt<IsarService>().missionQuestions,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<MissionSessionResourceCubit>(
         create: (context) => MissionSessionResourceCubit(
           missionSessionService: getIt(),
-          dbService: getIt<IsarService>().missionSessions,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<MissionMediaResourceCubit>(
@@ -102,33 +103,31 @@ class MissionsModule {
       BlocProvider<GroundSuggestionResourceCubit>(
         create: (context) => GroundSuggestionResourceCubit(
           missionGroundSuggestionService: getIt(),
-          hiveService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<SubscribeCubit>(
         create: (context) => SubscribeCubit(
           missionSubscriptionService: getIt(),
-          hiveService: getIt(),
-          isarService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<WithdrawCubit>(
         create: (context) => WithdrawCubit(
           missionSubscriptionService: getIt(),
-          hiveService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<SelectMediaCubit>(
         create: (context) => SelectMediaCubit(
           mediaService: getIt(),
-          isarService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<UploadMediaCubit>(
         create: (context) => UploadMediaCubit(
           mediaService: getIt(),
-          isarService: getIt(),
-          hiveService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<DownloadFileCubit>(
@@ -141,7 +140,7 @@ class MissionsModule {
         create: (context) => RecordingUploadCubit(
           mediaService: getIt(),
           failedUploadService: getIt(),
-          hiveService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
     ];

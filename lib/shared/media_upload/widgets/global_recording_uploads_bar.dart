@@ -1,6 +1,6 @@
 import 'package:app/di/di_container.dart';
-import 'package:app/models/local/media/prf_failed_recording_upload.dart';
-import 'package:app/models/local/media/upload_retry_progress.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
+import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:flutter/material.dart';
@@ -295,7 +295,7 @@ class _UploadTile extends StatelessWidget {
           ),
           IconButton(
             onPressed: () => getIt<FailedRecordingUploadService>()
-                .removeFailedUpload(upload.id),
+                .removeFailedUpload(upload.path),
             icon: const Icon(Icons.delete_outline),
             tooltip: 'Remove',
           ),

@@ -3,7 +3,6 @@ import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription_dto.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -15,16 +14,13 @@ class SubscribeCubit extends Cubit<SubscribeState> {
   SubscribeCubit({
     required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
-    required IsarService isarService,
   }) : super(const SubscribeState.initial()) {
     _missionSubscriptionService = missionSubscriptionService;
     _hiveService = hiveService;
-    _isarService = isarService;
   }
 
   late MissionSubscriptionService _missionSubscriptionService;
   late HiveService _hiveService;
-  late IsarService _isarService;
 
   Future<void> subscribe({required String missionUlid}) async {
     emit(const SubscribeState.loading());
@@ -37,7 +33,7 @@ class SubscribeCubit extends Cubit<SubscribeState> {
         ).toJson(),
         includes: ['mission', 'member.profilePicture'],
       );
-      await _isarService.missionSubscriptions.persistEntity(
+      await _hiveService.missionSubscriptions.persistEntity(
         missionSubscription,
       );
 

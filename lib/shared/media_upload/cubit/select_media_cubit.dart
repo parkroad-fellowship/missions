@@ -2,7 +2,7 @@ import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_media_type.dart';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/services/media/media_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +14,14 @@ part 'select_media_state.dart';
 class SelectMediaCubit extends Cubit<SelectMediaState> {
   SelectMediaCubit({
     required MediaService mediaService,
-    required IsarService isarService,
+    required HiveService hiveService,
   }) : super(const SelectMediaState.initial()) {
     _mediaService = mediaService;
-    _isarService = isarService;
+    _hiveService = hiveService;
   }
 
   late MediaService _mediaService;
-  late IsarService _isarService;
+  late HiveService _hiveService;
 
   Future<void> selectMedia({
     required BuildContext context,
@@ -42,7 +42,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
 
       final items = [...previousMedia, ...media];
 
-      await _isarService.mediaUploads.persistEntities(media);
+      await _hiveService.mediaUploads.persistEntities(media);
 
       if (items.isEmpty) {
         emit(const SelectMediaState.empty());
@@ -75,7 +75,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
 
       final items = [...previousMedia, ...media];
 
-      await _isarService.mediaUploads.persistEntities(media);
+      await _hiveService.mediaUploads.persistEntities(media);
 
       if (items.isEmpty) {
         emit(const SelectMediaState.empty());
@@ -107,7 +107,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
       );
 
       if (media != null) {
-        await _isarService.mediaUploads.persistEntity(media);
+        await _hiveService.mediaUploads.persistEntity(media);
 
         final items = [...previousMedia, media];
         emit(SelectMediaState.loaded(media: items));
@@ -135,7 +135,7 @@ class SelectMediaCubit extends Cubit<SelectMediaState> {
         model: model,
       );
 
-      await _isarService.mediaUploads.persistEntities(media);
+      await _hiveService.mediaUploads.persistEntities(media);
 
       final items = [...previousMedia, ...media];
 

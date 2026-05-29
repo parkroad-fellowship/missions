@@ -1,18 +1,17 @@
-import 'package:app/models/local/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/services/api/mission_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/single_resource_cubit.dart';
 
 /// Cubit dedicated to mission details screen state.
 ///
 /// Keeping this separate from the upcoming list cubit prevents detail page
 /// fetches from mutating the list tab state.
-class MissionDetailsResourceCubit
-    extends SingleResourceCubit<PRFMission, PRFLocalMission> {
+class MissionDetailsResourceCubit extends SingleResourceCubit<PRFMission> {
   MissionDetailsResourceCubit({
     required MissionService missionService,
-    super.dbService,
-  }) : super(service: missionService);
+    required HiveService hiveService,
+  }) : super(service: missionService, dbService: hiveService.missions);
 
   @override
   List<String> get defaultIncludes => [

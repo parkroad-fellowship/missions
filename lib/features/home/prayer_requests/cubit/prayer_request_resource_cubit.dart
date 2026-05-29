@@ -4,13 +4,15 @@ import 'package:app/services/api/prayer_request_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest, Null> {
+class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest> {
   PrayerRequestResourceCubit({
     required PrayerRequestService prayerRequestService,
     required HiveService hiveService,
-    super.dbService,
   }) : _hiveService = hiveService,
-       super(service: prayerRequestService);
+       super(
+         service: prayerRequestService,
+         dbService: hiveService.prayerRequests,
+       );
 
   final HiveService _hiveService;
 

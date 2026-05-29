@@ -5,7 +5,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_prompt.dart';
 import 'package:app/models/remote/prayer/prf_prayer_response.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+
 import 'package:app/utils/router/router.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -135,7 +135,7 @@ abstract class NotificationService {
                                       final member = getIt<HiveService>()
                                           .retrieveMember();
                                       if (member != null) {
-                                        await getIt<IsarService>()
+                                        await getIt<HiveService>()
                                             .prayerResponses
                                             .persistEntities(
                                               [

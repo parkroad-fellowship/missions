@@ -6,7 +6,7 @@ import 'package:app/services/api/mission_faq_category_service.dart';
 import 'package:app/services/api/mission_faq_service.dart';
 import 'package:app/services/api/student_enquiry_reply_service.dart';
 import 'package:app/services/api/student_enquiry_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -29,26 +29,25 @@ class EnquiriesModule {
       BlocProvider<FaqResourceCubit>(
         create: (context) => FaqResourceCubit(
           missionFaqService: getIt(),
-          dbService: getIt<IsarService>().faqs,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<FaqCategoryResourceCubit>(
         create: (context) => FaqCategoryResourceCubit(
           missionFaqCategoryService: getIt(),
-          dbService: getIt<IsarService>().faqCategories,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<EnquiryResourceCubit>(
         create: (context) => EnquiryResourceCubit(
           studentEnquiryService: getIt(),
-          dbService: getIt<IsarService>().studentEnquiries,
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<EnquiryReplyResourceCubit>(
         create: (context) => EnquiryReplyResourceCubit(
           studentEnquiryReplyService: getIt(),
-          hiveService: getIt(),
-          dbService: getIt<IsarService>().studentEnquiryReplies,
+          hiveService: getIt<HiveService>(),
         ),
       ),
     ];

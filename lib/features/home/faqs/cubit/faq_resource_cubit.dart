@@ -1,13 +1,13 @@
-import 'package:app/models/local/faq/prf_faq.dart';
 import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/services/api/mission_faq_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class FaqResourceCubit extends ResourceCubit<PRFFaq, PRFLocalFaq> {
+class FaqResourceCubit extends ResourceCubit<PRFFaq> {
   FaqResourceCubit({
     required MissionFaqService missionFaqService,
-    super.dbService,
-  }) : super(service: missionFaqService);
+    required HiveService hiveService,
+  }) : super(service: missionFaqService, dbService: hiveService.faqs);
 
   @override
   List<String> get defaultIncludes => ['missionFaqCategory'];

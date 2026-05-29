@@ -2,8 +2,8 @@
 
 import 'package:app/di/di_container.dart';
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/models/local/media/prf_failed_recording_upload.dart';
-import 'package:app/models/local/media/upload_retry_progress.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
+import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

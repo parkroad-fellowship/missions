@@ -4,13 +4,12 @@ import 'package:app/services/api/payment_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class PaymentResourceCubit extends ResourceCubit<PRFPayment, Null> {
+class PaymentResourceCubit extends ResourceCubit<PRFPayment> {
   PaymentResourceCubit({
     required PaymentService paymentService,
     required HiveService hiveService,
-    super.dbService,
   }) : _hiveService = hiveService,
-       super(service: paymentService);
+       super(service: paymentService, dbService: hiveService.payments);
 
   final HiveService _hiveService;
 

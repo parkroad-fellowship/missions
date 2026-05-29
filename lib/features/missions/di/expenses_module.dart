@@ -7,6 +7,7 @@ import 'package:app/services/api/allocation_entry_service.dart';
 import 'package:app/services/api/expense_categories_service.dart';
 import 'package:app/services/api/refund_service.dart';
 import 'package:app/services/api/requisition_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -26,6 +27,7 @@ class ExpensesModule {
       BlocProvider<ExpenseCategoryResourceCubit>(
         create: (context) => ExpenseCategoryResourceCubit(
           expenseCategoriesService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
       BlocProvider<AllocationEntryResourceCubit>(
@@ -44,6 +46,7 @@ class ExpensesModule {
       BlocProvider<RequisitionResourceCubit>(
         create: (context) => RequisitionResourceCubit(
           requisitionService: getIt(),
+          hiveService: getIt<HiveService>(),
         ),
       ),
     ];

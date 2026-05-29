@@ -1,6 +1,6 @@
 import 'package:app/models/remote/prayer/prf_prayer_response.dart';
 import 'package:app/services/api/prayer_response_service.dart';
-import 'package:app/services/local_storage/isar/isar_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -10,19 +10,19 @@ part 'upload_prayer_response_cubit.freezed.dart';
 
 class UploadPrayerResponseCubit extends Cubit<UploadPrayerResponseState> {
   UploadPrayerResponseCubit({
-    required IsarService isarService,
+    required HiveService hiveService,
     required PrayerResponseService prayerResponseService,
   }) : super(const UploadPrayerResponseState.initial()) {
-    _isarService = isarService;
+    _hiveService = hiveService;
     _prayerResponseService = prayerResponseService;
   }
 
-  late IsarService _isarService;
+  late HiveService _hiveService;
   late PrayerResponseService _prayerResponseService;
 
   Future<void> uploadPrayerResponses() async {
     try {
-      final prayerResponses = await _isarService.prayerResponses.getAllFuture();
+      final prayerResponses = await _hiveService.prayerResponses.list();
 
       final responses = <Future<PRFPrayerResponse>>[];
 
@@ -41,7 +41,7 @@ class UploadPrayerResponseCubit extends Cubit<UploadPrayerResponseState> {
       Logger().f(results);
 
       for (final result in results) {
-        await _isarService.prayerResponses.deleteByKey(
+        await _hiveService.prayerResponses.deleteByKey(
           result.prayerPrompt!.ulid,
         );
       }
