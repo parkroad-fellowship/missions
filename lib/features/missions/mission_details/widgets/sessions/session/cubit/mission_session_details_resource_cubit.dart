@@ -29,12 +29,6 @@ class MissionSessionDetailsResourceCubit
     'mission',
   ];
 
-  @override
-  Future<PRFMissionSession?> loadCachedItem(String id) async {
-    if (dbService is! MissionSessionHiveDbService) return null;
-    return (dbService! as MissionSessionHiveDbService).get(id);
-  }
-
   Future<void> loadSession({
     required String missionSessionUlid,
     bool refresh = false,

@@ -1,7 +1,6 @@
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/models/remote/prayer/prf_soul_dto.dart';
 import 'package:app/services/api/soul_service.dart';
-import 'package:app/services/local_storage/hive/db/soul_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
@@ -13,15 +12,6 @@ class SoulResourceCubit extends ResourceCubit<PRFSoul> {
 
   @override
   List<String> get defaultIncludes => ['classGroup', 'mission'];
-
-  @override
-  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is SoulHiveDbService) {
-      await (dbService as SoulHiveDbService).refreshParentStream(parentKey);
-    }
-    await dbService.refreshStream();
-  }
 
   /// Create a soul.
   Future<void> createSoul({required PRFSoulDTO data}) async {

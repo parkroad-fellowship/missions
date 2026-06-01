@@ -11,11 +11,6 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
   }) : super(service: missionService, dbService: hiveService.missions);
 
   @override
-  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    await dbService.refreshStream();
-  }
-
-  @override
   List<String> get defaultIncludes => [
     'school',
     'schoolTerm',

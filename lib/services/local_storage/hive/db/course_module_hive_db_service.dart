@@ -19,25 +19,9 @@ class CourseModuleHiveDbService extends BaseHiveDbService<PRFCourseModule> {
 
   // ----- Parent (course) stream -----
 
-  StreamController<List<PRFCourseModule>>? _parentStreamController;
-
-  Stream<List<PRFCourseModule>> get parentStream {
-    _parentStreamController ??=
-        StreamController<List<PRFCourseModule>>.broadcast();
-    return _parentStreamController!.stream;
-  }
-
   Future<List<PRFCourseModule>> listByCourse(String courseUlid) =>
       filterBy((m) => m.course?.ulid == courseUlid);
 
-  Future<void> refreshParentStream(String courseUlid) async {
-    _parentStreamController ??=
-        StreamController<List<PRFCourseModule>>.broadcast();
-    _parentStreamController!.add(await listByCourse(courseUlid));
-  }
-
-  Future<void> closeParentStream() async {
-    await _parentStreamController?.close();
-    _parentStreamController = null;
-  }
+  Stream<List<PRFCourseModule>> watchByParent(String parentId) =>
+      stream.asyncMap((_) => listByCourse(parentId));
 }

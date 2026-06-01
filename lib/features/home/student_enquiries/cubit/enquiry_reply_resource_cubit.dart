@@ -13,9 +13,7 @@ class EnquiryReplyResourceCubit extends ResourceCubit<PRFStudentEnquiryReply> {
        super(
          service: studentEnquiryReplyService,
          dbService: hiveService.studentEnquiryReplies,
-       ) {
-    subscribeToIsarUpdates();
-  }
+       );
 
   final HiveService _hiveService;
 

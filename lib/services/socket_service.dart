@@ -197,7 +197,7 @@ class SocketServiceImpl implements SocketService {
     required String eventName,
   }) {
     // Handle data from the socket server here
-    channel.bind(eventName).listen((event) {
+    channel.bind(eventName).listen((event) async {
       Logger().i('$eventName from the private channel ${channel.name} fired!');
       Logger().e(event.data);
 
@@ -211,11 +211,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _hiveService.courses.persistEntities(<PRFCourse>[courseData]).then((
-              _,
-            ) {
-              _hiveService.courseModules.refreshStream();
-            });
+            await _hiveService.courses.persistEntities(<PRFCourse>[courseData]);
 
           case PRFEvent.memberModuleUpdated:
             Logger().f(data['data']);
@@ -223,15 +219,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _hiveService.courseModules.persistEntity(courseModuleData).then((
-              _,
-            ) {
-              if (courseModuleData.course != null) {
-                _hiveService.courseModules.refreshParentStream(
-                  courseModuleData.course!.ulid,
-                );
-              }
-            });
+            await _hiveService.courseModules.persistEntity(courseModuleData);
 
           case PRFEvent.lessonMemberUpdated:
             Logger().f(data['data']);
@@ -239,15 +227,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _hiveService.lessonModules.persistEntity(lessonModuleData).then((
-              _,
-            ) {
-              if (lessonModuleData.module != null) {
-                _hiveService.lessonModules.refreshParentStream(
-                  lessonModuleData.module!.ulid,
-                );
-              }
-            });
+            await _hiveService.lessonModules.persistEntity(lessonModuleData);
 
           case PRFEvent.studentEnquiryReplyCreated:
             Logger().f(data['data']);
@@ -255,17 +235,9 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _hiveService.studentEnquiryReplies
-                .persistEntity(
-                  studentEnquiryReplyData,
-                )
-                .then((_) {
-                  if (studentEnquiryReplyData.studentEnquiry != null) {
-                    _hiveService.studentEnquiryReplies.refreshParentStream(
-                      studentEnquiryReplyData.studentEnquiry!.ulid,
-                    );
-                  }
-                });
+            await _hiveService.studentEnquiryReplies.persistEntity(
+              studentEnquiryReplyData,
+            );
         }
       } catch (e, stackTrace) {
         Logger().e(

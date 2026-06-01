@@ -42,11 +42,39 @@ abstract class BaseHiveDbService<TRemote> {
   }
 
   Future<void> persistEntity(TRemote entity) async {
-    await _box.put(getKey(entity), toJson(entity));
+    final key = getKey(entity);
+    final newJson = toJson(entity);
+    final existing = _box.get(key);
+
+    if (existing != null) {
+      final existingJson = Map<String, dynamic>.from(existing as Map);
+      // Strip nulls from incoming JSON so explicit null relations (due to missing includes)
+      // do not overwrite and destroy locally cached relationships.
+      final nonNullNewJson = Map<String, dynamic>.from(newJson)
+        ..removeWhere((k, v) => v == null);
+      await _box.put(key, {...existingJson, ...nonNullNewJson});
+    } else {
+      await _box.put(key, newJson);
+    }
   }
 
   Future<void> persistEntities(List<TRemote> entities) async {
-    final map = {for (final e in entities) getKey(e): toJson(e)};
+    final map = <String, dynamic>{};
+    for (final e in entities) {
+      final key = getKey(e);
+      final newJson = toJson(e);
+      final existing = _box.get(key);
+
+      if (existing != null) {
+        final existingJson = Map<String, dynamic>.from(existing as Map);
+        // Strip nulls to prevent destroying un-hydrated local relationships
+        final nonNullNewJson = Map<String, dynamic>.from(newJson)
+          ..removeWhere((k, v) => v == null);
+        map[key] = {...existingJson, ...nonNullNewJson};
+      } else {
+        map[key] = newJson;
+      }
+    }
     await _box.putAll(map);
   }
 
@@ -68,39 +96,21 @@ abstract class BaseHiveDbService<TRemote> {
 
   // ----- List stream -----
 
-  StreamController<List<TRemote>>? _streamController;
-
-  Stream<List<TRemote>> get stream {
-    _streamController ??= StreamController<List<TRemote>>.broadcast();
-    return _streamController!.stream;
-  }
-
-  Future<void> refreshStream() async {
-    _streamController ??= StreamController<List<TRemote>>.broadcast();
-    _streamController!.add(await list());
-  }
-
-  Future<void> closeStream() async {
-    await _streamController?.close();
-    _streamController = null;
+  /// A reactive stream broadcasting the full list whenever the Hive box updates.
+  Stream<List<TRemote>> get stream async* {
+    yield await list();
+    await for (final _ in _box.watch()) {
+      yield await list();
+    }
   }
 
   // ----- Single-item stream -----
 
-  StreamController<TRemote?>? _itemStreamController;
-
-  Stream<TRemote?> get itemStream {
-    _itemStreamController ??= StreamController<TRemote?>.broadcast();
-    return _itemStreamController!.stream;
-  }
-
-  Future<void> refreshItemStream(String key) async {
-    _itemStreamController ??= StreamController<TRemote?>.broadcast();
-    _itemStreamController!.add(await get(key));
-  }
-
-  Future<void> closeItemStream() async {
-    await _itemStreamController?.close();
-    _itemStreamController = null;
+  /// A reactive stream broadcasting a single item whenever its key updates in the Hive box.
+  Stream<TRemote?> watchItem(String key) async* {
+    yield await get(key);
+    await for (final _ in _box.watch(key: key)) {
+      yield await get(key);
+    }
   }
 }

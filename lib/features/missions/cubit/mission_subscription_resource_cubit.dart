@@ -1,7 +1,6 @@
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
-import 'package:app/services/local_storage/hive/db/mission_subscription_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
@@ -14,17 +13,6 @@ class MissionSubscriptionResourceCubit
          service: missionSubscriptionService,
          dbService: hiveService.missionSubscriptions,
        );
-
-  @override
-  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is MissionSubscriptionHiveDbService) {
-      await (dbService as MissionSubscriptionHiveDbService).refreshParentStream(
-        parentKey,
-      );
-    }
-    await dbService.refreshStream();
-  }
 
   @override
   List<String> get defaultIncludes => [

@@ -19,25 +19,9 @@ class DebriefNoteHiveDbService extends BaseHiveDbService<PRFDebriefNote> {
 
   // ----- Parent (mission) stream -----
 
-  StreamController<List<PRFDebriefNote>>? _parentStreamController;
-
-  Stream<List<PRFDebriefNote>> get parentStream {
-    _parentStreamController ??=
-        StreamController<List<PRFDebriefNote>>.broadcast();
-    return _parentStreamController!.stream;
-  }
-
   Future<List<PRFDebriefNote>> listByMission(String missionUlid) =>
       filterBy((n) => n.mission?.ulid == missionUlid);
 
-  Future<void> refreshParentStream(String missionUlid) async {
-    _parentStreamController ??=
-        StreamController<List<PRFDebriefNote>>.broadcast();
-    _parentStreamController!.add(await listByMission(missionUlid));
-  }
-
-  Future<void> closeParentStream() async {
-    await _parentStreamController?.close();
-    _parentStreamController = null;
-  }
+  Stream<List<PRFDebriefNote>> watchByParent(String parentId) =>
+      stream.asyncMap((_) => listByMission(parentId));
 }

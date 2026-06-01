@@ -18,23 +18,9 @@ class SoulHiveDbService extends BaseHiveDbService<PRFSoul> {
 
   // ----- Parent (mission) stream -----
 
-  StreamController<List<PRFSoul>>? _parentStreamController;
-
-  Stream<List<PRFSoul>> get parentStream {
-    _parentStreamController ??= StreamController<List<PRFSoul>>.broadcast();
-    return _parentStreamController!.stream;
-  }
-
   Future<List<PRFSoul>> listByMission(String missionUlid) =>
       filterBy((s) => s.mission?.ulid == missionUlid);
 
-  Future<void> refreshParentStream(String missionUlid) async {
-    _parentStreamController ??= StreamController<List<PRFSoul>>.broadcast();
-    _parentStreamController!.add(await listByMission(missionUlid));
-  }
-
-  Future<void> closeParentStream() async {
-    await _parentStreamController?.close();
-    _parentStreamController = null;
-  }
+  Stream<List<PRFSoul>> watchByParent(String parentId) =>
+      stream.asyncMap((_) => listByMission(parentId));
 }

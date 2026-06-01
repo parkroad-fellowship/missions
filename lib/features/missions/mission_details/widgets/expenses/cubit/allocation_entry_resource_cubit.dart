@@ -66,10 +66,12 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
         );
       }
 
-      final updated = [entry, ...currentItems];
+      await dbService.persistEntity(entry);
+
+      final hiveItems = await loadCachedList(filters: lastFilters);
       emit(
         ResourceState.mutated(
-          items: updated,
+          items: hiveItems,
           operation: ResourceOperation.create,
           item: entry,
         ),
@@ -110,12 +112,12 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
         );
       }
 
-      final updated = currentItems.map((e) {
-        return e.ulid == ulid ? entry : e;
-      }).toList();
+      await dbService.persistEntity(entry);
+
+      final hiveItems = await loadCachedList(filters: lastFilters);
       emit(
         ResourceState.mutated(
-          items: updated,
+          items: hiveItems,
           operation: ResourceOperation.update,
           item: entry,
         ),
@@ -155,10 +157,13 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
         memberUlid: _hiveService.retrieveMember()!.ulid,
       );
       final entry = await _allocationEntryService.addToken(data: data);
-      final updated = [entry, ...currentItems];
+
+      await dbService.persistEntity(entry);
+
+      final hiveItems = await loadCachedList(filters: lastFilters);
       emit(
         ResourceState.mutated(
-          items: updated,
+          items: hiveItems,
           operation: ResourceOperation.create,
           item: entry,
         ),

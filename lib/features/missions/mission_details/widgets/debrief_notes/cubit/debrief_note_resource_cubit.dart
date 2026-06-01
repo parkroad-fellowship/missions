@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/models/remote/content/prf_debrief_note_dto.dart';
 import 'package:app/services/api/debrief_note_service.dart';
 import 'package:app/services/local_storage/hive/db/debrief_note_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
+import 'package:app/utils/crud/resource_state.dart';
 
 class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   DebriefNoteResourceCubit({
@@ -12,14 +15,14 @@ class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   }) : super(service: debriefNoteService, dbService: hiveService.debriefNotes);
 
   @override
-  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is DebriefNoteHiveDbService) {
-      await (dbService as DebriefNoteHiveDbService).refreshParentStream(
-        parentKey,
-      );
+  Future<List<PRFDebriefNote>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) async {
+    final missionUlid = filters?['mission_ulid'] as String?;
+    if (missionUlid != null && dbService is DebriefNoteHiveDbService) {
+      return (dbService as DebriefNoteHiveDbService).listByMission(missionUlid);
     }
-    await dbService.refreshStream();
+    return super.loadCachedList(filters: filters);
   }
 
   @override

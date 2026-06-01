@@ -1,7 +1,6 @@
 import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/models/remote/mission/prf_mission_question_dto.dart';
 import 'package:app/services/api/mission_question_service.dart';
-import 'package:app/services/local_storage/hive/db/mission_question_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
@@ -13,17 +12,6 @@ class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
          service: missionQuestionService,
          dbService: hiveService.missionQuestions,
        );
-
-  @override
-  Future<void> refreshIsarStreams({Map<String, dynamic>? filters}) async {
-    final parentKey = filters?['mission_ulid'] as String?;
-    if (parentKey != null && dbService is MissionQuestionHiveDbService) {
-      await (dbService as MissionQuestionHiveDbService).refreshParentStream(
-        parentKey,
-      );
-    }
-    await dbService.refreshStream();
-  }
 
   @override
   List<String> get defaultIncludes => [

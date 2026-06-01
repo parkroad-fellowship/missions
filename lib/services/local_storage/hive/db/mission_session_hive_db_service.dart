@@ -19,25 +19,9 @@ class MissionSessionHiveDbService extends BaseHiveDbService<PRFMissionSession> {
 
   // ----- Parent (mission) stream -----
 
-  StreamController<List<PRFMissionSession>>? _parentStreamController;
-
-  Stream<List<PRFMissionSession>> get parentStream {
-    _parentStreamController ??=
-        StreamController<List<PRFMissionSession>>.broadcast();
-    return _parentStreamController!.stream;
-  }
-
   Future<List<PRFMissionSession>> listByMission(String missionUlid) =>
       filterBy((s) => s.mission?.ulid == missionUlid);
 
-  Future<void> refreshParentStream(String missionUlid) async {
-    _parentStreamController ??=
-        StreamController<List<PRFMissionSession>>.broadcast();
-    _parentStreamController!.add(await listByMission(missionUlid));
-  }
-
-  Future<void> closeParentStream() async {
-    await _parentStreamController?.close();
-    _parentStreamController = null;
-  }
+  Stream<List<PRFMissionSession>> watchByParent(String parentId) =>
+      stream.asyncMap((_) => listByMission(parentId));
 }

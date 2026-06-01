@@ -20,25 +20,9 @@ class MissionSubscriptionHiveDbService
 
   // ----- Parent (mission) stream -----
 
-  StreamController<List<PRFMissionSubscription>>? _parentStreamController;
-
-  Stream<List<PRFMissionSubscription>> get parentStream {
-    _parentStreamController ??=
-        StreamController<List<PRFMissionSubscription>>.broadcast();
-    return _parentStreamController!.stream;
-  }
-
   Future<List<PRFMissionSubscription>> listByMission(String missionUlid) =>
       filterBy((s) => s.mission?.ulid == missionUlid);
 
-  Future<void> refreshParentStream(String missionUlid) async {
-    _parentStreamController ??=
-        StreamController<List<PRFMissionSubscription>>.broadcast();
-    _parentStreamController!.add(await listByMission(missionUlid));
-  }
-
-  Future<void> closeParentStream() async {
-    await _parentStreamController?.close();
-    _parentStreamController = null;
-  }
+  Stream<List<PRFMissionSubscription>> watchByParent(String parentId) =>
+      stream.asyncMap((_) => listByMission(parentId));
 }
