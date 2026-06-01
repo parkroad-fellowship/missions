@@ -214,11 +214,12 @@ class _AddPrayerRequestViewHandsetState
                     ResourceState<PRFPrayerRequest>
                   >(
                     listenWhen: (prev, curr) =>
-                        curr is ResourceMutated<PRFPrayerRequest> ||
+                        curr is ResourceListLoaded<PRFPrayerRequest> ||
                         curr is ResourceError<PRFPrayerRequest>,
                     listener: (context, state) {
                       switch (state) {
-                        case ResourceMutated<PRFPrayerRequest>():
+                        case ResourceListLoaded<PRFPrayerRequest>():
+                          if (!_isLoading) break;
                           setState(() {
                             _isLoading = false;
                           });

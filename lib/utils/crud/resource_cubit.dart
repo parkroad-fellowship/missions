@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/common/paginated_response.dart';
 import 'package:app/services/api/_base_api_service.dart';
 import 'package:app/services/local_storage/hive/db/_base_hive_db_service.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -14,7 +15,7 @@ import 'package:logger/logger.dart';
 ///   1. Pass the service via super constructor.
 ///   2. Optionally override [defaultIncludes], [defaultFilters], etc.
 ///   3. Add resource-specific convenience methods.
-class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
+abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   ResourceCubit({
     required BaseAPIService<TRemote> service,
     required this.dbService,
@@ -39,27 +40,33 @@ class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   /// this triggers a re-fetch so the cubit state stays current organically.
   StreamSubscription<List<TRemote>>? _dbStreamSubscription;
 
+  int _requestSequence = 0;
+  int _activeRequestId = 0;
+  int _currentPage = 1;
+  bool _hasMore = false;
+
   /// Subscribe to the Hive DB service's stream.
   /// The stream automatically triggers a locally filtered fetch via [loadCachedList].
   void subscribeToDbUpdates() {
     _dbStreamSubscription?.cancel();
     _dbStreamSubscription = dbService.stream.listen((_) async {
       if (!isClosed) {
-        final hiveItems = await loadCachedList(filters: _lastFilters);
-        _emitIfOpen(
-          ResourceState.listLoaded(
-            items: hiveItems,
-            // Preserve current page metadata if it exists
-            page: state.maybeWhen(
-              listLoaded: (_, page, _) => page,
-              orElse: () => 1,
+        try {
+          final hiveItems = await loadCachedList(filters: _lastFilters);
+          _emitIfOpen(
+            ResourceState.listLoaded(
+              items: hiveItems,
+              page: _currentPage,
+              hasMore: _hasMore,
             ),
-            hasMore: state.maybeWhen(
-              listLoaded: (_, _, hasMore) => hasMore,
-              orElse: () => false,
-            ),
-          ),
-        );
+          );
+        } catch (e, s) {
+          _logger.e(
+            'Error syncing cached list from DB stream',
+            error: e,
+            stackTrace: s,
+          );
+        }
       }
     });
   }
@@ -84,20 +91,9 @@ class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
       listLoaded: (items, _, _) => items,
       itemLoaded: (_, items) => items,
       mutating: (items, _) => items,
-      mutated: (items, _, _) => items,
       error: (_, items) => items,
       itemError: (_, items, _) => items,
       orElse: () => [],
-    );
-  }
-
-  TRemote? get currentItem {
-    return state.maybeWhen(
-      itemLoading: (_, item) => item,
-      itemLoaded: (item, _) => item,
-      mutated: (_, _, item) => item,
-      itemError: (_, _, item) => item,
-      orElse: () => null,
     );
   }
 
@@ -108,9 +104,7 @@ class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   /// the items relevant to the current parent context (e.g. by mission ULID).
   Future<List<TRemote>> loadCachedList({
     Map<String, dynamic>? filters,
-  }) {
-    throw UnimplementedError();
-  }
+  });
 
   /// Fetch the full list of resources from the API.
   /// Persists into Hive, triggering an organic UI update via [_dbStreamSubscription].
@@ -120,40 +114,72 @@ class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
     int? limit,
     int? page,
     String? sortBy,
-    bool forceRefresh = false,
+    bool refreshInBackground = true,
   }) async {
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
-    final resolvedLimit = limit ?? defaultLimit;
     final startPage = page ?? 1;
+    final resolvedLimit = limit ?? defaultLimit;
+    final requestId = _nextRequestId();
 
     // Ensure we are subscribed to organically push DB changes to the UI
     if (_dbStreamSubscription == null) {
       subscribeToDbUpdates();
     }
 
-    // Immediately seed the UI with cached data for the newly requested filters
-    // so switching contexts (like viewing a different mission) feels instant.
+    // Strict offline-first: always seed UI with cache immediately.
     try {
       final cached = await loadCachedList(filters: mergedFilters);
-      _emitIfOpen(ResourceState.listLoading(items: cached));
+      _currentPage = startPage;
+      _hasMore = cached.length == resolvedLimit;
+      _emitIfOpen(
+        ResourceState.listLoaded(
+          items: cached,
+          page: _currentPage,
+          hasMore: _hasMore,
+        ),
+      );
+    } catch (e, s) {
+      _logger.e(
+        'Error loading cached list before background refresh',
+        error: e,
+        stackTrace: s,
+      );
+      _currentPage = startPage;
+      _hasMore = false;
+      _emitIfOpen(
+        ResourceState.listLoaded(
+          items: currentItems,
+          page: _currentPage,
+          hasMore: _hasMore,
+        ),
+      );
+    }
 
-      // If we already have a full page of cache and we weren't explicitly asked to refresh,
-      // we can optionally skip the API call to save bandwidth and prevent "overwriting all items".
-      if (!forceRefresh && cached.length >= resolvedLimit) {
-        _emitIfOpen(
-          ResourceState.listLoaded(
-            items: cached,
-            page: startPage,
-            hasMore: cached.length == resolvedLimit,
-          ),
-        );
-        return;
-      }
-    } catch (_) {}
+    if (!refreshInBackground) return;
 
+    unawaited(
+      _refreshAllInBackground(
+        requestId: requestId,
+        mergedFilters: mergedFilters,
+        includes: includes,
+        resolvedLimit: resolvedLimit,
+        startPage: startPage,
+        sortBy: sortBy,
+      ),
+    );
+  }
+
+  Future<void> _refreshAllInBackground({
+    required int requestId,
+    required Map<String, dynamic> mergedFilters,
+    required List<String>? includes,
+    required int resolvedLimit,
+    required int startPage,
+    required String? sortBy,
+  }) async {
     try {
-      final batch = await _service.list(
+      final result = await _service.list(
         filters: mergedFilters,
         includes: includes ?? defaultIncludes,
         limit: resolvedLimit,
@@ -161,18 +187,12 @@ class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
         sortBy: sortBy ?? defaultSortBy,
       );
 
-      // Track pagination on the state to assist UI without overriding the stream emit.
-      // We manually emit listLoaded with old cache and new pagination values,
-      // which will then rapidly be augmented by the organic DB trigger.
-      _emitIfOpen(
-        ResourceState.listLoaded(
-          items: currentItems,
-          page: startPage,
-          hasMore: batch.length == resolvedLimit,
-        ),
-      );
+      if (!_isLatestRequest(requestId)) return;
 
-      await dbService.persistEntities(batch);
+      _currentPage = result.pagination.currentPage ?? startPage;
+      _hasMore = _resolveHasMore(result, resolvedLimit);
+
+      await dbService.persistEntities(result.data);
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -192,27 +212,29 @@ class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
     String? sortBy,
   }) async {
     final mergedFilters = {...defaultFilters, ...?filters};
+    _lastFilters = mergedFilters;
+    final resolvedLimit = limit ?? defaultLimit;
+    final requestId = _nextRequestId();
+
+    if (_dbStreamSubscription == null) {
+      subscribeToDbUpdates();
+    }
+
     try {
-      final newItems = await _service.list(
+      final result = await _service.list(
         filters: mergedFilters,
         includes: includes ?? defaultIncludes,
-        limit: limit ?? defaultLimit,
+        limit: resolvedLimit,
         page: page,
         sortBy: sortBy ?? defaultSortBy,
       );
 
-      // Track pagination on the state to assist UI without overriding the stream emit.
-      // We manually emit listLoaded with old cache and new pagination values,
-      // which will then rapidly be augmented by the organic DB trigger.
-      _emitIfOpen(
-        ResourceState.listLoaded(
-          items: currentItems,
-          page: page,
-          hasMore: newItems.isNotEmpty,
-        ),
-      );
+      if (!_isLatestRequest(requestId)) return;
 
-      await dbService.persistEntities(newItems);
+      _currentPage = result.pagination.currentPage ?? page;
+      _hasMore = _resolveHasMore(result, resolvedLimit);
+
+      await dbService.persistEntities(result.data);
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -319,5 +341,19 @@ class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   void _emitIfOpen(ResourceState<TRemote> nextState) {
     if (isClosed) return;
     emit(nextState);
+  }
+
+  int _nextRequestId() {
+    _requestSequence += 1;
+    _activeRequestId = _requestSequence;
+    return _activeRequestId;
+  }
+
+  bool _isLatestRequest(int requestId) => requestId == _activeRequestId;
+
+  bool _resolveHasMore(PaginatedResponse<TRemote> result, int resolvedLimit) {
+    if (result.pagination.hasNext) return true;
+    if (result.pagination.currentPage != null) return false;
+    return result.data.length == resolvedLimit;
   }
 }

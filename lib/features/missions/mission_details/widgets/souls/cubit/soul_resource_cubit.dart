@@ -34,4 +34,11 @@ class SoulResourceCubit extends ResourceCubit<PRFSoul> {
   Future<void> deleteSoul(String ulid) async {
     await delete(ulid: ulid, matchById: (s) => s.ulid == ulid);
   }
+
+  @override
+  Future<List<PRFSoul>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

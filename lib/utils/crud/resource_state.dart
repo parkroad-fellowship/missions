@@ -25,11 +25,6 @@ abstract class ResourceState<T> with _$ResourceState<T> {
     required List<T> items,
     required ResourceOperation operation,
   }) = ResourceMutating<T>;
-  const factory ResourceState.mutated({
-    required List<T> items,
-    required ResourceOperation operation,
-    T? item,
-  }) = ResourceMutated<T>;
   const factory ResourceState.error({
     required String message,
     @Default([]) List<T> items,

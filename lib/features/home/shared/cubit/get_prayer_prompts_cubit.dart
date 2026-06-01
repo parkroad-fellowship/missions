@@ -30,7 +30,7 @@ class GetPrayerPromptsCubit extends Cubit<GetPrayerPromptsState> {
       );
 
       await _notificationService.schedulePrayerPromptNotifications(
-        prayerPrompts: prayerPrompts,
+        prayerPrompts: prayerPrompts.data,
       );
 
       emit(const GetPrayerPromptsState.loaded());

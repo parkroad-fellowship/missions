@@ -31,4 +31,11 @@ class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest> {
     );
     await create(data: dto.toJson());
   }
+
+  @override
+  Future<List<PRFPrayerRequest>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

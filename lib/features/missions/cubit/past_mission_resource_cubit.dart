@@ -38,4 +38,11 @@ class PastMissionResourceCubit extends ResourceCubit<PRFMission> {
 
   @override
   String? get defaultSortBy => '-start_date';
+
+  @override
+  Future<List<PRFMission>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

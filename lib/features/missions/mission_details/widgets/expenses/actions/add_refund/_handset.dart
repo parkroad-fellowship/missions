@@ -227,7 +227,8 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                             _isLoading = true;
                           });
                         },
-                        mutated: (refund) {
+                        listLoaded: (_) {
+                          if (!_isLoading) return;
                           setState(() {
                             _isLoading = false;
                           });

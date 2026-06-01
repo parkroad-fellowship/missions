@@ -51,12 +51,7 @@ class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
         completionStatus: PRFCompletionStatus.complete,
       );
       await _lessonMemberService.create(data: dto.toJson());
-      emit(
-        ResourceState.mutated(
-          items: currentItems,
-          operation: ResourceOperation.update,
-        ),
-      );
+
       // Reload to transition back to listLoaded with updated lessonMember data.
       // Unlike base class mutations, finishLesson creates a different entity
       // (LessonMember), so Isar streams won't auto-trigger a refresh.
@@ -66,5 +61,12 @@ class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
     } catch (e) {
       emit(ResourceState.error(message: e.toString(), items: currentItems));
     }
+  }
+
+  @override
+  Future<List<PRFLessonModule>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
   }
 }

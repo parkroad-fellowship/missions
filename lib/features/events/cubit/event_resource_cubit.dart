@@ -27,4 +27,11 @@ class EventResourceCubit extends ResourceCubit<PRFEvent> {
     'unsubscribed': true,
     'event_type': PRFEventType.member.apiKey,
   };
+
+  @override
+  Future<List<PRFEvent>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

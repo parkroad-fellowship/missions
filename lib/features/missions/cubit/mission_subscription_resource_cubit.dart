@@ -36,4 +36,11 @@ class MissionSubscriptionResourceCubit
 
   @override
   String? get defaultSortBy => '-created_at';
+
+  @override
+  Future<List<PRFMissionSubscription>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

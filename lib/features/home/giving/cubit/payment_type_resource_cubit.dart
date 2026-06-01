@@ -8,4 +8,11 @@ class PaymentTypeResourceCubit extends ResourceCubit<PRFPaymentType> {
     required PaymentTypeService paymentTypeService,
     required HiveService hiveService,
   }) : super(service: paymentTypeService, dbService: hiveService.paymentTypes);
+
+  @override
+  Future<List<PRFPaymentType>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

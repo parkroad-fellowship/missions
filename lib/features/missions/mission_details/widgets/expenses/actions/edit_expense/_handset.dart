@@ -338,7 +338,8 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                         mutating: (_) {
                           setState(() => _isLoading = true);
                         },
-                        mutated: (_) {
+                        listLoaded: (_) {
+                          if (!_isLoading) return;
                           setState(() => _isLoading = false);
                           Navigator.of(context).pop();
                           PRFSnackbar.success(context, l10n.expenseRecorded);

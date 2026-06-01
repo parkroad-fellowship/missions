@@ -83,7 +83,6 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
         final souls = state.maybeWhen(
           listLoaded: (items, _, _) => items,
           mutating: (items, _) => items,
-          mutated: (items, _, _) => items,
           error: (_, items) => items,
           orElse: () => <PRFSoul>[],
         );

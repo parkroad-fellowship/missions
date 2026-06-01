@@ -52,7 +52,6 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
     return BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
       buildWhen: (previous, current) => current.maybeWhen(
         mutating: (_, _) => false,
-        mutated: (_, _, _) => false,
         orElse: () => true,
       ),
       builder: (context, state) {
@@ -348,7 +347,8 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                   mutating: (_, _) => setState(() {
                     _isLoading = true;
                   }),
-                  mutated: (_, _, _) {
+                  listLoaded: (_, _, _) {
+                    if (!_isLoading) return;
                     setState(() {
                       _isLoading = false;
                     });

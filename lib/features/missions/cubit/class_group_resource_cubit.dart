@@ -23,4 +23,11 @@ class ClassGroupResourceCubit extends ResourceCubit<PRFClassGroup> {
       limit: 500,
     );
   }
+
+  @override
+  Future<List<PRFClassGroup>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

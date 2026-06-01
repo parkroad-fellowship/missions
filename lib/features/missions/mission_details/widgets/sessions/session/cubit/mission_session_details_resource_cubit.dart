@@ -2,7 +2,6 @@ import 'package:app/features/missions/mission_details/widgets/sessions/cubit/mis
     show MissionSessionResourceCubit;
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/services/api/mission_session_service.dart';
-import 'package:app/services/local_storage/hive/db/mission_session_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/single_resource_cubit.dart';
 

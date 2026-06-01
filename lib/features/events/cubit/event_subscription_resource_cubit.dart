@@ -59,4 +59,11 @@ class EventSubscriptionResourceCubit
   Future<void> deleteSubscription(String ulid) async {
     await delete(ulid: ulid, matchById: (s) => s.ulid == ulid);
   }
+
+  @override
+  Future<List<PRFEventSubscription>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

@@ -23,4 +23,11 @@ class RequisitionResourceCubit extends ResourceCubit<PRFRequisition> {
       },
     );
   }
+
+  @override
+  Future<List<PRFRequisition>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

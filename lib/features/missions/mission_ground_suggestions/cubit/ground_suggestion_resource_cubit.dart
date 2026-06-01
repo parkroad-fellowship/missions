@@ -46,4 +46,11 @@ class GroundSuggestionResourceCubit
       matchById: (s) => s.ulid == ulid,
     );
   }
+
+  @override
+  Future<List<PRFMissionGroundSuggestion>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

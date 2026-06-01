@@ -43,4 +43,11 @@ class MissionSessionResourceCubit extends ResourceCubit<PRFMissionSession> {
   Future<void> deleteSession(String ulid) async {
     await delete(ulid: ulid, matchById: (s) => s.ulid == ulid);
   }
+
+  @override
+  Future<List<PRFMissionSession>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

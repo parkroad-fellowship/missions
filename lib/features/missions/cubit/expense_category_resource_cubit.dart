@@ -11,4 +11,11 @@ class ExpenseCategoryResourceCubit extends ResourceCubit<PRFExpenseCategory> {
          service: expenseCategoriesService,
          dbService: hiveService.expenseCategories,
        );
+
+  @override
+  Future<List<PRFExpenseCategory>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

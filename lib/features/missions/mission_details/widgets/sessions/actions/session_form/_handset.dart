@@ -314,7 +314,8 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                       _isLoading = true;
                     });
                   },
-                  mutated: (_) {
+                  listLoaded: (_) {
+                    if (!_isLoading) return;
                     setState(() {
                       _isLoading = false;
                     });

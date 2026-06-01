@@ -52,4 +52,11 @@ class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
   Future<void> deleteMissionQuestion(String ulid) async {
     await delete(ulid: ulid, matchById: (q) => q.ulid == ulid);
   }
+
+  @override
+  Future<List<PRFMissionQuestion>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

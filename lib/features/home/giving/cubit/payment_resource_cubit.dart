@@ -28,4 +28,11 @@ class PaymentResourceCubit extends ResourceCubit<PRFPayment> {
     );
     await create(data: dto.toJson());
   }
+
+  @override
+  Future<List<PRFPayment>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

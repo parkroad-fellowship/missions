@@ -11,4 +11,11 @@ class EnquiryResourceCubit extends ResourceCubit<PRFStudentEnquiry> {
          service: studentEnquiryService,
          dbService: hiveService.studentEnquiries,
        );
+
+  @override
+  Future<List<PRFStudentEnquiry>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

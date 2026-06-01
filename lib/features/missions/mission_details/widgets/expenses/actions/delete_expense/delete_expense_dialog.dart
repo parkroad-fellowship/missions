@@ -37,7 +37,7 @@ class DeleteExpenseDialog extends StatelessWidget {
       listener: (context, state) {
         state.maybeWhen(
           orElse: () {},
-          mutated: (_, _, _) {
+          listLoaded: (_, _, _) {
             Navigator.of(context).pop(true);
           },
           error: (message, _) {

@@ -322,7 +322,8 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                             _isLoading = true;
                           });
                         },
-                        mutated: (result) {
+                        listLoaded: (_) {
+                          if (!_isLoading) return;
                           setState(() {
                             _isLoading = false;
                           });
@@ -331,7 +332,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           PRFSnackbar.success(
                             context,
                             l10n.missionGroundRecorded(
-                              result.item?.name ?? '',
+                              _nameController.text.trim(),
                             ),
                           );
                         },

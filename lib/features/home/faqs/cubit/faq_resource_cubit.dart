@@ -11,4 +11,11 @@ class FaqResourceCubit extends ResourceCubit<PRFFaq> {
 
   @override
   List<String> get defaultIncludes => ['missionFaqCategory'];
+
+  @override
+  Future<List<PRFFaq>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

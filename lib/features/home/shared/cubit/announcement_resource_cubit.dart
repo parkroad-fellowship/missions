@@ -14,4 +14,11 @@ class AnnouncementResourceCubit extends ResourceCubit<PRFAnnouncement> {
 
   @override
   String? get defaultSortBy => '-published_at';
+
+  @override
+  Future<List<PRFAnnouncement>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

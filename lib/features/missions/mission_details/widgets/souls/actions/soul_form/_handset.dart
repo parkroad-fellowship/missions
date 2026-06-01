@@ -233,7 +233,8 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
                       _isLoading = true;
                     });
                   },
-                  mutated: (_) {
+                  listLoaded: (_) {
+                    if (!_isLoading) return;
                     setState(() {
                       _isLoading = false;
                     });

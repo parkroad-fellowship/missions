@@ -195,7 +195,6 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                         listLoaded: (items, _, _) => items,
                         listLoading: (items) => items,
                         mutating: (items, _) => items,
-                        mutated: (items, _, _) => items,
                         error: (_, items) => items,
                         orElse: () => const <PRFMissionQuestion>[],
                       );

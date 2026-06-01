@@ -47,7 +47,6 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
         final subscriptions = state.maybeWhen(
           listLoaded: (items, _, _) => items,
           mutating: (items, _) => items,
-          mutated: (items, _, _) => items,
           error: (_, items) => items,
           orElse: () => <PRFMissionSubscription>[],
         );

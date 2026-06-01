@@ -192,7 +192,8 @@ class _AddMissionQuestionViewHandsetState
                             _isLoading = true;
                           });
                         },
-                        mutated: (_) {
+                        listLoaded: (_) {
+                          if (!_isLoading) return;
                           setState(() {
                             _isLoading = false;
                           });

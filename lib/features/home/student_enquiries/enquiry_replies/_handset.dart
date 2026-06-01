@@ -184,7 +184,7 @@ class _StudentEnquiryRepliesPageHandsetState
     >(
       listener: (context, state) {
         state.mapOrNull(
-          mutated: (_) {
+          listLoaded: (_) {
             _enquiryReplyController.clear();
             FocusScope.of(context).unfocus();
             PRFSnackbar.success(context, context.l10n.replySent);

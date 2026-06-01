@@ -6,7 +6,6 @@ import 'package:app/services/api/debrief_note_service.dart';
 import 'package:app/services/local_storage/hive/db/debrief_note_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
-import 'package:app/utils/crud/resource_state.dart';
 
 class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   DebriefNoteResourceCubit({
@@ -22,7 +21,7 @@ class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
     if (missionUlid != null && dbService is DebriefNoteHiveDbService) {
       return (dbService as DebriefNoteHiveDbService).listByMission(missionUlid);
     }
-    return super.loadCachedList(filters: filters);
+    return dbService.list();
   }
 
   @override

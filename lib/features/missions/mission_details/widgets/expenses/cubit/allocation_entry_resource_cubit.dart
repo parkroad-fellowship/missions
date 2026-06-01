@@ -69,13 +69,7 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
       await dbService.persistEntity(entry);
 
       final hiveItems = await loadCachedList(filters: lastFilters);
-      emit(
-        ResourceState.mutated(
-          items: hiveItems,
-          operation: ResourceOperation.create,
-          item: entry,
-        ),
-      );
+      emit(ResourceState.listLoaded(items: hiveItems));
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
@@ -115,13 +109,7 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
       await dbService.persistEntity(entry);
 
       final hiveItems = await loadCachedList(filters: lastFilters);
-      emit(
-        ResourceState.mutated(
-          items: hiveItems,
-          operation: ResourceOperation.update,
-          item: entry,
-        ),
-      );
+      emit(ResourceState.listLoaded(items: hiveItems));
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
@@ -161,13 +149,7 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
       await dbService.persistEntity(entry);
 
       final hiveItems = await loadCachedList(filters: lastFilters);
-      emit(
-        ResourceState.mutated(
-          items: hiveItems,
-          operation: ResourceOperation.create,
-          item: entry,
-        ),
-      );
+      emit(ResourceState.listLoaded(items: hiveItems));
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
@@ -186,16 +168,18 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
 
     try {
       await _refundService.create(data: data.toJson());
-      emit(
-        ResourceState.mutated(
-          items: currentItems,
-          operation: ResourceOperation.create,
-        ),
-      );
+      emit(ResourceState.listLoaded(items: currentItems));
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {
       emit(ResourceState.error(message: e.toString(), items: currentItems));
     }
+  }
+
+  @override
+  Future<List<PRFAllocationEntry>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
   }
 }

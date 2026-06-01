@@ -74,43 +74,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              mutated: (_, _, _) {
+              listLoaded: (_, _, _) {
                 _loadData();
-                PRFSnackbar.success(context, 'Entry added successfully');
-              },
-              error: (message, _) {
-                PRFSnackbar.error(context, message);
-              },
-            );
-          },
-        ),
-        BlocListener<
-          AllocationEntryResourceCubit,
-          ResourceState<PRFAllocationEntry>
-        >(
-          listener: (context, state) {
-            state.maybeWhen(
-              orElse: () {},
-              mutated: (_, _, _) {
-                _loadData();
-                PRFSnackbar.success(context, 'Expense updated successfully');
-              },
-              error: (message, _) {
-                PRFSnackbar.error(context, message);
-              },
-            );
-          },
-        ),
-        BlocListener<
-          AllocationEntryResourceCubit,
-          ResourceState<PRFAllocationEntry>
-        >(
-          listener: (context, state) {
-            state.maybeWhen(
-              orElse: () {},
-              mutated: (_, _, _) {
-                _loadData();
-                PRFSnackbar.success(context, 'Expense deleted successfully');
+                PRFSnackbar.success(context, 'Expenses updated successfully');
               },
               error: (message, _) {
                 PRFSnackbar.error(context, message);
@@ -187,8 +153,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                   child: PRFLinearProgressIndicator(),
                 ),
-                mutated: (entries, _, _) =>
-                    _buildLoadedView(context, l10n, entries),
                 error: (message, _) => Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,

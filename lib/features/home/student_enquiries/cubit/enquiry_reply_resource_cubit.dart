@@ -34,4 +34,11 @@ class EnquiryReplyResourceCubit extends ResourceCubit<PRFStudentEnquiryReply> {
     );
     await create(data: dto.toJson());
   }
+
+  @override
+  Future<List<PRFStudentEnquiryReply>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

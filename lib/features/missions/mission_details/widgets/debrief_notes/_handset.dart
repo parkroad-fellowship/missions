@@ -86,7 +86,6 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
         final debriefNotes = state.maybeWhen(
           listLoaded: (items, _, _) => items,
           mutating: (items, _) => items,
-          mutated: (items, _, _) => items,
           error: (_, items) => items,
           orElse: () => <PRFDebriefNote>[],
         );

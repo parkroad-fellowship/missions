@@ -78,11 +78,6 @@ class _RequisitionsViewState extends State<RequisitionsView> {
 
                   requisitions: requisitions,
                 ),
-                mutated: (requisitions, _, _) => _buildContent(
-                  context,
-
-                  requisitions: requisitions,
-                ),
                 error: (message, requisitions) => _buildContent(
                   context,
 

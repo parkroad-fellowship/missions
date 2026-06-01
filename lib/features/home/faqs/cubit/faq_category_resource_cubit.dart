@@ -11,4 +11,11 @@ class FaqCategoryResourceCubit extends ResourceCubit<PRFFaqCategory> {
          service: missionFaqCategoryService,
          dbService: hiveService.faqCategories,
        );
+
+  @override
+  Future<List<PRFFaqCategory>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }

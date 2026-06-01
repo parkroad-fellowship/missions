@@ -17,7 +17,7 @@ import 'package:logger/logger.dart';
 /// Only item-scoped states are used: [ResourceState.itemLoading],
 /// [ResourceState.itemLoaded], [ResourceState.itemError], and
 /// [ResourceState.initial]. List fields in those states are always empty.
-/// Parent list state is never read or mutated by this cubit — list cubits
+/// Parent list state is never read or mutated by this cubit - list cubits
 /// and [ResourceCubit] subclasses remain the sole owners of list state.
 class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   SingleResourceCubit({
@@ -31,18 +31,24 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   final _logger = Logger();
 
   StreamSubscription<TRemote?>? _dbItemSubscription;
+  String? _subscribedItemId;
 
   /// Subscribe to the Hive DB service's item stream for reactive updates.
   void subscribeToDbUpdates(String id) {
     _dbItemSubscription?.cancel();
+    _subscribedItemId = id;
 
     _dbItemSubscription = dbService.watchItem(id).listen((item) {
-      if (!isClosed && item != null) {
-        // Automatically push local state updates to UI
-        _emitIfOpen(
-          ResourceState.itemLoaded(item: dbService.localToRemote(item)),
-        );
+      if (isClosed) return;
+
+      if (item == null) {
+        _emitIfOpen(const ResourceState.initial());
+        return;
       }
+
+      _emitIfOpen(
+        ResourceState.itemLoaded(item: dbService.localToRemote(item)),
+      );
     });
   }
 
@@ -81,14 +87,13 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   }) async {
     final existing = currentItem;
 
+    if (_dbItemSubscription == null || _subscribedItemId != id) {
+      subscribeToDbUpdates(id);
+    }
+
     if (existing != null && matchById(existing) && !refresh) {
       _emitIfOpen(ResourceState.itemLoaded(item: existing));
       return existing;
-    }
-
-    // Ensure we are organically pushing local Hive updates to the UI
-    if (_dbItemSubscription == null) {
-      subscribeToDbUpdates(id);
     }
 
     if (!refresh) {
@@ -108,15 +113,13 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
       );
       await dbService.persistEntity(item);
 
-      // We don't need to manually read or emit because [_dbItemSubscription]
-      // handles pushing new states immediately as Hive puts happen.
-      // However, we still return the final object for immediate callers.
       final persisted = await loadCachedItem(id);
-      return persisted ?? item;
+      final finalItem = persisted ?? item;
+      _emitIfOpen(ResourceState.itemLoaded(item: finalItem));
+      return finalItem;
     } on Failure catch (e) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
-        // Only override loading state; the stream might not have fired if it wasn't modified
         _emitIfOpen(ResourceState.itemLoaded(item: cached));
         return cached;
       }
@@ -147,10 +150,6 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   }
 
   /// Create a new resource.
-  ///
-  /// Emits [ResourceState.itemLoading] while the request is in flight, then
-  /// persists the API response to Hive and relies on [_dbItemSubscription]
-  /// to organically stream the new local state. On failure emits [ResourceState.itemError].
   Future<void> create({
     required Map<String, dynamic> data,
     List<String>? includes,
@@ -163,6 +162,7 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
         includes: includes ?? defaultIncludes,
       );
       await dbService.persistEntity(item);
+      _emitIfOpen(ResourceState.itemLoaded(item: item));
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.itemError(message: e.message, item: existing));
     } catch (e, s) {
@@ -174,11 +174,6 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   }
 
   /// Update an existing resource.
-  ///
-  /// Emits [ResourceState.itemLoading] while the request is in flight, then
-  /// persists the API response to Hive and relies on [_dbItemSubscription]
-  /// to stream the mutated state. On failure emits
-  /// [ResourceState.itemError] with the pre-update item preserved.
   Future<void> update({
     required String id,
     required Map<String, dynamic> data,
@@ -193,6 +188,7 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
         includes: includes ?? defaultIncludes,
       );
       await dbService.persistEntity(item);
+      _emitIfOpen(ResourceState.itemLoaded(item: item));
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.itemError(message: e.message, item: existing));
     } catch (e, s) {
@@ -204,18 +200,12 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   }
 
   /// Delete a resource.
-  ///
-  /// Emits [ResourceState.itemLoading] while the request is in flight, removes
-  /// the record from Hive, then emits [ResourceState.initial] on success organically.
   Future<void> delete({required String ulid}) async {
     final existing = currentItem;
     _emitIfOpen(ResourceState.itemLoading(item: existing));
     try {
       await _service.delete(ulid: ulid);
       await dbService.deleteByKey(ulid);
-
-      // Item no longer exists — return to clean initial state manually.
-      // (Stream will stop receiving values)
       _emitIfOpen(const ResourceState.initial());
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.itemError(message: e.message, item: existing));

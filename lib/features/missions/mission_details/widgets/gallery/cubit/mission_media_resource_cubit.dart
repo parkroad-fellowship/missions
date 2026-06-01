@@ -20,7 +20,6 @@ class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
     return state.maybeWhen(
       listLoaded: (items, _, _) => items,
       mutating: (items, _) => items,
-      mutated: (items, _, _) => items,
       error: (_, items) => items,
       orElse: () => [],
     );
@@ -70,12 +69,7 @@ class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
         apiVersion: 'v2',
       );
       final updated = currentItems.where((m) => m.uuid != mediaUuid).toList();
-      emit(
-        ResourceState.mutated(
-          items: updated,
-          operation: ResourceOperation.delete,
-        ),
-      );
+      emit(ResourceState.listLoaded(items: updated));
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message, items: currentItems));
     } catch (e) {

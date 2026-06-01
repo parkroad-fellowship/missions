@@ -22,4 +22,11 @@ class ModuleResourceCubit extends ResourceCubit<PRFCourseModule> {
     'module.lessonModules.lessonMember',
     'module.lessonModules.module',
   ];
+
+  @override
+  Future<List<PRFCourseModule>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
 }
