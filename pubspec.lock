@@ -719,10 +719,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_soloud
-      sha256: "054d7baf7effb3fa6765387d7d3f236961e558573e9a0ad2523b081fac5fa988"
+      sha256: "44146f03a49fa770056ead2099e8f088cf99409f539add37534f6e563ad1e5ee"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.6"
+    version: "4.0.7"
   flutter_staggered_grid_view:
     dependency: transitive
     description:
@@ -1457,26 +1457,26 @@ packages:
     dependency: "direct dev"
     description:
       name: patrol
-      sha256: "7825a6e96a8f0755f68eec600a91a08b19bd0975488a70885b3696f6b65ffc0f"
+      sha256: f43fda9425e90c0e69d2dac9e495e3a3036a22a550466365b4720fa4dd53d6ae
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.0"
+    version: "4.6.1"
   patrol_finders:
     dependency: transitive
     description:
       name: patrol_finders
-      sha256: "9970eac0669a90b20ec7e1bcaabd0475655655998068ca656f4df9f6ec84f336"
+      sha256: "915da1e63fe7fd024418ab30b2394b1c8d6e812ce25be7d0b11634202521f0a9"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.4.0"
   patrol_log:
     dependency: transitive
     description:
       name: patrol_log
-      sha256: a2360db165c34692665c0de146e5157887d6b584fdccca8f141f947a5acf1b2e
+      sha256: "16ab747b28621640115d9493138eae82a1d410a613857cb0caf9000ce62fc546"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.0"
+    version: "0.9.0"
   pdfx:
     dependency: "direct main"
     description:
@@ -1489,10 +1489,10 @@ packages:
     dependency: "direct main"
     description:
       name: permission_handler
-      sha256: bc917da36261b00137bbc8896bf1482169cd76f866282368948f032c8c1caae1
+      sha256: fe54465bcc62a4564c6e4db337bbaded6c0c0fa6e10487414436d163114784f6
       url: "https://pub.dev"
     source: hosted
-    version: "12.0.1"
+    version: "12.0.3"
   permission_handler_android:
     dependency: transitive
     description:
@@ -1609,10 +1609,10 @@ packages:
     dependency: "direct main"
     description:
       name: posthog_flutter
-      sha256: "55a46ecf63411a6ede4a85e9d31dd251223c375fa85c18b78a134e62e11dcd6b"
+      sha256: "48e1547cae4c4830b657a56cc385f2c254b3bd51c93e131feb88ffcd990200a3"
       url: "https://pub.dev"
     source: hosted
-    version: "5.24.2"
+    version: "5.25.1"
   pretty_dio_logger:
     dependency: "direct main"
     description:
@@ -1966,10 +1966,10 @@ packages:
     dependency: "direct main"
     description:
       name: upgrader
-      sha256: e05ddce3799a73b76470d8d239951038f5759f116e89fe0c909e30ac2856310b
+      sha256: "7e088ecbe95aa0e31d44600b39d419b2f354c7a59b2e06453fcca5a0944660a0"
       url: "https://pub.dev"
     source: hosted
-    version: "13.3.0"
+    version: "13.4.0"
   url_launcher:
     dependency: "direct main"
     description:
