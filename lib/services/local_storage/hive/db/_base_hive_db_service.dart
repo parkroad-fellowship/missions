@@ -146,9 +146,9 @@ abstract class BaseHiveDbService<TRemote> {
   Future<int> count() async => _box.length;
 
   /// Returns all entities matching [predicate].
-  Future<List<TRemote>> filterBy(bool Function(TRemote) predicate) async {
+  Future<List<TRemote>> filterBy(List<bool> Function(TRemote) predicate) async {
     final all = await list();
-    return all.where(predicate).toList();
+    return all.where((e) => predicate(e).every((b) => b)).toList();
   }
 
   // ----- List stream -----
