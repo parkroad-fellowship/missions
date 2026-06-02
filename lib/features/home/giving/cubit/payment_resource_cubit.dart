@@ -16,6 +16,11 @@ class PaymentResourceCubit extends ResourceCubit<PRFPayment> {
   @override
   List<String> get defaultIncludes => ['paymentType'];
 
+  @override
+  Map<String, dynamic> get defaultFilters => {
+    'member_ulid': _hiveService.retrieveMember()!.ulid,
+  };
+
   /// Create a payment.
   Future<void> addPayment({
     required String paymentTypeUlid,
