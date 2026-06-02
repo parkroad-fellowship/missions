@@ -16,6 +16,22 @@ class FaqResourceCubit extends ResourceCubit<PRFFaq> {
   Future<List<PRFFaq>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
-    return dbService.list();
+    return dbService.filterBy(
+      (faq) => [
+        filters?['mission_faq_category_ulid'] == null ||
+            faq.category?.ulid == filters!['mission_faq_category_ulid'],
+        filters?['search'] == null ||
+            faq.question.toLowerCase().contains(
+              (filters!['search'] as String).toLowerCase(),
+            ) ||
+            faq.answer.toLowerCase().contains(
+              (filters['search'] as String).toLowerCase(),
+            ) ||
+            faq.category?.name.toLowerCase().contains(
+                  (filters['search'] as String).toLowerCase(),
+                ) ==
+                true,
+      ],
+    );
   }
 }

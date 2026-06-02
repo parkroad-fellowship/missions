@@ -29,12 +29,14 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
 
-    context.read<PaymentTypeResourceCubit>().loadAll();
-    context.read<AnnouncementResourceCubit>().loadAll();
-    context.read<GetPrayerPromptsCubit>().getPrayerPrompts();
-    context.read<UploadPrayerResponseCubit>().uploadPrayerResponses();
-    context.read<FaqCategoryResourceCubit>().loadAll();
-    context.read<FaqResourceCubit>().loadAll();
+    Future.wait([
+      context.read<PaymentTypeResourceCubit>().loadAll(),
+      context.read<AnnouncementResourceCubit>().loadAll(),
+      context.read<GetPrayerPromptsCubit>().getPrayerPrompts(),
+      context.read<UploadPrayerResponseCubit>().uploadPrayerResponses(),
+      context.read<FaqCategoryResourceCubit>().loadAll(),
+      context.read<FaqResourceCubit>().loadAll(),
+    ]);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeNotifications();
