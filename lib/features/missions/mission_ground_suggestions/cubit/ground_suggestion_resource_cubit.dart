@@ -20,6 +20,11 @@ class GroundSuggestionResourceCubit
   @override
   List<String> get defaultIncludes => ['suggestor'];
 
+  @override
+  Map<String, dynamic> get defaultFilters => {
+    'suggestor_ulid': _hiveService.retrieveMember()!.ulid,
+  };
+
   /// Create a ground suggestion.
   Future<void> createSuggestion({
     required String name,
