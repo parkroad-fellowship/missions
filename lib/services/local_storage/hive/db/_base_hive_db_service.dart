@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:logger/logger.dart';
 
 /// Abstract base for all Hive-backed entity CRUD services.
 ///
@@ -21,6 +22,7 @@ abstract class BaseHiveDbService<TRemote> {
   TRemote fromJson(Map<String, dynamic> json);
 
   Box<dynamic> get _box => Hive.box<dynamic>(boxName);
+  final _logger = Logger();
 
   // ----- Identity helpers kept for ResourceCubit compatibility -----
 
@@ -30,26 +32,46 @@ abstract class BaseHiveDbService<TRemote> {
   // ----- CRUD -----
 
   Future<List<TRemote>> list() async {
-    return _box.values
-        .map((v) => fromJson(Map<String, dynamic>.from(v as Map)))
-        .toList();
+    final items = <TRemote>[];
+
+    for (final entry in _box.toMap().entries) {
+      try {
+        final json = _toStringKeyedMap(entry.value);
+        items.add(fromJson(json));
+      } catch (e, s) {
+        _logger.e(
+          'HiveDB[$boxName]: failed to deserialize key ${entry.key}',
+          error: e,
+          stackTrace: s,
+        );
+      }
+    }
+
+    return items;
   }
 
   Future<TRemote?> get(String key) async {
-    final v = _box.get(key);
-    if (v == null) return null;
-    return fromJson(Map<String, dynamic>.from(v as Map));
+    final value = _box.get(key);
+    if (value == null) return null;
+    try {
+      return fromJson(_toStringKeyedMap(value));
+    } catch (e, s) {
+      _logger.e(
+        'HiveDB[$boxName]: failed to deserialize key $key',
+        error: e,
+        stackTrace: s,
+      );
+      return null;
+    }
   }
 
   Future<void> persistEntity(TRemote entity) async {
     final key = getKey(entity);
-    final newJson = toJson(entity);
+    final newJson = _toStringKeyedMap(toJson(entity));
     final existing = _box.get(key);
 
     if (existing != null) {
-      final existingJson = Map<String, dynamic>.from(existing as Map);
-      // Strip nulls from incoming JSON so explicit null relations (due to missing includes)
-      // do not overwrite and destroy locally cached relationships.
+      final existingJson = _toStringKeyedMap(existing);
       final nonNullNewJson = Map<String, dynamic>.from(newJson)
         ..removeWhere((k, v) => v == null);
       await _box.put(key, {...existingJson, ...nonNullNewJson});
@@ -60,14 +82,14 @@ abstract class BaseHiveDbService<TRemote> {
 
   Future<void> persistEntities(List<TRemote> entities) async {
     final map = <String, dynamic>{};
+
     for (final e in entities) {
       final key = getKey(e);
-      final newJson = toJson(e);
+      final newJson = _toStringKeyedMap(toJson(e));
       final existing = _box.get(key);
 
       if (existing != null) {
-        final existingJson = Map<String, dynamic>.from(existing as Map);
-        // Strip nulls to prevent destroying un-hydrated local relationships
+        final existingJson = _toStringKeyedMap(existing);
         final nonNullNewJson = Map<String, dynamic>.from(newJson)
           ..removeWhere((k, v) => v == null);
         map[key] = {...existingJson, ...nonNullNewJson};
@@ -75,7 +97,42 @@ abstract class BaseHiveDbService<TRemote> {
         map[key] = newJson;
       }
     }
+
     await _box.putAll(map);
+  }
+
+  Map<String, dynamic> _toStringKeyedMap(dynamic value) {
+    if (value is! Map) {
+      throw StateError(
+        'HiveDB[$boxName]: expected Map but got ${value.runtimeType}',
+      );
+    }
+
+    final normalized = _normalizeJsonValue(value);
+    if (normalized is! Map) {
+      throw StateError(
+        'HiveDB[$boxName]: normalized value is not a Map (${normalized.runtimeType})',
+      );
+    }
+
+    return Map<String, dynamic>.from(normalized);
+  }
+
+  dynamic _normalizeJsonValue(dynamic value) {
+    if (value is Map) {
+      return value.map<String, dynamic>(
+        (key, mapValue) => MapEntry(
+          key.toString(),
+          _normalizeJsonValue(mapValue),
+        ),
+      );
+    }
+
+    if (value is List) {
+      return value.map(_normalizeJsonValue).toList();
+    }
+
+    return value;
   }
 
   Future<void> deleteByKey(String key) async {
