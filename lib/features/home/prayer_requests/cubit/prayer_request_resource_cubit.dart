@@ -19,6 +19,11 @@ class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest> {
   @override
   List<String> get defaultIncludes => ['member'];
 
+  @override
+  Map<String, dynamic> get defaultFilters => {
+    'member_ulid': _hiveService.retrieveMember()!.ulid,
+  };
+
   /// Create a prayer request.
   Future<void> createPrayerRequest({
     required String title,
@@ -38,4 +43,6 @@ class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest> {
   }) {
     return dbService.list();
   }
+
+
 }
