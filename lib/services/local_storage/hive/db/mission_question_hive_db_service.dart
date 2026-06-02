@@ -21,7 +21,7 @@ class MissionQuestionHiveDbService
   // ----- Parent (mission) stream -----
 
   Future<List<PRFMissionQuestion>> listByMission(String missionUlid) =>
-      filterBy((q) => q.mission?.ulid == missionUlid);
+      filterBy((q) => [q.mission?.ulid == missionUlid]);
 
   Stream<List<PRFMissionQuestion>> watchByParent(String parentId) =>
       stream.asyncMap((_) => listByMission(parentId));

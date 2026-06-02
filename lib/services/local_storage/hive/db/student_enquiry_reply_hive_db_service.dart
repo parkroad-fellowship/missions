@@ -21,7 +21,7 @@ class StudentEnquiryReplyHiveDbService
   // ----- Parent (student enquiry) stream -----
 
   Future<List<PRFStudentEnquiryReply>> listByEnquiry(String enquiryUlid) =>
-      filterBy((r) => r.studentEnquiry?.ulid == enquiryUlid);
+      filterBy((r) => [r.studentEnquiry?.ulid == enquiryUlid]);
 
   Stream<List<PRFStudentEnquiryReply>> watchByParent(String parentId) =>
       stream.asyncMap((_) => listByEnquiry(parentId));

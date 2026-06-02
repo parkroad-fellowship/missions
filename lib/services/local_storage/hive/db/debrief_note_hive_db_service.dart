@@ -20,7 +20,7 @@ class DebriefNoteHiveDbService extends BaseHiveDbService<PRFDebriefNote> {
   // ----- Parent (mission) stream -----
 
   Future<List<PRFDebriefNote>> listByMission(String missionUlid) =>
-      filterBy((n) => n.mission?.ulid == missionUlid);
+      filterBy((n) => [n.mission?.ulid == missionUlid]);
 
   Stream<List<PRFDebriefNote>> watchByParent(String parentId) =>
       stream.asyncMap((_) => listByMission(parentId));

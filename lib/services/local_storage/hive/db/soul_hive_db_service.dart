@@ -19,7 +19,7 @@ class SoulHiveDbService extends BaseHiveDbService<PRFSoul> {
   // ----- Parent (mission) stream -----
 
   Future<List<PRFSoul>> listByMission(String missionUlid) =>
-      filterBy((s) => s.mission?.ulid == missionUlid);
+      filterBy((s) => [s.mission?.ulid == missionUlid]);
 
   Stream<List<PRFSoul>> watchByParent(String parentId) =>
       stream.asyncMap((_) => listByMission(parentId));

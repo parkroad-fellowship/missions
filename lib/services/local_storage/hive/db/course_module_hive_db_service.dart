@@ -20,7 +20,7 @@ class CourseModuleHiveDbService extends BaseHiveDbService<PRFCourseModule> {
   // ----- Parent (course) stream -----
 
   Future<List<PRFCourseModule>> listByCourse(String courseUlid) =>
-      filterBy((m) => m.course?.ulid == courseUlid);
+      filterBy((m) => [m.course?.ulid == courseUlid]);
 
   Stream<List<PRFCourseModule>> watchByParent(String parentId) =>
       stream.asyncMap((_) => listByCourse(parentId));

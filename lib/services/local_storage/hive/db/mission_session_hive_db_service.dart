@@ -20,7 +20,7 @@ class MissionSessionHiveDbService extends BaseHiveDbService<PRFMissionSession> {
   // ----- Parent (mission) stream -----
 
   Future<List<PRFMissionSession>> listByMission(String missionUlid) =>
-      filterBy((s) => s.mission?.ulid == missionUlid);
+      filterBy((s) => [s.mission?.ulid == missionUlid]);
 
   Stream<List<PRFMissionSession>> watchByParent(String parentId) =>
       stream.asyncMap((_) => listByMission(parentId));
