@@ -193,6 +193,17 @@ abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
       _hasMore = _resolveHasMore(result, resolvedLimit);
 
       await dbService.persistEntities(result.data);
+
+      if (_hasMore) {
+        await _loadRemainingPagesInBackground(
+          requestId: requestId,
+          startFromPage: _currentPage + 1,
+          mergedFilters: mergedFilters,
+          includes: includes,
+          resolvedLimit: resolvedLimit,
+          sortBy: sortBy,
+        );
+      }
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -203,6 +214,35 @@ abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
     }
   }
 
+  Future<void> _loadRemainingPagesInBackground({
+    required int requestId,
+    required int startFromPage,
+    required Map<String, dynamic> mergedFilters,
+    required List<String>? includes,
+    required int resolvedLimit,
+    required String? sortBy,
+  }) async {
+    var nextPage = startFromPage;
+
+    while (_hasMore && _isLatestRequest(requestId)) {
+      final result = await _service.list(
+        filters: mergedFilters,
+        includes: includes ?? defaultIncludes,
+        limit: resolvedLimit,
+        page: nextPage,
+        sortBy: sortBy ?? defaultSortBy,
+      );
+
+      if (!_isLatestRequest(requestId)) return;
+
+      _currentPage = result.pagination.currentPage ?? nextPage;
+      _hasMore = _resolveHasMore(result, resolvedLimit);
+
+      await dbService.persistEntities(result.data);
+      nextPage += 1;
+    }
+  }
+
   /// Append the next page of results to the current list.
   Future<void> loadMore({
     required int page,
@@ -210,6 +250,7 @@ abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
     List<String>? includes,
     int? limit,
     String? sortBy,
+    bool loadUntilDone = false,
   }) async {
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
@@ -235,6 +276,17 @@ abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
       _hasMore = _resolveHasMore(result, resolvedLimit);
 
       await dbService.persistEntities(result.data);
+
+      if (loadUntilDone && _hasMore) {
+        await _loadRemainingPagesInBackground(
+          requestId: requestId,
+          startFromPage: _currentPage + 1,
+          mergedFilters: mergedFilters,
+          includes: includes,
+          resolvedLimit: resolvedLimit,
+          sortBy: sortBy,
+        );
+      }
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -345,8 +397,7 @@ abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
 
   int _nextRequestId() {
     _requestSequence += 1;
-    _activeRequestId = _requestSequence;
-    return _activeRequestId;
+    return _activeRequestId = _requestSequence;
   }
 
   bool _isLatestRequest(int requestId) => requestId == _activeRequestId;
