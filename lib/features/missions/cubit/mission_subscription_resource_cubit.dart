@@ -9,10 +9,13 @@ class MissionSubscriptionResourceCubit
   MissionSubscriptionResourceCubit({
     required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
-  }) : super(
-         service: missionSubscriptionService,
-         dbService: hiveService.missionSubscriptions,
-       );
+  })  : _hiveService = hiveService,
+        super(
+          service: missionSubscriptionService,
+          dbService: hiveService.missionSubscriptions,
+        );
+
+final HiveService _hiveService;
 
   @override
   List<String> get defaultIncludes => [
@@ -28,6 +31,7 @@ class MissionSubscriptionResourceCubit
 
   @override
   Map<String, dynamic> get defaultFilters => {
+    'member_ulid': _hiveService.retrieveMember()!.ulid,
     'status_keys': [
       PRFMissionSubscriptionStatus.approved.apiKey,
       PRFMissionSubscriptionStatus.fullySubscribed.apiKey,
