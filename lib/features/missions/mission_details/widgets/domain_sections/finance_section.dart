@@ -18,10 +18,13 @@ class FinanceSection extends StatelessWidget {
       title: 'Finances',
       subtitle: 'Requisitions and expense tracking for this mission.',
       tabs: const [
-        Tab(text: 'Requisitions'),
         Tab(text: 'Expenses'),
+        Tab(text: 'Requisitions'),
       ],
-      children: [requisitionsTab, expensesTab],
+      children: [
+        expensesTab,
+        requisitionsTab,
+      ],
     );
   }
 }
