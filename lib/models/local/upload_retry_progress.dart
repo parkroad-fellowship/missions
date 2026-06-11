@@ -1,15 +1,21 @@
-class UploadRetryProgress {
-  const UploadRetryProgress({
-    required this.isRetrying,
-    required this.currentIndex,
-    required this.totalCount,
-    this.currentFileName,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final bool isRetrying;
-  final int currentIndex;
-  final int totalCount;
-  final String? currentFileName;
+part 'upload_retry_progress.freezed.dart';
+part 'upload_retry_progress.g.dart';
+
+@freezed
+abstract class UploadRetryProgress with _$UploadRetryProgress {
+  const factory UploadRetryProgress({
+    required bool isRetrying,
+    required int currentIndex,
+    required int totalCount,
+    String? currentFileName,
+  }) = _UploadRetryProgress;
+
+  const UploadRetryProgress._();
+
+  factory UploadRetryProgress.fromJson(Map<String, dynamic> json) =>
+      _$UploadRetryProgressFromJson(json);
 
   bool get isComplete => !isRetrying && totalCount > 0;
 

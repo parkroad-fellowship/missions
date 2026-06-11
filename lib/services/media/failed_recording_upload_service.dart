@@ -41,7 +41,7 @@ class FailedRecordingUploadService {
 
   Future<void> _putUpload(PRFFailedRecordingUpload upload) async {
     await _removeUploadByPath(upload.path);
-    await _hiveService.failedRecordingUploads.put(upload);
+    await _hiveService.failedRecordingUploads.persistEntity(upload);
   }
 
   Future<void> storePendingUpload(PRFMediaDTO mediaDTO) async {
@@ -196,7 +196,7 @@ class FailedRecordingUploadService {
   Future<void> _updateFailedUploadRetryCount(
     PRFFailedRecordingUpload failedUpload,
   ) async {
-    await _hiveService.failedRecordingUploads.update(
+    await _hiveService.failedRecordingUploads.persistEntity(
       failedUpload.copyWith(retryCount: failedUpload.retryCount + 1),
     );
   }

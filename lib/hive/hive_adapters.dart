@@ -4,6 +4,8 @@ import 'package:app/enums/mission/prf_mission_role.dart';
 import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/enums/mission/prf_soul_decision_type.dart';
+import 'package:app/models/local/prf_failed_recording_upload.dart';
+import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/course/prf_school.dart';
 import 'package:app/models/remote/course/prf_school_term.dart';
@@ -74,6 +76,8 @@ import 'package:hive_ce/hive.dart';
     AdapterSpec<PRFExpenseCategory>(),
     AdapterSpec<PRFPaymentTypeResponse>(),
     AdapterSpec<PRFPaymentType>(),
+    AdapterSpec<PRFFailedRecordingUpload>(),
+    AdapterSpec<UploadRetryProgress>(),
   ],
   reservedTypeIds: {4},
 )

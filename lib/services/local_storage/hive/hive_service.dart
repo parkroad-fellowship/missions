@@ -196,7 +196,7 @@ class HiveService {
       _prayerResponses.boxName,
       _souls.boxName,
       _mediaUploads.boxName,
-      FailedRecordingUploadHiveDbService.boxName,
+      _failedRecordingUploads.boxName,
       _expenseCategories.boxName,
       _paymentTypes.boxName,
       _events.boxName,

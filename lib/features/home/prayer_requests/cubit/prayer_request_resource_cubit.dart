@@ -43,6 +43,4 @@ class PrayerRequestResourceCubit extends ResourceCubit<PRFPrayerRequest> {
   }) {
     return dbService.list();
   }
-
-
 }

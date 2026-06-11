@@ -1,18 +1,23 @@
 import 'package:app/models/local/prf_failed_recording_upload.dart';
+import 'package:app/services/local_storage/hive/db/_base_hive_db_service.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 /// Hive-backed storage for [PRFFailedRecordingUpload] objects.
 ///
 /// Uses `path` as the unique key since a file path is inherently unique on
 /// disk.  Data is stored as raw maps (no type adapters required).
-class FailedRecordingUploadHiveDbService {
-  static const String boxName = 'prf_failed_recording_uploads';
+class FailedRecordingUploadHiveDbService
+    extends BaseHiveDbService<PRFFailedRecordingUpload> {
+  @override
+  String get boxName => 'prf_failed_recording_uploads';
 
   Box<dynamic> get _box => Hive.box<dynamic>(boxName);
 
   List<PRFFailedRecordingUpload> getAll() {
     return _box.values
-        .map((v) => PRFFailedRecordingUpload.fromMap(v as Map))
+        .map(
+          (v) => PRFFailedRecordingUpload.fromJson(v as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -31,21 +36,18 @@ class FailedRecordingUploadHiveDbService {
     }).toList();
   }
 
-  Future<void> put(PRFFailedRecordingUpload upload) async {
-    await _box.put(upload.path, upload.toMap());
-  }
-
   Future<void> deleteByPath(String path) async {
     await _box.delete(path);
   }
 
-  Future<void> update(PRFFailedRecordingUpload upload) async {
-    await put(upload);
-  }
+  @override
+  String getKey(PRFFailedRecordingUpload entity) => entity.path;
 
-  Future<void> clearAll() async {
-    await _box.clear();
-  }
+  @override
+  PRFFailedRecordingUpload fromJson(Map<String, dynamic> json) =>
+      PRFFailedRecordingUpload.fromJson(json);
 
-  int get count => _box.length;
+  @override
+  Map<String, dynamic> toJson(PRFFailedRecordingUpload entity) =>
+      entity.toJson();
 }
