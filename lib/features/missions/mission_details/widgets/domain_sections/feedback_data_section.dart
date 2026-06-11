@@ -11,12 +11,16 @@ class FeedbackDataSection extends StatelessWidget {
     required this.questionsTab,
     required this.galleryTab,
     super.key,
+    this.onTabChanged,
+    this.initialIndex = 0,
   });
 
   final Widget debriefNotesTab;
   final Widget soulsTab;
   final Widget questionsTab;
   final Widget galleryTab;
+  final ValueChanged<int>? onTabChanged;
+  final int initialIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,8 @@ class FeedbackDataSection extends StatelessWidget {
     return PRFDomainTabSection(
       title: 'Feedback Data',
       subtitle: 'Questions captured and post-mission debrief reflections.',
+      onTabChanged: onTabChanged,
+      initialIndex: initialIndex,
       tabs: [
         Tab(text: l10n.debriefNotes),
         Tab(text: l10n.souls),

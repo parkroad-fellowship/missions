@@ -13,6 +13,8 @@ class PRFDomainTabSection extends StatefulWidget {
     required this.children,
     super.key,
     this.subtitle,
+    this.onTabChanged,
+    this.initialIndex = 0,
   }) : assert(
          tabs.length == children.length,
          'tabs and children must have the same length',
@@ -22,6 +24,8 @@ class PRFDomainTabSection extends StatefulWidget {
   final String? subtitle;
   final List<Tab> tabs;
   final List<Widget> children;
+  final ValueChanged<int>? onTabChanged;
+  final int initialIndex;
 
   @override
   State<PRFDomainTabSection> createState() => _PRFDomainTabSectionState();
@@ -37,11 +41,19 @@ class _PRFDomainTabSectionState extends State<PRFDomainTabSection>
     _tabController = TabController(
       length: widget.tabs.length,
       vsync: this,
+      initialIndex: widget.initialIndex,
     );
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  void _handleTabSelection() {
+    if (_tabController.indexIsChanging) return;
+    widget.onTabChanged?.call(_tabController.index);
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(_handleTabSelection);
     _tabController.dispose();
     super.dispose();
   }
