@@ -86,7 +86,7 @@ class FailedRecordingUploadService {
   }
 
   Future<List<PRFFailedRecordingUpload>> getPendingUploads() async {
-    return _hiveService.failedRecordingUploads.getAll();
+    return _hiveService.failedRecordingUploads.list();
   }
 
   Future<List<PRFFailedRecordingUpload>> getPendingUploadsForSession(

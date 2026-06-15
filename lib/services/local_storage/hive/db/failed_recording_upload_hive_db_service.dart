@@ -11,35 +11,6 @@ class FailedRecordingUploadHiveDbService
   @override
   String get boxName => 'prf_failed_recording_uploads';
 
-  Box<dynamic> get _box => Hive.box<dynamic>(boxName);
-
-  List<PRFFailedRecordingUpload> getAll() {
-    return _box.values
-        .map(
-          (v) => PRFFailedRecordingUpload.fromJson(v as Map<String, dynamic>),
-        )
-        .toList();
-  }
-
-  List<PRFFailedRecordingUpload> getByModelUlid(String modelUlid) {
-    return getAll().where((u) => u.modelUlid == modelUlid).toList();
-  }
-
-  List<PRFFailedRecordingUpload> getByTarget({
-    required String modelUlid,
-    String? modelName,
-  }) {
-    return getAll().where((u) {
-      if (u.modelUlid != modelUlid) return false;
-      if (modelName != null && u.model.name != modelName) return false;
-      return true;
-    }).toList();
-  }
-
-  Future<void> deleteByPath(String path) async {
-    await _box.delete(path);
-  }
-
   @override
   String getKey(PRFFailedRecordingUpload entity) => entity.path;
 
@@ -50,4 +21,27 @@ class FailedRecordingUploadHiveDbService
   @override
   Map<String, dynamic> toJson(PRFFailedRecordingUpload entity) =>
       entity.toJson();
+
+  Box<dynamic> get _box => Hive.box<dynamic>(boxName);
+
+  Future<List<PRFFailedRecordingUpload>> getByModelUlid(
+    String modelUlid,
+  ) async {
+    return (await list()).where((u) => u.modelUlid == modelUlid).toList();
+  }
+
+  Future<List<PRFFailedRecordingUpload>> getByTarget({
+    required String modelUlid,
+    String? modelName,
+  }) async {
+    return (await list()).where((u) {
+      if (u.modelUlid != modelUlid) return false;
+      if (modelName != null && u.model.name != modelName) return false;
+      return true;
+    }).toList();
+  }
+
+  Future<void> deleteByPath(String path) async {
+    await _box.delete(path);
+  }
 }
