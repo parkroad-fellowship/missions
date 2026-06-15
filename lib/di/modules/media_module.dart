@@ -16,8 +16,10 @@ class MediaModule {
       ..registerSingleton<MediaService>(MediaServiceImpl())
       ..registerSingleton<AudioPlaybackService>(AudioPlaybackService())
       ..registerSingleton<AudioRecordingService>(AudioRecordingService())
-      ..registerSingleton<FailedRecordingUploadService>(
-        FailedRecordingUploadService(
+      // This service touches Hive in its constructor, so defer creation
+      // until after database initialization has completed.
+      ..registerLazySingleton<FailedRecordingUploadService>(
+        () => FailedRecordingUploadService(
           mediaService: getIt(),
           hiveService: getIt(),
         ),
