@@ -1407,4 +1407,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get darkModeEnabled => 'Dark mode enabled';
+
+  @override
+  String get answerFaqs => 'Answer FAQs';
 }

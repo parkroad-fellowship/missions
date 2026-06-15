@@ -2691,6 +2691,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark mode enabled'**
   String get darkModeEnabled;
+
+  /// No description provided for @answerFaqs.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer FAQs'**
+  String get answerFaqs;
 }
 
 class _AppLocalizationsDelegate

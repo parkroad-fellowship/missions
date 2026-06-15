@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:app/models/remote/common/failure.dart';
+import 'package:app/models/remote/common/paginated_response.dart';
 import 'package:app/services/api/_base_api_service.dart';
-import 'package:app/services/local_storage/isar/_base_local_db_service.dart';
+import 'package:app/services/local_storage/hive/db/_base_hive_db_service.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:logger/logger.dart';
@@ -13,46 +14,66 @@ import 'package:logger/logger.dart';
 /// Subclasses only need to:
 ///   1. Pass the service via super constructor.
 ///   2. Optionally override [defaultIncludes], [defaultFilters], etc.
-///   3. Optionally override [refreshIsarStreams] for parent-filtered streams.
-///   4. Add resource-specific convenience methods.
-class ResourceCubit<TRemote, TLocal extends Object?>
-    extends Cubit<ResourceState<TRemote>> {
+///   3. Add resource-specific convenience methods.
+abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   ResourceCubit({
     required BaseAPIService<TRemote> service,
-    this.dbService,
+    required this.dbService,
   }) : _service = service,
        super(const ResourceState.initial());
 
   final BaseAPIService<TRemote> _service;
-  final BaseLocalDBService<TRemote, TLocal>? dbService;
+  final BaseHiveDbService<TRemote> dbService;
   final _logger = Logger();
 
-  /// Stores the last filters used by [loadAll] so that [refreshIsarStreams]
-  /// can be called with the correct parent key after mutations.
+  /// Stores the last filters used by [loadAll] to ensure
+  /// subsequent fetches use the correct parent key after mutations.
   Map<String, dynamic>? _lastFilters;
 
-  /// Subscription to the Isar DB stream for reactive updates.
-  /// When external sources (e.g., socket service) write to Isar and refresh
-  /// the stream, this triggers a re-fetch so the cubit state stays current.
-  StreamSubscription<dynamic>? _isarStreamSubscription;
+  /// Exposes [_lastFilters] to subclasses that need to pass the last-used
+  /// filter context (e.g. parent ULID) from within
+  /// custom mutation methods.
+  Map<String, dynamic>? get lastFilters => _lastFilters;
 
-  /// Subscribe to the Isar DB service's stream. When the stream emits
-  /// (from socket events or any other Isar write), the cubit re-fetches
-  /// data via [loadAll] using the last-used filters.
-  ///
-  /// Call this in the subclass constructor for cubits that need
-  /// real-time updates from socket-driven Isar changes.
-  void subscribeToIsarUpdates() {
-    _isarStreamSubscription = dbService?.stream.listen((_) {
+  /// Subscription to the Hive DB stream for reactive updates.
+  /// When external sources (e.g., API calls, socket events) write to Hive,
+  /// this triggers a re-fetch so the cubit state stays current organically.
+  StreamSubscription<List<TRemote>>? _dbStreamSubscription;
+
+  int _requestSequence = 0;
+  int _activeRequestId = 0;
+  int _currentPage = 1;
+  bool _hasMore = false;
+
+  /// Subscribe to the Hive DB service's stream.
+  /// The stream automatically triggers a locally filtered fetch via [loadCachedList].
+  void subscribeToDbUpdates() {
+    _dbStreamSubscription?.cancel();
+    _dbStreamSubscription = dbService.stream.listen((_) async {
       if (!isClosed) {
-        loadAll(filters: _lastFilters);
+        try {
+          final hiveItems = await loadCachedList(filters: _lastFilters);
+          _emitIfOpen(
+            ResourceState.listLoaded(
+              items: hiveItems,
+              page: _currentPage,
+              hasMore: _hasMore,
+            ),
+          );
+        } catch (e, s) {
+          _logger.e(
+            'Error syncing cached list from DB stream',
+            error: e,
+            stackTrace: s,
+          );
+        }
       }
     });
   }
 
   @override
   Future<void> close() {
-    _isarStreamSubscription?.cancel();
+    _dbStreamSubscription?.cancel();
     return super.close();
   }
 
@@ -70,184 +91,157 @@ class ResourceCubit<TRemote, TLocal extends Object?>
       listLoaded: (items, _, _) => items,
       itemLoaded: (_, items) => items,
       mutating: (items, _) => items,
-      mutated: (items, _, _) => items,
       error: (_, items) => items,
       itemError: (_, items, _) => items,
       orElse: () => [],
     );
   }
 
-  TRemote? get currentItem {
-    return state.maybeWhen(
-      itemLoading: (_, item) => item,
-      itemLoaded: (item, _) => item,
-      mutated: (_, _, item) => item,
-      itemError: (_, _, item) => item,
-      orElse: () => null,
-    );
-  }
-
-  TRemote? _firstWhereOrNull(
-    List<TRemote> source,
-    bool Function(TRemote item) predicate,
-  ) {
-    for (final item in source) {
-      if (predicate(item)) {
-        return item;
-      }
-    }
-    return null;
-  }
-
-  List<TRemote> _upsertCurrentItems(
-    TRemote item,
-    bool Function(TRemote existing) matchById,
-  ) {
-    final items = [...currentItems];
-    final index = items.indexWhere(matchById);
-    if (index >= 0) {
-      items[index] = item;
-      return items;
-    }
-    return [item, ...items];
-  }
-
-  /// Override in subclasses to refresh Isar streams after data persistence.
-  /// Called after persistEntities/persistEntity/deleteByKey.
+  /// Returns the initial cached list used by [loadAll] for the cache-first
+  /// local seed. Defaults to [dbService.list()] (all items).
   ///
-  /// The base implementation calls [dbService.refreshStream()].
-  /// Subclasses with parent-filtered streams should also call
-  /// [refreshParentStream(parentKey)] on their typed DB service.
-  Future<void> refreshIsarStreams({
+  /// Override in subclasses that have parent-filtered Hive data to return only
+  /// the items relevant to the current parent context (e.g. by mission ULID).
+  Future<List<TRemote>> loadCachedList({
     Map<String, dynamic>? filters,
-  }) async {
-    await dbService?.refreshStream();
-  }
+  });
 
-  /// Override in subclasses when local cache types differ from remote models.
-  ///
-  /// Return a hydrated remote entity for [id] from local storage when possible.
-  Future<TRemote?> loadCachedItem(String id) async {
-    if (dbService == null) return null;
-    try {
-      final item = await dbService!.get(id);
-      return item != null ? dbService!.localToRemote(item) : null;
-    } catch (e, s) {
-      _logger.e('Error loading cached item', error: e, stackTrace: s);
-      return null;
-    }
-  }
-
-  /// Fetch the full list of resources.
-  /// On API failure with Isar available, falls back to cached data.
+  /// Fetch the full list of resources from the API.
+  /// Persists into Hive, triggering an organic UI update via [_dbStreamSubscription].
   Future<void> loadAll({
     Map<String, dynamic>? filters,
     List<String>? includes,
     int? limit,
     int? page,
     String? sortBy,
+    bool refreshInBackground = true,
   }) async {
+    _emitIfOpen(ResourceState.listLoading());
+
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
-
-    var hasLocalSeed = false;
     final startPage = page ?? 1;
+    final resolvedLimit = limit ?? defaultLimit;
+    final requestId = _nextRequestId();
 
-    _emitIfOpen(ResourceState.listLoading(items: currentItems));
-
-    // Cache-first: immediately hydrate UI with local data when available.
-    if (dbService != null) {
-      try {
-        final cached = await dbService!.list();
-        if (cached.isNotEmpty) {
-          hasLocalSeed = true;
-          _emitIfOpen(
-            ResourceState.listLoaded(
-              items: dbService!.localToRemoteList(cached),
-              page: startPage,
-              hasMore: true,
-            ),
-          );
-        }
-      } catch (e, s) {
-        _logger.w('Error loading cached list', error: e, stackTrace: s);
-      }
+    // Ensure we are subscribed to organically push DB changes to the UI
+    if (_dbStreamSubscription == null) {
+      subscribeToDbUpdates();
     }
 
+    // Strict offline-first: always seed UI with cache immediately.
     try {
-      var nextPage = startPage;
-      final allItems = <TRemote>[];
+      final cached = await loadCachedList(filters: mergedFilters);
+      _currentPage = startPage;
+      _hasMore = cached.length == resolvedLimit;
+      _emitIfOpen(
+        ResourceState.listLoaded(
+          items: cached,
+          page: _currentPage,
+          hasMore: _hasMore,
+        ),
+      );
+    } catch (e, s) {
+      _logger.e(
+        'Error loading cached list before background refresh',
+        error: e,
+        stackTrace: s,
+      );
+      _currentPage = startPage;
+      _hasMore = false;
+      _emitIfOpen(
+        ResourceState.listLoaded(
+          items: currentItems,
+          page: _currentPage,
+          hasMore: _hasMore,
+        ),
+      );
+    }
 
-      while (true) {
-        final batch = await _service.list(
-          filters: mergedFilters,
-          includes: includes ?? defaultIncludes,
-          limit: defaultLimit,
-          page: nextPage,
-          sortBy: sortBy ?? defaultSortBy,
+    if (!refreshInBackground) return;
+
+    unawaited(
+      _refreshAllInBackground(
+        requestId: requestId,
+        mergedFilters: mergedFilters,
+        includes: includes,
+        resolvedLimit: resolvedLimit,
+        startPage: startPage,
+        sortBy: sortBy,
+      ),
+    );
+  }
+
+  Future<void> _refreshAllInBackground({
+    required int requestId,
+    required Map<String, dynamic> mergedFilters,
+    required List<String>? includes,
+    required int resolvedLimit,
+    required int startPage,
+    required String? sortBy,
+  }) async {
+    try {
+      final result = await _service.list(
+        filters: mergedFilters,
+        includes: includes ?? defaultIncludes,
+        limit: resolvedLimit,
+        page: startPage,
+        sortBy: sortBy ?? defaultSortBy,
+      );
+
+      if (!_isLatestRequest(requestId)) return;
+
+      _currentPage = result.pagination.currentPage ?? startPage;
+      _hasMore = _resolveHasMore(result, resolvedLimit);
+
+      await dbService.persistEntities(result.data);
+
+      if (_hasMore) {
+        await _loadRemainingPagesInBackground(
+          requestId: requestId,
+          startFromPage: _currentPage + 1,
+          mergedFilters: mergedFilters,
+          includes: includes,
+          resolvedLimit: resolvedLimit,
+          sortBy: sortBy,
         );
-
-        if (batch.isEmpty) {
-          _emitIfOpen(
-            ResourceState.listLoaded(
-              items: allItems,
-              page: nextPage == startPage ? startPage : nextPage - 1,
-            ),
-          );
-          break;
-        }
-
-        allItems.addAll(batch);
-        await dbService?.persistEntities(batch);
-
-        final hasMore = batch.length >= defaultLimit;
-        _emitIfOpen(
-          ResourceState.listLoaded(
-            items: allItems,
-            page: nextPage,
-            hasMore: hasMore,
-          ),
-        );
-
-        if (!hasMore) {
-          break;
-        }
-
-        nextPage++;
       }
-
-      await refreshIsarStreams(filters: mergedFilters);
     } on Failure catch (e) {
-      if (hasLocalSeed) {
-        _emitIfOpen(
-          ResourceState.error(message: e.message, items: currentItems),
-        );
-        return;
-      }
-
-      // Offline fallback: try Isar cache
-      if (dbService != null) {
-        try {
-          final cached = await dbService!.list();
-          if (cached.isNotEmpty) {
-            _logger.w('API failed, using ${cached.length} cached items');
-            _emitIfOpen(
-              ResourceState.listLoaded(
-                items: dbService!.localToRemoteList(cached),
-              ),
-            );
-            return;
-          }
-        } catch (_) {
-          // Isar fallback also failed, emit original error
-        }
-      }
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
       _logger.e('Error loading resources', error: e, stackTrace: s);
       _emitIfOpen(
         ResourceState.error(message: e.toString(), items: currentItems),
       );
+    }
+  }
+
+  Future<void> _loadRemainingPagesInBackground({
+    required int requestId,
+    required int startFromPage,
+    required Map<String, dynamic> mergedFilters,
+    required List<String>? includes,
+    required int resolvedLimit,
+    required String? sortBy,
+  }) async {
+    var nextPage = startFromPage;
+
+    while (_hasMore && _isLatestRequest(requestId)) {
+      final result = await _service.list(
+        filters: mergedFilters,
+        includes: includes ?? defaultIncludes,
+        limit: resolvedLimit,
+        page: nextPage,
+        sortBy: sortBy ?? defaultSortBy,
+      );
+
+      if (!_isLatestRequest(requestId)) return;
+
+      _currentPage = result.pagination.currentPage ?? nextPage;
+      _hasMore = _resolveHasMore(result, resolvedLimit);
+
+      await dbService.persistEntities(result.data);
+      nextPage += 1;
     }
   }
 
@@ -258,27 +252,43 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     List<String>? includes,
     int? limit,
     String? sortBy,
+    bool loadUntilDone = false,
   }) async {
     final mergedFilters = {...defaultFilters, ...?filters};
+    _lastFilters = mergedFilters;
+    final resolvedLimit = limit ?? defaultLimit;
+    final requestId = _nextRequestId();
+
+    if (_dbStreamSubscription == null) {
+      subscribeToDbUpdates();
+    }
+
     try {
-      final newItems = await _service.list(
+      final result = await _service.list(
         filters: mergedFilters,
         includes: includes ?? defaultIncludes,
-        limit: limit ?? defaultLimit,
+        limit: resolvedLimit,
         page: page,
         sortBy: sortBy ?? defaultSortBy,
       );
 
-      await dbService?.persistEntities(newItems);
-      await refreshIsarStreams(filters: mergedFilters);
+      if (!_isLatestRequest(requestId)) return;
 
-      _emitIfOpen(
-        ResourceState.listLoaded(
-          items: [...currentItems, ...newItems],
-          page: page,
-          hasMore: newItems.isNotEmpty,
-        ),
-      );
+      _currentPage = result.pagination.currentPage ?? page;
+      _hasMore = _resolveHasMore(result, resolvedLimit);
+
+      await dbService.persistEntities(result.data);
+
+      if (loadUntilDone && _hasMore) {
+        await _loadRemainingPagesInBackground(
+          requestId: requestId,
+          startFromPage: _currentPage + 1,
+          mergedFilters: mergedFilters,
+          includes: includes,
+          resolvedLimit: resolvedLimit,
+          sortBy: sortBy,
+        );
+      }
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -289,98 +299,10 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     }
   }
 
-  /// Fetch a single resource for detail screens while preserving CRUD list state.
-  Future<TRemote?> loadOne({
-    required String id,
-    required bool Function(TRemote item) matchById,
-    List<String>? includes,
-    bool refresh = false,
-  }) async {
-    final existing = _firstWhereOrNull(currentItems, matchById);
-
-    if (existing != null && !refresh) {
-      _emitIfOpen(
-        ResourceState.itemLoaded(item: existing, items: currentItems),
-      );
-      return existing;
-    }
-
-    if (!refresh) {
-      final cached = await loadCachedItem(id);
-      if (cached != null) {
-        _emitIfOpen(
-          ResourceState.itemLoaded(
-            item: cached,
-            items: _upsertCurrentItems(cached, matchById),
-          ),
-        );
-        return cached;
-      }
-    }
-
-    _emitIfOpen(ResourceState.itemLoading(items: currentItems, item: existing));
-
-    try {
-      final item = await _service.get(
-        ulid: id,
-        includes: includes ?? defaultIncludes,
-      );
-
-      await dbService?.persistEntity(item);
-      await refreshIsarStreams(filters: _lastFilters);
-
-      _emitIfOpen(
-        ResourceState.itemLoaded(
-          item: item,
-          items: _upsertCurrentItems(item, matchById),
-        ),
-      );
-      return item;
-    } on Failure catch (e) {
-      final cached = await loadCachedItem(id);
-      if (cached != null) {
-        _emitIfOpen(
-          ResourceState.itemLoaded(
-            item: cached,
-            items: _upsertCurrentItems(cached, matchById),
-          ),
-        );
-        return cached;
-      }
-
-      _emitIfOpen(
-        ResourceState.itemError(
-          message: e.message,
-          items: currentItems,
-          item: existing,
-        ),
-      );
-    } catch (e, s) {
-      final cached = await loadCachedItem(id);
-      if (cached != null) {
-        _emitIfOpen(
-          ResourceState.itemLoaded(
-            item: cached,
-            items: _upsertCurrentItems(cached, matchById),
-          ),
-        );
-        return cached;
-      }
-
-      _logger.e('Error loading single resource', error: e, stackTrace: s);
-      _emitIfOpen(
-        ResourceState.itemError(
-          message: e.toString(),
-          items: currentItems,
-          item: existing,
-        ),
-      );
-    }
-
-    return existing;
-  }
-
-  /// Create a new resource and prepend it to the in-memory list.
+  /// Create a new resource.
+  ///
+  /// Persists the API response to Hive, leaving [_dbStreamSubscription] to
+  /// stream the authoritative list state back to the UI.
   Future<void> create({
     required Map<String, dynamic> data,
     List<String>? includes,
@@ -396,17 +318,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         data: data,
         includes: includes ?? defaultIncludes,
       );
-      await dbService?.persistEntity(item);
-      await refreshIsarStreams(filters: _lastFilters);
-
-      final updated = [item, ...currentItems];
-      _emitIfOpen(
-        ResourceState.mutated(
-          items: updated,
-          operation: ResourceOperation.create,
-          item: item,
-        ),
-      );
+      await dbService.persistEntity(item);
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -417,7 +329,10 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     }
   }
 
-  /// Update an existing resource and replace it in the in-memory list.
+  /// Update an existing resource.
+  ///
+  /// Persists the API response to Hive, leaving [_dbStreamSubscription] to
+  /// stream the authoritative list state back to the UI.
   Future<void> update({
     required String id,
     required Map<String, dynamic> data,
@@ -436,19 +351,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
         data: data,
         includes: includes ?? defaultIncludes,
       );
-      await dbService?.persistEntity(item);
-      await refreshIsarStreams(filters: _lastFilters);
-
-      final updated = currentItems.map((existing) {
-        return matchById(existing) ? item : existing;
-      }).toList();
-      _emitIfOpen(
-        ResourceState.mutated(
-          items: updated,
-          operation: ResourceOperation.update,
-          item: item,
-        ),
-      );
+      await dbService.persistEntity(item);
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -459,7 +362,10 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     }
   }
 
-  /// Delete a resource and remove it from the in-memory list.
+  /// Delete a resource.
+  ///
+  /// Removes the record from Hive, leaving [_dbStreamSubscription] to
+  /// stream the authoritative list state back to the UI.
   Future<void> delete({
     required String ulid,
     required bool Function(TRemote item) matchById,
@@ -472,16 +378,7 @@ class ResourceCubit<TRemote, TLocal extends Object?>
     );
     try {
       await _service.delete(ulid: ulid);
-      await dbService?.deleteByKey(ulid);
-      await refreshIsarStreams(filters: _lastFilters);
-
-      final updated = currentItems.where((item) => !matchById(item)).toList();
-      _emitIfOpen(
-        ResourceState.mutated(
-          items: updated,
-          operation: ResourceOperation.delete,
-        ),
-      );
+      await dbService.deleteByKey(ulid);
     } on Failure catch (e) {
       _emitIfOpen(ResourceState.error(message: e.message, items: currentItems));
     } catch (e, s) {
@@ -498,5 +395,18 @@ class ResourceCubit<TRemote, TLocal extends Object?>
   void _emitIfOpen(ResourceState<TRemote> nextState) {
     if (isClosed) return;
     emit(nextState);
+  }
+
+  int _nextRequestId() {
+    _requestSequence += 1;
+    return _activeRequestId = _requestSequence;
+  }
+
+  bool _isLatestRequest(int requestId) => requestId == _activeRequestId;
+
+  bool _resolveHasMore(PaginatedResponse<TRemote> result, int resolvedLimit) {
+    if (result.pagination.hasNext) return true;
+    if (result.pagination.currentPage != null) return false;
+    return result.data.length == resolvedLimit;
   }
 }

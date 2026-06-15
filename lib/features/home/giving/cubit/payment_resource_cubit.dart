@@ -1,21 +1,25 @@
 import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/models/remote/payment/prf_payment_dto.dart';
 import 'package:app/services/api/payment_service.dart';
-import 'package:app/services/local_storage/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
-class PaymentResourceCubit extends ResourceCubit<PRFPayment, Null> {
+class PaymentResourceCubit extends ResourceCubit<PRFPayment> {
   PaymentResourceCubit({
     required PaymentService paymentService,
     required HiveService hiveService,
-    super.dbService,
   }) : _hiveService = hiveService,
-       super(service: paymentService);
+       super(service: paymentService, dbService: hiveService.payments);
 
   final HiveService _hiveService;
 
   @override
   List<String> get defaultIncludes => ['paymentType'];
+
+  @override
+  Map<String, dynamic> get defaultFilters => {
+    'member_ulid': _hiveService.retrieveMember()!.ulid,
+  };
 
   /// Create a payment.
   Future<void> addPayment({
@@ -28,5 +32,12 @@ class PaymentResourceCubit extends ResourceCubit<PRFPayment, Null> {
       amount: amount,
     );
     await create(data: dto.toJson());
+  }
+
+  @override
+  Future<List<PRFPayment>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
   }
 }

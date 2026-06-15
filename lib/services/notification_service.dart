@@ -1,16 +1,16 @@
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/enums/common/prf_notification_type.dart';
 import 'package:app/enums/mission/prf_time_of_day.dart';
-import 'package:app/features/home/shared/cubit/save_prayer_response_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_prompt.dart';
-import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/models/remote/prayer/prf_prayer_response.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+
+import 'package:app/utils/router/router.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -131,18 +131,26 @@ abstract class NotificationService {
                                   PRFSecondaryButton(
                                     title: l10n.amen,
                                     disabled: false,
-                                    onPressed: () {
-                                      context
-                                          .read<SavePrayerResponseCubit>()
-                                          .savePrayerResponse(
-                                            prayerPromptUlid:
-                                                payload['prayer_prompt_ulid']!,
-                                          )
-                                          .then((_) {
-                                            if (context.mounted) {
-                                              Navigator.of(context).pop();
-                                            }
-                                          });
+                                    onPressed: () async {
+                                      final member = getIt<HiveService>()
+                                          .retrieveMember();
+                                      if (member != null) {
+                                        await getIt<HiveService>()
+                                            .prayerResponses
+                                            .persistEntities(
+                                              [
+                                                PRFPrayerResponseDTO(
+                                                  prayerPromptUlid:
+                                                      payload['prayer_prompt_ulid']!,
+                                                  memberUlid: member.ulid,
+                                                ),
+                                              ],
+                                            );
+                                      }
+
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                      }
                                     },
                                   ),
                                 ],

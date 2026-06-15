@@ -1,21 +1,25 @@
 import 'dart:developer';
 
 import 'package:app/models/remote/common/auth.dart';
+import 'package:app/services/errors/_error_reporting_service.dart';
 import 'package:app/services/firebase/firebase_service.dart';
 import 'package:bloc/bloc.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'google_sign_in_cubit.freezed.dart';
 part 'google_sign_in_state.dart';
 
 class GoogleSignInCubit extends Cubit<GoogleSignInState> {
-  GoogleSignInCubit({required FirebaseService firebaseService})
-    : super(const GoogleSignInState.initial()) {
+  GoogleSignInCubit({
+    required PRFFirebaseService firebaseService,
+    required ErrorReportingService errorReportingService,
+  }) : super(const GoogleSignInState.initial()) {
     _firebaseService = firebaseService;
+    _errorReportingService = errorReportingService;
   }
 
-  late FirebaseService _firebaseService;
+  late PRFFirebaseService _firebaseService;
+  late ErrorReportingService _errorReportingService;
 
   Future<void> signInwithGoogle() async {
     emit(const GoogleSignInState.loading());
@@ -24,7 +28,7 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
 
       emit(GoogleSignInState.loaded(socialAuthDTO: result));
     } catch (e) {
-      await FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
+      await _errorReportingService.recordError(e, StackTrace.current);
       log(e.toString(), error: e);
       emit(const GoogleSignInState.error('Google Sign in failed'));
     }

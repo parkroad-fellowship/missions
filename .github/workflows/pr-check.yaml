@@ -23,3 +23,36 @@ jobs:
       - name: Flutter Setup & Analysis
         uses: ./.github/actions/flutter-setup
 
+      # - name: Enforce Detail Cubit Isolation
+      #   shell: bash
+      #   run: |
+      #     set -euo pipefail
+
+      #     files_with_resource_base=$(grep -R -l --include='*.dart' 'extends ResourceCubit<' lib/features || true)
+
+      #     violations=""
+      #     if [[ -n "${files_with_resource_base}" ]]; then
+      #       while IFS= read -r file; do
+      #         [[ -z "${file}" ]] && continue
+
+      #         if grep -q 'loadOne\s*(' "${file}"; then
+      #           violations+="${file}"$'\n'
+      #         fi
+      #       done <<< "${files_with_resource_base}"
+      #     fi
+
+      #     if [[ -n "${violations}" ]]; then
+      #       echo "Found forbidden loadOne wrappers in ResourceCubit-based cubits:"
+      #       printf '%s' "${violations}"
+      #       echo
+      #       echo "Use a route-scoped detail cubit that extends SingleResourceCubit for one-record loading."
+      #       exit 1
+      #     fi
+
+      #     echo "Detail cubit isolation check passed."
+
+      # - name: Enforce Architecture Guardrails
+      #   shell: bash
+      #   run: |
+      #     bash scripts/architecture_guardrails.sh
+

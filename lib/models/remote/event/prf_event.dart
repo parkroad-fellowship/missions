@@ -1,6 +1,7 @@
 import 'package:app/models/remote/event/prf_event_subscription.dart';
 import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/models/remote/media/prf_weather_forecast.dart';
+import 'package:app/models/remote/mission/prf_transcript.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_event.freezed.dart';
@@ -31,6 +32,7 @@ abstract class PRFEvent with _$PRFEvent {
     @Default([])
     List<PRFEventSubscription> eventSubscriptions,
     @Default([]) List<PRFMedia> posters,
+    @Default([]) List<PRFTranscript> transcripts,
   }) = _PRFEvent;
 
   factory PRFEvent.fromJson(Map<String, dynamic> json) =>

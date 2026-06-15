@@ -2,29 +2,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum PRFPaymentStatus {
   @JsonValue(1)
-  pending,
+  pending(1, 'Pending'),
   @JsonValue(2)
-  initialised,
+  initialised(2, 'Initialised'),
   @JsonValue(3)
-  success,
+  success(3, 'Success'),
   @JsonValue(4)
-  cancelled,
+  cancelled(4, 'Cancelled'),
   @JsonValue(5)
-  failed
+  failed(5, 'Failed')
   ;
 
-  String get name {
-    switch (this) {
-      case PRFPaymentStatus.pending:
-        return 'Pending';
-      case PRFPaymentStatus.initialised:
-        return 'Initialised';
-      case PRFPaymentStatus.success:
-        return 'Success';
-      case PRFPaymentStatus.cancelled:
-        return 'Cancelled';
-      case PRFPaymentStatus.failed:
-        return 'Failed';
-    }
-  }
+  const PRFPaymentStatus(this.apiKey, this.name);
+
+  final int apiKey;
+  final String name;
 }

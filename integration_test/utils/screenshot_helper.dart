@@ -37,8 +37,9 @@ class ScreenshotHelper {
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
 
     _screenshotDir ??= _getScreenshotDir();
-    File('${_screenshotDir!.path}/$fileName.png')
-        .writeAsBytesSync(bytes!.buffer.asUint8List());
+    File(
+      '${_screenshotDir!.path}/$fileName.png',
+    ).writeAsBytesSync(bytes!.buffer.asUint8List());
     log('Screenshot saved: ${_screenshotDir!.path}/$fileName.png');
   }
 

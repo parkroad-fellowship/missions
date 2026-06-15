@@ -264,7 +264,6 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
             return _buildLoadingState(theme);
           },
           mutating: (_, _) => _buildLoadingState(theme),
-          mutated: (_, _, _) => _buildLoadingState(theme),
           error: (message, _) => _buildErrorState(message),
           itemError: (message, _, _) => _buildErrorState(message),
         );

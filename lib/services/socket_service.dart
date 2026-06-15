@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/enums/event/prf_event.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/models/remote/course/prf_course.dart';
 import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry_reply.dart';
-import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/utils/constants.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
 
@@ -21,11 +21,11 @@ abstract class SocketService {
 }
 
 class SocketServiceImpl implements SocketService {
-  SocketServiceImpl({required IsarService isarService}) {
-    _isarService = isarService;
+  SocketServiceImpl({required HiveService hiveService}) {
+    _hiveService = hiveService;
   }
 
-  late IsarService _isarService;
+  late HiveService _hiveService;
   PusherChannelsClient? _client;
   final StreamController<bool> _connectionStateController =
       StreamController<bool>.broadcast();
@@ -197,7 +197,7 @@ class SocketServiceImpl implements SocketService {
     required String eventName,
   }) {
     // Handle data from the socket server here
-    channel.bind(eventName).listen((event) {
+    channel.bind(eventName).listen((event) async {
       Logger().i('$eventName from the private channel ${channel.name} fired!');
       Logger().e(event.data);
 
@@ -211,11 +211,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.courses.persistEntities(<PRFCourse>[courseData]).then((
-              _,
-            ) {
-              _isarService.courseModules.refreshStream();
-            });
+            await _hiveService.courses.persistEntities(<PRFCourse>[courseData]);
 
           case PRFEvent.memberModuleUpdated:
             Logger().f(data['data']);
@@ -223,15 +219,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.courseModules.persistEntity(courseModuleData).then((
-              _,
-            ) {
-              if (courseModuleData.course != null) {
-                _isarService.courseModules.refreshParentStream(
-                  courseModuleData.course!.ulid,
-                );
-              }
-            });
+            await _hiveService.courseModules.persistEntity(courseModuleData);
 
           case PRFEvent.lessonMemberUpdated:
             Logger().f(data['data']);
@@ -239,15 +227,7 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.lessonModules.persistEntity(lessonModuleData).then((
-              _,
-            ) {
-              if (lessonModuleData.module != null) {
-                _isarService.lessonModules.refreshParentStream(
-                  lessonModuleData.module!.ulid,
-                );
-              }
-            });
+            await _hiveService.lessonModules.persistEntity(lessonModuleData);
 
           case PRFEvent.studentEnquiryReplyCreated:
             Logger().f(data['data']);
@@ -255,17 +235,9 @@ class SocketServiceImpl implements SocketService {
               data['data'] as Map<String, dynamic>,
             );
 
-            _isarService.studentEnquiryReplies
-                .persistEntity(
-                  studentEnquiryReplyData,
-                )
-                .then((_) {
-                  if (studentEnquiryReplyData.studentEnquiry != null) {
-                    _isarService.studentEnquiryReplies.refreshParentStream(
-                      studentEnquiryReplyData.studentEnquiry!.ulid,
-                    );
-                  }
-                });
+            await _hiveService.studentEnquiryReplies.persistEntity(
+              studentEnquiryReplyData,
+            );
         }
       } catch (e, stackTrace) {
         Logger().e(

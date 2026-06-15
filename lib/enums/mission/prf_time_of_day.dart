@@ -1,7 +1,12 @@
 enum PRFTimeOfDay {
-  morning,
-  evening
+  morning(1, 'Morning', 8),
+  evening(2, 'Evening', 18)
   ;
+
+  const PRFTimeOfDay(this.apiKey, this.name, this.hour);
+  final int apiKey;
+  final String name;
+  final int hour;
 
   static PRFTimeOfDay fromIndex(int index) {
     switch (index) {
@@ -11,15 +16,6 @@ enum PRFTimeOfDay {
         return PRFTimeOfDay.evening;
       default:
         return PRFTimeOfDay.morning;
-    }
-  }
-
-  int get hour {
-    switch (this) {
-      case PRFTimeOfDay.morning:
-        return 8;
-      case PRFTimeOfDay.evening:
-        return 18;
     }
   }
 }

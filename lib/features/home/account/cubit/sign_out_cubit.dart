@@ -1,4 +1,4 @@
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,20 +8,17 @@ part 'sign_out_cubit.freezed.dart';
 class SignOutCubit extends Cubit<SignOutState> {
   SignOutCubit({
     required HiveService hiveService,
-    required IsarService isarService,
   }) : super(const SignOutState.initial()) {
     _hiveService = hiveService;
-    _isarService = isarService;
   }
 
   late HiveService _hiveService;
-  late IsarService _isarService;
 
   Future<void> signOut() async {
     emit(const SignOutState.loading());
 
     try {
-      await _isarService.clearAllTables();
+      await _hiveService.clearAllTables();
       _hiveService.clearPrefs();
       emit(const SignOutState.loaded());
     } catch (e) {

@@ -1,10 +1,11 @@
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/firebase/firebase_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/helpers/app_version_helper.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
@@ -132,7 +133,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                             const SizedBox(height: 48),
 
                             FutureBuilder(
-                              future: getIt<FirebaseService>().canShowAuth(),
+                              future: getIt<PRFFirebaseService>().canShowAuth(),
                               builder: (context, snapshot) {
                                 final canShowAuth = snapshot.data ?? false;
                                 return Column(

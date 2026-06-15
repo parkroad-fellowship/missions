@@ -1,10 +1,7 @@
-import 'package:app/services/analytics/analytics_service.dart';
-import 'package:app/services/analytics/posthog_analytics_service.dart';
-import 'package:app/services/error_handler_service.dart';
-import 'package:app/services/firebase/crashlytics_service.dart';
-import 'package:app/services/firebase/crashlytics_service_impl.dart';
-import 'package:app/services/firebase/firebase_analytics_service.dart';
-import 'package:app/services/firebase/firebase_analytics_service_impl.dart';
+import 'package:app/services/analytics/_analytics_service.dart';
+import 'package:app/services/analytics/unified_analytics_service.dart';
+import 'package:app/services/errors/_error_reporting_service.dart';
+import 'package:app/services/errors/unified_error_reporting_service.dart';
 import 'package:app/services/firebase/firebase_messaging_service.dart';
 import 'package:app/services/firebase/firebase_service.dart';
 import 'package:app/services/notification_service.dart';
@@ -24,23 +21,18 @@ import 'package:get_it/get_it.dart';
 class FirebaseModule {
   static void register(GetIt getIt) {
     getIt
-      ..registerSingleton<FirebaseService>(FirebaseServiceImpl())
+      ..registerSingleton<PRFFirebaseService>(FirebaseServiceImpl())
       ..registerSingleton<FirebaseMessagingService>(
         FirebaseMessagingServiceImpl(),
       )
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
       ..registerSingleton<SocketService>(
-        SocketServiceImpl(isarService: getIt()),
+        SocketServiceImpl(hiveService: getIt()),
       )
-      ..registerSingleton<AnalyticsService>(PostHogAnalyticsService())
-      ..registerSingleton<FirebaseAnalyticsService>(
-        FirebaseAnalyticsServiceImpl(),
-      )
-      ..registerSingleton<CrashlyticsService>(CrashlyticsServiceImpl())
-      ..registerSingleton<ErrorHandlerService>(
-        ErrorHandlerServiceImpl(
-          analyticsService: getIt(),
-          crashlyticsService: getIt(),
+      ..registerSingleton<AnalyticsService>(UnifiedAnalyticsService())
+      ..registerSingleton<ErrorReportingService>(
+        UnifiedErrorReportingService(
+          analyticsService: getIt<AnalyticsService>(),
         ),
       );
   }

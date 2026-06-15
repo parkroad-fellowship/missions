@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/models/remote/common/failure.dart';
-import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/utils/constants.dart';
+import 'package:app/utils/helpers/app_version_helper.dart';
 import 'package:app/utils/http/request_signer.dart';
+import 'package:app/utils/http/retry_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';

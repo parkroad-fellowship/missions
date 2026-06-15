@@ -1,4 +1,5 @@
 import 'package:app/enums/mission/prf_mission_status.dart';
+import 'package:app/enums/mission/prf_mission_subscription_status.dart';
 import 'package:app/models/remote/course/prf_school.dart';
 import 'package:app/models/remote/course/prf_school_term.dart';
 import 'package:app/models/remote/expense/prf_accounting_event.dart';
@@ -38,8 +39,33 @@ abstract class PRFMission with _$PRFMission {
     List<PRFWeatherForecast> weatherForecasts,
   }) = _PRFMission;
 
+  const PRFMission._();
+
   factory PRFMission.fromJson(Map<String, dynamic> json) =>
       _$PRFMissionFromJson(json);
+
+  bool get isPastMission => endDate.isBefore(DateTime.now());
+
+  bool get isLoggedInMemberSubscribed =>
+      loggedInMemberMissionSubscription != null &&
+      loggedInMemberMissionSubscription!.status ==
+          PRFMissionSubscriptionStatus.approved;
+
+  bool get canEdit {
+    if (!isLoggedInMemberSubscribed) {
+      return false;
+    }
+
+    // Only missions that are still open for subscription or
+    // already fully subscribed can be edited
+    if (![
+      PRFMissionStatus.approved,
+      PRFMissionStatus.fullySubscribed,
+    ].contains(status)) {
+      return false;
+    }
+    return true;
+  }
 }
 
 @freezed

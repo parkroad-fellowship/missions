@@ -1,5 +1,5 @@
 import 'package:app/di/di_container.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
 
 mixin TimezoneMixin {
   String get timezone => getIt<HiveService>().auth.timezone;

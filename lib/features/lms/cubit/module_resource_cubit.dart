@@ -1,0 +1,32 @@
+import 'package:app/models/remote/course/prf_course_module.dart';
+import 'package:app/services/api/course_module_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/utils/crud/resource_cubit.dart';
+
+class ModuleResourceCubit extends ResourceCubit<PRFCourseModule> {
+  ModuleResourceCubit({
+    required CourseModuleService courseModuleService,
+    required HiveService hiveService,
+  }) : super(
+         service: courseModuleService,
+         dbService: hiveService.courseModules,
+       );
+
+  @override
+  List<String> get defaultIncludes => [
+    'course.thumbnail',
+    'course.courseMember',
+    'module.thumbnail',
+    'memberModule',
+    'module.lessonModules.lesson',
+    'module.lessonModules.lessonMember',
+    'module.lessonModules.module',
+  ];
+
+  @override
+  Future<List<PRFCourseModule>> loadCachedList({
+    Map<String, dynamic>? filters,
+  }) {
+    return dbService.list();
+  }
+}

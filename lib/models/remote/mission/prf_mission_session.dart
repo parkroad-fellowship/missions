@@ -1,7 +1,7 @@
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
-import 'package:app/models/remote/mission/prf_mission_session_transcript.dart';
+import 'package:app/models/remote/mission/prf_transcript.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prf_mission_session.freezed.dart';
@@ -20,9 +20,7 @@ abstract class PRFMissionSession with _$PRFMissionSession {
     PRFMember? speaker,
     PRFMission? mission,
     @JsonKey(name: 'class_group') PRFClassGroup? classGroup,
-    @Default([])
-    @JsonKey(name: 'mission_session_transcripts')
-    List<PRFMissionSessionTranscript> transcripts,
+    @Default([]) List<PRFTranscript> transcripts,
   }) = _PRFMissionSession;
 
   factory PRFMissionSession.fromJson(Map<String, dynamic> json) =>

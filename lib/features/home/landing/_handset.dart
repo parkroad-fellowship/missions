@@ -1,10 +1,12 @@
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/features/home/landing/models/landing_action_item.dart';
 import 'package:app/features/home/landing/widgets/landing_action_tile.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/utils/constants.dart';
+import 'package:app/utils/helpers/navigation_helper.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

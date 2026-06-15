@@ -1,0 +1,1 @@
+enum PRFMediaType { photos, videos }

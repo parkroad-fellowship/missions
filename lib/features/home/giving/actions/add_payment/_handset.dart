@@ -3,7 +3,8 @@ import 'package:app/features/home/giving/cubit/payment_type_resource_cubit.dart'
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/models/remote/payment/prf_payment_type.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/utils/helpers/url_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
@@ -129,19 +130,27 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
             const SizedBox(height: PRFSpacingTokens.xxl),
             BlocConsumer<PaymentResourceCubit, ResourceState<PRFPayment>>(
               listenWhen: (prev, curr) =>
-                  curr is ResourceMutated<PRFPayment> ||
+                  curr is ResourceListLoaded<PRFPayment> ||
                   curr is ResourceError<PRFPayment>,
               listener: (context, state) {
                 switch (state) {
-                  case ResourceMutated<PRFPayment>(:final item):
+                  case ResourceListLoaded<PRFPayment>(:final items):
+                    if (!_isLoading) break;
                     setState(() {
                       _isLoading = false;
                     });
                     Gaimon.success();
                     Navigator.of(context).pop();
-                    if (item?.authorizationUrl != null) {
+                    final paymentWithAuthorization = items
+                        .where((payment) => payment.authorizationUrl != null)
+                        .cast<PRFPayment?>()
+                        .firstWhere(
+                          (payment) => payment != null,
+                          orElse: () => null,
+                        );
+                    if (paymentWithAuthorization?.authorizationUrl != null) {
                       UrlHelper.openUrl(
-                        Uri.parse(item!.authorizationUrl!),
+                        Uri.parse(paymentWithAuthorization!.authorizationUrl!),
                       );
                     }
                   case ResourceError<PRFPayment>(:final message):

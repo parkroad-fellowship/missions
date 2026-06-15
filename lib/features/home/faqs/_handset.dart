@@ -3,7 +3,8 @@ import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/models/remote/content/prf_faq_category.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -28,8 +29,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
   @override
   void initState() {
     super.initState();
-    context.read<FaqCategoryResourceCubit>().loadAll();
-    _loadFaqs();
+    _refreshAll();
   }
 
   @override
@@ -317,6 +317,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
 
   Future<void> _loadFaqs() {
     return context.read<FaqResourceCubit>().loadAll(
+      refreshInBackground: false,
       filters: {
         if (_selectedCategory?.ulid != null)
           'mission_faq_category_ulid': _selectedCategory!.ulid,
@@ -326,7 +327,9 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
   }
 
   Future<void> _refreshAll() async {
-    await context.read<FaqCategoryResourceCubit>().loadAll();
+    await context.read<FaqCategoryResourceCubit>().loadAll(
+      refreshInBackground: false,
+    );
     await _loadFaqs();
   }
 }

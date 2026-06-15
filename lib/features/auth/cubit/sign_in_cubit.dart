@@ -1,13 +1,17 @@
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/models/remote/common/socket_config.dart';
-import 'package:app/services/_index.dart';
+import 'package:app/services/analytics/_analytics_service.dart';
+import 'package:app/services/api/auth_service.dart';
+import 'package:app/services/firebase/firebase_messaging_service.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/services/socket_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 
-part 'sign_in_state.dart';
 part 'sign_in_cubit.freezed.dart';
+part 'sign_in_state.dart';
 
 class SigninCubit extends Cubit<SignInState> {
   SigninCubit({

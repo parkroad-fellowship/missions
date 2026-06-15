@@ -2,11 +2,12 @@
 
 import 'dart:math';
 
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/enums/common/prf_supported_platform.dart';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/utils/constants.dart';
+import 'package:app/utils/helpers/device_helper.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logger/logger.dart';

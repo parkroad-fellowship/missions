@@ -1,15 +1,18 @@
-import 'package:app/di/_index.dart';
+import 'package:app/di/di_container.dart';
 import 'package:app/enums/common/prf_theme_mode.dart';
 import 'package:app/enums/member/prf_membership_type.dart';
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/enums/prf_media_type.dart';
 import 'package:app/features/home/account/cubit/change_profile_picture_cubit.dart';
 import 'package:app/features/home/account/cubit/sign_out_cubit.dart';
-import 'package:app/features/home/missions/mission_details/widgets/gallery/actions/add_media/_handset.dart';
-import 'package:app/features/home/shared/cubit/theme_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/services/_index.dart';
-import 'package:app/utils/_index.dart';
+import 'package:app/services/local_storage/hive/hive_service.dart';
+import 'package:app/shared/theme/cubit/theme_cubit.dart';
+import 'package:app/utils/constants.dart';
+import 'package:app/utils/helpers/app_version_helper.dart';
+import 'package:app/utils/helpers/url_helper.dart';
+import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -939,7 +942,7 @@ class ChangeProfilePictureButton extends StatelessWidget {
                   context: context,
                   modelUlid: member.ulid,
                   model: PRFMediaModel.memberProfilePictures,
-                  mediaType: MediaType.photos,
+                  mediaType: PRFMediaType.photos,
                 ),
             child: Container(
               padding: const EdgeInsets.all(PRFSpacingTokens.sm),
