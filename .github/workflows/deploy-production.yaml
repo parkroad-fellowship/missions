@@ -79,6 +79,15 @@ jobs:
             exit 1
             fi
 
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/lib/android/sdk/emulator
+          sudo rm -rf /usr/local/lib/android/sdk/system-images
+          df -h
+
       - name: Build AAB
         env:
             APP_ID: ${{ secrets.PROD_APP_ID }}

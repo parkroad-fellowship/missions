@@ -45,6 +45,15 @@ jobs:
           echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
 
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/lib/android/sdk/emulator
+          sudo rm -rf /usr/local/lib/android/sdk/system-images
+          df -h
+          
       - name: Build APK
         run: |
           flutter build apk \
