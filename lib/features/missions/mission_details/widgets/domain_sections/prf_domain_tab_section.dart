@@ -53,8 +53,9 @@ class _PRFDomainTabSectionState extends State<PRFDomainTabSection>
 
   @override
   void dispose() {
-    _tabController.removeListener(_handleTabSelection);
-    _tabController.dispose();
+    _tabController
+      ..removeListener(_handleTabSelection)
+      ..dispose();
     super.dispose();
   }
 

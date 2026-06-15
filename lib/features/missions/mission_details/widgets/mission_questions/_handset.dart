@@ -2,6 +2,7 @@ import 'package:app/features/missions/mission_details/widgets/mission_questions/
 import 'package:app/features/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/record_sections.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_question.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -11,9 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class MissionQuestionsViewHandset extends StatefulWidget {
-  const MissionQuestionsViewHandset({required this.missionUlid, super.key});
+  const MissionQuestionsViewHandset({required this.mission, super.key});
 
-  final String missionUlid;
+  final PRFMission mission;
 
   @override
   State<MissionQuestionsViewHandset> createState() =>
@@ -23,13 +24,13 @@ class MissionQuestionsViewHandset extends StatefulWidget {
 class _MissionQuestionsViewHandsetState
     extends State<MissionQuestionsViewHandset>
     with TimezoneMixin {
-  String get missionUlid => widget.missionUlid;
+  PRFMission get mission => widget.mission;
 
   Future<void> _showAddQuestionSheet() {
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.addQuestion,
-      child: AddMissionQuestionView(missionUlid: missionUlid),
+      child: AddMissionQuestionView(missionUlid: mission.ulid),
     );
   }
 
@@ -52,7 +53,7 @@ class _MissionQuestionsViewHandsetState
 
     await context.read<MissionQuestionResourceCubit>().updateMissionQuestion(
       ulid: missionQuestion.ulid,
-      missionUlid: missionUlid,
+      missionUlid: mission.ulid,
       question: question.trim(),
     );
 
@@ -94,12 +95,10 @@ class _MissionQuestionsViewHandsetState
     PRFSnackbar.success(context, 'Question deleted');
   }
 
-  @override
-  void initState() {
-    context.read<MissionQuestionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+  Future<void> _loadMissionQuestions() {
+    return context.read<MissionQuestionResourceCubit>().loadAll(
+      filters: {'mission_ulid': mission.ulid},
     );
-    super.initState();
   }
 
   @override
@@ -133,9 +132,8 @@ class _MissionQuestionsViewHandsetState
           isLoading: isLoading,
           error: error,
           isEmpty: questions.isEmpty,
-          onRefresh: () => context.read<MissionQuestionResourceCubit>().loadAll(
-            filters: {'mission_ulid': missionUlid},
-          ),
+          onRefresh: _loadMissionQuestions,
+          canEdit: mission.canEdit,
           onAdd: _showAddQuestionSheet,
           items: [
             for (int index = 0; index < questions.length; index++)
@@ -149,6 +147,7 @@ class _MissionQuestionsViewHandsetState
                     onEdit: () => _updateQuestion(questions[index]),
                     deleteTooltip: 'Delete question',
                     onDelete: () => _deleteQuestion(questions[index]),
+                    canEdit: mission.canEdit,
                   )
                   .animate(delay: (index * 100).ms)
                   .fadeIn()

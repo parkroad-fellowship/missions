@@ -1,3 +1,4 @@
+import 'package:app/enums/prf_media_model.dart';
 import 'package:app/features/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/missions/mission_details/cubit/mission_details_resource_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:app/features/missions/mission_details/widgets/domain_sections/ov
 import 'package:app/features/missions/mission_details/widgets/expenses/actions/add_expense/add_expense.dart';
 import 'package:app/features/missions/mission_details/widgets/expenses/expenses.dart';
 import 'package:app/features/missions/mission_details/widgets/gallery/actions/add_media/add_media.dart';
+import 'package:app/features/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/gallery/gallery.dart';
 import 'package:app/features/missions/mission_details/widgets/mission_ground/mission_ground.dart';
 import 'package:app/features/missions/mission_details/widgets/mission_questions/add_mission_question/add_mission_question.dart';
@@ -85,21 +87,31 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       }
     });
 
-    context.read<MissionSubscriptionResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
-    );
-    context.read<MissionSessionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
-    );
-    context.read<SoulResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
-    );
-    context.read<DebriefNoteResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
-    );
-    context.read<MissionQuestionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
-    );
+    Future.wait([
+      context.read<MissionSubscriptionResourceCubit>().loadAll(
+        filters: {'mission_ulid': widget.missionUlid},
+      ),
+      context.read<MissionSessionResourceCubit>().loadAll(
+        filters: {'mission_ulid': missionUlid},
+      ),
+      context.read<DebriefNoteResourceCubit>().loadAll(
+        filters: {'mission_ulid': missionUlid},
+      ),
+      context.read<SoulResourceCubit>().loadAll(
+        filters: {'mission_ulid': missionUlid},
+      ),
+      context.read<MissionQuestionResourceCubit>().loadAll(
+        filters: {'mission_ulid': missionUlid},
+      ),
+
+      context.read<MissionMediaResourceCubit>().loadMedia(
+        missionUlid: missionUlid,
+        collections: [
+          PRFMediaModel.missionPhotos,
+          PRFMediaModel.missionVideos,
+        ],
+      ),
+    ]);
   }
 
   @override
@@ -232,42 +244,40 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                             missionUlid: missionUlid,
                           ),
                           sessions: SessionsView(
-                            missionUlid: missionUlid,
+                            mission: mission,
                           ),
                           initialIndex: _subTabIndexes[0]!,
-                          onTabChanged:
-                              (index) =>
-                                  setState(() => _subTabIndexes[0] = index),
+                          onTabChanged: (index) =>
+                              setState(() => _subTabIndexes[0] = index),
                         ),
                         FeedbackDataSection(
                           debriefNotesTab: DebriefNotesView(
-                            missionUlid: missionUlid,
+                            mission: mission,
                           ),
                           soulsTab: SoulsView(
-                            missionUlid: missionUlid,
+                            mission: mission,
                           ),
                           questionsTab: MissionQuestionsView(
-                            missionUlid: missionUlid,
+                            mission: mission,
                           ),
                           galleryTab: GalleryView(
-                            missionUlid: missionUlid,
+                            mission: mission,
                           ),
                           initialIndex: _subTabIndexes[1]!,
-                          onTabChanged:
-                              (index) =>
-                                  setState(() => _subTabIndexes[1] = index),
+                          onTabChanged: (index) =>
+                              setState(() => _subTabIndexes[1] = index),
                         ),
                         FinanceSection(
+                          expensesTab: ExpensesView(
+                            accountingEventUlid: mission.accountingEvent?.ulid,
+                            canEdit: mission.canEdit,
+                          ),
                           requisitionsTab: RequisitionsView(
                             accountingEventUlid: mission.accountingEvent?.ulid,
                           ),
-                          expensesTab: ExpensesView(
-                            accountingEventUlid: mission.accountingEvent?.ulid,
-                          ),
                           initialIndex: _subTabIndexes[2]!,
-                          onTabChanged:
-                              (index) =>
-                                  setState(() => _subTabIndexes[2] = index),
+                          onTabChanged: (index) =>
+                              setState(() => _subTabIndexes[2] = index),
                         ),
                       ],
                     );
@@ -276,20 +286,22 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
           ),
         ],
       ),
-      floatingActionButton: BlocBuilder<
-        MissionDetailsResourceCubit,
-        ResourceState<PRFMission>
-      >(
-        builder: (context, state) {
-          final mission = state.maybeWhen(
-            itemLoaded: (item, _) => item,
-            itemLoading: (_, item) => item,
-            itemError: (_, _, item) => item,
-            orElse: () => null,
-          );
-          return _buildDynamicFab(context, l10n, mission);
-        },
-      ),
+      floatingActionButton:
+          BlocBuilder<MissionDetailsResourceCubit, ResourceState<PRFMission>>(
+            builder: (context, state) {
+              final mission = state.maybeWhen(
+                itemLoaded: (item, _) => item,
+                itemLoading: (_, item) => item,
+                itemError: (_, _, item) => item,
+                orElse: () => null,
+              );
+              if (mission == null) return const SizedBox.shrink();
+              if (!mission.canEdit) {
+                return const SizedBox.shrink();
+              }
+              return _buildDynamicFab(context, l10n, mission);
+            },
+          ),
     );
   }
 
@@ -321,28 +333,29 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
           ),
         ],
       ),
-      child: FloatingActionButton.extended(
-        heroTag: 'dynamic-fab-${config.label}',
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: theme.colorScheme.onPrimary,
-        onPressed: config.onPressed,
-        label: Text(
-          config.label,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onPrimary,
+      child:
+          FloatingActionButton.extended(
+            heroTag: 'dynamic-fab-${config.label}',
+            backgroundColor: theme.colorScheme.primary,
+            foregroundColor: theme.colorScheme.onPrimary,
+            onPressed: config.onPressed,
+            label: Text(
+              config.label,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onPrimary,
+              ),
+            ),
+            icon: Icon(config.icon),
+          ).animate(
+            effects: [
+              const ScaleEffect(
+                begin: Offset(0.8, 0.8),
+                end: Offset(1, 1),
+                duration: PRFMotionTokens.slow,
+              ),
+            ],
           ),
-        ),
-        icon: Icon(config.icon),
-      ).animate(
-        effects: [
-          const ScaleEffect(
-            begin: Offset(0.8, 0.8),
-            end: Offset(1, 1),
-            duration: PRFMotionTokens.slow,
-          ),
-        ],
-      ),
     );
   }
 
@@ -360,12 +373,11 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
           return _FABConfig(
             icon: Icons.add_task_rounded,
             label: l10n.addSession,
-            onPressed:
-                () => PRFBottomSheet.show<void>(
-                  context,
-                  title: l10n.addSession,
-                  child: SessionFormView(missionUlid: missionUlid),
-                ),
+            onPressed: () => PRFBottomSheet.show<void>(
+              context,
+              title: l10n.addSession,
+              child: SessionFormView(missionUlid: missionUlid),
+            ),
           );
         }
         // Default for Overview: Subscribe
@@ -381,45 +393,41 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             return _FABConfig(
               icon: Icons.note_add_rounded,
               label: l10n.addDebriefNote,
-              onPressed:
-                  () => PRFBottomSheet.show<void>(
-                    context,
-                    title: l10n.addDebriefNote,
-                    child: DebriefNoteFormView(missionUlid: missionUlid),
-                  ),
+              onPressed: () => PRFBottomSheet.show<void>(
+                context,
+                title: l10n.addDebriefNote,
+                child: DebriefNoteFormView(missionUlid: missionUlid),
+              ),
             );
           case 1: // Souls
             return _FABConfig(
               icon: Icons.person_add_rounded,
               label: l10n.addSoul,
-              onPressed:
-                  () => PRFBottomSheet.show<void>(
-                    context,
-                    title: l10n.addSoul,
-                    child: SoulFormView(missionUlid: missionUlid),
-                  ),
+              onPressed: () => PRFBottomSheet.show<void>(
+                context,
+                title: l10n.addSoul,
+                child: SoulFormView(missionUlid: missionUlid),
+              ),
             );
           case 2: // Questions
             return _FABConfig(
               icon: Icons.quiz_rounded,
               label: l10n.addQuestion,
-              onPressed:
-                  () => PRFBottomSheet.show<void>(
-                    context,
-                    title: l10n.addQuestion,
-                    child: AddMissionQuestionView(missionUlid: missionUlid),
-                  ),
+              onPressed: () => PRFBottomSheet.show<void>(
+                context,
+                title: l10n.addQuestion,
+                child: AddMissionQuestionView(missionUlid: missionUlid),
+              ),
             );
           case 3: // Gallery
             return _FABConfig(
               icon: Icons.add_photo_alternate_rounded,
               label: l10n.addMissionPhotos,
-              onPressed:
-                  () => PRFBottomSheet.show<void>(
-                    context,
-                    title: l10n.addMissionPhotos,
-                    child: AddMediaView(missionUlid: missionUlid),
-                  ),
+              onPressed: () => PRFBottomSheet.show<void>(
+                context,
+                title: l10n.addMissionPhotos,
+                child: AddMediaView(missionUlid: missionUlid),
+              ),
             );
           default:
             return _FABConfig(

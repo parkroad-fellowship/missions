@@ -9,13 +9,13 @@ class MissionSubscriptionResourceCubit
   MissionSubscriptionResourceCubit({
     required MissionSubscriptionService missionSubscriptionService,
     required HiveService hiveService,
-  })  : _hiveService = hiveService,
-        super(
-          service: missionSubscriptionService,
-          dbService: hiveService.missionSubscriptions,
-        );
+  }) : _hiveService = hiveService,
+       super(
+         service: missionSubscriptionService,
+         dbService: hiveService.missionSubscriptions,
+       );
 
-final HiveService _hiveService;
+  final HiveService _hiveService;
 
   @override
   List<String> get defaultIncludes => [

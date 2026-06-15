@@ -21,15 +21,8 @@ class SubscribersViewHandset extends StatefulWidget {
 
 class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
     with TimezoneMixin {
-  @override
-  void initState() {
-    context.read<MissionSubscriptionResourceCubit>().loadAll(
-      filters: {'mission_ulid': widget.missionUlid},
-    );
-    super.initState();
-  }
 
-  Future<void> _onRefresh() {
+  Future<void> _loadSubscriptions() {
     return context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},
     );
@@ -87,7 +80,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
                 ),
                 const SizedBox(height: PRFSpacingTokens.lg),
                 FilledButton.icon(
-                  onPressed: _onRefresh,
+                  onPressed: _loadSubscriptions,
                   icon: const Icon(Icons.refresh_rounded),
                   label: const Text('Retry'),
                 ),
@@ -97,7 +90,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: _onRefresh,
+          onRefresh: _loadSubscriptions,
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(

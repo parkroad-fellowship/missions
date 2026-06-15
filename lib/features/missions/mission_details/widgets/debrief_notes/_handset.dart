@@ -3,6 +3,7 @@ import 'package:app/features/missions/mission_details/widgets/debrief_notes/cubi
 import 'package:app/features/missions/mission_details/widgets/record_sections.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_debrief_note.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class DebriefNotesViewHandset extends StatefulWidget {
-  const DebriefNotesViewHandset({required this.missionUlid, super.key});
+  const DebriefNotesViewHandset({required this.mission, super.key});
 
-  final String missionUlid;
+  final PRFMission mission;
 
   @override
   State<DebriefNotesViewHandset> createState() =>
@@ -22,13 +23,13 @@ class DebriefNotesViewHandset extends StatefulWidget {
 
 class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
     with TimezoneMixin {
-  String get missionUlid => widget.missionUlid;
+  PRFMission get mission => widget.mission;
 
   Future<void> _showAddDebriefNoteSheet() {
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.addDebriefNote,
-      child: DebriefNoteFormView(missionUlid: missionUlid),
+      child: DebriefNoteFormView(missionUlid: mission.ulid),
     );
   }
 
@@ -37,7 +38,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
       context,
       title: context.l10n.edit,
       child: DebriefNoteFormView(
-        missionUlid: missionUlid,
+        missionUlid: mission.ulid,
         debriefNote: debriefNote,
       ),
     );
@@ -68,13 +69,11 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
     }
     PRFSnackbar.success(context, 'Debrief note deleted');
   }
-
-  @override
-  void initState() {
-    context.read<DebriefNoteResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+  
+  Future<void> _loadDebriefNotes() {
+    return context.read<DebriefNoteResourceCubit>().loadAll(
+      filters: {'mission_ulid': mission.ulid},
     );
-    super.initState();
   }
 
   @override
@@ -101,10 +100,9 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
           isLoading: isLoading,
           error: error,
           isEmpty: debriefNotes.isEmpty,
-          onRefresh: () => context.read<DebriefNoteResourceCubit>().loadAll(
-            filters: {'mission_ulid': missionUlid},
-          ),
+          onRefresh: _loadDebriefNotes,
           onAdd: _showAddDebriefNoteSheet,
+          canEdit: mission.canEdit,
           addButtonLabel: l10n.addDebriefNote,
           addButtonIcon: Icons.rate_review_outlined,
           emptyLabel: l10n.noNotes,
@@ -114,6 +112,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
             final index = entry.key;
             final debriefNote = entry.value;
             return MissionResourceCard(
+              canEdit: mission.canEdit,
               title: debriefNote.note.isEmpty
                   ? 'Untitled note'
                   : debriefNote.note,

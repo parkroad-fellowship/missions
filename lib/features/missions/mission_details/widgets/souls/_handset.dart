@@ -2,6 +2,7 @@ import 'package:app/features/missions/mission_details/widgets/record_sections.da
 import 'package:app/features/missions/mission_details/widgets/souls/actions/soul_form/soul_form.dart';
 import 'package:app/features/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -11,9 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class SoulsViewHandset extends StatefulWidget {
-  const SoulsViewHandset({required this.missionUlid, super.key});
+  const SoulsViewHandset({required this.mission, super.key});
 
-  final String missionUlid;
+  final PRFMission mission;
 
   @override
   State<SoulsViewHandset> createState() => _SoulsViewHandsetState();
@@ -21,13 +22,13 @@ class SoulsViewHandset extends StatefulWidget {
 
 class _SoulsViewHandsetState extends State<SoulsViewHandset>
     with TimezoneMixin {
-  String get missionUlid => widget.missionUlid;
+  PRFMission get mission => widget.mission;
 
   Future<void> _showAddSoulSheet() {
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.recordSoul,
-      child: SoulFormView(missionUlid: missionUlid),
+      child: SoulFormView(missionUlid: mission.ulid),
     );
   }
 
@@ -36,7 +37,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
       context,
       title: context.l10n.edit,
       child: SoulFormView(
-        missionUlid: missionUlid,
+        missionUlid: mission.ulid,
         soul: soul,
       ),
     );
@@ -66,12 +67,10 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
     PRFSnackbar.success(context, 'Soul deleted');
   }
 
-  @override
-  void initState() {
-    context.read<SoulResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+  Future<void> _loadSouls() {
+    return context.read<SoulResourceCubit>().loadAll(
+      filters: {'mission_ulid': mission.ulid},
     );
-    super.initState();
   }
 
   @override
@@ -99,9 +98,8 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
           ),
           error: state.mapOrNull(error: (e) => e.message),
           isEmpty: souls.isEmpty,
-          onRefresh: () => context.read<SoulResourceCubit>().loadAll(
-            filters: {'mission_ulid': missionUlid},
-          ),
+          onRefresh: _loadSouls,
+          canEdit: mission.canEdit,
           onAdd: _showAddSoulSheet,
           items: [
             for (int index = 0; index < souls.length; index++)
@@ -114,6 +112,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
                     onEdit: () => _showEditSoulSheet(souls[index]),
                     deleteTooltip: 'Delete soul',
                     onDelete: () => _deleteSoul(souls[index]),
+                    canEdit: mission.canEdit,
                   )
                   .animate(delay: (index * 100).ms)
                   .fadeIn()

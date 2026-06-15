@@ -7,6 +7,7 @@ class MissionResourceTabView extends StatelessWidget {
     required this.error,
     required this.isEmpty,
     required this.onRefresh,
+    required this.canEdit,
     required this.onAdd,
     required this.addButtonLabel,
     required this.addButtonIcon,
@@ -20,6 +21,7 @@ class MissionResourceTabView extends StatelessWidget {
   final bool isLoading;
   final String? error;
   final bool isEmpty;
+  final bool canEdit;
   final Future<void> Function() onRefresh;
   final VoidCallback onAdd;
   final String addButtonLabel;
@@ -88,12 +90,14 @@ class MissionResourceTabView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FilledButton.icon(
-                  onPressed: onAdd,
-                  icon: Icon(addButtonIcon),
-                  label: Text(addButtonLabel),
-                ),
-                const SizedBox(height: PRFSpacingTokens.md),
+                if (canEdit) ...[
+                  FilledButton.icon(
+                    onPressed: onAdd,
+                    icon: Icon(addButtonIcon),
+                    label: Text(addButtonLabel),
+                  ),
+                  const SizedBox(height: PRFSpacingTokens.md),
+                ],
                 if (error != null)
                   Container(
                     width: double.infinity,
@@ -190,6 +194,7 @@ class MissionResourceCard extends StatelessWidget {
     required this.onEdit,
     required this.deleteTooltip,
     required this.onDelete,
+    required this.canEdit,
     super.key,
   });
 
@@ -199,6 +204,7 @@ class MissionResourceCard extends StatelessWidget {
   final VoidCallback onEdit;
   final String deleteTooltip;
   final VoidCallback onDelete;
+  final bool canEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -245,40 +251,42 @@ class MissionResourceCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: PRFSpacingTokens.sm),
-            Tooltip(
-              message: editTooltip,
-              child: GestureDetector(
-                onTap: onEdit,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: PRFSpacingTokens.sm,
-                    vertical: PRFSpacingTokens.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.11),
-                    borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
-                  ),
-                  child: Text(
-                    'Edit',
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
+            if (canEdit) ...[
+              Tooltip(
+                message: editTooltip,
+                child: GestureDetector(
+                  onTap: onEdit,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: PRFSpacingTokens.sm,
+                      vertical: PRFSpacingTokens.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.11),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
+                    ),
+                    child: Text(
+                      'Edit',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: PRFSpacingTokens.xs),
-            Tooltip(
-              message: deleteTooltip,
-              child: IconButton(
-                onPressed: onDelete,
-                icon: Icon(
-                  Icons.delete_outline,
-                  color: theme.colorScheme.error,
+              const SizedBox(width: PRFSpacingTokens.xs),
+              Tooltip(
+                message: deleteTooltip,
+                child: IconButton(
+                  onPressed: onDelete,
+                  icon: Icon(
+                    Icons.delete_outline,
+                    color: theme.colorScheme.error,
+                  ),
                 ),
               ),
-            ),
+            ],
           ],
         ),
       ),

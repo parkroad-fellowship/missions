@@ -6,6 +6,7 @@ import 'package:app/features/missions/mission_details/widgets/gallery/cubit/miss
 import 'package:app/features/missions/mission_details/widgets/gallery/video_player_widget.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/shared/media_upload/cubit/upload_media_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:extended_image/extended_image.dart';
@@ -17,38 +18,27 @@ import 'package:path_provider/path_provider.dart';
 import 'package:prf_design/prf_design.dart';
 
 class GalleryViewHandset extends StatefulWidget {
-  const GalleryViewHandset({required this.missionUlid, super.key});
+  const GalleryViewHandset({required this.mission, super.key});
 
-  final String missionUlid;
+  final PRFMission mission;
 
   @override
   State<GalleryViewHandset> createState() => _GalleryViewHandsetState();
 }
 
 class _GalleryViewHandsetState extends State<GalleryViewHandset> {
-  String get missionUlid => widget.missionUlid;
+  PRFMission get mission => widget.mission;
 
-  @override
-  void initState() {
-    context.read<MissionMediaResourceCubit>().loadMedia(
-      missionUlid: missionUlid,
+
+
+
+  Future<void> _loadMedia() =>
+      context.read<MissionMediaResourceCubit>().loadMedia(
+         missionUlid: mission.ulid,
       collections: [
         PRFMediaModel.missionPhotos,
         PRFMediaModel.missionVideos,
       ],
-    );
-    super.initState();
-  }
-
-  List<PRFMediaModel> get _collections => [
-    PRFMediaModel.missionPhotos,
-    PRFMediaModel.missionVideos,
-  ];
-
-  Future<void> _refreshMedia() =>
-      context.read<MissionMediaResourceCubit>().loadMedia(
-        missionUlid: missionUlid,
-        collections: _collections,
       );
 
   void _openCarousel(List<PRFMedia> mediaItems, int index) {
@@ -86,7 +76,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     if (confirmed != true || !mounted) return false;
 
     await context.read<MissionMediaResourceCubit>().deleteMedia(
-      missionUlid: missionUlid,
+      missionUlid: mission.ulid,
       mediaUuid: media.uuid,
     );
 
@@ -94,7 +84,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
     Gaimon.success();
     PRFSnackbar.success(context, 'Media deleted');
-    await _refreshMedia();
+    await _loadMedia();
     return true;
   }
 
@@ -124,7 +114,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     PRFBottomSheet.show<void>(
       context,
       title: 'Add Media',
-      child: AddMediaView(missionUlid: missionUlid),
+      child: AddMediaView(missionUlid: mission.ulid),
     );
   }
 
@@ -144,7 +134,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     final theme = Theme.of(context);
 
     return RefreshIndicator(
-      onRefresh: _refreshMedia,
+      onRefresh: _loadMedia,
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(
           parent: BouncingScrollPhysics(),
@@ -155,7 +145,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
             listener: (context, state) {
               state.mapOrNull(
                 loaded: (_) {
-                  _refreshMedia();
+                  _loadMedia();
                   Gaimon.success();
                   PRFSnackbar.success(context, l10n.doneUploading);
                 },
@@ -200,8 +190,12 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                           label: l10n.addMissionPhotos,
                           description: l10n.addMissionPhotosDesc,
                           icon: Icons.photo_camera_outlined,
-                          actionLabel: l10n.addMissionPhotos,
-                          onActionPressed: _showAddMediaModal,
+                          actionLabel: mission.canEdit
+                              ? l10n.addMissionPhotos
+                              : null,
+                          onActionPressed: mission.canEdit
+                              ? _showAddMediaModal
+                              : null,
                         ),
                       ),
                     );
@@ -212,7 +206,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                     sliver: SliverToBoxAdapter(
                       child: PRFMediaGrid(
                         itemCount: mediaItems.length,
-                        onAdd: _showAddMediaModal,
+                        onAdd: mission.canEdit ? _showAddMediaModal : null,
                         itemBuilder: (context, index) {
                           final media = mediaItems[index];
                           final isVideo = _isVideoFile(media.temporaryURL);

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/models/remote/content/prf_debrief_note.dart';
 import 'package:app/models/remote/content/prf_debrief_note_dto.dart';
 import 'package:app/services/api/debrief_note_service.dart';
-import 'package:app/services/local_storage/hive/db/debrief_note_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
@@ -17,11 +16,12 @@ class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   Future<List<PRFDebriefNote>> loadCachedList({
     Map<String, dynamic>? filters,
   }) async {
-    final missionUlid = filters?['mission_ulid'] as String?;
-    if (missionUlid != null && dbService is DebriefNoteHiveDbService) {
-      return (dbService as DebriefNoteHiveDbService).listByMission(missionUlid);
-    }
-    return dbService.list();
+    return dbService.filterBy(
+      (debriefNote) => [
+        filters?['mission_ulid'] == null ||
+            debriefNote.mission?.ulid == filters!['mission_ulid'],
+      ],
+    );
   }
 
   @override

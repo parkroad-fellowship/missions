@@ -48,6 +48,11 @@ class MissionSessionResourceCubit extends ResourceCubit<PRFMissionSession> {
   Future<List<PRFMissionSession>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
-    return dbService.list();
+    return dbService.filterBy(
+      (session) => [
+        filters?['mission_ulid'] == null ||
+            session.mission?.ulid == filters!['mission_ulid'],
+      ],
+    );
   }
 }

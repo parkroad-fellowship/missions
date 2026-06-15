@@ -1,5 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_media_type.dart';
@@ -31,10 +29,12 @@ import 'package:prf_design/prf_design.dart';
 class ExpensesViewHandset extends StatefulWidget {
   const ExpensesViewHandset({
     required this.accountingEventUlid,
+    required this.canEdit,
     super.key,
   });
 
   final String? accountingEventUlid;
+  final bool canEdit;
 
   @override
   State<ExpensesViewHandset> createState() => _ExpensesViewHandsetState();
@@ -215,17 +215,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ),
 
         // Quick Actions
-        SliverToBoxAdapter(
-          child:
-              _buildQuickActions(
-                    context,
-                    l10n,
-                    accountingEvent,
-                  )
-                  .animate(delay: PRFMotionTokens.standard)
-                  .slideY(begin: 0.3)
-                  .fadeIn(),
-        ),
+        if (widget.canEdit)
+          SliverToBoxAdapter(
+            child:
+                _buildQuickActions(
+                      context,
+                      l10n,
+                      accountingEvent,
+                    )
+                    .animate(delay: PRFMotionTokens.standard)
+                    .slideY(begin: 0.3)
+                    .fadeIn(),
+          ),
 
         // Refund Information (show when balance > 0)
         SliverToBoxAdapter(
@@ -712,7 +713,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     ),
                   ),
                   // Delete Button for Debit Entries Only
-                  if (!isCredit) ...[
+                  if (!isCredit && widget.canEdit) ...[
                     const SizedBox(width: PRFSpacingTokens.sm),
                     Material(
                       color: PRFColors.transparent,
@@ -747,34 +748,39 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ],
                   // Edit Button
                   const SizedBox(width: PRFSpacingTokens.sm),
-                  Material(
-                    color: PRFColors.transparent,
-                    child: InkWell(
-                      onTap: () => _showExpenseDetails(context, entry),
-                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                      child: Container(
-                        padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primaryContainer.withValues(
-                            alpha: 0.5,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.smd,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.primary.withValues(
-                              alpha: 0.3,
+                  if (!isCredit && widget.canEdit) ...[
+                    Material(
+                      color: PRFColors.transparent,
+                      child: InkWell(
+                        onTap: () => _showExpenseDetails(context, entry),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer
+                                .withValues(
+                                  alpha: 0.5,
+                                ),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.smd,
+                            ),
+                            border: Border.all(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.3,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Icon(
-                          Icons.edit_outlined,
-                          size: 18,
-                          color: theme.colorScheme.primary,
+                          child: Icon(
+                            Icons.edit_outlined,
+                            size: 18,
+                            color: theme.colorScheme.primary,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ],
               ),
 
@@ -1163,178 +1169,20 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           color: theme.colorScheme.error.withValues(alpha: 0.3),
         ),
       ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.error.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-            ),
-            child: Icon(
-              Icons.receipt_outlined,
-              size: 20,
-              color: theme.colorScheme.error,
-            ),
-          ),
-          const SizedBox(width: PRFSpacingTokens.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Receipt Missing',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  'Attach receipt or documentation',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          BlocBuilder<UploadMediaCubit, UploadMediaState>(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final shouldStack = constraints.maxWidth < 420;
+
+          return BlocBuilder<UploadMediaCubit, UploadMediaState>(
             builder: (context, uploadState) {
-              return uploadState.maybeWhen(
-                orElse: () => Row(
-                  mainAxisSize: MainAxisSize.min,
+              final uploadActions = uploadState.maybeWhen(
+                orElse: () => Wrap(
+                  spacing: PRFSpacingTokens.sm,
+                  runSpacing: PRFSpacingTokens.sm,
+                  alignment: WrapAlignment.end,
                   children: [
-                    // Attach Image Button
-                    Material(
-                      color: theme.colorScheme.error,
-                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                      child: InkWell(
-                        onTap: () async {
-                          try {
-                            await context
-                                .read<SelectMediaCubit>()
-                                .selectMediaWithSource(
-                                  context: context,
-                                  modelUlid: entry.ulid,
-                                  model: PRFMediaModel.allocationEntryReceipts,
-                                  mediaType: PRFMediaType.photos,
-                                );
-
-                            // Get the selected media from the cubit state
-                            // ignore: use_build_context_synchronously
-                            context.read<SelectMediaCubit>().state.maybeWhen(
-                              orElse: () {},
-                              loaded: (_) {
-                                if (context.mounted) {
-                                  context
-                                      .read<UploadMediaCubit>()
-                                      .uploadMedia();
-                                }
-                              },
-                            );
-                          } catch (e) {
-                            if (context.mounted) {
-                              PRFSnackbar.error(
-                                context,
-                                'Failed to select image: $e',
-                              );
-                            }
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(
-                          PRFRadiusTokens.smd,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: PRFSpacingTokens.md,
-                            vertical: PRFSpacingTokens.sm,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.image_outlined,
-                                size: 16,
-                                color: theme.colorScheme.onError,
-                              ),
-                              const SizedBox(width: PRFSpacingTokens.xs),
-                              Text(
-                                'Image',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onError,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: PRFSpacingTokens.sm),
-                    // Attach PDF Button
-                    Material(
-                      color: theme.colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                      child: InkWell(
-                        onTap: () async {
-                          try {
-                            await context
-                                .read<SelectMediaCubit>()
-                                .selectDocuments(
-                                  modelUlid: entry.ulid,
-                                  model: PRFMediaModel.allocationEntryReceipts,
-                                );
-
-                            // Get the selected documents from the cubit state
-                            // ignore: use_build_context_synchronously
-                            context.read<SelectMediaCubit>().state.maybeWhen(
-                              orElse: () {},
-                              loaded: (_) {
-                                if (context.mounted) {
-                                  context
-                                      .read<UploadMediaCubit>()
-                                      .uploadMedia();
-                                }
-                              },
-                            );
-                          } catch (e) {
-                            if (context.mounted) {
-                              PRFSnackbar.error(
-                                context,
-                                'Failed to select PDF: $e',
-                              );
-                            }
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(
-                          PRFRadiusTokens.smd,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: PRFSpacingTokens.md,
-                            vertical: PRFSpacingTokens.sm,
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.file_present_outlined,
-                                size: 16,
-                                color: theme.colorScheme.onTertiary,
-                              ),
-                              const SizedBox(width: PRFSpacingTokens.xs),
-                              Text(
-                                'PDF',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onTertiary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    _buildAttachImageButton(context, theme, entry),
+                    _buildAttachPdfButton(context, theme, entry),
                   ],
                 ),
                 loading: () => SizedBox(
@@ -1345,9 +1193,217 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   ),
                 ),
               );
+
+              final receiptDescription = Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Receipt Missing',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.xs),
+                    Text(
+                      'Attach receipt or documentation',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.7,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+
+              if (shouldStack) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildMissingReceiptIcon(theme),
+                        const SizedBox(width: PRFSpacingTokens.md),
+                        receiptDescription,
+                      ],
+                    ),
+                    const SizedBox(height: PRFSpacingTokens.md),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: widget.canEdit
+                          ? uploadActions
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
+                );
+              }
+
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildMissingReceiptIcon(theme),
+                  const SizedBox(width: PRFSpacingTokens.md),
+                  receiptDescription,
+                  const SizedBox(width: PRFSpacingTokens.md),
+                  Flexible(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: uploadActions,
+                    ),
+                  ),
+                ],
+              );
             },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildMissingReceiptIcon(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.error.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+      ),
+      child: Icon(
+        Icons.receipt_outlined,
+        size: 20,
+        color: theme.colorScheme.error,
+      ),
+    );
+  }
+
+  Widget _buildAttachImageButton(
+    BuildContext context,
+    ThemeData theme,
+    PRFAllocationEntry entry,
+  ) {
+    return Material(
+      color: theme.colorScheme.error,
+      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+      child: InkWell(
+        onTap: () async {
+          try {
+            await context.read<SelectMediaCubit>().selectMediaWithSource(
+              context: context,
+              modelUlid: entry.ulid,
+              model: PRFMediaModel.allocationEntryReceipts,
+              mediaType: PRFMediaType.photos,
+            );
+
+            // Get the selected media from the cubit state
+            // ignore: use_build_context_synchronously
+            context.read<SelectMediaCubit>().state.maybeWhen(
+              orElse: () {},
+              loaded: (_) {
+                if (context.mounted) {
+                  context.read<UploadMediaCubit>().uploadMedia();
+                }
+              },
+            );
+          } catch (e) {
+            if (context.mounted) {
+              PRFSnackbar.error(
+                context,
+                'Failed to select image: $e',
+              );
+            }
+          }
+        },
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: PRFSpacingTokens.md,
+            vertical: PRFSpacingTokens.sm,
           ),
-        ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.image_outlined,
+                size: 16,
+                color: theme.colorScheme.onError,
+              ),
+              const SizedBox(width: PRFSpacingTokens.xs),
+              Text(
+                'Image',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onError,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAttachPdfButton(
+    BuildContext context,
+    ThemeData theme,
+    PRFAllocationEntry entry,
+  ) {
+    return Material(
+      color: theme.colorScheme.tertiary,
+      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+      child: InkWell(
+        onTap: () async {
+          try {
+            await context.read<SelectMediaCubit>().selectDocuments(
+              modelUlid: entry.ulid,
+              model: PRFMediaModel.allocationEntryReceipts,
+            );
+
+            // Get the selected documents from the cubit state
+            // ignore: use_build_context_synchronously
+            context.read<SelectMediaCubit>().state.maybeWhen(
+              orElse: () {},
+              loaded: (_) {
+                if (context.mounted) {
+                  context.read<UploadMediaCubit>().uploadMedia();
+                }
+              },
+            );
+          } catch (e) {
+            if (context.mounted) {
+              PRFSnackbar.error(
+                context,
+                'Failed to select PDF: $e',
+              );
+            }
+          }
+        },
+        borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: PRFSpacingTokens.md,
+            vertical: PRFSpacingTokens.sm,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.file_present_outlined,
+                size: 16,
+                color: theme.colorScheme.onTertiary,
+              ),
+              const SizedBox(width: PRFSpacingTokens.xs),
+              Text(
+                'PDF',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onTertiary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -1627,12 +1683,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       ),
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
-                    PRFPrimaryButton(
-                      onPressed: () =>
-                          _showAddRefundModal(context, accountingEvent),
-                      title: 'Add Refund',
-                      disabled: false,
-                    ),
+                    if (widget.canEdit)
+                      PRFPrimaryButton(
+                        onPressed: () =>
+                            _showAddRefundModal(context, accountingEvent),
+                        title: 'Add Refund',
+                        disabled: false,
+                      ),
                     const SizedBox(height: PRFSpacingTokens.md),
                     if (accountingEvent.refunds.isNotEmpty)
                       _buildRefundEntriesList(

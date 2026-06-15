@@ -1150,9 +1150,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                       SizedBox(
                         width: 110,
                         child: PRFSecondaryButton(
-                          onPressed: () async {
-                            await _showEditSessionSheet(context);
-                          },
+                          onPressed: () => _showEditSessionSheet(context),
                           title: l10n.edit,
                           disabled: false,
                         ),

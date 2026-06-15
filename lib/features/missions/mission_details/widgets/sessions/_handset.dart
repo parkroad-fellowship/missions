@@ -1,6 +1,7 @@
 import 'package:app/features/missions/mission_details/widgets/sessions/actions/session_form/session_form.dart';
 import 'package:app/features/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
@@ -13,9 +14,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class SessionsViewHandset extends StatefulWidget {
-  const SessionsViewHandset({required this.missionUlid, super.key});
+  const SessionsViewHandset({required this.mission, super.key});
 
-  final String missionUlid;
+  final PRFMission mission;
 
   @override
   State<SessionsViewHandset> createState() => _SessionsViewHandsetState();
@@ -23,13 +24,13 @@ class SessionsViewHandset extends StatefulWidget {
 
 class _SessionsViewHandsetState extends State<SessionsViewHandset>
     with TimezoneMixin {
-  String get missionUlid => widget.missionUlid;
+  PRFMission get mission => widget.mission;
 
   Future<void> _showAddSessionSheet() {
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.addSession,
-      child: SessionFormView(missionUlid: missionUlid),
+      child: SessionFormView(missionUlid: mission.ulid),
     );
   }
 
@@ -38,7 +39,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
       context,
       title: context.l10n.edit,
       child: SessionFormView(
-        missionUlid: missionUlid,
+        missionUlid: mission.ulid,
         missionSession: missionSession,
       ),
     );
@@ -70,12 +71,10 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     PRFSnackbar.success(context, 'Session deleted');
   }
 
-  @override
-  void initState() {
-    context.read<MissionSessionResourceCubit>().loadAll(
-      filters: {'mission_ulid': missionUlid},
+  Future<void> _loadSessions() {
+    return context.read<MissionSessionResourceCubit>().loadAll(
+      filters: {'mission_ulid': mission.ulid},
     );
-    super.initState();
   }
 
   @override
@@ -85,147 +84,154 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
 
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.fromLTRB(
-            PRFSpacingTokens.lg,
-            PRFSpacingTokens.sm,
-            PRFSpacingTokens.lg,
-            PRFSpacingTokens.md,
-          ),
-          padding: const EdgeInsets.all(PRFSpacingTokens.md),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-            border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.4),
+        if (mission.canEdit)
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.fromLTRB(
+              PRFSpacingTokens.lg,
+              PRFSpacingTokens.xs,
+              PRFSpacingTokens.lg,
+              PRFSpacingTokens.sm,
+            ),
+            padding: const EdgeInsets.all(PRFSpacingTokens.sm),
+            child: FilledButton.icon(
+              onPressed: _showAddSessionSheet,
+              icon: const Icon(Icons.add_rounded),
+              label: Text(l10n.addSession),
             ),
           ),
-          child: FilledButton.icon(
-            onPressed: _showAddSessionSheet,
-            icon: const Icon(Icons.add_rounded),
-            label: Text(l10n.addSession),
-          ),
-        ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: PRFSpacingTokens.sm,
-            ),
-            child:
-                BlocBuilder<
-                  MissionSessionResourceCubit,
-                  ResourceState<PRFMissionSession>
-                >(
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      listLoading: (_) => const Center(
-                        child: PRFCircularProgressIndicator(),
-                      ),
-                      listLoaded: (sessions, _, _) {
-                        if (sessions.isEmpty) {
-                          return PRFEmptyView(
-                            label: l10n.noSessions,
-                            description: l10n.sessionsWillAppearHere,
-                            icon: Icons.event_note_outlined,
-                          );
-                        }
-
-                        final missionSessions = col.groupBy(
-                          sessions,
-                          (session) => session.startsAt,
-                        );
-
-                        return ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: missionSessions.length,
-                          itemBuilder: (context, index) {
-                            final sortedDailySessions =
-                                List<PRFMissionSession>.from(
-                                  missionSessions.values.elementAt(index),
-                                )..sort(
-                                  (a, b) => a.startsAt.compareTo(b.startsAt),
-                                );
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                      margin: const EdgeInsets.only(
-                                        left: PRFSpacingTokens.xxl,
-                                        top: PRFSpacingTokens.lg,
-                                        bottom: PRFSpacingTokens.sm,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 4,
-                                            height: 24,
-                                            decoration: BoxDecoration(
-                                              color: theme.colorScheme.primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: PRFSpacingTokens.md,
-                                          ),
-                                          Text(
-                                            DateFormatter.formatMissionDate(
-                                              missionSessions.keys.elementAt(
-                                                index,
-                                              ),
-                                              timezone,
-                                            ),
-                                            style: theme.textTheme.headlineSmall
-                                                ?.copyWith(
-                                                  fontWeight: FontWeight.w600,
-                                                  color:
-                                                      theme.colorScheme.primary,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                    .animate(delay: (index * 100).ms)
-                                    .slideX(begin: -0.3)
-                                    .fadeIn(),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: sortedDailySessions.length,
-                                  itemBuilder: (context, i) =>
-                                      TimelineSessionCard(
-                                        missionSession: sortedDailySessions[i],
-                                        missionUlid: missionUlid,
-                                        isLast:
-                                            i == sortedDailySessions.length - 1,
-                                        animationDelay:
-                                            (index * 100 + i * 50).ms,
-                                        userTimezone: timezone,
-                                        onEdit: () => _showEditSessionSheet(
-                                          sortedDailySessions[i],
-                                        ),
-                                        onDelete: () => _deleteSession(
-                                          sortedDailySessions[i],
-                                        ),
-                                      ),
-                                ),
-                                const SizedBox(height: PRFSpacingTokens.lg),
-                              ],
+          child: RefreshIndicator(
+            onRefresh: _loadSessions,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.sm,
+              ),
+              child:
+                  BlocBuilder<
+                    MissionSessionResourceCubit,
+                    ResourceState<PRFMissionSession>
+                  >(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        listLoading: (_) => const Center(
+                          child: PRFCircularProgressIndicator(),
+                        ),
+                        listLoaded: (sessions, _, _) {
+                          if (sessions.isEmpty) {
+                            return PRFEmptyView(
+                              label: l10n.noSessions,
+                              description: l10n.sessionsWillAppearHere,
+                              icon: Icons.event_note_outlined,
                             );
-                          },
-                        );
-                      },
-                      error: (message, _) => PRFEmptyView(
-                        label: l10n.noSessions,
-                        description: message,
-                        icon: Icons.event_note_outlined,
-                      ),
-                      orElse: () => const SizedBox.shrink(),
-                    );
-                  },
-                ),
+                          }
+
+                          final missionSessions = col.groupBy(
+                            sessions,
+                            (session) => session.startsAt,
+                          );
+
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: missionSessions.length,
+                            itemBuilder: (context, index) {
+                              final sortedDailySessions =
+                                  List<PRFMissionSession>.from(
+                                    missionSessions.values.elementAt(index),
+                                  )..sort(
+                                    (a, b) => a.startsAt.compareTo(b.startsAt),
+                                  );
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                        margin: const EdgeInsets.only(
+                                          left: PRFSpacingTokens.xxl,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 4,
+                                              height: 24,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    theme.colorScheme.primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(2),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: PRFSpacingTokens.md,
+                                            ),
+                                            Text(
+                                              DateFormatter.formatMissionDate(
+                                                missionSessions.keys.elementAt(
+                                                  index,
+                                                ),
+                                                timezone,
+                                              ),
+                                              style: theme
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: theme
+                                                        .colorScheme
+                                                        .primary,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                      .animate(delay: (index * 100).ms)
+                                      .slideX(begin: -0.3)
+                                      .fadeIn(),
+                                  ListView.builder(
+                                    padding: const EdgeInsets.only(
+                                      top: PRFSpacingTokens.xl,
+                                    ),
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: sortedDailySessions.length,
+                                    itemBuilder: (context, i) =>
+                                        TimelineSessionCard(
+                                          canEdit: mission.canEdit,
+                                          missionSession:
+                                              sortedDailySessions[i],
+                                          missionUlid: mission.ulid,
+                                          isLast:
+                                              i ==
+                                              sortedDailySessions.length - 1,
+                                          animationDelay:
+                                              (index * 100 + i * 50).ms,
+                                          userTimezone: timezone,
+                                          onEdit: () => _showEditSessionSheet(
+                                            sortedDailySessions[i],
+                                          ),
+                                          onDelete: () => _deleteSession(
+                                            sortedDailySessions[i],
+                                          ),
+                                        ),
+                                  ),
+                                  const SizedBox(height: PRFSpacingTokens.lg),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        error: (message, _) => PRFEmptyView(
+                          label: l10n.noSessions,
+                          description: message,
+                          icon: Icons.event_note_outlined,
+                        ),
+                        orElse: () => const SizedBox.shrink(),
+                      );
+                    },
+                  ),
+            ),
           ),
         ),
       ],
@@ -235,6 +241,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
 
 class TimelineSessionCard extends StatelessWidget {
   const TimelineSessionCard({
+    required this.canEdit,
     required this.missionSession,
     required this.missionUlid,
     required this.isLast,
@@ -252,6 +259,7 @@ class TimelineSessionCard extends StatelessWidget {
   final String userTimezone;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final bool canEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +313,7 @@ class TimelineSessionCard extends StatelessWidget {
               ),
               child:
                   Container(
-                        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(
@@ -353,6 +361,7 @@ class TimelineSessionCard extends StatelessWidget {
                                         ),
                                   ),
                                 ),
+                                if (canEdit)
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
