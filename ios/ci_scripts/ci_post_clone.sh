@@ -81,8 +81,8 @@ dart pub global activate flutterfire_cli
 # # Run static analysis
 # flutter analyze lib
 
-# Install CocoaPods using Homebrew.
-HOMEBREW_NO_AUTO_UPDATE=1 brew install cocoapods
+# Install required native tooling using Homebrew.
+HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake cocoapods
 
 # Install CocoaPods dependencies.
 cd ios && pod install --repo-update --verbose && cd ..
