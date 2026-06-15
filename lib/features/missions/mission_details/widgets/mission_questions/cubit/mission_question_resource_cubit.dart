@@ -57,6 +57,11 @@ class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
   Future<List<PRFMissionQuestion>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
-    return dbService.list();
+    return dbService.filterBy(
+      (question) => [
+        if (filters?['mission_ulid'] != null)
+          question.mission?.ulid == filters!['mission_ulid'],
+      ],
+    );
   }
 }

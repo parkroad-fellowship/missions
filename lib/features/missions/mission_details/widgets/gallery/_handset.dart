@@ -29,16 +29,13 @@ class GalleryViewHandset extends StatefulWidget {
 class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   PRFMission get mission => widget.mission;
 
-
-
-
   Future<void> _loadMedia() =>
       context.read<MissionMediaResourceCubit>().loadMedia(
-         missionUlid: mission.ulid,
-      collections: [
-        PRFMediaModel.missionPhotos,
-        PRFMediaModel.missionVideos,
-      ],
+        missionUlid: mission.ulid,
+        collections: [
+          PRFMediaModel.missionPhotos,
+          PRFMediaModel.missionVideos,
+        ],
       );
 
   void _openCarousel(List<PRFMedia> mediaItems, int index) {

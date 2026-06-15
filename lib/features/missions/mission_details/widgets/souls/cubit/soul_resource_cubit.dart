@@ -39,6 +39,11 @@ class SoulResourceCubit extends ResourceCubit<PRFSoul> {
   Future<List<PRFSoul>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
-    return dbService.list();
+    return dbService.filterBy(
+      (soul) => [
+        if (filters?['mission_ulid'] != null)
+          soul.mission?.ulid == filters!['mission_ulid'],
+      ],
+    );
   }
 }

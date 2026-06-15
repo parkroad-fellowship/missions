@@ -7,6 +7,7 @@ import 'package:app/features/home/landing/models/landing_action_item.dart';
 import 'package:app/features/home/shared/cubit/announcement_resource_cubit.dart';
 import 'package:app/features/home/shared/cubit/get_prayer_prompts_cubit.dart';
 import 'package:app/features/home/shared/cubit/upload_prayer_response_cubit.dart';
+import 'package:app/features/missions/cubit/expense_category_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/firebase/firebase_messaging_service.dart';
 import 'package:app/services/notification_service.dart';
@@ -36,6 +37,7 @@ class _LandingPageState extends State<LandingPage> {
       context.read<UploadPrayerResponseCubit>().uploadPrayerResponses(),
       context.read<FaqCategoryResourceCubit>().loadAll(),
       context.read<FaqResourceCubit>().loadAll(),
+      context.read<ExpenseCategoryResourceCubit>().loadAll(),
     ]);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

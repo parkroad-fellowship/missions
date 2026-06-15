@@ -362,57 +362,60 @@ class TimelineSessionCard extends StatelessWidget {
                                   ),
                                 ),
                                 if (canEdit)
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Tooltip(
-                                      message: context.l10n.edit,
-                                      child: GestureDetector(
-                                        onTap: onEdit,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: PRFSpacingTokens.sm,
-                                            vertical: PRFSpacingTokens.xs,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                                .withValues(alpha: 0.11),
-                                            borderRadius: BorderRadius.circular(
-                                              PRFRadiusTokens.full,
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Tooltip(
+                                        message: context.l10n.edit,
+                                        child: GestureDetector(
+                                          onTap: onEdit,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: PRFSpacingTokens.sm,
+                                              vertical: PRFSpacingTokens.xs,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                                  .withValues(alpha: 0.11),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    PRFRadiusTokens.full,
+                                                  ),
+                                            ),
+                                            child: Text(
+                                              context.l10n.edit,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall
+                                                  ?.copyWith(
+                                                    color: Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
                                             ),
                                           ),
-                                          child: Text(
-                                            context.l10n.edit,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall
-                                                ?.copyWith(
-                                                  color: Theme.of(
-                                                    context,
-                                                  ).colorScheme.primary,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: PRFSpacingTokens.xs,
+                                      ),
+                                      Tooltip(
+                                        message: context.l10n.delete,
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.delete_outline,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.error,
                                           ),
+                                          onPressed: onDelete,
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: PRFSpacingTokens.xs),
-                                    Tooltip(
-                                      message: context.l10n.delete,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.delete_outline,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.error,
-                                        ),
-                                        onPressed: onDelete,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
                               ],
                             ),
                             const SizedBox(height: PRFSpacingTokens.md),

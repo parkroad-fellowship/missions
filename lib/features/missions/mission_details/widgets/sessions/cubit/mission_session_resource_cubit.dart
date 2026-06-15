@@ -50,8 +50,8 @@ class MissionSessionResourceCubit extends ResourceCubit<PRFMissionSession> {
   }) {
     return dbService.filterBy(
       (session) => [
-        filters?['mission_ulid'] == null ||
-            session.mission?.ulid == filters!['mission_ulid'],
+        if (filters?['mission_ulid'] != null)
+          session.mission?.ulid == filters!['mission_ulid'],
       ],
     );
   }

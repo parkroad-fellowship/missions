@@ -180,6 +180,11 @@ class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
   Future<List<PRFAllocationEntry>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
-    return dbService.list();
+    return dbService.filterBy(
+      (entry) => [
+        if (filters?['accounting_event_ulid'] != null)
+          entry.accountingEvent?.ulid == filters!['accounting_event_ulid'],
+      ],
+    );
   }
 }

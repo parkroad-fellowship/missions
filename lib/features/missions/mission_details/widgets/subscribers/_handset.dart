@@ -21,7 +21,6 @@ class SubscribersViewHandset extends StatefulWidget {
 
 class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
     with TimezoneMixin {
-
   Future<void> _loadSubscriptions() {
     return context.read<MissionSubscriptionResourceCubit>().loadAll(
       filters: {'mission_ulid': widget.missionUlid},

@@ -1,7 +1,6 @@
 import 'package:app/enums/mission/prf_entry_type.dart';
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_media_type.dart';
-import 'package:app/features/missions/cubit/expense_category_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/expenses/actions/add_expense/_handset.dart';
 import 'package:app/features/missions/mission_details/widgets/expenses/actions/add_refund/_handset.dart';
 import 'package:app/features/missions/mission_details/widgets/expenses/actions/add_token/_handset.dart';
@@ -57,8 +56,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         filters: {'accounting_event_ulid': accountingEventUlid},
       );
     }
-
-    context.read<ExpenseCategoryResourceCubit>().loadAll();
   }
 
   @override

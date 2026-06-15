@@ -28,6 +28,12 @@ class RequisitionResourceCubit extends ResourceCubit<PRFRequisition> {
   Future<List<PRFRequisition>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
-    return dbService.list();
+    return dbService.filterBy(
+      (requisition) => [
+        if (filters?['accounting_event_ulid'] != null)
+          requisition.accountingEvent?.ulid ==
+              filters!['accounting_event_ulid'],
+      ],
+    );
   }
 }

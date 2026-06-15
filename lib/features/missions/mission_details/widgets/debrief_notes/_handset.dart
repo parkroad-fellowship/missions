@@ -69,7 +69,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
     }
     PRFSnackbar.success(context, 'Debrief note deleted');
   }
-  
+
   Future<void> _loadDebriefNotes() {
     return context.read<DebriefNoteResourceCubit>().loadAll(
       filters: {'mission_ulid': mission.ulid},

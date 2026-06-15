@@ -116,6 +116,8 @@ abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
     String? sortBy,
     bool refreshInBackground = true,
   }) async {
+    _emitIfOpen(ResourceState.listLoading());
+
     final mergedFilters = {...defaultFilters, ...?filters};
     _lastFilters = mergedFilters;
     final startPage = page ?? 1;
