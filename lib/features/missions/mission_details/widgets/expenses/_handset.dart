@@ -71,10 +71,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              listLoaded: (_, _, _) {
-                _loadData();
-                PRFSnackbar.success(context, 'Expenses updated successfully');
-              },
               error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
