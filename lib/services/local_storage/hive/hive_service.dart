@@ -32,6 +32,7 @@ import 'package:app/services/local_storage/hive/db/requisition_hive_db_service.d
 import 'package:app/services/local_storage/hive/db/soul_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/db/student_enquiry_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/db/student_enquiry_reply_hive_db_service.dart';
+import 'package:app/services/local_storage/hive/db/subscriptions_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/kv/auth_hive_service.dart';
 import 'package:app/services/local_storage/hive/kv/settings_hive_service.dart';
 import 'package:app/utils/constants.dart';
@@ -71,6 +72,7 @@ class HiveService {
   late final MissionQuestionHiveDbService _missionQuestions;
   late final MissionSessionHiveDbService _missionSessions;
   late final MissionSubscriptionHiveDbService _missionSubscriptions;
+  late final SubscriptionHiveDbService _subscriptions;
   late final MemberMissionHiveDbService _memberMissions;
   late final PrayerResponseHiveDbService _prayerResponses;
   late final SoulHiveDbService _souls;
@@ -102,6 +104,7 @@ class HiveService {
   MissionSessionHiveDbService get missionSessions => _missionSessions;
   MissionSubscriptionHiveDbService get missionSubscriptions =>
       _missionSubscriptions;
+  SubscriptionHiveDbService get subscriptions => _subscriptions;
   MemberMissionHiveDbService get memberMissions => _memberMissions;
   PrayerResponseHiveDbService get prayerResponses => _prayerResponses;
   SoulHiveDbService get souls => _souls;
@@ -161,6 +164,7 @@ class HiveService {
     _missionQuestions = MissionQuestionHiveDbService();
     _missionSessions = MissionSessionHiveDbService();
     _missionSubscriptions = MissionSubscriptionHiveDbService();
+    _subscriptions = SubscriptionHiveDbService();
     _memberMissions = MemberMissionHiveDbService();
     _prayerResponses = PrayerResponseHiveDbService();
     _souls = SoulHiveDbService();
@@ -192,6 +196,7 @@ class HiveService {
       _missionQuestions.boxName,
       _missionSessions.boxName,
       _missionSubscriptions.boxName,
+      _subscriptions.boxName,
       _memberMissions.boxName,
       _prayerResponses.boxName,
       _souls.boxName,
@@ -300,6 +305,7 @@ class HiveService {
       _missionGroundSuggestions,
       _requisitions,
       _allocationEntries,
+      _subscriptions,
     ];
     for (final s in services) {
       await s.clearAll();

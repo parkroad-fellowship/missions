@@ -1,5 +1,4 @@
 import 'package:app/enums/prf_media_model.dart';
-import 'package:app/features/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/missions/mission_details/cubit/mission_details_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/debrief_notes/actions/debrief_note_form/debrief_note_form.dart';
@@ -24,6 +23,7 @@ import 'package:app/features/missions/mission_details/widgets/sessions/sessions.
 import 'package:app/features/missions/mission_details/widgets/souls/actions/soul_form/soul_form.dart';
 import 'package:app/features/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/souls/souls.dart';
+import 'package:app/features/missions/mission_details/widgets/subscribers/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/subscribers/subscribers.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';

@@ -1,7 +1,7 @@
 import 'package:app/di/di_container.dart';
-import 'package:app/features/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/_handset.dart';
 import 'package:app/features/missions/mission_details/cubit/mission_details_resource_cubit.dart';
+import 'package:app/features/missions/mission_details/widgets/subscribers/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/services/api/mission_service.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';

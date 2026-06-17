@@ -1,7 +1,7 @@
 import 'package:app/di/di_container.dart';
 import 'package:app/features/missions/cubit/mission_resource_cubit.dart';
-import 'package:app/features/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/cubit/past_mission_resource_cubit.dart';
+import 'package:app/features/missions/cubit/subscriptions_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
@@ -75,25 +75,25 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
   int _lastTabIndex = 0;
   final Set<int> _loadedTabs = {};
 
-  void _loadTabData(int index, {bool force = false}) {
+  Future<void> _loadTabData(int index, {bool force = false}) async {
     if (!force && _loadedTabs.contains(index)) return;
 
     switch (index) {
       case 0:
-        context.read<MissionResourceCubit>().loadAll(
+        await context.read<MissionResourceCubit>().loadAll(
           filters: {
             if (_searchQuery.isNotEmpty) 'search': _searchQuery,
           },
         );
       case 1:
-        context.read<MissionSubscriptionResourceCubit>().loadAll(
+        await context.read<SubscriptionResourceCubit>().loadAll(
           filters: {
             'member_ulid': member?.ulid,
             if (_searchQuery.isNotEmpty) 'search': _searchQuery,
           },
         );
       case 2:
-        context.read<PastMissionResourceCubit>().loadAll(
+        await context.read<PastMissionResourceCubit>().loadAll(
           filters: {
             if (_searchQuery.isNotEmpty) 'search': _searchQuery,
           },
@@ -146,7 +146,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                       ),
                       const SizedBox(width: PRFSpacingTokens.sm),
                       BlocBuilder<
-                        MissionSubscriptionResourceCubit,
+                        SubscriptionResourceCubit,
                         ResourceState<PRFMissionSubscription>
                       >(
                         builder: (context, state) => state.maybeWhen(
@@ -251,7 +251,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
+            onRefresh: () => _loadTabData(0, force: true),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -264,7 +264,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () => context.read<MissionResourceCubit>().loadAll(),
+          onRefresh: () => _loadTabData(0, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -306,21 +306,24 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     final l10n = context.l10n;
 
     return BlocBuilder<
-      MissionSubscriptionResourceCubit,
+      SubscriptionResourceCubit,
       ResourceState<PRFMissionSubscription>
     >(
       builder: (context, state) {
         final subscriptions = context
-            .read<MissionSubscriptionResourceCubit>()
+            .read<SubscriptionResourceCubit>()
             .currentItems;
 
-        final missions = subscriptions
+        final missions0 = subscriptions
             .map((subscription) => subscription.mission)
             .whereType<PRFMission>()
             .groupListsBy((mission) => mission.ulid)
             .values
             .map((missionGroup) => missionGroup.first)
             .toList();
+
+        final missions = List<PRFMission>.from(missions0)
+          ..sort((a, b) => b.startDate.compareTo(a.startDate));
 
         final showInitialLoader =
             state is ResourceListLoading<PRFMissionSubscription> &&
@@ -334,12 +337,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () =>
-                context.read<MissionSubscriptionResourceCubit>().loadAll(
-                  filters: {
-                    'member_ulid': member?.ulid,
-                  },
-                ),
+            onRefresh: () => _loadTabData(1),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -352,12 +350,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () =>
-              context.read<MissionSubscriptionResourceCubit>().loadAll(
-                filters: {
-                  'member_ulid': member?.ulid,
-                },
-              ),
+          onRefresh: () => _loadTabData(1),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -402,7 +395,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
     return BlocBuilder<PastMissionResourceCubit, ResourceState<PRFMission>>(
       builder: (context, state) {
-        final missions = context.read<PastMissionResourceCubit>().currentItems;
+        final missions0 = context.read<PastMissionResourceCubit>().currentItems;
+        final missions = List<PRFMission>.from(missions0)
+          ..sort((a, b) => b.startDate.compareTo(a.startDate));
         final showInitialLoader =
             state is ResourceListLoading<PRFMission> && missions.isEmpty;
 
@@ -414,8 +409,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () =>
-                context.read<PastMissionResourceCubit>().loadAll(limit: 30),
+            onRefresh: () => _loadTabData(2, force: true),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -428,8 +422,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () =>
-              context.read<PastMissionResourceCubit>().loadAll(limit: 30),
+          onRefresh: () => _loadTabData(2, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
