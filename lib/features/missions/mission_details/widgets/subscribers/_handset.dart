@@ -1,5 +1,5 @@
-import 'package:app/features/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/record_sections.dart';
+import 'package:app/features/missions/mission_details/widgets/subscribers/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';

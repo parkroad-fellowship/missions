@@ -1,6 +1,6 @@
 name: app
 description: The PRF Missions app
-version: 2.94.00+29400
+version: 2.94.01+29401
 publish_to: none
 
 environment:
@@ -56,7 +56,7 @@ dependencies:
   lottie: ^3.3.3
   map_launcher: ^4.5.0
   mime: ^2.0.0
-  path_provider: ^2.1.5
+  path_provider: ^2.1.6
   pdfx: ^2.9.2
   permission_handler: ^12.0.3
   phone_form_field: ^10.0.17

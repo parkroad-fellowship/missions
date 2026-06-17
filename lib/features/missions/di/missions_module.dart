@@ -1,8 +1,8 @@
 import 'package:app/features/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/missions/cubit/mission_resource_cubit.dart';
-import 'package:app/features/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/cubit/past_mission_resource_cubit.dart';
 import 'package:app/features/missions/cubit/subscribe_cubit.dart';
+import 'package:app/features/missions/cubit/subscriptions_resource_cubit.dart';
 import 'package:app/features/missions/cubit/withdraw_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/debrief_notes/cubit/debrief_note_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/gallery/cubit/mission_media_resource_cubit.dart';
@@ -10,6 +10,7 @@ import 'package:app/features/missions/mission_details/widgets/mission_questions/
 import 'package:app/features/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/sessions/session/cubit/download_file_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
+import 'package:app/features/missions/mission_details/widgets/subscribers/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/services/api/class_group_service.dart';
 import 'package:app/services/api/debrief_note_service.dart';
@@ -61,6 +62,12 @@ class MissionsModule {
       ),
       BlocProvider<MissionSubscriptionResourceCubit>(
         create: (context) => MissionSubscriptionResourceCubit(
+          missionSubscriptionService: getIt(),
+          hiveService: getIt<HiveService>(),
+        ),
+      ),
+      BlocProvider<SubscriptionResourceCubit>(
+        create: (context) => SubscriptionResourceCubit(
           missionSubscriptionService: getIt(),
           hiveService: getIt<HiveService>(),
         ),

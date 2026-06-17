@@ -71,10 +71,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           listener: (context, state) {
             state.maybeWhen(
               orElse: () {},
-              listLoaded: (_, _, _) {
-                _loadData();
-                PRFSnackbar.success(context, 'Expenses updated successfully');
-              },
               error: (message, _) {
                 PRFSnackbar.error(context, message);
               },
@@ -86,7 +82,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             state.maybeWhen(
               orElse: () {},
               loaded: () {
-                _loadData();
                 PRFSnackbar.success(context, 'Receipt uploaded successfully');
               },
               error: (message) {
@@ -821,7 +816,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           initial: () {},
           loading: (mediaUuid) {},
           loaded: (mediaUuid) {
-            _loadData();
             PRFSnackbar.success(context, 'Receipt deleted successfully');
           },
           error: (message) {

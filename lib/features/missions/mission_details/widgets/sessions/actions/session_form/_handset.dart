@@ -1,6 +1,6 @@
 import 'package:app/features/missions/cubit/class_group_resource_cubit.dart';
-import 'package:app/features/missions/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/sessions/cubit/mission_session_resource_cubit.dart';
+import 'package:app/features/missions/mission_details/widgets/subscribers/cubit/mission_subscription_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_class_group.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
