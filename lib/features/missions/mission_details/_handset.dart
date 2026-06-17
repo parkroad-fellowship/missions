@@ -296,9 +296,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 orElse: () => null,
               );
               if (mission == null) return const SizedBox.shrink();
-              if (!mission.canEdit) {
-                return const SizedBox.shrink();
-              }
+
               return _buildDynamicFab(context, l10n, mission);
             },
           ),
@@ -320,6 +318,10 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     // If it's the subscribe action, we use the original BlocConsumer for logic
     if (config.label == l10n.sendMe) {
       return _buildSubscribeFab(context, l10n);
+    }
+
+    if (!mission.canEdit) {
+      return const SizedBox.shrink();
     }
 
     return Container(

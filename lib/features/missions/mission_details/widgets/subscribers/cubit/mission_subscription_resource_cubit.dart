@@ -35,7 +35,9 @@ class MissionSubscriptionResourceCubit
   Future<List<PRFMissionSubscription>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
-    Logger().f('MissionSubscriptionResourceCubit.loadCachedList: filters=$filters');
+    Logger().f(
+      'MissionSubscriptionResourceCubit.loadCachedList: filters=$filters',
+    );
     return dbService.filterBy(
       (subscription) => [
         if (filters?['mission_ulid'] != null)
