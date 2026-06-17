@@ -82,7 +82,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             state.maybeWhen(
               orElse: () {},
               loaded: () {
-                _loadData();
                 PRFSnackbar.success(context, 'Receipt uploaded successfully');
               },
               error: (message) {
@@ -817,7 +816,6 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           initial: () {},
           loading: (mediaUuid) {},
           loaded: (mediaUuid) {
-            _loadData();
             PRFSnackbar.success(context, 'Receipt deleted successfully');
           },
           error: (message) {
