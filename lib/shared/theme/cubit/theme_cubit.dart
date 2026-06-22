@@ -21,9 +21,7 @@ part 'theme_cubit.freezed.dart';
 /// context.read<ThemeCubit>().setSystemMode();
 /// ```
 class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit({required HiveService hiveService})
-    : _hiveService = hiveService,
-      super(const ThemeState.initial()) {
+  ThemeCubit({required this._hiveService}) : super(const ThemeState.initial()) {
     _loadSavedTheme();
   }
 

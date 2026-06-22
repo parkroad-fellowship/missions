@@ -11,11 +11,9 @@ import 'package:bloc/bloc.dart';
 class MemberEngagementResourceCubit
     extends Cubit<ResourceState<PRFMemberEngagement>> {
   MemberEngagementResourceCubit({
-    required MemberService memberService,
-    required HiveService hiveService,
-  }) : _memberService = memberService,
-       _hiveService = hiveService,
-       super(const ResourceState.initial());
+    required this._memberService,
+    required this._hiveService,
+  }) : super(const ResourceState.initial());
 
   late final MemberService _memberService;
   late final HiveService _hiveService;

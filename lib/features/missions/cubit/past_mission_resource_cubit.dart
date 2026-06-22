@@ -1,55 +1,42 @@
-import 'package:app/enums/mission/prf_mission_status.dart';
 import 'package:app/features/missions/cubit/mission_resource_cubit.dart'
     show MissionResourceCubit;
-import 'package:app/models/remote/mission/prf_mission.dart';
-import 'package:app/services/api/mission_service.dart';
+import 'package:app/models/remote/course/prf_school.dart';
+import 'package:app/services/api/school_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 
 /// Cubit for loading past/completed missions.
 /// Separate from [MissionResourceCubit] so the "All" and "Past" tabs
 /// maintain independent state without overwriting each other.
-class PastMissionResourceCubit extends ResourceCubit<PRFMission> {
+class PastMissionResourceCubit extends ResourceCubit<PRFSchool> {
   PastMissionResourceCubit({
-    required MissionService missionService,
+    required SchoolService schoolService,
     required HiveService hiveService,
-  }) : super(service: missionService, dbService: hiveService.missions);
+  }) : super(service: schoolService, dbService: hiveService.schools);
 
   @override
   List<String> get defaultIncludes => [
-    'school',
-    'schoolTerm',
-    'missionType',
-    'school.schoolContacts.contactType',
-    'loggedInMemberMissionSubscription',
-    'weatherForecasts',
-    'accountingEvent',
+    'missions.school',
+    'missions.schoolTerm',
+    'missions.missionType',
   ];
 
   @override
-  Map<String, dynamic> get defaultFilters => {
-    'past': true,
-    'status_keys': [
-      PRFMissionStatus.approved.apiKey,
-      PRFMissionStatus.fullySubscribed.apiKey,
-      PRFMissionStatus.serviced.apiKey,
-    ].join(','),
-  };
+  Map<String, dynamic> get defaultFilters => {};
 
   @override
-  String? get defaultSortBy => '-start_date';
+  String? get defaultSortBy => 'name';
 
   @override
-  Future<List<PRFMission>> loadCachedList({
+  Future<List<PRFSchool>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
     return dbService.filterBy(
-      (mission) => [
-        filters?['past'] == null || mission.endDate.isBefore(DateTime.now()),
-        filters?['status_keys'] == null ||
-            (filters!['status_keys'] as String)
-                .split(',')
-                .contains(mission.status.apiKey.toString()),
+      (school) => [
+        filters?['search'] == null ||
+            (school.name.toLowerCase().contains(
+              (filters!['search'] as String).toLowerCase(),
+            )),
       ],
     );
   }

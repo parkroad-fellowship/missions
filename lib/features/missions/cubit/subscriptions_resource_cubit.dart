@@ -49,6 +49,15 @@ class SubscriptionResourceCubit extends ResourceCubit<PRFMissionSubscription> {
       (subscription) => [
         if (filters?['mission_ulid'] != null)
           subscription.mission?.ulid == filters!['mission_ulid'],
+        filters?['search'] == null ||
+            ((subscription.member?.fullName.toLowerCase().contains(
+                      (filters!['search'] as String).toLowerCase(),
+                    ) ??
+                    false) ||
+                (subscription.mission?.school?.name.toLowerCase().contains(
+                      (filters!['search'] as String).toLowerCase(),
+                    ) ??
+                    false)),
       ],
     );
   }

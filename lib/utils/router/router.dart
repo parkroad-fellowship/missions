@@ -13,6 +13,7 @@ class PRFSuperAppRouter extends RootStackRouter {
   static const String missionDetailsRoute = '/mission-details/:missionUlid';
   static const String missionSessionRoute =
       '/mission-details/:missionUlid/mission-sessions/:missionSessionUlid/:missionSessionId';
+  static const String schoolMissionsRoute = '/school-missions/:schoolUlid';
 
   static const String lmsRoute = '/lms';
   static const String studentEnquiriesRoute = '/student-enquiries';
@@ -101,6 +102,12 @@ class PRFSuperAppRouter extends RootStackRouter {
     CustomRoute<dynamic>(
       page: MissionsDetailsRoute.page,
       path: missionDetailsRoute,
+      guards: [AuthGuard()],
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+    ),
+    CustomRoute<dynamic>(
+      page: SchoolPastMissionsRoute.page,
+      path: schoolMissionsRoute,
       guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),

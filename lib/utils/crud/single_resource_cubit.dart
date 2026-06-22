@@ -21,10 +21,9 @@ import 'package:logger/logger.dart';
 /// and [ResourceCubit] subclasses remain the sole owners of list state.
 class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   SingleResourceCubit({
-    required BaseAPIService<TRemote> service,
+    required this._service,
     required this.dbService,
-  }) : _service = service,
-       super(const ResourceState.initial());
+  }) : super(const ResourceState.initial());
 
   final BaseAPIService<TRemote> _service;
   final BaseHiveDbService<TRemote> dbService;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/features/home/shared/cubit/member_engagement_resource_cubit.dart';
 import 'package:app/features/home/wrapped/pages/wrapped_pages.dart';
 import 'package:app/l10n/l10n.dart';
@@ -5,7 +7,6 @@ import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -16,28 +17,100 @@ class MissionsWrappedHandset extends StatefulWidget {
   State<MissionsWrappedHandset> createState() => _MissionsWrappedHandsetState();
 }
 
-class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
+class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset>
+    with SingleTickerProviderStateMixin {
   late PageController _pageController;
+  late AnimationController _timelineController;
   int _currentPage = 0;
-
-  Future<void> _skipToSummary(int summaryIndex) async {
-    await _pageController.animateToPage(
-      summaryIndex,
-      duration: const Duration(milliseconds: 550),
-      curve: Curves.easeOutCubic,
-    );
-  }
+  int _pageCount = 0;
+  bool _closeButtonVisible = true;
+  Timer? _closeButtonTimer;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    _timelineController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 7),
+    )..addStatusListener(_onTimelineStatus);
+    _timelineController.forward();
+    _resetCloseButtonTimer();
   }
 
   @override
   void dispose() {
+    _closeButtonTimer?.cancel();
+    _timelineController.dispose();
     _pageController.dispose();
     super.dispose();
+  }
+
+  void _onTimelineStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      _advanceToNextPage();
+    }
+  }
+
+  void _advanceToNextPage() {
+    if (!mounted || !_pageController.hasClients) return;
+    final nextPage = _currentPage + 1;
+    if (nextPage < _pageCount) {
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 450),
+        curve: Curves.easeOutCubic,
+      );
+    }
+  }
+
+  void _onPageChanged(int index) {
+    if (!mounted) return;
+    setState(() => _currentPage = index);
+    _timelineController.reset();
+    if (index < _pageCount - 1) {
+      _timelineController.forward();
+    }
+    _resetCloseButtonTimer();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    setState(() => _closeButtonVisible = true);
+    _resetCloseButtonTimer();
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final tapX = details.localPosition.dx;
+
+    if (tapX < screenWidth * 0.4) {
+      if (_currentPage > 0) {
+        _pageController.previousPage(
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOutCubic,
+        );
+      }
+    } else {
+      if (_currentPage < _pageCount - 1) {
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOutCubic,
+        );
+      }
+    }
+  }
+
+  void _resetCloseButtonTimer() {
+    _closeButtonTimer?.cancel();
+    _closeButtonTimer = Timer(const Duration(seconds: 3), () {
+      if (mounted) setState(() => _closeButtonVisible = false);
+    });
+  }
+
+  bool _hasInsufficientData(PRFMemberEngagement m) {
+    return m.missionStats.totalMissions == 0 &&
+        m.impactStats.soulsTouched == 0 &&
+        m.learningStats.coursesCompleted == 0 &&
+        m.prayerStats.prayerResponses == 0 &&
+        m.eventStats.eventsAttended == 0;
   }
 
   @override
@@ -60,6 +133,11 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
             }
             final memberEngagement = memberEngagementList.first;
             final year = DateTime.now().year;
+
+            if (_hasInsufficientData(memberEngagement)) {
+              return _buildInsufficientDataPage();
+            }
+
             final pageEntries = <_WrappedPageEntry>[
               _WrappedPageEntry(
                 title: l10n.wrappedTagline,
@@ -88,7 +166,6 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               ),
             ];
 
-            // Add prayer page if there are prayer responses
             if (memberEngagement.prayerStats.prayerResponses > 0 ||
                 memberEngagement.prayerStats.prayerConsistencyDays > 0) {
               pageEntries.add(
@@ -101,7 +178,6 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               );
             }
 
-            // Add events page if there are events attended
             if (memberEngagement.eventStats.eventsAttended > 0) {
               pageEntries.add(
                 _WrappedPageEntry(
@@ -113,7 +189,6 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               );
             }
 
-            // Always add summary as the last page
             pageEntries.add(
               _WrappedPageEntry(
                 title: l10n.wrappedSummaryTitle,
@@ -124,7 +199,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
               ),
             );
 
-            final pageCount = pageEntries.length;
+            _pageCount = pageEntries.length;
             final pages = List<Widget>.generate(
               pageEntries.length,
               (index) => Semantics(
@@ -139,120 +214,55 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
             return Scaffold(
               body: Stack(
                 children: [
-                  PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentPage = index;
-                      });
+                  Listener(
+                    onPointerDown: (_) => _timelineController.stop(),
+                    onPointerUp: (_) {
+                      if (_currentPage < _pageCount - 1) {
+                        _timelineController.forward();
+                      }
                     },
-                    children: pages,
+                    onPointerCancel: (_) {
+                      if (_currentPage < _pageCount - 1) {
+                        _timelineController.forward();
+                      }
+                    },
+                    child: GestureDetector(
+                      onTapUp: _onTapUp,
+                      child: PageView(
+                        controller: _pageController,
+                        onPageChanged: _onPageChanged,
+                        children: pages,
+                      ),
+                    ),
                   ),
                   Positioned(
-                    top: 60,
+                    bottom: 0,
                     left: 0,
                     right: 0,
-                    child:
-                        WrappedStoryPageIndicator(
-                              currentPage: _currentPage,
-                              pageCount: pageCount,
-                            )
-                            .animate()
-                            .fadeIn(
-                              delay: 2000.ms,
-                              duration: PRFMotionTokens.enterShort,
-                            )
-                            .slideY(begin: -0.5, end: 0),
+                    child: _TimelineProgressBar(
+                      listenable: _timelineController,
+                    ),
                   ),
                   Positioned(
                     top: 60,
                     left: 16,
-                    child:
-                        Semantics(
-                              label: l10n.wrappedCloseSemantics,
-                              button: true,
-                              child: IconButton(
-                                icon: Container(
-                                  padding: const EdgeInsets.all(
-                                    PRFSpacingTokens.sm,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: PRFColors.black.withValues(
-                                      alpha: 0.35,
-                                    ),
-                                    border: Border.all(
-                                      color: PRFColors.white.withValues(
-                                        alpha: 0.24,
-                                      ),
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.close,
-                                    color: PRFColors.white,
-                                  ),
-                                ),
-                                onPressed: () => context.router.maybePop(),
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(
-                              delay: 2000.ms,
-                              duration: PRFMotionTokens.enterShort,
-                            )
-                            .scale(delay: PRFMotionTokens.standard),
-                  ),
-                  if (_currentPage < pageCount - 1)
-                    Positioned(
-                      top: 60,
-                      right: 16,
-                      child:
-                          Semantics(
-                                label: l10n.wrappedSkipToSummarySemantics,
-                                button: true,
-                                child: TextButton.icon(
-                                  onPressed: () =>
-                                      _skipToSummary(pageCount - 1),
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: PRFSpacingTokens.md,
-                                      vertical: PRFSpacingTokens.sm,
-                                    ),
-                                    backgroundColor: PRFColors.black.withValues(
-                                      alpha: 0.35,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        PRFRadiusTokens.xl,
-                                      ),
-                                      side: BorderSide(
-                                        color: PRFColors.white.withValues(
-                                          alpha: 0.24,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  icon: const Icon(
-                                    Icons.skip_next_rounded,
-                                    color: PRFColors.white,
-                                    size: 18,
-                                  ),
-                                  label: Text(
-                                    l10n.wrappedSkipToSummary,
-                                    style: theme.textTheme.labelLarge?.copyWith(
-                                      color: PRFColors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .animate()
-                              .fadeIn(
-                                delay: 1200.ms,
-                                duration: PRFMotionTokens.enterShort,
-                              )
-                              .slideX(begin: 0.2, end: 0),
+                    child: AnimatedOpacity(
+                      opacity: _closeButtonVisible ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 300),
+                      child: Semantics(
+                        label: l10n.wrappedCloseSemantics,
+                        button: true,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.close,
+                            color: PRFColors.white,
+                            size: 20,
+                          ),
+                          onPressed: () => context.router.maybePop(),
+                        ),
+                      ),
                     ),
+                  ),
                 ],
               ),
             );
@@ -268,6 +278,56 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
           itemError: (message, _, _) => _buildErrorState(message),
         );
       },
+    );
+  }
+
+  Widget _buildInsufficientDataPage() {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: PRFColors.white),
+                    onPressed: () => context.router.maybePop(),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: CinematicSlide(
+                children: [
+                  Icon(
+                    Icons.inbox_rounded,
+                    size: 48,
+                    color: PRFColors.white.withValues(alpha: 0.5),
+                  ),
+                  const SizedBox(height: PRFSpacingTokens.md),
+                  Text(
+                    'Not enough data yet',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: PRFColors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: PRFSpacingTokens.sm),
+                  Text(
+                    'Complete missions, courses, and more\nto unlock your Wrapped next season!',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: PRFColors.white.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -357,6 +417,30 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TimelineProgressBar extends AnimatedWidget {
+  const _TimelineProgressBar({
+    required super.listenable,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final progress = (listenable as Animation<double>).value;
+    return SizedBox(
+      width: double.infinity,
+      height: 2,
+      child: Stack(
+        children: [
+          Container(color: PRFColors.white.withValues(alpha: 0.15)),
+          FractionallySizedBox(
+            widthFactor: progress.clamp(0.0, 1.0),
+            child: Container(color: PRFColors.white.withValues(alpha: 0.7)),
+          ),
+        ],
       ),
     );
   }

@@ -9,8 +9,7 @@ enum PrfRole {
   treasurer('treasurer'),
   member('member'),
   student('student'),
-  missionsCommitteeMember('missions committee member')
-  ;
+  missionsCommitteeMember('missions committee member');
 
   const PrfRole(this.label);
   final String label;

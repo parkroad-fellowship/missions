@@ -17,10 +17,9 @@ import 'package:logger/logger.dart';
 ///   3. Add resource-specific convenience methods.
 abstract class ResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
   ResourceCubit({
-    required BaseAPIService<TRemote> service,
+    required this._service,
     required this.dbService,
-  }) : _service = service,
-       super(const ResourceState.initial());
+  }) : super(const ResourceState.initial());
 
   final BaseAPIService<TRemote> _service;
   final BaseHiveDbService<TRemote> dbService;

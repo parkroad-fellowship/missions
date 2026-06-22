@@ -1,7 +1,6 @@
 enum PRFTimeOfDay {
   morning(1, 'Morning', 8),
-  evening(2, 'Evening', 18)
-  ;
+  evening(2, 'Evening', 18);
 
   const PRFTimeOfDay(this.apiKey, this.name, this.hour);
   final int apiKey;

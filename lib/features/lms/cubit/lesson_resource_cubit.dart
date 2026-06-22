@@ -12,9 +12,8 @@ class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
   LessonResourceCubit({
     required LessonModuleService lessonModuleService,
     required HiveService hiveService,
-    LessonMemberService? lessonMemberService,
+    this._lessonMemberService,
   }) : _hiveService = hiveService,
-       _lessonMemberService = lessonMemberService,
        super(
          service: lessonModuleService,
          dbService: hiveService.lessonModules,
