@@ -37,7 +37,7 @@ abstract class FirebaseMessagingService {
 
     // Only process notifications explicitly targeted at this app
     final targetApp = data['target_app'] as String?;
-    if (targetApp != 'leadership_app') {
+    if (targetApp != 'missions_app') {
       Logger().d('Ignoring FCM message: target_app=$targetApp');
       return;
     }
@@ -53,7 +53,7 @@ abstract class FirebaseMessagingService {
       await AwesomeNotifications().createNotification(
         content: NotificationContent(
           id: Random().nextInt(2147483647),
-          channelKey: 'requisitions',
+          channelKey: 'basic_channel',
           title: notification.title,
           body: notification.body,
           payload: data.map((key, value) => MapEntry(key, value.toString())),
@@ -143,6 +143,10 @@ class FirebaseMessagingServiceImpl implements FirebaseMessagingService {
           'Notifications not enabled/requested; skipping iOS permission prompt',
         );
         return '';
+      }
+
+      if (notificationsEnabled) {
+        await AwesomeNotifications().requestPermissionToSendNotifications();
       }
 
       final currentSettings = await _firebaseMessaging
