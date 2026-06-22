@@ -65,6 +65,7 @@ dependencies:
   prf_design: ^0.8.4
     # path: ../../prf_design_system
   record: ^7.1.0
+  share_plus: ^10.1.4
   shorebird_code_push: ^2.0.6
   timezone: ^0.11.0
   upgrader: ^13.5.0
