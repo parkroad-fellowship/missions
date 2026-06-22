@@ -300,9 +300,11 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset>
             Expanded(
               child: CinematicSlide(
                 children: [
-                  Icon(Icons.inbox_rounded,
-                      size: 48,
-                      color: PRFColors.white.withValues(alpha: 0.5)),
+                  Icon(
+                    Icons.inbox_rounded,
+                    size: 48,
+                    color: PRFColors.white.withValues(alpha: 0.5),
+                  ),
                   const SizedBox(height: PRFSpacingTokens.md),
                   Text(
                     'Not enough data yet',

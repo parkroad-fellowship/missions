@@ -311,7 +311,7 @@ class HiveService {
       _requisitions,
       _allocationEntries,
       _subscriptions,
-      _schools
+      _schools,
     ];
     for (final s in services) {
       await s.clearAll();

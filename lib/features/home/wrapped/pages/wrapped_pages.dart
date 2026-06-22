@@ -36,8 +36,8 @@ class _FullScreenLottie extends StatelessWidget {
 
 class CinematicSlide extends StatelessWidget {
   const CinematicSlide({
-    super.key,
     required this.children,
+    super.key,
     this.lottieAsset,
     this.lottieOpacity = 0.35,
   });
@@ -91,32 +91,38 @@ class HeroNumber extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         TweenAnimationBuilder<int>(
-          tween: IntTween(begin: 0, end: value),
-          duration: const Duration(milliseconds: 1800),
-          builder: (context, count, _) {
-            return Text(
-              count.toString(),
-              style: TextStyle(
-                fontSize: numberSize,
-                fontWeight: FontWeight.w800,
-                color: PRFColors.white,
-                height: 1,
-              ),
-            );
-          },
-        ).animate(delay: 300.ms).fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0),
+              tween: IntTween(begin: 0, end: value),
+              duration: const Duration(milliseconds: 1800),
+              builder: (context, count, _) {
+                return Text(
+                  count.toString(),
+                  style: TextStyle(
+                    fontSize: numberSize,
+                    fontWeight: FontWeight.w800,
+                    color: PRFColors.white,
+                    height: 1,
+                  ),
+                );
+              },
+            )
+            .animate(delay: 300.ms)
+            .fadeIn(duration: 400.ms)
+            .slideY(begin: 0.1, end: 0),
         if (label != null) ...[
           const SizedBox(height: 8),
           Text(
-            label!,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: labelSize,
-              fontWeight: FontWeight.w500,
-              color: PRFColors.white.withValues(alpha: 0.7),
-              letterSpacing: 0.5,
-            ),
-          ).animate(delay: 500.ms).fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0),
+                label!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: labelSize,
+                  fontWeight: FontWeight.w500,
+                  color: PRFColors.white.withValues(alpha: 0.7),
+                  letterSpacing: 0.5,
+                ),
+              )
+              .animate(delay: 500.ms)
+              .fadeIn(duration: 400.ms)
+              .slideY(begin: 0.1, end: 0),
         ],
       ],
     );
@@ -224,15 +230,18 @@ class IntroWrappedPage extends StatelessWidget {
         ).animate(delay: 600.ms).fadeIn(duration: 500.ms),
         const SizedBox(height: 12),
         Text(
-          memberName,
-          style: const TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.w700,
-            color: PRFColors.white,
-            height: 1.1,
-          ),
-          textAlign: TextAlign.center,
-        ).animate(delay: 800.ms).fadeIn(duration: 600.ms).slideY(begin: 10, end: 0),
+              memberName,
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w700,
+                color: PRFColors.white,
+                height: 1.1,
+              ),
+              textAlign: TextAlign.center,
+            )
+            .animate(delay: 800.ms)
+            .fadeIn(duration: 600.ms)
+            .slideY(begin: 10, end: 0),
         const SizedBox(height: 16),
         Text(
           'Missions Wrapped',
@@ -259,7 +268,7 @@ class MissionsWrappedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (missionStats.totalMissions == 0) {
-      return CinematicSlide(
+      return const CinematicSlide(
         lottieAsset: 'assets/images/wrapped_missions_beam.json',
         lottieOpacity: 0.25,
         children: [
@@ -296,10 +305,10 @@ class MissionsWrappedPage extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.local_fire_department_rounded,
                   size: 16,
-                  color: const Color(0xFFFF8A00),
+                  color: Color(0xFFFF8A00),
                 ),
                 const SizedBox(width: 6),
                 Text(
@@ -330,7 +339,7 @@ class ImpactWrappedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (impactStats.soulsTouched == 0) {
-      return CinematicSlide(
+      return const CinematicSlide(
         lottieAsset: 'assets/images/wrapped_impact_orbit.json',
         lottieOpacity: 0.25,
         children: [
@@ -379,7 +388,7 @@ class LearningWrappedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (learningStats.coursesCompleted == 0 &&
         learningStats.lessonsCompleted == 0) {
-      return CinematicSlide(
+      return const CinematicSlide(
         lottieAsset: 'assets/images/wrapped_learning_wave.json',
         lottieOpacity: 0.25,
         children: [
@@ -416,10 +425,10 @@ class LearningWrappedPage extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.flash_on_rounded,
                   size: 16,
-                  color: const Color(0xFFFFD400),
+                  color: Color(0xFFFFD400),
                 ),
                 const SizedBox(width: 6),
                 Text(
@@ -474,10 +483,10 @@ class PrayerWrappedPage extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.auto_awesome_rounded,
                   size: 16,
-                  color: const Color(0xFFB388FF),
+                  color: Color(0xFFB388FF),
                 ),
                 const SizedBox(width: 6),
                 Text(

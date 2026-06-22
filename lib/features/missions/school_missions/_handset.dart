@@ -45,18 +45,18 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(message,
-                          style: theme.textTheme.bodyMedium,
-                          textAlign: TextAlign.center),
+                      Text(
+                        message,
+                        style: theme.textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
                       const SizedBox(height: PRFSpacingTokens.md),
                       FilledButton(
                         onPressed: () {
-                          context
-                              .read<SchoolDetailsResourceCubit>()
-                              .loadSchool(
-                                schoolUlid: widget.schoolUlid,
-                                refresh: true,
-                              );
+                          context.read<SchoolDetailsResourceCubit>().loadSchool(
+                            schoolUlid: widget.schoolUlid,
+                            refresh: true,
+                          );
                         },
                         child: const Text('Retry'),
                       ),
@@ -87,12 +87,10 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
               ? _buildEmptyState(context)
               : RefreshIndicator(
                   onRefresh: () async {
-                    await context
-                        .read<SchoolDetailsResourceCubit>()
-                        .loadSchool(
-                          schoolUlid: widget.schoolUlid,
-                          refresh: true,
-                        );
+                    await context.read<SchoolDetailsResourceCubit>().loadSchool(
+                      schoolUlid: widget.schoolUlid,
+                      refresh: true,
+                    );
                   },
                   child: ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -115,8 +113,7 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
                               mission: mission,
                               isLast: isLast,
                               onTap: () => context.router.push(
-                                MissionsDetailsRoute(
-                                    missionUlid: mission.ulid),
+                                MissionsDetailsRoute(missionUlid: mission.ulid),
                               ),
                             )
                             .animate()

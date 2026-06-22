@@ -31,7 +31,6 @@ abstract class PRFSchool with _$PRFSchool {
       _$PRFSchoolFromJson(json);
 }
 
-
 @freezed
 abstract class PRFSchoolsResponse with _$PRFSchoolsResponse {
   factory PRFSchoolsResponse(List<PRFSchool> data) = _PRFSchoolsResponse;

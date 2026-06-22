@@ -9,8 +9,7 @@ class SchoolHiveDbService extends BaseHiveDbService<PRFSchool> {
   String getKey(PRFSchool entity) => entity.ulid;
 
   @override
-  PRFSchool fromJson(Map<String, dynamic> json) =>
-      PRFSchool.fromJson(json);
+  PRFSchool fromJson(Map<String, dynamic> json) => PRFSchool.fromJson(json);
 
   @override
   Map<String, dynamic> toJson(PRFSchool entity) => entity.toJson();
