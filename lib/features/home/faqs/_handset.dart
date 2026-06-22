@@ -360,51 +360,55 @@ class FaqCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Theme(
-          data: theme.copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            tilePadding: const EdgeInsets.symmetric(
-              horizontal: PRFSpacingTokens.md,
-              vertical: PRFSpacingTokens.xs,
-            ),
-            childrenPadding: const EdgeInsets.fromLTRB(
-              PRFSpacingTokens.md,
-              0,
-              PRFSpacingTokens.md,
-              PRFSpacingTokens.md,
-            ),
-            leading: Container(
-              padding: const EdgeInsets.all(PRFSpacingTokens.md),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+        child: Material(
+          type: MaterialType.transparency,
+          clipBehavior: Clip.antiAlias,
+          child: Theme(
+            data: theme.copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: const EdgeInsets.symmetric(
+                horizontal: PRFSpacingTokens.md,
+                vertical: PRFSpacingTokens.xs,
               ),
-              child: Icon(
-                Icons.quiz_rounded,
-                color: theme.colorScheme.onPrimaryContainer,
-                size: 20,
+              childrenPadding: const EdgeInsets.fromLTRB(
+                PRFSpacingTokens.md,
+                0,
+                PRFSpacingTokens.md,
+                PRFSpacingTokens.md,
               ),
-            ),
-            title: Text(
-              faq.question,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  faq.answer,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+              leading: Container(
+                padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                ),
+                child: Icon(
+                  Icons.quiz_rounded,
+                  color: theme.colorScheme.onPrimaryContainer,
+                  size: 20,
                 ),
               ),
-            ],
+              title: Text(
+                faq.question,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    faq.answer,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
