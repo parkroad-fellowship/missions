@@ -96,6 +96,8 @@ flutter:
     - assets/images/
     - assets/svgs/
     - shorebird.yaml
+  config:
+    enable-swift-package-manager: false
 
 patrol:
   app_name: PRF Missions
