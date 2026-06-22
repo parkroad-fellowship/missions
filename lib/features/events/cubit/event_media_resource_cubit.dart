@@ -8,9 +8,8 @@ import 'package:bloc/bloc.dart';
 /// because media are child resources of an event.
 class EventMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
   EventMediaResourceCubit({
-    required EventService eventService,
-  }) : _eventService = eventService,
-       super(const ResourceState.initial());
+    required this._eventService,
+  }) : super(const ResourceState.initial());
 
   final EventService _eventService;
 

@@ -14,8 +14,7 @@ enum PRFInstitutionType {
   @JsonValue(6)
   juniorSecondarySchool('Junior Secondary School', 6),
   @JsonValue(7)
-  seniorSecondarySchool('Senior Secondary School', 7)
-  ;
+  seniorSecondarySchool('Senior Secondary School', 7);
 
   const PRFInstitutionType(this.label, this.value);
 

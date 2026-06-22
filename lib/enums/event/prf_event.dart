@@ -8,8 +8,7 @@ enum PRFEvent {
   @JsonValue(3)
   lessonMemberUpdated('Lesson Member Updated'),
   @JsonValue(4)
-  studentEnquiryReplyCreated('Student Enquiry Reply Created')
-  ;
+  studentEnquiryReplyCreated('Student Enquiry Reply Created');
 
   const PRFEvent(this.name);
 
@@ -33,8 +32,7 @@ enum PRFEvent {
 
 enum PRFPresenceEvent {
   @JsonValue(5)
-  announcementGroupCreated('Announcement Group Created')
-  ;
+  announcementGroupCreated('Announcement Group Created');
 
   const PRFPresenceEvent(this.name);
 

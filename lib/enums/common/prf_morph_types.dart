@@ -18,8 +18,7 @@ enum PRFMorphType {
   @JsonValue(8)
   missionSession(8),
   @JsonValue(9)
-  missionQuestion(9)
-  ;
+  missionQuestion(9);
 
   const PRFMorphType(this.apiKey);
 

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 enum PRFThemeMode {
   system,
   light,
-  dark
-  ;
+  dark;
 
   /// Convert to Flutter's ThemeMode.
   ThemeMode toFlutterThemeMode() {

@@ -1,8 +1,7 @@
 enum PrfMembershipType {
   friend('Friend'),
   yearlyMember('Yearly Member'),
-  lifetimeMember('Lifetime Member')
-  ;
+  lifetimeMember('Lifetime Member');
 
   const PrfMembershipType(this.name);
   final String name;

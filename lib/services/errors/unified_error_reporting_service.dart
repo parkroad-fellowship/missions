@@ -13,9 +13,8 @@ import 'package:logger/logger.dart';
 /// Unified error reporting service that fans out to all enabled platforms.
 class UnifiedErrorReportingService implements ErrorReportingService {
   UnifiedErrorReportingService({
-    required AnalyticsService analyticsService,
-  }) : _analyticsService = analyticsService,
-       _crashlytics = FirebaseCrashlytics.instance;
+    required this._analyticsService,
+  }) : _crashlytics = FirebaseCrashlytics.instance;
 
   final AnalyticsService _analyticsService;
   final FirebaseCrashlytics _crashlytics;

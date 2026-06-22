@@ -9,9 +9,8 @@ import 'package:bloc/bloc.dart';
 /// instead of standard CRUD because media are child resources of a mission.
 class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
   MissionMediaResourceCubit({
-    required MissionService missionService,
-  }) : _missionService = missionService,
-       super(const ResourceState.initial());
+    required this._missionService,
+  }) : super(const ResourceState.initial());
 
   final MissionService _missionService;
 

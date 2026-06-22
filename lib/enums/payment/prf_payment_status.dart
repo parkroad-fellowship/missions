@@ -10,8 +10,7 @@ enum PRFPaymentStatus {
   @JsonValue(4)
   cancelled(4, 'Cancelled'),
   @JsonValue(5)
-  failed(5, 'Failed')
-  ;
+  failed(5, 'Failed');
 
   const PRFPaymentStatus(this.apiKey, this.name);
 

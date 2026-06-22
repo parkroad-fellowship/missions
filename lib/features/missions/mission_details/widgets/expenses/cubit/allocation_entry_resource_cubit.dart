@@ -14,13 +14,11 @@ import 'package:app/utils/crud/resource_state.dart';
 class AllocationEntryResourceCubit extends ResourceCubit<PRFAllocationEntry> {
   AllocationEntryResourceCubit({
     required AllocationEntryService allocationEntryService,
-    required MediaService mediaService,
+    required this._mediaService,
     required HiveService hiveService,
-    required RefundService refundService,
+    required this._refundService,
   }) : _allocationEntryService = allocationEntryService,
-       _mediaService = mediaService,
        _hiveService = hiveService,
-       _refundService = refundService,
        super(
          service: allocationEntryService,
          dbService: hiveService.allocationEntries,
