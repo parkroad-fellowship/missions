@@ -4,12 +4,12 @@ version: 2.94.01+29401
 publish_to: none
 
 environment:
-  sdk: ^3.10.3
-  flutter: ^3.41.1
+  sdk: ^3.12.2
+  flutter: ^3.44.2
 
 dependencies:
   auto_route: ^11.1.0
-  awesome_notifications: ^0.11.0
+  awesome_notifications: ^0.12.0
   awesome_notifications_core: ^0.10.1
   bloc: ^9.2.1
   build_version: ^2.1.1
@@ -64,7 +64,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   prf_design: ^0.8.3
   # path: ../../prf_design_system
-  record: ^6.2.0
+  record: ^7.1.0
   shorebird_code_push: ^2.0.6
   timezone: ^0.11.0
   upgrader: ^13.5.0
