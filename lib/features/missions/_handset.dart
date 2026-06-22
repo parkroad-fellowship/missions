@@ -3,6 +3,7 @@ import 'package:app/features/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/missions/cubit/past_mission_resource_cubit.dart';
 import 'package:app/features/missions/cubit/subscriptions_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
+import 'package:app/models/remote/course/prf_school.dart';
 import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
@@ -393,13 +394,11 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
   Widget _buildPastMissionsTimeline(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocBuilder<PastMissionResourceCubit, ResourceState<PRFMission>>(
+    return BlocBuilder<PastMissionResourceCubit, ResourceState<PRFSchool>>(
       builder: (context, state) {
-        final missions0 = context.read<PastMissionResourceCubit>().currentItems;
-        final missions = List<PRFMission>.from(missions0)
-          ..sort((a, b) => b.startDate.compareTo(a.startDate));
+        final schools = context.read<PastMissionResourceCubit>().currentItems;
         final showInitialLoader =
-            state is ResourceListLoading<PRFMission> && missions.isEmpty;
+            state is ResourceListLoading<PRFSchool> && schools.isEmpty;
 
         if (showInitialLoader) {
           return const Center(
@@ -407,7 +406,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           );
         }
 
-        if (missions.isEmpty) {
+        if (schools.isEmpty) {
           return RefreshIndicator(
             onRefresh: () => _loadTabData(2, force: true),
             child: PRFEmptyView(
@@ -429,17 +428,19 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               horizontal: PRFSpacingTokens.lg,
               vertical: PRFSpacingTokens.xl,
             ),
-            itemCount: missions.length,
+            itemCount: schools.length,
             itemBuilder: (context, index) {
-              final mission = missions[index];
-              final isLast = index == missions.length - 1;
+              final school = schools[index];
+              final missionCount = school.missions.length;
 
-              return _buildTimelineMissionCard(
-                    context,
-                    mission: mission,
-                    isLast: isLast,
+              return PRFSchoolCard(
+                    schoolName: school.name,
+                    address: school.address,
+                    missionCount: missionCount > 0 ? missionCount : null,
                     onTap: () => context.router.push(
-                      MissionsDetailsRoute(missionUlid: mission.ulid),
+                      SchoolPastMissionsRoute(
+                        schoolUlid: school.ulid,
+                      ),
                     ),
                   )
                   .animate()

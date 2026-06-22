@@ -1617,10 +1617,10 @@ packages:
     dependency: "direct main"
     description:
       name: prf_design
-      sha256: "2e4facdd9d9325a43adfdbe313c8d5c3f4ce1fcb337a157f49d315710e4fca61"
+      sha256: "6dd4e75708516a77ce81c37acf7beb5a26077469ba5488758fe74e8a698ee645"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.3"
+    version: "0.8.4"
   provider:
     dependency: transitive
     description:

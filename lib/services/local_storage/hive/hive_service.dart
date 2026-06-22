@@ -29,6 +29,7 @@ import 'package:app/services/local_storage/hive/db/payment_type_hive_db_service.
 import 'package:app/services/local_storage/hive/db/prayer_request_db_service.dart';
 import 'package:app/services/local_storage/hive/db/prayer_response_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/db/requisition_hive_db_service.dart';
+import 'package:app/services/local_storage/hive/db/school_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/db/soul_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/db/student_enquiry_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/db/student_enquiry_reply_hive_db_service.dart';
@@ -87,6 +88,7 @@ class HiveService {
   late final MissionGroundSuggestionHiveDbService _missionGroundSuggestions;
   late final RequisitionHiveDbService _requisitions;
   late final AllocationEntryHiveDbService _allocationEntries;
+  late final SchoolHiveDbService _schools;
 
   AnnouncementHiveDbService get announcements => _announcements;
   ClassGroupHiveDbService get classGroups => _classGroups;
@@ -121,6 +123,7 @@ class HiveService {
       _missionGroundSuggestions;
   RequisitionHiveDbService get requisitions => _requisitions;
   AllocationEntryHiveDbService get allocationEntries => _allocationEntries;
+  SchoolHiveDbService get schools => _schools;
 
   // ----- Initialisation -----
 
@@ -179,6 +182,7 @@ class HiveService {
     _missionGroundSuggestions = MissionGroundSuggestionHiveDbService();
     _requisitions = RequisitionHiveDbService();
     _allocationEntries = AllocationEntryHiveDbService();
+    _schools = SchoolHiveDbService();
 
     // Open all entity boxes with the shared cipher.
     final entityBoxNames = [
@@ -211,6 +215,7 @@ class HiveService {
       _missionGroundSuggestions.boxName,
       _requisitions.boxName,
       _allocationEntries.boxName,
+      _schools.boxName,
     ];
 
     for (final name in entityBoxNames) {
@@ -306,6 +311,7 @@ class HiveService {
       _requisitions,
       _allocationEntries,
       _subscriptions,
+      _schools
     ];
     for (final s in services) {
       await s.clearAll();

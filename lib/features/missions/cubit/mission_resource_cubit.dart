@@ -44,6 +44,11 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
             (filters!['status_keys'] as String)
                 .split(',')
                 .contains(mission.status.apiKey.toString()),
+        filters?['search'] == null ||
+            (mission.school?.name.toLowerCase().contains(
+                  (filters!['search'] as String).toLowerCase(),
+                ) ??
+                false),
       ],
     );
   }

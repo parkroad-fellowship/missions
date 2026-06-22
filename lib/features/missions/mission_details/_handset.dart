@@ -135,9 +135,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
               children: [
                 PRFBrandedNavBar(
                   title: l10n.missionDetails,
-                  onBack: () => context.router.popUntilRouteWithPath(
-                    PRFSuperAppRouter.missionsRoute,
-                  ),
+                  onBack: () => context.router.pop(),
                   actions: [
                     BlocBuilder<
                       MissionDetailsResourceCubit,

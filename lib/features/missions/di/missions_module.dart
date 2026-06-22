@@ -1,6 +1,7 @@
 import 'package:app/features/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/missions/cubit/past_mission_resource_cubit.dart';
+import 'package:app/features/missions/cubit/school_details_resource_cubit.dart';
 import 'package:app/features/missions/cubit/subscribe_cubit.dart';
 import 'package:app/features/missions/cubit/subscriptions_resource_cubit.dart';
 import 'package:app/features/missions/cubit/withdraw_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:app/services/api/mission_question_service.dart';
 import 'package:app/services/api/mission_service.dart';
 import 'package:app/services/api/mission_session_service.dart';
 import 'package:app/services/api/mission_subscription_service.dart';
+import 'package:app/services/api/school_service.dart';
 import 'package:app/services/api/soul_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/shared/media_upload/cubit/audio_recording_cubit.dart';
@@ -43,7 +45,8 @@ class MissionsModule {
         MissionGroundSuggestionService(),
       )
       ..registerSingleton<ClassGroupService>(ClassGroupService())
-      ..registerSingleton<SoulService>(SoulService());
+      ..registerSingleton<SoulService>(SoulService())
+      ..registerSingleton<SchoolService>(SchoolService());
   }
 
   static List<BlocProvider> registerCubits(GetIt getIt) {
@@ -56,7 +59,13 @@ class MissionsModule {
       ),
       BlocProvider<PastMissionResourceCubit>(
         create: (context) => PastMissionResourceCubit(
-          missionService: getIt(),
+          schoolService: getIt(),
+          hiveService: getIt<HiveService>(),
+        ),
+      ),
+      BlocProvider<SchoolDetailsResourceCubit>(
+        create: (context) => SchoolDetailsResourceCubit(
+          schoolService: getIt(),
           hiveService: getIt<HiveService>(),
         ),
       ),
