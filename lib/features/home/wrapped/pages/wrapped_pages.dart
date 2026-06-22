@@ -592,7 +592,11 @@ class SummaryWrappedPage extends StatelessWidget {
         SizedBox(
           width: 200,
           child: OutlinedButton.icon(
-            onPressed: () => Share.share(_shareText()),
+            onPressed: () => SharePlus.instance.share(
+              ShareParams(
+                text: _shareText(),
+              ),
+            ),
             icon: const Icon(Icons.share_rounded, color: PRFColors.white),
             label: const Text(
               'Share Your Wrapped',
