@@ -740,7 +740,7 @@ packages:
     source: hosted
     version: "0.7.0"
   flutter_svg:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_svg
       sha256: "35882981abcbfb8c15b286f0cd690ff25bac12d95eff3e25ee207f37d4c42e7f"
@@ -1150,7 +1150,7 @@ packages:
     source: hosted
     version: "0.7.2"
   json_annotation:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: json_annotation
       sha256: "2a743920d81b7910627f68ee2c9ac1fc0bfee32b9fc3403587d7c6791ca12f80"
@@ -1478,7 +1478,7 @@ packages:
     source: hosted
     version: "0.9.0"
   pdfx:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: pdfx
       sha256: "29db9b71d46bf2335e001f91693f2c3fbbf0760e4c2eb596bf4bafab211471c1"
@@ -2258,14 +2258,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
-  wolt_modal_sheet:
-    dependency: "direct main"
-    description:
-      name: wolt_modal_sheet
-      sha256: "03e28e39dd4de44dc58a7c623877488a89ca3b41a62fc3e70bfc86b64be067d6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.11.0"
   xdg_directories:
     dependency: transitive
     description:
