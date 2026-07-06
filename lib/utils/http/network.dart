@@ -41,7 +41,7 @@ class NetworkUtil {
         headers: <String, dynamic>{
           'Accept': 'application/json',
           'X-App-Version': AppVersionHelper.getFullAppVersion(),
-          'X-PRF-App': 'PRF-Missions-${AppVersionHelper.getFullAppVersion()}',
+          'X-HMT-App': 'HMT-Missions-${AppVersionHelper.getFullAppVersion()}',
         },
         // Fixed timeout configuration
         connectTimeout: const Duration(seconds: 30),

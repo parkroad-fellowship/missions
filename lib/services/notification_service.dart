@@ -1,6 +1,5 @@
 import 'package:app/di/di_container.dart';
 import 'package:app/enums/common/prf_notification_type.dart';
-import 'package:app/enums/mission/prf_time_of_day.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_prompt.dart';
 import 'package:app/models/remote/prayer/prf_prayer_response.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 abstract class NotificationService {
   Future<void> init();
@@ -320,65 +318,65 @@ class NotificationServiceImpl implements NotificationService {
   Future<void> schedulePrayerPromptNotifications({
     required List<PRFPrayerPrompt> prayerPrompts,
   }) async {
-    final notificationsEnabled = getIt<HiveService>().settings
-        .areNotificationsEnabled();
-    if (!notificationsEnabled) return;
-    await AwesomeNotifications().cancelAllSchedules();
-    for (final prayerPrompt in prayerPrompts) {
-      await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          autoDismissible: false,
-          id: int.parse('${prayerPrompt.dayOfWeek}${prayerPrompt.timeOfDay}'),
-          channelKey: 'prayer_prompts',
-          title: 'PRF: Prayer watch',
-          body: prayerPrompt.description,
-          payload: {
-            'type': 'prayer_prompt',
-            'prayer_prompt_ulid': prayerPrompt.ulid,
-            'prayer_prompt_description': prayerPrompt.description,
-          },
-        ),
-        // Show this notification at a particular time of day
-        schedule: NotificationCalendar(
-          weekday: prayerPrompt.dayOfWeek,
-          hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
-          minute: 0,
-          second: 0,
-          repeats: true,
-          allowWhileIdle: true,
-          timeZone: _timezone,
-        ),
-      );
-    }
+    // final notificationsEnabled = getIt<HiveService>().settings
+    //     .areNotificationsEnabled();
+    // if (!notificationsEnabled) return;
+    // await AwesomeNotifications().cancelAllSchedules();
+    // for (final prayerPrompt in prayerPrompts) {
+    //   await AwesomeNotifications().createNotification(
+    //     content: NotificationContent(
+    //       autoDismissible: false,
+    //       id: int.parse('${prayerPrompt.dayOfWeek}${prayerPrompt.timeOfDay}'),
+    //       channelKey: 'prayer_prompts',
+    //       title: 'PRF: Prayer watch',
+    //       body: prayerPrompt.description,
+    //       payload: {
+    //         'type': 'prayer_prompt',
+    //         'prayer_prompt_ulid': prayerPrompt.ulid,
+    //         'prayer_prompt_description': prayerPrompt.description,
+    //       },
+    //     ),
+    //     // Show this notification at a particular time of day
+    //     schedule: NotificationCalendar(
+    //       weekday: prayerPrompt.dayOfWeek,
+    //       hour: PRFTimeOfDay.fromIndex(prayerPrompt.timeOfDay).hour,
+    //       minute: 0,
+    //       second: 0,
+    //       repeats: true,
+    //       allowWhileIdle: true,
+    //       timeZone: _timezone,
+    //     ),
+    //   );
+    // }
   }
 
   @override
   Future<void> scheduleGivingNotification() async {
-    final notificationsEnabled = getIt<HiveService>().settings
-        .areNotificationsEnabled();
-    if (!notificationsEnabled) return;
-    await AwesomeNotifications().cancelAllSchedules();
-    await AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        autoDismissible: false,
-        id: 111001,
-        channelKey: 'giving_prompts',
-        title: 'PRF: Support',
-        body: 'Consider supporting the fellowship with your giving',
-        payload: {'type': 'giving_prompt'},
-      ),
-      // Show this notification every Friday at 1250 Hours
-      schedule: NotificationCalendar(
-        weekday: 5,
-        hour: 12,
-        minute: 50,
-        second: 0,
-        repeats: true,
-        allowWhileIdle: true,
-        timeZone: _timezone,
-      ),
-    );
+    // final notificationsEnabled = getIt<HiveService>().settings
+    //     .areNotificationsEnabled();
+    // if (!notificationsEnabled) return;
+    // await AwesomeNotifications().cancelAllSchedules();
+    // await AwesomeNotifications().createNotification(
+    //   content: NotificationContent(
+    //     autoDismissible: false,
+    //     id: 111001,
+    //     channelKey: 'giving_prompts',
+    //     title: 'PRF: Support',
+    //     body: 'Consider supporting the fellowship with your giving',
+    //     payload: {'type': 'giving_prompt'},
+    //   ),
+    //   // Show this notification every Friday at 1250 Hours
+    //   schedule: NotificationCalendar(
+    //     weekday: 5,
+    //     hour: 12,
+    //     minute: 50,
+    //     second: 0,
+    //     repeats: true,
+    //     allowWhileIdle: true,
+    //     timeZone: _timezone,
+    //   ),
+    // );
   }
 
-  String get _timezone => tz.local.name;
+  // String get _timezone => tz.local.name;
 }

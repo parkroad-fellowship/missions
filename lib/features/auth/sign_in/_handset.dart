@@ -101,7 +101,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   ],
                                 ),
                                 child: ExtendedImage.asset(
-                                  'assets/images/app-logo.png',
+                                  'assets/images/hmt-icon.png',
                                   height: 60,
                                   width: 69,
                                 ),

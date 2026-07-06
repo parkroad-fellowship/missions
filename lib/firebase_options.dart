@@ -48,12 +48,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAPRptZXBum6K_NdaTF5alei7Z9H55kIfg',
-    appId: '1:899177334428:android:0c399ecc63460bc4b18f59',
+    appId: '1:899177334428:android:9120f41859d57199b18f59',
     messagingSenderId: '899177334428',
     projectId: 'parkroad-fellowship',
     storageBucket: 'parkroad-fellowship.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD4GCdn77Z79Z7lxkNbaUImu7iVYGDBSw4',
     appId: '1:899177334428:ios:44321bf608b421d7b18f59',
@@ -66,7 +65,6 @@ class DefaultFirebaseOptions {
         '899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7.apps.googleusercontent.com',
     iosBundleId: 'app.parkroadfellowship.org',
   );
-
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCJjit7qKk0sqo0cxNrhreR0gNfSTlSc00',
     appId: '1:899177334428:web:f93f20d18f092d8cb18f59',

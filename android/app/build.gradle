@@ -51,7 +51,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.parkroadfellowship.app"
+        applicationId "org.parkroadfellowship.hmt"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
@@ -82,17 +82,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "PRF Missions"]
+            manifestPlaceholders = [appName: "HMT Missions"]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] PRF Missions"]
+            manifestPlaceholders = [appName: "[STG] HMT Missions"]
         }
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] PRF Missions"]
+            manifestPlaceholders = [appName: "[DEV] HMT Missions"]
         }
     }
 
