@@ -1624,10 +1624,11 @@ packages:
   prf_design:
     dependency: "direct main"
     description:
-      path: "../../prf_design_system"
-      relative: true
-    source: path
-    version: "0.8.4"
+      name: prf_design
+      sha256: b84ea4837f7fce44d30a60bf985a5f043b7d593f85ff8acde7a3b6427f1d5f9a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.5"
   provider:
     dependency: transitive
     description:
