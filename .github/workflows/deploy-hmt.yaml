@@ -101,8 +101,6 @@ jobs:
           flutter build appbundle \
             --flavor production \
             --target lib/main_production.dart \
-            --obfuscate \
-            --split-debug-info=debug-symbols \
             --dart-define=APP_ID="$APP_ID" \
             --dart-define=APP_SECRET="$APP_SECRET" \
             --dart-define=BASE_DOMAIN="$BASE_DOMAIN" \
@@ -110,25 +108,25 @@ jobs:
             --dart-define=HIVE_ENCRYPTION_KEY="$HIVE_ENCRYPTION_KEY" \
             --dart-define=POSTHOG_KEY="$POSTHOG_KEY"
 
-      - name: Upload AAB to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{ secrets.FIREBASE_HMT_APP_ID }}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          groups: dev-team
-          releaseNotes: ${{ github.event.inputs.notes }}
-          file: build/app/outputs/bundle/productionRelease/app-production-release.aab
+      # - name: Upload AAB to Firebase App Distribution
+      #   uses: wzieba/Firebase-Distribution-Github-Action@v1
+      #   with:
+      #     appId: ${{ secrets.FIREBASE_HMT_APP_ID }}
+      #     serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      #     groups: dev-team
+      #     releaseNotes: ${{ github.event.inputs.notes }}
+      #     file: build/app/outputs/bundle/productionRelease/app-production-release.aab
 
-      - name: Upload debug symbols to Firebase Crashlytics
-        env:
-          FIREBASE_CRED: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          FIREBASE_APP: ${{ secrets.FIREBASE_HMT_APP_ID }}
-        run: |
-          echo "$FIREBASE_CRED" > /tmp/firebase-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-credentials.json
-          zip -r debug-symbols.zip debug-symbols
-          curl -sL https://firebase.tools | bash
-          firebase crashlytics:symbols:upload --app="$FIREBASE_APP" debug-symbols.zip
+      # - name: Upload debug symbols to Firebase Crashlytics
+      #   env:
+      #     FIREBASE_CRED: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      #     FIREBASE_APP: ${{ secrets.FIREBASE_HMT_APP_ID }}
+      #   run: |
+      #     echo "$FIREBASE_CRED" > /tmp/firebase-credentials.json
+      #     export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-credentials.json
+      #     zip -r debug-symbols.zip debug-symbols
+      #     curl -sL https://firebase.tools | bash
+      #     firebase crashlytics:symbols:upload --app="$FIREBASE_APP" debug-symbols.zip
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
