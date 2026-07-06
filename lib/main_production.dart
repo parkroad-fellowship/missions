@@ -20,12 +20,6 @@ Future<void> main() async {
       hiveBox: 'prf-missions--${AppVersionHelper.getSluggedAppVersion()}',
       baseDomain: EncryptionHelper.requiredDefine(EncryptionHelper.baseDomain),
       urlScheme: 'https',
-      socketDomain: EncryptionHelper.requiredDefine(
-        EncryptionHelper.socketDomain,
-      ),
-      socketKey: EncryptionHelper.requiredDefine(EncryptionHelper.socketKey),
-      socketScheme: 'wss',
-      socketPort: 443,
       azureConnString: EncryptionHelper.requiredDefine(
         EncryptionHelper.azureConnString,
       ),

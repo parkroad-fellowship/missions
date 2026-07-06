@@ -16,10 +16,6 @@ Future<void> main() async {
       hiveBox: 'prf-super-app-stg',
       baseDomain: 'stg-api.parkroadfellowship.org',
       urlScheme: 'https',
-      socketDomain: 'stg-ws.parkroadfellowship.org',
-      socketKey: 'yvnlkaqadqiadutrs9sa',
-      socketScheme: 'wss',
-      socketPort: 443,
       azureConnString: '',
       appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
       appSecret:

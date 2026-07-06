@@ -5,7 +5,7 @@ import 'package:app/services/errors/unified_error_reporting_service.dart';
 import 'package:app/services/firebase/firebase_messaging_service.dart';
 import 'package:app/services/firebase/firebase_service.dart';
 import 'package:app/services/notification_service.dart';
-import 'package:app/services/socket_service.dart';
+// import 'package:app/services/socket_service.dart';
 import 'package:get_it/get_it.dart';
 
 /// Firebase module for registering Firebase-related services.
@@ -26,9 +26,9 @@ class FirebaseModule {
         FirebaseMessagingServiceImpl(),
       )
       ..registerSingleton<NotificationService>(NotificationServiceImpl())
-      ..registerSingleton<SocketService>(
-        SocketServiceImpl(hiveService: getIt()),
-      )
+      // ..registerSingleton<SocketService>(
+      //   SocketServiceImpl(hiveService: getIt()),
+      // )
       ..registerSingleton<AnalyticsService>(UnifiedAnalyticsService())
       ..registerSingleton<ErrorReportingService>(
         UnifiedErrorReportingService(

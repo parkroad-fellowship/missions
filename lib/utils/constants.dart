@@ -6,10 +6,10 @@ class PRFSuperAppValues {
     required this.urlScheme,
     required this.baseDomain,
     required this.hiveBox,
-    required this.socketDomain,
-    required this.socketKey,
-    required this.socketScheme,
-    required this.socketPort,
+    // required this.socketDomain,
+    // required this.socketKey,
+    // required this.socketScheme,
+    // required this.socketPort,
     required this.azureConnString,
     required this.appId,
     required this.appSecret,
@@ -21,10 +21,10 @@ class PRFSuperAppValues {
   final String urlScheme;
   final String baseDomain;
   final String hiveBox;
-  final String socketDomain;
-  final String socketKey;
-  final String socketScheme;
-  final int socketPort;
+  // final String socketDomain;
+  // final String socketKey;
+  // final String socketScheme;
+  // final int socketPort;
   final String azureConnString;
   final String appId;
   final String appSecret;

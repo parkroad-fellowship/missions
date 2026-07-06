@@ -16,10 +16,6 @@ Future<void> main() async {
       hiveBox: 'prf-super-app-dev',
       baseDomain: 'dev-api.parkroadfellowship.org',
       urlScheme: 'https',
-      socketDomain: 'dev-ws.parkroadfellowship.org',
-      socketKey: 'yvnlkaqadqiadutrs9sa',
-      socketScheme: 'wss',
-      socketPort: 443,
       azureConnString: '',
       appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
       appSecret:

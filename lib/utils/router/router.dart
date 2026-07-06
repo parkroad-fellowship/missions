@@ -75,12 +75,12 @@ class PRFSuperAppRouter extends RootStackRouter {
       guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeft,
     ),
-    CustomRoute<dynamic>(
-      page: StudentEnquiriesRoute.page,
-      path: studentEnquiriesRoute,
-      guards: [AuthGuard()],
-      transitionsBuilder: TransitionsBuilders.slideLeft,
-    ),
+    // CustomRoute<dynamic>(
+    //   page: StudentEnquiriesRoute.page,
+    //   path: studentEnquiriesRoute,
+    //   guards: [AuthGuard()],
+    //   transitionsBuilder: TransitionsBuilders.slideLeft,
+    // ),
     CustomRoute<dynamic>(
       page: AccountRoute.page,
       path: accountRoute,
@@ -111,12 +111,12 @@ class PRFSuperAppRouter extends RootStackRouter {
       guards: [AuthGuard()],
       transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
     ),
-    CustomRoute<dynamic>(
-      page: StudentEnquiryRepliesRoute.page,
-      path: repliesRoute,
-      guards: [AuthGuard()],
-      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-    ),
+    // CustomRoute<dynamic>(
+    //   page: StudentEnquiryRepliesRoute.page,
+    //   path: repliesRoute,
+    //   guards: [AuthGuard()],
+    //   transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+    // ),
     CustomRoute<dynamic>(
       page: MemberFAQRoute.page,
       path: memberLearnerFaqs,

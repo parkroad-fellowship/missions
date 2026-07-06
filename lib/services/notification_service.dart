@@ -189,19 +189,19 @@ abstract class NotificationService {
             const LandingRoute(),
             const EventsRoute(),
           ]);
-        case PRFNotificationType.studentEnquiry:
-          await getIt<PRFSuperAppRouter>().replaceAll([
-            const LandingRoute(),
-            const StudentEnquiriesRoute(),
-          ]);
-        case PRFNotificationType.studentEnquiryReply:
-          await getIt<PRFSuperAppRouter>().replaceAll([
-            const LandingRoute(),
-            const StudentEnquiriesRoute(),
-            StudentEnquiryRepliesRoute(
-              enquiryUlid: payload['student_enquiry_ulid']!,
-            ),
-          ]);
+        // case PRFNotificationType.studentEnquiry:
+        //   await getIt<PRFSuperAppRouter>().replaceAll([
+        //     const LandingRoute(),
+        //     const StudentEnquiriesRoute(),
+        //   ]);
+        // case PRFNotificationType.studentEnquiryReply:
+        //   await getIt<PRFSuperAppRouter>().replaceAll([
+        //     const LandingRoute(),
+        //     const StudentEnquiriesRoute(),
+        //     StudentEnquiryRepliesRoute(
+        //       enquiryUlid: payload['student_enquiry_ulid']!,
+        //     ),
+        //   ]);
       }
     }
   }

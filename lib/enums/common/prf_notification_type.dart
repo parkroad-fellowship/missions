@@ -8,9 +8,10 @@ enum PRFNotificationType {
   missionThankYou,
   missionWhatsappGroupCreated,
   missionSubscription,
-  newEvent,
-  studentEnquiry,
-  studentEnquiryReply;
+  newEvent
+  // studentEnquiry,
+  // studentEnquiryReply
+  ;
 
   static PRFNotificationType fromType(String type) {
     switch (type) {
@@ -32,10 +33,10 @@ enum PRFNotificationType {
         return PRFNotificationType.missionSubscription;
       case 'new_event':
         return PRFNotificationType.newEvent;
-      case 'student_enquiry':
-        return PRFNotificationType.studentEnquiry;
-      case 'student_enquiry_reply':
-        return PRFNotificationType.studentEnquiryReply;
+      // case 'student_enquiry':
+      //   return PRFNotificationType.studentEnquiry;
+      // case 'student_enquiry_reply':
+      //   return PRFNotificationType.studentEnquiryReply;
       default:
         return PRFNotificationType.defaultPrompt;
     }

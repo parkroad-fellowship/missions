@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:app/di/di_container.dart';
 import 'package:app/firebase_options.dart';
 import 'package:app/models/remote/common/auth.dart';
-import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/analytics/_analytics_service.dart';
 import 'package:app/services/api/auth_service.dart';
 import 'package:app/services/errors/_error_reporting_service.dart';
@@ -12,7 +11,6 @@ import 'package:app/services/firebase/firebase_messaging_service.dart';
 import 'package:app/services/firebase/firebase_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/services/media/media_service.dart';
-import 'package:app/services/socket_service.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/http/request_signer.dart';
 import 'package:bloc/bloc.dart';
@@ -101,19 +99,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     final user = getIt<HiveService>().auth.retrieveProfile();
 
     if (user != null) {
-      final defaultConfig = getIt<SocketService>().defaultConfig();
-
-      try {
-        await getIt<SocketService>().init(
-          socketConfig: SocketConfig(
-            privateChannels: defaultConfig.privateChannels,
-            presenceChannels: defaultConfig.presenceChannels,
-          ),
-        );
-      } catch (e) {
-        Logger().e('SocketService init error: $e');
-      }
-
       await getIt<AnalyticsService>().identifyUser(user: user);
       await getIt<ErrorReportingService>().setUserId(user.email);
 

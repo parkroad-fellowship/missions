@@ -4,15 +4,9 @@ import 'package:app/app/app.dart';
 import 'package:app/di/di_container.dart';
 import 'package:app/enums/common/prf_environment.dart';
 import 'package:app/firebase_options.dart';
-import 'package:app/models/remote/common/auth.dart';
-import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/services/analytics/_analytics_service.dart';
-import 'package:app/services/api/auth_service.dart';
-import 'package:app/services/firebase/firebase_messaging_service.dart';
 import 'package:app/services/firebase/firebase_service.dart';
-import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/services/media/media_service.dart';
-import 'package:app/services/socket_service.dart';
 import 'package:app/utils/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -55,10 +49,10 @@ void main() {
           hiveBox: 'prf-super-app-dev',
           baseDomain: 'dev.api.parkroadfellowship.org',
           urlScheme: 'https',
-          socketDomain: 'dev.ws.parkroadfellowship.org',
-          socketKey: 'yvnlkaqadqiadutrs9sa',
-          socketScheme: 'wss',
-          socketPort: 443,
+          // socketDomain: 'dev.ws.parkroadfellowship.org',
+          // socketKey: 'yvnlkaqadqiadutrs9sa',
+          // socketScheme: 'wss',
+          // socketPort: 443,
           azureConnString:
               'DefaultEndpointsProtocol=https;AccountName=prfcorestorage;'
               'AccountKey=oizfzMYG6gsjQWTfix8V/50Jh40qCg93DzNiFok/DxJjDOhffzM0'
@@ -99,33 +93,6 @@ void main() {
       }
 
       await getIt<AnalyticsService>().init();
-
-      final user = getIt<HiveService>().auth.retrieveProfile();
-      if (user != null) {
-        final defaultConfig = getIt<SocketService>().defaultConfig();
-        try {
-          await getIt<SocketService>().init(
-            socketConfig: SocketConfig(
-              privateChannels: defaultConfig.privateChannels,
-              presenceChannels: defaultConfig.presenceChannels,
-            ),
-          );
-        } catch (e) {
-          Logger().e('SocketService init error: $e');
-        }
-        await getIt<AnalyticsService>().identifyUser(user: user);
-        try {
-          final fcmToken = await getIt<FirebaseMessagingService>()
-              .retrieveFCMToken();
-          if (fcmToken.isNotEmpty) {
-            await getIt<AuthService>().updateProfile(
-              updateDTO: UserUpdateDTO(fcmTokens: [fcmToken]),
-            );
-          }
-        } catch (e) {
-          Logger().e('Firebase Messaging init error: $e');
-        }
-      }
 
       await getIt<MediaService>().initDownloader();
 
