@@ -55,10 +55,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -91,10 +91,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -127,10 +127,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -145,6 +145,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "899177334428-4rv9lpvghcpmm0uhslqj8i7jsovrlom5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.parkroadfellowship.hmt",
+            "certificate_hash": "1cfcdfeab5bf167154db1cd639a3ac5a86b77af4"
+          }
+        },
+        {
+          "client_id": "899177334428-p9spso8u0f4vr8qg3dv2ljrh89vv025h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.parkroadfellowship.hmt",
+            "certificate_hash": "e22a058138e6356324b553f5047c14af86bcb0aa"
+          }
+        },
         {
           "client_id": "899177334428-uki7dklg44onv8e8718e4freb3s3p8nn.apps.googleusercontent.com",
           "client_type": 3
@@ -163,10 +179,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -215,10 +231,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -259,10 +275,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -303,10 +319,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -339,10 +355,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
@@ -375,10 +391,10 @@
               "client_type": 3
             },
             {
-              "client_id": "899177334428-2u8vvf9drhncq874nv6e4k1n97cet6ev.apps.googleusercontent.com",
+              "client_id": "899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.parkroadfellowship.leadership.stg"
+                "bundle_id": "hmt.parkroadfellowship.org"
               }
             }
           ]
