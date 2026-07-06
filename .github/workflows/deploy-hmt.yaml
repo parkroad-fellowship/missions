@@ -1,6 +1,9 @@
 name: Deploy HMT
 
 on:
+  push:
+    branches:
+      - devops/hmt-fellowship
   workflow_dispatch:
     inputs:
       play-store-track:
