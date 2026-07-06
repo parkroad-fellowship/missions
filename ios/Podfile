@@ -29,7 +29,7 @@ flutter_ios_podfile_setup
 
 target 'Runner' do
   use_frameworks!
-  # use_modular_headers!  # Commented out - conflicts with Swift bridging header
+  use_modular_headers!  # Commented out - conflicts with Swift bridging header
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
@@ -37,6 +37,16 @@ target 'Runner' do
   end
   target 'RunnerUITests' do
     inherit! :complete
+  end
+end
+
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if pod.name == 'flutter_downloader'
+      def pod.build_type
+        Pod::BuildType.static_library
+      end
+    end
   end
 end
 
