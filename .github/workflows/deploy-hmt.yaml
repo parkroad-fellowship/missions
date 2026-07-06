@@ -147,5 +147,5 @@ jobs:
         run: |
           bundle exec fastlane supply \
             --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
-            --track "$PLAY_TRACK" \
+            --track internal \
             --release_status draft
