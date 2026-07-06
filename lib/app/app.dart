@@ -1,3 +1,4 @@
+import 'package:app/app/theme/hmt_theme.dart';
 import 'package:app/di/di_container.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/services/analytics/_analytics_service.dart';
@@ -22,9 +23,11 @@ class PRFSuperApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: PRFTheme.light(
               scaleFactor: DeviceHelper.getScaleFactor(context: context),
+              config: HMTTheme.light,
             ),
             darkTheme: PRFTheme.dark(
               scaleFactor: DeviceHelper.getScaleFactor(context: context),
+              config: HMTTheme.dark,
             ),
             themeMode: themeMode.toFlutterThemeMode(),
             localizationsDelegates: AppLocalizations.localizationsDelegates,

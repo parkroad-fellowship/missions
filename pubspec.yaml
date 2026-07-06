@@ -59,8 +59,9 @@ dependencies:
   phone_form_field: ^10.0.17
   posthog_flutter: ^5.27.0
   pretty_dio_logger: ^1.4.0
-  prf_design: ^0.8.4
-  # path: ../../prf_design_system
+  # prf_design: ^0.8.4
+  prf_design:
+    path: ../../prf_design_system
   record: ^7.1.0
   share_plus: ^13.1.0
   shorebird_code_push: ^2.0.6

@@ -35,7 +35,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7</string>
+				<string>com.googleusercontent.apps.899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq</string>
 				<string>https</string>
 				<string>http</string>
 				<string>google.navigation</string>
@@ -46,7 +46,7 @@
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GIDClientID</key>
-	<string>899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7.apps.googleusercontent.com</string>
+	<string>899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
@@ -62,18 +62,18 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your audio files for upload.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(FLAVOR_APP_NAME) needs access to your camera to take photos and videos for events and missions.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to protect your giving history.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>ITSAppUsesNonExemptEncryption</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to access your microphone to record sermon sessions.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(FLAVOR_APP_NAME) requires access to your photos and videos to enable you to set your profile picture and upload photos from events and missions you attend.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(FLAVOR_APP_NAME) needs to save photos and videos to your photo library.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>$(FLAVOR_APP_NAME) needs access to your camera to take photos and videos for events and missions.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(FLAVOR_APP_NAME) requires access to your photos and videos to enable you to set your profile picture and upload photos from events and missions you attend.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
