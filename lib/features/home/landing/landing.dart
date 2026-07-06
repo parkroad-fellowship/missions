@@ -79,24 +79,24 @@ class _LandingPageState extends State<LandingPage> {
       //   animationDelay: 0,
       //   deskGroup: 'Faith & Ministry',
       // ),
-      LandingActionItem(
-        title: l10n.suggestAMission,
-        assetPath: 'assets/svgs/chatting.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.missionGroundSuggestionsRoute,
-        ),
-        animationDelay: 0,
-        deskGroup: 'Faith & Ministry',
-      ),
-      LandingActionItem(
-        title: l10n.give,
-        assetPath: 'assets/svgs/giving.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.givingRoute,
-        ),
-        animationDelay: 0,
-        deskGroup: 'Faith & Ministry',
-      ),
+      // LandingActionItem(
+      //   title: l10n.suggestAMission,
+      //   assetPath: 'assets/svgs/chatting.svg',
+      //   onTap: () => context.router.pushPath(
+      //     PRFSuperAppRouter.missionGroundSuggestionsRoute,
+      //   ),
+      //   animationDelay: 0,
+      //   deskGroup: 'Faith & Ministry',
+      // ),
+      // LandingActionItem(
+      //   title: l10n.give,
+      //   assetPath: 'assets/svgs/giving.svg',
+      //   onTap: () => context.router.pushPath(
+      //     PRFSuperAppRouter.givingRoute,
+      //   ),
+      //   animationDelay: 0,
+      //   deskGroup: 'Faith & Ministry',
+      // ),
       LandingActionItem(
         title: l10n.answerFaqs,
         assetPath: 'assets/svgs/recording.svg',
