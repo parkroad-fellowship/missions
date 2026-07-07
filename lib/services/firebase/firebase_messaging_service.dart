@@ -37,7 +37,7 @@ abstract class FirebaseMessagingService {
 
     // Only process notifications explicitly targeted at this app
     final targetApp = data['target_app'] as String?;
-    if (targetApp != 'missions_app') {
+    if (targetApp != 'hmt_missions_app') {
       Logger().d('Ignoring FCM message: target_app=$targetApp');
       return;
     }
@@ -112,7 +112,7 @@ class FirebaseMessagingServiceImpl implements FirebaseMessagingService {
     try {
       final prefix = PRFSuperAppConfig.instance!.values.environment;
 
-      final topics = ['${prefix.name}_missions_app'];
+      final topics = ['${prefix.name}_hmt_missions_app'];
       for (final topic in topics) {
         try {
           await _firebaseMessaging.subscribeToTopic(topic);
