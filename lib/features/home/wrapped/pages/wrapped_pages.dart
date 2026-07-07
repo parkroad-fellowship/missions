@@ -541,7 +541,7 @@ class SummaryWrappedPage extends StatelessWidget {
 
   String _shareText() {
     final m = memberEngagement;
-    return 'My $year PRF Missions Wrapped:\n'
+    return 'My $year HMT Missions Wrapped:\n'
         '${m.missionStats.totalMissions} Missions\n'
         '${m.impactStats.soulsTouched} Souls Touched\n'
         '${m.learningStats.coursesCompleted} Courses\n'

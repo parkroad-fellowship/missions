@@ -1429,7 +1429,7 @@ abstract class AppLocalizations {
   /// No description provided for @suggestMissionDescription.
   ///
   /// In en, this message translates to:
-  /// **'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.'**
+  /// **'Suggest a mission ground for HMT to consider. This is not a request to service the mission, but rather a suggestion for future missions.'**
   String get suggestMissionDescription;
 
   /// No description provided for @suggestMissionSubTitle.
@@ -1933,7 +1933,7 @@ abstract class AppLocalizations {
   /// No description provided for @allowNotifications.
   ///
   /// In en, this message translates to:
-  /// **'Allow PRF Missions to send you prayer and mission notifications.'**
+  /// **'Allow HMT Missions to send you prayer and mission notifications.'**
   String get allowNotifications;
 
   /// No description provided for @deny.
@@ -1981,7 +1981,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBack.
   ///
   /// In en, this message translates to:
-  /// **'Welcome back! Please sign in with your PRF organisation email to continue.'**
+  /// **'Welcome back! Please sign in with your HMT organisation email to continue.'**
   String get welcomeBack;
 
   /// No description provided for @welcome.
@@ -2017,7 +2017,7 @@ abstract class AppLocalizations {
   /// No description provided for @submitPrayerRequestDesc.
   ///
   /// In en, this message translates to:
-  /// **'Share your prayer request with the PRF community. We will pray for you.'**
+  /// **'Share your prayer request with the HMT community. We will pray for you.'**
   String get submitPrayerRequestDesc;
 
   /// No description provided for @addMissionPhotos.
@@ -2233,7 +2233,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeIntro.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to PRF Missions'**
+  /// **'Welcome to HMT Missions'**
   String get welcomeIntro;
 
   /// No description provided for @paymentActions.

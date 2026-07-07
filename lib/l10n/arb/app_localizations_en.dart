@@ -715,7 +715,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suggestMissionDescription =>
-      'Suggest a mission ground for PRF to consider. This is not a request to service the mission, but rather a suggestion for future missions.';
+      'Suggest a mission ground for HMT to consider. This is not a request to service the mission, but rather a suggestion for future missions.';
 
   @override
   String get suggestMissionSubTitle =>
@@ -987,7 +987,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allowNotifications =>
-      'Allow PRF Missions to send you prayer and mission notifications.';
+      'Allow HMT Missions to send you prayer and mission notifications.';
 
   @override
   String get deny => 'Deny';
@@ -1013,7 +1013,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeBack =>
-      'Welcome back! Please sign in with your PRF organisation email to continue.';
+      'Welcome back! Please sign in with your HMT organisation email to continue.';
 
   @override
   String get welcome => 'Welcome back!';
@@ -1033,7 +1033,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get submitPrayerRequestDesc =>
-      'Share your prayer request with the PRF community. We will pray for you.';
+      'Share your prayer request with the HMT community. We will pray for you.';
 
   @override
   String get addMissionPhotos => 'Add mission media';
@@ -1154,7 +1154,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'What would you like to point out concerning this soul?';
 
   @override
-  String get welcomeIntro => 'Welcome to PRF Missions';
+  String get welcomeIntro => 'Welcome to HMT Missions';
 
   @override
   String get paymentActions => 'Payment Actions';
