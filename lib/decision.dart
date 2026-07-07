@@ -63,7 +63,7 @@ class _DecisionPageState extends State<DecisionPage> {
         child: Scaffold(
           body: Center(
             child: ExtendedImage.asset(
-              'assets/images/hmt-icon.png',
+              'assets/images/hmt-icon-store.png',
               width: 222,
               cacheRawData: true,
             ),
