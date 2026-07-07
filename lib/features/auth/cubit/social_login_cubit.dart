@@ -1,6 +1,7 @@
 import 'package:app/models/remote/common/auth.dart';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/api/auth_service.dart';
+import 'package:app/services/firebase/firebase_messaging_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,13 +14,16 @@ class SocialLoginCubit extends Cubit<SocialLoginState> {
   SocialLoginCubit({
     required HiveService hiveService,
     required AuthService authService,
+    required FirebaseMessagingService firebaseMessagingService,
   }) : super(const SocialLoginState.initial()) {
     _hiveService = hiveService;
     _authService = authService;
+    _firebaseMessagingService = firebaseMessagingService;
   }
 
   late HiveService _hiveService;
   late AuthService _authService;
+  late FirebaseMessagingService _firebaseMessagingService;
 
   Future<void> login({required SocialAuthDTO socialAuthDTO}) async {
     emit(const SocialLoginState.loading());
@@ -33,6 +37,15 @@ class SocialLoginCubit extends Cubit<SocialLoginState> {
       final user = await _authService.getUser();
 
       _hiveService.auth.persistProfile(user);
+
+      final fcmToken = await _firebaseMessagingService.retrieveFCMToken();
+      if (fcmToken.isNotEmpty) {
+        await _authService.updateProfile(
+          updateDTO: UserUpdateDTO(
+            fcmTokens: [fcmToken],
+          ),
+        );
+      }
 
       emit(const SocialLoginState.loaded());
     } on Failure catch (e) {

@@ -32,6 +32,7 @@ class AuthModule {
         create: (context) => SocialLoginCubit(
           authService: getIt(),
           hiveService: getIt(),
+          firebaseMessagingService: getIt(),
         ),
       ),
     ];
