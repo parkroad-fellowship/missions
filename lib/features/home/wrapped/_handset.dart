@@ -212,6 +212,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset>
             );
 
             return Scaffold(
+              appBar: const PRFAppBar(title: 'Wrapped'),
               body: Stack(
                 children: [
                   Listener(
@@ -283,6 +284,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset>
 
   Widget _buildInsufficientDataPage() {
     return Scaffold(
+      appBar: const PRFAppBar(title: 'Wrapped'),
       body: SafeArea(
         child: Column(
           children: [
@@ -333,6 +335,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset>
 
   Widget _buildLoadingState(ThemeData theme) {
     return Scaffold(
+      appBar: const PRFAppBar(title: 'Wrapped'),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
