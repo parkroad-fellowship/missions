@@ -86,7 +86,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   PRFSpacingTokens.lg,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: PRFColors.white,
+                                  color: theme.scaffoldBackgroundColor,
                                   borderRadius: BorderRadius.circular(
                                     PRFRadiusTokens.md,
                                   ),
