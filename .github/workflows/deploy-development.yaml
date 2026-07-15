@@ -8,11 +8,6 @@ on:
         required: false
         default: "Development build"
 
-permissions:
-  checks: write
-  contents: read
-  pull-requests: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -27,34 +22,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Flutter Setup & Analysis
+      - name: Flutter Setup
         uses: ./.github/actions/flutter-setup
-
-      - name: Accept Android licenses
-        run: yes | flutter doctor --android-licenses
-
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v2.0
         with:
-          fileName: key.jks
-          encodedString: ${{ secrets.RELEASE_KEYSTORE }}
+          skip-analysis: "true"
 
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-          echo "storePassword=${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
-
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo rm -rf /usr/local/lib/android/sdk/emulator
-          sudo rm -rf /usr/local/lib/android/sdk/system-images
-          df -h
+      - name: Android Setup
+        uses: ./.github/actions/android-setup
+        with:
+          keystore: ${{ secrets.RELEASE_KEYSTORE }}
+          keystore-passphrase: ${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}
+          keystore-password: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          keystore-alias: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
 
       - name: Build APK
         run: |

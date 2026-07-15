@@ -23,11 +23,13 @@ runs:
       with:
         java-version: ${{ inputs.java-version }}
         distribution: "adopt"
+        cache: gradle
 
     - name: Setup Flutter ${{ inputs.flutter-version }}
       uses: subosito/flutter-action@v2
       with:
         flutter-version: ${{ inputs.flutter-version }}
+        cache: true
 
     - name: Install Dependencies
       shell: bash

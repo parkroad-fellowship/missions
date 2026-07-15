@@ -1,6 +1,9 @@
 name: Deploy Production
 
 on:
+  push:
+    branches:
+      - devops/tenanting
   workflow_dispatch:
     inputs:
       play-store-track:
@@ -27,6 +30,9 @@ jobs:
     name: Build & Release AAB (Production)
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    env:
+      FLUTTER_VERSION: "3.44.2"
+      SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -36,24 +42,21 @@ jobs:
       - name: Flutter Setup
         uses: ./.github/actions/flutter-setup
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           skip-analysis: "true"
 
-      - name: Accept Android licenses
-        run: yes | flutter doctor --android-licenses
-
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v2.0
+      - name: Setup Shorebird
+        uses: shorebirdtech/setup-shorebird@v1
         with:
-          fileName: key.jks
-          encodedString: ${{ secrets.RELEASE_KEYSTORE }}
+          cache: true
 
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-          echo "storePassword=${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
+      - name: Android Setup
+        uses: ./.github/actions/android-setup
+        with:
+          keystore: ${{ secrets.RELEASE_KEYSTORE }}
+          keystore-passphrase: ${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}
+          keystore-password: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          keystore-alias: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
 
       - name: Validate production defines
         env:
@@ -79,16 +82,7 @@ jobs:
             exit 1
             fi
 
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo rm -rf /usr/local/lib/android/sdk/emulator
-          sudo rm -rf /usr/local/lib/android/sdk/system-images
-          df -h
-
-      - name: Build AAB
+      - name: Shorebird Release
         env:
             APP_ID: ${{ secrets.PROD_APP_ID }}
             APP_SECRET: ${{ secrets.PROD_APP_SECRET }}
@@ -99,11 +93,11 @@ jobs:
             HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
             POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
         run: |
-          flutter build appbundle \
+          shorebird release android \
             --flavor production \
             --target lib/main_production.dart \
-            --obfuscate \
-            --split-debug-info=debug-symbols \
+            --flutter-version ${{ env.FLUTTER_VERSION }} \
+            -- --obfuscate --split-debug-info=debug-symbols \
             --dart-define=APP_ID="$APP_ID" \
             --dart-define=APP_SECRET="$APP_SECRET" \
             --dart-define=BASE_DOMAIN="$BASE_DOMAIN" \
