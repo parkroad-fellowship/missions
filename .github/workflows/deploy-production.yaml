@@ -119,7 +119,6 @@ jobs:
           shorebird patch android \
             --flavor production \
             --target lib/main_production.dart \
-            --flutter-version ${{ env.FLUTTER_VERSION }} \
             -- --obfuscate --split-debug-info=debug-symbols \
             --dart-define=APP_ID="$APP_ID" \
             --dart-define=APP_SECRET="$APP_SECRET" \
