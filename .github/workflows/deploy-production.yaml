@@ -31,6 +31,9 @@ jobs:
       FLUTTER_VERSION: "3.44.2"
       SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -146,6 +149,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download AAB artifact
         uses: actions/download-artifact@v8
         with:
@@ -165,6 +171,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download debug symbols artifact
         uses: actions/download-artifact@v8
         with:
@@ -187,6 +196,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download AAB artifact
         uses: actions/download-artifact@v8
         with:
@@ -218,6 +230,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download AAB artifact
         uses: actions/download-artifact@v8
         with:
