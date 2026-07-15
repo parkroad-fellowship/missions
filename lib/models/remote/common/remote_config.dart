@@ -17,6 +17,7 @@ abstract class RemoteConfig with _$RemoteConfig {
 abstract class ReviewConfig with _$ReviewConfig {
   factory ReviewConfig({
     required String appStore, // 'ios', 'android', 'huawei', 'all'
+    required String applicationId, // e.g., 'com.example.app'
     required String appVersion,
     required bool isInReview,
   }) = _ReviewConfig;
