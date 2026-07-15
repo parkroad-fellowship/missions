@@ -50,10 +50,6 @@ jobs:
           keystore-password: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           keystore-alias: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
 
-      - name: Install NDK
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;28.2.13676358" || true
-
       - name: Validate production defines
         env:
             APP_ID: ${{ secrets.PROD_APP_ID }}
@@ -88,6 +84,7 @@ jobs:
             AZURE_CONN_STRING: ${{ secrets.PROD_AZURE_CONN_STRING }}
             HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
             POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
+            NO_OPUS_OGG_LIBS: "1"
         run: |
           flutter build appbundle \
             --flavor production \
