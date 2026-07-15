@@ -7,8 +7,6 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    assignees:
-      - "MillerAdulu"
     commit-message:
       prefix: "pub"
       include: "scope"
@@ -25,8 +23,6 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    assignees:
-      - "MillerAdulu"
     commit-message:
       prefix: "ci"
     groups:
@@ -41,7 +37,5 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    assignees:
-      - "MillerAdulu"
     commit-message:
       prefix: "ruby"

@@ -27,6 +27,6 @@ Build the APK via an action and download the APK from Firebase App Distribution 
 
 ## Release Notes
 
-- [ ] Environment or flavor changes included
+- [ ] Environment or flavour changes included
 - [ ] No secrets/credentials committed
 - [ ] Related issue linked (`Closes #...`)
