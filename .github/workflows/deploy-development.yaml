@@ -13,9 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-apk:
+  build:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    name: Build & Distribute APK (Dev)
+    name: Build APK (Dev)
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -42,6 +42,23 @@ jobs:
             --target lib/main_development.dart \
             --release
 
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-artifact
+          path: build/app/outputs/flutter-apk/app-development-release.apk
+          retention-days: 1
+
+  firebase:
+    name: Push to Firebase (Dev)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-artifact
+
       - name: Upload APK to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -49,4 +66,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: dev-team
           releaseNotes: ${{ github.event.inputs.notes }}
-          file: build/app/outputs/flutter-apk/app-development-release.apk
+          file: app-development-release.apk

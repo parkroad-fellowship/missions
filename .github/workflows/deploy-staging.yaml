@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-apk:
-    name: Build & Distribute APK (Staging)
+  build:
+    name: Build APK (Staging)
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -41,6 +41,23 @@ jobs:
             --target lib/main_staging.dart \
             --release
 
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-artifact
+          path: build/app/outputs/flutter-apk/app-staging-release.apk
+          retention-days: 1
+
+  firebase:
+    name: Push to Firebase (Staging)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-artifact
+
       - name: Upload APK to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -48,4 +65,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: dev-team
           releaseNotes: ${{ github.event.inputs.notes }}
-          file: build/app/outputs/flutter-apk/app-staging-release.apk
+          file: app-staging-release.apk

@@ -1,9 +1,6 @@
 name: Deploy Production
 
 on:
-  push:
-    branches:
-      - devops/tenanting
   workflow_dispatch:
     inputs:
       play-store-track:
@@ -26,8 +23,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-aab:
-    name: Build & Release AAB (Production)
+  build:
+    name: Build AAB (Production)
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
@@ -105,6 +102,30 @@ jobs:
             --dart-define=HIVE_ENCRYPTION_KEY="$HIVE_ENCRYPTION_KEY" \
             --dart-define=POSTHOG_KEY="$POSTHOG_KEY"
 
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-artifact
+          path: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          retention-days: 1
+
+      - name: Upload debug symbols artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-symbols
+          path: debug-symbols/
+          retention-days: 1
+
+  firebase:
+    name: Push to Firebase (Production)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aab-artifact
+
       - name: Upload AAB to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -112,7 +133,18 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: dev-team
           releaseNotes: ${{ github.event.inputs.notes }}
-          file: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          file: app-production-release.aab
+
+  crashlytics:
+    name: Upload Symbols to Crashlytics
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download debug symbols artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: debug-symbols
+          path: debug-symbols
 
       - name: Upload debug symbols to Firebase Crashlytics
         env:
@@ -124,6 +156,19 @@ jobs:
           zip -r debug-symbols.zip debug-symbols
           curl -sL https://firebase.tools | bash
           firebase crashlytics:symbols:upload --app="$FIREBASE_APP" debug-symbols.zip
+
+  google-play:
+    name: Push to Google Play Store
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aab-artifact
+
+      - name: Checkout
+        uses: actions/checkout@v7
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -140,8 +185,29 @@ jobs:
         env:
           SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
           SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
-          PLAY_TRACK: ${{ github.event.inputs.play-store-track || 'internal' }}
+          PLAY_TRACK: ${{ github.event.inputs.play-store-track || 'production' }}
         run: |
           bundle exec fastlane supply \
-            --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
+            --aab app-production-release.aab \
             --track "$PLAY_TRACK"
+
+  huawei:
+    name: Push to Huawei AppGallery
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aab-artifact
+
+      - name: Deploy to Huawei AppGallery
+        uses: muhamedzeema/appgallery-deply-action@main
+        with:
+          client-id: ${{ secrets.HUAWEI_CLIENT_ID }}
+          client-key: ${{ secrets.HUAWEI_CLIENT_KEY }}
+          app-id: ${{ secrets.HUAWEI_APP_ID }}
+          file-extension: "aab"
+          file-path: "app-production-release.aab"
+          file-name: "production-release"
+          submit: true
