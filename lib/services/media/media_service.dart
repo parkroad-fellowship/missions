@@ -124,7 +124,7 @@ class MediaServiceImpl implements MediaService {
 
   @override
   Future<void> initDownloader() async {
-    if(kIsWeb) return;
+    if (kIsWeb) return;
     await FlutterDownloader.initialize(debug: kDebugMode);
     await FlutterDownloader.registerCallback(callback);
   }
