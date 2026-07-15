@@ -58,6 +58,8 @@ class _DecisionPageState extends State<DecisionPage> {
         result: result,
       ),
       child: UpgradeAlert(
+        showIgnore: false,
+        showLater: false,
         child: Scaffold(
           body: Center(
             child: ExtendedImage.asset(
