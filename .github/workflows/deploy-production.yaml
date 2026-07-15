@@ -20,7 +20,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -31,6 +31,9 @@ jobs:
       FLUTTER_VERSION: "3.44.2"
       SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -102,6 +105,31 @@ jobs:
             --dart-define=HIVE_ENCRYPTION_KEY="$HIVE_ENCRYPTION_KEY" \
             --dart-define=POSTHOG_KEY="$POSTHOG_KEY"
 
+      - name: Shorebird Patch
+        env:
+            APP_ID: ${{ secrets.PROD_APP_ID }}
+            APP_SECRET: ${{ secrets.PROD_APP_SECRET }}
+            BASE_DOMAIN: ${{ secrets.PROD_BASE_DOMAIN }}
+            SOCKET_DOMAIN: ${{ secrets.PROD_SOCKET_DOMAIN }}
+            SOCKET_KEY: ${{ secrets.PROD_SOCKET_KEY }}
+            AZURE_CONN_STRING: ${{ secrets.PROD_AZURE_CONN_STRING }}
+            HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
+            POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
+        run: |
+          shorebird patch android \
+            --flavor production \
+            --target lib/main_production.dart \
+            --flutter-version ${{ env.FLUTTER_VERSION }} \
+            -- --obfuscate --split-debug-info=debug-symbols \
+            --dart-define=APP_ID="$APP_ID" \
+            --dart-define=APP_SECRET="$APP_SECRET" \
+            --dart-define=BASE_DOMAIN="$BASE_DOMAIN" \
+            --dart-define=SOCKET_DOMAIN="$SOCKET_DOMAIN" \
+            --dart-define=SOCKET_KEY="$SOCKET_KEY" \
+            --dart-define=AZURE_CONN_STRING="$AZURE_CONN_STRING" \
+            --dart-define=HIVE_ENCRYPTION_KEY="$HIVE_ENCRYPTION_KEY" \
+            --dart-define=POSTHOG_KEY="$POSTHOG_KEY"
+
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v7
         with:
@@ -121,6 +149,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download AAB artifact
         uses: actions/download-artifact@v8
         with:
@@ -140,6 +171,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download debug symbols artifact
         uses: actions/download-artifact@v8
         with:
@@ -162,6 +196,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download AAB artifact
         uses: actions/download-artifact@v8
         with:
@@ -193,6 +230,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download AAB artifact
         uses: actions/download-artifact@v8
         with:

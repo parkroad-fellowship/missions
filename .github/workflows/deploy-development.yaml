@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -54,6 +57,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
+
       - name: Download APK artifact
         uses: actions/download-artifact@v8
         with:
