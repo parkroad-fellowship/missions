@@ -167,9 +167,6 @@ jobs:
         with:
           name: aab-artifact
 
-      - name: Checkout
-        uses: actions/checkout@v7
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -210,4 +207,4 @@ jobs:
           file-extension: "aab"
           file-path: "app-production-release.aab"
           file-name: "production-release"
-          submit: true
+          submit: false
