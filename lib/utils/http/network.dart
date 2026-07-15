@@ -6,10 +6,10 @@ import 'package:app/models/remote/common/failure.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/helpers/app_version_helper.dart';
+import 'package:app/utils/http/multiplatform/http_client_config/http_client_config.dart';
 import 'package:app/utils/http/request_signer.dart';
 import 'package:app/utils/http/retry_interceptor.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -94,11 +94,7 @@ class NetworkUtil {
     );
 
     // Retry interceptor for transient failures
-    dio.interceptors.add(
-      RetryInterceptor(
-        dio: dio,
-      ),
-    );
+    dio.interceptors.add(RetryInterceptor(dio: dio));
 
     // Pretty logger for debug mode
     if (kDebugMode) {
@@ -113,8 +109,7 @@ class NetworkUtil {
 
     // Certificate handling for development
     if (kDebugMode) {
-      (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () =>
-          HttpClient()..badCertificateCallback = (_, _, _) => true;
+      configureCertificateBypass(dio);
     }
 
     _dioCache[cacheKey] = dio;
@@ -199,6 +194,8 @@ class NetworkUtil {
             throw Failure(message: 'Bad SSL certificate');
           case DioExceptionType.cancel:
             throw Failure(message: 'Request was cancelled');
+          case DioExceptionType.transformTimeout:
+            throw Failure(message: 'Request timeout during transformation');
         }
     }
   }

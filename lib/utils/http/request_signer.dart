@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:app/utils/helpers/app_version_helper.dart';
+import 'package:app/utils/http/multiplatform/http_client_config/http_client_config.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 class RequestSigner {
@@ -17,8 +20,19 @@ class RequestSigner {
         BaseOptions(
           connectTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
+          headers: <String, dynamic>{
+            'Accept': 'application/json',
+            'X-App-Version': AppVersionHelper.getFullAppVersion(),
+            'X-PRF-App': 'PRF-Missions-${AppVersionHelper.getFullAppVersion()}',
+          },
         ),
       );
+
+      // Certificate handling for development
+      if (kDebugMode) {
+        configureCertificateBypass(dio);
+      }
+
       final deviceTimeBefore = DateTime.now().millisecondsSinceEpoch;
       final response = await dio.get<Map<String, dynamic>>(
         '$baseUrl/api/v1/server-time',

@@ -1,5 +1,5 @@
 icons:
-		dart run flutter_launcher_icons:main && dart run icons_launcher:create && dart run icons_launcher:create --flavor dev && dart run icons_launcher:create --flavor stg
+		dart run flutter_launcher_icons:main && dart run icons_launcher:create
 
 splash:
 		dart run flutter_native_splash:create

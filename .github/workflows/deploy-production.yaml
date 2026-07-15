@@ -23,37 +23,35 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-aab:
-    name: Build & Release AAB (Production)
+  build:
+    name: Build AAB (Production)
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    env:
+      FLUTTER_VERSION: "3.44.2"
+      SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-        with:
-          ref: main
 
       - name: Flutter Setup
         uses: ./.github/actions/flutter-setup
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           skip-analysis: "true"
 
-      - name: Accept Android licenses
-        run: yes | flutter doctor --android-licenses
-
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v2.0
+      - name: Setup Shorebird
+        uses: shorebirdtech/setup-shorebird@v1
         with:
-          fileName: key.jks
-          encodedString: ${{ secrets.RELEASE_KEYSTORE }}
+          cache: true
 
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-          echo "storePassword=${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
+      - name: Android Setup
+        uses: ./.github/actions/android-setup
+        with:
+          keystore: ${{ secrets.RELEASE_KEYSTORE }}
+          keystore-passphrase: ${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}
+          keystore-password: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          keystore-alias: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
 
       - name: Validate production defines
         env:
@@ -79,16 +77,7 @@ jobs:
             exit 1
             fi
 
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo rm -rf /usr/local/lib/android/sdk/emulator
-          sudo rm -rf /usr/local/lib/android/sdk/system-images
-          df -h
-
-      - name: Build AAB
+      - name: Shorebird Release
         env:
             APP_ID: ${{ secrets.PROD_APP_ID }}
             APP_SECRET: ${{ secrets.PROD_APP_SECRET }}
@@ -99,11 +88,11 @@ jobs:
             HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
             POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
         run: |
-          flutter build appbundle \
+          shorebird release android \
             --flavor production \
             --target lib/main_production.dart \
-            --obfuscate \
-            --split-debug-info=debug-symbols \
+            --flutter-version ${{ env.FLUTTER_VERSION }} \
+            -- --obfuscate --split-debug-info=debug-symbols \
             --dart-define=APP_ID="$APP_ID" \
             --dart-define=APP_SECRET="$APP_SECRET" \
             --dart-define=BASE_DOMAIN="$BASE_DOMAIN" \
@@ -113,6 +102,30 @@ jobs:
             --dart-define=HIVE_ENCRYPTION_KEY="$HIVE_ENCRYPTION_KEY" \
             --dart-define=POSTHOG_KEY="$POSTHOG_KEY"
 
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-artifact
+          path: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          retention-days: 1
+
+      - name: Upload debug symbols artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-symbols
+          path: debug-symbols/
+          retention-days: 1
+
+  firebase:
+    name: Push to Firebase (Production)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aab-artifact
+
       - name: Upload AAB to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -120,7 +133,18 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: dev-team
           releaseNotes: ${{ github.event.inputs.notes }}
-          file: build/app/outputs/bundle/productionRelease/app-production-release.aab
+          file: app-production-release.aab
+
+  crashlytics:
+    name: Upload Symbols to Crashlytics
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download debug symbols artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: debug-symbols
+          path: debug-symbols
 
       - name: Upload debug symbols to Firebase Crashlytics
         env:
@@ -132,6 +156,19 @@ jobs:
           zip -r debug-symbols.zip debug-symbols
           curl -sL https://firebase.tools | bash
           firebase crashlytics:symbols:upload --app="$FIREBASE_APP" debug-symbols.zip
+
+  google-play:
+    name: Push to Google Play Store
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aab-artifact
+
+      - name: Checkout
+        uses: actions/checkout@v7
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -148,8 +185,29 @@ jobs:
         env:
           SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
           SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_CREDENTIALS }}
-          PLAY_TRACK: ${{ github.event.inputs.play-store-track }}
+          PLAY_TRACK: ${{ github.event.inputs.play-store-track || 'production' }}
         run: |
           bundle exec fastlane supply \
-            --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
+            --aab app-production-release.aab \
             --track "$PLAY_TRACK"
+
+  huawei:
+    name: Push to Huawei AppGallery
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download AAB artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aab-artifact
+
+      - name: Deploy to Huawei AppGallery
+        uses: muhamedzeema/appgallery-deply-action@main
+        with:
+          client-id: ${{ secrets.HUAWEI_CLIENT_ID }}
+          client-key: ${{ secrets.HUAWEI_CLIENT_KEY }}
+          app-id: ${{ secrets.HUAWEI_APP_ID }}
+          file-extension: "aab"
+          file-path: "app-production-release.aab"
+          file-name: "production-release"
+          submit: true

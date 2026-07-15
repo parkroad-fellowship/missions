@@ -1,0 +1,54 @@
+name: "Android Setup"
+description: "Free disk space, accept Android licenses, configure keystore and key.properties"
+
+inputs:
+  keystore:
+    description: "Base64-encoded Android keystore"
+    required: true
+  keystore-passphrase:
+    description: "Keystore store password"
+    required: true
+  keystore-password:
+    description: "Keystore key password"
+    required: true
+  keystore-alias:
+    description: "Keystore key alias"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Free up disk space
+      shell: bash
+      run: |
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /opt/ghc
+        sudo rm -rf /opt/hostedtoolcache/CodeQL
+        sudo rm -rf /usr/local/lib/android/sdk/emulator
+        sudo rm -rf /usr/local/lib/android/sdk/system-images
+        sudo rm -rf /usr/share/swift
+        sudo rm -rf /usr/local/.ghcup
+        sudo rm -rf /opt/microsoft
+        sudo rm -rf /usr/local/share/chromium
+        sudo rm -rf /usr/share/az_*
+        sudo rm -rf /usr/share/miniconda
+        df -h
+
+    - name: Accept Android licenses
+      shell: bash
+      run: yes | flutter doctor --android-licenses || true
+
+    - name: Download Android keystore
+      id: android_keystore
+      uses: timheuer/base64-to-file@v2.0
+      with:
+        fileName: key.jks
+        encodedString: ${{ inputs.keystore }}
+
+    - name: Create key.properties
+      shell: bash
+      run: |
+        echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+        echo "storePassword=${{ inputs.keystore-passphrase }}" >> android/key.properties
+        echo "keyPassword=${{ inputs.keystore-password }}" >> android/key.properties
+        echo "keyAlias=${{ inputs.keystore-alias }}" >> android/key.properties
