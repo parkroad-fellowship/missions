@@ -29,7 +29,6 @@ jobs:
     timeout-minutes: 40
     env:
       FLUTTER_VERSION: "3.44.2"
-      SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -42,11 +41,6 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           skip-analysis: "true"
-
-      - name: Setup Shorebird
-        uses: shorebirdtech/setup-shorebird@v1
-        with:
-          cache: true
 
       - name: Android Setup
         uses: ./.github/actions/android-setup
@@ -80,7 +74,7 @@ jobs:
             exit 1
             fi
 
-      - name: Shorebird Release
+      - name: Build AAB
         env:
             APP_ID: ${{ secrets.PROD_APP_ID }}
             APP_SECRET: ${{ secrets.PROD_APP_SECRET }}
@@ -91,35 +85,10 @@ jobs:
             HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
             POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
         run: |
-          shorebird release android \
+          flutter build appbundle \
             --flavor production \
             --target lib/main_production.dart \
-            --flutter-version ${{ env.FLUTTER_VERSION }} \
-            -- --obfuscate --split-debug-info=debug-symbols \
-            --dart-define=APP_ID="$APP_ID" \
-            --dart-define=APP_SECRET="$APP_SECRET" \
-            --dart-define=BASE_DOMAIN="$BASE_DOMAIN" \
-            --dart-define=SOCKET_DOMAIN="$SOCKET_DOMAIN" \
-            --dart-define=SOCKET_KEY="$SOCKET_KEY" \
-            --dart-define=AZURE_CONN_STRING="$AZURE_CONN_STRING" \
-            --dart-define=HIVE_ENCRYPTION_KEY="$HIVE_ENCRYPTION_KEY" \
-            --dart-define=POSTHOG_KEY="$POSTHOG_KEY"
-
-      - name: Shorebird Patch
-        env:
-            APP_ID: ${{ secrets.PROD_APP_ID }}
-            APP_SECRET: ${{ secrets.PROD_APP_SECRET }}
-            BASE_DOMAIN: ${{ secrets.PROD_BASE_DOMAIN }}
-            SOCKET_DOMAIN: ${{ secrets.PROD_SOCKET_DOMAIN }}
-            SOCKET_KEY: ${{ secrets.PROD_SOCKET_KEY }}
-            AZURE_CONN_STRING: ${{ secrets.PROD_AZURE_CONN_STRING }}
-            HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
-            POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
-        run: |
-          shorebird patch android \
-            --flavor production \
-            --target lib/main_production.dart \
-            -- --obfuscate --split-debug-info=debug-symbols \
+            --obfuscate --split-debug-info=debug-symbols \
             --dart-define=APP_ID="$APP_ID" \
             --dart-define=APP_SECRET="$APP_SECRET" \
             --dart-define=BASE_DOMAIN="$BASE_DOMAIN" \
