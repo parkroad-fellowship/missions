@@ -50,6 +50,10 @@ jobs:
           keystore-password: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           keystore-alias: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
 
+      - name: Install NDK
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;28.2.13676358" || true
+
       - name: Validate production defines
         env:
             APP_ID: ${{ secrets.PROD_APP_ID }}
