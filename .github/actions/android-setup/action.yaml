@@ -36,7 +36,7 @@ runs:
 
     - name: Accept Android licenses
       shell: bash
-      run: yes | flutter doctor --android-licenses
+      run: yes | flutter doctor --android-licenses || true
 
     - name: Download Android keystore
       id: android_keystore
