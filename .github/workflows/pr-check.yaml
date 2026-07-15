@@ -17,11 +17,11 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Free disk space
-        uses: ./.github/actions/free-disk-space
-
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
 
       - name: Flutter Setup & Analysis
         uses: ./.github/actions/flutter-setup
