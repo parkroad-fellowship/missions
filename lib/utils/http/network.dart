@@ -42,6 +42,7 @@ class NetworkUtil {
           'Accept': 'application/json',
           'X-App-Version': AppVersionHelper.getFullAppVersion(),
           'X-PRF-App': 'PRF-Missions-${AppVersionHelper.getFullAppVersion()}',
+          'X-Tenant': PRFSuperAppConfig.instance!.values.tenantUlid,
         },
         // Fixed timeout configuration
         connectTimeout: const Duration(seconds: 30),
