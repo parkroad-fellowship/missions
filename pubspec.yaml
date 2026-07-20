@@ -43,7 +43,7 @@ dependencies:
   full_screen_image: ^2.0.0
   gaimon: ^1.4.3
   get_it: ^9.2.1
-  google_fonts: ^8.1.0
+  google_fonts: ^8.2.0
   google_sign_in: ^7.2.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
@@ -60,12 +60,12 @@ dependencies:
   path_provider: ^2.1.6
   permission_handler: ^12.0.3
   phone_form_field: ^10.0.18
-  posthog_flutter: ^5.30.0
+  posthog_flutter: ^5.32.0
   pretty_dio_logger: ^1.4.0
   prf_design: ^0.8.5
   # path: ../../prf_design_system
   record: ^7.1.1
-  share_plus: ^13.2.0
+  share_plus: ^13.2.1
   shorebird_code_push: ^2.0.7
   timezone: ^0.11.1
   upgrader: ^13.5.0
