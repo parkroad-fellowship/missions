@@ -32,3 +32,12 @@ abstract class PRFMissionQuestionResponse with _$PRFMissionQuestionResponse {
   factory PRFMissionQuestionResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFMissionQuestionResponseFromJson(json);
 }
+
+extension PRFMissionQuestionX on PRFMissionQuestion {
+  int get answerCount {
+    if (questionMediaAnswers.isNotEmpty) return questionMediaAnswers.length;
+    return transcripts.where((t) => t.media != null).length;
+  }
+
+  bool get hasAnswers => answerCount > 0;
+}
