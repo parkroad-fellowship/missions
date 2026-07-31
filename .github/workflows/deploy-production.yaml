@@ -60,9 +60,10 @@ jobs:
             AZURE_CONN_STRING: ${{ secrets.PROD_AZURE_CONN_STRING }}
             HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
             POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
+            TENANT_ULID: ${{ secrets.PROD_TENANT_ULID }}
         run: |
             missing=""
-            for key in APP_ID APP_SECRET BASE_DOMAIN SOCKET_DOMAIN SOCKET_KEY AZURE_CONN_STRING HIVE_ENCRYPTION_KEY POSTHOG_KEY; do
+            for key in APP_ID APP_SECRET BASE_DOMAIN SOCKET_DOMAIN SOCKET_KEY AZURE_CONN_STRING HIVE_ENCRYPTION_KEY POSTHOG_KEY TENANT_ULID ; do
             value="${!key}"
             if [ -z "$value" ]; then
                 missing="$missing $key"
@@ -84,6 +85,7 @@ jobs:
             AZURE_CONN_STRING: ${{ secrets.PROD_AZURE_CONN_STRING }}
             HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
             POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
+            TENANT_ULID: ${{ secrets.PROD_TENANT_ULID }}
             NO_OPUS_OGG_LIBS: "1"
         run: |
           flutter build appbundle \
@@ -97,7 +99,8 @@ jobs:
             --dart-define=SOCKET_KEY="$SOCKET_KEY" \
             --dart-define=AZURE_CONN_STRING="$AZURE_CONN_STRING" \
             --dart-define=HIVE_ENCRYPTION_KEY="$HIVE_ENCRYPTION_KEY" \
-            --dart-define=POSTHOG_KEY="$POSTHOG_KEY"
+            --dart-define=POSTHOG_KEY="$POSTHOG_KEY" \
+            --dart-define=TENANT_ULID="$TENANT_ULID"
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v7

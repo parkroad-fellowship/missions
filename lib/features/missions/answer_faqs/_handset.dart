@@ -262,11 +262,10 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     _query.isEmpty
                                         ? 'Questions from missions will appear here'
                                         : 'Try a different search term',
-                                    style: theme.textTheme.bodyMedium
-                                        ?.copyWith(
-                                          color: theme.colorScheme.onSurface
-                                              .withValues(alpha: 0.6),
-                                        ),
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onSurface
+                                          .withValues(alpha: 0.6),
+                                    ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -347,26 +346,21 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                       child: Semantics(
                                         label: 'No answers yet',
                                         child: Container(
-                                          padding:
-                                              const EdgeInsets.symmetric(
-                                                horizontal:
-                                                    PRFSpacingTokens.sm,
-                                                vertical:
-                                                    PRFSpacingTokens.xs,
-                                              ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: PRFSpacingTokens.sm,
+                                            vertical: PRFSpacingTokens.xs,
+                                          ),
                                           decoration: BoxDecoration(
                                             color: PRFColors.warningLight,
-                                            borderRadius:
-                                                BorderRadius.circular(
-                                                  PRFRadiusTokens.xs,
-                                                ),
+                                            borderRadius: BorderRadius.circular(
+                                              PRFRadiusTokens.xs,
+                                            ),
                                           ),
                                           child: Text(
                                             'No answers yet',
                                             style: theme.textTheme.labelSmall
                                                 ?.copyWith(
-                                                  color:
-                                                      PRFColors.warningDark,
+                                                  color: PRFColors.warningDark,
                                                 ),
                                           ),
                                         ),
@@ -398,8 +392,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                           label:
                                               '${item.answerCount} ${item.answerCount == 1 ? 'answer' : 'answers'}',
                                           child: PRFSecondaryButton(
-                                            onPressed: () =>
-                                                _openAnswers(item),
+                                            onPressed: () => _openAnswers(item),
                                             title:
                                                 'Answers (${item.answerCount})',
                                             disabled: !item.hasAnswers,
