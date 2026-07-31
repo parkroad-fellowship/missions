@@ -174,9 +174,12 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                 PRFSpacingTokens.lg,
                 PRFSpacingTokens.md,
               ),
-              child: PRFTextInput(
-                hintText: 'Search questions',
-                controller: _searchController,
+              child: Semantics(
+                label: 'Search questions',
+                child: PRFTextInput(
+                  hintText: 'Search questions',
+                  controller: _searchController,
+                ),
               ),
             ),
             Expanded(
@@ -215,16 +218,59 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                 .toList();
 
                       if (isLoading && questions.isEmpty) {
-                        return const Center(
-                          child: PRFCircularProgressIndicator(),
+                        return Center(
+                          child: Semantics(
+                            label: 'Loading questions',
+                            child: const PRFCircularProgressIndicator(),
+                          ),
                         );
                       }
 
                       if (filtered.isEmpty) {
                         return Center(
-                          child: Text(
-                            'No questions found',
-                            style: theme.textTheme.bodyMedium,
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                              PRFSpacingTokens.xxl,
+                            ),
+                            child: Semantics(
+                              label: _query.isEmpty
+                                  ? 'No questions yet'
+                                  : 'No questions found',
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.question_answer_outlined,
+                                    size: 64,
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.2),
+                                  ),
+                                  const SizedBox(
+                                    height: PRFSpacingTokens.lg,
+                                  ),
+                                  Text(
+                                    _query.isEmpty
+                                        ? 'No questions yet'
+                                        : 'No questions found',
+                                    style: theme.textTheme.headlineSmall,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(
+                                    height: PRFSpacingTokens.sm,
+                                  ),
+                                  Text(
+                                    _query.isEmpty
+                                        ? 'Questions from missions will appear here'
+                                        : 'Try a different search term',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onSurface
+                                          .withValues(alpha: 0.6),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       }
@@ -263,48 +309,94 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    item.question,
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                  if (item.mission?.theme != null) ...[
-                                    const SizedBox(height: PRFSpacingTokens.xs),
-                                    Text(
-                                      item.mission!.theme!,
-                                      style: theme.textTheme.bodySmall
+                                  Semantics(
+                                    header: true,
+                                    child: Text(
+                                      item.question,
+                                      style: theme.textTheme.titleMedium
                                           ?.copyWith(
-                                            color: theme.colorScheme.onSurface
-                                                .withValues(alpha: 0.6),
+                                            fontWeight: FontWeight.w600,
                                           ),
                                     ),
+                                  ),
+                                  if (item.mission?.theme != null) ...[
+                                    const SizedBox(
+                                      height: PRFSpacingTokens.xs,
+                                    ),
+                                    Semantics(
+                                      label:
+                                          'Mission theme: ${item.mission!.theme!}',
+                                      child: Text(
+                                        item.mission!.theme!,
+                                        style: theme.textTheme.bodySmall
+                                            ?.copyWith(
+                                              color: theme.colorScheme.outline,
+                                            ),
+                                      ),
+                                    ),
                                   ],
-                                  const SizedBox(height: PRFSpacingTokens.md),
+                                  const SizedBox(
+                                    height: PRFSpacingTokens.sm,
+                                  ),
+                                  if (!item.hasAnswers)
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: PRFSpacingTokens.sm,
+                                      ),
+                                      child: Semantics(
+                                        label: 'No answers yet',
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: PRFSpacingTokens.sm,
+                                            vertical: PRFSpacingTokens.xs,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: PRFColors.warningLight,
+                                            borderRadius: BorderRadius.circular(
+                                              PRFRadiusTokens.xs,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'No answers yet',
+                                            style: theme.textTheme.labelSmall
+                                                ?.copyWith(
+                                                  color: PRFColors.warningDark,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: PRFPrimaryButton(
-                                          onPressed: () => _openRecorder(item),
-                                          title: 'Record answer',
-                                          disabled: false,
+                                        child: Semantics(
+                                          button: true,
+                                          label:
+                                              'Record answer to: ${item.question}',
+                                          child: PRFPrimaryButton(
+                                            onPressed: () =>
+                                                _openRecorder(item),
+                                            title: 'Record answer',
+                                            disabled: false,
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(
                                         width: PRFSpacingTokens.sm,
                                       ),
                                       SizedBox(
-                                        width: 130,
-                                        child: PRFSecondaryButton(
-                                          onPressed: () => _openAnswers(item),
-                                          title:
-                                              'Answers (${item.questionMediaAnswers.isNotEmpty ? item.questionMediaAnswers.length : item.transcripts.where((t) => t.media != null).length})',
-                                          disabled:
-                                              item
-                                                  .questionMediaAnswers
-                                                  .isEmpty &&
-                                              item.transcripts.isEmpty,
+                                        width: 120,
+                                        child: Semantics(
+                                          button: true,
+                                          enabled: item.hasAnswers,
+                                          label:
+                                              '${item.answerCount} ${item.answerCount == 1 ? 'answer' : 'answers'}',
+                                          child: PRFSecondaryButton(
+                                            onPressed: () => _openAnswers(item),
+                                            title:
+                                                'Answers (${item.answerCount})',
+                                            disabled: !item.hasAnswers,
+                                          ),
                                         ),
                                       ),
                                     ],

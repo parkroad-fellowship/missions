@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/utils/constants.dart';
 import 'package:app/utils/helpers/app_version_helper.dart';
 import 'package:app/utils/http/multiplatform/http_client_config/http_client_config.dart';
 import 'package:crypto/crypto.dart';
@@ -24,6 +25,7 @@ class RequestSigner {
             'Accept': 'application/json',
             'X-App-Version': AppVersionHelper.getFullAppVersion(),
             'X-PRF-App': 'PRF-Missions-${AppVersionHelper.getFullAppVersion()}',
+            'X-Tenant': PRFSuperAppConfig.instance!.values.tenantUlid,
           },
         ),
       );

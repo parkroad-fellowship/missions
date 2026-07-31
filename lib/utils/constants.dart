@@ -3,6 +3,7 @@ import 'package:app/enums/common/prf_environment.dart';
 class PRFSuperAppValues {
   PRFSuperAppValues({
     required this.environment,
+    required this.tenantUlid,
     required this.urlScheme,
     required this.baseDomain,
     required this.hiveBox,
@@ -18,6 +19,7 @@ class PRFSuperAppValues {
   });
 
   final PRFEnvironment environment;
+  final String tenantUlid;
   final String urlScheme;
   final String baseDomain;
   final String hiveBox;

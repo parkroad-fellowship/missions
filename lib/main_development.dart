@@ -23,8 +23,9 @@ Future<void> main() async {
       azureConnString: '',
       appId: 'prf_missions_01khyfbrbnaqq8tjdcvjjnvv78',
       appSecret:
-          'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
+          'GrGyVe1bkrkqKKlz0k0wh8KqgPnKjTDaQo9o7rDn9BkVr6iVORhVxS04wueOY5st',
       hiveEncryptionKey: 'random_dev',
+      tenantUlid: '01kypvzr12zes0btzjh13fgfva',
     ),
   );
 
