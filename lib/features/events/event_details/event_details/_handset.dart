@@ -695,44 +695,17 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
       return;
     }
 
-    final latitude = event.latitude!;
-    final longitude = event.longitude!;
+    final maps =
+        await MapLauncher.marker(
+          LocationCoords(
+            event.latitude!,
+            event.longitude!,
+            title: event.venue ?? '',
+          ),
+        ).getSupportedMaps(
+          [MapApp.google, MapApp.googleGo, MapApp.apple],
+        );
 
-    final isGoogleMapAvailable = await MapLauncher.isMapAvailable(
-      MapType.google,
-    );
-
-    if (isGoogleMapAvailable) {
-      await MapLauncher.showMarker(
-        mapType: MapType.google,
-        coords: Coords(latitude, longitude),
-        title: event.venue ?? '',
-      );
-      return;
-    }
-
-    final isGoogleGoMapAvailable = await MapLauncher.isMapAvailable(
-      MapType.googleGo,
-    );
-
-    if (isGoogleGoMapAvailable) {
-      await MapLauncher.showMarker(
-        mapType: MapType.googleGo,
-        coords: Coords(latitude, longitude),
-        title: event.venue ?? '',
-      );
-      return;
-    }
-
-    final isAppleMapAvailable = await MapLauncher.isMapAvailable(MapType.apple);
-
-    if (isAppleMapAvailable) {
-      await MapLauncher.showMarker(
-        mapType: MapType.apple,
-        coords: Coords(latitude, longitude),
-        title: event.venue ?? '',
-      );
-      return;
-    }
+    await maps.first.show();
   }
 }
