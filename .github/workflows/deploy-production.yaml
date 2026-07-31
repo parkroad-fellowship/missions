@@ -26,7 +26,7 @@ jobs:
   build:
     name: Build AAB (Production)
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     env:
       FLUTTER_VERSION: "3.44.2"
     steps:
@@ -41,6 +41,9 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           skip-analysis: "true"
+
+      - name: Preinstall Android SDK components
+        run: sdkmanager "platforms;android-33"
 
       - name: Android Setup
         uses: ./.github/actions/android-setup
@@ -86,7 +89,6 @@ jobs:
             HIVE_ENCRYPTION_KEY: ${{ secrets.PROD_HIVE_ENCRYPTION_KEY }}
             POSTHOG_KEY: ${{ secrets.PROD_POSTHOG_KEY }}
             TENANT_ULID: ${{ secrets.PROD_TENANT_ULID }}
-            NO_OPUS_OGG_LIBS: "1"
         run: |
           flutter build appbundle \
             --flavor production \
