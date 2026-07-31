@@ -43,7 +43,8 @@ jobs:
           skip-analysis: "true"
 
       - name: Preinstall Android SDK components
-        run: sdkmanager "platforms;android-33"
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-33"
 
       - name: Android Setup
         uses: ./.github/actions/android-setup
