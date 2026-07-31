@@ -90,7 +90,7 @@ jobs:
         run: |
           flutter build appbundle \
             --flavor production \
-            --target lib/main_production.dart -v \
+            --target lib/main_production.dart \
             --obfuscate --split-debug-info=debug-symbols \
             --dart-define=APP_ID="$APP_ID" \
             --dart-define=APP_SECRET="$APP_SECRET" \

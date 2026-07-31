@@ -57,13 +57,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
-
-        externalNativeBuild {
-            cmake {
-                cFlags "-Wno-dev"
-                cppFlags "-Wno-dev"
-            }
-        }
     }
 
     signingConfigs {
