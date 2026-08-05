@@ -86,9 +86,9 @@ class RequestSigner {
     );
 
     return {
-      'X-HMT-App-ID': appId,
-      'X-HMT-Timestamp': timestamp,
-      'X-HMT-Signature': signature,
+      'X-PRF-App-ID': appId,
+      'X-PRF-Timestamp': timestamp,
+      'X-PRF-Signature': signature,
     };
   }
 }

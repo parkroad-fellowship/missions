@@ -22,6 +22,10 @@ Future<void> main() async {
           'lXmRrcK3R1yJMs1r9iZ1omYdnHaUhJtdnwQO2Kz61mHH6T7SVC6ZyNShRKGcybOh',
       hiveEncryptionKey: 'random_stg',
       tenantUlid: '01kyvpa2pqkxjtvnwhdz9snwnw',
+      socketDomain: 'hmt-ws.parkroadfellowship.org',
+      socketKey: 'yvnlkaqadqiadutrs9sa',
+      socketScheme: 'wss',
+      socketPort: 443,
     ),
   );
 

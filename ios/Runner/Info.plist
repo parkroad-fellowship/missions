@@ -35,7 +35,7 @@
 				<string>Editor</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<string>com.googleusercontent.apps.899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7</string>
+					<string>com.googleusercontent.apps.373327072646-7eurh2efm754p1rj78ckhbl3frfbag8t</string>
 					<string>https</string>
 					<string>http</string>
 					<string>google.navigation</string>
@@ -46,7 +46,7 @@
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>GIDClientID</key>
-		<string>899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7.apps.googleusercontent.com</string>
+		<string>373327072646-7eurh2efm754p1rj78ckhbl3frfbag8t.apps.googleusercontent.com</string>
 		<key>ITSAppUsesNonExemptEncryption</key>
 		<false/>
 		<key>LSApplicationCategoryType</key>

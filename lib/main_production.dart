@@ -30,6 +30,10 @@ Future<void> main() async {
       ),
       postHogKey: EncryptionHelper.requiredDefine(EncryptionHelper.postHogKey),
       tenantUlid: EncryptionHelper.requiredDefine(EncryptionHelper.tenantUlid),
+      socketDomain: EncryptionHelper.requiredDefine(EncryptionHelper.socketDomain),
+      socketKey: EncryptionHelper.requiredDefine(EncryptionHelper.socketKey),
+      socketScheme: 'wss',
+      socketPort: 443,
     ),
   );
 

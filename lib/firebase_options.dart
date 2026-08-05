@@ -47,31 +47,28 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAPRptZXBum6K_NdaTF5alei7Z9H55kIfg',
-    appId: '1:899177334428:android:9120f41859d57199b18f59',
-    messagingSenderId: '899177334428',
-    projectId: 'parkroad-fellowship',
-    storageBucket: 'parkroad-fellowship.firebasestorage.app',
+    apiKey: 'AIzaSyCmTYauZ_0oaxcd-CS5tEmQVxfWFahIlR4',
+    appId: '1:373327072646:android:d9bc80cec10952325c3007',
+    messagingSenderId: '373327072646',
+    projectId: 'hosanna-mt',
+    storageBucket: 'hosanna-mt.firebasestorage.app',
   );
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD4GCdn77Z79Z7lxkNbaUImu7iVYGDBSw4',
-    appId: '1:899177334428:ios:08369a6cb8b6e3a1b18f59',
-    messagingSenderId: '899177334428',
-    projectId: 'parkroad-fellowship',
-    storageBucket: 'parkroad-fellowship.firebasestorage.app',
-    androidClientId:
-        '899177334428-4rv9lpvghcpmm0uhslqj8i7jsovrlom5.apps.googleusercontent.com',
-    iosClientId:
-        '899177334428-0fms229m2k2npc4bqbc62q9cn0iq6afq.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDQcmn2k0_LpSAxpkNAfKoX_8vqzBg2DM8',
+    appId: '1:373327072646:ios:66467d115d1a2fc95c3007',
+    messagingSenderId: '373327072646',
+    projectId: 'hosanna-mt',
+    storageBucket: 'hosanna-mt.firebasestorage.app',
+    iosClientId: '373327072646-7eurh2efm754p1rj78ckhbl3frfbag8t.apps.googleusercontent.com',
     iosBundleId: 'hmt.parkroadfellowship.org',
   );
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCJjit7qKk0sqo0cxNrhreR0gNfSTlSc00',
-    appId: '1:899177334428:web:f93f20d18f092d8cb18f59',
-    messagingSenderId: '899177334428',
-    projectId: 'parkroad-fellowship',
-    authDomain: 'parkroad-fellowship.firebaseapp.com',
-    storageBucket: 'parkroad-fellowship.firebasestorage.app',
-    measurementId: 'G-8PMMBCWG0R',
+    apiKey: 'AIzaSyAbI5VykxCvu6iStjKav08Wlk8zpSnIHiI',
+    appId: '1:373327072646:web:79248e00603814105c3007',
+    messagingSenderId: '373327072646',
+    projectId: 'hosanna-mt',
+    authDomain: 'hosanna-mt.firebaseapp.com',
+    storageBucket: 'hosanna-mt.firebasestorage.app',
+    measurementId: 'G-XLM8D3JQBL',
   );
 }

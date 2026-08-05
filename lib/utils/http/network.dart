@@ -41,7 +41,7 @@ class NetworkUtil {
         headers: <String, dynamic>{
           'Accept': 'application/json',
           'X-App-Version': AppVersionHelper.getFullAppVersion(),
-          'X-HMT-App': 'HMT-Missions-${AppVersionHelper.getFullAppVersion()}',
+          'X-PRF-App': 'HMT-Missions-${AppVersionHelper.getFullAppVersion()}',
           'X-Tenant': PRFSuperAppConfig.instance!.values.tenantUlid,
         },
         // Fixed timeout configuration
