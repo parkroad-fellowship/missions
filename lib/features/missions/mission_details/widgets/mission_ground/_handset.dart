@@ -1063,18 +1063,12 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
     final school = mission.school;
     if (school == null) return;
 
-    final mapTypes = [MapType.google, MapType.googleGo, MapType.apple];
+    final mapTypes = [MapApp.google, MapApp.googleGo, MapApp.apple];
 
-    for (final mapType in mapTypes) {
-      final isAvailable = await MapLauncher.isMapAvailable(mapType);
-      if (isAvailable) {
-        await MapLauncher.showMarker(
-          mapType: mapType,
-          coords: Coords(school.latitude, school.longitude),
-          title: school.name,
-        );
-        return;
-      }
-    }
+    final maps = await MapLauncher.marker(
+      LocationCoords(school.latitude, school.longitude, title: school.name),
+    ).getSupportedMaps(mapTypes);
+
+    await maps.first.show();
   }
 }

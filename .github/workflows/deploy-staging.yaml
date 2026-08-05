@@ -13,53 +13,53 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-apk:
-    name: Build & Distribute APK (Staging)
+  build:
+    name: Build APK (Staging)
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-        with:
-          ref: main
+
+      - name: Free disk space
+        uses: ./.github/actions/free-disk-space
 
       - name: Flutter Setup
         uses: ./.github/actions/flutter-setup
         with:
           skip-analysis: "true"
 
-      - name: Accept Android licenses
-        run: yes | flutter doctor --android-licenses
-
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v2.0
+      - name: Android Setup
+        uses: ./.github/actions/android-setup
         with:
-          fileName: key.jks
-          encodedString: ${{ secrets.RELEASE_KEYSTORE }}
+          keystore: ${{ secrets.RELEASE_KEYSTORE }}
+          keystore-passphrase: ${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}
+          keystore-password: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          keystore-alias: ${{ secrets.RELEASE_KEYSTORE_ALIAS }}
 
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-          echo "storePassword=${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.RELEASE_KEYSTORE_ALIAS }}" >> android/key.properties
-
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo rm -rf /usr/local/lib/android/sdk/emulator
-          sudo rm -rf /usr/local/lib/android/sdk/system-images
-          df -h
-          
       - name: Build APK
         run: |
           flutter build apk \
             --flavor staging \
             --target lib/main_staging.dart \
             --release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: apk-artifact
+          path: build/app/outputs/flutter-apk/app-staging-release.apk
+          retention-days: 1
+
+  firebase:
+    name: Push to Firebase (Staging)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: apk-artifact
 
       - name: Upload APK to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -68,4 +68,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: dev-team
           releaseNotes: ${{ github.event.inputs.notes }}
-          file: build/app/outputs/flutter-apk/app-staging-release.apk
+          file: app-staging-release.apk

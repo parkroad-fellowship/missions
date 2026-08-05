@@ -22,7 +22,6 @@ class PRFSuperAppRouter extends RootStackRouter {
   static const String announcementsRoute = '/announcements';
   static const String landingRoute = '/landing';
 
-  static const String myMissionDetailsRoute = '/my-mission-details';
   static const String repliesRoute = '/replies';
   static const String missionGroundSuggestionsRoute =
       '/mission-ground-suggestions';

@@ -47,6 +47,7 @@ if [ "$app_env" = "production" ]; then
   : "${PROD_AZURE_CONN_STRING:?Missing AZURE_CONN_STRING for production build}"
   : "${PROD_HIVE_ENCRYPTION_KEY:?Missing HIVE_ENCRYPTION_KEY for production build}"
   : "${PROD_POSTHOG_KEY:?Missing POSTHOG_KEY for production build}"
+  : "${PROD_TENANT_ULID:?Missing TENANT_ULID for production build}"
 
   flutter build ios --config-only --release --flavor production -t lib/main.dart \
     --dart-define=APP_ID="$PROD_APP_ID" \
@@ -54,7 +55,8 @@ if [ "$app_env" = "production" ]; then
     --dart-define=BASE_DOMAIN="$PROD_BASE_DOMAIN" \
     --dart-define=AZURE_CONN_STRING="$PROD_AZURE_CONN_STRING" \
     --dart-define=HIVE_ENCRYPTION_KEY="$PROD_HIVE_ENCRYPTION_KEY" \
-    --dart-define=POSTHOG_KEY="$PROD_POSTHOG_KEY"
+    --dart-define=POSTHOG_KEY="$PROD_POSTHOG_KEY" \
+    --dart-define=TENANT_ULID="$PROD_TENANT_ULID"
 elif [ "$app_env" = "staging" ]; then
   flutter build ios --config-only --release --flavor staging -t lib/main.dart
 elif [ "$app_env" = "development" ]; then

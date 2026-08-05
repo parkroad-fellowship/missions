@@ -29,6 +29,7 @@ Future<void> main() async {
         EncryptionHelper.hiveEncryptionKey,
       ),
       postHogKey: EncryptionHelper.requiredDefine(EncryptionHelper.postHogKey),
+      tenantUlid: EncryptionHelper.requiredDefine(EncryptionHelper.tenantUlid),
     ),
   );
 

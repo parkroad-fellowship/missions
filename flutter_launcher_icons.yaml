@@ -19,11 +19,10 @@ flutter_launcher_icons:
   # background_color_ios: "#ffffff"
 
   web:
-    generate: false
-    image_path: "path/to/image.png"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
-
+    generate: true
+    image_path: "assets/images/hmt-icon-store.png"
+    # background_color: "#hexcode"
+    # theme_color: "#hexcode"
   windows:
     generate: false
     image_path: "path/to/image.png"
