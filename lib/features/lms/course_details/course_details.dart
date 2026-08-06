@@ -24,7 +24,7 @@ class CourseDetailsPage extends StatelessWidget {
       )..loadCourse(courseUlid: courseUlid),
       child: PRFAdaptive(
         builder: (context, _) =>
-            CourseDetailsPageHandset(courseUlid: courseUlid),
+            CourseDetailsPageTablet(courseUlid: courseUlid),
         handset: (context) => CourseDetailsPageHandset(courseUlid: courseUlid),
         tablet: (context) => CourseDetailsPageTablet(courseUlid: courseUlid),
       ),

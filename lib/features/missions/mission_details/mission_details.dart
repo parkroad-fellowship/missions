@@ -39,7 +39,7 @@ class MissionsDetailsPage extends StatelessWidget {
       ],
       child: PRFAdaptive(
         builder: (context, _) =>
-            MissionsDetailsPageHandset(missionUlid: missionUlid),
+            MissionsDetailsPageTablet(missionUlid: missionUlid),
         handset: (context) =>
             MissionsDetailsPageHandset(missionUlid: missionUlid),
         tablet: (context) =>

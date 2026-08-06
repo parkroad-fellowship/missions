@@ -11,7 +11,7 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const SignInHandset(),
+      builder: (context, _) => const SignInTablet(),
       handset: (context) => const SignInHandset(),
       tablet: (context) => const SignInTablet(),
     );

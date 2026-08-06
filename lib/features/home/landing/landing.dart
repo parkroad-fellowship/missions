@@ -94,7 +94,7 @@ class LandingPage extends StatelessWidget {
     ];
 
     return PRFAdaptive(
-      builder: (context, _) => LandingPageHandset(actions: actions),
+      builder: (context, _) => LandingPageTablet(actions: actions),
       handset: (context) => LandingPageHandset(actions: actions),
       tablet: (context) => LandingPageTablet(actions: actions),
     );

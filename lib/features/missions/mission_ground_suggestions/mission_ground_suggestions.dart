@@ -11,7 +11,7 @@ class MissionGroundSuggestionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const MissionGroundSuggestionsPageHandset(),
+      builder: (context, _) => const MissionGroundSuggestionsPageTablet(),
       handset: (context) => const MissionGroundSuggestionsPageHandset(),
       tablet: (context) => const MissionGroundSuggestionsPageTablet(),
     );

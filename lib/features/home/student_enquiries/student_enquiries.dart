@@ -11,7 +11,7 @@ class StudentEnquiriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const StudentEnquiriesPageHandset(),
+      builder: (context, _) => const StudentEnquiriesPageTablet(),
       handset: (context) => const StudentEnquiriesPageHandset(),
       tablet: (context) => const StudentEnquiriesPageTablet(),
     );

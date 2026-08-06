@@ -11,7 +11,7 @@ class MemberFAQPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const MemberFAQPageHandset(),
+      builder: (context, _) => const MemberFAQPageTablet(),
       handset: (context) => const MemberFAQPageHandset(),
       tablet: (context) => const MemberFAQPageTablet(),
     );

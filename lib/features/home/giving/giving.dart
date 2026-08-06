@@ -11,7 +11,7 @@ class GivingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const GivingPageHandset(),
+      builder: (context, _) => const GivingPageTablet(),
       handset: (context) => const GivingPageHandset(),
       tablet: (context) => const GivingPageTablet(),
     );

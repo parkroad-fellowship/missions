@@ -11,7 +11,7 @@ class LMSPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const LMSPageHandset(),
+      builder: (context, _) => const LMSPageTablet(),
       handset: (context) => const LMSPageHandset(),
       tablet: (context) => const LMSPageTablet(),
     );

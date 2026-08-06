@@ -11,7 +11,7 @@ class MissionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const MissionsPageHandset(),
+      builder: (context, _) => const MissionsPageTablet(),
       handset: (context) => const MissionsPageHandset(),
       tablet: (context) => const MissionsPageTablet(),
     );

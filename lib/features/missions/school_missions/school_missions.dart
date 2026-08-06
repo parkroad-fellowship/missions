@@ -26,7 +26,7 @@ class SchoolPastMissionsPage extends StatelessWidget {
         hiveService: getIt<HiveService>(),
       )..loadSchool(schoolUlid: schoolUlid),
       child: PRFAdaptive(
-        builder: (context, _) => SchoolMissionsHandset(schoolUlid: schoolUlid),
+        builder: (context, _) => SchoolMissionsTablet(schoolUlid: schoolUlid),
         handset: (context) => SchoolMissionsHandset(schoolUlid: schoolUlid),
         tablet: (context) => SchoolMissionsTablet(schoolUlid: schoolUlid),
       ),

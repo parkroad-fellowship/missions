@@ -11,7 +11,7 @@ class AnnouncementsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const AnnouncementsPageHandset(),
+      builder: (context, _) => const AnnouncementsPageTablet(),
       handset: (context) => const AnnouncementsPageHandset(),
       tablet: (context) => const AnnouncementsPageTablet(),
     );

@@ -11,7 +11,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const AccountPageHandset(),
+      builder: (context, _) => const AccountPageTablet(),
       handset: (context) => const AccountPageHandset(),
       tablet: (context) => const AccountPageTablet(),
     );

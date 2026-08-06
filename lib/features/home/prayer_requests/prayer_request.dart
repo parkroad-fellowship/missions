@@ -11,7 +11,7 @@ class PrayerRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => const PrayerRequestHandset(),
+      builder: (context, _) => const PrayerRequestTablet(),
       handset: (context) => const PrayerRequestHandset(),
       tablet: (context) => const PrayerRequestTablet(),
     );

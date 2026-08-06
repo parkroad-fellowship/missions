@@ -14,7 +14,7 @@ class StudentEnquiryRepliesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PRFAdaptive(
       builder: (context, _) =>
-          StudentEnquiryRepliesPageHandset(enquiryUlid: enquiryUlid),
+          StudentEnquiryRepliesPageTablet(enquiryUlid: enquiryUlid),
       handset: (context) =>
           StudentEnquiryRepliesPageHandset(enquiryUlid: enquiryUlid),
       tablet: (context) =>

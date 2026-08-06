@@ -14,7 +14,7 @@ class EventDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => EventDetailsPageHandset(event: event),
+      builder: (context, _) => EventDetailsPageTablet(event: event),
       handset: (context) => EventDetailsPageHandset(event: event),
       tablet: (context) => EventDetailsPageTablet(event: event),
     );

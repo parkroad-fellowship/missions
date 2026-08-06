@@ -13,7 +13,7 @@ class ModuleDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => ModuleDetailsPageHandset(
+      builder: (context, _) => ModuleDetailsPageTablet(
         courseModuleUlid: courseModuleUlid,
       ),
       handset: (context) => ModuleDetailsPageHandset(
