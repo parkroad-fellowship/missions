@@ -471,7 +471,7 @@ class _LessonResourceTile extends StatelessWidget {
           ),
         ),
         child: Material(
-          color: PRFColors.transparent,
+          color: Colors.transparent,
           child: ListTile(
             leading: Container(
               padding: const EdgeInsets.all(PRFSpacingTokens.sm),

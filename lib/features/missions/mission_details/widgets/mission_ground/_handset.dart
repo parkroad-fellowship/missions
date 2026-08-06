@@ -362,8 +362,8 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
+              mainAxisSpacing: PRFSpacingTokens.md,
+              crossAxisSpacing: PRFSpacingTokens.md,
               childAspectRatio: 1.2,
               children: [
                 if ((mission.school?.totalStudents ?? 0) != 0)

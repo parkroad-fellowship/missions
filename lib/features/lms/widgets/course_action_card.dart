@@ -31,7 +31,7 @@ class CourseActionCard extends StatelessWidget {
         ],
       ),
       child: Material(
-        color: PRFColors.transparent,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         child: InkWell(
           borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),

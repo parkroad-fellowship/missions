@@ -548,7 +548,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                         ),
                         child: SizedBox(
                           width: PRFSpacingTokens.lg,
-                          height: 16,
+                          height: PRFSpacingTokens.lg,
                           child: PRFCircularProgressIndicator(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -629,7 +629,9 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                               : Theme.of(
                                   context,
                                 ).colorScheme.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.xs,
+                          ),
                         ),
                         child: Text(
                           '${upload.retryCount} ${upload.retryCount == 1 ? 'retry' : 'retries'}',

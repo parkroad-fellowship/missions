@@ -153,8 +153,8 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                                         child: Row(
                                           children: [
                                             Container(
-                                              width: 4,
-                                              height: 24,
+                                              width: PRFSpacingTokens.xs,
+                                              height: PRFSpacingTokens.xl,
                                               decoration: BoxDecoration(
                                                 color:
                                                     theme.colorScheme.primary,
@@ -278,8 +278,8 @@ class TimelineSessionCard extends StatelessWidget {
           Column(
             children: [
               Container(
-                width: 16,
-                height: 16,
+                width: PRFSpacingTokens.lg,
+                height: PRFSpacingTokens.lg,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,

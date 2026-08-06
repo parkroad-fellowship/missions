@@ -245,7 +245,7 @@ class _MissionsWrappedHandsetState extends State<MissionsWrappedHandset>
                   ),
                   Positioned(
                     top: 60,
-                    left: 16,
+                    left: PRFSpacingTokens.lg,
                     child: AnimatedOpacity(
                       opacity: _closeButtonVisible ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 300),

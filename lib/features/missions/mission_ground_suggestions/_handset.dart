@@ -245,7 +245,7 @@ class _MissionGroundSuggestionsPageHandsetState
                                             : PRFSpacingTokens.lg,
                                       ),
                                       child: Material(
-                                        color: PRFColors.transparent,
+                                        color: Colors.transparent,
                                         borderRadius: BorderRadius.circular(
                                           PRFRadiusTokens.xl,
                                         ),

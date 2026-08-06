@@ -155,7 +155,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           ),
         ),
         child: Theme(
-          data: theme.copyWith(dividerColor: PRFColors.transparent),
+          data: theme.copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             tilePadding: const EdgeInsets.symmetric(
               horizontal: PRFSpacingTokens.lg,

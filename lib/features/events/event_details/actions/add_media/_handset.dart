@@ -281,8 +281,8 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             physics: const BouncingScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
+              crossAxisSpacing: PRFSpacingTokens.md,
+              mainAxisSpacing: PRFSpacingTokens.md,
             ),
             itemCount: images.length + 1,
             itemBuilder: (context, index) {
@@ -368,7 +368,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PRFColors.transparent,
+                    Colors.transparent,
                     PRFColors.black.withValues(alpha: 0.3),
                   ],
                 ),
@@ -376,8 +376,8 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             ),
             // Remove button
             Positioned(
-              top: 8,
-              right: 8,
+              top: PRFSpacingTokens.sm,
+              right: PRFSpacingTokens.sm,
               child: GestureDetector(
                 onTap: () {
                   // Remove image logic would go here

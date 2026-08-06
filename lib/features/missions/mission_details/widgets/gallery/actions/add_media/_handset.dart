@@ -279,8 +279,8 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
             physics: const BouncingScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
+              crossAxisSpacing: PRFSpacingTokens.md,
+              mainAxisSpacing: PRFSpacingTokens.md,
             ),
             itemCount: images.length + 1,
             itemBuilder: (context, index) {
@@ -382,7 +382,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PRFColors.transparent,
+                    Colors.transparent,
                     PRFColors.black.withValues(alpha: 0.3),
                   ],
                 ),
@@ -391,8 +391,8 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
             // Video indicator
             if (isVideo)
               Positioned(
-                bottom: 8,
-                left: 8,
+                bottom: PRFSpacingTokens.sm,
+                left: PRFSpacingTokens.sm,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.xs,
@@ -400,7 +400,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   ),
                   decoration: BoxDecoration(
                     color: PRFColors.black.withValues(alpha: 0.7),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                   ),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
@@ -425,8 +425,8 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
               ),
             // Remove button
             Positioned(
-              top: 8,
-              right: 8,
+              top: PRFSpacingTokens.sm,
+              right: PRFSpacingTokens.sm,
               child: GestureDetector(
                 onTap: () {
                   // Remove image logic would go here
@@ -507,7 +507,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
         decoration: BoxDecoration(
           color: isSelected
               ? theme.colorScheme.primary.withValues(alpha: 0.1)
-              : PRFColors.transparent,
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         ),
         child: Column(

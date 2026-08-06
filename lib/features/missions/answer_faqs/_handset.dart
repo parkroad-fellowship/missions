@@ -351,7 +351,10 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                             vertical: PRFSpacingTokens.xs,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: PRFColors.warningLight,
+                                            color: context
+                                                .statusColors
+                                                .warning
+                                                .background,
                                             borderRadius: BorderRadius.circular(
                                               PRFRadiusTokens.xs,
                                             ),
@@ -360,7 +363,10 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                             'No answers yet',
                                             style: theme.textTheme.labelSmall
                                                 ?.copyWith(
-                                                  color: PRFColors.warningDark,
+                                                  color: context
+                                                      .statusColors
+                                                      .warning
+                                                      .onColor,
                                                 ),
                                           ),
                                         ),

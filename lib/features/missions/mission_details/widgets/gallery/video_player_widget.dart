@@ -256,8 +256,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             end: Alignment.bottomCenter,
             colors: [
               PRFColors.black.withValues(alpha: 0.7),
-              PRFColors.transparent,
-              PRFColors.transparent,
+              Colors.transparent,
+              Colors.transparent,
               PRFColors.black.withValues(alpha: 0.7),
             ],
             stops: const [0.0, 0.3, 0.7, 1.0],
@@ -267,9 +267,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           children: [
             // Top controls
             Positioned(
-              top: 16,
-              left: 16,
-              right: 16,
+              top: PRFSpacingTokens.lg,
+              left: PRFSpacingTokens.lg,
+              right: PRFSpacingTokens.lg,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -326,9 +326,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             // Bottom controls
             Positioned(
-              bottom: 16,
-              left: 16,
-              right: 16,
+              bottom: PRFSpacingTokens.lg,
+              left: PRFSpacingTokens.lg,
+              right: PRFSpacingTokens.lg,
               child: Column(
                 children: [
                   // Progress bar
@@ -413,7 +413,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         });
       },
       child: ColoredBox(
-        color: PRFColors.transparent,
+        color: Colors.transparent,
         child: Stack(
           children: [
             // Center play/pause button
@@ -448,8 +448,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             // Full-screen button
             Positioned(
-              top: 8,
-              right: 8,
+              top: PRFSpacingTokens.sm,
+              right: PRFSpacingTokens.sm,
               child: GestureDetector(
                 onTap: _toggleFullScreen,
                 child: Container(

@@ -206,7 +206,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 2),
                     height: 20 + (animationValue * 40),
-                    width: 4,
+                    width: PRFSpacingTokens.xs,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(2),

@@ -508,10 +508,11 @@ class NetworkUtil {
     ProgressCallback? onDownloadProgress,
   }) async {
     try {
-      final response = await _getHttpClient(apiVersion: apiVersion).get<List<int>>(
-        url,
-        options: Options(responseType: ResponseType.bytes),
-      );
+      final response = await _getHttpClient(apiVersion: apiVersion)
+          .get<List<int>>(
+            url,
+            options: Options(responseType: ResponseType.bytes),
+          );
       return Uint8List.fromList(response.data!);
     } on SocketException catch (_) {
       throw Failure(message: 'No internet connection');

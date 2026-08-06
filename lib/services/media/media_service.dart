@@ -19,7 +19,8 @@ import 'package:logger/logger.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:prf_design/prf_design.dart' show StringFormatter;
+import 'package:prf_design/prf_design.dart'
+    show PRFRadiusTokens, PRFSpacingTokens, StringFormatter;
 
 abstract class MediaService {
   Future<PRFMedia?> uploadFile({
@@ -220,7 +221,9 @@ class MediaServiceImpl implements MediaService {
       final source = await showModalBottomSheet<ImageSource>(
         context: context,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(PRFRadiusTokens.lg),
+          ),
         ),
         builder: (context) {
           final theme = Theme.of(context);
@@ -231,8 +234,8 @@ class MediaServiceImpl implements MediaService {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: 40,
-                    height: 4,
+                    width: PRFSpacingTokens.xxxl,
+                    height: PRFSpacingTokens.xs,
                     margin: const EdgeInsets.only(bottom: 20),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
@@ -248,10 +251,12 @@ class MediaServiceImpl implements MediaService {
                   const SizedBox(height: 20),
                   ListTile(
                     leading: Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: Icon(
                         Icons.camera_alt_outlined,
@@ -268,12 +273,14 @@ class MediaServiceImpl implements MediaService {
                   ),
                   ListTile(
                     leading: Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.secondary.withValues(
                           alpha: 0.1,
                         ),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(
+                          PRFRadiusTokens.smd,
+                        ),
                       ),
                       child: Icon(
                         Icons.photo_library_outlined,
@@ -288,7 +295,7 @@ class MediaServiceImpl implements MediaService {
                     ),
                     onTap: () => Navigator.pop(context, ImageSource.gallery),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: PRFSpacingTokens.sm),
                 ],
               ),
             ),

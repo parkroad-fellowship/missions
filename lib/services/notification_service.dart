@@ -92,16 +92,18 @@ abstract class NotificationService {
               final l10n = context.l10n;
               return Center(
                 child: Material(
-                  color: PRFColors.transparent,
+                  color: Colors.transparent,
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: PRFSpacingTokens.xl,
+                      ),
                       child: Card(
                         color: PRFColors.white,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 24,
+                            horizontal: PRFSpacingTokens.xl,
+                            vertical: PRFSpacingTokens.xl,
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -283,7 +285,7 @@ class NotificationServiceImpl implements NotificationService {
               onPressed: () => Navigator.of(context).pop(),
               title: l10n.deny,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: PRFSpacingTokens.lg),
             PRFButton(
               onPressed: () {
                 userAuthorized = true;

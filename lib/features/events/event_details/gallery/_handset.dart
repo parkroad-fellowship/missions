@@ -197,8 +197,8 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
+                            crossAxisSpacing: PRFSpacingTokens.md,
+                            mainAxisSpacing: PRFSpacingTokens.md,
                           ),
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
@@ -377,7 +377,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        PRFColors.transparent,
+                        Colors.transparent,
                         PRFColors.black.withValues(alpha: 0.1),
                       ],
                     ),

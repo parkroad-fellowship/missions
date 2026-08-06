@@ -109,7 +109,7 @@ class HeroNumber extends StatelessWidget {
             .fadeIn(duration: 400.ms)
             .slideY(begin: 0.1, end: 0),
         if (label != null) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: PRFSpacingTokens.sm),
           Text(
                 label!,
                 textAlign: TextAlign.center,
@@ -147,7 +147,7 @@ class _EmptySectionContent extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, size: 48, color: PRFColors.white.withValues(alpha: 0.3)),
-        const SizedBox(height: 16),
+        const SizedBox(height: PRFSpacingTokens.lg),
         Text(
           message,
           textAlign: TextAlign.center,
@@ -172,7 +172,7 @@ class _StatLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: PRFSpacingTokens.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -184,7 +184,7 @@ class _StatLine extends StatelessWidget {
               color: PRFColors.white,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: PRFSpacingTokens.sm),
           Text(
             label,
             style: TextStyle(
@@ -228,7 +228,7 @@ class IntroWrappedPage extends StatelessWidget {
             letterSpacing: 2,
           ),
         ).animate(delay: 600.ms).fadeIn(duration: 500.ms),
-        const SizedBox(height: 12),
+        const SizedBox(height: PRFSpacingTokens.md),
         Text(
               memberName,
               style: const TextStyle(
@@ -242,7 +242,7 @@ class IntroWrappedPage extends StatelessWidget {
             .animate(delay: 800.ms)
             .fadeIn(duration: 600.ms)
             .slideY(begin: 10, end: 0),
-        const SizedBox(height: 16),
+        const SizedBox(height: PRFSpacingTokens.lg),
         Text(
           'Missions Wrapped',
           style: TextStyle(
@@ -289,15 +289,15 @@ class MissionsWrappedPage extends StatelessWidget {
           numberSize: 88,
         ),
         if (missionStats.missionStreak > 0) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: PRFSpacingTokens.xl),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: PRFSpacingTokens.lg,
               vertical: 6,
             ),
             decoration: BoxDecoration(
               color: PRFColors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
                 color: PRFColors.white.withValues(alpha: 0.2),
               ),
@@ -360,7 +360,7 @@ class ImpactWrappedPage extends StatelessWidget {
           numberSize: 88,
         ),
         if (impactStats.mostImpactfulMission != null) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: PRFSpacingTokens.xl),
           Text(
             'through ${impactStats.mostImpactfulMission!.name}',
             textAlign: TextAlign.center,
@@ -409,15 +409,15 @@ class LearningWrappedPage extends StatelessWidget {
           numberSize: 88,
         ),
         if (learningStats.learningStreak > 0) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: PRFSpacingTokens.xl),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: PRFSpacingTokens.lg,
               vertical: 6,
             ),
             decoration: BoxDecoration(
               color: PRFColors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
                 color: PRFColors.white.withValues(alpha: 0.2),
               ),
@@ -467,15 +467,15 @@ class PrayerWrappedPage extends StatelessWidget {
           numberSize: 88,
         ),
         if (prayerStats.prayerConsistencyDays > 0) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: PRFSpacingTokens.xl),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: PRFSpacingTokens.lg,
               vertical: 6,
             ),
             decoration: BoxDecoration(
               color: PRFColors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
                 color: PRFColors.white.withValues(alpha: 0.2),
               ),
@@ -565,7 +565,7 @@ class SummaryWrappedPage extends StatelessWidget {
             color: PRFColors.white,
           ),
         ).animate(delay: 200.ms).fadeIn(),
-        const SizedBox(height: 24),
+        const SizedBox(height: PRFSpacingTokens.xl),
         _StatLine(
           value: m.missionStats.totalMissions.toString(),
           label: 'missions completed',
@@ -588,7 +588,7 @@ class SummaryWrappedPage extends StatelessWidget {
             value: m.eventStats.eventsAttended.toString(),
             label: 'events attended',
           ).animate(delay: 750.ms).fadeIn().slideY(begin: 10, end: 0),
-        const SizedBox(height: 24),
+        const SizedBox(height: PRFSpacingTokens.xl),
         SizedBox(
           width: 200,
           child: OutlinedButton.icon(
@@ -614,7 +614,7 @@ class SummaryWrappedPage extends StatelessWidget {
             ),
           ),
         ).animate(delay: 900.ms).fadeIn().slideY(begin: 10, end: 0),
-        const SizedBox(height: 16),
+        const SizedBox(height: PRFSpacingTokens.lg),
         Text(
           'Thank you for making an impact\nin $year!',
           textAlign: TextAlign.center,

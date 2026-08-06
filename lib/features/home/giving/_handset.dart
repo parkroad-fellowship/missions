@@ -261,7 +261,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                             : PRFSpacingTokens.lg,
                                       ),
                                       child: Material(
-                                        color: PRFColors.transparent,
+                                        color: Colors.transparent,
                                         borderRadius: BorderRadius.circular(
                                           PRFRadiusTokens.xl,
                                         ),

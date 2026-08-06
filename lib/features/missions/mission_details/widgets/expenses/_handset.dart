@@ -612,7 +612,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         ],
       ),
       child: Material(
-        color: PRFColors.transparent,
+        color: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
@@ -708,7 +708,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   if (!isCredit && widget.canEdit) ...[
                     const SizedBox(width: PRFSpacingTokens.sm),
                     Material(
-                      color: PRFColors.transparent,
+                      color: Colors.transparent,
                       child: InkWell(
                         onTap: () => _showDeleteConfirmation(context, entry),
                         borderRadius: BorderRadius.circular(
@@ -742,7 +742,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   const SizedBox(width: PRFSpacingTokens.sm),
                   if (!isCredit && widget.canEdit) ...[
                     Material(
-                      color: PRFColors.transparent,
+                      color: Colors.transparent,
                       child: InkWell(
                         onTap: () => _showExpenseDetails(context, entry),
                         borderRadius: BorderRadius.circular(
@@ -1032,7 +1032,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
                                                     colors: [
-                                                      PRFColors.transparent,
+                                                      Colors.transparent,
                                                       PRFColors.black
                                                           .withValues(
                                                             alpha: 0.1,
@@ -1058,8 +1058,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                   receipt,
                                 ),
                                 child: Container(
-                                  width: 24,
-                                  height: 24,
+                                  width: PRFSpacingTokens.xl,
+                                  height: PRFSpacingTokens.xl,
                                   decoration: BoxDecoration(
                                     color: theme.colorScheme.error,
                                     shape: BoxShape.circle,
@@ -1178,7 +1178,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 loading: () => SizedBox(
                   width: PRFSpacingTokens.lg,
-                  height: 16,
+                  height: PRFSpacingTokens.lg,
                   child: PRFCircularProgressIndicator(
                     color: theme.colorScheme.primary,
                   ),
@@ -1753,7 +1753,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             itemCount: refunds.length,
             separatorBuilder: (context, index) => Divider(
               color: theme.colorScheme.outline.withValues(alpha: 0.1),
-              height: 16,
+              height: PRFSpacingTokens.lg,
             ),
             itemBuilder: (context, index) {
               final refund = refunds.reversed.elementAt(index);
