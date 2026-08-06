@@ -4,6 +4,7 @@ import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/firebase/firebase_service.dart';
+import 'package:app/shared/validators.dart';
 import 'package:app/utils/helpers/app_version_helper.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
@@ -193,23 +194,31 @@ class _SignInHandsetState extends State<SignInHandset> {
                                         builder: (context, state) {
                                           return PRFButton(
                                             onPressed: () {
-                                              if (_emailController
-                                                  .text
-                                                  .isEmpty) {
+                                              final emailResult =
+                                                  PRFRequired(
+                                                    l10n.enterEmail,
+                                                  ).validateResult(
+                                                    _emailController.text,
+                                                  );
+                                              if (!emailResult.valid) {
                                                 PRFSnackbar.warning(
                                                   context,
-                                                  l10n.enterEmail,
+                                                  emailResult.error!,
                                                 );
                                                 Gaimon.warning();
                                                 return;
                                               }
 
-                                              if (_passwordController
-                                                  .text
-                                                  .isEmpty) {
+                                              final passwordResult =
+                                                  PRFRequired(
+                                                    l10n.enterPassword,
+                                                  ).validateResult(
+                                                    _passwordController.text,
+                                                  );
+                                              if (!passwordResult.valid) {
                                                 PRFSnackbar.warning(
                                                   context,
-                                                  l10n.enterPassword,
+                                                  passwordResult.error!,
                                                 );
                                                 Gaimon.warning();
                                                 return;
