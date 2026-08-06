@@ -1,12 +1,10 @@
 import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
-import 'package:app/features/missions/mission_ground_suggestions/actions/add_mission_ground_suggestion/add_mission_ground_suggestion.dart';
-import 'package:app/features/missions/mission_ground_suggestions/actions/update_mission_ground_suggestion/update_mission_ground_suggestion.dart';
+import 'package:app/features/missions/mission_ground_suggestions/_shared.dart';
 import 'package:app/features/missions/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/features/missions/mission_ground_suggestions/widgets/mission_ground_suggestion_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
 import 'package:app/utils/crud/resource_state.dart';
-import 'package:app/utils/helpers/permission_helper.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -23,10 +21,20 @@ class MissionGroundSuggestionsPageHandset extends StatefulWidget {
 
 class _MissionGroundSuggestionsPageHandsetState
     extends State<MissionGroundSuggestionsPageHandset> {
+  final _form = GroundSuggestionsFormState();
+
   @override
   void initState() {
     super.initState();
-    context.read<GroundSuggestionResourceCubit>().loadAll();
+    _form
+      ..attach(() => setState(() {}))
+      ..load(context);
+  }
+
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,89 +69,18 @@ class _MissionGroundSuggestionsPageHandsetState
           backgroundColor: theme.colorScheme.surface,
           body: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.88),
-                    ],
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    PRFBrandedNavBar(
-                      title: l10n.suggestAMission,
-                      onBack: () => context.router.back(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.xs,
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.lg,
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary.withValues(
-                            alpha: 0.1,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.onPrimary.withValues(
-                              alpha: 0.15,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.suggestMissionSubTitle,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onPrimary.withValues(
-                                  alpha: 0.9,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Wrap(
-                              spacing: PRFSpacingTokens.xs,
-                              runSpacing: PRFSpacingTokens.xs,
-                              children: [
-                                _StatPill(
-                                  label: l10n.total,
-                                  value: missionGroundSuggestions.length,
-                                ),
-                                _StatPill(
-                                  label: PRFMissionGroundSuggestionStatus
-                                      .pending
-                                      .name,
-                                  value: pendingCount,
-                                ),
-                                _StatPill(
-                                  label: l10n.completed,
-                                  value: completedCount,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              buildSuggestionsHeader(
+                context,
+                theme,
+                l10n,
+                missionGroundSuggestions.length,
+                pendingCount,
+                completedCount,
+                () => context.router.back(),
               ),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () =>
-                      context.read<GroundSuggestionResourceCubit>().loadAll(),
+                  onRefresh: () async => _form.load(context),
                   child: CustomScrollView(
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics(),
@@ -189,8 +126,8 @@ class _MissionGroundSuggestionsPageHandsetState
                                     label: l10n.suggestAMission,
                                     description: l10n.suggestMissionDescription,
                                     actionLabel: l10n.suggestAMission,
-                                    onActionPressed:
-                                        _addMissionGroundSuggestion,
+                                    onActionPressed: () =>
+                                        triggerAddSuggestion(context),
                                   ),
                                 ),
                               );
@@ -250,11 +187,11 @@ class _MissionGroundSuggestionsPageHandsetState
                                           PRFRadiusTokens.xl,
                                         ),
                                         child: InkWell(
-                                          onLongPress: () async {
-                                            await _updateMissionGroundSuggestion(
-                                              suggestion,
-                                            );
-                                          },
+                                          onLongPress: () =>
+                                              triggerUpdateSuggestion(
+                                                context,
+                                                suggestion,
+                                              ),
                                           borderRadius: BorderRadius.circular(
                                             PRFRadiusTokens.xl,
                                           ),
@@ -310,7 +247,7 @@ class _MissionGroundSuggestionsPageHandsetState
                 FloatingActionButton.extended(
                       backgroundColor: theme.colorScheme.primary,
                       foregroundColor: theme.colorScheme.onPrimary,
-                      onPressed: _addMissionGroundSuggestion,
+                      onPressed: () => triggerAddSuggestion(context),
                       icon: const Icon(Icons.add_rounded),
                       label: Text(
                         l10n.suggestAMission,
@@ -326,81 +263,6 @@ class _MissionGroundSuggestionsPageHandsetState
           ),
         );
       },
-    );
-  }
-
-  Future<void> _updateMissionGroundSuggestion(
-    PRFMissionGroundSuggestion missionGroundSuggestion,
-  ) async {
-    if (!PermissionHelper.userCan('edit mission ground suggestion')) {
-      return;
-    }
-
-    await PRFBottomSheet.show<void>(
-      context,
-      title: context.l10n.editMissionSuggestion,
-      child: UpdateMissionGroundSuggestionView(
-        missionGroundSuggestion: missionGroundSuggestion,
-      ),
-    ).then((_) {
-      if (mounted) {
-        context.read<GroundSuggestionResourceCubit>().loadAll();
-      }
-    });
-  }
-
-  void _addMissionGroundSuggestion() {
-    PRFBottomSheet.show<void>(
-      context,
-      title: context.l10n.suggestAMission,
-      child: const AddMissionGroundSuggestionView(),
-    ).then((_) {
-      if (mounted) {
-        context.read<GroundSuggestionResourceCubit>().loadAll();
-      }
-    });
-  }
-}
-
-class _StatPill extends StatelessWidget {
-  const _StatPill({required this.label, required this.value});
-
-  final String label;
-  final int value;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.md,
-        vertical: PRFSpacingTokens.xs,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onPrimary.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      ),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '$value ',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: theme.colorScheme.onPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            TextSpan(
-              text: label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

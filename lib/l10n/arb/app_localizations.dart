@@ -3189,6 +3189,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry failed'**
   String get retryFailed;
+
+  /// No description provided for @dashboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Dashboard'**
+  String get dashboardTitle;
+
+  /// No description provided for @dashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore and suggest missions, make giving contributions, and check the latest answers and announcements.'**
+  String get dashboardSubtitle;
 }
 
 class _AppLocalizationsDelegate

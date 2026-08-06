@@ -1669,4 +1669,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retryFailed => 'Retry failed';
+
+  @override
+  String get dashboardTitle => 'Mission Dashboard';
+
+  @override
+  String get dashboardSubtitle =>
+      'Explore and suggest missions, make giving contributions, and check the latest answers and announcements.';
 }

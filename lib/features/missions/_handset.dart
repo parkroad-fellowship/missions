@@ -1,15 +1,12 @@
-import 'package:app/di/di_container.dart';
+import 'package:app/features/missions/_shared.dart';
 import 'package:app/features/missions/cubit/mission_resource_cubit.dart';
 import 'package:app/features/missions/cubit/past_mission_resource_cubit.dart';
 import 'package:app/features/missions/cubit/subscriptions_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_school.dart';
-import 'package:app/models/remote/member/prf_member.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
-import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_state.dart';
-import 'package:app/utils/helpers/mission_helper.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:app/utils/router/router.gr.dart';
@@ -33,10 +30,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         SingleTickerProviderStateMixin,
         TimezoneMixin {
   late TabController _tabController;
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-
-  PRFMember? get member => getIt<HiveService>().retrieveMember();
+  final _form = MissionsFormState();
 
   @override
   bool get wantKeepAlive => true;
@@ -46,68 +40,16 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
-    _loadTabData(0, force: true); // initial tab
-
-    _tabController.addListener(() {
-      // Prevent duplicate calls during tab animation
-      if (_tabController.indexIsChanging) return;
-
-      final index = _tabController.index;
-      if (index == _lastTabIndex) return;
-
-      _lastTabIndex = index;
-      _loadTabData(index);
-    });
-
-    _searchController.addListener(() {
-      final newQuery = _searchController.text.trim();
-      if (newQuery == _searchQuery) return;
-
-      setState(() {
-        _searchQuery = newQuery;
-        _loadedTabs.clear(); // Clear loaded tabs to force reload with new query
-      });
-
-      // Reload current tab data with new search query
-      _loadTabData(_tabController.index, force: true);
-    });
-  }
-
-  int _lastTabIndex = 0;
-  final Set<int> _loadedTabs = {};
-
-  Future<void> _loadTabData(int index, {bool force = false}) async {
-    if (!force && _loadedTabs.contains(index)) return;
-
-    switch (index) {
-      case 0:
-        await context.read<MissionResourceCubit>().loadAll(
-          filters: {
-            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
-          },
-        );
-      case 1:
-        await context.read<SubscriptionResourceCubit>().loadAll(
-          filters: {
-            'member_ulid': member?.ulid,
-            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
-          },
-        );
-      case 2:
-        await context.read<PastMissionResourceCubit>().loadAll(
-          filters: {
-            if (_searchQuery.isNotEmpty) 'search': _searchQuery,
-          },
-        );
-    }
-
-    _loadedTabs.add(index);
+    _form
+      ..attach(() => setState(() {}))
+      ..initListeners(_tabController, context)
+      ..loadTabData(0, context, force: true);
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
     _tabController.dispose();
+    _form.dispose();
     super.dispose();
   }
 
@@ -207,12 +149,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                     ),
                     child: PRFTextField(
                       hintText: l10n.missionsSearchHint,
-                      controller: _searchController,
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value.trim();
-                        });
-                      },
+                      controller: _form.searchController,
                     ),
                   ),
                 ],
@@ -252,7 +189,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () => _loadTabData(0, force: true),
+            onRefresh: () async => _form.loadTabData(0, context, force: true),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -265,7 +202,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () => _loadTabData(0, force: true),
+          onRefresh: () async => _form.loadTabData(0, context, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -276,8 +213,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             itemBuilder: (context, index) {
               final mission = missions[index];
               final isLast = index == missions.length - 1;
-              return _buildTimelineMissionCard(
-                    context,
+              return TimelineMissionCard(
                     mission: mission,
                     isLast: isLast,
                     onTap: () => context.router.push(
@@ -338,7 +274,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () => _loadTabData(1),
+            onRefresh: () async => _form.loadTabData(1, context),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -351,7 +287,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () => _loadTabData(1),
+          onRefresh: () async => _form.loadTabData(1, context),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -363,8 +299,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               final mission = missions[index];
               final isLast = index == missions.length - 1;
 
-              return _buildTimelineMissionCard(
-                    context,
+              return TimelineMissionCard(
                     mission: mission,
                     isLast: isLast,
                     isSubscribed: true,
@@ -408,7 +343,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
         if (schools.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () => _loadTabData(2, force: true),
+            onRefresh: () async => _form.loadTabData(2, context, force: true),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -421,7 +356,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () => _loadTabData(2, force: true),
+          onRefresh: () async => _form.loadTabData(2, context, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -458,70 +393,5 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         );
       },
     );
-  }
-
-  Widget _buildTimelineMissionCard(
-    BuildContext context, {
-    required PRFMission mission,
-    required bool isLast,
-    required VoidCallback onTap,
-    bool isSubscribed = false,
-  }) {
-    final l10n = context.l10n;
-    final theme = Theme.of(context);
-    final startDate = mission.startDate;
-    final endDate = mission.endDate;
-    final isMultiDay = !MissionHelper.isSameDay(startDate, endDate);
-    final now = DateTime.now();
-    final isOngoing =
-        (startDate.isBefore(now) || MissionHelper.isSameDay(startDate, now)) &&
-        (endDate.isAfter(now) || MissionHelper.isSameDay(endDate, now));
-    final durationDays = endDate.difference(startDate).inDays + 1;
-    final timeRange =
-        '${DateFormatter.formatTime(mission.startTime, timezone)} - ${DateFormatter.formatTime(mission.endTime, timezone)}';
-    final datePrimaryText = isMultiDay
-        ? '${DateFormatter.formatDate(startDate, timezone)} - ${DateFormatter.formatDate(endDate, timezone)}'
-        : DateFormatter.formatDate(startDate, timezone);
-
-    return PRFTimelineMissionCard(
-      isLast: isLast,
-      startDate: startDate,
-      endDate: endDate,
-      statusColor: _resolveMissionStatusColor(mission, theme),
-      statusText: isSubscribed ? l10n.subscribed : mission.status.name,
-      schoolName: mission.school?.name ?? '-',
-      missionTypeName: mission.missionType?.name ?? '-',
-      durationLabel: l10n.duration,
-      durationValue: isMultiDay ? l10n.durationDesc(durationDays) : timeRange,
-      capacityLabel: l10n.capacity,
-      capacityValue: l10n.capacityDesc(mission.missionSubscriptionsNeeded),
-      datePrimaryText: datePrimaryText,
-      dateSecondaryText: timeRange,
-      showActiveIndicator: isOngoing,
-      activeIndicatorColor: theme.colorScheme.tertiary,
-      actionLabel: l10n.missionDetails,
-      onTap: onTap,
-    );
-  }
-
-  Color _resolveMissionStatusColor(PRFMission mission, ThemeData theme) {
-    switch (mission.status.apiKey) {
-      case 1:
-        return Colors.amber.shade700;
-      case 2:
-        return Colors.green.shade700;
-      case 3:
-        return theme.colorScheme.error;
-      case 4:
-        return Colors.red.shade700;
-      case 5:
-        return theme.colorScheme.primary;
-      case 6:
-        return theme.colorScheme.secondary;
-      case 7:
-        return Colors.deepOrange.shade500;
-      default:
-        return theme.colorScheme.primary;
-    }
   }
 }

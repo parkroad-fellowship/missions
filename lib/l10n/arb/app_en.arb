@@ -1247,5 +1247,9 @@
     "uploadedSuccessfully": "{upload_name} uploaded successfully",
     "@uploadedSuccessfully": {},
     "retryFailed": "Retry failed",
-    "@retryFailed": {}
+    "@retryFailed": {},
+    "dashboardTitle": "Mission Dashboard",
+    "@dashboardTitle": {},
+    "dashboardSubtitle": "Explore and suggest missions, make giving contributions, and check the latest answers and announcements.",
+    "@dashboardSubtitle": {}
 }

@@ -1,10 +1,7 @@
-import 'package:app/enums/prf_media_model.dart';
+import 'package:app/features/missions/answer_faqs/_shared.dart';
 import 'package:app/features/missions/mission_details/widgets/mission_questions/cubit/mission_question_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
-import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/models/remote/mission/prf_mission_question.dart';
-import 'package:app/shared/media_upload/widgets/audio_player_widget.dart';
-import 'package:app/shared/media_upload/widgets/offline_audio_recorder_sheet.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,146 +15,26 @@ class AnswerFAQsPageHandset extends StatefulWidget {
 }
 
 class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
-  final _searchController = TextEditingController();
-  String _query = '';
+  final _form = AnswerFAQsFormState();
 
   @override
   void initState() {
     super.initState();
-    context.read<MissionQuestionResourceCubit>().loadAll();
-    _searchController.addListener(_handleSearchChanged);
+    _form
+      ..attach(() => setState(() {}))
+      ..initListeners()
+      ..load(context);
   }
 
   @override
   void dispose() {
-    _searchController
-      ..removeListener(_handleSearchChanged)
-      ..dispose();
+    _form.dispose();
     super.dispose();
-  }
-
-  void _handleSearchChanged() {
-    final next = _searchController.text.trim().toLowerCase();
-    if (next == _query) return;
-    setState(() => _query = next);
-  }
-
-  Future<void> _openRecorder(PRFMissionQuestion question) async {
-    await PRFBottomSheet.show<void>(
-      context,
-      title: context.l10n.recordAnswer,
-      child: SizedBox(
-        height: MediaQuery.sizeOf(context).height * 0.8,
-        child: OfflineAudioRecorderSheet(
-          model: PRFMediaModel.missionQuestions,
-          modelUlid: question.ulid,
-        ),
-      ),
-    );
-    if (!mounted) return;
-    await context.read<MissionQuestionResourceCubit>().loadAll();
-  }
-
-  Future<void> _openAnswers(PRFMissionQuestion question) async {
-    final mediaAnswers = question.questionMediaAnswers;
-    final transcriptEntries = question.transcripts;
-
-    final mediaByUuid = <String, PRFMedia>{};
-    for (final media in mediaAnswers) {
-      mediaByUuid[media.uuid] = media;
-    }
-    for (final t in transcriptEntries) {
-      final media = t.media;
-      if (media == null) continue;
-      mediaByUuid.putIfAbsent(media.uuid, () => media);
-    }
-
-    final orderedUuids = <String>[];
-    for (final media in mediaAnswers) {
-      orderedUuids.add(media.uuid);
-    }
-    for (final t in transcriptEntries) {
-      final media = t.media;
-      if (media == null) continue;
-      if (!orderedUuids.contains(media.uuid)) {
-        orderedUuids.add(media.uuid);
-      }
-    }
-
-    if (orderedUuids.isEmpty) {
-      PRFSnackbar.info(context, context.l10n.noAnswersYet);
-      return;
-    }
-
-    await PRFBottomSheet.show<void>(
-      context,
-      title: context.l10n.answers,
-      child: Padding(
-        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '${orderedUuids.length} answer${orderedUuids.length == 1 ? '' : 's'}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: PRFSpacingTokens.lg),
-            Expanded(
-              child: ListView.separated(
-                itemCount: orderedUuids.length,
-                separatorBuilder: (_, _) =>
-                    const SizedBox(height: PRFSpacingTokens.md),
-                itemBuilder: (context, index) {
-                  final uuid = orderedUuids[index];
-                  final media = mediaByUuid[uuid];
-                  if (media == null) {
-                    return const SizedBox.shrink();
-                  }
-                  final transcript = transcriptEntries
-                      .where((t) => t.media?.uuid == uuid)
-                      .map((t) => t.content)
-                      .where((c) => c.trim().isNotEmpty)
-                      .join('\n')
-                      .trim();
-
-                  final transcriptText = transcript.isEmpty ? null : transcript;
-                  return Container(
-                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-                      border: Border.all(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.outline.withValues(alpha: 0.2),
-                      ),
-                    ),
-                    child: AudioPlayerWidget(
-                      url: media.temporaryURL,
-                      title: media.fileName,
-                      transcript: transcriptText,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -178,7 +55,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                 label: context.l10n.searchQuestions,
                 child: PRFTextField(
                   hintText: context.l10n.searchQuestions,
-                  controller: _searchController,
+                  controller: _form.searchController,
                 ),
               ),
             ),
@@ -202,16 +79,16 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                         orElse: () => const <PRFMissionQuestion>[],
                       );
 
-                      final filtered = _query.isEmpty
+                      final filtered = _form.query.isEmpty
                           ? questions
                           : questions
                                 .where(
                                   (q) =>
                                       q.question.toLowerCase().contains(
-                                        _query,
+                                        _form.query,
                                       ) ||
                                       (q.mission?.theme?.toLowerCase().contains(
-                                            _query,
+                                            _form.query,
                                           ) ??
                                           false),
                                 )
@@ -233,7 +110,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                               PRFSpacingTokens.xxl,
                             ),
                             child: Semantics(
-                              label: _query.isEmpty
+                              label: _form.query.isEmpty
                                   ? 'No questions yet'
                                   : 'No questions found',
                               child: Column(
@@ -249,7 +126,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     height: PRFSpacingTokens.lg,
                                   ),
                                   Text(
-                                    _query.isEmpty
+                                    _form.query.isEmpty
                                         ? 'No questions yet'
                                         : 'No questions found',
                                     style: theme.textTheme.headlineSmall,
@@ -259,7 +136,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     height: PRFSpacingTokens.sm,
                                   ),
                                   Text(
-                                    _query.isEmpty
+                                    _form.query.isEmpty
                                         ? 'Questions from missions will appear here'
                                         : 'Try a different search term',
                                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -276,9 +153,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                       }
 
                       return RefreshIndicator(
-                        onRefresh: () => context
-                            .read<MissionQuestionResourceCubit>()
-                            .loadAll(),
+                        onRefresh: () async => _form.load(context),
                         child: ListView.separated(
                           padding: const EdgeInsets.fromLTRB(
                             PRFSpacingTokens.lg,
@@ -380,8 +255,11 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                           label:
                                               'Record answer to: ${item.question}',
                                           child: PRFButton(
-                                            onPressed: () =>
-                                                _openRecorder(item),
+                                            onPressed: () => openRecorder(
+                                              context,
+                                              item,
+                                              _form,
+                                            ),
                                             title: context.l10n.recordAnswer,
                                           ),
                                         ),
@@ -398,7 +276,8 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                               '${item.answerCount} ${item.answerCount == 1 ? 'answer' : 'answers'}',
                                           child: PRFButton(
                                             variant: PRFButtonVariant.secondary,
-                                            onPressed: () => _openAnswers(item),
+                                            onPressed: () =>
+                                                openAnswers(context, item),
                                             title:
                                                 'Answers (${item.answerCount})',
                                             disabled: !item.hasAnswers,

@@ -1,6 +1,8 @@
 import 'package:app/features/lms/_handset.dart';
+import 'package:app/features/lms/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:prf_design/prf_design.dart';
 
 @RoutePage()
 class LMSPage extends StatelessWidget {
@@ -8,6 +10,10 @@ class LMSPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LMSPageHandset();
+    return PRFAdaptive(
+      builder: (context, _) => const LMSPageHandset(),
+      handset: (context) => const LMSPageHandset(),
+      tablet: (context) => const LMSPageTablet(),
+    );
   }
 }

@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:app/di/di_container.dart';
 import 'package:app/enums/common/prf_morph_types.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_reply_resource_cubit.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
+import 'package:app/features/home/student_enquiries/enquiry_replies/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/common/socket_config.dart';
 import 'package:app/models/remote/enquiry/prf_student_enquiry.dart';
@@ -12,7 +15,6 @@ import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:prf_design/prf_design.dart';
 
 class StudentEnquiryRepliesPageHandset extends StatefulWidget {
@@ -111,67 +113,6 @@ class _StudentEnquiryRepliesPageHandsetState
     await context.read<EnquiryReplyResourceCubit>().createReply(
       studentEnquiryUlid: enquiryUlid,
       content: text.trim(),
-    );
-  }
-
-  String _formatTimestamp(DateTime dateTime) {
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
-
-    if (difference.inDays == 0) {
-      return DateFormat('HH:mm').format(dateTime);
-    } else if (difference.inDays == 1) {
-      return 'Yesterday ${DateFormat('HH:mm').format(dateTime)}';
-    } else if (difference.inDays < 7) {
-      return DateFormat('EEE HH:mm').format(dateTime);
-    } else {
-      return DateFormat('MMM d, HH:mm').format(dateTime);
-    }
-  }
-
-  bool _isStudentReply(PRFStudentEnquiryReply reply) =>
-      reply.commentorableType == PRFMorphType.student;
-
-  Widget _buildMessageBubble(PRFStudentEnquiryReply reply, int index) {
-    final isStudent = _isStudentReply(reply);
-    final l10n = context.l10n;
-    final semanticRole = isStudent ? l10n.unread : l10n.replied;
-
-    return TweenAnimationBuilder<double>(
-      duration: Duration(milliseconds: 220 + (index * 35)),
-      tween: Tween(begin: 0, end: 1),
-      curve: Curves.easeOutBack,
-      builder: (context, value, child) {
-        return Transform.translate(
-          offset: Offset(0, 20 * (1 - value)),
-          child: Opacity(
-            opacity: value.clamp(0.0, 1.0),
-            child: child,
-          ),
-        );
-      },
-      child: Semantics(
-        label:
-            '$semanticRole: ${reply.content}. ${_formatTimestamp(reply.createdAt)}',
-        child: PRFMessageBubble(
-          message: reply.content,
-          timestamp: _formatTimestamp(reply.createdAt),
-          isIncoming: isStudent,
-          showStatusIndicator: !isStudent,
-          margin: EdgeInsets.only(
-            left: isStudent
-                ? PRFSpacingTokens.lg
-                : 76, // 76 keeps outgoing alignment while reducing crowding
-            right: isStudent
-                ? 76
-                : PRFSpacingTokens
-                      .lg, // 76 keeps incoming alignment while reducing crowding
-            top: PRFSpacingTokens.xs,
-            bottom: PRFSpacingTokens.xs,
-          ),
-          maxWidth: MediaQuery.sizeOf(context).width * 0.77,
-        ),
-      ),
     );
   }
 
@@ -302,7 +243,7 @@ class _StudentEnquiryRepliesPageHandsetState
                     emptyDescription: l10n.pleaseWait,
                     messages: enquiryReplies,
                     messageBuilder: (context, message, index) =>
-                        _buildMessageBubble(message, index),
+                        buildMessageBubble(context, l10n, message, index),
                     composer: _buildEnhancedInputArea(),
                   );
                 },

@@ -1,6 +1,8 @@
 import 'package:app/features/missions/mission_ground_suggestions/_handset.dart';
+import 'package:app/features/missions/mission_ground_suggestions/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:prf_design/prf_design.dart';
 
 @RoutePage()
 class MissionGroundSuggestionsPage extends StatelessWidget {
@@ -8,6 +10,10 @@ class MissionGroundSuggestionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MissionGroundSuggestionsPageHandset();
+    return PRFAdaptive(
+      builder: (context, _) => const MissionGroundSuggestionsPageHandset(),
+      handset: (context) => const MissionGroundSuggestionsPageHandset(),
+      tablet: (context) => const MissionGroundSuggestionsPageTablet(),
+    );
   }
 }

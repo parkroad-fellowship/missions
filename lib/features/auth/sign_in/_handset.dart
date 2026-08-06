@@ -2,13 +2,12 @@ import 'package:app/di/di_container.dart';
 import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
+import 'package:app/features/auth/sign_in/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/firebase/firebase_service.dart';
 import 'package:app/shared/validators.dart';
-import 'package:app/utils/helpers/app_version_helper.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,15 +22,19 @@ class SignInHandset extends StatefulWidget {
 }
 
 class _SignInHandsetState extends State<SignInHandset> {
-  final _emailController = TextEditingController(
-    text: kDebugMode ? 'member.bradtke@example.org' : '',
-  );
-  final _passwordController = TextEditingController(
-    text: kDebugMode ? 'asZDcVt7Q' : '',
-  );
-  final _hidePasswordNotifier = ValueNotifier<bool>(true);
+  final _form = SignInFormState();
 
-  bool _isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    _form.attach(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,55 +84,12 @@ class _SignInHandsetState extends State<SignInHandset> {
                             const Spacer(),
 
                             // Logo
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(
-                                  PRFSpacingTokens.lg,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: PRFColors.white,
-                                  borderRadius: BorderRadius.circular(
-                                    PRFRadiusTokens.md,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: PRFColors.black.withValues(
-                                        alpha: 0.1,
-                                      ),
-                                      blurRadius: 16,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: ExtendedImage.asset(
-                                  'assets/images/app-logo.png',
-                                  height: 60,
-                                  width: 69,
-                                ),
-                              ),
-                            ),
+                            buildLogo(theme),
 
                             const SizedBox(height: 48),
 
                             // Welcome Text
-                            Text(
-                              l10n.signIn,
-                              style: theme.textTheme.headlineLarge?.copyWith(
-                                color: theme.colorScheme.primary,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-
-                            const SizedBox(height: PRFSpacingTokens.sm),
-
-                            Text(
-                              l10n.welcomeBack,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                            buildWelcomeHeaders(theme, l10n),
 
                             const SizedBox(height: 48),
 
@@ -146,8 +106,8 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       PRFTextField(
                                         type: PRFTextFieldType.email,
                                         hintText: l10n.enterEmail,
-                                        controller: _emailController,
-                                        enabled: !_isLoading,
+                                        controller: _form.emailController,
+                                        enabled: !_form.isLoading,
                                       ),
 
                                       const SizedBox(
@@ -158,9 +118,10 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       PRFTextField(
                                         type: PRFTextFieldType.password,
                                         hintText: l10n.enterPassword,
-                                        obscureNotifier: _hidePasswordNotifier,
-                                        controller: _passwordController,
-                                        enabled: !_isLoading,
+                                        obscureNotifier:
+                                            _form.hidePasswordNotifier,
+                                        controller: _form.passwordController,
+                                        enabled: !_form.isLoading,
                                       ),
 
                                       const SizedBox(
@@ -171,18 +132,16 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       BlocConsumer<SigninCubit, SignInState>(
                                         listener: (context, state) {
                                           state.maybeWhen(
-                                            loading: () => setState(() {
-                                              _isLoading = !_isLoading;
-                                            }),
-                                            loaded: () =>
-                                                context.router.pushPath(
-                                                  PRFSuperAppRouter
-                                                      .landingRoute,
-                                                ),
+                                            loading: () =>
+                                                _form.setLoading(true),
+                                            loaded: () {
+                                              _form.setLoading(false);
+                                              context.router.pushPath(
+                                                PRFSuperAppRouter.landingRoute,
+                                              );
+                                            },
                                             error: (message) {
-                                              setState(() {
-                                                _isLoading = !_isLoading;
-                                              });
+                                              _form.setLoading(false);
                                               PRFSnackbar.error(
                                                 context,
                                                 message,
@@ -198,7 +157,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                                   PRFRequired(
                                                     l10n.enterEmail,
                                                   ).validateResult(
-                                                    _emailController.text,
+                                                    _form.emailController.text,
                                                   );
                                               if (!emailResult.valid) {
                                                 PRFSnackbar.warning(
@@ -213,7 +172,9 @@ class _SignInHandsetState extends State<SignInHandset> {
                                                   PRFRequired(
                                                     l10n.enterPassword,
                                                   ).validateResult(
-                                                    _passwordController.text,
+                                                    _form
+                                                        .passwordController
+                                                        .text,
                                                   );
                                               if (!passwordResult.valid) {
                                                 PRFSnackbar.warning(
@@ -227,18 +188,21 @@ class _SignInHandsetState extends State<SignInHandset> {
                                               context
                                                   .read<SigninCubit>()
                                                   .signIn(
-                                                    email: _emailController.text
+                                                    email: _form
+                                                        .emailController
+                                                        .text
                                                         .trim(),
-                                                    password:
-                                                        _passwordController.text
-                                                            .trim(),
+                                                    password: _form
+                                                        .passwordController
+                                                        .text
+                                                        .trim(),
                                                   );
                                             },
-                                            title: _isLoading
+                                            title: _form.isLoading
                                                 ? l10n.signingIn
                                                 : l10n.signIn,
-                                            disabled: _isLoading,
-                                            isLoading: _isLoading,
+                                            disabled: _form.isLoading,
+                                            isLoading: _form.isLoading,
                                           );
                                         },
                                       ),
@@ -248,37 +212,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       ),
 
                                       // Divider
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Divider(
-                                              color: theme.colorScheme.outline,
-                                              thickness: 1,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: PRFSpacingTokens.lg,
-                                            ),
-                                            child: Text(
-                                              'OR',
-                                              style: theme.textTheme.labelMedium
-                                                  ?.copyWith(
-                                                    color: theme
-                                                        .colorScheme
-                                                        .onSurfaceVariant,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Divider(
-                                              color: theme.colorScheme.outline,
-                                              thickness: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                      buildOrDivider(theme),
 
                                       const SizedBox(
                                         height: PRFSpacingTokens.xxl,
@@ -295,29 +229,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                             const Spacer(),
 
                             // Version
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.lg,
-                                  vertical: PRFSpacingTokens.sm,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      theme.colorScheme.surfaceContainerHighest,
-                                  borderRadius: BorderRadius.circular(
-                                    PRFRadiusTokens.lg,
-                                  ),
-                                ),
-                                child: Text(
-                                  l10n.version(
-                                    AppVersionHelper.getAppVersion(),
-                                  ),
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                    color: theme.colorScheme.onSurfaceVariant,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            buildVersionPill(theme, l10n),
                           ],
                         ),
                       ),
@@ -329,59 +241,6 @@ class _SignInHandsetState extends State<SignInHandset> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class GoogleSignInButton extends StatelessWidget {
-  const GoogleSignInButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
-      builder: (context, signInWithGoogleState) {
-        return BlocBuilder<SocialLoginCubit, SocialLoginState>(
-          builder: (context, socialSignUpState) {
-            return BlocBuilder<SocialLoginCubit, SocialLoginState>(
-              builder: (context, socialSignInState) {
-                final (
-                  isLoading,
-                  title,
-                ) = signInWithGoogleState.maybeWhen(
-                  loading: () => (true, 'Please wait ...'),
-                  orElse: () => socialSignUpState.maybeWhen(
-                    loading: () => (
-                      true,
-                      'Please wait ...',
-                    ),
-                    orElse: () => socialSignInState.maybeWhen(
-                      loading: () => (
-                        true,
-                        'Please wait ...',
-                      ),
-                      orElse: () => (
-                        false,
-                        'Continue with Google',
-                      ),
-                    ),
-                  ),
-                );
-
-                return PRFButton(
-                  variant: PRFButtonVariant.google,
-                  onPressed: () =>
-                      context.read<GoogleSignInCubit>().signInwithGoogle(),
-                  title: title,
-                  disabled: isLoading,
-                  isLoading: isLoading,
-                );
-              },
-            );
-          },
-        );
-      },
     );
   }
 }
