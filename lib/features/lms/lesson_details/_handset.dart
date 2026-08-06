@@ -368,7 +368,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PRFPrimaryButton(
+                  orElse: () => PRFButton(
                     onPressed: () async {
                       final moduleUlid = lessonModule.module?.ulid;
                       final lessonUlid = lessonModule.lesson?.ulid;
@@ -388,7 +388,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                     },
                     title: _isLoading ? l10n.completing : l10n.complete,
                     disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
+                    isLoading: _isLoading,
                   ),
                 );
               },

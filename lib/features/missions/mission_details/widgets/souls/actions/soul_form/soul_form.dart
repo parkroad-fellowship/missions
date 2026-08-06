@@ -1,7 +1,7 @@
 import 'package:app/features/missions/mission_details/widgets/souls/actions/soul_form/_handset.dart';
 import 'package:app/models/remote/prayer/prf_soul.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+import 'package:prf_design/prf_design.dart';
 
 class SoulFormView extends StatelessWidget {
   const SoulFormView({
@@ -15,16 +15,14 @@ class SoulFormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) => SoulFormViewHandset(
+    return PRFAdaptive(
+      handset: (_) => SoulFormViewHandset(
         missionUlid: missionUlid,
         soul: soul,
       ),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => SoulFormViewHandset(
-          missionUlid: missionUlid,
-          soul: soul,
-        ),
+      builder: (_, _) => SoulFormViewHandset(
+        missionUlid: missionUlid,
+        soul: soul,
       ),
     );
   }

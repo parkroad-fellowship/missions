@@ -170,7 +170,8 @@ class _AddEventSubscriptionViewHandsetState
                       icon: Icons.confirmation_number_rounded,
                       title: l10n.tickets,
                       isRequired: true,
-                      child: PRFNumberInput(
+                      child: PRFTextField(
+                        type: PRFTextFieldType.number,
                         hintText: l10n.tickets,
                         controller: _ticketController,
                         errorText: _showValidation ? _ticketError : null,
@@ -221,7 +222,7 @@ class _AddEventSubscriptionViewHandsetState
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.record,
                         disabled: !_isFormValid,

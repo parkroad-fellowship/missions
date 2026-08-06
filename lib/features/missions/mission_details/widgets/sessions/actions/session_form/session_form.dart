@@ -1,7 +1,7 @@
 import 'package:app/features/missions/mission_details/widgets/sessions/actions/session_form/_handset.dart';
 import 'package:app/models/remote/mission/prf_mission_session.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+import 'package:prf_design/prf_design.dart';
 
 class SessionFormView extends StatelessWidget {
   const SessionFormView({
@@ -15,16 +15,14 @@ class SessionFormView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) => SessionFormViewHandset(
+    return PRFAdaptive(
+      handset: (_) => SessionFormViewHandset(
         missionUlid: missionUlid,
         missionSession: missionSession,
       ),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => SessionFormViewHandset(
-          missionUlid: missionUlid,
-          missionSession: missionSession,
-        ),
+      builder: (_, _) => SessionFormViewHandset(
+        missionUlid: missionUlid,
+        missionSession: missionSession,
       ),
     );
   }

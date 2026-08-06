@@ -197,17 +197,17 @@ class _MissionQuestionFormBodyState extends State<_MissionQuestionFormBody> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PRFTextAreaInput(
+          PRFTextField(
+            type: PRFTextFieldType.textArea,
             hintText: context.l10n.addQuestionDesc,
             controller: _controller,
             maxLines: 6,
             errorText: _error,
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
-          PRFPrimaryButton(
+          PRFButton(
             onPressed: _submit,
             title: widget.submitLabel,
-            disabled: false,
           ),
         ],
       ),

@@ -263,7 +263,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
               isRequired: true,
               child: GestureDetector(
                 onTap: _selectStartDate,
-                child: PRFTextInput(
+                child: PRFTextField(
                   hintText: l10n.startTime,
                   controller: _startDateController,
                   enabled: false,
@@ -279,7 +279,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
               isRequired: true,
               child: GestureDetector(
                 onTap: _selectEndDate,
-                child: PRFTextInput(
+                child: PRFTextField(
                   hintText: l10n.endTime,
                   controller: _endDateController,
                   enabled: false,
@@ -293,7 +293,8 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
               icon: Icons.notes_outlined,
               title: l10n.notes,
               isRequired: true,
-              child: PRFTextAreaInput(
+              child: PRFTextField(
+                type: PRFTextFieldType.textArea,
                 hintText: l10n.notes,
                 controller: _notesController,
                 errorText: _showValidation ? _notesError : null,
@@ -340,7 +341,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                 );
               },
               builder: (context, state) {
-                return PRFPrimaryButton(
+                return PRFButton(
                   onPressed: _submitForm,
                   title: _isEditing ? 'Update' : l10n.record,
                   disabled: !_isFormValid,

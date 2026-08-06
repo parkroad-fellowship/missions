@@ -141,7 +141,8 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       ),
                       SizedBox(
                         width: 140,
-                        child: PRFSecondaryButton(
+                        child: PRFButton(
+                          variant: PRFButtonVariant.secondary,
                           onPressed: () => _showPendingUploadsDetails(
                             context,
                             filteredUploads,
@@ -150,7 +151,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                               '${filteredUploads.length} '
                               '${filteredUploads.length == 1 ? 'recording' : 'record'
                                         'ings'}',
-                          disabled: false,
                         ),
                       ),
                     ],
@@ -177,7 +177,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   Row(
                     children: [
                       Expanded(
-                        child: PRFPrimaryButton(
+                        child: PRFButton(
                           onPressed: () => _retryAllUploads(context),
                           title: progress.isRetrying
                               ? 'Uploading...'
@@ -189,7 +189,8 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       const SizedBox(width: PRFSpacingTokens.sm),
                       SizedBox(
                         width: 120,
-                        child: PRFSecondaryButton(
+                        child: PRFButton(
+                          variant: PRFButtonVariant.secondary,
                           onPressed: () => _showPendingUploadsDetails(
                             context,
                             filteredUploads,
@@ -363,7 +364,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
                     return SizedBox(
                       width: 120,
-                      child: PRFPrimaryButton(
+                      child: PRFButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           _retryAllUploads(context);

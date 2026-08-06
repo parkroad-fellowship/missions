@@ -436,12 +436,11 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               ),
                               SizedBox(
                                 width: 140,
-                                child: PRFPrimaryButton(
+                                child: PRFButton(
                                   onPressed: () async {
                                     await _showAddAudioSheet();
                                   },
                                   title: 'Record',
-                                  disabled: false,
                                 ),
                               ),
                             ],
@@ -517,7 +516,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                       ),
                                       SizedBox(
                                         width: 120,
-                                        child: PRFSecondaryButton(
+                                        child: PRFButton(
+                                          variant: PRFButtonVariant.secondary,
                                           onPressed: () =>
                                               getIt<
                                                     FailedRecordingUploadService
@@ -526,7 +526,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                     missionSessionUlid,
                                                   ),
                                           title: 'Retry all',
-                                          disabled: false,
                                         ),
                                       ),
                                     ],
@@ -600,7 +599,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                           ),
                                           SizedBox(
                                             width: 90,
-                                            child: PRFSecondaryButton(
+                                            child: PRFButton(
+                                              variant:
+                                                  PRFButtonVariant.secondary,
                                               onPressed: () =>
                                                   getIt<
                                                         FailedRecordingUploadService
@@ -609,7 +610,6 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                         upload,
                                                       ),
                                               title: 'Retry',
-                                              disabled: false,
                                             ),
                                           ),
                                         ],
@@ -859,19 +859,18 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                 },
                               );
                             },
-                            builder: (context, state) => PRFPrimaryButton(
+                            builder: (context, state) => PRFButton(
                               onPressed: () => context
                                   .read<DownloadFileCubit>()
                                   .downloadFile(media.temporaryURL),
                               title: 'Download',
-                              disabled: false,
                               isLoading: state.maybeWhen(
                                 loading: () => true,
                                 orElse: () => false,
                               ),
                             ),
                           )
-                        : PRFPrimaryButton(
+                        : PRFButton(
                             onPressed: () {},
                             title: 'Processing',
                             disabled: true,
@@ -882,7 +881,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 Expanded(
                   child: SizedBox(
                     height: actionButtonHeight,
-                    child: PRFSecondaryButton(
+                    child: PRFButton(
+                      variant: PRFButtonVariant.secondary,
                       onPressed: hasTranscript
                           ? () async {
                               await _viewTranscript(transcript);
@@ -998,12 +998,12 @@ class _RecordingStatusCard extends StatelessWidget {
               ),
               SizedBox(
                 width: 96,
-                child: PRFSecondaryButton(
+                child: PRFButton(
+                  variant: PRFButtonVariant.secondary,
                   onPressed: () async {
                     await onOpenRecorder();
                   },
                   title: 'Open',
-                  disabled: false,
                 ),
               ),
               const SizedBox(width: PRFSpacingTokens.xs),
@@ -1149,10 +1149,10 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                       ),
                       SizedBox(
                         width: 110,
-                        child: PRFSecondaryButton(
+                        child: PRFButton(
+                          variant: PRFButtonVariant.secondary,
                           onPressed: () => _showEditSessionSheet(context),
                           title: l10n.edit,
-                          disabled: false,
                         ),
                       ),
                     ],
@@ -1257,12 +1257,12 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     alignment: Alignment.centerRight,
                     child: SizedBox(
                       width: 140,
-                      child: PRFDestroyButton(
+                      child: PRFButton(
+                        variant: PRFButtonVariant.destructive,
                         onPressed: () async {
                           await _deleteSession(context);
                         },
                         title: l10n.delete,
-                        disabled: false,
                       ),
                     ),
                   ),

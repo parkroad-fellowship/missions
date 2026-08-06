@@ -175,7 +175,8 @@ class _UpdateEventSubscriptionViewHandsetState
                       icon: Icons.confirmation_number_rounded,
                       title: l10n.tickets,
                       isRequired: true,
-                      child: PRFNumberInput(
+                      child: PRFTextField(
+                        type: PRFTextFieldType.number,
                         hintText: l10n.tickets,
                         controller: _ticketController,
                         errorText: _showValidation ? _ticketError : null,
@@ -226,7 +227,7 @@ class _UpdateEventSubscriptionViewHandsetState
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.record,
                         disabled: !_isFormValid,
@@ -241,9 +242,9 @@ class _UpdateEventSubscriptionViewHandsetState
               const SizedBox(height: PRFSpacingTokens.xl),
 
               // Cancel Registration Button
-              PRFDestroyButton(
+              PRFButton(
+                    variant: PRFButtonVariant.destructive,
                     title: l10n.cancelRegistration,
-                    disabled: false,
                     onPressed: () async {
                       final confirmed = await PRFConfirmationDialog.show(
                         context,

@@ -1,6 +1,6 @@
 import 'package:app/features/events/event_details/actions/add_media/_handset.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddEventMediaView extends StatelessWidget {
   const AddEventMediaView({required this.eventUlid, super.key});
@@ -9,11 +9,9 @@ class AddEventMediaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) => AddEventMediaViewHandset(eventUlid: eventUlid),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => AddEventMediaViewHandset(eventUlid: eventUlid),
-      ),
+    return PRFAdaptive(
+      handset: (_) => AddEventMediaViewHandset(eventUlid: eventUlid),
+      builder: (_, _) => AddEventMediaViewHandset(eventUlid: eventUlid),
     );
   }
 }

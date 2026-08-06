@@ -175,10 +175,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: PRFSpacingTokens.xxl),
-        PRFDestroyButton(
+        PRFButton(
+          variant: PRFButtonVariant.destructive,
           onPressed: () => context.read<AudioRecordingCubit>().startRecording(),
           title: l10n.startRecording,
-          disabled: false,
         ),
       ],
     );
@@ -243,10 +243,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         const SizedBox(height: PRFSpacingTokens.xxl),
 
         if (widget.onMinimize != null) ...[
-          PRFSecondaryButton(
+          PRFButton(
+            variant: PRFButtonVariant.secondary,
             onPressed: widget.onMinimize!,
             title: 'Use app while recording',
-            disabled: false,
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
         ],
@@ -257,11 +257,11 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           children: [
             // Pause button
             Flexible(
-              child: PRFSecondaryButton(
+              child: PRFButton(
+                variant: PRFButtonVariant.secondary,
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().pauseRecording(),
                 title: l10n.pause,
-                disabled: false,
               ),
             ),
 
@@ -269,11 +269,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
 
             // Stop button
             Flexible(
-              child: PRFPrimaryButton(
+              child: PRFButton(
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().stopRecording(),
                 title: l10n.stop,
-                disabled: false,
               ),
             ),
           ],
@@ -329,10 +328,10 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         const SizedBox(height: PRFSpacingTokens.xxl),
 
         if (widget.onMinimize != null) ...[
-          PRFSecondaryButton(
+          PRFButton(
+            variant: PRFButtonVariant.secondary,
             onPressed: widget.onMinimize!,
             title: 'Use app while paused',
-            disabled: false,
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
         ],
@@ -343,21 +342,20 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           children: [
             // Resume button
             Flexible(
-              child: PRFDestroyButton(
+              child: PRFButton(
+                variant: PRFButtonVariant.destructive,
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().resumeRecording(),
                 title: l10n.resume,
-                disabled: false,
               ),
             ),
             const SizedBox(width: PRFSpacingTokens.lg),
             // Stop button
             Flexible(
-              child: PRFPrimaryButton(
+              child: PRFButton(
                 onPressed: () =>
                     context.read<AudioRecordingCubit>().stopRecording(),
                 title: l10n.stop,
-                disabled: false,
               ),
             ),
           ],
@@ -462,10 +460,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
 
         const SizedBox(height: PRFSpacingTokens.xxl),
 
-        PRFPrimaryButton(
+        PRFButton(
           onPressed: () => context.read<AudioRecordingCubit>().resetRecording(),
           title: l10n.recordAnother,
-          disabled: false,
         ),
       ],
     );
@@ -520,19 +517,17 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         const SizedBox(height: PRFSpacingTokens.xxl),
 
         if (isPermissionError) ...[
-          PRFPrimaryButton(
+          PRFButton(
             onPressed: () =>
                 context.read<AudioRecordingCubit>().requestPermissions(),
             title: l10n.allow,
-            disabled: false,
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
         ],
 
-        PRFPrimaryButton(
+        PRFButton(
           onPressed: () => context.read<AudioRecordingCubit>().resetRecording(),
           title: l10n.tryAgain,
-          disabled: false,
         ),
       ],
     );

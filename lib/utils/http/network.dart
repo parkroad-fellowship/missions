@@ -501,6 +501,27 @@ class NetworkUtil {
     }
   }
 
+  Future<Uint8List> getBytes(
+    String url, {
+    String apiVersion = 'v1',
+    Map<String, dynamic>? queryParameters,
+    ProgressCallback? onDownloadProgress,
+  }) async {
+    try {
+      final response = await _getHttpClient(apiVersion: apiVersion).get<List<int>>(
+        url,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      return Uint8List.fromList(response.data!);
+    } on SocketException catch (_) {
+      throw Failure(message: 'No internet connection');
+    } on TimeoutException catch (_) {
+      throw Failure(message: 'Download timeout');
+    } on DioException catch (err) {
+      _handleError(err, 'DOWNLOAD', url);
+    }
+  }
+
   /// Clear cache (useful for testing or memory management)
   void clearCache() {
     _dioCache.clear();

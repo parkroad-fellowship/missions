@@ -296,13 +296,14 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           isRequired: true,
                           child: Column(
                             children: [
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.paymentDesc,
                                 controller: _narrationController,
-                                textInputAction: TextInputAction.next,
                               ),
                               const SizedBox(height: PRFSpacingTokens.lg),
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.confirmationMsg,
                                 controller: _confirmationMessageController,
                                 textInputAction: TextInputAction.done,
@@ -350,7 +351,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.recordExpense,
                         disabled: !_isFormValid,
@@ -432,7 +433,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
-        PRFNumberInput(
+        PRFTextField(
+          type: PRFTextFieldType.number,
           controller: controller,
           hintText: hint,
           prefixText: prefix,

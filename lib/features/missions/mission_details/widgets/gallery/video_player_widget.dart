@@ -198,9 +198,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: PRFSpacingTokens.xl),
-            PRFPrimaryButton(
+            PRFButton(
               title: 'Retry',
-              disabled: false,
               onPressed: () {
                 setState(() {
                   _hasError = false;

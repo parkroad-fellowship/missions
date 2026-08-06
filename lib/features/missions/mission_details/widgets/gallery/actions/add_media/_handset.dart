@@ -103,11 +103,11 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: PRFSpacingTokens.lg),
-                      PRFSecondaryButton(
+                      PRFButton(
+                        variant: PRFButtonVariant.secondary,
                         onPressed: () =>
                             _selectMedia(context, previousMedia: []),
                         title: 'Try Again',
-                        disabled: false,
                       ),
                     ],
                   ),
@@ -128,7 +128,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
 
               return Column(
                 children: [
-                  PRFPrimaryButton(
+                  PRFButton(
                     title: l10n.upload,
                     disabled: isDisabled,
                     onPressed: isDisabled
@@ -142,9 +142,9 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                           },
                   ),
                   const SizedBox(height: PRFSpacingTokens.md),
-                  PRFSecondaryButton(
+                  PRFButton(
+                    variant: PRFButtonVariant.secondary,
                     title: l10n.cancel,
-                    disabled: false,
                     onPressed: () async {
                       Navigator.of(context).pop();
                       context.read<SelectMediaCubit>().clearMedia();

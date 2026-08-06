@@ -86,7 +86,8 @@ class _UpdateMissionQuestionViewHandsetState
               icon: Icons.help_outline,
               title: l10n.addQuestion,
               isRequired: true,
-              child: PRFTextAreaInput(
+              child: PRFTextField(
+                type: PRFTextFieldType.textArea,
                 hintText: l10n.addQuestionDesc,
                 controller: _questionController,
                 enabled: !_isLoading,
@@ -128,7 +129,7 @@ class _UpdateMissionQuestionViewHandsetState
                 );
               },
               builder: (context, state) {
-                return PRFPrimaryButton(
+                return PRFButton(
                   onPressed: _submitForm,
                   title: 'Update',
                   disabled: !_isFormValid,

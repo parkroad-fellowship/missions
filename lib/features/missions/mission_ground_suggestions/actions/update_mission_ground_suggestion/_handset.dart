@@ -225,7 +225,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                       icon: Icons.school_outlined,
                       title: l10n.missionGround,
                       isRequired: true,
-                      child: PRFTextInput(
+                      child: PRFTextField(
                         hintText: l10n.missionGround,
                         controller: _nameController,
                         errorText: _showValidation ? _nameError : null,
@@ -236,7 +236,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           icon: Icons.person_outline,
                           title: l10n.contactPerson,
                           isRequired: true,
-                          child: PRFTextInput(
+                          child: PRFTextField(
                             hintText: l10n.contactPerson,
                             controller: _contactPersonController,
                             errorText: _showValidation
@@ -296,7 +296,8 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                     PRFFormSection(
                           icon: Icons.notes_outlined,
                           title: l10n.comments,
-                          child: PRFTextAreaInput(
+                          child: PRFTextField(
+                            type: PRFTextFieldType.textArea,
                             hintText: l10n.comments,
                             controller: _notesController,
                           ),
@@ -346,7 +347,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.record,
                         disabled: !_isFormValid,

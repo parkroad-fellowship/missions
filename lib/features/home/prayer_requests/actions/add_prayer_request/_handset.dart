@@ -182,7 +182,7 @@ class _AddPrayerRequestViewHandsetState
                       icon: Icons.title_outlined,
                       title: l10n.title,
                       isRequired: true,
-                      child: PRFTextInput(
+                      child: PRFTextField(
                         hintText: l10n.title,
                         controller: _titleController,
                         errorText: _showValidation ? _titleError : null,
@@ -193,7 +193,8 @@ class _AddPrayerRequestViewHandsetState
                           icon: Icons.notes_outlined,
                           title: l10n.prayerRequest,
                           isRequired: true,
-                          child: PRFTextAreaInput(
+                          child: PRFTextField(
+                            type: PRFTextFieldType.textArea,
                             hintText: l10n.prayerRequest,
                             controller: _requestController,
                             errorText: _showValidation ? _requestError : null,
@@ -243,7 +244,7 @@ class _AddPrayerRequestViewHandsetState
                         curr is ResourceMutating<PRFPrayerRequest> ||
                         curr is ResourceError<PRFPrayerRequest>,
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.submit,
                         disabled: !_isFormValid,

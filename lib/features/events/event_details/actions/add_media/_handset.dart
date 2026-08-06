@@ -70,11 +70,11 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: PRFSpacingTokens.lg),
-                      PRFSecondaryButton(
+                      PRFButton(
+                        variant: PRFButtonVariant.secondary,
                         onPressed: () =>
                             _selectMedia(context, previousMedia: []),
                         title: 'Try Again',
-                        disabled: false,
                       ),
                     ],
                   ),
@@ -95,13 +95,13 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
 
               return Column(
                 children: [
-                  PRFSecondaryButton(
+                  PRFButton(
+                    variant: PRFButtonVariant.secondary,
                     title: 'Record Audio',
-                    disabled: false,
                     onPressed: () => _openAudioRecorder(context),
                   ),
                   const SizedBox(height: PRFSpacingTokens.md),
-                  PRFPrimaryButton(
+                  PRFButton(
                     title: l10n.upload,
                     disabled: isDisabled,
                     onPressed: isDisabled
@@ -115,9 +115,9 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                           },
                   ),
                   const SizedBox(height: PRFSpacingTokens.md),
-                  PRFSecondaryButton(
+                  PRFButton(
+                    variant: PRFButtonVariant.secondary,
                     title: l10n.cancel,
-                    disabled: false,
                     onPressed: () async {
                       Navigator.of(context).pop();
                       context.read<SelectMediaCubit>().clearMedia();
@@ -175,11 +175,11 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: PRFSpacingTokens.lg),
-                        PRFSecondaryButton(
+                        PRFButton(
+                          variant: PRFButtonVariant.secondary,
                           onPressed: () =>
                               _selectMedia(context, previousMedia: []),
                           title: 'Try Again',
-                          disabled: false,
                         ),
                       ],
                     ),
@@ -200,13 +200,13 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
 
                 return Column(
                   children: [
-                    PRFSecondaryButton(
+                    PRFButton(
+                      variant: PRFButtonVariant.secondary,
                       title: 'Record Audio',
-                      disabled: false,
                       onPressed: () => _openAudioRecorder(context),
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
-                    PRFPrimaryButton(
+                    PRFButton(
                       title: l10n.upload,
                       disabled: isDisabled,
                       onPressed: isDisabled
@@ -220,9 +220,9 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                             },
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
-                    PRFSecondaryButton(
+                    PRFButton(
+                      variant: PRFButtonVariant.secondary,
                       title: l10n.cancel,
-                      disabled: false,
                       onPressed: () async {
                         Navigator.of(context).pop();
                         context.read<SelectMediaCubit>().clearMedia();

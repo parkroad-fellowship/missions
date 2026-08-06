@@ -176,7 +176,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
               ),
               child: Semantics(
                 label: 'Search questions',
-                child: PRFTextInput(
+                child: PRFTextField(
                   hintText: 'Search questions',
                   controller: _searchController,
                 ),
@@ -373,11 +373,10 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                           button: true,
                                           label:
                                               'Record answer to: ${item.question}',
-                                          child: PRFPrimaryButton(
+                                          child: PRFButton(
                                             onPressed: () =>
                                                 _openRecorder(item),
                                             title: 'Record answer',
-                                            disabled: false,
                                           ),
                                         ),
                                       ),
@@ -391,7 +390,8 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                           enabled: item.hasAnswers,
                                           label:
                                               '${item.answerCount} ${item.answerCount == 1 ? 'answer' : 'answers'}',
-                                          child: PRFSecondaryButton(
+                                          child: PRFButton(
+                                            variant: PRFButtonVariant.secondary,
                                             onPressed: () => _openAnswers(item),
                                             title:
                                                 'Answers (${item.answerCount})',

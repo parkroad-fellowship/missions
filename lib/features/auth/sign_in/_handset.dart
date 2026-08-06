@@ -142,9 +142,10 @@ class _SignInHandsetState extends State<SignInHandset> {
                                   children: [
                                     if (canShowAuth || kDebugMode) ...[
                                       // Email Input
-                                      PRFEmailInput(
+                                      PRFTextField(
+                                        type: PRFTextFieldType.email,
                                         hintText: l10n.enterEmail,
-                                        emailController: _emailController,
+                                        controller: _emailController,
                                         enabled: !_isLoading,
                                       ),
 
@@ -153,11 +154,11 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       ),
 
                                       // Password Input
-                                      PRFPasswordInput(
+                                      PRFTextField(
+                                        type: PRFTextFieldType.password,
                                         hintText: l10n.enterPassword,
-                                        hidePasswordNotifier:
-                                            _hidePasswordNotifier,
-                                        passwordController: _passwordController,
+                                        obscureNotifier: _hidePasswordNotifier,
+                                        controller: _passwordController,
                                         enabled: !_isLoading,
                                       ),
 
@@ -190,7 +191,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                           );
                                         },
                                         builder: (context, state) {
-                                          return PRFPrimaryButton(
+                                          return PRFButton(
                                             onPressed: () {
                                               if (_emailController
                                                   .text
@@ -359,7 +360,8 @@ class GoogleSignInButton extends StatelessWidget {
                   ),
                 );
 
-                return PRFGoogleAuthButton(
+                return PRFButton(
+                  variant: PRFButtonVariant.google,
                   onPressed: () =>
                       context.read<GoogleSignInCubit>().signInwithGoogle(),
                   title: title,

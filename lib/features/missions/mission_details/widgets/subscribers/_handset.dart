@@ -347,10 +347,9 @@ class _SubscriptionCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: PRFPrimaryButton(
+                  child: PRFButton(
                     onPressed: () => _makeCall(member),
                     title: 'Call Member',
-                    disabled: false,
                   ),
                 ),
               ],

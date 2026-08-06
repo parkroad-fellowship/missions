@@ -305,13 +305,15 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                           isRequired: true,
                           child: Column(
                             children: [
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.paymentDesc,
                                 controller: _narrationController,
                                 textInputAction: TextInputAction.done,
                               ),
                               const SizedBox(height: PRFSpacingTokens.lg),
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.confirmationMsg,
                                 controller: _confirmationController,
                                 textInputAction: TextInputAction.done,
@@ -351,7 +353,7 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: 'Update Expense',
                         disabled: !_isFormValid,
@@ -433,7 +435,8 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
-        PRFNumberInput(
+        PRFTextField(
+          type: PRFTextFieldType.number,
           controller: controller,
           hintText: hint,
           prefixText: prefix,

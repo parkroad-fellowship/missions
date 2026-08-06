@@ -205,7 +205,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                       PRFSpacingTokens.lg,
                       PRFSpacingTokens.lg,
                     ),
-                    child: PRFTextInput(
+                    child: PRFTextField(
                       hintText: l10n.missionsSearchHint,
                       controller: _searchController,
                       onChanged: (value) {

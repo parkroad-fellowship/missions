@@ -196,7 +196,8 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           isRequired: true,
                           child: Column(
                             children: [
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.confirmationMessage,
                                 controller: _confirmationController,
                                 maxLines: 3,
@@ -257,7 +258,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: 'Add Token',
                         disabled: !_isFormValid,
@@ -295,7 +296,8 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
-        PRFNumberInput(
+        PRFTextField(
+          type: PRFTextFieldType.number,
           controller: controller,
           hintText: hint,
           prefixText: prefix,

@@ -192,7 +192,8 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                           isRequired: true,
                           child: Column(
                             children: [
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText:
                                     'Enter confirmation message or '
                                     'reference number',
@@ -247,7 +248,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: 'Add Refund Entry',
                         disabled: !_isFormValid,
@@ -285,7 +286,8 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
-        PRFNumberInput(
+        PRFTextField(
+          type: PRFTextFieldType.number,
           controller: controller,
           hintText: hint,
           prefixText: prefix,

@@ -80,10 +80,10 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                             const SizedBox(width: PRFSpacingTokens.sm),
                             SizedBox(
                               width: 88,
-                              child: PRFSecondaryButton(
+                              child: PRFButton(
+                                variant: PRFButtonVariant.secondary,
                                 onPressed: () => _showDetails(context),
                                 title: 'View',
-                                disabled: false,
                               ),
                             ),
                           ],
@@ -118,13 +118,12 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: PRFPrimaryButton(
+                                child: PRFButton(
                                   onPressed: () {
                                     getIt<FailedRecordingUploadService>()
                                         .retryAllUploads();
                                   },
                                   title: 'Retry now',
-                                  disabled: false,
                                 ),
                               ),
                             ],
@@ -186,7 +185,7 @@ class _PendingUploadsDetails extends StatelessWidget {
                           progressSnapshot.data ?? UploadRetryProgress.idle;
                       return SizedBox(
                         width: 120,
-                        child: PRFPrimaryButton(
+                        child: PRFButton(
                           onPressed: () {
                             getIt<FailedRecordingUploadService>()
                                 .retryAllUploads();

@@ -90,7 +90,8 @@ class _DebriefNoteFormViewHandsetState
               icon: Icons.edit_note,
               title: l10n.note,
               isRequired: true,
-              child: PRFTextAreaInput(
+              child: PRFTextField(
+                type: PRFTextFieldType.textArea,
                 hintText: l10n.addDebriefNoteDesc,
                 controller: _noteController,
                 enabled: !_isLoading,
@@ -132,7 +133,7 @@ class _DebriefNoteFormViewHandsetState
                 );
               },
               builder: (context, state) {
-                return PRFPrimaryButton(
+                return PRFButton(
                   onPressed: _submitForm,
                   title: _isEditing ? 'Update' : l10n.record,
                   disabled: !_isFormValid,

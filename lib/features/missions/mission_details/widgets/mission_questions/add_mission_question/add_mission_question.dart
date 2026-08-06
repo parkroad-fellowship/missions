@@ -1,6 +1,6 @@
 import 'package:app/features/missions/mission_details/widgets/mission_questions/add_mission_question/_handset.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddMissionQuestionView extends StatelessWidget {
   const AddMissionQuestionView({required this.missionUlid, super.key});
@@ -9,13 +9,10 @@ class AddMissionQuestionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) =>
+    return PRFAdaptive(
+      handset: (_) => AddMissionQuestionViewHandset(missionUlid: missionUlid),
+      builder: (_, _) =>
           AddMissionQuestionViewHandset(missionUlid: missionUlid),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) =>
-            AddMissionQuestionViewHandset(missionUlid: missionUlid),
-      ),
     );
   }
 }

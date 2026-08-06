@@ -46,9 +46,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     LicenseRegistry.addLicense(() async* {
       final license = await rootBundle.loadString(
-        'packages/prf_design/assets/google_fonts/lato/OFL.txt',
+        'packages/prf_design/assets/google_fonts/manrope/OFL.txt',
       );
-      yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+      yield LicenseEntryWithLineBreaks(['Manrope'], license);
     });
 
     tz_data.initializeTimeZones();

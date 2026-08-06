@@ -28,7 +28,6 @@ dependencies:
   firebase_remote_config: ^6.5.6
   flutter:
     sdk: flutter
-  flutter_adaptive_ui: ^0.8.0+1
   flutter_animate: ^4.5.2
   flutter_bloc: ^9.1.1
   flutter_datetime_picker_plus: ^2.4.0
@@ -43,7 +42,6 @@ dependencies:
   full_screen_image: ^2.0.0
   gaimon: ^1.4.3
   get_it: ^9.2.1
-  google_fonts: ^8.2.1
   google_sign_in: ^7.2.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
@@ -62,8 +60,8 @@ dependencies:
   phone_form_field: ^10.0.18
   posthog_flutter: ^5.35.1
   pretty_dio_logger: ^1.4.0
-  prf_design: ^0.8.5
-  # path: ../../prf_design_system
+  prf_design: #^0.8.5
+    path: ../../prf_design_system
   record: ^7.1.1
   share_plus: ^13.3.0
   shorebird_code_push: ^2.0.7

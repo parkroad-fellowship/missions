@@ -128,9 +128,9 @@ abstract class NotificationService {
                               OverflowBar(
                                 alignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  PRFSecondaryButton(
+                                  PRFButton(
+                                    variant: PRFButtonVariant.secondary,
                                     title: l10n.amen,
-                                    disabled: false,
                                     onPressed: () async {
                                       final member = getIt<HiveService>()
                                           .retrieveMember();
@@ -278,19 +278,18 @@ class NotificationServiceImpl implements NotificationService {
           title: Text(l10n.getNotified),
           content: Text(l10n.allowNotifications),
           actions: [
-            PRFSecondaryButton(
+            PRFButton(
+              variant: PRFButtonVariant.secondary,
               onPressed: () => Navigator.of(context).pop(),
               title: l10n.deny,
-              disabled: false,
             ),
             const SizedBox(height: 16),
-            PRFPrimaryButton(
+            PRFButton(
               onPressed: () {
                 userAuthorized = true;
                 Navigator.of(context).pop();
               },
               title: l10n.allow,
-              disabled: false,
             ),
           ],
         );

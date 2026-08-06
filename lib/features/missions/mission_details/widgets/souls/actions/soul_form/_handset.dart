@@ -191,7 +191,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
               icon: Icons.person_outline,
               title: l10n.fullName,
               isRequired: true,
-              child: PRFTextInput(
+              child: PRFTextField(
                 hintText: l10n.enterName,
                 controller: _fullNameController,
                 enabled: !_isLoading,
@@ -203,7 +203,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
             PRFFormSection(
               icon: Icons.badge_outlined,
               title: l10n.admissionNumber,
-              child: PRFTextInput(
+              child: PRFTextField(
                 hintText: l10n.enterAdmissionNumber,
                 controller: _admissionNumberController,
                 enabled: !_isLoading,
@@ -214,7 +214,8 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
             PRFFormSection(
               icon: Icons.edit_note,
               title: l10n.note,
-              child: PRFTextAreaInput(
+              child: PRFTextField(
+                type: PRFTextFieldType.textArea,
                 hintText: l10n.addDecisionNote,
                 controller: _notesController,
                 enabled: !_isLoading,
@@ -252,7 +253,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
                 );
               },
               builder: (context, state) {
-                return PRFPrimaryButton(
+                return PRFButton(
                   onPressed: _submitForm,
                   title: _isEditing ? 'Update' : l10n.record,
                   disabled: !_isFormValid,

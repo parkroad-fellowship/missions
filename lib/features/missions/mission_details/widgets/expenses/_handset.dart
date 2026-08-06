@@ -17,6 +17,7 @@ import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/shared/media_upload/cubit/select_media_cubit.dart';
 import 'package:app/shared/media_upload/cubit/upload_media_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/utils/http/network.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -505,18 +506,17 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       child: Row(
         children: [
           Expanded(
-            child: PRFPrimaryButton(
+            child: PRFButton(
               onPressed: () => _showAddTokenModal(context, accountingEvent),
               title: l10n.addToken,
-              disabled: false,
             ),
           ),
           const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
-            child: PRFSecondaryButton(
+            child: PRFButton(
+              variant: PRFButtonVariant.secondary,
               onPressed: () => _showAddExpenseModal(context),
               title: l10n.addExpense,
-              disabled: false,
             ),
           ),
         ],
@@ -1399,14 +1399,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     );
   }
 
-  void _openPdfDocument(BuildContext context, String pdfUrl) {
-    Navigator.of(context).push(
-      MaterialPageRoute<dynamic>(
-        builder: (context) => PDFViewerPage(
-          pdfUrl: pdfUrl,
-          title: 'Receipt PDF',
-        ),
-      ),
+  Future<void> _openPdfDocument(BuildContext context, String pdfUrl) async {
+    await PRFPdfViewer.show(
+      context,
+      bytes: await NetworkUtil().getBytes(pdfUrl),
+      title: 'Receipt PDF',
     );
   }
 
@@ -1675,11 +1672,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
                     if (widget.canEdit)
-                      PRFPrimaryButton(
+                      PRFButton(
                         onPressed: () =>
                             _showAddRefundModal(context, accountingEvent),
                         title: 'Add Refund',
-                        disabled: false,
                       ),
                     const SizedBox(height: PRFSpacingTokens.md),
                     if (accountingEvent.refunds.isNotEmpty)

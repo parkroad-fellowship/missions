@@ -156,7 +156,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                               PRFSpacingTokens.lg,
                             ),
                             sliver: SliverToBoxAdapter(
-                              child: PRFTextInput(
+                              child: PRFTextField(
                                 hintText: l10n.whatWouldYouLikeToKnow,
                                 controller: _searchController,
                                 onChanged: (value) {
