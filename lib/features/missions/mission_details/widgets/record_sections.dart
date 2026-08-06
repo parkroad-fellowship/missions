@@ -1,3 +1,4 @@
+import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -66,7 +67,7 @@ class MissionResourceTabView extends StatelessWidget {
             FilledButton.icon(
               onPressed: onRefresh,
               icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Retry'),
+              label: Text(context.l10n.retry),
             ),
           ],
         ),

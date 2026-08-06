@@ -2,6 +2,7 @@
 
 import 'package:app/di/di_container.dart';
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
@@ -195,7 +196,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                             context,
                             filteredUploads,
                           ),
-                          title: 'View All',
+                          title: context.l10n.viewAll,
                           disabled: progress.isRetrying,
                         ),
                       ),
@@ -221,7 +222,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
         );
 
         if (pendingUploads.isEmpty) {
-          PRFSnackbar.info(context, 'No pending uploads');
+          PRFSnackbar.info(context, context.l10n.noPendingUploads);
           return;
         }
 
@@ -234,7 +235,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
       final pendingUploads = await service.getPendingUploads();
       if (pendingUploads.isEmpty) {
-        PRFSnackbar.info(context, 'No pending uploads');
+        PRFSnackbar.info(context, context.l10n.noPendingUploads);
         return;
       }
 
@@ -340,7 +341,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
   ) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Pending Uploads',
+      title: context.l10n.pendingUploads_2,
       child: Container(
         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         child: Column(
@@ -661,9 +662,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
   ) async {
     try {
       await getIt<FailedRecordingUploadService>().retrySpecificUpload(upload);
-      PRFSnackbar.success(context, '${upload.name} uploaded successfully');
+      PRFSnackbar.success(
+        context,
+        context.l10n.uploadedSuccessfully(upload.name),
+      );
     } catch (e) {
-      PRFSnackbar.error(context, 'Retry failed');
+      PRFSnackbar.error(context, context.l10n.retryFailed);
     }
   }
 }

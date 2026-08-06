@@ -58,7 +58,7 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
                             refresh: true,
                           );
                         },
-                        child: const Text('Retry'),
+                        child: Text(context.l10n.retry),
                       ),
                     ],
                   ),
@@ -208,13 +208,13 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
             _buildInfoChip(
               theme,
               icon: Icons.people_rounded,
-              label: '${school.totalStudents} students',
+              label: context.l10n.students(school.totalStudents),
             ),
             const SizedBox(width: PRFSpacingTokens.sm),
             _buildInfoChip(
               theme,
               icon: Icons.flag_rounded,
-              label: '${school.missions.length} missions',
+              label: context.l10n.missions_2(school.missions.length),
             ),
           ],
         ),

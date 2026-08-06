@@ -198,7 +198,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                       title: l10n.missionGround,
                       isRequired: true,
                       child: PRFTextField(
-                        hintText: 'e.g., Cool High School',
+                        hintText: context.l10n.eGCoolHighSchool,
                         controller: _nameController,
                         errorText: _showValidation ? _nameError : null,
                       ),
@@ -209,7 +209,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                           title: l10n.contactPerson,
                           isRequired: true,
                           child: PRFTextField(
-                            hintText: 'e.g., Tr John',
+                            hintText: context.l10n.eGTrJohn,
                             controller: _contactPersonController,
                             errorText: _showValidation
                                 ? _contactPersonError

@@ -131,7 +131,7 @@ class _UpdateMissionQuestionViewHandsetState
               builder: (context, state) {
                 return PRFButton(
                   onPressed: _submitForm,
-                  title: 'Update',
+                  title: context.l10n.update,
                   disabled: !_isFormValid,
                   isLoading: _isLoading,
                 );

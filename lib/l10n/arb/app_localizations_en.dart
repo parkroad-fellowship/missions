@@ -1410,4 +1410,263 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get answerFaqs => 'Answer FAQs';
+
+  @override
+  String get receiptPdf => 'Receipt PDF';
+
+  @override
+  String get venue => 'Venue';
+
+  @override
+  String get dateRange => 'Date Range';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get time_2 => 'Time';
+
+  @override
+  String get subscribe => 'Subscribe';
+
+  @override
+  String get updateSubscription => 'Update Subscription';
+
+  @override
+  String get addMedia => 'Add Media';
+
+  @override
+  String get addEventPhotos_2 => 'Add Event Photos';
+
+  @override
+  String get sharePhotosAndMemoriesFromThisEvent =>
+      'Share photos and memories from this event';
+
+  @override
+  String get recordAudio => 'Record Audio';
+
+  @override
+  String get recordEventAudio => 'Record event audio';
+
+  @override
+  String get photos => 'Photos';
+
+  @override
+  String get missionsCompleted => 'missions completed';
+
+  @override
+  String get soulsTouched => 'souls touched';
+
+  @override
+  String get coursesCompleted => 'courses completed';
+
+  @override
+  String get prayerResponses => 'prayer responses';
+
+  @override
+  String get eventsAttended => 'events attended';
+
+  @override
+  String get recordAnswer => 'Record answer';
+
+  @override
+  String get noAnswersYet => 'No answers yet';
+
+  @override
+  String get answers => 'Answers';
+
+  @override
+  String get searchQuestions => 'Search questions';
+
+  @override
+  String get loadingQuestions => 'Loading questions';
+
+  @override
+  String get debriefNoteDeleted => 'Debrief note deleted';
+
+  @override
+  String get feedbackData => 'Feedback Data';
+
+  @override
+  String get questionsCapturedAndPostMissionDebriefReflections =>
+      'Questions captured and post-mission debrief reflections.';
+
+  @override
+  String get finances => 'Finances';
+
+  @override
+  String get requisitionsAndExpenseTrackingForThisMission =>
+      'Requisitions and expense tracking for this mission.';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get missionContextTeamMembersAndSessions =>
+      'Mission context, team members, and sessions.';
+
+  @override
+  String get receiptUploadedSuccessfully => 'Receipt uploaded successfully';
+
+  @override
+  String get noExpensesYet => 'No Expenses Yet';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get receiptDeletedSuccessfully => 'Receipt deleted successfully';
+
+  @override
+  String get deleteReceipt => 'Delete Receipt';
+
+  @override
+  String get addExpense_2 => 'Add Expense';
+
+  @override
+  String get editExpense => 'Edit Expense';
+
+  @override
+  String get deleteExpense => 'Delete Expense';
+
+  @override
+  String get addRefund => 'Add Refund';
+
+  @override
+  String get copiedToClipboard => 'Copied to clipboard';
+
+  @override
+  String copiedToClipboard_2(Object value) {
+    return 'Copied \"$value\" to clipboard';
+  }
+
+  @override
+  String get refundAmount => 'Refund Amount';
+
+  @override
+  String get addRefundEntry => 'Add Refund Entry';
+
+  @override
+  String get tokenAmount_2 => 'Token Amount';
+
+  @override
+  String get updateExpense => 'Update Expense';
+
+  @override
+  String get mediaDeleted => 'Media deleted';
+
+  @override
+  String get savedToDevice => 'Saved to device';
+
+  @override
+  String get failedToSave => 'Failed to save';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get questionUpdated => 'Question updated';
+
+  @override
+  String get questionDeleted => 'Question deleted';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get requisitions => 'Requisitions';
+
+  @override
+  String get noRequisitions => 'No Requisitions';
+
+  @override
+  String get queued => 'Queued';
+
+  @override
+  String get retryAll => 'Retry all';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get processing => 'Processing';
+
+  @override
+  String get open => 'Open';
+
+  @override
+  String get sessionInformation => 'Session information';
+
+  @override
+  String get soulDeleted => 'Soul deleted';
+
+  @override
+  String get missionSubscribers => 'Mission Subscribers';
+
+  @override
+  String get membersSubscribedToThisMission =>
+      'Members subscribed to this mission.';
+
+  @override
+  String get viewDetails => 'View details';
+
+  @override
+  String get callMember => 'Call Member';
+
+  @override
+  String get eGCoolHighSchool => 'e.g., Cool High School';
+
+  @override
+  String get eGTrJohn => 'e.g., Tr John';
+
+  @override
+  String students(Object school_totalStudents) {
+    return '$school_totalStudents students';
+  }
+
+  @override
+  String missions_2(Object school_missions_length) {
+    return '$school_missions_length missions';
+  }
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get unableToPlayAudio => 'Unable to play audio';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get retryNow => 'Retry now';
+
+  @override
+  String get pendingUploads => 'Pending uploads';
+
+  @override
+  String get useAppWhileRecording => 'Use app while recording';
+
+  @override
+  String get useAppWhilePaused => 'Use app while paused';
+
+  @override
+  String get answerUploaded => 'Answer uploaded';
+
+  @override
+  String get viewAll => 'View All';
+
+  @override
+  String get noPendingUploads => 'No pending uploads';
+
+  @override
+  String get pendingUploads_2 => 'Pending Uploads';
+
+  @override
+  String uploadedSuccessfully(Object upload_name) {
+    return '$upload_name uploaded successfully';
+  }
+
+  @override
+  String get retryFailed => 'Retry failed';
 }

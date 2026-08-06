@@ -64,7 +64,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
       PRFSnackbar.error(context, error);
       return;
     }
-    PRFSnackbar.success(context, 'Soul deleted');
+    PRFSnackbar.success(context, context.l10n.soulDeleted);
   }
 
   Future<void> _loadSouls() {

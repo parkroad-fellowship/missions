@@ -98,16 +98,16 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                 0,
               ),
               child: SegmentedButton<PRFMediaModel>(
-                segments: const [
+                segments: [
                   ButtonSegment<PRFMediaModel>(
                     value: PRFMediaModel.eventPhotos,
-                    icon: Icon(Icons.photo_library_outlined),
-                    label: Text('Photos'),
+                    icon: const Icon(Icons.photo_library_outlined),
+                    label: Text(context.l10n.photos),
                   ),
                   ButtonSegment<PRFMediaModel>(
                     value: PRFMediaModel.eventAudios,
-                    icon: Icon(Icons.mic_outlined),
-                    label: Text('Recordings'),
+                    icon: const Icon(Icons.mic_outlined),
+                    label: Text(context.l10n.recordings),
                   ),
                 ],
                 selected: {_selectedModel},
@@ -394,7 +394,7 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
   void _showAddMediaModal(BuildContext context) {
     PRFBottomSheet.show<void>(
       context,
-      title: _isAudioMode ? 'Record Audio' : 'Add Photos',
+      title: _isAudioMode ? context.l10n.recordAudio : context.l10n.addPhotos,
       child: AddEventMediaView(
         eventUlid: eventUlid,
       ),

@@ -1,5 +1,6 @@
 import 'package:app/enums/expense/prf_approval_status.dart';
 import 'package:app/features/missions/mission_details/widgets/requisitions/cubit/requisition_resource_cubit.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_requisition.dart';
 import 'package:app/models/remote/expense/prf_requisition_item.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -42,8 +43,8 @@ class _RequisitionsViewState extends State<RequisitionsView> {
   @override
   Widget build(BuildContext context) {
     return widget.accountingEventUlid == null
-        ? const PRFEmptyView(
-            label: 'Requisitions',
+        ? PRFEmptyView(
+            label: context.l10n.requisitions,
             description: 'No financial data available for this mission.',
             icon: Icons.receipt_long_outlined,
           )
@@ -125,8 +126,8 @@ class _RequisitionsViewState extends State<RequisitionsView> {
 
         // Requisitions list
         if (requisitions.isEmpty)
-          const PRFEmptyView(
-            label: 'No Requisitions',
+          PRFEmptyView(
+            label: context.l10n.noRequisitions,
             description: 'No requisitions have been created for this mission.',
             icon: Icons.receipt_long_outlined,
           )

@@ -1,3 +1,4 @@
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/member/prf_member_engagement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -285,7 +286,7 @@ class MissionsWrappedPage extends StatelessWidget {
       children: [
         HeroNumber(
           value: missionStats.totalMissions,
-          label: 'missions completed',
+          label: context.l10n.missionsCompleted,
           numberSize: 88,
         ),
         if (missionStats.missionStreak > 0) ...[
@@ -356,7 +357,7 @@ class ImpactWrappedPage extends StatelessWidget {
       children: [
         HeroNumber(
           value: impactStats.soulsTouched,
-          label: 'souls touched',
+          label: context.l10n.soulsTouched,
           numberSize: 88,
         ),
         if (impactStats.mostImpactfulMission != null) ...[
@@ -405,7 +406,7 @@ class LearningWrappedPage extends StatelessWidget {
       children: [
         HeroNumber(
           value: learningStats.coursesCompleted,
-          label: 'courses completed',
+          label: context.l10n.coursesCompleted,
           numberSize: 88,
         ),
         if (learningStats.learningStreak > 0) ...[
@@ -463,7 +464,7 @@ class PrayerWrappedPage extends StatelessWidget {
       children: [
         HeroNumber(
           value: prayerStats.prayerResponses,
-          label: 'prayer responses',
+          label: context.l10n.prayerResponses,
           numberSize: 88,
         ),
         if (prayerStats.prayerConsistencyDays > 0) ...[
@@ -521,7 +522,7 @@ class EventsWrappedPage extends StatelessWidget {
       children: [
         HeroNumber(
           value: eventStats.eventsAttended,
-          label: 'events attended',
+          label: context.l10n.eventsAttended,
           numberSize: 88,
         ),
       ],
@@ -568,25 +569,25 @@ class SummaryWrappedPage extends StatelessWidget {
         const SizedBox(height: PRFSpacingTokens.xl),
         _StatLine(
           value: m.missionStats.totalMissions.toString(),
-          label: 'missions completed',
+          label: context.l10n.missionsCompleted,
         ).animate(delay: 350.ms).fadeIn().slideY(begin: 10, end: 0),
         _StatLine(
           value: m.impactStats.soulsTouched.toString(),
-          label: 'souls touched',
+          label: context.l10n.soulsTouched,
         ).animate(delay: 450.ms).fadeIn().slideY(begin: 10, end: 0),
         _StatLine(
           value: m.learningStats.coursesCompleted.toString(),
-          label: 'courses completed',
+          label: context.l10n.coursesCompleted,
         ).animate(delay: 550.ms).fadeIn().slideY(begin: 10, end: 0),
         if (m.prayerStats.prayerResponses > 0)
           _StatLine(
             value: m.prayerStats.prayerResponses.toString(),
-            label: 'prayer responses',
+            label: context.l10n.prayerResponses,
           ).animate(delay: 650.ms).fadeIn().slideY(begin: 10, end: 0),
         if (m.eventStats.eventsAttended > 0)
           _StatLine(
             value: m.eventStats.eventsAttended.toString(),
-            label: 'events attended',
+            label: context.l10n.eventsAttended,
           ).animate(delay: 750.ms).fadeIn().slideY(begin: 10, end: 0),
         const SizedBox(height: PRFSpacingTokens.xl),
         SizedBox(

@@ -440,7 +440,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   onPressed: () async {
                                     await _showAddAudioSheet();
                                   },
-                                  title: 'Record',
+                                  title: context.l10n.record,
                                 ),
                               ),
                             ],
@@ -525,7 +525,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                   .retryAllUploadsForSession(
                                                     missionSessionUlid,
                                                   ),
-                                          title: 'Retry all',
+                                          title: context.l10n.retryAll,
                                         ),
                                       ),
                                     ],
@@ -609,7 +609,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                       .retrySpecificUpload(
                                                         upload,
                                                       ),
-                                              title: 'Retry',
+                                              title: context.l10n.retry,
                                             ),
                                           ),
                                         ],
@@ -863,7 +863,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               onPressed: () => context
                                   .read<DownloadFileCubit>()
                                   .downloadFile(media.temporaryURL),
-                              title: 'Download',
+                              title: context.l10n.download,
                               isLoading: state.maybeWhen(
                                 loading: () => true,
                                 orElse: () => false,
@@ -872,7 +872,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                           )
                         : PRFButton(
                             onPressed: () {},
-                            title: 'Processing',
+                            title: context.l10n.processing,
                             disabled: true,
                           ),
                   ),
@@ -1003,7 +1003,7 @@ class _RecordingStatusCard extends StatelessWidget {
                   onPressed: () async {
                     await onOpenRecorder();
                   },
-                  title: 'Open',
+                  title: context.l10n.open,
                 ),
               ),
               const SizedBox(width: PRFSpacingTokens.xs),
@@ -1142,9 +1142,9 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                 children: [
                   Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: PRFSectionHeader(
-                          title: 'Session information',
+                          title: context.l10n.sessionInformation,
                         ),
                       ),
                       SizedBox(

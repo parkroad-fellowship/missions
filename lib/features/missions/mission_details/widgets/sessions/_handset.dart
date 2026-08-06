@@ -68,7 +68,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
       PRFSnackbar.error(context, error);
       return;
     }
-    PRFSnackbar.success(context, 'Session deleted');
+    PRFSnackbar.success(context, context.l10n.sessionDeleted);
   }
 
   Future<void> _loadSessions() {

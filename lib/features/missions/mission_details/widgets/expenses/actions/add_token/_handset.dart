@@ -177,11 +177,11 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                   children: [
                     PRFFormSection(
                           icon: Icons.attach_money,
-                          title: 'Amount',
+                          title: context.l10n.amount,
                           isRequired: true,
                           child: _buildNumberField(
                             controller: _amountController,
-                            label: 'Token Amount',
+                            label: context.l10n.tokenAmount_2,
                             hint: 'Enter token amount',
                             prefix: 'KES ',
                           ),
@@ -260,7 +260,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                     builder: (context, state) {
                       return PRFButton(
                         onPressed: _submitForm,
-                        title: 'Add Token',
+                        title: context.l10n.addToken,
                         disabled: !_isFormValid,
                         isLoading: _isLoading,
                       );

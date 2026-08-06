@@ -246,7 +246,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           PRFButton(
             variant: PRFButtonVariant.secondary,
             onPressed: widget.onMinimize!,
-            title: 'Use app while recording',
+            title: context.l10n.useAppWhileRecording,
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
         ],
@@ -331,7 +331,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           PRFButton(
             variant: PRFButtonVariant.secondary,
             onPressed: widget.onMinimize!,
-            title: 'Use app while paused',
+            title: context.l10n.useAppWhilePaused,
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
         ],

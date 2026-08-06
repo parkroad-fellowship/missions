@@ -83,7 +83,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             state.maybeWhen(
               orElse: () {},
               loaded: () {
-                PRFSnackbar.success(context, 'Receipt uploaded successfully');
+                PRFSnackbar.success(
+                  context,
+                  context.l10n.receiptUploadedSuccessfully,
+                );
               },
               error: (message) {
                 PRFSnackbar.error(
@@ -122,12 +125,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 listLoaded: (entries, _, _) {
                   if (entries.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: PRFSpacingTokens.lg,
                       ),
                       child: PRFEmptyView(
-                        label: 'No Expenses Yet',
+                        label: context.l10n.noExpensesYet,
                         description: 'Start by adding your first expense',
                         icon: Icons.receipt_long_outlined,
                       ),
@@ -151,7 +154,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     horizontal: PRFSpacingTokens.lg,
                   ),
                   child: PRFEmptyView(
-                    label: 'Error',
+                    label: context.l10n.error,
                     description: message,
                     icon: Icons.error_outline,
                     actionLabel: 'Retry',
@@ -163,7 +166,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     horizontal: PRFSpacingTokens.lg,
                   ),
                   child: PRFEmptyView(
-                    label: 'Error',
+                    label: context.l10n.error,
                     description: message,
                     icon: Icons.error_outline,
                     actionLabel: 'Retry',
@@ -261,8 +264,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         // Empty state when breakdown is shown but no entries
         if (_showBreakdown && entries.isEmpty)
           SliverToBoxAdapter(
-            child: const PRFEmptyView(
-              label: 'No Expenses Yet',
+            child: PRFEmptyView(
+              label: context.l10n.noExpensesYet,
               description: 'Start by adding your first expense',
               icon: Icons.receipt_long_outlined,
             ).animate().fadeIn(duration: PRFMotionTokens.enterShort),
@@ -816,7 +819,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           initial: () {},
           loading: (mediaUuid) {},
           loaded: (mediaUuid) {
-            PRFSnackbar.success(context, 'Receipt deleted successfully');
+            PRFSnackbar.success(
+              context,
+              context.l10n.receiptDeletedSuccessfully,
+            );
           },
           error: (message) {
             PRFSnackbar.error(context, message);
@@ -1130,7 +1136,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     PRFConfirmationDialog.show(
       context,
-      title: 'Delete Receipt',
+      title: context.l10n.deleteReceipt,
       message:
           'Are you sure you want to delete this receipt? This action cannot '
           'be undone.',
@@ -1403,7 +1409,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     await PRFPdfViewer.show(
       context,
       bytes: await NetworkUtil().getBytes(pdfUrl),
-      title: 'Receipt PDF',
+      title: context.l10n.receiptPdf,
     );
   }
 
@@ -1426,7 +1432,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     context.read<SelectMediaCubit>().clearMedia();
     PRFBottomSheet.show<void>(
       context,
-      title: 'Add Expense',
+      title: context.l10n.addExpense_2,
       child: accountingEventUlid != null
           ? AddExpenseViewHandset(
               accountingEventUlid: accountingEventUlid!,
@@ -1438,7 +1444,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   void _showExpenseDetails(BuildContext context, PRFAllocationEntry entry) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Edit Expense',
+      title: context.l10n.editExpense,
       child: EditExpenseViewHandset(
         allocationEntry: entry,
       ),
@@ -1451,7 +1457,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) async {
     final confirmed = await PRFConfirmationDialog.show(
       context,
-      title: 'Delete Expense',
+      title: context.l10n.deleteExpense,
       message: 'Are you sure you want to delete this expense?',
       confirmLabel: 'Delete',
       isDestructive: true,
@@ -1467,7 +1473,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Add Token',
+      title: context.l10n.addToken,
       child: AddTokenViewHandset(
         accountingEventUlid: accountingEvent.ulid,
       ),
@@ -1486,7 +1492,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Add Refund',
+      title: context.l10n.addRefund,
       child: AddRefundViewHandset(
         accountingEventUlid: accountingEvent.ulid,
       ),
@@ -1675,7 +1681,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       PRFButton(
                         onPressed: () =>
                             _showAddRefundModal(context, accountingEvent),
-                        title: 'Add Refund',
+                        title: context.l10n.addRefund,
                       ),
                     const SizedBox(height: PRFSpacingTokens.md),
                     if (accountingEvent.refunds.isNotEmpty)
@@ -1882,7 +1888,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           IconButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: value));
-              PRFSnackbar.info(context, 'Copied to clipboard');
+              PRFSnackbar.info(context, context.l10n.copiedToClipboard);
             },
             icon: Icon(
               Icons.copy,
@@ -1925,7 +1931,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         GestureDetector(
           onTap: () {
             Clipboard.setData(ClipboardData(text: value));
-            PRFSnackbar.info(context, 'Copied "$value" to clipboard');
+            PRFSnackbar.info(context, context.l10n.copiedToClipboard_2(value));
           },
           child: Container(
             padding: const EdgeInsets.symmetric(

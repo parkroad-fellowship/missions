@@ -67,7 +67,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
       PRFSnackbar.error(context, error);
       return;
     }
-    PRFSnackbar.success(context, 'Debrief note deleted');
+    PRFSnackbar.success(context, context.l10n.debriefNoteDeleted);
   }
 
   Future<void> _loadDebriefNotes() {

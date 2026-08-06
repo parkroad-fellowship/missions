@@ -45,7 +45,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
   Future<void> _openRecorder(PRFMissionQuestion question) async {
     await PRFBottomSheet.show<void>(
       context,
-      title: 'Record answer',
+      title: context.l10n.recordAnswer,
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.8,
         child: OfflineAudioRecorderSheet(
@@ -85,13 +85,13 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
     }
 
     if (orderedUuids.isEmpty) {
-      PRFSnackbar.info(context, 'No answers yet');
+      PRFSnackbar.info(context, context.l10n.noAnswersYet);
       return;
     }
 
     await PRFBottomSheet.show<void>(
       context,
-      title: 'Answers',
+      title: context.l10n.answers,
       child: Padding(
         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         child: Column(
@@ -175,9 +175,9 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                 PRFSpacingTokens.md,
               ),
               child: Semantics(
-                label: 'Search questions',
+                label: context.l10n.searchQuestions,
                 child: PRFTextField(
-                  hintText: 'Search questions',
+                  hintText: context.l10n.searchQuestions,
                   controller: _searchController,
                 ),
               ),
@@ -220,7 +220,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                       if (isLoading && questions.isEmpty) {
                         return Center(
                           child: Semantics(
-                            label: 'Loading questions',
+                            label: context.l10n.loadingQuestions,
                             child: const PRFCircularProgressIndicator(),
                           ),
                         );
@@ -344,7 +344,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                         bottom: PRFSpacingTokens.sm,
                                       ),
                                       child: Semantics(
-                                        label: 'No answers yet',
+                                        label: context.l10n.noAnswersYet,
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: PRFSpacingTokens.sm,
@@ -382,7 +382,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                           child: PRFButton(
                                             onPressed: () =>
                                                 _openRecorder(item),
-                                            title: 'Record answer',
+                                            title: context.l10n.recordAnswer,
                                           ),
                                         ),
                                       ),

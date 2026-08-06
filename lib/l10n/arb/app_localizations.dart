@@ -2697,6 +2697,498 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Answer FAQs'**
   String get answerFaqs;
+
+  /// No description provided for @receiptPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt PDF'**
+  String get receiptPdf;
+
+  /// No description provided for @venue.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue'**
+  String get venue;
+
+  /// No description provided for @dateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Range'**
+  String get dateRange;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @time_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time_2;
+
+  /// No description provided for @subscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get subscribe;
+
+  /// No description provided for @updateSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Subscription'**
+  String get updateSubscription;
+
+  /// No description provided for @addMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Media'**
+  String get addMedia;
+
+  /// No description provided for @addEventPhotos_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Event Photos'**
+  String get addEventPhotos_2;
+
+  /// No description provided for @sharePhotosAndMemoriesFromThisEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Share photos and memories from this event'**
+  String get sharePhotosAndMemoriesFromThisEvent;
+
+  /// No description provided for @recordAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Record Audio'**
+  String get recordAudio;
+
+  /// No description provided for @recordEventAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Record event audio'**
+  String get recordEventAudio;
+
+  /// No description provided for @photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos;
+
+  /// No description provided for @missionsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'missions completed'**
+  String get missionsCompleted;
+
+  /// No description provided for @soulsTouched.
+  ///
+  /// In en, this message translates to:
+  /// **'souls touched'**
+  String get soulsTouched;
+
+  /// No description provided for @coursesCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'courses completed'**
+  String get coursesCompleted;
+
+  /// No description provided for @prayerResponses.
+  ///
+  /// In en, this message translates to:
+  /// **'prayer responses'**
+  String get prayerResponses;
+
+  /// No description provided for @eventsAttended.
+  ///
+  /// In en, this message translates to:
+  /// **'events attended'**
+  String get eventsAttended;
+
+  /// No description provided for @recordAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Record answer'**
+  String get recordAnswer;
+
+  /// No description provided for @noAnswersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers yet'**
+  String get noAnswersYet;
+
+  /// No description provided for @answers.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers'**
+  String get answers;
+
+  /// No description provided for @searchQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Search questions'**
+  String get searchQuestions;
+
+  /// No description provided for @loadingQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading questions'**
+  String get loadingQuestions;
+
+  /// No description provided for @debriefNoteDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Debrief note deleted'**
+  String get debriefNoteDeleted;
+
+  /// No description provided for @feedbackData.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback Data'**
+  String get feedbackData;
+
+  /// No description provided for @questionsCapturedAndPostMissionDebriefReflections.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions captured and post-mission debrief reflections.'**
+  String get questionsCapturedAndPostMissionDebriefReflections;
+
+  /// No description provided for @finances.
+  ///
+  /// In en, this message translates to:
+  /// **'Finances'**
+  String get finances;
+
+  /// No description provided for @requisitionsAndExpenseTrackingForThisMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Requisitions and expense tracking for this mission.'**
+  String get requisitionsAndExpenseTrackingForThisMission;
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @missionContextTeamMembersAndSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission context, team members, and sessions.'**
+  String get missionContextTeamMembersAndSessions;
+
+  /// No description provided for @receiptUploadedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt uploaded successfully'**
+  String get receiptUploadedSuccessfully;
+
+  /// No description provided for @noExpensesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Expenses Yet'**
+  String get noExpensesYet;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @receiptDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt deleted successfully'**
+  String get receiptDeletedSuccessfully;
+
+  /// No description provided for @deleteReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Receipt'**
+  String get deleteReceipt;
+
+  /// No description provided for @addExpense_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense'**
+  String get addExpense_2;
+
+  /// No description provided for @editExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Expense'**
+  String get editExpense;
+
+  /// No description provided for @deleteExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Expense'**
+  String get deleteExpense;
+
+  /// No description provided for @addRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Refund'**
+  String get addRefund;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get copiedToClipboard;
+
+  /// No description provided for @copiedToClipboard_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied \"{value}\" to clipboard'**
+  String copiedToClipboard_2(Object value);
+
+  /// No description provided for @refundAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Amount'**
+  String get refundAmount;
+
+  /// No description provided for @addRefundEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Refund Entry'**
+  String get addRefundEntry;
+
+  /// No description provided for @tokenAmount_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Token Amount'**
+  String get tokenAmount_2;
+
+  /// No description provided for @updateExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Expense'**
+  String get updateExpense;
+
+  /// No description provided for @mediaDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Media deleted'**
+  String get mediaDeleted;
+
+  /// No description provided for @savedToDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to device'**
+  String get savedToDevice;
+
+  /// No description provided for @failedToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save'**
+  String get failedToSave;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @questionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Question updated'**
+  String get questionUpdated;
+
+  /// No description provided for @questionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Question deleted'**
+  String get questionDeleted;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @requisitions.
+  ///
+  /// In en, this message translates to:
+  /// **'Requisitions'**
+  String get requisitions;
+
+  /// No description provided for @noRequisitions.
+  ///
+  /// In en, this message translates to:
+  /// **'No Requisitions'**
+  String get noRequisitions;
+
+  /// No description provided for @queued.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued'**
+  String get queued;
+
+  /// No description provided for @retryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry all'**
+  String get retryAll;
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get processing;
+
+  /// No description provided for @open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open;
+
+  /// No description provided for @sessionInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Session information'**
+  String get sessionInformation;
+
+  /// No description provided for @soulDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Soul deleted'**
+  String get soulDeleted;
+
+  /// No description provided for @missionSubscribers.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Subscribers'**
+  String get missionSubscribers;
+
+  /// No description provided for @membersSubscribedToThisMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Members subscribed to this mission.'**
+  String get membersSubscribedToThisMission;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewDetails;
+
+  /// No description provided for @callMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Member'**
+  String get callMember;
+
+  /// No description provided for @eGCoolHighSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Cool High School'**
+  String get eGCoolHighSchool;
+
+  /// No description provided for @eGTrJohn.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Tr John'**
+  String get eGTrJohn;
+
+  /// No description provided for @students.
+  ///
+  /// In en, this message translates to:
+  /// **'{school_totalStudents} students'**
+  String students(Object school_totalStudents);
+
+  /// No description provided for @missions_2.
+  ///
+  /// In en, this message translates to:
+  /// **'{school_missions_length} missions'**
+  String missions_2(Object school_missions_length);
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @unableToPlayAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to play audio'**
+  String get unableToPlayAudio;
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @retryNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry now'**
+  String get retryNow;
+
+  /// No description provided for @pendingUploads.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending uploads'**
+  String get pendingUploads;
+
+  /// No description provided for @useAppWhileRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Use app while recording'**
+  String get useAppWhileRecording;
+
+  /// No description provided for @useAppWhilePaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Use app while paused'**
+  String get useAppWhilePaused;
+
+  /// No description provided for @answerUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer uploaded'**
+  String get answerUploaded;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get viewAll;
+
+  /// No description provided for @noPendingUploads.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending uploads'**
+  String get noPendingUploads;
+
+  /// No description provided for @pendingUploads_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Uploads'**
+  String get pendingUploads_2;
+
+  /// No description provided for @uploadedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'{upload_name} uploaded successfully'**
+  String uploadedSuccessfully(Object upload_name);
+
+  /// No description provided for @retryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry failed'**
+  String get retryFailed;
 }
 
 class _AppLocalizationsDelegate

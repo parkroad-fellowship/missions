@@ -81,7 +81,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
                 FilledButton.icon(
                   onPressed: _loadSubscriptions,
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Retry'),
+                  label: Text(context.l10n.retry),
                 ),
               ],
             ),
@@ -100,8 +100,8 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
             ),
             children: [
               MissionSectionCard(
-                title: 'Mission Subscribers',
-                subtitle: 'Members subscribed to this mission.',
+                title: context.l10n.missionSubscribers,
+                subtitle: context.l10n.membersSubscribedToThisMission,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -213,7 +213,7 @@ class _SubscriptionCard extends StatelessWidget {
                         foregroundColor: theme.colorScheme.primary,
                       ),
                       onPressed: () => _viewSubscriber(context, member),
-                      child: const Text('View details'),
+                      child: Text(context.l10n.viewDetails),
                     ),
                   Text(
                     subtitle,
@@ -349,7 +349,7 @@ class _SubscriptionCard extends StatelessWidget {
                 Expanded(
                   child: PRFButton(
                     onPressed: () => _makeCall(member),
-                    title: 'Call Member',
+                    title: context.l10n.callMember,
                   ),
                 ),
               ],

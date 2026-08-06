@@ -1,3 +1,4 @@
+import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:prf_design/prf_design.dart';
@@ -199,7 +200,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             const SizedBox(height: PRFSpacingTokens.xl),
             PRFButton(
-              title: 'Retry',
+              title: context.l10n.retry,
               onPressed: () {
                 setState(() {
                   _hasError = false;

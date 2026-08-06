@@ -1,4 +1,5 @@
 import 'package:app/features/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_refund_dto.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -173,11 +174,11 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                   children: [
                     PRFFormSection(
                           icon: Icons.attach_money,
-                          title: 'Refund Amount',
+                          title: context.l10n.refundAmount,
                           isRequired: true,
                           child: _buildNumberField(
                             controller: _amountController,
-                            label: 'Amount',
+                            label: context.l10n.amount,
                             hint: 'Enter refund amount',
                             prefix: 'KES ',
                           ),
@@ -188,7 +189,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
 
                     PRFFormSection(
                           icon: Icons.description,
-                          title: 'Confirmation Message',
+                          title: context.l10n.confirmationMessage,
                           isRequired: true,
                           child: Column(
                             children: [
@@ -250,7 +251,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                     builder: (context, state) {
                       return PRFButton(
                         onPressed: _submitForm,
-                        title: 'Add Refund Entry',
+                        title: context.l10n.addRefundEntry,
                         disabled: !_isFormValid,
                         isLoading: _isLoading,
                       );

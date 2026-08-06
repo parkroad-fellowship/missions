@@ -149,8 +149,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                             ),
                           ),
                           const SizedBox(width: PRFSpacingTokens.sm),
-                          const Chip(
-                            label: Text('Queued'),
+                          Chip(
+                            label: Text(context.l10n.queued),
                             padding: EdgeInsets.zero,
                           ),
                         ],

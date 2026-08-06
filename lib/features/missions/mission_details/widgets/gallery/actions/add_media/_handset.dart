@@ -107,7 +107,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                         variant: PRFButtonVariant.secondary,
                         onPressed: () =>
                             _selectMedia(context, previousMedia: []),
-                        title: 'Try Again',
+                        title: context.l10n.wrappedTryAgain,
                       ),
                     ],
                   ),

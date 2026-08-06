@@ -66,7 +66,7 @@ class _MissionQuestionsViewHandsetState
       PRFSnackbar.error(context, error);
       return;
     }
-    PRFSnackbar.success(context, 'Question updated');
+    PRFSnackbar.success(context, context.l10n.questionUpdated);
   }
 
   Future<void> _deleteQuestion(PRFMissionQuestion missionQuestion) async {
@@ -92,7 +92,7 @@ class _MissionQuestionsViewHandsetState
       PRFSnackbar.error(context, error);
       return;
     }
-    PRFSnackbar.success(context, 'Question deleted');
+    PRFSnackbar.success(context, context.l10n.questionDeleted);
   }
 
   Future<void> _loadMissionQuestions() {

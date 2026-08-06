@@ -407,7 +407,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 if (event.venue != null) ...[
                   PRFInfoCard(
                     icon: Icons.location_on_rounded,
-                    label: 'Venue',
+                    label: context.l10n.venue,
                     value: event.venue!,
                   ),
                   const SizedBox(height: PRFSpacingTokens.sm),
@@ -436,7 +436,9 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 const SizedBox(height: PRFSpacingTokens.sm),
                 PRFInfoCard(
                   icon: Icons.calendar_today_rounded,
-                  label: isMultiDay ? 'Date Range' : 'Date',
+                  label: isMultiDay
+                      ? context.l10n.dateRange
+                      : context.l10n.date,
                   value: isMultiDay
                       ? '${DateFormatter.formatDate(startDate, timezone)} - '
                             '${DateFormatter.formatDate(endDate, timezone)}'
@@ -445,7 +447,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
                 const SizedBox(height: PRFSpacingTokens.sm),
                 PRFInfoCard(
                   icon: Icons.access_time_rounded,
-                  label: 'Time',
+                  label: context.l10n.time_2,
                   value:
                       '${DateFormatter.formatTime(event.startTime, timezone)} '
                       '- ${DateFormatter.formatTime(event.endTime, timezone)} '

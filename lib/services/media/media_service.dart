@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app/enums/prf_media_model.dart';
 import 'package:app/enums/prf_media_type.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/common/failure.dart';
 import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
@@ -19,8 +20,7 @@ import 'package:logger/logger.dart';
 import 'package:mime/mime.dart' as mime;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:prf_design/prf_design.dart'
-    show PRFRadiusTokens, PRFSpacingTokens, StringFormatter;
+import 'package:prf_design/prf_design.dart';
 
 abstract class MediaService {
   Future<PRFMedia?> uploadFile({
@@ -263,7 +263,7 @@ class MediaServiceImpl implements MediaService {
                         color: theme.colorScheme.primary,
                       ),
                     ),
-                    title: const Text('Camera'),
+                    title: Text(context.l10n.camera),
                     subtitle: Text(
                       mediaType == PRFMediaType.videos
                           ? 'Record a video'
@@ -287,7 +287,7 @@ class MediaServiceImpl implements MediaService {
                         color: theme.colorScheme.secondary,
                       ),
                     ),
-                    title: const Text('Gallery'),
+                    title: Text(context.l10n.gallery),
                     subtitle: Text(
                       count > 1
                           ? 'Select up to $count items'

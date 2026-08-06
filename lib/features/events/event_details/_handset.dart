@@ -163,7 +163,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
             if (event.loggedInMemberEventSubscription == null) {
               PRFBottomSheet.show<void>(
                 context,
-                title: 'Subscribe',
+                title: context.l10n.subscribe,
                 child: AddEventSubscriptionView(event: event),
               ).then((_) {
                 // ignore: use_build_context_synchronously
@@ -174,7 +174,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
             if (event.loggedInMemberEventSubscription != null) {
               PRFBottomSheet.show<void>(
                 context,
-                title: 'Update Subscription',
+                title: context.l10n.updateSubscription,
                 child: UpdateEventSubscriptionView(event: event),
               ).then((_) {
                 // ignore: use_build_context_synchronously
@@ -194,7 +194,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
             if (_currentTab == 1) {
               PRFBottomSheet.show<void>(
                 context,
-                title: 'Add Media',
+                title: context.l10n.addMedia,
                 child: AddEventMediaView(eventUlid: event.ulid),
               );
             }

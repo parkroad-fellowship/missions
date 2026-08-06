@@ -80,7 +80,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     if (!mounted) return false;
 
     Gaimon.success();
-    PRFSnackbar.success(context, 'Media deleted');
+    PRFSnackbar.success(context, context.l10n.mediaDeleted);
     await _loadMedia();
     return true;
   }
@@ -99,18 +99,18 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
 
       if (!mounted) return;
       Gaimon.success();
-      PRFSnackbar.success(context, 'Saved to device');
+      PRFSnackbar.success(context, context.l10n.savedToDevice);
     } catch (e) {
       if (!mounted) return;
       Gaimon.error();
-      PRFSnackbar.error(context, 'Failed to save');
+      PRFSnackbar.error(context, context.l10n.failedToSave);
     }
   }
 
   void _showAddMediaModal() {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Add Media',
+      title: context.l10n.addMedia,
       child: AddMediaView(missionUlid: mission.ulid),
     );
   }

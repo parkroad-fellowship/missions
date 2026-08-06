@@ -355,7 +355,7 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                     builder: (context, state) {
                       return PRFButton(
                         onPressed: _submitForm,
-                        title: 'Update Expense',
+                        title: context.l10n.updateExpense,
                         disabled: !_isFormValid,
                         isLoading: _isLoading,
                       );

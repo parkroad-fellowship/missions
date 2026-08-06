@@ -1,4 +1,5 @@
 import 'package:app/di/di_container.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
@@ -83,7 +84,7 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                               child: PRFButton(
                                 variant: PRFButtonVariant.secondary,
                                 onPressed: () => _showDetails(context),
-                                title: 'View',
+                                title: context.l10n.view,
                               ),
                             ),
                           ],
@@ -123,7 +124,7 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                                     getIt<FailedRecordingUploadService>()
                                         .retryAllUploads();
                                   },
-                                  title: 'Retry now',
+                                  title: context.l10n.retryNow,
                                 ),
                               ),
                             ],
@@ -147,7 +148,7 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
     final sheetContext = navigatorContext ?? context;
     PRFBottomSheet.show<void>(
       sheetContext,
-      title: 'Pending uploads',
+      title: context.l10n.pendingUploads,
       child: const _PendingUploadsDetails(),
     );
   }

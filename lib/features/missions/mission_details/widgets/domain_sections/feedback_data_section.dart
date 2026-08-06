@@ -27,8 +27,8 @@ class FeedbackDataSection extends StatelessWidget {
     final l10n = context.l10n;
 
     return PRFDomainTabSection(
-      title: 'Feedback Data',
-      subtitle: 'Questions captured and post-mission debrief reflections.',
+      title: context.l10n.feedbackData,
+      subtitle: context.l10n.questionsCapturedAndPostMissionDebriefReflections,
       onTabChanged: onTabChanged,
       initialIndex: initialIndex,
       tabs: [

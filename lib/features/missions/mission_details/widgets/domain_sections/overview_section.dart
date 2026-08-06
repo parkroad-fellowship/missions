@@ -1,4 +1,5 @@
 import 'package:app/features/missions/mission_details/widgets/domain_sections/prf_domain_tab_section.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 /// Overview section that displays mission ground info, subscribers,
@@ -22,8 +23,8 @@ class OverviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFDomainTabSection(
-      title: 'Overview',
-      subtitle: 'Mission context, team members, and sessions.',
+      title: context.l10n.overview,
+      subtitle: context.l10n.missionContextTeamMembersAndSessions,
       onTabChanged: onTabChanged,
       initialIndex: initialIndex,
       tabs: const [
