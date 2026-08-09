@@ -1568,10 +1568,11 @@ packages:
   prf_design:
     dependency: "direct main"
     description:
-      path: "../../prf_design_system"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: prf_design
+      sha256: bc2023a04a9cc5c438909ab8b5c774d76b99b5a10323d769f0d44972e957dbf2
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   provider:
     dependency: transitive
     description:
