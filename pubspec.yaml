@@ -20,12 +20,12 @@ dependencies:
   dio: ^5.11.0
   extended_image: ^10.1.0
   file_picker: ^12.0.0-beta.7
-  firebase_analytics: ^12.4.5
-  firebase_auth: ^6.5.6
+  firebase_analytics: ^12.4.6
+  firebase_auth: ^6.5.7
   firebase_core: ^4.12.1
-  firebase_crashlytics: ^5.2.6
-  firebase_messaging: ^16.4.3
-  firebase_remote_config: ^6.5.5
+  firebase_crashlytics: ^5.2.7
+  firebase_messaging: ^16.5.0
+  firebase_remote_config: ^6.5.6
   flutter:
     sdk: flutter
   flutter_adaptive_ui: ^0.8.0+1
@@ -43,7 +43,7 @@ dependencies:
   full_screen_image: ^2.0.0
   gaimon: ^1.4.3
   get_it: ^9.2.1
-  google_fonts: ^8.2.0
+  google_fonts: ^8.2.1
   google_sign_in: ^7.2.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
