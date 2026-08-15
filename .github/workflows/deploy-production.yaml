@@ -36,6 +36,15 @@ jobs:
       - name: Free disk space
         uses: ./.github/actions/free-disk-space
 
+      - name: Enable swap space
+        run: |
+          sudo swapon --show || true
+          sudo fallocate -l 10G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          free -h
+
       - name: Flutter Setup
         uses: ./.github/actions/flutter-setup
         with:
