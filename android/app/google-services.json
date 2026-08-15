@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "373327072646-q3m1lke2pdfjuomll9m34kt3n9t4t8he.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.parkroadfellowship.hmt",
+            "certificate_hash": "0b93636334ff2ee242b815c858d8bdbc25335cf9"
+          }
+        },
+        {
           "client_id": "373327072646-qtqsv2okfuoqba72c659qmvu7vph8gi4.apps.googleusercontent.com",
           "client_type": 3
         }
