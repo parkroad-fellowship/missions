@@ -1497,10 +1497,10 @@ packages:
     dependency: transitive
     description:
       name: phone_numbers_parser
-      sha256: f024c4003f2f186ac1ef8bbf56841b6409d4a9c84379df4e22cb50488aea5a31
+      sha256: f0d669e9bb3def72b479ee034a42ddc2eecb5d39af9e598459d6f1c489bb19c7
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.24"
+    version: "9.0.25"
   photo_view:
     dependency: transitive
     description:
@@ -1553,10 +1553,10 @@ packages:
     dependency: "direct main"
     description:
       name: posthog_flutter
-      sha256: "41a7d3c7329d58c6b438b28346e62b06d063b9740960d750df431203a714708a"
+      sha256: "848a2e95eddf954b051657ea3419440e11517c72c63d29b81f31bac4b47642ea"
       url: "https://pub.dev"
     source: hosted
-    version: "5.35.1"
+    version: "5.36.0"
   pretty_dio_logger:
     dependency: "direct main"
     description:
@@ -1657,10 +1657,10 @@ packages:
     dependency: transitive
     description:
       name: record_web
-      sha256: "7d75ed681b5bf40c3a9b51b6c105fe53705f752284d859d5f030ab5a2bfd49cf"
+      sha256: f53d3da48de3618a331868aec73261d5a75eddd9c09409afd9ec6d66b25db532
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   record_windows:
     dependency: transitive
     description:
@@ -2070,10 +2070,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_android
-      sha256: "5121de08444d00363efdda630a69ad4d27a208a9f7586482d4909a44a1cdbc63"
+      sha256: e229676f8fade3e0124482495aaa2b548872cc4018b6268adfca4868be16aa74
       url: "https://pub.dev"
     source: hosted
-    version: "2.11.0"
+    version: "2.12.0"
   video_player_avfoundation:
     dependency: transitive
     description:

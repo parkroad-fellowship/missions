@@ -58,7 +58,7 @@ dependencies:
   path_provider: ^2.1.6
   permission_handler: ^13.0.0
   phone_form_field: ^10.0.18
-  posthog_flutter: ^5.35.1
+  posthog_flutter: ^5.36.0
   pretty_dio_logger: ^1.4.0
   prf_design: ^1.0.2
     # path: ../../prf_design_system
