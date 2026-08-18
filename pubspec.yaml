@@ -1,6 +1,6 @@
 name: app
-description: The PRF Missions app
-version: 2.96.07+29607
+description: The HMT Missions app
+version: 2.96.08+29608
 publish_to: none
 
 environment:
@@ -99,7 +99,7 @@ flutter:
     enable-swift-package-manager: false
 
 patrol:
-  app_name: PRF Missions
+  app_name: HMT Missions
   test_directory: integration_test
   android:
     package_name: org.parkroadfellowship.app.dev

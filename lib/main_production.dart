@@ -28,7 +28,6 @@ Future<void> main() async {
       hiveEncryptionKey: EncryptionHelper.requiredDefine(
         EncryptionHelper.hiveEncryptionKey,
       ),
-      postHogKey: EncryptionHelper.requiredDefine(EncryptionHelper.postHogKey),
       tenantUlid: EncryptionHelper.requiredDefine(EncryptionHelper.tenantUlid),
       socketDomain: EncryptionHelper.requiredDefine(
         EncryptionHelper.socketDomain,
