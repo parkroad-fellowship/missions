@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCmTYauZ_0oaxcd-CS5tEmQVxfWFahIlR4',
-    appId: '1:373327072646:android:d9bc80cec10952325c3007',
+    appId: '1:373327072646:android:aac9e80fbe380a045c3007',
     messagingSenderId: '373327072646',
     projectId: 'hosanna-mt',
     storageBucket: 'hosanna-mt.firebasestorage.app',
@@ -59,19 +59,17 @@ class DefaultFirebaseOptions {
     messagingSenderId: '373327072646',
     projectId: 'hosanna-mt',
     storageBucket: 'hosanna-mt.firebasestorage.app',
-    androidClientId:
-        '373327072646-gfihsd0rogf1a0avc4vk94p7del0p0ng.apps.googleusercontent.com',
-    iosClientId:
-        '373327072646-go00t5b8me9a5nstj11v1j2u0cd83951.apps.googleusercontent.com',
+    androidClientId: '373327072646-16vphn45tpaj8ji1doorhpajs68l7dm9.apps.googleusercontent.com',
+    iosClientId: '373327072646-71v553m2m47qmt4h06r2abdh4eclc64a.apps.googleusercontent.com',
     iosBundleId: 'hmt.parkroadfellowship.org',
   );
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAbI5VykxCvu6iStjKav08Wlk8zpSnIHiI',
-    appId: '1:373327072646:web:79248e00603814105c3007',
+    appId: '1:373327072646:web:4b27c5d7cd2754cc5c3007',
     messagingSenderId: '373327072646',
     projectId: 'hosanna-mt',
     authDomain: 'hosanna-mt.firebaseapp.com',
     storageBucket: 'hosanna-mt.firebasestorage.app',
-    measurementId: 'G-XLM8D3JQBL',
+    measurementId: 'G-FCZ9VYB7LJ',
   );
 }

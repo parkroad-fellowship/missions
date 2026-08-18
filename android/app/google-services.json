@@ -7,14 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:373327072646:android:d9bc80cec10952325c3007",
+        "mobilesdk_app_id": "1:373327072646:android:aac9e80fbe380a045c3007",
         "android_client_info": {
           "package_name": "org.parkroadfellowship.hmt"
         }
       },
       "oauth_client": [
         {
-          "client_id": "373327072646-gfihsd0rogf1a0avc4vk94p7del0p0ng.apps.googleusercontent.com",
+          "client_id": "373327072646-16vphn45tpaj8ji1doorhpajs68l7dm9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "org.parkroadfellowship.hmt",
@@ -22,12 +22,16 @@
           }
         },
         {
-          "client_id": "373327072646-qmdt6uif81bkfdcblhk9ho6auimqv8t4.apps.googleusercontent.com",
+          "client_id": "373327072646-2heuf55qv4ek0g5k8msoupd0gk3f7lfc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "org.parkroadfellowship.hmt",
             "certificate_hash": "0b93636334ff2ee242b815c858d8bdbc25335cf9"
           }
+        },
+        {
+          "client_id": "373327072646-5h7gn7ajh8dqdccmth7rj22s7ads66p3.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -37,7 +41,20 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373327072646-5h7gn7ajh8dqdccmth7rj22s7ads66p3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "373327072646-71v553m2m47qmt4h06r2abdh4eclc64a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "hmt.parkroadfellowship.org",
+                "app_store_id": "6788113090"
+              }
+            }
+          ]
         }
       }
     }
