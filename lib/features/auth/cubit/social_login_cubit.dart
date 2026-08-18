@@ -38,14 +38,16 @@ class SocialLoginCubit extends Cubit<SocialLoginState> {
 
       _hiveService.auth.persistProfile(user);
 
-      final fcmToken = await _firebaseMessagingService.retrieveFCMToken();
-      if (fcmToken.isNotEmpty) {
-        await _authService.updateProfile(
-          updateDTO: UserUpdateDTO(
-            fcmTokens: [fcmToken],
-          ),
-        );
-      }
+      try {
+        final fcmToken = await _firebaseMessagingService.retrieveFCMToken();
+        if (fcmToken.isNotEmpty) {
+          await _authService.updateProfile(
+            updateDTO: UserUpdateDTO(
+              fcmTokens: [fcmToken],
+            ),
+          );
+        }
+      } finally {}
 
       emit(const SocialLoginState.loaded());
     } on Failure catch (e) {
