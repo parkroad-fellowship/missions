@@ -60,9 +60,7 @@ class DefaultFirebaseOptions {
     projectId: 'hosanna-mt',
     storageBucket: 'hosanna-mt.firebasestorage.app',
     androidClientId:
-        '373327072646-q3m1lke2pdfjuomll9m34kt3n9t4t8he.apps.googleusercontent.com',
-    iosClientId:
-        '373327072646-7eurh2efm754p1rj78ckhbl3frfbag8t.apps.googleusercontent.com',
+        '373327072646-gfihsd0rogf1a0avc4vk94p7del0p0ng.apps.googleusercontent.com',
     iosBundleId: 'hmt.parkroadfellowship.org',
   );
   static const FirebaseOptions web = FirebaseOptions(
