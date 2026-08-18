@@ -1,6 +1,6 @@
 name: app
 description: The PRF Missions app
-version: 3.00.02+30002
+version: 3.00.03+30003
 publish_to: none
 
 environment:
@@ -60,7 +60,7 @@ dependencies:
   path_provider: ^2.1.6
   permission_handler: ^13.0.1
   phone_form_field: ^10.0.18
-  posthog_flutter: ^5.36.2
+  posthog_flutter: ^5.36.3
   pretty_dio_logger: ^1.4.0
   prf_design: ^0.8.5
   # path: ../../prf_design_system
