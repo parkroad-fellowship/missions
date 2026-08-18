@@ -1609,10 +1609,10 @@ packages:
     dependency: "direct main"
     description:
       name: posthog_flutter
-      sha256: "2cedf7675acd2109a8ebf69c425a00ab9c03223b4fba4c00436124258bfd2df0"
+      sha256: "12ba0b32988b57570f80cf2c9ce3ee6005f97ef46794d9a8ff624c45bc6bbbe5"
       url: "https://pub.dev"
     source: hosted
-    version: "5.36.3"
+    version: "5.36.4"
   pretty_dio_logger:
     dependency: "direct main"
     description:
@@ -1990,10 +1990,10 @@ packages:
     dependency: "direct main"
     description:
       name: upgrader
-      sha256: "7efb17f21ca9d3ee5c186d084dd76a5b9740f68dc297ef9f79ee21eb0235c8d0"
+      sha256: "5a117075c5d22844136a89a60cc0272602cb8a5d0ce371b15379ddf68a415588"
       url: "https://pub.dev"
     source: hosted
-    version: "13.6.0"
+    version: "13.7.0"
   url_launcher:
     dependency: "direct main"
     description:
