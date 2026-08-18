@@ -391,22 +391,22 @@ class MediaServiceImpl implements MediaService {
         });
 
     final uploadAssets = <PRFMediaDTO>[];
-    // final appDir = await path_provider.getApplicationDocumentsDirectory();
+    final appDir = await path_provider.getApplicationDocumentsDirectory();
 
     try {
-      for (final file in filePaths) {
-        if (file.path != null) {
-          final fileName = StringFormatter.getFileName(file.path!);
-          // TODO(adulu): Observe if we need to copy the file to app directory or just use the path directly
-          // final mediaUploadsDir = '${appDir.path}/media_uploads';
-          // await Directory(mediaUploadsDir).create(recursive: true);
-          // final newPath = '$mediaUploadsDir/$fileName';
+      for (final filePath in filePaths) {
+        if (filePath.path != null) {
+          final fileName = StringFormatter.getFileName(filePath.path!);
+          final mediaUploadsDir = '${appDir.path}/media_uploads';
+          await Directory(mediaUploadsDir).create(recursive: true);
+          final newPath = '$mediaUploadsDir/$fileName';
 
-          // await file.copy(newPath);
+          final file = File(filePath.path!);
+          await file.copy(newPath);
 
           uploadAssets.add(
             PRFMediaDTO(
-              path: file.path!,
+              path: newPath,
               model: model,
               modelUlid: modelUlid,
               name: fileName,
