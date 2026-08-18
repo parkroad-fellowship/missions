@@ -62,7 +62,7 @@ dependencies:
   phone_form_field: ^10.0.18
   posthog_flutter: ^5.36.4
   pretty_dio_logger: ^1.4.0
-  prf_design: ^0.8.5
+  prf_design: ^1.0.2
   # path: ../../prf_design_system
   record: ^7.1.1
   share_plus: ^13.3.0
