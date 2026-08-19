@@ -1,6 +1,6 @@
 name: app
 description: The HMT Missions app
-version: 2.97.11+29711
+version: 2.97.13+29713
 publish_to: none
 
 environment:
@@ -50,7 +50,7 @@ dependencies:
   http: ^1.6.0
   http_parser: ^4.1.2
   image_picker: ^1.2.3
-  intl: ^0.20.2
+  intl: ^0.20.3
   json_annotation: ^4.12.0
   local_auth: ^3.0.2
   logger: ^2.7.0
