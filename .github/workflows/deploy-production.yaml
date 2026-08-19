@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest-4-cores
     timeout-minutes: 90
     env:
-      FLUTTER_VERSION: "3.44.2"
+      FLUTTER_VERSION: "3.47.0"
     steps:
       - name: Checkout
         uses: actions/checkout@v7
