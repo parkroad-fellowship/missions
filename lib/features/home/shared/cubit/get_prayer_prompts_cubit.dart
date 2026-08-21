@@ -1,3 +1,4 @@
+import 'package:app/models/remote/prayer/prf_prayer_prompt.dart';
 import 'package:app/services/api/prayer_prompt_service.dart';
 import 'package:app/services/notification_service.dart';
 import 'package:bloc/bloc.dart';
@@ -18,6 +19,8 @@ class GetPrayerPromptsCubit extends Cubit<GetPrayerPromptsState> {
   late PrayerPromptService _prayerPromptService;
   late NotificationService _notificationService;
 
+  final List<PRFPrayerPrompt> prompts = [];
+
   Future<void> getPrayerPrompts() async {
     emit(const GetPrayerPromptsState.loading());
 
@@ -28,6 +31,10 @@ class GetPrayerPromptsCubit extends Cubit<GetPrayerPromptsState> {
           'is_active': 2,
         },
       );
+
+      prompts
+        ..clear()
+        ..addAll(prayerPrompts.data);
 
       await _notificationService.schedulePrayerPromptNotifications(
         prayerPrompts: prayerPrompts.data,

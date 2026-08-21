@@ -25,6 +25,7 @@ class LandingPage extends StatelessWidget {
         ),
         animationDelay: 0,
         deskGroup: 'Faith & Ministry',
+        isAccent: true,
       ),
       LandingActionItem(
         title: l10n.suggestAMission,
@@ -42,6 +43,7 @@ class LandingPage extends StatelessWidget {
           PRFSuperAppRouter.givingRoute,
         ),
         animationDelay: 0,
+        
         deskGroup: 'Faith & Ministry',
       ),
       LandingActionItem(

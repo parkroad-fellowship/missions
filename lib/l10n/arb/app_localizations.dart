@@ -3237,6 +3237,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Explore and suggest missions, make giving contributions, and check the latest answers and announcements.'**
   String get dashboardSubtitle;
+
+  /// No description provided for @prayerPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer prompt'**
+  String get prayerPrompt;
+
+  /// No description provided for @emptyActionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get emptyActionsTitle;
+
+  /// No description provided for @emptyActionsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Fellowship actions will appear here once they are published.'**
+  String get emptyActionsBody;
 }
 
 class _AppLocalizationsDelegate

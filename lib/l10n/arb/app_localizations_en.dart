@@ -1695,4 +1695,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get dashboardSubtitle =>
       'Explore and suggest missions, make giving contributions, and check the latest answers and announcements.';
+
+  @override
+  String get prayerPrompt => 'Prayer prompt';
+
+  @override
+  String get emptyActionsTitle => 'Nothing here yet';
+
+  @override
+  String get emptyActionsBody =>
+      'Fellowship actions will appear here once they are published.';
 }

@@ -1263,5 +1263,11 @@
     "dashboardTitle": "Mission Dashboard",
     "@dashboardTitle": {},
     "dashboardSubtitle": "Explore and suggest missions, make giving contributions, and check the latest answers and announcements.",
-    "@dashboardSubtitle": {}
+    "@dashboardSubtitle": {},
+    "prayerPrompt": "Prayer prompt",
+    "@prayerPrompt": {},
+    "emptyActionsTitle": "Nothing here yet",
+    "@emptyActionsTitle": {},
+    "emptyActionsBody": "Fellowship actions will appear here once they are published.",
+    "@emptyActionsBody": {}
 }

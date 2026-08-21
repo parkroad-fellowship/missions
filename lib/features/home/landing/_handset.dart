@@ -41,6 +41,11 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
     final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
     final columns = width >= 430 ? 3 : 2;
+
+    // The entrance cascade plays exactly once per screen instance.
+    final animateEntrance = !_state.entrancePlayed;
+    _state.entrancePlayed = true;
+
     final visibleActions = widget.actions
         .where((action) => action.isVisible)
         .toList();
@@ -94,6 +99,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
                 context: context,
                 sections: sections,
                 columns: columns,
+                animateEntrance: animateEntrance,
               ),
 
               const SliverToBoxAdapter(
