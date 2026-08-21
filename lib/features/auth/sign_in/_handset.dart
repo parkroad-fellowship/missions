@@ -212,7 +212,7 @@ class _SignInHandsetState extends State<SignInHandset> {
                                       ),
 
                                       // Divider
-                                      buildOrDivider(theme),
+                                      buildOrDivider(theme, l10n),
 
                                       const SizedBox(
                                         height: PRFSpacingTokens.xxl,

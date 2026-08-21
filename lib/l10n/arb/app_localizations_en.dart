@@ -21,6 +21,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signingIn => 'Signing In ...';
 
   @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get pleaseWaitBrief => 'Please wait ...';
+
+  @override
+  String get orDivider => 'OR';
+
+  @override
+  String get signInPanelBody =>
+      'One home for the life of Parkroad Fellowship — serve missions together, give, pray for one another and stay close to the community wherever you are.';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get enterValidEmail => 'Please enter a valid email address';
+
+  @override
   String get missions => 'Missions';
 
   @override

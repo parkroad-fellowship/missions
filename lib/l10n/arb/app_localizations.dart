@@ -118,6 +118,42 @@ abstract class AppLocalizations {
   /// **'Signing In ...'**
   String get signingIn;
 
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @pleaseWaitBrief.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait ...'**
+  String get pleaseWaitBrief;
+
+  /// No description provided for @orDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get orDivider;
+
+  /// No description provided for @signInPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'One home for the life of Parkroad Fellowship — serve missions together, give, pray for one another and stay close to the community wherever you are.'**
+  String get signInPanelBody;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get enterValidEmail;
+
   /// No description provided for @missions.
   ///
   /// In en, this message translates to:

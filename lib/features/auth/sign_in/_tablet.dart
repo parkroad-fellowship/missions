@@ -1,8 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:app/di/di_container.dart';
 import 'package:app/features/auth/cubit/google_sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/sign_in_cubit.dart';
 import 'package:app/features/auth/cubit/social_login_cubit.dart';
 import 'package:app/features/auth/sign_in/_shared.dart';
+import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/services/firebase/firebase_service.dart';
 import 'package:app/shared/validators.dart';
@@ -23,17 +26,53 @@ class SignInTablet extends StatefulWidget {
 
 class _SignInTabletState extends State<SignInTablet> {
   final _form = SignInFormState();
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+
+  late final Future<bool> _canShowAuth;
+
+  String? _emailError;
+  String? _passwordError;
 
   @override
   void initState() {
     super.initState();
+    _canShowAuth = getIt<PRFFirebaseService>().canShowAuth();
     _form.attach(() => setState(() {}));
   }
 
   @override
   void dispose() {
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     _form.dispose();
     super.dispose();
+  }
+
+  void _submit() {
+    final l10n = context.l10n;
+    final emailError = PRFCompose([
+      PRFRequired(l10n.enterEmail),
+      PRFEmail(l10n.enterValidEmail),
+    ]).validate(_form.emailController.text);
+    final passwordError = PRFRequired(
+      l10n.enterPassword,
+    ).validate(_form.passwordController.text);
+
+    setState(() {
+      _emailError = emailError;
+      _passwordError = passwordError;
+    });
+
+    if (emailError != null || passwordError != null) {
+      Gaimon.warning();
+      return;
+    }
+
+    context.read<SigninCubit>().signIn(
+      email: _form.emailController.text.trim(),
+      password: _form.passwordController.text.trim(),
+    );
   }
 
   @override
@@ -67,247 +106,93 @@ class _SignInTabletState extends State<SignInTablet> {
         child: Scaffold(
           backgroundColor: theme.scaffoldBackgroundColor,
           body: SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1100),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Left Column - SignIn form (flex: 3)
-                    Expanded(
-                      flex: 3,
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 420),
-                          child: SingleChildScrollView(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: PRFSpacingTokens.xl,
-                              vertical: PRFSpacingTokens.xxl,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                // Logo (smaller for side-by-side)
-                                buildLogo(theme),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final showBrandPanel = constraints.maxWidth >= 960;
 
-                                const SizedBox(height: PRFSpacingTokens.xxl),
-
-                                // Welcome Text
-                                buildWelcomeHeaders(theme, l10n),
-
-                                const SizedBox(height: PRFSpacingTokens.xxxl),
-
-                                FutureBuilder(
-                                  future: getIt<PRFFirebaseService>()
-                                      .canShowAuth(),
-                                  builder: (context, snapshot) {
-                                    final canShowAuth = snapshot.data ?? false;
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        if (canShowAuth || kDebugMode) ...[
-                                          // Email Input
-                                          PRFTextField(
-                                            type: PRFTextFieldType.email,
-                                            hintText: l10n.enterEmail,
-                                            controller: _form.emailController,
-                                            enabled: !_form.isLoading,
-                                          ),
-
-                                          const SizedBox(
-                                            height: PRFSpacingTokens.lg,
-                                          ),
-
-                                          // Password Input
-                                          PRFTextField(
-                                            type: PRFTextFieldType.password,
-                                            hintText: l10n.enterPassword,
-                                            obscureNotifier:
-                                                _form.hidePasswordNotifier,
-                                            controller:
-                                                _form.passwordController,
-                                            enabled: !_form.isLoading,
-                                          ),
-
-                                          const SizedBox(
-                                            height: PRFSpacingTokens.xxl,
-                                          ),
-
-                                          // Sign In Button
-                                          BlocConsumer<
-                                            SigninCubit,
-                                            SignInState
-                                          >(
-                                            listener: (context, state) {
-                                              state.maybeWhen(
-                                                loading: () =>
-                                                    _form.setLoading(true),
-                                                loaded: () {
-                                                  _form.setLoading(false);
-                                                  context.router.pushPath(
-                                                    PRFSuperAppRouter
-                                                        .landingRoute,
-                                                  );
-                                                },
-                                                error: (message) {
-                                                  _form.setLoading(false);
-                                                  PRFSnackbar.error(
-                                                    context,
-                                                    message,
-                                                  );
-                                                },
-                                                orElse: () {},
-                                              );
-                                            },
-                                            builder: (context, state) {
-                                              return PRFButton(
-                                                onPressed: () {
-                                                  final emailResult =
-                                                      PRFRequired(
-                                                        l10n.enterEmail,
-                                                      ).validateResult(
-                                                        _form
-                                                            .emailController
-                                                            .text,
-                                                      );
-                                                  if (!emailResult.valid) {
-                                                    PRFSnackbar.warning(
-                                                      context,
-                                                      emailResult.error!,
-                                                    );
-                                                    Gaimon.warning();
-                                                    return;
-                                                  }
-
-                                                  final passwordResult =
-                                                      PRFRequired(
-                                                        l10n.enterPassword,
-                                                      ).validateResult(
-                                                        _form
-                                                            .passwordController
-                                                            .text,
-                                                      );
-                                                  if (!passwordResult.valid) {
-                                                    PRFSnackbar.warning(
-                                                      context,
-                                                      passwordResult.error!,
-                                                    );
-                                                    Gaimon.warning();
-                                                    return;
-                                                  }
-
-                                                  context
-                                                      .read<SigninCubit>()
-                                                      .signIn(
-                                                        email: _form
-                                                            .emailController
-                                                            .text
-                                                            .trim(),
-                                                        password: _form
-                                                            .passwordController
-                                                            .text
-                                                            .trim(),
-                                                      );
-                                                },
-                                                title: _form.isLoading
-                                                    ? l10n.signingIn
-                                                    : l10n.signIn,
-                                                disabled: _form.isLoading,
-                                                isLoading: _form.isLoading,
-                                              );
-                                            },
-                                          ),
-
-                                          const SizedBox(
-                                            height: PRFSpacingTokens.xxl,
-                                          ),
-
-                                          // Divider
-                                          buildOrDivider(theme),
-
-                                          const SizedBox(
-                                            height: PRFSpacingTokens.xxl,
-                                          ),
-                                        ],
-
-                                        // Google Sign In Button
-                                        const GoogleSignInButton(),
-                                      ],
-                                    );
-                                  },
-                                ),
-
-                                const SizedBox(height: PRFSpacingTokens.xxxl),
-
-                                // Version
-                                buildVersionPill(theme, l10n),
-                              ],
-                            ),
-                          ),
+                return Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1100),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          flex: showBrandPanel ? 3 : 1,
+                          child: _buildFormColumn(constraints.maxHeight),
                         ),
-                      ),
-                    ),
-
-                    // Vertical Divider
-                    VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: theme.colorScheme.outline.withValues(alpha: 0.12),
-                    ),
-
-                    // Right Column - Beautiful Brand Welcome Panel (flex: 2)
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.all(PRFSpacingTokens.lg),
-                        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
+                        if (showBrandPanel) ...[
+                          VerticalDivider(
+                            width: 1,
+                            thickness: 1,
                             color: theme.colorScheme.outline.withValues(
                               alpha: 0.12,
                             ),
                           ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Spacer(),
-                            Icon(
-                              Icons.spa_rounded,
-                              size: 72,
-                              color: theme.colorScheme.primary,
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.lg),
-                            Text(
-                              'Support Fellowship',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.onSurface,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Text(
-                              'Join your fellowship members, manage requisitions, suggest grounds and run missions seamlessly with the official PRF Missions tool.',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                                height: 1.4,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Spacer(),
-                          ],
-                        ),
-                      ),
+                          Expanded(
+                            flex: 2,
+                            child: _buildBrandPanel(l10n, theme),
+                          ),
+                        ],
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFormColumn(double bodyHeight) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    const verticalPadding = PRFSpacingTokens.xxl * 2;
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: PRFSpacingTokens.xxl,
+            vertical: PRFSpacingTokens.xxl,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: math.max<double>(0, bodyHeight - verticalPadding),
+            ),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Spacer(),
+
+                  buildLogo(theme),
+                  const SizedBox(height: PRFSpacingTokens.xxl),
+                  buildWelcomeHeaders(theme, l10n),
+                  const SizedBox(height: PRFSpacingTokens.xxxl),
+
+                  // Primary action: Google sign-in.
+                  const GoogleSignInButton(),
+                  const SizedBox(height: PRFSpacingTokens.xxl),
+
+                  // Secondary action: email & password (Play Store review
+                  // builds). Resolves once from initState.
+                  FutureBuilder<bool>(
+                    future: _canShowAuth,
+                    builder: (context, snapshot) {
+                      final canShowAuth = snapshot.data ?? false;
+                      if (!canShowAuth && !kDebugMode) {
+                        return const SizedBox.shrink();
+                      }
+                      return _buildEmailSignIn(theme, l10n);
+                    },
+                  ),
+
+                  const Spacer(),
+                  buildVersionPill(theme, l10n),
+                ],
               ),
             ),
           ),
@@ -315,4 +200,186 @@ class _SignInTabletState extends State<SignInTablet> {
       ),
     );
   }
+
+  Widget _buildEmailSignIn(ThemeData theme, AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        buildOrDivider(theme, l10n),
+        const SizedBox(height: PRFSpacingTokens.xxl),
+        AutofillGroup(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PRFTextField(
+                type: PRFTextFieldType.email,
+                hintText: l10n.enterEmail,
+                labelText: l10n.email,
+                controller: _form.emailController,
+                enabled: !_form.isLoading,
+                errorText: _emailError,
+                focusNode: _emailFocusNode,
+                autofillHints: const [AutofillHints.email],
+                onSubmitted: (_) => _passwordFocusNode.requestFocus(),
+                onChanged: (_) {
+                  if (_emailError != null) {
+                    setState(() => _emailError = null);
+                  }
+                },
+              ),
+              const SizedBox(height: PRFSpacingTokens.lg),
+              PRFTextField(
+                type: PRFTextFieldType.password,
+                hintText: l10n.enterPassword,
+                labelText: l10n.password,
+                obscureNotifier: _form.hidePasswordNotifier,
+                controller: _form.passwordController,
+                enabled: !_form.isLoading,
+                errorText: _passwordError,
+                focusNode: _passwordFocusNode,
+                autofillHints: const [AutofillHints.password],
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _submit(),
+                onChanged: (_) {
+                  if (_passwordError != null) {
+                    setState(() => _passwordError = null);
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: PRFSpacingTokens.xxl),
+        BlocConsumer<SigninCubit, SignInState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              loading: () => _form.setLoading(true),
+              loaded: () {
+                _form.setLoading(false);
+                context.router.pushPath(PRFSuperAppRouter.landingRoute);
+              },
+              error: (message) {
+                _form.setLoading(false);
+                PRFSnackbar.error(context, message);
+              },
+              orElse: () {},
+            );
+          },
+          builder: (context, state) {
+            return PRFButton(
+              onPressed: _submit,
+              title: _form.isLoading ? l10n.signingIn : l10n.signIn,
+              disabled: _form.isLoading,
+              isLoading: _form.isLoading,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBrandPanel(AppLocalizations l10n, ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: PRFColors.navyBlue,
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
+          child: Stack(
+            children: [
+              const Positioned.fill(
+                child: ExcludeSemantics(child: CustomPaint(painter: _RootMotifPainter())),
+              ),
+              Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PRFSpacingTokens.xxxl,
+                    vertical: PRFSpacingTokens.xxl,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l10n.signInPanelBody,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: PRFColors.navy100,
+                          height: 1.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// "The Living Root" motif: organic growth arcs rising across the brand
+/// panel, tipped with lime nodes — the only lime on this surface, echoing
+/// the action color.
+class _RootMotifPainter extends CustomPainter {
+  const _RootMotifPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final origin = Offset(w * 0.16, h * 0.94);
+
+    final stemPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.14)
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    final nodePaint = Paint()
+      ..color = PRFColors.limeGreen.withValues(alpha: 0.55)
+      ..style = PaintingStyle.fill;
+
+    final faintNodePaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.22)
+      ..style = PaintingStyle.fill;
+
+    void branch(
+      double c1x,
+      double c1y,
+      double c2x,
+      double c2y,
+      double ex,
+      double ey,
+      double strokeWidth,
+    ) {
+      final end = Offset(w * ex, h * ey);
+      canvas
+        ..drawPath(
+          Path()
+            ..moveTo(origin.dx, origin.dy)
+            ..cubicTo(w * c1x, h * c1y, w * c2x, h * c2y, end.dx, end.dy),
+          stemPaint..strokeWidth = strokeWidth,
+        )
+        ..drawCircle(end, strokeWidth + 1.4, nodePaint);
+    }
+
+    branch(0.30, 0.62, 0.52, 0.34, 0.90, 0.16, 3.2);
+    branch(0.26, 0.70, 0.44, 0.50, 0.68, 0.28, 2.6);
+    branch(0.22, 0.58, 0.36, 0.30, 0.54, 0.10, 2.2);
+    branch(0.32, 0.80, 0.58, 0.66, 0.86, 0.46, 1.8);
+    branch(0.20, 0.74, 0.30, 0.48, 0.40, 0.24, 1.5);
+
+    // Faint offshoot nodes along the boldest arcs.
+    canvas
+      ..drawCircle(Offset(w * 0.47, h * 0.42), 3, faintNodePaint)
+      ..drawCircle(Offset(w * 0.60, h * 0.60), 2.4, faintNodePaint)
+      ..drawCircle(Offset(w * 0.33, h * 0.55), 2.8, faintNodePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

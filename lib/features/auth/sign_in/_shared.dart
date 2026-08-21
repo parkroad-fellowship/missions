@@ -46,11 +46,14 @@ Widget buildLogo(ThemeData theme) {
     child: Container(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
-        color: PRFColors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.12),
+        ),
         boxShadow: [
           BoxShadow(
-            color: PRFColors.black.withValues(alpha: 0.1),
+            color: PRFColors.black.withValues(alpha: 0.08),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -89,7 +92,7 @@ Widget buildWelcomeHeaders(ThemeData theme, AppLocalizations l10n) {
   );
 }
 
-Widget buildOrDivider(ThemeData theme) {
+Widget buildOrDivider(ThemeData theme, AppLocalizations l10n) {
   return Row(
     children: [
       Expanded(
@@ -103,7 +106,7 @@ Widget buildOrDivider(ThemeData theme) {
           horizontal: PRFSpacingTokens.lg,
         ),
         child: Text(
-          'OR',
+          l10n.orDivider,
           style: theme.textTheme.labelMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w600,
@@ -151,41 +154,23 @@ class GoogleSignInButton extends StatelessWidget {
     return BlocBuilder<GoogleSignInCubit, GoogleSignInState>(
       builder: (context, signInWithGoogleState) {
         return BlocBuilder<SocialLoginCubit, SocialLoginState>(
-          builder: (context, socialSignUpState) {
-            return BlocBuilder<SocialLoginCubit, SocialLoginState>(
-              builder: (context, socialSignInState) {
-                final (
-                  isLoading,
-                  title,
-                ) = signInWithGoogleState.maybeWhen(
-                  loading: () => (true, 'Please wait ...'),
-                  orElse: () => socialSignUpState.maybeWhen(
-                    loading: () => (
-                      true,
-                      'Please wait ...',
-                    ),
-                    orElse: () => socialSignInState.maybeWhen(
-                      loading: () => (
-                        true,
-                        'Please wait ...',
-                      ),
-                      orElse: () => (
-                        false,
-                        'Continue with Google',
-                      ),
-                    ),
-                  ),
-                );
+          builder: (context, socialLoginState) {
+            final l10n = AppLocalizations.of(context);
+            final isLoading = signInWithGoogleState.maybeWhen(
+              loading: () => true,
+              orElse: () => socialLoginState.maybeWhen(
+                loading: () => true,
+                orElse: () => false,
+              ),
+            );
 
-                return PRFButton(
-                  variant: PRFButtonVariant.google,
-                  onPressed: () =>
-                      context.read<GoogleSignInCubit>().signInwithGoogle(),
-                  title: title,
-                  disabled: isLoading,
-                  isLoading: isLoading,
-                );
-              },
+            return PRFButton(
+              variant: PRFButtonVariant.google,
+              onPressed: () =>
+                  context.read<GoogleSignInCubit>().signInwithGoogle(),
+              title: isLoading ? l10n.pleaseWaitBrief : l10n.continueWithGoogle,
+              disabled: isLoading,
+              isLoading: isLoading,
             );
           },
         );
