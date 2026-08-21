@@ -20,21 +20,30 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     name: Build AAB (Production)
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+    runs-on: ubuntu-latest-4-cores
+    timeout-minutes: 90
     env:
-      FLUTTER_VERSION: "3.44.2"
+      FLUTTER_VERSION: "3.47.0"
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
       - name: Free disk space
         uses: ./.github/actions/free-disk-space
+
+      - name: Enable swap space
+        run: |
+          sudo swapon --show || true
+          sudo fallocate -l 10G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          free -h
 
       - name: Flutter Setup
         uses: ./.github/actions/flutter-setup

@@ -384,58 +384,46 @@ class MediaServiceImpl implements MediaService {
     required String modelUlid,
     required PRFMediaModel model,
   }) async {
-    try {
-      // FilePicker uses SAF (Storage Access Framework)
-      // which doesn't require permissions
-      final result =
-          await FilePicker.pickFiles(
-            type: FileType.custom,
-            allowedExtensions: ['mp3', 'aac', 'ogg', 'mp4', 'wav', 'flac'],
-          ).catchError((dynamic error) {
-            if (error is PlatformException &&
-                error.code == 'multiple_request') {
-              throw Failure(message: 'Another file selection is in progress');
-            }
-            throw Failure(message: error.toString());
-          });
-
-      if (result != null) {
-        final filePaths = result.paths;
-        final uploadAssets = <PRFMediaDTO>[];
-        final appDir = await path_provider.getApplicationDocumentsDirectory();
-
-        try {
-          for (final filePath in filePaths) {
-            if (filePath != null) {
-              final file = File(filePath);
-              final fileName = StringFormatter.getFileName(filePath);
-              final mediaUploadsDir = '${appDir.path}/media_uploads';
-              await Directory(mediaUploadsDir).create(recursive: true);
-              final newPath = '$mediaUploadsDir/$fileName';
-
-              await file.copy(newPath);
-
-              uploadAssets.add(
-                PRFMediaDTO(
-                  path: newPath,
-                  model: model,
-                  modelUlid: modelUlid,
-                  name: fileName,
-                ),
-              );
-            }
+    // FilePicker uses SAF (Storage Access Framework)
+    // which doesn't require permissions
+    final filePaths =
+        await FilePicker.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['mp3', 'aac', 'ogg', 'mp4', 'wav', 'flac'],
+        ).catchError((dynamic error) {
+          if (error is PlatformException && error.code == 'multiple_request') {
+            throw Failure(message: 'Another file selection is in progress');
           }
-          return uploadAssets;
-        } catch (e) {
-          rethrow;
+          throw Failure(message: error.toString());
+        });
+
+    final uploadAssets = <PRFMediaDTO>[];
+    final appDir = await path_provider.getApplicationDocumentsDirectory();
+
+    try {
+      for (final filePath in filePaths) {
+        if (filePath.path != null) {
+          final fileName = StringFormatter.getFileName(filePath.path!);
+          final mediaUploadsDir = '${appDir.path}/media_uploads';
+          await Directory(mediaUploadsDir).create(recursive: true);
+          final newPath = '$mediaUploadsDir/$fileName';
+
+          final file = File(filePath.path!);
+          await file.copy(newPath);
+
+          uploadAssets.add(
+            PRFMediaDTO(
+              path: newPath,
+              model: model,
+              modelUlid: modelUlid,
+              name: fileName,
+            ),
+          );
         }
       }
-
-      return [];
+      return uploadAssets;
     } catch (e) {
       rethrow;
-    } finally {
-      await FilePicker.clearTemporaryFiles();
     }
   }
 
@@ -447,35 +435,32 @@ class MediaServiceImpl implements MediaService {
     try {
       // FilePicker uses SAF (Storage Access Framework)
       // which doesn't require permissions
-      final result = await FilePicker.pickFiles(
+      final filePaths = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
 
-      if (result != null && result.paths.isNotEmpty) {
-        final filePaths = result.paths;
+      if (filePaths.isNotEmpty) {
         final uploadAssets = <PRFMediaDTO>[];
         final appDir = await path_provider.getApplicationDocumentsDirectory();
 
         for (final filePath in filePaths) {
-          if (filePath != null) {
-            final file = File(filePath);
-            final fileName = StringFormatter.getFileName(filePath);
-            final mediaUploadsDir = '${appDir.path}/media_uploads';
-            await Directory(mediaUploadsDir).create(recursive: true);
-            final newPath = '$mediaUploadsDir/$fileName';
+          final file = File(filePath.path!);
+          final fileName = StringFormatter.getFileName(filePath.path!);
+          final mediaUploadsDir = '${appDir.path}/media_uploads';
+          await Directory(mediaUploadsDir).create(recursive: true);
+          final newPath = '$mediaUploadsDir/$fileName';
 
-            await file.copy(newPath);
+          await file.copy(newPath);
 
-            uploadAssets.add(
-              PRFMediaDTO(
-                path: newPath,
-                model: model,
-                modelUlid: modelUlid,
-                name: fileName,
-              ),
-            );
-          }
+          uploadAssets.add(
+            PRFMediaDTO(
+              path: newPath,
+              model: model,
+              modelUlid: modelUlid,
+              name: fileName,
+            ),
+          );
         }
         return uploadAssets;
       }

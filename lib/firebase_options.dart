@@ -53,7 +53,6 @@ class DefaultFirebaseOptions {
     projectId: 'parkroad-fellowship',
     storageBucket: 'parkroad-fellowship.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD4GCdn77Z79Z7lxkNbaUImu7iVYGDBSw4',
     appId: '1:899177334428:ios:44321bf608b421d7b18f59',
@@ -66,7 +65,6 @@ class DefaultFirebaseOptions {
         '899177334428-4r7n7urnfc286cepp7uvtjntfks7kfp7.apps.googleusercontent.com',
     iosBundleId: 'app.parkroadfellowship.org',
   );
-
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCJjit7qKk0sqo0cxNrhreR0gNfSTlSc00',
     appId: '1:899177334428:web:f93f20d18f092d8cb18f59',
