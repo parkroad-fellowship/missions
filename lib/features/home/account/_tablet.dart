@@ -12,217 +12,183 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:prf_design/prf_design.dart';
 
-class AccountPageTablet extends StatelessWidget {
+class AccountPageTablet extends StatefulWidget {
   const AccountPageTablet({super.key});
+
+  @override
+  State<AccountPageTablet> createState() => _AccountPageTabletState();
+}
+
+class _AccountPageTabletState extends State<AccountPageTablet> {
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocListener<SignOutCubit, SignOutState>(
       listener: (context, state) {
         state.maybeWhen(
-          orElse: () => context.router.pushPath(
+          loaded: () => context.router.pushPath(
             PRFSuperAppRouter.decisionRoute,
           ),
+          orElse: () {},
         );
       },
-      child: Scaffold(
-        backgroundColor: theme.scaffoldBackgroundColor,
-        body: SafeArea(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1100),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Left Column - Details & Information (flex: 3)
-                  Expanded(
-                    flex: 3,
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: PRFSpacingTokens.lg,
-                              vertical: PRFSpacingTokens.lg,
-                            ),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_back),
-                                  onPressed: () =>
-                                      context.router.popUntilRouteWithPath(
-                                        PRFSuperAppRouter.landingRoute,
-                                      ),
-                                ),
-                                const SizedBox(width: PRFSpacingTokens.xs),
-                                Text(
-                                  l10n.myAccount,
-                                  style: theme.textTheme.headlineMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: theme.colorScheme.onSurface,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // Personal Information Section
-                        ValueListenableBuilder(
-                          valueListenable: Hive.box<dynamic>(
-                            PRFSuperAppConfig.instance!.values.hiveBox,
-                          ).listenable(),
-                          builder: (context, _, _) {
-                            final profile = getIt<HiveService>().auth
-                                .retrieveProfile();
-                            if (profile == null) {
-                              return const SliverToBoxAdapter(
-                                child: SizedBox.shrink(),
-                              );
-                            }
-                            return SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: PRFSpacingTokens.md,
-                                ),
-                                child:
-                                    buildPersonalInfoSection(
-                                          context,
-                                          theme,
-                                          l10n,
-                                          profile,
-                                        )
-                                        .animate(delay: 100.ms)
-                                        .fadeIn(duration: PRFMotionTokens.slow)
-                                        .slideY(begin: 0.1, end: 0),
-                              ),
-                            );
-                          },
-                        ),
-
-                        // Memberships Section
-                        ValueListenableBuilder(
-                          valueListenable: Hive.box<dynamic>(
-                            PRFSuperAppConfig.instance!.values.hiveBox,
-                          ).listenable(),
-                          builder: (context, _, _) {
-                            final profile = getIt<HiveService>().auth
-                                .retrieveProfile();
-                            if (profile?.member?.memberships.isEmpty ?? true) {
-                              return const SliverToBoxAdapter(
-                                child: SizedBox.shrink(),
-                              );
-                            }
-
-                            return SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: PRFSpacingTokens.md,
-                                ),
-                                child:
-                                    buildMembershipsSection(
-                                          context,
-                                          theme,
-                                          l10n,
-                                          profile!,
-                                        )
-                                        .animate(
-                                          delay: PRFMotionTokens.standard,
-                                        )
-                                        .fadeIn(duration: PRFMotionTokens.slow)
-                                        .slideY(begin: 0.1, end: 0),
-                              ),
-                            );
-                          },
-                        ),
-
-                        // Settings Section
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: PRFSpacingTokens.md,
-                            ),
-                            child: buildSettingsSection(context, theme, l10n)
-                                .animate(delay: 250.ms)
-                                .fadeIn(duration: PRFMotionTokens.slow)
-                                .slideY(begin: 0.1, end: 0),
-                          ),
-                        ),
-
-                        // Footer Section
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: PRFSpacingTokens.md,
-                            ),
-                            child: buildFooterSection(context, theme, l10n)
-                                .animate(delay: PRFMotionTokens.slow)
-                                .fadeIn(duration: PRFMotionTokens.slow)
-                                .slideY(begin: 0.1, end: 0),
-                          ),
-                        ),
-
-                        const SliverToBoxAdapter(
-                          child: SizedBox(height: PRFSpacingTokens.xxl),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Vertical Divider
-                  VerticalDivider(
-                    width: 1,
-                    thickness: 1,
-                    color: theme.colorScheme.outline.withValues(alpha: 0.12),
-                  ),
-
-                  // Right Column - Profile Summary Sidebar & SignOut CTA (flex: 2)
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      margin: const EdgeInsets.all(PRFSpacingTokens.lg),
-                      padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-                        border: Border.all(
-                          color: theme.colorScheme.outline.withValues(
-                            alpha: 0.12,
-                          ),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          const Spacer(),
-
-                          // Large profile card
-                          buildProfileCard(context, theme, l10n),
-
-                          const Spacer(),
-
-                          // Beautiful centered logout button
-                          PRFButton(
-                            variant: PRFButtonVariant.destructive,
-                            onPressed: () =>
-                                context.read<SignOutCubit>().signOut(),
-                            title: l10n.signOut,
-                          ),
-
-                          const SizedBox(height: PRFSpacingTokens.lg),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+      child: PRFTabletSplitScaffold(
+        content: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: PRFTabletHeaderRow(
+                title: l10n.myAccount,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.landingRoute,
+                ),
               ),
             ),
-          ),
+
+            // Personal Information Section
+            SliverToBoxAdapter(
+              child: _EntranceSection(
+                animate: animateEntrance,
+                delay: Duration.zero,
+                child: ValueListenableBuilder(
+                  valueListenable: Hive.box<dynamic>(
+                    PRFSuperAppConfig.instance!.values.hiveBox,
+                  ).listenable(),
+                  builder: (context, _, _) {
+                    final profile = getIt<HiveService>().auth.retrieveProfile();
+                    if (profile == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: PRFSpacingTokens.md,
+                      ),
+                      child: buildPersonalInfoSection(
+                        context,
+                        theme,
+                        l10n,
+                        profile,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            // Memberships Section
+            SliverToBoxAdapter(
+              child: _EntranceSection(
+                animate: animateEntrance,
+                delay: PRFMotionTokens.standard,
+                child: ValueListenableBuilder(
+                  valueListenable: Hive.box<dynamic>(
+                    PRFSuperAppConfig.instance!.values.hiveBox,
+                  ).listenable(),
+                  builder: (context, _, _) {
+                    final profile = getIt<HiveService>().auth.retrieveProfile();
+                    if (profile?.member?.memberships.isEmpty ?? true) {
+                      return const SizedBox.shrink();
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: PRFSpacingTokens.md,
+                      ),
+                      child: buildMembershipsSection(
+                        context,
+                        theme,
+                        l10n,
+                        profile!,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            // Settings Section
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: PRFSpacingTokens.md,
+                ),
+                child: _EntranceSection(
+                  animate: animateEntrance,
+                  delay: PRFMotionTokens.enterShort * 2,
+                  child: buildSettingsSection(context, theme, l10n),
+                ),
+              ),
+            ),
+
+            // Footer Section
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: PRFSpacingTokens.md,
+                ),
+                child: _EntranceSection(
+                  animate: animateEntrance,
+                  delay: PRFMotionTokens.slow,
+                  child: buildFooterSection(context, theme, l10n),
+                ),
+              ),
+            ),
+
+            const SliverToBoxAdapter(
+              child: SizedBox(height: PRFSpacingTokens.xxl),
+            ),
+          ],
+        ),
+        sidePanel: PRFBrandPanel(
+          children: [
+            const SizedBox(height: PRFSpacingTokens.xxxl),
+
+            // Large profile card
+            Center(child: buildProfileCard(context, theme, l10n)),
+
+            const SizedBox(height: PRFSpacingTokens.xxl),
+
+            // Destructive sign-out action
+            PRFButton(
+              variant: PRFButtonVariant.destructive,
+              onPressed: () => context.read<SignOutCubit>().signOut(),
+              title: l10n.signOut,
+            ),
+          ],
         ),
       ),
     );
+  }
+}
+
+/// Plays a one-time entrance cascade per screen instance; later rebuilds
+/// (e.g. Hive writes) render instantly.
+class _EntranceSection extends StatelessWidget {
+  const _EntranceSection({
+    required this.animate,
+    required this.delay,
+    required this.child,
+  });
+
+  final bool animate;
+  final Duration delay;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!animate || MediaQuery.disableAnimationsOf(context)) {
+      return child;
+    }
+
+    return child
+        .animate(delay: delay)
+        .fadeIn(duration: PRFMotionTokens.slow)
+        .slideY(begin: 0.1, end: 0);
   }
 }

@@ -57,259 +57,198 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
           listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
           orElse: () => null,
         );
+        final isCompleted =
+            lessonModule?.lessonMember?.completionStatus ==
+            PRFCompletionStatus.complete;
+
+        return PRFTabletSplitScaffold(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PRFTabletHeaderRow(
+                title: l10n.lessonDetails,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.moduleDetailsRoute,
+                ),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async =>
+                      context.read<LessonResourceCubit>().loadAll(
+                        filters: {
+                          'lesson_module_id': widget.lessonModuleUlid,
+                        },
+                      ),
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    slivers: [
+                      SliverPadding(
+                        padding: const EdgeInsets.all(
+                          PRFSpacingTokens.lg,
+                        ),
+                        sliver: state.maybeWhen(
+                          orElse: () => const SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(child: PRFCircularProgressIndicator()),
+                          ),
+                          listLoading: (_) => const SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
+                          ),
+                          error: (message, _) => SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: PRFEmptyView(
+                                label: l10n.lessonDetails,
+                                description: message,
+                              ),
+                            ),
+                          ),
+                          listLoaded: (items, _, _) {
+                            if (items.isEmpty) {
+                              return SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: PRFEmptyView(
+                                    label: l10n.lessonDetails,
+                                    description: l10n.noLessonsDesc,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return SliverToBoxAdapter(
+                              child: LessonContentCard(
+                                lessonModule: items.first,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          sidePanel: _buildBrandPanel(context, l10n, theme, isCompleted),
+        );
+      },
+    );
+  }
+
+  // The panel keeps its header, stats and completion action visible through
+  // every load state — no spinner dead-ends.
+  Widget _buildBrandPanel(
+    BuildContext context,
+    AppLocalizations l10n,
+    ThemeData theme,
+    bool isCompleted,
+  ) {
+    return BlocBuilder<
+      LessonResourceCubit,
+      ResourceState<PRFLessonModule>
+    >(
+      builder: (context, state) {
+        final lessonModule = state.maybeWhen(
+          listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
+          orElse: () => null,
+        );
         final lesson = lessonModule?.lesson;
         final mediaCount = [
           lesson?.videoUrl,
           lesson?.documentUrl,
           lesson?.audioUrl,
         ].where((url) => (url ?? '').trim().isNotEmpty).length;
-        final isCompleted =
-            lessonModule?.lessonMember?.completionStatus ==
-            PRFCompletionStatus.complete;
+        final isLoading = state.maybeWhen(
+          listLoading: (_) => true,
+          orElse: () => false,
+        );
 
-        return Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          body: SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1100),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Left Column - Core HTML Lesson Content (flex: 3)
-                    Expanded(
-                      flex: 3,
-                      child: RefreshIndicator(
-                        onRefresh: () async =>
-                            context.read<LessonResourceCubit>().loadAll(
-                              filters: {
-                                'lesson_module_id': widget.lessonModuleUlid,
-                              },
-                            ),
-                        child: CustomScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(
-                            parent: BouncingScrollPhysics(),
-                          ),
-                          slivers: [
-                            SliverPadding(
-                              padding: const EdgeInsets.all(
-                                PRFSpacingTokens.lg,
-                              ),
-                              sliver: state.maybeWhen(
-                                orElse: () => const SliverFillRemaining(
-                                  hasScrollBody: false,
-                                  child: Center(
-                                    child: PRFCircularProgressIndicator(),
-                                  ),
-                                ),
-                                listLoading: (_) => const SliverFillRemaining(
-                                  hasScrollBody: false,
-                                  child: Center(
-                                    child: PRFCircularProgressIndicator(),
-                                  ),
-                                ),
-                                error: (message, _) => SliverFillRemaining(
-                                  hasScrollBody: false,
-                                  child: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: PRFEmptyView(
-                                      label: l10n.lessonDetails,
-                                      description: message,
-                                    ),
-                                  ),
-                                ),
-                                listLoaded: (items, _, _) {
-                                  if (items.isEmpty) {
-                                    return SliverFillRemaining(
-                                      hasScrollBody: false,
-                                      child: Align(
-                                        alignment: Alignment.topCenter,
-                                        child: PRFEmptyView(
-                                          label: l10n.lessonDetails,
-                                          description: l10n.pleaseWait,
-                                        ),
-                                      ),
-                                    );
-                                  }
+        final resolvedCourseModule = context
+            .read<ModuleResourceCubit>()
+            .state
+            .maybeWhen(
+              listLoaded: (courseModules, _, _) {
+                for (final courseModule in courseModules) {
+                  if (courseModule.ulid == widget.courseModuleUlid) {
+                    return courseModule;
+                  }
+                }
+                return null;
+              },
+              orElse: () => null,
+            );
 
-                                  return SliverToBoxAdapter(
-                                    child: LessonContentCard(
-                                      lessonModule: items.first,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+        return PRFBrandPanel(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: PRFPanelSectionLabel(
+                    lesson?.name ?? l10n.lessonDetails,
+                  ),
+                ),
+                if (isLoading)
+                  const SizedBox.square(
+                    dimension: 16,
+                    child: PRFCircularProgressIndicator(color: Colors.white),
+                  ),
+              ],
+            ),
+            const SizedBox(height: PRFSpacingTokens.lg),
+            Wrap(
+              spacing: PRFSpacingTokens.sm,
+              runSpacing: PRFSpacingTokens.sm,
+              children: [
+                LmsStatPill(
+                  label: l10n.total,
+                  value: mediaCount,
+                ),
+                LmsStatPill(
+                  label: l10n.completed,
+                  value: isCompleted ? 1 : 0,
+                ),
+              ],
+            ),
+            const SizedBox(height: PRFSpacingTokens.xl),
 
-                    // Vertical Divider
-                    VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: theme.colorScheme.outline.withValues(alpha: 0.12),
-                    ),
-
-                    // Right Column - Lesson Resources & Completion (flex: 2)
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.all(PRFSpacingTokens.lg),
-                        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.outline.withValues(
-                              alpha: 0.12,
-                            ),
-                          ),
-                        ),
-                        child: state.maybeWhen(
-                          orElse: () => const Center(
-                            child: PRFCircularProgressIndicator(),
-                          ),
-                          listLoaded: (items, _, _) {
-                            if (items.isEmpty) {
-                              return const Center(
-                                child: PRFCircularProgressIndicator(),
-                              );
-                            }
-
-                            final resolvedLessonModule = items.first;
-                            final resolvedCourseModule = context
-                                .read<ModuleResourceCubit>()
-                                .state
-                                .maybeWhen(
-                                  listLoaded: (courseModules, _, _) {
-                                    for (final courseModule in courseModules) {
-                                      if (courseModule.ulid ==
-                                          widget.courseModuleUlid) {
-                                        return courseModule;
-                                      }
-                                    }
-                                    return null;
-                                  },
-                                  orElse: () => null,
-                                );
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.arrow_back),
-                                      onPressed: () =>
-                                          context.router.popUntilRouteWithPath(
-                                            PRFSuperAppRouter
-                                                .moduleDetailsRoute,
-                                          ),
-                                    ),
-                                    const SizedBox(width: PRFSpacingTokens.xs),
-                                    Expanded(
-                                      child: Text(
-                                        l10n.lessonDetails,
-                                        style: theme.textTheme.titleLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: PRFSpacingTokens.xl),
-
-                                // Lesson Stats Card
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(
-                                    PRFSpacingTokens.xl,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.surface,
-                                    borderRadius: BorderRadius.circular(
-                                      PRFRadiusTokens.md,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        lesson?.name ?? l10n.lessonDetails,
-                                        style: theme.textTheme.titleMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(
-                                        height: PRFSpacingTokens.lg,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: LmsStatPill(
-                                              label: l10n.total,
-                                              value: mediaCount,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: PRFSpacingTokens.sm,
-                                          ),
-                                          Expanded(
-                                            child: LmsStatPill(
-                                              label: l10n.completed,
-                                              value: isCompleted ? 1 : 0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: PRFSpacingTokens.xl),
-
-                                // Media resource tiles
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: buildLessonMedia(
-                                      context: context,
-                                      lessonModule: resolvedLessonModule,
-                                      l10n: l10n,
-                                    ),
-                                  ),
-                                ),
-
-                                const SizedBox(height: PRFSpacingTokens.md),
-
-                                // Complete button
-                                _buildCompleteButton(
-                                  resolvedLessonModule,
-                                  resolvedCourseModule?.course?.ulid,
-                                  l10n,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+            // Media resource tiles on a light card for legibility, or a
+            // graceful empty fallback
+            if (lessonModule != null && mediaCount > 0)
+              Material(
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                child: Padding(
+                  padding: const EdgeInsets.all(PRFSpacingTokens.md),
+                  child: buildLessonMedia(
+                    context: context,
+                    lessonModule: lessonModule,
+                    l10n: l10n,
+                  ),
+                ),
+              )
+            else if (!isLoading && lessonModule == null)
+              Text(
+                l10n.noLessonResources,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: PRFColors.navy100,
+                  height: 1.4,
                 ),
               ),
-            ),
-          ),
+
+            const SizedBox(height: PRFSpacingTokens.xl),
+
+            // Complete button docked at the bottom of the panel
+            _buildCompleteButton(lessonModule,
+                resolvedCourseModule?.course?.ulid, l10n),
+          ],
         );
       },
     );
@@ -321,7 +260,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
     AppLocalizations l10n,
   ) {
     if (lessonModule == null) {
-      return const Center(child: PRFCircularProgressIndicator());
+      return const SizedBox.shrink();
     }
 
     if (lessonModule.lessonMember == null ||
@@ -356,6 +295,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
         builder: (context, state) {
           return state.maybeWhen(
             orElse: () => PRFButton(
+              variant: PRFButtonVariant.secondary,
               onPressed: () async {
                 final moduleUlid = lessonModule.module?.ulid;
                 final lessonUlid = lessonModule.lesson?.ulid;
@@ -363,7 +303,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                 if (courseUlid == null ||
                     moduleUlid == null ||
                     lessonUlid == null) {
-                  PRFSnackbar.error(context, l10n.pleaseWait);
+                  PRFSnackbar.error(context, l10n.pleaseWaitBrief);
                   return;
                 }
 

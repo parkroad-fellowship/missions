@@ -58,7 +58,6 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                 theme,
                 l10n,
                 prayerRequests,
-                prayerRequests.length,
                 () => context.router.back(),
               ),
               Expanded(

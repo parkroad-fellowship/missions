@@ -458,7 +458,7 @@ Widget buildEventLocationHub(
               const SizedBox(width: PRFSpacingTokens.md),
               Expanded(
                 child: Text(
-                  event.venue ?? 'Venue not specified',
+                  event.venue ?? l10n.venueNotSpecified,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),

@@ -88,141 +88,102 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                     .toList()
                   ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
-            return Scaffold(
-              backgroundColor: theme.scaffoldBackgroundColor,
-              body: SafeArea(
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1100),
+            return PRFTabletSplitScaffold(
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Left Column - Timeline & Tabs (flex: 3)
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(
-                                  PRFSpacingTokens.lg,
-                                ),
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.arrow_back),
-                                      onPressed: () =>
-                                          context.router.popUntilRouteWithPath(
-                                            PRFSuperAppRouter.landingRoute,
-                                          ),
-                                    ),
-                                    const SizedBox(
-                                      width: PRFSpacingTokens.xs,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        l10n.missions,
-                                        style: theme.textTheme.headlineMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                      ),
-                                    ),
-                                    if (isLoading)
-                                      const SizedBox.square(
-                                        dimension: 24,
-                                        child: PRFCircularProgressIndicator(),
-                                      ),
-                                  ],
-                                ),
-                              ),
-
-                              // Tabs + Search Text Field Row
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.xl,
-                                ),
-                                child: TabBar(
-                                  controller: _tabController,
-                                  isScrollable: true,
-                                  labelColor: theme.colorScheme.primary,
-                                  unselectedLabelColor:
-                                      theme.colorScheme.onSurfaceVariant,
-                                  indicatorColor: theme.colorScheme.primary,
-                                  dividerColor: theme.colorScheme.outline
-                                      .withValues(alpha: 0.12),
-                                  labelStyle: theme.textTheme.titleSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                  tabs: [
-                                    Tab(text: l10n.upcoming),
-                                    Tab(text: l10n.subscribed),
-                                    Tab(text: l10n.allPast),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(
-                                  PRFSpacingTokens.lg,
-                                ),
-                                child: PRFTextField(
-                                  hintText: l10n.missionsSearchHint,
-                                  controller: _form.searchController,
-                                ),
-                              ),
-
-                              Expanded(
-                                child: TabBarView(
-                                  controller: _tabController,
-                                  children: [
-                                    _buildMissionsTimeline(
-                                      context,
-                                      animateEntrance: animateEntrance,
-                                    ),
-                                    _buildSubscribedMissionsTimeline(
-                                      context,
-                                      animateEntrance: animateEntrance,
-                                    ),
-                                    _buildPastMissionsTimeline(
-                                      context,
-                                      animateEntrance: animateEntrance,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () => context.router.popUntilRouteWithPath(
+                            PRFSuperAppRouter.landingRoute,
                           ),
                         ),
-
-                        // Vertical Divider
-                        VerticalDivider(
-                          width: 1,
-                          thickness: 1,
-                          color: theme.colorScheme.outline.withValues(
-                            alpha: 0.12,
+                        const SizedBox(width: PRFSpacingTokens.xs),
+                        Expanded(
+                          child: Text(
+                            l10n.missions,
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: theme.colorScheme.onSurface,
+                            ),
                           ),
                         ),
-
-                        // Right Column - Living Root mission panel (flex: 2)
-                        Expanded(
-                          flex: 2,
-                          child: _buildBrandPanel(
-                            l10n,
-                            theme,
-                            subscribedMissions: subscribedMissions,
-                            upcomingCount: context
-                                .read<MissionResourceCubit>()
-                                .currentItems
-                                .length,
+                        if (isLoading)
+                          const SizedBox.square(
+                            dimension: 24,
+                            child: PRFCircularProgressIndicator(),
                           ),
+                      ],
+                    ),
+                  ),
+
+                  // Tabs + Search Text Field Row
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: PRFSpacingTokens.xl,
+                    ),
+                    child: TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      labelColor: theme.colorScheme.primary,
+                      unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
+                      indicatorColor: theme.colorScheme.primary,
+                      dividerColor: theme.colorScheme.outline.withValues(
+                        alpha: 0.12,
+                      ),
+                      labelStyle: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      tabs: [
+                        Tab(text: l10n.upcoming),
+                        Tab(text: l10n.subscribed),
+                        Tab(text: l10n.allPast),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                    child: PRFTextField(
+                      hintText: l10n.missionsSearchHint,
+                      controller: _form.searchController,
+                    ),
+                  ),
+
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        _buildMissionsTimeline(
+                          context,
+                          animateEntrance: animateEntrance,
+                        ),
+                        _buildSubscribedMissionsTimeline(
+                          context,
+                          animateEntrance: animateEntrance,
+                        ),
+                        _buildPastMissionsTimeline(
+                          context,
+                          animateEntrance: animateEntrance,
                         ),
                       ],
                     ),
                   ),
-                ),
+                ],
+              ),
+
+              // Right Column - Living Root mission panel (flex: 2)
+              sidePanel: _buildBrandPanel(
+                l10n,
+                theme,
+                subscribedMissions: subscribedMissions,
+                upcomingCount: context
+                    .read<MissionResourceCubit>()
+                    .currentItems
+                    .length,
               ),
             );
           },

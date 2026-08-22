@@ -1462,7 +1462,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Share photos and memories from this event';
 
   @override
-  String get recordAudio => 'Record Audio';
+  String get recordAudio => 'Record audio';
 
   @override
   String get recordEventAudio => 'Record event audio';
@@ -1725,4 +1725,244 @@ class AppLocalizationsEn extends AppLocalizations {
   String subscribedCount(int count) {
     return '$count Subscribed';
   }
+
+  @override
+  String get noUnreadQuestionsDesc =>
+      'No unread questions right now. New questions from students will appear here.';
+
+  @override
+  String get noRepliedQuestionsDesc =>
+      'No replied questions yet. Answers you send to students will collect here.';
+
+  @override
+  String get noAnnouncementsDesc =>
+      'Announcements and publications from the fellowship will appear here.';
+
+  @override
+  String get schoolPastMissions => 'School Past Missions';
+
+  @override
+  String get spiritualLegacy => 'Spiritual Legacy';
+
+  @override
+  String get schoolLegacyBody =>
+      'Explore all historical missions carried out by PRF at this school. Touch lives, follow up with student enquiries, and review past statistics.';
+
+  @override
+  String get noPastMissionsForSchool => 'No past missions for this school.';
+
+  @override
+  String get groundSuggestions => 'Ground Suggestions';
+
+  @override
+  String get pendingStatus => 'Pending';
+
+  @override
+  String get suggestGroundsTitle => 'Suggest Mission Grounds';
+
+  @override
+  String get suggestGroundsPanelBody =>
+      'Suggest new schools or centers that need spiritual interventions. The fellowship review board evaluates all entries to establish new missions.';
+
+  @override
+  String get noQuestionsYet => 'No questions yet';
+
+  @override
+  String get noQuestionsFound => 'No questions found';
+
+  @override
+  String get questionsFromMissionsBody =>
+      'Questions from missions will appear here';
+
+  @override
+  String get tryDifferentSearchTerm => 'Try a different search term';
+
+  @override
+  String get missionsFaqHub => 'Missions FAQ Hub';
+
+  @override
+  String get faqHubIntro =>
+      'Record audio answers to student questions, which are transcribed into text automatically.';
+
+  @override
+  String get answerTranscribeTitle => 'Answer & Transcribe';
+
+  @override
+  String get faqHubPanelBody =>
+      'Review incoming student questions on the left. Tap \"Record Answer\" to capture your audio feedback, which is transcribed by AI to serve the fellowship.';
+
+  @override
+  String get awaitingAnswers => 'Awaiting answers';
+
+  @override
+  String answersCount(int count) {
+    return 'Answers ($count)';
+  }
+
+  @override
+  String missionThemeLabel(Object theme) {
+    return 'Mission theme: $theme';
+  }
+
+  @override
+  String recordAnswerSemantic(Object question) {
+    return 'Record answer to: $question';
+  }
+
+  @override
+  String get overviewTab => 'Overview';
+
+  @override
+  String get feedbackDataTab => 'Feedback Data';
+
+  @override
+  String get financeTab => 'Finance';
+
+  @override
+  String get missionOverview => 'Mission Overview';
+
+  @override
+  String get schoolNotSpecified => 'School not specified';
+
+  @override
+  String get generalMission => 'General Mission';
+
+  @override
+  String get interactiveActions => 'Interactive Actions';
+
+  @override
+  String get missionActionsGuidance =>
+      'The button below dynamically adapts to your current selected tab. Add sessions, write debriefs, register souls, or report expenses seamlessly.';
+
+  @override
+  String get latestCampaign => 'Latest Campaign';
+
+  @override
+  String get announcementsPanelIntro =>
+      'Announcements and publications received recently from the Fellowship admin.';
+
+  @override
+  String get stayUpToDate => 'Stay Up to Date';
+
+  @override
+  String get announcementsPanelBody =>
+      'Keep track of important announcements, spiritual years publications, events alerts, and news directly shared by Park Road Fellowship.';
+
+  @override
+  String publicationsCount(int count) {
+    return '$count Publications';
+  }
+
+  @override
+  String get prayerSummaryTitle => 'Prayer Summary';
+
+  @override
+  String get prayerPanelBody =>
+      'Submit your prayer needs directly to the fellowship. Together in one spirit, we stand in prayer watch and lift up our requests.';
+
+  @override
+  String get enquiryDashboard => 'Enquiry Dashboard';
+
+  @override
+  String get unreadQuestions => 'Unread Questions';
+
+  @override
+  String get repliedQuestions => 'Replied Questions';
+
+  @override
+  String get ministerToStudents => 'Minister to Students';
+
+  @override
+  String get enquiriesPanelBody =>
+      'Answer enquiries submitted by students. Share wisdom and feedback on spiritual matters, or guide them through their doubts.';
+
+  @override
+  String get helpCenter => 'Help Center';
+
+  @override
+  String get findQuickAnswers => 'Find Quick Answers';
+
+  @override
+  String get faqsPanelBody =>
+      'Search through compiled FAQs or filter by categories on the left panel to find immediate guidelines about PRF Missions and fellowship rules.';
+
+  @override
+  String get noFaqsDesc =>
+      'Browse categories or search to find answers about PRF Missions and fellowship life.';
+
+  @override
+  String get givingSummary => 'Giving Summary';
+
+  @override
+  String get supportFellowshipMissions => 'Support Fellowship Missions';
+
+  @override
+  String get givingPanelBody =>
+      'Your giving enables spiritual growth and supports critical missions, local requisitions, and fellowship operations.';
+
+  @override
+  String get fellowshipEvents => 'Fellowship Events';
+
+  @override
+  String get eventsPanelIntro =>
+      'Join fellowship gatherings, teachings, conferences and local spiritual events.';
+
+  @override
+  String get participateLearn => 'Participate & Learn';
+
+  @override
+  String get eventsPanelBody =>
+      'Tap any event from the left list to subscribe and secure your slot, view attendees lists, and read schedules and timelines.';
+
+  @override
+  String availableCount(int count) {
+    return '$count Available';
+  }
+
+  @override
+  String get venueNotSpecified => 'Venue not specified';
+
+  @override
+  String get addRecordings => 'Add recordings';
+
+  @override
+  String get recordingsCaptureBody =>
+      'Record audio to capture event highlights.';
+
+  @override
+  String get growInKnowledge => 'Grow in Knowledge';
+
+  @override
+  String get lmsPanelBody =>
+      'Acquire wisdom and understanding through structured learning courses. Take courses, complete modules, and learn at your own pace.';
+
+  @override
+  String get noCoursesDesc =>
+      'New courses will appear here as the fellowship publishes them.';
+
+  @override
+  String get completeAllModules => 'Complete all Modules';
+
+  @override
+  String get modulesPanelBody =>
+      'Each module has specific learning content and lessons. View and study module actions on the left panel.';
+
+  @override
+  String get noModulesDesc =>
+      'Modules will appear here once the course content is published.';
+
+  @override
+  String get studyYourLessons => 'Study your Lessons';
+
+  @override
+  String get lessonsPanelBody =>
+      'Each lesson includes informative texts and resources to grow. Tap lessons on the left list to begin studying.';
+
+  @override
+  String get noLessonsDesc =>
+      'Lessons will appear here once the module content is published.';
+
+  @override
+  String get noLessonResources =>
+      'No learning resources are attached to this lesson yet.';
 }

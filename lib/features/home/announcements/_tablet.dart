@@ -4,6 +4,8 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_announcement.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
+import 'package:app/utils/router/router.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -45,258 +47,182 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
       ResourceState<PRFAnnouncement>
     >(
       builder: (context, state) {
-        final announcements = state.maybeWhen(
-          listLoaded: (values, _, _) => values,
-          orElse: List<PRFAnnouncement>.empty,
-        );
+        final announcements = context
+            .read<AnnouncementResourceCubit>()
+            .currentItems;
 
-        return Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          body: SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1100),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Left Column - Announcements List (flex: 3)
-                    Expanded(
-                      flex: 3,
-                      child: RefreshIndicator(
-                        onRefresh: () async => _form.load(context),
-                        child: CustomScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(
-                            parent: BouncingScrollPhysics(),
-                          ),
-                          slivers: [
-                            SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.lg,
-                                  vertical: PRFSpacingTokens.lg,
-                                ),
-                                child: Text(
-                                  l10n.announcements,
-                                  style: theme.textTheme.headlineMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: theme.colorScheme.onSurface,
-                                      ),
-                                ),
-                              ),
-                            ),
-                            SliverToBoxAdapter(
-                              child: state.maybeWhen(
-                                listLoading: (_) => const Padding(
+        return PRFTabletSplitScaffold(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PRFTabletHeaderRow(
+                title: l10n.announcements,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.landingRoute,
+                ),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async => _form.load(context),
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: state.maybeWhen(
+                          listLoading: (_) => announcements.isEmpty
+                              ? const Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: PRFSpacingTokens.lg,
                                   ),
                                   child: PRFLinearProgressIndicator(),
-                                ),
-                                orElse: () => const SizedBox.shrink(),
-                              ),
-                            ),
-                            SliverFillRemaining(
-                              child: state.maybeWhen(
-                                listLoading: (_) => const Center(
-                                  child: PRFCircularProgressIndicator(),
-                                ),
-                                error: (message, _) =>
-                                    Center(child: Text(message)),
-                                listLoaded: (items, _, _) {
-                                  if (items.isEmpty) {
-                                    return PRFEmptyView(
-                                      label: l10n.noAnnouncements,
-                                      description: l10n.pleaseWaitForOS,
-                                    );
-                                  }
-
-                                  final groupedEntries = _form.groupByDate(
-                                    items,
-                                  );
-
-                                  return ListView.builder(
-                                    padding: const EdgeInsets.all(
-                                      PRFSpacingTokens.lg,
-                                    ),
-                                    itemCount: groupedEntries.length,
-                                    itemBuilder: (context, index) {
-                                      final mapAsList = groupedEntries.keys
-                                          .toList();
-                                      final entries =
-                                          groupedEntries[mapAsList[index]]!;
-
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          PRFSectionHeader(
-                                            title: DateFormat.yMMMMd().format(
-                                              mapAsList[index],
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: PRFSpacingTokens.lg,
-                                            ),
-                                          ),
-                                          ...entries.map(
-                                            (announcement) => AnnouncementCard(
-                                              announcement: announcement,
-                                              timezone: timezone,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: PRFSpacingTokens.xl,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                orElse: () => const SizedBox.shrink(),
-                              ),
-                            ),
-                          ],
+                                )
+                              : const SizedBox.shrink(),
+                          orElse: () => const SizedBox.shrink(),
                         ),
                       ),
-                    ),
-
-                    // Vertical Divider
-                    VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: theme.colorScheme.outline.withValues(alpha: 0.12),
-                    ),
-
-                    // Right Column - Announcement Info & Sidebar Guidance (flex: 2)
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.all(PRFSpacingTokens.lg),
-                        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.outline.withValues(
-                              alpha: 0.12,
+                      SliverFillRemaining(
+                        child: state.maybeWhen(
+                          listLoading: (_) => announcements.isEmpty
+                              ? const Center(
+                                  child: PRFCircularProgressIndicator(),
+                                )
+                              : const SizedBox.shrink(),
+                          error: (message, _) => Align(
+                            alignment: Alignment.topCenter,
+                            child: PRFEmptyView(
+                              label: l10n.noAnnouncements,
+                              description: message,
+                              icon: Icons.campaign_outlined,
                             ),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Latest Campaign',
-                              style: theme.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.primary,
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.xl),
+                          listLoaded: (items, _, _) {
+                            if (items.isEmpty) {
+                              return PRFEmptyView(
+                                label: l10n.noAnnouncements,
+                                description: l10n.noAnnouncementsDesc,
+                                icon: Icons.campaign_outlined,
+                              );
+                            }
 
-                            // Stats or Total count Card
-                            Container(
-                              width: double.infinity,
+                            final groupedEntries = _form.groupByDate(
+                              items,
+                            );
+
+                            return ListView.builder(
                               padding: const EdgeInsets.all(
-                                PRFSpacingTokens.xl,
+                                PRFSpacingTokens.lg,
                               ),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.surface,
-                                borderRadius: BorderRadius.circular(
-                                  PRFRadiusTokens.md,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Announcements and publications received recently from the Fellowship admin.',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onSurfaceVariant,
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                  const SizedBox(height: PRFSpacingTokens.lg),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: PRFSpacingTokens.md,
-                                      vertical: PRFSpacingTokens.sm,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: theme.colorScheme.primary
-                                          .withValues(alpha: 0.1),
-                                      borderRadius: BorderRadius.circular(
-                                        PRFRadiusTokens.lg,
+                              itemCount: groupedEntries.length,
+                              itemBuilder: (context, index) {
+                                final mapAsList = groupedEntries.keys
+                                    .toList();
+                                final entries =
+                                    groupedEntries[mapAsList[index]]!;
+
+                                return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    PRFSectionHeader(
+                                      title: DateFormat.yMMMMd().format(
+                                        mapAsList[index],
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: PRFSpacingTokens.lg,
                                       ),
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.campaign_outlined,
-                                          color: theme.colorScheme.primary,
-                                          size: 20,
-                                        ),
-                                        const SizedBox(
-                                          width: PRFSpacingTokens.sm,
-                                        ),
-                                        Text(
-                                          '${announcements.length} Publications',
-                                          style: theme.textTheme.labelLarge
-                                              ?.copyWith(
-                                                color:
-                                                    theme.colorScheme.primary,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                        ),
-                                      ],
+                                    ...entries.map(
+                                      (announcement) => AnnouncementCard(
+                                        announcement: announcement,
+                                        timezone: timezone,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            const Spacer(),
-
-                            // Helpful guidance card
-                            Center(
-                              child: Icon(
-                                Icons.campaign_rounded,
-                                size: 64,
-                                color: theme.colorScheme.primary.withValues(
-                                  alpha: 0.5,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Text(
-                              'Stay Up to Date',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.onSurface,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.sm),
-                            Text(
-                              'Keep track of important announcements, spiritual years publications, events alerts, and news directly shared by Park Road Fellowship.',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                                height: 1.4,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Spacer(),
-                          ],
+                                    const SizedBox(
+                                      height: PRFSpacingTokens.xl,
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          orElse: () => const SizedBox.shrink(),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          sidePanel: PRFBrandPanel(
+            children: [
+              PRFPanelSectionLabel(l10n.latestCampaign),
+              const SizedBox(height: PRFSpacingTokens.md),
+              Text(
+                l10n.announcementsPanelIntro,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: PRFColors.navy100,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: PRFSpacingTokens.lg),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.md,
+                  vertical: PRFSpacingTokens.sm,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.campaign_outlined,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    const SizedBox(width: PRFSpacingTokens.sm),
+                    Text(
+                      l10n.publicationsCount(announcements.length),
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
+              const SizedBox(height: PRFSpacingTokens.xxl),
+              Center(
+                child: Icon(
+                  Icons.campaign_rounded,
+                  size: 64,
+                  color: Colors.white.withValues(alpha: 0.5),
+                ),
+              ),
+              const SizedBox(height: PRFSpacingTokens.md),
+              Text(
+                l10n.stayUpToDate,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: PRFSpacingTokens.sm),
+              Text(
+                l10n.announcementsPanelBody,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: PRFColors.navy100,
+                  height: 1.4,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         );
       },

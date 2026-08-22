@@ -258,7 +258,34 @@ Every component should feel clean, minimal, and functional — getting out of th
 - **Color:** Fog (#E6EAF2) in light, Slate Deep (#4B5368) in dark
 - **Thickness:** 1px. Structural, not decorative.
 
-## 6. Do's and Don'ts
+## 6. Tablet Layout Language
+
+Tablet (≥600dp) is a first-class surface. Screens restructure — they never
+stretch a phone layout. The canonical geometry ships as shared components in
+`prf_design_system` (`src/widgets/layouts/`).
+
+### Split Scaffold — `PRFTabletSplitScaffold`
+- **Stage:** `Scaffold > SafeArea > Center > ConstrainedBox(maxWidth: 1100)`; content centers beyond the cap instead of stretching to uncomfortable reading widths.
+- **Columns:** content `flex: 3` | hairline divider (`outline` @ 12% alpha) | side panel `flex: 2`.
+- The content column owns the header row, tabs, search and the primary scrollable list/grid.
+- Grids size against the **pane**, not the window: use `SliverGridDelegateWithMaxCrossAxisExtent` (~340 for cards, ~220 for media thumbnails). Never `MediaQuery.width >= 1024 ? 2 : 1`.
+
+### Header Row — `PRFTabletHeaderRow`
+- Back `IconButton` + **Expanded**(title, headlineMedium w700) + inline 24px loading slot + trailing actions.
+- The title absorbs long localizations; the spinner keeps counts from flashing zero mid-reload.
+
+### Brand Panel — `PRFBrandPanel`
+- Navy (#1A2253) card at radius lg, clipped, with the Living Root motif painted behind a **scrollable** body (padding xl inside, lg outside).
+- Section labels: uppercase labelMedium, navy100, w700, letterSpacing .6 (`PRFPanelSectionLabel`).
+- Body text white/navy100; stat chips on translucent white @ 12%; lime green appears only where tapping does something.
+- Light-surface widgets reused inside the panel sit on a `surface` card for legibility.
+
+### Motion & states
+- Entrance cascades play **once per screen instance** (gated flag); rebuilds and scrolled-in cards never replay.
+- Pull-to-refresh keeps existing items visible; full-area spinners only when nothing has loaded yet.
+- Every list screen covers load / error / empty (+ CTA) states via `PRFCircularProgressIndicator`, `PRFEmptyView`, `RefreshIndicator`.
+
+## 7. Do's and Don'ts
 
 ### Do:
 - **Do** use Deep Navy (#1A2253) as the visual anchor on every screen — it IS the brand
@@ -282,3 +309,6 @@ Every component should feel clean, minimal, and functional — getting out of th
 - **Don't** use side-stripe borders (`border-left` > 1px) as colored accents — rewrite with full borders or background tints
 - **Don't** let lime green decorate surfaces — it calls to action, it doesn't wallpaper
 - **Don't** compress the type scale — the gap between display (38px) and body (15px) IS the hierarchy
+- **Don't** stretch a phone layout across a tablet — restructure with `PRFTabletSplitScaffold`
+- **Don't** hand-roll light side panels where the navy brand panel belongs — one panel language, everywhere
+- **Don't** size grids from window width — measure the pane they live in

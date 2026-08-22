@@ -75,68 +75,43 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
         )
         .toList();
 
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1100),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Left Column - main action grids (flex: 3)
-                Expanded(
-                  flex: 3,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      // Fewer, larger tiles: eight actions read better as
-                      // generous cards than as a dense 4-up grid here.
-                    
-                      return CustomScrollView(
-                        slivers: [
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: PRFSpacingTokens.lg),
-                          ),
-                          if (sections.isEmpty)
-                            SliverToBoxAdapter(
-                              child: _buildEmptyActions(theme, l10n),
-                            )
-                          else
-                            ...buildSectionSlivers(
-                              context: context,
-                              sections: sections,
-                              columns: 2,
-                              assetHeight: 72,
-                              animateEntrance: animateEntrance,
-                              sectionHeaderStyle: theme.textTheme.headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                            ),
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: PRFSpacingTokens.xl),
-                          ),
-                        ],
-                      );
-                    },
+    return PRFTabletSplitScaffold(
+      content: LayoutBuilder(
+        builder: (context, constraints) {
+          // Fewer, larger tiles: eight actions read better as
+          // generous cards than as a dense 4-up grid here.
+
+          return CustomScrollView(
+            slivers: [
+              const SliverToBoxAdapter(
+                child: SizedBox(height: PRFSpacingTokens.lg),
+              ),
+              if (sections.isEmpty)
+                SliverToBoxAdapter(
+                  child: _buildEmptyActions(theme, l10n),
+                )
+              else
+                ...buildSectionSlivers(
+                  context: context,
+                  sections: sections,
+                  columns: 2,
+                  assetHeight: 72,
+                  animateEntrance: animateEntrance,
+                  sectionHeaderStyle: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
-
-                // Vertical Divider
-                VerticalDivider(
-                  width: 1,
-                  thickness: 1,
-                  color: theme.colorScheme.outline.withValues(alpha: 0.12),
-                ),
-
-                // Right Column - Living Root dashboard panel (flex: 2)
-                Expanded(flex: 2, child: _buildBrandPanel(l10n, theme)),
-              ],
-            ),
-          ),
-        ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: PRFSpacingTokens.xl),
+              ),
+            ],
+          );
+        },
       ),
+
+      // Right Column - Living Root dashboard panel (flex: 2)
+      sidePanel: _buildBrandPanel(l10n, theme),
     );
   }
 

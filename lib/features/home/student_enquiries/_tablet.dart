@@ -41,9 +41,6 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final theme = Theme.of(context);
-    final width = MediaQuery.sizeOf(context).width;
-    final columns = width >= 1024 ? 2 : 1;
 
     return BlocBuilder<EnquiryResourceCubit, ResourceState<PRFStudentEnquiry>>(
       builder: (context, state) {
@@ -54,225 +51,191 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
 
         final unreadCount = allEnquiries.where((e) => !e.hasReplies).length;
         final repliedCount = allEnquiries.where((e) => e.hasReplies).length;
+        final isLoading = state.maybeWhen(
+          listLoading: (_) => true,
+          orElse: () => false,
+        );
 
-        return Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          body: SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1100),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Left Column - Enquiries Grid/List (flex: 3)
-                    Expanded(
-                      flex: 3,
-                      child: RefreshIndicator(
-                        onRefresh: () async => _form.load(context),
-                        child: CustomScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(
-                            parent: BouncingScrollPhysics(),
+        return PRFTabletSplitScaffold(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PRFTabletHeaderRow(
+                title: l10n.studentQuestions,
+                onBack: () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.landingRoute,
+                ),
+              ),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async => _form.load(context),
+                  child: CustomScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: state.maybeWhen(
+                          listLoading: (_) => const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: PRFSpacingTokens.lg,
+                            ),
+                            child: PRFLinearProgressIndicator(),
                           ),
-                          slivers: [
-                            SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: PRFSpacingTokens.lg,
-                                  vertical: PRFSpacingTokens.lg,
+                          initial: () => const Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: PRFSpacingTokens.lg,
+                            ),
+                            child: PRFLinearProgressIndicator(),
+                          ),
+                          orElse: () => const SizedBox.shrink(),
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.lg,
+                        ),
+                        sliver: state.maybeWhen(
+                          listLoading: (_) => allEnquiries.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
                                 ),
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.arrow_back),
-                                      onPressed: () =>
-                                          context.router.popUntilRouteWithPath(
-                                            PRFSuperAppRouter.landingRoute,
-                                          ),
-                                    ),
-                                    const SizedBox(width: PRFSpacingTokens.xs),
-                                    Expanded(
-                                      child: Text(
-                                        l10n.studentQuestions,
-                                        style: theme.textTheme.headlineMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                                  theme.colorScheme.onSurface,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          error: (message, _) => SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: PRFEmptyView(
+                                label: l10n.noQuestions,
+                                description: message,
                               ),
                             ),
-                            state.maybeWhen(
-                              listLoading: (_) => const SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: PRFSpacingTokens.lg,
-                                  ),
-                                  child: PRFLinearProgressIndicator(),
-                                ),
-                              ),
-                              error: (message, _) => SliverFillRemaining(
+                          ),
+                          listLoaded: (loadedEnquiries, _, _) {
+                            final enquiries = loadedEnquiries
+                                .where(
+                                  (e) =>
+                                      e.hasReplies ==
+                                      _form.selectedReplyStatus,
+                                )
+                                .toList();
+
+                            if (enquiries.isEmpty) {
+                              final showingReplied =
+                                  _form.selectedReplyStatus;
+                              return SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Align(
                                   alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.noQuestions,
-                                    description: message,
+                                    description: showingReplied
+                                        ? l10n.noRepliedQuestionsDesc
+                                        : l10n.noUnreadQuestionsDesc,
                                   ),
                                 ),
-                              ),
-                              listLoaded: (loadedEnquiries, _, _) {
-                                final enquiries = loadedEnquiries
-                                    .where(
-                                      (e) =>
-                                          e.hasReplies ==
-                                          _form.selectedReplyStatus,
-                                    )
-                                    .toList();
+                              );
+                            }
 
-                                if (enquiries.isEmpty) {
-                                  return SliverFillRemaining(
-                                    hasScrollBody: false,
-                                    child: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: PRFEmptyView(
-                                        label: l10n.noQuestions,
-                                        description: l10n.pleaseWait,
+                            return SliverGrid(
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 340,
+                                crossAxisSpacing: PRFSpacingTokens.lg,
+                                mainAxisSpacing: PRFSpacingTokens.lg,
+                                childAspectRatio: 1.4,
+                              ),
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  final enquiry = enquiries[index];
+                                  return StudentEnquiryPreviewCard(
+                                    enquiry: enquiry,
+                                    timezone: timezone,
+                                    onTap: () => context.router.push(
+                                      StudentEnquiryRepliesRoute(
+                                        enquiryUlid: enquiry.ulid,
                                       ),
                                     ),
                                   );
-                                }
-
-                                return SliverGrid(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: columns,
-                                        crossAxisSpacing: PRFSpacingTokens.lg,
-                                        mainAxisSpacing: PRFSpacingTokens.lg,
-                                        childAspectRatio: 1.4,
-                                      ),
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      final enquiry = enquiries[index];
-                                      return StudentEnquiryPreviewCard(
-                                        enquiry: enquiry,
-                                        timezone: timezone,
-                                        onTap: () => context.router.push(
-                                          StudentEnquiryRepliesRoute(
-                                            enquiryUlid: enquiry.ulid,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    childCount: enquiries.length,
-                                  ),
-                                );
-                              },
-                              orElse: () => const SliverToBoxAdapter(
-                                child: SizedBox.shrink(),
+                                },
+                                childCount: enquiries.length,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // Vertical Divider
-                    VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: theme.colorScheme.outline.withValues(alpha: 0.12),
-                    ),
-
-                    // Right Column - Enquiries Filter Dashboard & Guidance (flex: 2)
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.all(PRFSpacingTokens.lg),
-                        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.outline.withValues(
-                              alpha: 0.12,
-                            ),
+                            );
+                          },
+                          orElse: () => const SliverToBoxAdapter(
+                            child: SizedBox.shrink(),
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Enquiry Dashboard',
-                              style: theme.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.primary,
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.xl),
-
-                            // Custom Vertical Filter Selection Buttons
-                            _FilterSelectionButton(
-                              label: 'Unread Questions',
-                              count: unreadCount,
-                              icon: Icons.mark_chat_unread_outlined,
-                              selected: !_form.selectedReplyStatus,
-                              onTap: () => _form.setReplyStatus(false),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            _FilterSelectionButton(
-                              label: 'Replied Questions',
-                              count: repliedCount,
-                              icon: Icons.mark_chat_read_outlined,
-                              selected: _form.selectedReplyStatus,
-                              onTap: () => _form.setReplyStatus(true),
-                            ),
-
-                            const Spacer(),
-
-                            // Guidance illustration card
-                            Center(
-                              child: Icon(
-                                Icons.question_answer_outlined,
-                                size: 64,
-                                color: theme.colorScheme.primary.withValues(
-                                  alpha: 0.5,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Text(
-                              'Minister to Students',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.onSurface,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.sm),
-                            Text(
-                              'Answer enquiries submitted by students. Share wisdom and feedback on spiritual matters, or guide them through their doubts.',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                                height: 1.4,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-
-                            const Spacer(),
-                          ],
-                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
+          ),
+          sidePanel: PRFBrandPanel(
+            children: [
+              PRFPanelSectionLabel(l10n.enquiryDashboard),
+              if (isLoading) ...[
+                const SizedBox(height: PRFSpacingTokens.md),
+                const SizedBox.square(
+                  dimension: 16,
+                  child: PRFCircularProgressIndicator(color: Colors.white),
+                ),
+              ],
+              const SizedBox(height: PRFSpacingTokens.xl),
+
+              // Custom Vertical Filter Selection Buttons
+              _FilterSelectionButton(
+                label: l10n.unreadQuestions,
+                count: unreadCount,
+                icon: Icons.mark_chat_unread_outlined,
+                selected: !_form.selectedReplyStatus,
+                onTap: () => _form.setReplyStatus(false),
+              ),
+              const SizedBox(height: PRFSpacingTokens.md),
+              _FilterSelectionButton(
+                label: l10n.repliedQuestions,
+                count: repliedCount,
+                icon: Icons.mark_chat_read_outlined,
+                selected: _form.selectedReplyStatus,
+                onTap: () => _form.setReplyStatus(true),
+              ),
+
+              const SizedBox(height: PRFSpacingTokens.xxl),
+
+              // Guidance illustration card
+              Center(
+                child: Icon(
+                  Icons.question_answer_outlined,
+                  size: 64,
+                  color: Colors.white.withValues(alpha: 0.5),
+                ),
+              ),
+              const SizedBox(height: PRFSpacingTokens.md),
+              Text(
+                l10n.ministerToStudents,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: PRFSpacingTokens.sm),
+              Text(
+                l10n.enquiriesPanelBody,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: PRFColors.navy100,
+                      height: 1.4,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         );
       },
@@ -300,21 +263,20 @@ class _FilterSelectionButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color: Colors.transparent,
+      color:
+          selected ? Colors.white.withValues(alpha: 0.14) : Colors.transparent,
+      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         child: Container(
           padding: const EdgeInsets.all(PRFSpacingTokens.lg),
           decoration: BoxDecoration(
-            color: selected
-                ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                : theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
               color: selected
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.outline.withValues(alpha: 0.12),
+                  ? PRFColors.limeGreen
+                  : Colors.white.withValues(alpha: 0.12),
               width: selected ? 2 : 1,
             ),
           ),
@@ -322,9 +284,7 @@ class _FilterSelectionButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: selected
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurfaceVariant,
+                color: selected ? PRFColors.limeGreen : PRFColors.navy100,
               ),
               const SizedBox(width: PRFSpacingTokens.md),
               Expanded(
@@ -332,9 +292,7 @@ class _FilterSelectionButton extends StatelessWidget {
                   label,
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: selected
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.onSurface,
+                    color: selected ? Colors.white : PRFColors.navy100,
                   ),
                 ),
               ),
@@ -345,16 +303,16 @@ class _FilterSelectionButton extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: selected
-                      ? theme.colorScheme.primary
-                      : theme.colorScheme.surfaceContainerHighest,
+                      ? PRFColors.limeGreen
+                      : Colors.white.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
                 ),
                 child: Text(
                   '$count',
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: selected
-                        ? theme.colorScheme.onPrimary
-                        : theme.colorScheme.onSurface,
+                        ? PRFColors.navyBlue
+                        : Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

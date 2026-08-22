@@ -38,6 +38,7 @@ class _StudentEnquiryRepliesPageHandsetState
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   bool _isComposing = false;
+  int _lastMessageCount = 0;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -76,7 +77,12 @@ class _StudentEnquiryRepliesPageHandsetState
 
   @override
   void dispose() {
+    getIt<SocketService>().unsubscribePrivateChannels({
+      'App.Models.StudentEnquiry.$enquiryUlid',
+    });
     _animationController.dispose();
+    _enquiryReplyController.dispose();
+    _scrollController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -210,10 +216,6 @@ class _StudentEnquiryRepliesPageHandsetState
                 ResourceState<PRFStudentEnquiryReply>
               >(
                 builder: (context, replyState) {
-                  WidgetsBinding.instance.addPostFrameCallback(
-                    (_) => _scrollToBottom(),
-                  );
-
                   final replies = replyState.maybeWhen(
                     listLoaded: (items, _, _) => items,
                     orElse: () => null,
@@ -231,6 +233,13 @@ class _StudentEnquiryRepliesPageHandsetState
                           ),
                           ...replies,
                         ];
+
+                  if (enquiryReplies.length != _lastMessageCount) {
+                    _lastMessageCount = enquiryReplies.length;
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => _scrollToBottom(),
+                    );
+                  }
 
                   return PRFChatView<PRFStudentEnquiryReply>(
                     title: l10n.studentQuestions,

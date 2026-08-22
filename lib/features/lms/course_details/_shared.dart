@@ -14,8 +14,8 @@ class CourseDetailsFormState {
 
   void attach(VoidCallback rebuild) {}
 
-  void load(BuildContext context) {
-    context.read<ModuleResourceCubit>().loadAll(
+  Future<void> load(BuildContext context) {
+    return context.read<ModuleResourceCubit>().loadAll(
       filters: {'course_ulid': courseUlid},
     );
   }

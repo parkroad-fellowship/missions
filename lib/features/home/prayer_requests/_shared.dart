@@ -67,7 +67,6 @@ Widget buildPrayerHeader(
   ThemeData theme,
   AppLocalizations l10n,
   List<PRFPrayerRequest> prayerRequests,
-  int activeCount,
   VoidCallback onBack,
 ) {
   return Container(
@@ -129,10 +128,6 @@ Widget buildPrayerHeader(
                     PrayerStatPill(
                       label: l10n.total,
                       value: prayerRequests.length,
-                    ),
-                    PrayerStatPill(
-                      label: l10n.activeNow,
-                      value: activeCount,
                     ),
                   ],
                 ),

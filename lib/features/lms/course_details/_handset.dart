@@ -89,7 +89,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                               courseUlid: widget.courseUlid,
                               refresh: true,
                             );
-                        _form.load(context);
+                        await _form.load(context);
                       },
                       child: CustomScrollView(
                         physics: const AlwaysScrollableScrollPhysics(

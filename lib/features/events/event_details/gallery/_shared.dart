@@ -64,7 +64,8 @@ Widget buildAddTile(
   bool isAudioMode,
   VoidCallback onTap,
 ) {
-  final title = isAudioMode ? 'Record Audio' : 'Add Photos';
+  final l10n = context.l10n;
+  final title = isAudioMode ? l10n.recordAudio : l10n.addPhotos;
   final icon = isAudioMode ? Icons.mic_outlined : Icons.add_a_photo_outlined;
 
   return Animate(

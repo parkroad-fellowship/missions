@@ -113,307 +113,243 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
           orElse: () => null,
         );
 
-        if (state is ResourceItemLoading<PRFMission> && mission == null) {
-          return const Scaffold(
-            body: Center(
-              child: PRFCircularProgressIndicator(),
-            ),
-          );
-        }
-
-        if (mission == null && state is ResourceItemError<PRFMission>) {
+        if (state is ResourceItemError<PRFMission> && mission == null) {
           return Scaffold(
-            body: Center(
-              child: PRFErrorView.fromMessage(
-                message: state.message,
+            backgroundColor: theme.scaffoldBackgroundColor,
+            body: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PRFTabletHeaderRow(
+                    title: l10n.missionDetails,
+                    onBack: () => context.router.pop(),
+                  ),
+                  Expanded(
+                    child: PRFErrorView.fromMessage(
+                      message: state.message,
+                      onRetry: () => context
+                          .read<MissionDetailsResourceCubit>()
+                          .loadMission(
+                            missionUlid: missionUlid,
+                            refresh: true,
+                          ),
+                    ),
+                  ),
+                ],
               ),
             ),
           );
         }
 
         if (mission == null) {
-          return const Scaffold(
-            body: Center(
-              child: PRFCircularProgressIndicator(),
+          return Scaffold(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            body: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PRFTabletHeaderRow(
+                    title: l10n.missionDetails,
+                    onBack: () => context.router.pop(),
+                    isLoading: true,
+                  ),
+                  const Expanded(
+                    child: Center(child: PRFCircularProgressIndicator()),
+                  ),
+                ],
+              ),
             ),
           );
         }
 
-        return Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          body: SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1100),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+        final isLoading = state is ResourceItemLoading<PRFMission>;
+
+        return PRFTabletSplitScaffold(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PRFTabletHeaderRow(
+                title: l10n.missionDetails,
+                onBack: () => context.router.pop(),
+                isLoading: isLoading,
+              ),
+
+              // TabBar for Overview, Feedback, Finance
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.xl,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TabBar(
+                    controller: _tabController,
+                    isScrollable: true,
+                    labelColor: theme.colorScheme.primary,
+                    unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
+                    indicatorColor: theme.colorScheme.primary,
+                    dividerColor:
+                        theme.colorScheme.outline.withValues(alpha: 0.12),
+                    labelStyle: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    tabs: [
+                      Tab(text: l10n.overviewTab),
+                      Tab(text: l10n.feedbackDataTab),
+                      Tab(text: l10n.financeTab),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: PRFSpacingTokens.lg),
+
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
                   children: [
-                    // Left Column - Interactive Tabs & Sub-sections (flex: 3)
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_back),
-                                  onPressed: () => context.router.pop(),
-                                ),
-                                const SizedBox(width: PRFSpacingTokens.xs),
-                                Expanded(
-                                  child: Text(
-                                    l10n.missionDetails,
-                                    style: theme.textTheme.headlineMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: theme.colorScheme.onSurface,
-                                        ),
-                                  ),
-                                ),
-                                if (state is ResourceItemLoading<PRFMission>)
-                                  const SizedBox.square(
-                                    dimension: 24,
-                                    child: PRFCircularProgressIndicator(),
-                                  ),
-                              ],
-                            ),
-                          ),
-
-                          // TabBar for Overview, Feedback, Finance
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: PRFSpacingTokens.xl,
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: TabBar(
-                                controller: _tabController,
-                                isScrollable: true,
-                                labelColor: theme.colorScheme.primary,
-                                unselectedLabelColor:
-                                    theme.colorScheme.onSurfaceVariant,
-                                indicatorColor: theme.colorScheme.primary,
-                                dividerColor: theme.colorScheme.outline
-                                    .withValues(alpha: 0.12),
-                                labelStyle: theme.textTheme.titleSmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                tabs: const [
-                                  Tab(text: 'Overview'),
-                                  Tab(text: 'Feedback Data'),
-                                  Tab(text: 'Finance'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: PRFSpacingTokens.lg),
-
-                          Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                OverviewSection(
-                                  missionGround: MissionGroundView(
-                                    missionUlid: missionUlid,
-                                  ),
-                                  subscribers: SubscribersView(
-                                    missionUlid: missionUlid,
-                                  ),
-                                  sessions: SessionsView(
-                                    mission: mission,
-                                  ),
-                                  initialIndex: _subTabIndexes[0]!,
-                                  onTabChanged: (index) =>
-                                      setState(() => _subTabIndexes[0] = index),
-                                ),
-                                FeedbackDataSection(
-                                  debriefNotesTab: DebriefNotesView(
-                                    mission: mission,
-                                  ),
-                                  soulsTab: SoulsView(
-                                    mission: mission,
-                                  ),
-                                  questionsTab: MissionQuestionsView(
-                                    mission: mission,
-                                  ),
-                                  galleryTab: GalleryView(
-                                    mission: mission,
-                                  ),
-                                  initialIndex: _subTabIndexes[1]!,
-                                  onTabChanged: (index) =>
-                                      setState(() => _subTabIndexes[1] = index),
-                                ),
-                                FinanceSection(
-                                  expensesTab: ExpensesView(
-                                    accountingEventUlid:
-                                        mission.accountingEvent?.ulid,
-                                    canEdit: mission.canEdit,
-                                  ),
-                                  requisitionsTab: RequisitionsView(
-                                    accountingEventUlid:
-                                        mission.accountingEvent?.ulid,
-                                  ),
-                                  initialIndex: _subTabIndexes[2]!,
-                                  onTabChanged: (index) =>
-                                      setState(() => _subTabIndexes[2] = index),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                    OverviewSection(
+                      missionGround: MissionGroundView(
+                        missionUlid: missionUlid,
                       ),
-                    ),
-
-                    // Vertical Divider
-                    VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: theme.colorScheme.outline.withValues(alpha: 0.12),
-                    ),
-
-                    // Right Column - Mission Metadata Summary & Contextual Action FAB (flex: 2)
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.all(PRFSpacingTokens.lg),
-                        padding: const EdgeInsets.all(PRFSpacingTokens.xl),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.outline.withValues(
-                              alpha: 0.12,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Mission Overview',
-                              style: theme.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.primary,
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.xl),
-
-                            // Mini information box
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(
-                                PRFSpacingTokens.xl,
-                              ),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.surface,
-                                borderRadius: BorderRadius.circular(
-                                  PRFRadiusTokens.md,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    mission.school?.name ??
-                                        'School not specified',
-                                    style: theme.textTheme.titleMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: theme.colorScheme.onSurface,
-                                        ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: PRFSpacingTokens.xs),
-                                  Text(
-                                    mission.missionType?.name ??
-                                        'General Mission',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                  const SizedBox(height: PRFSpacingTokens.lg),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: PRFSpacingTokens.md,
-                                      vertical: PRFSpacingTokens.xs,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: theme.colorScheme.primary
-                                          .withValues(alpha: 0.1),
-                                      borderRadius: BorderRadius.circular(
-                                        PRFRadiusTokens.sm,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      mission.status.name,
-                                      style: theme.textTheme.labelMedium
-                                          ?.copyWith(
-                                            color: theme.colorScheme.primary,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            const Spacer(),
-
-                            // Helpful guidance card
-                            Center(
-                              child: Icon(
-                                Icons.explore_outlined,
-                                size: 64,
-                                color: theme.colorScheme.primary.withValues(
-                                  alpha: 0.5,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Text(
-                              'Interactive Actions',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: theme.colorScheme.onSurface,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.sm),
-                            Text(
-                              'The button below dynamically adapts to your current selected tab. Add sessions, write debriefs, register souls, or report expenses seamlessly.',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                                height: 1.4,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-
-                            const Spacer(),
-
-                            // The unified, floating button docked cleanly inside the right sidebar
-                            SizedBox(
-                              width: double.infinity,
-                              child: _buildDynamicFab(context, l10n, mission),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.sm),
-                          ],
-                        ),
+                      subscribers: SubscribersView(
+                        missionUlid: missionUlid,
                       ),
+                      sessions: SessionsView(
+                        mission: mission,
+                      ),
+                      initialIndex: _subTabIndexes[0]!,
+                      onTabChanged: (index) =>
+                          setState(() => _subTabIndexes[0] = index),
+                    ),
+                    FeedbackDataSection(
+                      debriefNotesTab: DebriefNotesView(
+                        mission: mission,
+                      ),
+                      soulsTab: SoulsView(
+                        mission: mission,
+                      ),
+                      questionsTab: MissionQuestionsView(
+                        mission: mission,
+                      ),
+                      galleryTab: GalleryView(
+                        mission: mission,
+                      ),
+                      initialIndex: _subTabIndexes[1]!,
+                      onTabChanged: (index) =>
+                          setState(() => _subTabIndexes[1] = index),
+                    ),
+                    FinanceSection(
+                      expensesTab: ExpensesView(
+                        accountingEventUlid: mission.accountingEvent?.ulid,
+                        canEdit: mission.canEdit,
+                      ),
+                      requisitionsTab: RequisitionsView(
+                        accountingEventUlid: mission.accountingEvent?.ulid,
+                      ),
+                      initialIndex: _subTabIndexes[2]!,
+                      onTabChanged: (index) =>
+                          setState(() => _subTabIndexes[2] = index),
                     ),
                   ],
                 ),
               ),
-            ),
+            ],
           ),
+          sidePanel: _buildBrandPanel(context, l10n, mission),
         );
       },
+    );
+  }
+
+  Widget _buildBrandPanel(
+    BuildContext context,
+    AppLocalizations l10n,
+    PRFMission mission,
+  ) {
+    final theme = Theme.of(context);
+
+    return PRFBrandPanel(
+      children: [
+        PRFPanelSectionLabel(l10n.missionOverview),
+        const SizedBox(height: PRFSpacingTokens.md),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                mission.school?.name ?? l10n.schoolNotSpecified,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: PRFSpacingTokens.xs),
+              Text(
+                mission.missionType?.name ?? l10n.generalMission,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: PRFColors.navy100,
+                ),
+              ),
+              const SizedBox(height: PRFSpacingTokens.md),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PRFSpacingTokens.md,
+                  vertical: PRFSpacingTokens.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
+                ),
+                child: Text(
+                  mission.status.name,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: PRFSpacingTokens.xxl),
+        Center(
+          child: Icon(
+            Icons.explore_outlined,
+            size: 64,
+            color: Colors.white.withValues(alpha: 0.5),
+          ),
+        ),
+        const SizedBox(height: PRFSpacingTokens.md),
+        Text(
+          l10n.interactiveActions,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: PRFSpacingTokens.sm),
+        Text(
+          l10n.missionActionsGuidance,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: PRFColors.navy100,
+            height: 1.4,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: PRFSpacingTokens.xl),
+        SizedBox(
+          width: double.infinity,
+          child: _buildDynamicFab(context, l10n, mission),
+        ),
+      ],
     );
   }
 
@@ -434,9 +370,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
     );
     if (!config.visible) return const SizedBox.shrink();
 
-    final theme = Theme.of(context);
-
-    // If it's the subscribe action, we use the original BlocConsumer for logic
+    // Lime-on-navy keeps the action visible against the brand panel.
     if (config.label == l10n.sendMe) {
       return _buildSubscribeFab(context, l10n);
     }
@@ -445,46 +379,31 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
       return const SizedBox.shrink();
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
+    return FloatingActionButton.extended(
+      heroTag: 'dynamic-fab-tablet-${config.label}',
+      backgroundColor: PRFColors.limeGreen,
+      foregroundColor: PRFColors.navyBlue,
+      onPressed: config.onPressed,
+      label: Text(
+        config.label,
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          color: PRFColors.navyBlue,
+        ),
       ),
-      child:
-          FloatingActionButton.extended(
-            heroTag: 'dynamic-fab-tablet-${config.label}',
-            backgroundColor: theme.colorScheme.primary,
-            foregroundColor: theme.colorScheme.onPrimary,
-            onPressed: config.onPressed,
-            label: Text(
-              config.label,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onPrimary,
-              ),
-            ),
-            icon: Icon(config.icon),
-          ).animate(
-            effects: [
-              const ScaleEffect(
-                begin: Offset(0.8, 0.8),
-                end: Offset(1, 1),
-                duration: PRFMotionTokens.slow,
-              ),
-            ],
-          ),
+      icon: Icon(config.icon),
+    ).animate(
+      effects: [
+        const ScaleEffect(
+          begin: Offset(0.8, 0.8),
+          end: Offset(1, 1),
+          duration: PRFMotionTokens.slow,
+        ),
+      ],
     );
   }
 
   Widget _buildSubscribeFab(BuildContext context, AppLocalizations l10n) {
-    final theme = Theme.of(context);
-
     return BlocConsumer<SubscribeCubit, SubscribeState>(
       listener: (context, state) {
         state.mapOrNull(
@@ -505,60 +424,42 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
         );
       },
       builder: (context, state) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              PRFRadiusTokens.md,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.primary.withValues(
-                  alpha: 0.3,
-                ),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
+        return FloatingActionButton.extended(
+          heroTag: 'subscribe-tablet',
+          backgroundColor: PRFColors.limeGreen,
+          foregroundColor: PRFColors.navyBlue,
+          onPressed: () async => context.read<SubscribeCubit>().subscribe(
+            missionUlid: missionUlid,
           ),
-          child:
-              FloatingActionButton.extended(
-                heroTag: 'subscribe-tablet',
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
-                onPressed: () async => context.read<SubscribeCubit>().subscribe(
-                  missionUlid: missionUlid,
-                ),
-                label: Text(
-                  l10n.sendMe,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-                icon: BlocBuilder<SubscribeCubit, SubscribeState>(
-                  builder: (context, state) => state.maybeWhen(
-                    orElse: () => const Icon(Icons.hail_rounded),
-                    loading: () => const SizedBox.square(
-                      dimension: 16,
-                      child: PRFCircularProgressIndicator(
-                        color: PRFColors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ).animate(
-                effects: [
-                  const ShimmerEffect(
-                    duration: Duration(seconds: 2),
-                    delay: PRFMotionTokens.enterShort,
-                  ),
-                  const ScaleEffect(
-                    begin: Offset(0.8, 0.8),
-                    end: Offset(1, 1),
-                    duration: PRFMotionTokens.slow,
-                  ),
-                ],
+          label: Text(
+            l10n.sendMe,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: PRFColors.navyBlue,
+            ),
+          ),
+          icon: BlocBuilder<SubscribeCubit, SubscribeState>(
+            builder: (context, state) => state.maybeWhen(
+              orElse: () =>
+                  const Icon(Icons.hail_rounded, color: PRFColors.navyBlue),
+              loading: () => const SizedBox.square(
+                dimension: 16,
+                child: PRFCircularProgressIndicator(color: PRFColors.navyBlue),
               ),
+            ),
+          ),
+        ).animate(
+          effects: [
+            const ShimmerEffect(
+              duration: Duration(seconds: 2),
+              delay: PRFMotionTokens.enterShort,
+            ),
+            const ScaleEffect(
+              begin: Offset(0.8, 0.8),
+              end: Offset(1, 1),
+              duration: PRFMotionTokens.slow,
+            ),
+          ],
         );
       },
     );

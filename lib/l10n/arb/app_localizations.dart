@@ -2797,7 +2797,7 @@ abstract class AppLocalizations {
   /// No description provided for @recordAudio.
   ///
   /// In en, this message translates to:
-  /// **'Record Audio'**
+  /// **'Record audio'**
   String get recordAudio;
 
   /// No description provided for @recordEventAudio.
@@ -3285,6 +3285,414 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} Subscribed'**
   String subscribedCount(int count);
+
+  /// No description provided for @noUnreadQuestionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No unread questions right now. New questions from students will appear here.'**
+  String get noUnreadQuestionsDesc;
+
+  /// No description provided for @noRepliedQuestionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No replied questions yet. Answers you send to students will collect here.'**
+  String get noRepliedQuestionsDesc;
+
+  /// No description provided for @noAnnouncementsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements and publications from the fellowship will appear here.'**
+  String get noAnnouncementsDesc;
+
+  /// No description provided for @schoolPastMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'School Past Missions'**
+  String get schoolPastMissions;
+
+  /// No description provided for @spiritualLegacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Spiritual Legacy'**
+  String get spiritualLegacy;
+
+  /// No description provided for @schoolLegacyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore all historical missions carried out by PRF at this school. Touch lives, follow up with student enquiries, and review past statistics.'**
+  String get schoolLegacyBody;
+
+  /// No description provided for @noPastMissionsForSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'No past missions for this school.'**
+  String get noPastMissionsForSchool;
+
+  /// No description provided for @groundSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground Suggestions'**
+  String get groundSuggestions;
+
+  /// No description provided for @pendingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pendingStatus;
+
+  /// No description provided for @suggestGroundsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest Mission Grounds'**
+  String get suggestGroundsTitle;
+
+  /// No description provided for @suggestGroundsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest new schools or centers that need spiritual interventions. The fellowship review board evaluates all entries to establish new missions.'**
+  String get suggestGroundsPanelBody;
+
+  /// No description provided for @noQuestionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions yet'**
+  String get noQuestionsYet;
+
+  /// No description provided for @noQuestionsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions found'**
+  String get noQuestionsFound;
+
+  /// No description provided for @questionsFromMissionsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions from missions will appear here'**
+  String get questionsFromMissionsBody;
+
+  /// No description provided for @tryDifferentSearchTerm.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search term'**
+  String get tryDifferentSearchTerm;
+
+  /// No description provided for @missionsFaqHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Missions FAQ Hub'**
+  String get missionsFaqHub;
+
+  /// No description provided for @faqHubIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Record audio answers to student questions, which are transcribed into text automatically.'**
+  String get faqHubIntro;
+
+  /// No description provided for @answerTranscribeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer & Transcribe'**
+  String get answerTranscribeTitle;
+
+  /// No description provided for @faqHubPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Review incoming student questions on the left. Tap \"Record Answer\" to capture your audio feedback, which is transcribed by AI to serve the fellowship.'**
+  String get faqHubPanelBody;
+
+  /// No description provided for @awaitingAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting answers'**
+  String get awaitingAnswers;
+
+  /// No description provided for @answersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers ({count})'**
+  String answersCount(int count);
+
+  /// No description provided for @missionThemeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission theme: {theme}'**
+  String missionThemeLabel(Object theme);
+
+  /// No description provided for @recordAnswerSemantic.
+  ///
+  /// In en, this message translates to:
+  /// **'Record answer to: {question}'**
+  String recordAnswerSemantic(Object question);
+
+  /// No description provided for @overviewTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overviewTab;
+
+  /// No description provided for @feedbackDataTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback Data'**
+  String get feedbackDataTab;
+
+  /// No description provided for @financeTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get financeTab;
+
+  /// No description provided for @missionOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Overview'**
+  String get missionOverview;
+
+  /// No description provided for @schoolNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'School not specified'**
+  String get schoolNotSpecified;
+
+  /// No description provided for @generalMission.
+  ///
+  /// In en, this message translates to:
+  /// **'General Mission'**
+  String get generalMission;
+
+  /// No description provided for @interactiveActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive Actions'**
+  String get interactiveActions;
+
+  /// No description provided for @missionActionsGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'The button below dynamically adapts to your current selected tab. Add sessions, write debriefs, register souls, or report expenses seamlessly.'**
+  String get missionActionsGuidance;
+
+  /// No description provided for @latestCampaign.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest Campaign'**
+  String get latestCampaign;
+
+  /// No description provided for @announcementsPanelIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements and publications received recently from the Fellowship admin.'**
+  String get announcementsPanelIntro;
+
+  /// No description provided for @stayUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Up to Date'**
+  String get stayUpToDate;
+
+  /// No description provided for @announcementsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep track of important announcements, spiritual years publications, events alerts, and news directly shared by Park Road Fellowship.'**
+  String get announcementsPanelBody;
+
+  /// No description provided for @publicationsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Publications'**
+  String publicationsCount(int count);
+
+  /// No description provided for @prayerSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Summary'**
+  String get prayerSummaryTitle;
+
+  /// No description provided for @prayerPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit your prayer needs directly to the fellowship. Together in one spirit, we stand in prayer watch and lift up our requests.'**
+  String get prayerPanelBody;
+
+  /// No description provided for @enquiryDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry Dashboard'**
+  String get enquiryDashboard;
+
+  /// No description provided for @unreadQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread Questions'**
+  String get unreadQuestions;
+
+  /// No description provided for @repliedQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Replied Questions'**
+  String get repliedQuestions;
+
+  /// No description provided for @ministerToStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Minister to Students'**
+  String get ministerToStudents;
+
+  /// No description provided for @enquiriesPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer enquiries submitted by students. Share wisdom and feedback on spiritual matters, or guide them through their doubts.'**
+  String get enquiriesPanelBody;
+
+  /// No description provided for @helpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get helpCenter;
+
+  /// No description provided for @findQuickAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Quick Answers'**
+  String get findQuickAnswers;
+
+  /// No description provided for @faqsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Search through compiled FAQs or filter by categories on the left panel to find immediate guidelines about PRF Missions and fellowship rules.'**
+  String get faqsPanelBody;
+
+  /// No description provided for @noFaqsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse categories or search to find answers about PRF Missions and fellowship life.'**
+  String get noFaqsDesc;
+
+  /// No description provided for @givingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Giving Summary'**
+  String get givingSummary;
+
+  /// No description provided for @supportFellowshipMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Fellowship Missions'**
+  String get supportFellowshipMissions;
+
+  /// No description provided for @givingPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your giving enables spiritual growth and supports critical missions, local requisitions, and fellowship operations.'**
+  String get givingPanelBody;
+
+  /// No description provided for @fellowshipEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Fellowship Events'**
+  String get fellowshipEvents;
+
+  /// No description provided for @eventsPanelIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Join fellowship gatherings, teachings, conferences and local spiritual events.'**
+  String get eventsPanelIntro;
+
+  /// No description provided for @participateLearn.
+  ///
+  /// In en, this message translates to:
+  /// **'Participate & Learn'**
+  String get participateLearn;
+
+  /// No description provided for @eventsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any event from the left list to subscribe and secure your slot, view attendees lists, and read schedules and timelines.'**
+  String get eventsPanelBody;
+
+  /// No description provided for @availableCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Available'**
+  String availableCount(int count);
+
+  /// No description provided for @venueNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue not specified'**
+  String get venueNotSpecified;
+
+  /// No description provided for @addRecordings.
+  ///
+  /// In en, this message translates to:
+  /// **'Add recordings'**
+  String get addRecordings;
+
+  /// No description provided for @recordingsCaptureBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Record audio to capture event highlights.'**
+  String get recordingsCaptureBody;
+
+  /// No description provided for @growInKnowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow in Knowledge'**
+  String get growInKnowledge;
+
+  /// No description provided for @lmsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Acquire wisdom and understanding through structured learning courses. Take courses, complete modules, and learn at your own pace.'**
+  String get lmsPanelBody;
+
+  /// No description provided for @noCoursesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'New courses will appear here as the fellowship publishes them.'**
+  String get noCoursesDesc;
+
+  /// No description provided for @completeAllModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete all Modules'**
+  String get completeAllModules;
+
+  /// No description provided for @modulesPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Each module has specific learning content and lessons. View and study module actions on the left panel.'**
+  String get modulesPanelBody;
+
+  /// No description provided for @noModulesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Modules will appear here once the course content is published.'**
+  String get noModulesDesc;
+
+  /// No description provided for @studyYourLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Study your Lessons'**
+  String get studyYourLessons;
+
+  /// No description provided for @lessonsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Each lesson includes informative texts and resources to grow. Tap lessons on the left list to begin studying.'**
+  String get lessonsPanelBody;
+
+  /// No description provided for @noLessonsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons will appear here once the module content is published.'**
+  String get noLessonsDesc;
+
+  /// No description provided for @noLessonResources.
+  ///
+  /// In en, this message translates to:
+  /// **'No learning resources are attached to this lesson yet.'**
+  String get noLessonResources;
 }
 
 class _AppLocalizationsDelegate

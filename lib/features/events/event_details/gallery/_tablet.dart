@@ -41,8 +41,6 @@ class _EventGalleryViewTabletState extends State<EventGalleryViewTablet> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    final width = MediaQuery.sizeOf(context).width;
-    final columns = width >= 1024 ? 4 : 3;
 
     return Center(
       child: ConstrainedBox(
@@ -140,16 +138,16 @@ class _EventGalleryViewTabletState extends State<EventGalleryViewTablet> {
                             ),
                             child: PRFEmptyView(
                               label: _form.isAudioMode
-                                  ? 'Add recordings'
+                                  ? l10n.addRecordings
                                   : l10n.addPhotos,
                               description: _form.isAudioMode
-                                  ? 'Record audio to capture event highlights.'
+                                  ? l10n.recordingsCaptureBody
                                   : l10n.addEventPhotos,
                               icon: _form.isAudioMode
                                   ? Icons.mic_none_outlined
                                   : Icons.photo_camera_outlined,
                               actionLabel: _form.isAudioMode
-                                  ? 'Record audio'
+                                  ? l10n.recordAudio
                                   : l10n.addPhotos,
                               onActionPressed: () => triggerAddMediaModal(
                                 context,
@@ -204,11 +202,11 @@ class _EventGalleryViewTabletState extends State<EventGalleryViewTablet> {
                         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                         sliver: SliverGrid(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: columns,
-                                crossAxisSpacing: PRFSpacingTokens.md,
-                                mainAxisSpacing: PRFSpacingTokens.md,
-                              ),
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 220,
+                            crossAxisSpacing: PRFSpacingTokens.md,
+                            mainAxisSpacing: PRFSpacingTokens.md,
+                          ),
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
                               if (index == 0) {
@@ -238,30 +236,10 @@ class _EventGalleryViewTabletState extends State<EventGalleryViewTablet> {
                     },
                     error: (error, _) => SliverFillRemaining(
                       child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.error_outline,
-                              size: 64,
-                              color: theme.colorScheme.error,
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.lg),
-                            Text(
-                              l10n.errorLoadingPhotos,
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                color: theme.colorScheme.error,
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.sm),
-                            Text(
-                              error,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                        child: PRFEmptyView(
+                          label: l10n.errorLoadingPhotos,
+                          description: error,
+                          icon: Icons.error_outline,
                         ),
                       ),
                     ),

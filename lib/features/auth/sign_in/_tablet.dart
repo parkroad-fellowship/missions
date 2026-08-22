@@ -110,32 +110,18 @@ class _SignInTabletState extends State<SignInTablet> {
               builder: (context, constraints) {
                 final showBrandPanel = constraints.maxWidth >= 960;
 
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1100),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          flex: showBrandPanel ? 3 : 1,
-                          child: _buildFormColumn(constraints.maxHeight),
-                        ),
-                        if (showBrandPanel) ...[
-                          VerticalDivider(
-                            width: 1,
-                            thickness: 1,
-                            color: theme.colorScheme.outline.withValues(
-                              alpha: 0.12,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: _buildBrandPanel(l10n, theme),
-                          ),
-                        ],
-                      ],
+                if (!showBrandPanel) {
+                  return Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1100),
+                      child: _buildFormColumn(constraints.maxHeight),
                     ),
-                  ),
+                  );
+                }
+
+                return PRFTabletSplitScaffold(
+                  content: _buildFormColumn(constraints.maxHeight),
+                  sidePanel: _buildBrandPanel(l10n, theme),
                 );
               },
             ),
