@@ -13,7 +13,6 @@ import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -59,119 +58,132 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: theme.colorScheme.surface,
-        body: Column(
-          children: [
-            ColoredBox(
-              color: theme.colorScheme.primary,
-              child: Column(
-                children: [
-                  PRFBrandedNavBar(
-                    title: l10n.missions,
-                    onBack: () => context.router.popUntilRouteWithPath(
-                      PRFSuperAppRouter.landingRoute,
-                    ),
-                    actions: [
-                      BlocBuilder<
-                        MissionResourceCubit,
-                        ResourceState<PRFMission>
-                      >(
-                        builder: (context, state) => state.maybeWhen(
-                          listLoading: (_) => const SizedBox.square(
-                            dimension: 24,
-                            child: PRFCircularProgressIndicator(),
-                          ),
-                          orElse: SizedBox.shrink,
-                        ),
-                      ),
-                      const SizedBox(width: PRFSpacingTokens.sm),
-                      BlocBuilder<
-                        SubscriptionResourceCubit,
-                        ResourceState<PRFMissionSubscription>
-                      >(
-                        builder: (context, state) => state.maybeWhen(
-                          listLoading: (_) => const SizedBox.square(
-                            dimension: 24,
-                            child: PRFCircularProgressIndicator(),
-                          ),
-                          orElse: SizedBox.shrink,
-                        ),
-                      ),
-                      const SizedBox(width: PRFSpacingTokens.lg),
-                    ],
+    // The entrance cascade plays exactly once per screen instance.
+    final animateEntrance = !_form.entrancePlayed;
+    _form.entrancePlayed = true;
+
+    return Scaffold(
+      backgroundColor: theme.colorScheme.surface,
+      body: Column(
+        children: [
+          ColoredBox(
+            color: theme.colorScheme.primary,
+            child: Column(
+              children: [
+                PRFBrandedNavBar(
+                  title: l10n.missions,
+                  onBack: () => context.router.popUntilRouteWithPath(
+                    PRFSuperAppRouter.landingRoute,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      PRFSpacingTokens.lg,
-                      0,
-                      PRFSpacingTokens.lg,
-                      PRFSpacingTokens.sm,
-                    ),
-                    child: Transform.translate(
-                      offset: const Offset(0, -6),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: TabBar(
-                          controller: _tabController,
-                          isScrollable: true,
-                          labelColor: theme.colorScheme.onPrimary,
-                          unselectedLabelColor: theme.colorScheme.onPrimary
-                              .withValues(alpha: 0.65),
-                          indicatorColor: theme.colorScheme.secondary,
-                          dividerColor: theme.colorScheme.onPrimary.withValues(
-                            alpha: 0.2,
-                          ),
-                          labelStyle: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                          padding: EdgeInsets.zero,
-                          labelPadding: const EdgeInsets.symmetric(
-                            horizontal: PRFSpacingTokens.sm,
-                          ),
-                          tabs: [
-                            const Tab(text: 'Upcoming'),
-                            Tab(text: l10n.subscribed),
-                            const Tab(text: 'All Past'),
-                          ],
+                  actions: [
+                    BlocBuilder<
+                      MissionResourceCubit,
+                      ResourceState<PRFMission>
+                    >(
+                      builder: (context, state) => state.maybeWhen(
+                        listLoading: (_) => const SizedBox.square(
+                          dimension: 24,
+                          child: PRFCircularProgressIndicator(),
                         ),
+                        orElse: SizedBox.shrink,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      PRFSpacingTokens.lg,
-                      0,
-                      PRFSpacingTokens.lg,
-                      PRFSpacingTokens.lg,
+                    const SizedBox(width: PRFSpacingTokens.sm),
+                    BlocBuilder<
+                      SubscriptionResourceCubit,
+                      ResourceState<PRFMissionSubscription>
+                    >(
+                      builder: (context, state) => state.maybeWhen(
+                        listLoading: (_) => const SizedBox.square(
+                          dimension: 24,
+                          child: PRFCircularProgressIndicator(),
+                        ),
+                        orElse: SizedBox.shrink,
+                      ),
                     ),
-                    child: PRFTextField(
-                      hintText: l10n.missionsSearchHint,
-                      controller: _form.searchController,
+                    const SizedBox(width: PRFSpacingTokens.lg),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    PRFSpacingTokens.lg,
+                    0,
+                    PRFSpacingTokens.lg,
+                    PRFSpacingTokens.sm,
+                  ),
+                  child: Transform.translate(
+                    offset: const Offset(0, -6),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        labelColor: theme.colorScheme.onPrimary,
+                        unselectedLabelColor: theme.colorScheme.onPrimary
+                            .withValues(alpha: 0.65),
+                        indicatorColor: theme.colorScheme.secondary,
+                        dividerColor: theme.colorScheme.onPrimary.withValues(
+                          alpha: 0.2,
+                        ),
+                        labelStyle: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        padding: EdgeInsets.zero,
+                        labelPadding: const EdgeInsets.symmetric(
+                          horizontal: PRFSpacingTokens.sm,
+                        ),
+                        tabs: [
+                          Tab(text: l10n.upcoming),
+                          Tab(text: l10n.subscribed),
+                          Tab(text: l10n.allPast),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    PRFSpacingTokens.lg,
+                    0,
+                    PRFSpacingTokens.lg,
+                    PRFSpacingTokens.lg,
+                  ),
+                  child: PRFTextField(
+                    hintText: l10n.missionsSearchHint,
+                    controller: _form.searchController,
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildMissionsTimeline(context),
-                  _buildSubscribedMissionsTimeline(context),
-                  _buildPastMissionsTimeline(context),
-                ],
-              ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildMissionsTimeline(
+                  context,
+                  animateEntrance: animateEntrance,
+                ),
+                _buildSubscribedMissionsTimeline(
+                  context,
+                  animateEntrance: animateEntrance,
+                ),
+                _buildPastMissionsTimeline(
+                  context,
+                  animateEntrance: animateEntrance,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildMissionsTimeline(BuildContext context) {
+  Widget _buildMissionsTimeline(
+    BuildContext context, {
+    required bool animateEntrance,
+  }) {
     final l10n = context.l10n;
 
     return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
@@ -213,25 +225,18 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             itemBuilder: (context, index) {
               final mission = missions[index];
               final isLast = index == missions.length - 1;
-              return TimelineMissionCard(
-                    mission: mission,
-                    isLast: isLast,
-                    onTap: () => context.router.push(
-                      MissionsDetailsRoute(
-                        missionUlid: mission.ulid,
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: Duration(milliseconds: index * 100),
-                    duration: PRFMotionTokens.enterShort,
-                  )
-                  .slideX(
-                    begin: 0.3,
-                    end: 0,
-                    curve: Curves.easeOutCubic,
-                  );
+              return buildAnimatedTimelineEntry(
+                context: context,
+                index: index,
+                animate: animateEntrance,
+                child: TimelineMissionCard(
+                  mission: mission,
+                  isLast: isLast,
+                  onTap: () => context.router.push(
+                    MissionsDetailsRoute(missionUlid: mission.ulid),
+                  ),
+                ),
+              );
             },
           ),
         );
@@ -239,7 +244,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     );
   }
 
-  Widget _buildSubscribedMissionsTimeline(BuildContext context) {
+  Widget _buildSubscribedMissionsTimeline(
+    BuildContext context, {
+    required bool animateEntrance,
+  }) {
     final l10n = context.l10n;
 
     return BlocBuilder<
@@ -251,16 +259,15 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             .read<SubscriptionResourceCubit>()
             .currentItems;
 
-        final missions0 = subscriptions
-            .map((subscription) => subscription.mission)
-            .whereType<PRFMission>()
-            .groupListsBy((mission) => mission.ulid)
-            .values
-            .map((missionGroup) => missionGroup.first)
-            .toList();
-
-        final missions = List<PRFMission>.from(missions0)
-          ..sort((a, b) => b.startDate.compareTo(a.startDate));
+        final missions =
+            subscriptions
+                .map((subscription) => subscription.mission)
+                .whereType<PRFMission>()
+                .groupListsBy((mission) => mission.ulid)
+                .values
+                .map((missionGroup) => missionGroup.first)
+                .toList()
+              ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
         final showInitialLoader =
             state is ResourceListLoading<PRFMissionSubscription> &&
@@ -299,26 +306,19 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               final mission = missions[index];
               final isLast = index == missions.length - 1;
 
-              return TimelineMissionCard(
-                    mission: mission,
-                    isLast: isLast,
-                    isSubscribed: true,
-                    onTap: () => context.router.push(
-                      MissionsDetailsRoute(
-                        missionUlid: mission.ulid,
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: Duration(milliseconds: index * 100),
-                    duration: PRFMotionTokens.enterShort,
-                  )
-                  .slideX(
-                    begin: 0.3,
-                    end: 0,
-                    curve: Curves.easeOutCubic,
-                  );
+              return buildAnimatedTimelineEntry(
+                context: context,
+                index: index,
+                animate: animateEntrance,
+                child: TimelineMissionCard(
+                  mission: mission,
+                  isLast: isLast,
+                  isSubscribed: true,
+                  onTap: () => context.router.push(
+                    MissionsDetailsRoute(missionUlid: mission.ulid),
+                  ),
+                ),
+              );
             },
           ),
         );
@@ -326,7 +326,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
     );
   }
 
-  Widget _buildPastMissionsTimeline(BuildContext context) {
+  Widget _buildPastMissionsTimeline(
+    BuildContext context, {
+    required bool animateEntrance,
+  }) {
     final l10n = context.l10n;
 
     return BlocBuilder<PastMissionResourceCubit, ResourceState<PRFSchool>>(
@@ -345,11 +348,11 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           return RefreshIndicator(
             onRefresh: () async => _form.loadTabData(2, context, force: true),
             child: PRFEmptyView(
-              label: l10n.noMissions,
+              label: l10n.noPastMissions,
               description: state.maybeWhen(
                 error: (message, _) => message,
                 itemError: (message, _, _) => message,
-                orElse: () => 'No past missions found.',
+                orElse: () => l10n.pleaseWait,
               ),
             ),
           );
@@ -368,26 +371,19 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               final school = schools[index];
               final missionCount = school.missions.length;
 
-              return PRFSchoolCard(
-                    schoolName: school.name,
-                    address: school.address,
-                    missionCount: missionCount > 0 ? missionCount : null,
-                    onTap: () => context.router.push(
-                      SchoolPastMissionsRoute(
-                        schoolUlid: school.ulid,
-                      ),
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: Duration(milliseconds: index * 100),
-                    duration: PRFMotionTokens.enterShort,
-                  )
-                  .slideX(
-                    begin: 0.3,
-                    end: 0,
-                    curve: Curves.easeOutCubic,
-                  );
+              return buildAnimatedTimelineEntry(
+                context: context,
+                index: index,
+                animate: animateEntrance,
+                child: PRFSchoolCard(
+                  schoolName: school.name,
+                  address: school.address,
+                  missionCount: missionCount > 0 ? missionCount : null,
+                  onTap: () => context.router.push(
+                    SchoolPastMissionsRoute(schoolUlid: school.ulid),
+                  ),
+                ),
+              );
             },
           ),
         );

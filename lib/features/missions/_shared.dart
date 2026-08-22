@@ -9,6 +9,7 @@ import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/helpers/mission_helper.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -18,10 +19,15 @@ class MissionsFormState {
   late final VoidCallback _rebuild;
 
   final searchController = TextEditingController();
+  final _searchDebouncer = Debouncer(milliseconds: 300);
   String searchQuery = '';
 
   int lastTabIndex = 0;
   final Set<int> loadedTabs = {};
+
+  /// Whether the card entrance cascade has played for this screen instance;
+  /// later rebuilds (search keystrokes, tab loads) skip it.
+  bool entrancePlayed = false;
 
   PRFMember? get member => getIt<HiveService>().retrieveMember();
 
@@ -49,7 +55,9 @@ class MissionsFormState {
       loadedTabs.clear(); // Force reload with new search query
       _rebuild();
 
-      loadTabData(tabController.index, context, force: true);
+      _searchDebouncer.run(() {
+        loadTabData(tabController.index, context, force: true);
+      });
     });
   }
 
@@ -86,29 +94,52 @@ class MissionsFormState {
   }
 
   void dispose() {
+    _searchDebouncer.cancel();
     searchController.dispose();
   }
 }
 
+/// Status accent colours remapped to brand tokens, each guaranteed readable
+/// under the white text used by the timeline badges (lime is never a status:
+/// it is reserved for action moments only).
 Color resolveMissionStatusColor(PRFMission mission, ThemeData theme) {
-  switch (mission.status.apiKey) {
-    case 1:
-      return Colors.amber.shade700;
-    case 2:
-      return Colors.green.shade700;
-    case 3:
-      return theme.colorScheme.error;
-    case 4:
-      return Colors.red.shade700;
-    case 5:
-      return theme.colorScheme.primary;
-    case 6:
-      return theme.colorScheme.secondary;
-    case 7:
-      return Colors.deepOrange.shade500;
-    default:
-      return theme.colorScheme.primary;
+  Color aaSafe(Color base) => Color.lerp(base, Colors.black, 0.22)!;
+
+  return switch (mission.status.apiKey) {
+    1 => aaSafe(PRFColors.warning),
+    2 => aaSafe(PRFColors.emerald),
+    3 => theme.colorScheme.error,
+    4 => aaSafe(const Color(0xFFD32F2F)),
+    5 => theme.colorScheme.primary,
+    6 => PRFColors.emerald,
+    7 => aaSafe(PRFColors.orange),
+    _ => theme.colorScheme.primary,
+  };
+}
+
+/// Entrance animation for timeline entries: plays once per screen instance,
+/// respects the system reduce-motion setting, and caps the stagger so cards
+/// scrolled into view appear immediately rather than waiting out a
+/// per-index delay.
+Widget buildAnimatedTimelineEntry({
+  required BuildContext context,
+  required int index,
+  required bool animate,
+  required Widget child,
+}) {
+  if (!animate || MediaQuery.disableAnimationsOf(context)) {
+    return child;
   }
+
+  final cappedIndex = index % 8;
+
+  return child
+      .animate()
+      .fadeIn(
+        delay: Duration(milliseconds: cappedIndex * 60),
+        duration: PRFMotionTokens.enterShort,
+      )
+      .slideX(begin: 0.3, end: 0, curve: Curves.easeOutCubic);
 }
 
 class TimelineMissionCard extends StatelessWidget with TimezoneMixin {

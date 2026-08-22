@@ -1705,4 +1705,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get emptyActionsBody =>
       'Fellowship actions will appear here once they are published.';
+
+  @override
+  String get allPast => 'All Past';
+
+  @override
+  String get yourNextMission => 'Your next mission';
+
+  @override
+  String get missionsIntroBody =>
+      'Choose a mission to serve in — or catch up on the grounds we have already visited.';
+
+  @override
+  String upcomingCount(int count) {
+    return '$count Upcoming';
+  }
+
+  @override
+  String subscribedCount(int count) {
+    return '$count Subscribed';
+  }
 }

@@ -3255,6 +3255,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fellowship actions will appear here once they are published.'**
   String get emptyActionsBody;
+
+  /// No description provided for @allPast.
+  ///
+  /// In en, this message translates to:
+  /// **'All Past'**
+  String get allPast;
+
+  /// No description provided for @yourNextMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next mission'**
+  String get yourNextMission;
+
+  /// No description provided for @missionsIntroBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a mission to serve in — or catch up on the grounds we have already visited.'**
+  String get missionsIntroBody;
+
+  /// No description provided for @upcomingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Upcoming'**
+  String upcomingCount(int count);
+
+  /// No description provided for @subscribedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Subscribed'**
+  String subscribedCount(int count);
 }
 
 class _AppLocalizationsDelegate

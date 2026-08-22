@@ -1269,5 +1269,27 @@
     "emptyActionsTitle": "Nothing here yet",
     "@emptyActionsTitle": {},
     "emptyActionsBody": "Fellowship actions will appear here once they are published.",
-    "@emptyActionsBody": {}
+    "@emptyActionsBody": {},
+    "allPast": "All Past",
+    "@allPast": {},
+    "yourNextMission": "Your next mission",
+    "@yourNextMission": {},
+    "missionsIntroBody": "Choose a mission to serve in — or catch up on the grounds we have already visited.",
+    "@missionsIntroBody": {},
+    "upcomingCount": "{count} Upcoming",
+    "@upcomingCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "subscribedCount": "{count} Subscribed",
+    "@subscribedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }
