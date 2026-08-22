@@ -192,8 +192,7 @@ class _AnswerFAQsPageTabletState extends State<AnswerFAQsPageTablet> {
           PRFSpacingTokens.xl,
         ),
         itemCount: filtered.length,
-        separatorBuilder: (_, _) =>
-            const SizedBox(height: PRFSpacingTokens.md),
+        separatorBuilder: (_, _) => const SizedBox(height: PRFSpacingTokens.md),
         itemBuilder: (context, index) {
           final item = filtered[index];
           return Container(
@@ -262,8 +261,7 @@ class _AnswerFAQsPageTabletState extends State<AnswerFAQsPageTablet> {
                         button: true,
                         label: l10n.recordAnswerSemantic(item.question),
                         child: PRFButton(
-                          onPressed: () =>
-                              openRecorder(context, item, _form),
+                          onPressed: () => openRecorder(context, item, _form),
                           title: l10n.recordAnswer,
                         ),
                       ),
@@ -390,18 +388,14 @@ class _FaqStatChip extends StatelessWidget {
                 '$value',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: highlight
-                      ? PRFColors.navyBlue
-                      : Colors.white,
+                  color: highlight ? PRFColors.navyBlue : Colors.white,
                 ),
               ),
               const SizedBox(height: PRFSpacingTokens.xs),
               Text(
                 label,
                 style: theme.textTheme.labelSmall?.copyWith(
-                  color: highlight
-                      ? PRFColors.navyBlue
-                      : PRFColors.navy100,
+                  color: highlight ? PRFColors.navyBlue : PRFColors.navy100,
                 ),
                 textAlign: TextAlign.center,
               ),

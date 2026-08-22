@@ -127,8 +127,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: (_) =>
-                                  faqs.isEmpty
+                              listLoading: (_) => faqs.isEmpty
                                   ? const SliverFillRemaining(
                                       hasScrollBody: false,
                                       child: Center(
@@ -207,18 +206,18 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
 
                                     final faqIndex = index - 1;
                                     return buildAnimatedTimelineEntry(
-                                          context: context,
-                                          index: faqIndex,
-                                          animate: animateEntrance,
-                                          child: Padding(
-                                    padding: EdgeInsets.only(
-                                      bottom: faqIndex == values.length - 1
-                                          ? 0
-                                          : PRFSpacingTokens.md,
-                                    ),
-                                    child: FaqCard(faq: values[faqIndex]),
-                                          ),
-                                        );
+                                      context: context,
+                                      index: faqIndex,
+                                      animate: animateEntrance,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: faqIndex == values.length - 1
+                                              ? 0
+                                              : PRFSpacingTokens.md,
+                                        ),
+                                        child: FaqCard(faq: values[faqIndex]),
+                                      ),
+                                    );
                                   },
                                 );
                               },

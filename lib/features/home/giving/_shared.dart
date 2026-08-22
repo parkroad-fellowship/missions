@@ -89,13 +89,7 @@ class PaymentCard extends StatelessWidget with TimezoneMixin {
         border: Border.all(
           color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
+        boxShadow: PRFShadowTokens.raised(theme.colorScheme.primary),
       ),
       child: Padding(
         padding: const EdgeInsets.all(PRFSpacingTokens.md),

@@ -105,13 +105,7 @@ Widget buildProfileCard(
     decoration: BoxDecoration(
       color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      boxShadow: [
-        BoxShadow(
-          color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-          blurRadius: 16,
-          offset: const Offset(0, 4),
-        ),
-      ],
+      boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
     ),
     child: Column(
       children: [
@@ -217,13 +211,7 @@ Widget buildPersonalInfoSection(
     decoration: BoxDecoration(
       color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      boxShadow: [
-        BoxShadow(
-          color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-          blurRadius: 16,
-          offset: const Offset(0, 4),
-        ),
-      ],
+      boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,13 +273,7 @@ Widget buildMembershipsSection(
     decoration: BoxDecoration(
       color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      boxShadow: [
-        BoxShadow(
-          color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-          blurRadius: 16,
-          offset: const Offset(0, 4),
-        ),
-      ],
+      boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +306,7 @@ Widget buildMembershipsSection(
             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.2),
               ),
@@ -411,13 +393,7 @@ Widget buildSettingsSection(
     decoration: BoxDecoration(
       color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      boxShadow: [
-        BoxShadow(
-          color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-          blurRadius: 16,
-          offset: const Offset(0, 4),
-        ),
-      ],
+      boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -465,7 +441,7 @@ Widget buildSettingsSection(
                     padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
                       color: primaryLight,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                   ),
                   const SizedBox(width: PRFSpacingTokens.md),
@@ -519,13 +495,7 @@ Widget buildFooterSection(
     decoration: BoxDecoration(
       color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      boxShadow: [
-        BoxShadow(
-          color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-          blurRadius: 16,
-          offset: const Offset(0, 4),
-        ),
-      ],
+      boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
     ),
     child: Column(
       children: [

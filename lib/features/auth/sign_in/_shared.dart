@@ -51,13 +51,7 @@ Widget buildLogo(ThemeData theme) {
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.12),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: PRFColors.black.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        boxShadow: PRFShadowTokens.card(PRFColors.black),
       ),
       child: ExtendedImage.asset(
         'assets/images/app-logo.png',

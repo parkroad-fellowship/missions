@@ -80,10 +80,11 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                         sliver: state.maybeWhen(
                           orElse: () => const SliverFillRemaining(
                             hasScrollBody: false,
-                            child: Center(child: PRFCircularProgressIndicator()),
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
                           ),
-                          listLoading: (_) =>
-                              courses.isEmpty
+                          listLoading: (_) => courses.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(
@@ -119,11 +120,11 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                             return SliverGrid(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 340,
-                                crossAxisSpacing: PRFSpacingTokens.lg,
-                                mainAxisSpacing: PRFSpacingTokens.lg,
-                                childAspectRatio: 1.4,
-                              ),
+                                    maxCrossAxisExtent: 340,
+                                    crossAxisSpacing: PRFSpacingTokens.lg,
+                                    mainAxisSpacing: PRFSpacingTokens.lg,
+                                    childAspectRatio: 1.4,
+                                  ),
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) {
                                   return buildAnimatedTimelineEntry(

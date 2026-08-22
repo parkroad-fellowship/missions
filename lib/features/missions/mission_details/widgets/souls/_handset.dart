@@ -107,7 +107,12 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
                     title: souls[index].fullName,
                     subtitle: souls[index].notes?.trim().isNotEmpty ?? false
                         ? souls[index].notes
-                        : l10n.capturedAt(DateFormatter.formatDateTime(souls[index].createdAt, timezone)),
+                        : l10n.capturedAt(
+                            DateFormatter.formatDateTime(
+                              souls[index].createdAt,
+                              timezone,
+                            ),
+                          ),
                     editTooltip: l10n.editSoulTooltip,
                     onEdit: () => _showEditSoulSheet(souls[index]),
                     deleteTooltip: l10n.deleteSoulTooltip,

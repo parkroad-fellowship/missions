@@ -86,12 +86,12 @@ class _SignInHandsetState extends State<SignInHandset> {
                             // Logo
                             buildLogo(theme),
 
-                            const SizedBox(height: 48),
+                            const SizedBox(height: PRFSpacingTokens.xxxl),
 
                             // Welcome Text
                             buildWelcomeHeaders(theme, l10n),
 
-                            const SizedBox(height: 48),
+                            const SizedBox(height: PRFSpacingTokens.xxxl),
 
                             FutureBuilder(
                               future: getIt<PRFFirebaseService>().canShowAuth(),

@@ -311,7 +311,7 @@ class MissionsWrappedPage extends StatelessWidget {
                   size: 16,
                   color: Color(0xFFFF8A00),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: PRFSpacingTokens.xs),
                 Text(
                   '${missionStats.missionStreak} mission streak',
                   style: const TextStyle(
@@ -431,7 +431,7 @@ class LearningWrappedPage extends StatelessWidget {
                   size: 16,
                   color: Color(0xFFFFD400),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: PRFSpacingTokens.xs),
                 Text(
                   '${learningStats.learningStreak} day streak',
                   style: const TextStyle(
@@ -489,7 +489,7 @@ class PrayerWrappedPage extends StatelessWidget {
                   size: 16,
                   color: Color(0xFFB388FF),
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: PRFSpacingTokens.xs),
                 Text(
                   '${prayerStats.prayerConsistencyDays} days of prayer',
                   style: const TextStyle(
@@ -610,7 +610,7 @@ class SummaryWrappedPage extends StatelessWidget {
               side: const BorderSide(color: PRFColors.white, width: 1.5),
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.xxl),
               ),
             ),
           ),

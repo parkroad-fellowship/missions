@@ -108,13 +108,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
               ],
             ),
             borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
+            boxShadow: PRFShadowTokens.heroGlow(theme.colorScheme.primary),
           ),
           child: Padding(
             padding: const EdgeInsets.all(PRFSpacingTokens.xl),
@@ -316,13 +310,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          boxShadow: PRFShadowTokens.badge(color),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -748,7 +736,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
             ],
           ),
         )
-        .animate(delay: const Duration(milliseconds: 800))
+        .animate(delay: PRFMotionTokens.enterLong)
         .fadeIn(duration: PRFMotionTokens.enterShort)
         .slideY(begin: 0.3, end: 0);
   }

@@ -91,7 +91,9 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
                         sliver: state.maybeWhen(
                           orElse: () => const SliverFillRemaining(
                             hasScrollBody: false,
-                            child: Center(child: PRFCircularProgressIndicator()),
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
                           ),
                           listLoading: (_) => const SliverFillRemaining(
                             hasScrollBody: false,
@@ -151,10 +153,7 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
     ThemeData theme,
     bool isCompleted,
   ) {
-    return BlocBuilder<
-      LessonResourceCubit,
-      ResourceState<PRFLessonModule>
-    >(
+    return BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
       builder: (context, state) {
         final lessonModule = state.maybeWhen(
           listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
@@ -246,8 +245,11 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
             const SizedBox(height: PRFSpacingTokens.xl),
 
             // Complete button docked at the bottom of the panel
-            _buildCompleteButton(lessonModule,
-                resolvedCourseModule?.course?.ulid, l10n),
+            _buildCompleteButton(
+              lessonModule,
+              resolvedCourseModule?.course?.ulid,
+              l10n,
+            ),
           ],
         );
       },

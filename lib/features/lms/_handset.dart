@@ -81,8 +81,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) =>
-                              courses.isEmpty
+                          listLoading: (_) => courses.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(

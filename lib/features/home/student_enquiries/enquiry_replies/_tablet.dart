@@ -59,7 +59,10 @@ class _StudentEnquiryRepliesPageTabletState
       vsync: this,
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+      CurvedAnimation(
+        parent: _animationController,
+        curve: PRFMotionTokens.standardCurve,
+      ),
     );
 
     _enquiryReplyController.addListener(() {
@@ -92,7 +95,7 @@ class _StudentEnquiryRepliesPageTabletState
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: PRFMotionTokens.slow,
-        curve: Curves.easeOutCubic,
+        curve: PRFMotionTokens.entering,
       );
     }
   }
@@ -147,7 +150,7 @@ class _StudentEnquiryRepliesPageTabletState
 
         return AnimatedContainer(
           duration: PRFMotionTokens.standard,
-          curve: Curves.easeOut,
+          curve: PRFMotionTokens.settling,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             boxShadow: [

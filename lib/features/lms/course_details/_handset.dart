@@ -61,8 +61,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
             );
             // Same source as the list: pull-to-refresh keeps cards visible
             // instead of flashing a full-screen spinner.
-            final modules =
-                context.read<ModuleResourceCubit>().currentItems;
+            final modules = context.read<ModuleResourceCubit>().currentItems;
             final completedCount = modules
                 .where(
                   (module) =>
@@ -115,8 +114,7 @@ class _CourseDetailsPageHandsetState extends State<CourseDetailsPageHandset> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: (_) =>
-                                  modules.isEmpty
+                              listLoading: (_) => modules.isEmpty
                                   ? const SliverFillRemaining(
                                       hasScrollBody: false,
                                       child: Center(

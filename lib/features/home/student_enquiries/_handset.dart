@@ -135,8 +135,7 @@ class _StudentEnquiriesPageHandsetState
                                     alignment: Alignment.topCenter,
                                     child: PRFEmptyView(
                                       label: l10n.noQuestions,
-                                      description:
-                                          _form.selectedReplyStatus
+                                      description: _form.selectedReplyStatus
                                           ? l10n.noRepliedQuestionsDesc
                                           : l10n.noUnreadQuestionsDesc,
                                     ),

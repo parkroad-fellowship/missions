@@ -93,8 +93,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                                     children: [
                                       PRFEmptyView(
                                         label: l10n.noAnnouncements,
-                                        description:
-                                            l10n.noAnnouncementsDesc,
+                                        description: l10n.noAnnouncementsDesc,
                                         icon: Icons.campaign_outlined,
                                       ),
                                     ],

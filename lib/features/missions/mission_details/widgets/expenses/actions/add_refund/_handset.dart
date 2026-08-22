@@ -195,8 +195,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                             children: [
                               PRFTextField(
                                 type: PRFTextFieldType.textArea,
-                                hintText:
-                                    context.l10n.enterConfirmationHint,
+                                hintText: context.l10n.enterConfirmationHint,
                                 controller: _confirmationController,
                                 maxLines: 3,
                                 textInputAction: TextInputAction.done,

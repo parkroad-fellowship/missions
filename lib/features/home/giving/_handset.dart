@@ -102,8 +102,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) =>
-                              payments.isEmpty
+                          listLoading: (_) => payments.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(
@@ -188,8 +187,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                   animate: animateEntrance,
                                   child: Padding(
                                     padding: EdgeInsets.only(
-                                      bottom:
-                                          paymentIndex == values.length - 1
+                                      bottom: paymentIndex == values.length - 1
                                           ? 0
                                           : PRFSpacingTokens.lg,
                                     ),
@@ -231,13 +229,7 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
           floatingActionButton: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.28),
-                  blurRadius: 16,
-                  offset: const Offset(0, 6),
-                ),
-              ],
+              boxShadow: PRFShadowTokens.badge(theme.colorScheme.primary),
             ),
             child:
                 FloatingActionButton.extended(

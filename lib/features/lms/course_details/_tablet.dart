@@ -58,8 +58,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
               itemError: (_, _, item) => item,
               orElse: () => null,
             );
-            final modules =
-                context.read<ModuleResourceCubit>().currentItems;
+            final modules = context.read<ModuleResourceCubit>().currentItems;
             final completedCount = modules
                 .where(
                   (module) =>
@@ -122,8 +121,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: (_) =>
-                                  modules.isEmpty
+                              listLoading: (_) => modules.isEmpty
                                   ? const SliverFillRemaining(
                                       hasScrollBody: false,
                                       child: Center(
@@ -160,11 +158,11 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                                 return SliverGrid(
                                   gridDelegate:
                                       const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 340,
-                                    crossAxisSpacing: PRFSpacingTokens.lg,
-                                    mainAxisSpacing: PRFSpacingTokens.lg,
-                                    childAspectRatio: 1.4,
-                                  ),
+                                        maxCrossAxisExtent: 340,
+                                        crossAxisSpacing: PRFSpacingTokens.lg,
+                                        mainAxisSpacing: PRFSpacingTokens.lg,
+                                        childAspectRatio: 1.4,
+                                      ),
                                   delegate: SliverChildBuilderDelegate(
                                     (context, index) {
                                       return buildAnimatedTimelineEntry(

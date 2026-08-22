@@ -141,8 +141,12 @@ class _MissionQuestionsViewHandsetState
                     title: questions[index].question.isEmpty
                         ? l10n.untitledQuestion
                         : questions[index].question,
-                    subtitle:
-                        l10n.capturedAt(DateFormatter.formatDateTime(questions[index].createdAt, timezone)),
+                    subtitle: l10n.capturedAt(
+                      DateFormatter.formatDateTime(
+                        questions[index].createdAt,
+                        timezone,
+                      ),
+                    ),
                     editTooltip: l10n.editQuestionTooltip,
                     onEdit: () => _updateQuestion(questions[index]),
                     deleteTooltip: l10n.deleteQuestionTooltip,
@@ -217,7 +221,9 @@ class _MissionQuestionFormBodyState extends State<_MissionQuestionFormBody> {
   void _submit() {
     final value = _controller.text.trim();
     if (value.isEmpty) {
-      setState(() => _error = context.l10n.fieldRequired(context.l10n.question));
+      setState(
+        () => _error = context.l10n.fieldRequired(context.l10n.question),
+      );
       return;
     }
     Navigator.of(context).pop(value);

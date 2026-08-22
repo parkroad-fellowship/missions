@@ -139,7 +139,7 @@ Widget buildAnimatedTimelineEntry({
         delay: Duration(milliseconds: cappedIndex * 60),
         duration: PRFMotionTokens.enterShort,
       )
-      .slideX(begin: 0.3, end: 0, curve: Curves.easeOutCubic);
+      .slideX(begin: 0.3, end: 0, curve: PRFMotionTokens.entering);
 }
 
 class TimelineMissionCard extends StatelessWidget with TimezoneMixin {

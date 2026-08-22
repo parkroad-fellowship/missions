@@ -52,8 +52,9 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
       builder: (context, state) {
         // Same source as the list: pull-to-refresh keeps cards visible
         // instead of flashing a full-screen spinner.
-        final prayerRequests =
-            context.read<PrayerRequestResourceCubit>().currentItems;
+        final prayerRequests = context
+            .read<PrayerRequestResourceCubit>()
+            .currentItems;
 
         return Scaffold(
           backgroundColor: theme.colorScheme.surface,
@@ -88,8 +89,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) =>
-                              prayerRequests.isEmpty
+                          listLoading: (_) => prayerRequests.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(
@@ -173,16 +173,16 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                                   index: requestIndex,
                                   animate: animateEntrance,
                                   child: Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom:
-                                            requestIndex == requests.length - 1
-                                            ? 0
-                                            : PRFSpacingTokens.lg,
-                                      ),
-                                      child: PrayerRequestCard(
-                                        prayerRequest: prayerRequest,
-                                      ),
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          requestIndex == requests.length - 1
+                                          ? 0
+                                          : PRFSpacingTokens.lg,
                                     ),
+                                    child: PrayerRequestCard(
+                                      prayerRequest: prayerRequest,
+                                    ),
+                                  ),
                                 );
                               },
                             );
@@ -198,13 +198,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
           floatingActionButton: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.28),
-                  blurRadius: 16,
-                  offset: const Offset(0, 6),
-                ),
-              ],
+              boxShadow: PRFShadowTokens.badge(theme.colorScheme.primary),
             ),
             child:
                 FloatingActionButton.extended(

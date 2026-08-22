@@ -273,7 +273,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
               .slideX(
                 begin: 0.3,
                 end: 0,
-                curve: Curves.easeOutCubic,
+                curve: PRFMotionTokens.entering,
               );
         },
       ),
@@ -366,7 +366,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
               .slideX(
                 begin: 0.3,
                 end: 0,
-                curve: Curves.easeOutCubic,
+                curve: PRFMotionTokens.entering,
               );
         },
       ),

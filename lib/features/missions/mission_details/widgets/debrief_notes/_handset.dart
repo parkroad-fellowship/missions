@@ -112,17 +112,24 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
             final index = entry.key;
             final debriefNote = entry.value;
             return MissionResourceCard(
-              canEdit: mission.canEdit,
-              title: debriefNote.note.isEmpty
-                  ? l10n.untitledNote
-                  : debriefNote.note,
-              subtitle:
-                  l10n.capturedAt(DateFormatter.formatDateTime(debriefNote.createdAt, timezone)),
-              editTooltip: l10n.editDebriefTooltip,
-              onEdit: () => _showEditDebriefNoteSheet(debriefNote),
-              deleteTooltip: l10n.deleteDebriefTooltip,
-              onDelete: () => _deleteDebriefNote(debriefNote),
-            ).animate(delay: (index * 100).ms).fadeIn().slideX(begin: -0.3, end: 0);
+                  canEdit: mission.canEdit,
+                  title: debriefNote.note.isEmpty
+                      ? l10n.untitledNote
+                      : debriefNote.note,
+                  subtitle: l10n.capturedAt(
+                    DateFormatter.formatDateTime(
+                      debriefNote.createdAt,
+                      timezone,
+                    ),
+                  ),
+                  editTooltip: l10n.editDebriefTooltip,
+                  onEdit: () => _showEditDebriefNoteSheet(debriefNote),
+                  deleteTooltip: l10n.deleteDebriefTooltip,
+                  onDelete: () => _deleteDebriefNote(debriefNote),
+                )
+                .animate(delay: (index * 100).ms)
+                .fadeIn()
+                .slideX(begin: -0.3, end: 0);
           }).toList(),
         );
       },

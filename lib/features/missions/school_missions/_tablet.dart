@@ -72,8 +72,7 @@ class _SchoolMissionsTabletState extends State<SchoolMissionsTablet>
                         ),
                         const SizedBox(height: PRFSpacingTokens.md),
                         FilledButton(
-                          onPressed: () =>
-                              _form.load(context, refresh: true),
+                          onPressed: () => _form.load(context, refresh: true),
                           child: Text(context.l10n.retry),
                         ),
                       ],
@@ -103,13 +102,15 @@ class _SchoolMissionsTabletState extends State<SchoolMissionsTablet>
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PRFTabletHeaderRow(title: school.name, onBack: () => context.router.maybePop()),
+          PRFTabletHeaderRow(
+            title: school.name,
+            onBack: () => context.router.maybePop(),
+          ),
           Expanded(
             child: missions.isEmpty
                 ? _buildEmptyState(context)
                 : RefreshIndicator(
-                    onRefresh: () async =>
-                        _form.load(context, refresh: true),
+                    onRefresh: () async => _form.load(context, refresh: true),
                     child: ListView.builder(
                       physics: const AlwaysScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(
@@ -165,18 +166,18 @@ class _SchoolMissionsTabletState extends State<SchoolMissionsTablet>
           Text(
             l10n.spiritualLegacy,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: PRFSpacingTokens.sm),
           Text(
             l10n.schoolLegacyBody,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: PRFColors.navy100,
-                  height: 1.4,
-                ),
+              color: PRFColors.navy100,
+              height: 1.4,
+            ),
             textAlign: TextAlign.center,
           ),
         ],

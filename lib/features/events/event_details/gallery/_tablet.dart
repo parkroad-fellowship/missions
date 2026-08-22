@@ -203,10 +203,10 @@ class _EventGalleryViewTabletState extends State<EventGalleryViewTablet> {
                         sliver: SliverGrid(
                           gridDelegate:
                               const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 220,
-                            crossAxisSpacing: PRFSpacingTokens.md,
-                            mainAxisSpacing: PRFSpacingTokens.md,
-                          ),
+                                maxCrossAxisExtent: 220,
+                                crossAxisSpacing: PRFSpacingTokens.md,
+                                mainAxisSpacing: PRFSpacingTokens.md,
+                              ),
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
                               if (index == 0) {

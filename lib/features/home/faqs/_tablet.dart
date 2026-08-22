@@ -52,8 +52,9 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
         >(
           builder: (context, categoryState) {
             final faqs = context.read<FaqResourceCubit>().currentItems;
-            final categories =
-                context.read<FaqCategoryResourceCubit>().currentItems;
+            final categories = context
+                .read<FaqCategoryResourceCubit>()
+                .currentItems;
 
             // The entrance cascade plays exactly once per screen instance;
             // later rebuilds (refresh setState) and scrolled-in cards skip it.
@@ -133,8 +134,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: (_) =>
-                                  faqs.isEmpty
+                              listLoading: (_) => faqs.isEmpty
                                   ? const SliverFillRemaining(
                                       hasScrollBody: false,
                                       child: Center(

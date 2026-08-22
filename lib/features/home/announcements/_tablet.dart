@@ -116,14 +116,12 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                               ),
                               itemCount: groupedEntries.length,
                               itemBuilder: (context, index) {
-                                final mapAsList = groupedEntries.keys
-                                    .toList();
+                                final mapAsList = groupedEntries.keys.toList();
                                 final entries =
                                     groupedEntries[mapAsList[index]]!;
 
                                 return Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     PRFSectionHeader(
                                       title: DateFormat.yMMMMd().format(

@@ -92,8 +92,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) =>
-                              prayerRequests.isEmpty
+                          listLoading: (_) => prayerRequests.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(
@@ -122,8 +121,7 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                                   alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.noPrayerRequests,
-                                    description:
-                                        l10n.noPrayerRequestsDesc,
+                                    description: l10n.noPrayerRequestsDesc,
                                     icon: Icons.hail_rounded,
                                     actionLabel: l10n.submitPrayerRequest,
                                     onActionPressed: () =>
@@ -136,11 +134,11 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                             return SliverGrid(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 340,
-                                crossAxisSpacing: PRFSpacingTokens.lg,
-                                mainAxisSpacing: PRFSpacingTokens.lg,
-                                childAspectRatio: 1.4,
-                              ),
+                                    maxCrossAxisExtent: 340,
+                                    crossAxisSpacing: PRFSpacingTokens.lg,
+                                    mainAxisSpacing: PRFSpacingTokens.lg,
+                                    childAspectRatio: 1.4,
+                                  ),
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) {
                                   final prayerRequest = requests[index];

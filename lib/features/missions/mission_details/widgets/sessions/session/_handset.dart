@@ -941,13 +941,22 @@ class _RecordingStatusCard extends StatelessWidget {
     return BlocBuilder<AudioRecordingCubit, AudioRecordingState>(
       builder: (context, state) {
         final (label, duration, isRecording, isPaused) = state.map(
-          initial: (_) => (context.l10n.recorderIdle, Duration.zero, false, false),
-          ready: (_) => (context.l10n.recorderReady, Duration.zero, false, false),
-          recording: (s) => (context.l10n.recordingInProgress, s.duration, true, false),
-          paused: (s) => (context.l10n.recordingPaused, s.duration, false, true),
-          completed: (s) => (context.l10n.savedLocally, s.duration, false, false),
-          error: (_) =>
-              (context.l10n.recorderNeedsAttention, Duration.zero, false, false),
+          initial: (_) =>
+              (context.l10n.recorderIdle, Duration.zero, false, false),
+          ready: (_) =>
+              (context.l10n.recorderReady, Duration.zero, false, false),
+          recording: (s) =>
+              (context.l10n.recordingInProgress, s.duration, true, false),
+          paused: (s) =>
+              (context.l10n.recordingPaused, s.duration, false, true),
+          completed: (s) =>
+              (context.l10n.savedLocally, s.duration, false, false),
+          error: (_) => (
+            context.l10n.recorderNeedsAttention,
+            Duration.zero,
+            false,
+            false,
+          ),
         );
 
         if (!isRecording && !isPaused) {

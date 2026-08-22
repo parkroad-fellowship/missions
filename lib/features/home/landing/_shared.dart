@@ -214,7 +214,7 @@ Widget buildAnimatedCard({
         duration: 420.ms,
         delay: Duration(milliseconds: delay),
         begin: const Offset(0, 0.08),
-        curve: Curves.easeOut,
+        curve: PRFMotionTokens.settling,
       ),
     ],
     child: child,

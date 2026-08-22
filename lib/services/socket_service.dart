@@ -296,8 +296,7 @@ class SocketServiceImpl implements SocketService {
       _presenceChannels[channelName] = presenceChannel;
       if (!isNewClient) {
         presenceChannel.subscribeIfNotUnsubscribed();
-        Logger()
-            .i('Subscribed to presence channel: ${presenceChannel.name}');
+        Logger().i('Subscribed to presence channel: ${presenceChannel.name}');
       }
     });
 

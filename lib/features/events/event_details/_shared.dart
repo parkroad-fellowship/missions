@@ -94,13 +94,7 @@ class EventHeroCard extends StatelessWidget with TimezoneMixin {
           ],
         ),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        boxShadow: PRFShadowTokens.heroGlow(theme.colorScheme.primary),
       ),
       child: Padding(
         padding: const EdgeInsets.all(PRFSpacingTokens.xl),

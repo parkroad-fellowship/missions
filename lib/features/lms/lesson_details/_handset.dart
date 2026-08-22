@@ -56,8 +56,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         // Same source as the list: pull-to-refresh keeps content visible
         // instead of flashing a full-screen spinner.
         final lessonItems = context.read<LessonResourceCubit>().currentItems;
-        final lessonModule =
-            lessonItems.isNotEmpty ? lessonItems.first : null;
+        final lessonModule = lessonItems.isNotEmpty ? lessonItems.first : null;
         final lesson = lessonModule?.lesson;
         final mediaCount = [
           lesson?.videoUrl,
@@ -108,8 +107,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) =>
-                              lessonItems.isEmpty
+                          listLoading: (_) => lessonItems.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(

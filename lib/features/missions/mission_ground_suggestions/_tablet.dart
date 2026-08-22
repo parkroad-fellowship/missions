@@ -103,10 +103,11 @@ class _MissionGroundSuggestionsPageTabletState
                         sliver: state.maybeWhen(
                           orElse: () => const SliverFillRemaining(
                             hasScrollBody: false,
-                            child: Center(child: PRFCircularProgressIndicator()),
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
                           ),
-                          listLoading: (_) =>
-                              missionGroundSuggestions.isEmpty
+                          listLoading: (_) => missionGroundSuggestions.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(
@@ -134,8 +135,7 @@ class _MissionGroundSuggestionsPageTabletState
                                   alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.suggestAMission,
-                                    description:
-                                        l10n.suggestMissionDescription,
+                                    description: l10n.suggestMissionDescription,
                                     actionLabel: l10n.suggestAMission,
                                     onActionPressed: () =>
                                         triggerAddSuggestion(context),
@@ -147,11 +147,11 @@ class _MissionGroundSuggestionsPageTabletState
                             return SliverGrid(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 340,
-                                crossAxisSpacing: PRFSpacingTokens.lg,
-                                mainAxisSpacing: PRFSpacingTokens.lg,
-                                childAspectRatio: 1.4,
-                              ),
+                                    maxCrossAxisExtent: 340,
+                                    crossAxisSpacing: PRFSpacingTokens.lg,
+                                    mainAxisSpacing: PRFSpacingTokens.lg,
+                                    childAspectRatio: 1.4,
+                                  ),
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) {
                                   final suggestion = suggestions[index];
@@ -170,13 +170,11 @@ class _MissionGroundSuggestionsPageTabletState
                                               context,
                                               suggestion,
                                             ),
-                                        borderRadius:
-                                            BorderRadius.circular(
+                                        borderRadius: BorderRadius.circular(
                                           PRFRadiusTokens.xl,
                                         ),
                                         child: MissionGroundSuggestionCard(
-                                          missionGroundSuggestion:
-                                              suggestion,
+                                          missionGroundSuggestion: suggestion,
                                         ),
                                       ),
                                     ),
@@ -201,8 +199,8 @@ class _MissionGroundSuggestionsPageTabletState
               Text(
                 l10n.suggestMissionSubTitle,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: PRFColors.navy100,
-                    ),
+                  color: PRFColors.navy100,
+                ),
               ),
               const SizedBox(height: PRFSpacingTokens.lg),
               Wrap(
@@ -235,18 +233,18 @@ class _MissionGroundSuggestionsPageTabletState
               Text(
                 l10n.suggestGroundsTitle,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: PRFSpacingTokens.sm),
               Text(
                 l10n.suggestGroundsPanelBody,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: PRFColors.navy100,
-                      height: 1.4,
-                    ),
+                  color: PRFColors.navy100,
+                  height: 1.4,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: PRFSpacingTokens.xl),

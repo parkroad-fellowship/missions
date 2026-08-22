@@ -83,7 +83,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
               // Weather Intelligence
               if (event.weatherForecasts.isNotEmpty)
                 buildEventWeatherIntelligence(context, theme, l10n, event)
-                    .animate(delay: const Duration(milliseconds: 700))
+                    .animate(delay: PRFMotionTokens.enterLong)
                     .fadeIn(duration: PRFMotionTokens.enterShort)
                     .slideY(begin: 0.3, end: 0),
             ],

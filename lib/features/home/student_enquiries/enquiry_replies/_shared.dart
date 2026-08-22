@@ -40,7 +40,7 @@ Widget buildMessageBubble(
   return TweenAnimationBuilder<double>(
     duration: Duration(milliseconds: 220 + (index * 35)),
     tween: Tween(begin: 0, end: 1),
-    curve: Curves.easeOutBack,
+    curve: PRFMotionTokens.overshoot,
     builder: (context, value, child) {
       return Transform.translate(
         offset: Offset(0, 20 * (1 - value)),

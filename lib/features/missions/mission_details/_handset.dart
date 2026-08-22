@@ -309,13 +309,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        boxShadow: PRFShadowTokens.badge(theme.colorScheme.primary),
       ),
       child:
           FloatingActionButton.extended(

@@ -141,7 +141,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       appBar: AppBar(
         backgroundColor: PRFColors.black,
         iconTheme: const IconThemeData(color: PRFColors.white),
-        elevation: 0,
+        elevation: PRFElevationTokens.none,
         title: Text(
           'Video',
           style: theme.textTheme.titleLarge?.copyWith(

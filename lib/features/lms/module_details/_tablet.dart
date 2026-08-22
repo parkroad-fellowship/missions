@@ -61,8 +61,9 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                   items.isNotEmpty ? items.first : null,
               orElse: () => null,
             );
-            final lessonModules =
-                context.read<LessonResourceCubit>().currentItems;
+            final lessonModules = context
+                .read<LessonResourceCubit>()
+                .currentItems;
             final completedCount = lessonModules
                 .where(
                   (lessonModule) =>
@@ -104,11 +105,9 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await context
-                            .read<ModuleResourceCubit>()
-                            .loadAll(
-                              filters: {'ulid': widget.courseModuleUlid},
-                            );
+                        await context.read<ModuleResourceCubit>().loadAll(
+                          filters: {'ulid': widget.courseModuleUlid},
+                        );
                         final module = context
                             .read<ModuleResourceCubit>()
                             .currentItems
@@ -117,13 +116,11 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                                   module.ulid == widget.courseModuleUlid,
                             );
                         if (module != null) {
-                          await context
-                              .read<LessonResourceCubit>()
-                              .loadAll(
-                                filters: {
-                                  'module_ulid': module.module?.ulid,
-                                },
-                              );
+                          await context.read<LessonResourceCubit>().loadAll(
+                            filters: {
+                              'module_ulid': module.module?.ulid,
+                            },
+                          );
                         }
                       },
                       child: CustomScrollView(
@@ -156,8 +153,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                                   child: Text(
                                     courseModule!.module!.description,
                                     style: theme.textTheme.bodyMedium?.copyWith(
-                                      color:
-                                          theme.colorScheme.onSurfaceVariant,
+                                      color: theme.colorScheme.onSurfaceVariant,
                                       height: 1.4,
                                     ),
                                   ),
@@ -175,8 +171,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: (_) =>
-                                  lessonModules.isEmpty
+                              listLoading: (_) => lessonModules.isEmpty
                                   ? const SliverFillRemaining(
                                       hasScrollBody: false,
                                       child: Center(
@@ -213,11 +208,11 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                                 return SliverGrid(
                                   gridDelegate:
                                       const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 340,
-                                    crossAxisSpacing: PRFSpacingTokens.lg,
-                                    mainAxisSpacing: PRFSpacingTokens.lg,
-                                    childAspectRatio: 1.4,
-                                  ),
+                                        maxCrossAxisExtent: 340,
+                                        crossAxisSpacing: PRFSpacingTokens.lg,
+                                        mainAxisSpacing: PRFSpacingTokens.lg,
+                                        childAspectRatio: 1.4,
+                                      ),
                                   delegate: SliverChildBuilderDelegate(
                                     (context, index) {
                                       return buildAnimatedTimelineEntry(

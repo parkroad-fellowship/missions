@@ -49,8 +49,9 @@ class _MissionGroundSuggestionsPageHandsetState
       builder: (context, state) {
         // Same source as the list: pull-to-refresh keeps cards visible
         // instead of flashing a full-screen spinner.
-        final missionGroundSuggestions =
-            context.read<GroundSuggestionResourceCubit>().currentItems;
+        final missionGroundSuggestions = context
+            .read<GroundSuggestionResourceCubit>()
+            .currentItems;
         final pendingCount = missionGroundSuggestions
             .where(
               (suggestion) =>
@@ -100,8 +101,7 @@ class _MissionGroundSuggestionsPageHandsetState
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) =>
-                              missionGroundSuggestions.isEmpty
+                          listLoading: (_) => missionGroundSuggestions.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(
@@ -224,7 +224,7 @@ class _MissionGroundSuggestionsPageHandsetState
                                       begin: 0.22,
                                       end: 0,
                                       duration: PRFMotionTokens.enterMedium,
-                                      curve: Curves.easeOutCubic,
+                                      curve: PRFMotionTokens.entering,
                                     );
                               },
                             );
@@ -240,13 +240,7 @@ class _MissionGroundSuggestionsPageHandsetState
           floatingActionButton: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.28),
-                  blurRadius: 16,
-                  offset: const Offset(0, 6),
-                ),
-              ],
+              boxShadow: PRFShadowTokens.badge(theme.colorScheme.primary),
             ),
             child:
                 FloatingActionButton.extended(

@@ -176,7 +176,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
       child: GestureDetector(
         onTap: () => _selectMedia(context, previousMedia: []),
         child: Container(
-          padding: const EdgeInsets.all(48),
+          padding: const EdgeInsets.all(PRFSpacingTokens.xxxl),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
             border: Border.all(

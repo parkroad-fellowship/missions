@@ -120,14 +120,12 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                             final enquiries = loadedEnquiries
                                 .where(
                                   (e) =>
-                                      e.hasReplies ==
-                                      _form.selectedReplyStatus,
+                                      e.hasReplies == _form.selectedReplyStatus,
                                 )
                                 .toList();
 
                             if (enquiries.isEmpty) {
-                              final showingReplied =
-                                  _form.selectedReplyStatus;
+                              final showingReplied = _form.selectedReplyStatus;
                               return SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Align(
@@ -145,11 +143,11 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                             return SliverGrid(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 340,
-                                crossAxisSpacing: PRFSpacingTokens.lg,
-                                mainAxisSpacing: PRFSpacingTokens.lg,
-                                childAspectRatio: 1.4,
-                              ),
+                                    maxCrossAxisExtent: 340,
+                                    crossAxisSpacing: PRFSpacingTokens.lg,
+                                    mainAxisSpacing: PRFSpacingTokens.lg,
+                                    childAspectRatio: 1.4,
+                                  ),
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) {
                                   final enquiry = enquiries[index];
@@ -221,18 +219,18 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
               Text(
                 l10n.ministerToStudents,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: PRFSpacingTokens.sm),
               Text(
                 l10n.enquiriesPanelBody,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: PRFColors.navy100,
-                      height: 1.4,
-                    ),
+                  color: PRFColors.navy100,
+                  height: 1.4,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -263,8 +261,9 @@ class _FilterSelectionButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color:
-          selected ? Colors.white.withValues(alpha: 0.14) : Colors.transparent,
+      color: selected
+          ? Colors.white.withValues(alpha: 0.14)
+          : Colors.transparent,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       child: InkWell(
         onTap: onTap,
@@ -310,9 +309,7 @@ class _FilterSelectionButton extends StatelessWidget {
                 child: Text(
                   '$count',
                   style: theme.textTheme.labelMedium?.copyWith(
-                    color: selected
-                        ? PRFColors.navyBlue
-                        : Colors.white,
+                    color: selected ? PRFColors.navyBlue : Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

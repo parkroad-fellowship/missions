@@ -100,7 +100,9 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
       _classGroupError = context.l10n.fieldRequired(context.l10n.classGroup);
     }
     if (selectedDecisionType == null) {
-      _decisionTypeError = context.l10n.fieldRequired(context.l10n.decisionType);
+      _decisionTypeError = context.l10n.fieldRequired(
+        context.l10n.decisionType,
+      );
     }
 
     setState(() => _showValidation = true);

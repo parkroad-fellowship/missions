@@ -199,8 +199,9 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                       height: PRFSpacingTokens.xs,
                                     ),
                                     Semantics(
-                                      label:
-                                          l10n.missionThemeLabel(item.mission!.theme!),
+                                      label: l10n.missionThemeLabel(
+                                        item.mission!.theme!,
+                                      ),
                                       child: Text(
                                         item.mission!.theme!,
                                         style: theme.textTheme.bodySmall
@@ -252,8 +253,9 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                       Expanded(
                                         child: Semantics(
                                           button: true,
-                                          label:
-                                              l10n.recordAnswerSemantic(item.question),
+                                          label: l10n.recordAnswerSemantic(
+                                            item.question,
+                                          ),
                                           child: PRFButton(
                                             onPressed: () => openRecorder(
                                               context,
@@ -278,8 +280,9 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                             variant: PRFButtonVariant.secondary,
                                             onPressed: () =>
                                                 openAnswers(context, item),
-                                            title:
-                                                l10n.answersCount(item.answerCount),
+                                            title: l10n.answersCount(
+                                              item.answerCount,
+                                            ),
                                             disabled: !item.hasAnswers,
                                           ),
                                         ),

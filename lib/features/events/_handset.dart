@@ -166,8 +166,7 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
       builder: (context, state) {
         // Same source as the list: pull-to-refresh keeps cards visible
         // instead of flashing a full-screen spinner.
-        final currentEvents =
-            context.read<EventResourceCubit>().currentItems;
+        final currentEvents = context.read<EventResourceCubit>().currentItems;
 
         final showInitialLoader =
             state is ResourceListLoading<PRFEvent> && currentEvents.isEmpty;
@@ -253,7 +252,6 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
       },
     );
   }
-
 
   Widget _buildSubscribedEventsTimeline(BuildContext context) {
     final l10n = context.l10n;

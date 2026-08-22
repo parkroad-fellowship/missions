@@ -187,8 +187,9 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                     labelColor: theme.colorScheme.primary,
                     unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
                     indicatorColor: theme.colorScheme.primary,
-                    dividerColor:
-                        theme.colorScheme.outline.withValues(alpha: 0.12),
+                    dividerColor: theme.colorScheme.outline.withValues(
+                      alpha: 0.12,
+                    ),
                     labelStyle: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),

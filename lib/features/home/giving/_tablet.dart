@@ -95,10 +95,11 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                         sliver: state.maybeWhen(
                           orElse: () => const SliverFillRemaining(
                             hasScrollBody: false,
-                            child: Center(child: PRFCircularProgressIndicator()),
+                            child: Center(
+                              child: PRFCircularProgressIndicator(),
+                            ),
                           ),
-                          listLoading: (_) =>
-                              payments.isEmpty
+                          listLoading: (_) => payments.isEmpty
                               ? const SliverFillRemaining(
                                   hasScrollBody: false,
                                   child: Center(
@@ -128,8 +129,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                   child: PRFEmptyView(
                                     label: l10n.considerGiving,
                                     description: l10n.startGiving,
-                                    icon:
-                                        Icons.volunteer_activism_rounded,
+                                    icon: Icons.volunteer_activism_rounded,
                                     actionLabel: l10n.give,
                                     onActionPressed: () =>
                                         triggerAddPayment(context),
@@ -141,11 +141,11 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                             return SliverGrid(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 340,
-                                crossAxisSpacing: PRFSpacingTokens.lg,
-                                mainAxisSpacing: PRFSpacingTokens.lg,
-                                childAspectRatio: 1.5,
-                              ),
+                                    maxCrossAxisExtent: 340,
+                                    crossAxisSpacing: PRFSpacingTokens.lg,
+                                    mainAxisSpacing: PRFSpacingTokens.lg,
+                                    childAspectRatio: 1.5,
+                                  ),
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) {
                                   final payment = values[index];
@@ -163,8 +163,7 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                           context,
                                           payment,
                                         ),
-                                        borderRadius:
-                                            BorderRadius.circular(
+                                        borderRadius: BorderRadius.circular(
                                           PRFRadiusTokens.xl,
                                         ),
                                         child: PaymentCard(
