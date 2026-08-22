@@ -1405,6 +1405,75 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get wrappedMissionsEmptyMessage =>
+      'No missions yet.\nStart your first mission!';
+
+  @override
+  String get wrappedImpactEmptyMessage =>
+      'No impact recorded yet.\nEvery mission touches lives!';
+
+  @override
+  String get wrappedLearningEmptyMessage =>
+      'No learning yet.\nStart a course to unlock this!';
+
+  @override
+  String get wrappedPrayerEmptyMessage =>
+      'No prayers answered yet.\nYour journey starts today!';
+
+  @override
+  String wrappedFavoriteMissionType(String name) {
+    return 'Favorite mission type — $name';
+  }
+
+  @override
+  String wrappedCourseProgress(int percentage) {
+    return '$percentage% complete';
+  }
+
+  @override
+  String get wrappedInsufficientDataTitle => 'Not enough data yet';
+
+  @override
+  String get wrappedInsufficientDataMessage =>
+      'Complete missions, courses, and more\nto unlock your Wrapped next season!';
+
+  @override
+  String get wrappedShareCta => 'Share Your Wrapped';
+
+  @override
+  String wrappedAboveAverage(String categories) {
+    return 'Above average in $categories';
+  }
+
+  @override
+  String wrappedShareText(
+    int year,
+    int missions,
+    int souls,
+    int courses,
+    int events,
+    int prayers,
+  ) {
+    return 'My $year PRF Missions Wrapped:\n$missions Missions\n$souls Souls Touched\n$courses Courses\n$events Events Attended\n$prayers Prayer Responses\n\nHow was your year?';
+  }
+
+  @override
+  String get wrappedLoadingMessage => 'Preparing your Wrapped…';
+
+  @override
+  String get wrappedPaused => 'Paused';
+
+  @override
+  String wrappedThankYouPersonal(String name, int year) {
+    return '$name, thank you for making an impact in $year';
+  }
+
+  @override
+  String wrappedCommunalLine(int year) {
+    return 'One fellowship, one mission — together we made $year count.';
+  }
+
+  @override
   String impact(int year) {
     return '$year Review';
   }

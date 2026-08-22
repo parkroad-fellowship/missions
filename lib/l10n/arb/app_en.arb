@@ -1074,6 +1074,90 @@
             }
         }
     },
+    "wrappedMissionsEmptyMessage": "No missions yet.\nStart your first mission!",
+    "@wrappedMissionsEmptyMessage": {},
+    "wrappedImpactEmptyMessage": "No impact recorded yet.\nEvery mission touches lives!",
+    "@wrappedImpactEmptyMessage": {},
+    "wrappedLearningEmptyMessage": "No learning yet.\nStart a course to unlock this!",
+    "@wrappedLearningEmptyMessage": {},
+    "wrappedPrayerEmptyMessage": "No prayers answered yet.\nYour journey starts today!",
+    "@wrappedPrayerEmptyMessage": {},
+    "wrappedFavoriteMissionType": "Favorite mission type — {name}",
+    "@wrappedFavoriteMissionType": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "wrappedCourseProgress": "{percentage}% complete",
+    "@wrappedCourseProgress": {
+        "placeholders": {
+            "percentage": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedInsufficientDataTitle": "Not enough data yet",
+    "@wrappedInsufficientDataTitle": {},
+    "wrappedInsufficientDataMessage": "Complete missions, courses, and more\nto unlock your Wrapped next season!",
+    "@wrappedInsufficientDataMessage": {},
+    "wrappedShareCta": "Share Your Wrapped",
+    "@wrappedShareCta": {},
+    "wrappedAboveAverage": "Above average in {categories}",
+    "@wrappedAboveAverage": {
+        "placeholders": {
+            "categories": {
+                "type": "String"
+            }
+        }
+    },
+    "wrappedShareText": "My {year} PRF Missions Wrapped:\n{missions} Missions\n{souls} Souls Touched\n{courses} Courses\n{events} Events Attended\n{prayers} Prayer Responses\n\nHow was your year?",
+    "@wrappedShareText": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            },
+            "missions": {
+                "type": "int"
+            },
+            "souls": {
+                "type": "int"
+            },
+            "courses": {
+                "type": "int"
+            },
+            "events": {
+                "type": "int"
+            },
+            "prayers": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedLoadingMessage": "Preparing your Wrapped…",
+    "@wrappedLoadingMessage": {},
+    "wrappedPaused": "Paused",
+    "@wrappedPaused": {},
+    "wrappedThankYouPersonal": "{name}, thank you for making an impact in {year}",
+    "@wrappedThankYouPersonal": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "year": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedCommunalLine": "One fellowship, one mission — together we made {year} count.",
+    "@wrappedCommunalLine": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            }
+        }
+    },
     "impact": "{year} Review",
     "@impact": {
         "placeholders": {

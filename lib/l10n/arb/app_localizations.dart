@@ -2686,6 +2686,103 @@ abstract class AppLocalizations {
   /// **'Wrapped page {currentPage} of {totalPages}'**
   String wrappedProgressSemantics(int currentPage, int totalPages);
 
+  /// No description provided for @wrappedMissionsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No missions yet.\nStart your first mission!'**
+  String get wrappedMissionsEmptyMessage;
+
+  /// No description provided for @wrappedImpactEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No impact recorded yet.\nEvery mission touches lives!'**
+  String get wrappedImpactEmptyMessage;
+
+  /// No description provided for @wrappedLearningEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No learning yet.\nStart a course to unlock this!'**
+  String get wrappedLearningEmptyMessage;
+
+  /// No description provided for @wrappedPrayerEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No prayers answered yet.\nYour journey starts today!'**
+  String get wrappedPrayerEmptyMessage;
+
+  /// No description provided for @wrappedFavoriteMissionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite mission type — {name}'**
+  String wrappedFavoriteMissionType(String name);
+
+  /// No description provided for @wrappedCourseProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{percentage}% complete'**
+  String wrappedCourseProgress(int percentage);
+
+  /// No description provided for @wrappedInsufficientDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough data yet'**
+  String get wrappedInsufficientDataTitle;
+
+  /// No description provided for @wrappedInsufficientDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete missions, courses, and more\nto unlock your Wrapped next season!'**
+  String get wrappedInsufficientDataMessage;
+
+  /// No description provided for @wrappedShareCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Wrapped'**
+  String get wrappedShareCta;
+
+  /// No description provided for @wrappedAboveAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Above average in {categories}'**
+  String wrappedAboveAverage(String categories);
+
+  /// No description provided for @wrappedShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'My {year} PRF Missions Wrapped:\n{missions} Missions\n{souls} Souls Touched\n{courses} Courses\n{events} Events Attended\n{prayers} Prayer Responses\n\nHow was your year?'**
+  String wrappedShareText(
+    int year,
+    int missions,
+    int souls,
+    int courses,
+    int events,
+    int prayers,
+  );
+
+  /// No description provided for @wrappedLoadingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your Wrapped…'**
+  String get wrappedLoadingMessage;
+
+  /// No description provided for @wrappedPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get wrappedPaused;
+
+  /// No description provided for @wrappedThankYouPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, thank you for making an impact in {year}'**
+  String wrappedThankYouPersonal(String name, int year);
+
+  /// No description provided for @wrappedCommunalLine.
+  ///
+  /// In en, this message translates to:
+  /// **'One fellowship, one mission — together we made {year} count.'**
+  String wrappedCommunalLine(int year);
+
   /// No description provided for @impact.
   ///
   /// In en, this message translates to:
