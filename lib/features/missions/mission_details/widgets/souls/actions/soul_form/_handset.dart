@@ -299,7 +299,9 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
-                    : theme.colorScheme.outline.withValues(alpha: 0.3),
+                    : theme.colorScheme.outline.withValues(
+                        alpha: PRFOpacities.glow,
+                      ),
               ),
             ),
             child: Text(

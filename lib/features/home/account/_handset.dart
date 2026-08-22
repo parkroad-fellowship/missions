@@ -45,12 +45,16 @@ class AccountPageHandset extends StatelessWidget {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.error.withValues(alpha: 0.1),
+                        color: theme.colorScheme.error.withValues(
+                          alpha: PRFOpacities.subtle,
+                        ),
                         borderRadius: BorderRadius.circular(
                           PRFRadiusTokens.smd,
                         ),
                         border: Border.all(
-                          color: theme.colorScheme.error.withValues(alpha: 0.3),
+                          color: theme.colorScheme.error.withValues(
+                            alpha: PRFOpacities.glow,
+                          ),
                         ),
                       ),
                       child: IconButton(

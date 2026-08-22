@@ -4,10 +4,10 @@ import 'package:app/features/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/features/lms/cubit/module_resource_cubit.dart';
 import 'package:app/features/lms/module_details/_shared.dart';
 import 'package:app/features/lms/widgets/module_details_action_card.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
@@ -147,7 +147,9 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                                     ),
                                     border: Border.all(
                                       color: theme.colorScheme.outline
-                                          .withValues(alpha: 0.12),
+                                          .withValues(
+                                            alpha: PRFOpacities.hairline,
+                                          ),
                                     ),
                                   ),
                                   child: Text(
@@ -263,7 +265,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                     child: Icon(
                       Icons.play_circle_outline_rounded,
                       size: 64,
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: Colors.white.withValues(alpha: PRFOpacities.half),
                     ),
                   ),
                   const SizedBox(height: PRFSpacingTokens.md),

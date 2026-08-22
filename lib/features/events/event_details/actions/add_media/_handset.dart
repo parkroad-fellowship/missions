@@ -308,10 +308,14 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
+            color: theme.colorScheme.primary.withValues(
+              alpha: PRFOpacities.glow,
+            ),
             width: 2,
           ),
-          color: theme.colorScheme.primary.withValues(alpha: 0.05),
+          color: theme.colorScheme.primary.withValues(
+            alpha: PRFOpacities.faint,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -346,7 +350,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         boxShadow: [
           BoxShadow(
-            color: PRFColors.black.withValues(alpha: 0.1),
+            color: PRFColors.black.withValues(alpha: PRFOpacities.subtle),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -369,7 +373,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    PRFColors.black.withValues(alpha: 0.3),
+                    PRFColors.black.withValues(alpha: PRFOpacities.glow),
                   ],
                 ),
               ),
@@ -390,7 +394,9 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                 child: Container(
                   padding: const EdgeInsets.all(PRFSpacingTokens.xs),
                   decoration: BoxDecoration(
-                    color: PRFColors.black.withValues(alpha: 0.6),
+                    color: PRFColors.black.withValues(
+                      alpha: PRFOpacities.prominent,
+                    ),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(

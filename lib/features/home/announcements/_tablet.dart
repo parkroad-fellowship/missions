@@ -172,7 +172,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                   vertical: PRFSpacingTokens.sm,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
+                  color: Colors.white.withValues(alpha: PRFOpacities.hairline),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                 ),
                 child: Row(
@@ -199,7 +199,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                 child: Icon(
                   Icons.campaign_rounded,
                   size: 64,
-                  color: Colors.white.withValues(alpha: 0.5),
+                  color: Colors.white.withValues(alpha: PRFOpacities.half),
                 ),
               ),
               const SizedBox(height: PRFSpacingTokens.md),

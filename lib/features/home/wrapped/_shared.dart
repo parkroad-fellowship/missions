@@ -22,7 +22,9 @@ class TimelineProgressBar extends AnimatedWidget {
           Container(color: PRFColors.white.withValues(alpha: 0.15)),
           FractionallySizedBox(
             widthFactor: progress.clamp(0.0, 1.0),
-            child: Container(color: PRFColors.white.withValues(alpha: 0.7)),
+            child: Container(
+              color: PRFColors.white.withValues(alpha: PRFOpacities.high),
+            ),
           ),
         ],
       ),
@@ -49,7 +51,7 @@ Widget buildWrappedLoadingState(ThemeData theme) {
           end: Alignment.bottomRight,
           colors: [
             theme.colorScheme.primary,
-            theme.colorScheme.primary.withValues(alpha: 0.7),
+            theme.colorScheme.primary.withValues(alpha: PRFOpacities.high),
           ],
         ),
       ),
@@ -152,7 +154,7 @@ Widget buildInsufficientDataPage(BuildContext context, AppLocalizations l10n) {
                 Icon(
                   Icons.inbox_rounded,
                   size: 48,
-                  color: PRFColors.white.withValues(alpha: 0.5),
+                  color: PRFColors.white.withValues(alpha: PRFOpacities.half),
                 ),
                 const SizedBox(height: PRFSpacingTokens.md),
                 Text(
@@ -168,7 +170,7 @@ Widget buildInsufficientDataPage(BuildContext context, AppLocalizations l10n) {
                   'Complete missions, courses, and more\nto unlock your Wrapped next season!',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: PRFColors.white.withValues(alpha: 0.7),
+                    color: PRFColors.white.withValues(alpha: PRFOpacities.high),
                   ),
                 ),
               ],

@@ -1,10 +1,10 @@
 import 'package:app/features/home/faqs/_shared.dart';
 import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
 import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/models/remote/content/prf_faq_category.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
@@ -225,7 +225,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                     child: Icon(
                       Icons.quiz_outlined,
                       size: 64,
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: Colors.white.withValues(alpha: PRFOpacities.half),
                     ),
                   ),
                   const SizedBox(height: PRFSpacingTokens.md),

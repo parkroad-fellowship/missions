@@ -128,7 +128,9 @@ class AnnouncementCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             boxShadow: [
               BoxShadow(
-                color: colorScheme.primary.withValues(alpha: 0.12),
+                color: colorScheme.primary.withValues(
+                  alpha: PRFOpacities.hairline,
+                ),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -152,7 +154,7 @@ class AnnouncementCard extends StatelessWidget {
             Icon(
               Icons.access_time_rounded,
               size: 16,
-              color: colorScheme.primary.withValues(alpha: 0.7),
+              color: colorScheme.primary.withValues(alpha: PRFOpacities.high),
             ),
             const SizedBox(width: PRFSpacingTokens.xs),
             Text(
@@ -161,7 +163,7 @@ class AnnouncementCard extends StatelessWidget {
                 timezone,
               ),
               style: theme.textTheme.labelMedium?.copyWith(
-                color: colorScheme.primary.withValues(alpha: 0.7),
+                color: colorScheme.primary.withValues(alpha: PRFOpacities.high),
                 fontWeight: FontWeight.w600,
               ),
             ),

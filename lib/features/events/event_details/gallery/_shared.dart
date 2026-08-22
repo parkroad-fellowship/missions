@@ -79,15 +79,17 @@ Widget buildAddTile(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.3),
+            color: theme.colorScheme.primary.withValues(
+              alpha: PRFOpacities.glow,
+            ),
             width: 2,
           ),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              theme.colorScheme.primary.withValues(alpha: 0.05),
-              theme.colorScheme.primary.withValues(alpha: 0.1),
+              theme.colorScheme.primary.withValues(alpha: PRFOpacities.faint),
+              theme.colorScheme.primary.withValues(alpha: PRFOpacities.subtle),
             ],
           ),
         ),
@@ -98,7 +100,9 @@ Widget buildAddTile(
               padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                color: theme.colorScheme.primary.withValues(
+                  alpha: PRFOpacities.subtle,
+                ),
               ),
               child: Icon(
                 icon,
@@ -140,7 +144,7 @@ Widget buildPhotoTile(BuildContext context, PRFMedia mediaItem, int index) {
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           boxShadow: [
             BoxShadow(
-              color: PRFColors.black.withValues(alpha: 0.1),
+              color: PRFColors.black.withValues(alpha: PRFOpacities.subtle),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -186,7 +190,7 @@ Widget buildPhotoTile(BuildContext context, PRFMedia mediaItem, int index) {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      PRFColors.black.withValues(alpha: 0.1),
+                      PRFColors.black.withValues(alpha: PRFOpacities.subtle),
                     ],
                   ),
                 ),

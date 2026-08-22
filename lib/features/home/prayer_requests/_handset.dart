@@ -1,9 +1,9 @@
 import 'package:app/features/home/prayer_requests/_shared.dart';
 import 'package:app/features/home/prayer_requests/cubit/prayer_request_resource_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_request.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';

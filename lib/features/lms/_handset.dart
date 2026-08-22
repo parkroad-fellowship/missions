@@ -1,9 +1,9 @@
 import 'package:app/features/lms/_shared.dart';
 import 'package:app/features/lms/cubit/course_resource_cubit.dart';
 import 'package:app/features/lms/widgets/course_action_card.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_course.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

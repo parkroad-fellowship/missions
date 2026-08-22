@@ -1,9 +1,9 @@
 import 'package:app/enums/payment/prf_payment_status.dart';
 import 'package:app/features/home/giving/_shared.dart';
 import 'package:app/features/home/giving/cubit/payment_resource_cubit.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/payment/prf_payment.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
@@ -205,11 +205,15 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                                           PRFRadiusTokens.xl,
                                         ),
                                         splashColor: theme.colorScheme.primary
-                                            .withValues(alpha: 0.1),
+                                            .withValues(
+                                              alpha: PRFOpacities.subtle,
+                                            ),
                                         highlightColor: theme
                                             .colorScheme
                                             .primary
-                                            .withValues(alpha: 0.05),
+                                            .withValues(
+                                              alpha: PRFOpacities.faint,
+                                            ),
                                         child: PaymentCard(payment: payment),
                                       ),
                                     ),

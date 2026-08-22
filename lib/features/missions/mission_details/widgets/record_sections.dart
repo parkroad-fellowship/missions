@@ -168,7 +168,9 @@ class MissionSectionCard extends StatelessWidget {
             title.toUpperCase(),
             style: theme.textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.w700,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
+              color: theme.colorScheme.onSurfaceVariant.withValues(
+                alpha: PRFOpacities.nearOpaque,
+              ),
               letterSpacing: 0.6,
             ),
           ),

@@ -1,10 +1,10 @@
 import 'package:app/features/home/faqs/_shared.dart';
 import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
 import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/models/remote/content/prf_faq_category.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

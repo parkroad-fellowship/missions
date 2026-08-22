@@ -7,6 +7,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_school.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.dart';
@@ -254,7 +255,9 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                         Expanded(
                           child: _StatChip(
                             label: l10n.upcomingCount(upcomingCount),
-                            background: Colors.white.withValues(alpha: 0.12),
+                            background: Colors.white.withValues(
+                              alpha: PRFOpacities.hairline,
+                            ),
                             foreground: Colors.white,
                             onTap: () => _tabController.animateTo(0),
                           ),

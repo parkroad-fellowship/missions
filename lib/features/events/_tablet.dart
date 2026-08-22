@@ -166,7 +166,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                     child: Icon(
                       Icons.calendar_month_outlined,
                       size: 64,
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: Colors.white.withValues(alpha: PRFOpacities.half),
                     ),
                   ),
                   const SizedBox(height: PRFSpacingTokens.md),
@@ -389,7 +389,7 @@ class _EventStatChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: highlight
             ? PRFColors.limeGreen
-            : Colors.white.withValues(alpha: 0.12),
+            : Colors.white.withValues(alpha: PRFOpacities.hairline),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       ),
       child: Text(

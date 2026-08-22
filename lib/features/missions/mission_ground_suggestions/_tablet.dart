@@ -1,10 +1,10 @@
 import 'package:app/enums/mission/prf_mission_ground_suggestion_status.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/features/missions/mission_ground_suggestions/_shared.dart';
 import 'package:app/features/missions/mission_ground_suggestions/cubit/ground_suggestion_resource_cubit.dart';
 import 'package:app/features/missions/mission_ground_suggestions/widgets/mission_ground_suggestion_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/mission/prf_mission_ground_suggestion.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
@@ -226,7 +226,7 @@ class _MissionGroundSuggestionsPageTabletState
                 child: Icon(
                   Icons.chat_bubble_outline_rounded,
                   size: 64,
-                  color: Colors.white.withValues(alpha: 0.5),
+                  color: Colors.white.withValues(alpha: PRFOpacities.half),
                 ),
               ),
               const SizedBox(height: PRFSpacingTokens.md),

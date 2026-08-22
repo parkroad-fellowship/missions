@@ -1,3 +1,4 @@
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media.dart';
 import 'package:flutter/material.dart';
 import 'package:prf_design/prf_design.dart';
@@ -77,7 +78,7 @@ class ReceiptPreviewPageState extends State<ReceiptPreviewPage> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
-                          'Failed to load image',
+                          context.l10n.failedToLoadImage,
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: theme.colorScheme.onSurface.withValues(
                               alpha: 0.6,

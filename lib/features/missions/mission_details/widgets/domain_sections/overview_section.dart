@@ -27,10 +27,10 @@ class OverviewSection extends StatelessWidget {
       subtitle: context.l10n.missionContextTeamMembersAndSessions,
       onTabChanged: onTabChanged,
       initialIndex: initialIndex,
-      tabs: const [
-        Tab(text: 'Mission Ground'),
-        Tab(text: 'Subscribers'),
-        Tab(text: 'Sessions'),
+      tabs: [
+        Tab(text: context.l10n.missionGroundTab),
+        Tab(text: context.l10n.subscribers),
+        Tab(text: context.l10n.sessions),
       ],
       children: [missionGround, subscribers, sessions],
     );

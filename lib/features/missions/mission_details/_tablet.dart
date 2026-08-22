@@ -305,7 +305,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                   vertical: PRFSpacingTokens.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
+                  color: Colors.white.withValues(alpha: PRFOpacities.hairline),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Text(
@@ -324,7 +324,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
           child: Icon(
             Icons.explore_outlined,
             size: 64,
-            color: Colors.white.withValues(alpha: 0.5),
+            color: Colors.white.withValues(alpha: PRFOpacities.half),
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.md),

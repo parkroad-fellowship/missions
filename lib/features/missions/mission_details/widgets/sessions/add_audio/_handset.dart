@@ -84,7 +84,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                 border: Border.all(
                   color: Theme.of(
                     context,
-                  ).colorScheme.outline.withValues(alpha: 0.2),
+                  ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                 ),
               ),
               child: Column(
@@ -110,9 +110,12 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                           'more',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurface.withValues(alpha: 0.6),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface.withValues(
+                                      alpha: PRFOpacities.prominent,
+                                    ),
                               ),
                         ),
                     ],
@@ -128,9 +131,12 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                           Container(
                             padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(alpha: 0.1),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(
+                                    alpha: PRFOpacities.subtle,
+                                  ),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -202,7 +208,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               decoration: BoxDecoration(
                 color: Theme.of(
                   context,
-                ).colorScheme.primary.withValues(alpha: 0.1),
+                ).colorScheme.primary.withValues(alpha: PRFOpacities.subtle),
                 borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               ),
               child: Row(

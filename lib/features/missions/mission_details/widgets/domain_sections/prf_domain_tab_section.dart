@@ -79,7 +79,9 @@ class _PRFDomainTabSectionState extends State<PRFDomainTabSection>
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
             border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              color: theme.colorScheme.outline.withValues(
+                alpha: PRFOpacities.muted,
+              ),
             ),
           ),
           child: Column(

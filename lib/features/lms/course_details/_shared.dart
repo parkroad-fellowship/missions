@@ -119,7 +119,9 @@ Widget buildCourseDetailsHeader(
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
+                    color: theme.colorScheme.onPrimary.withValues(
+                      alpha: PRFOpacities.nearOpaque,
+                    ),
                   ),
                 ),
                 const SizedBox(height: PRFSpacingTokens.md),

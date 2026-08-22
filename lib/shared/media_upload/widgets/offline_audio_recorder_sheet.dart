@@ -67,9 +67,12 @@ class OfflineAudioRecorderSheet extends StatelessWidget {
                   margin: const EdgeInsets.all(PRFSpacingTokens.lg),
                   padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.1),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(
+                          alpha: PRFOpacities.subtle,
+                        ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   ),
                   child: Row(

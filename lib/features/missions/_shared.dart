@@ -9,7 +9,6 @@ import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/helpers/mission_helper.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -115,31 +114,6 @@ Color resolveMissionStatusColor(PRFMission mission, ThemeData theme) {
     7 => aaSafe(PRFColors.orange),
     _ => theme.colorScheme.primary,
   };
-}
-
-/// Entrance animation for timeline entries: plays once per screen instance,
-/// respects the system reduce-motion setting, and caps the stagger so cards
-/// scrolled into view appear immediately rather than waiting out a
-/// per-index delay.
-Widget buildAnimatedTimelineEntry({
-  required BuildContext context,
-  required int index,
-  required bool animate,
-  required Widget child,
-}) {
-  if (!animate || MediaQuery.disableAnimationsOf(context)) {
-    return child;
-  }
-
-  final cappedIndex = index % 8;
-
-  return child
-      .animate()
-      .fadeIn(
-        delay: Duration(milliseconds: cappedIndex * 60),
-        duration: PRFMotionTokens.enterShort,
-      )
-      .slideX(begin: 0.3, end: 0, curve: PRFMotionTokens.entering);
 }
 
 class TimelineMissionCard extends StatelessWidget with TimezoneMixin {

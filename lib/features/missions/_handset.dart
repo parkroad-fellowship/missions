@@ -6,6 +6,7 @@ import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_school.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
 import 'package:app/models/remote/mission/prf_mission_subscription.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.dart';

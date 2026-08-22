@@ -238,7 +238,9 @@ class MediaServiceImpl implements MediaService {
                     height: PRFSpacingTokens.xs,
                     margin: const EdgeInsets.only(bottom: 20),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                      color: theme.colorScheme.onSurface.withValues(
+                        alpha: PRFOpacities.muted,
+                      ),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -253,7 +255,9 @@ class MediaServiceImpl implements MediaService {
                     leading: Container(
                       padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                        color: theme.colorScheme.primary.withValues(
+                          alpha: PRFOpacities.subtle,
+                        ),
                         borderRadius: BorderRadius.circular(
                           PRFRadiusTokens.smd,
                         ),

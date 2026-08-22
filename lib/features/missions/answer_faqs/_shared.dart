@@ -139,9 +139,12 @@ Future<void> openAnswers(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                     border: Border.all(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.outline.withValues(alpha: 0.2),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.outline.withValues(
+                            alpha: PRFOpacities.muted,
+                          ),
                     ),
                   ),
                   child: AudioPlayerWidget(

@@ -212,7 +212,7 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                 child: Icon(
                   Icons.question_answer_outlined,
                   size: 64,
-                  color: Colors.white.withValues(alpha: 0.5),
+                  color: Colors.white.withValues(alpha: PRFOpacities.half),
                 ),
               ),
               const SizedBox(height: PRFSpacingTokens.md),
@@ -275,7 +275,7 @@ class _FilterSelectionButton extends StatelessWidget {
             border: Border.all(
               color: selected
                   ? PRFColors.limeGreen
-                  : Colors.white.withValues(alpha: 0.12),
+                  : Colors.white.withValues(alpha: PRFOpacities.hairline),
               width: selected ? 2 : 1,
             ),
           ),
@@ -303,7 +303,7 @@ class _FilterSelectionButton extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: selected
                       ? PRFColors.limeGreen
-                      : Colors.white.withValues(alpha: 0.12),
+                      : Colors.white.withValues(alpha: PRFOpacities.hairline),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
                 ),
                 child: Text(

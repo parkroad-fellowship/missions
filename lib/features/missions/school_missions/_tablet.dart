@@ -4,6 +4,7 @@ import 'package:app/features/missions/school_missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_school.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.gr.dart';
@@ -159,7 +160,7 @@ class _SchoolMissionsTabletState extends State<SchoolMissionsTablet>
             child: Icon(
               Icons.school_outlined,
               size: 64,
-              color: Colors.white.withValues(alpha: 0.5),
+              color: Colors.white.withValues(alpha: PRFOpacities.half),
             ),
           ),
           const SizedBox(height: PRFSpacingTokens.md),

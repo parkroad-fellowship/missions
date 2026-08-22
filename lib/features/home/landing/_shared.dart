@@ -95,7 +95,7 @@ Widget buildProfilePicture(
         ),
         boxShadow: [
           BoxShadow(
-            color: effectiveRingColor.withValues(alpha: 0.3),
+            color: effectiveRingColor.withValues(alpha: PRFOpacities.glow),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

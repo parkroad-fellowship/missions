@@ -265,7 +265,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.10),
+        color: Colors.white.withValues(alpha: PRFOpacities.subtle),
         borderRadius: BorderRadius.circular(radius),
       ),
     );

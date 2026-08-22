@@ -156,9 +156,12 @@ class _StudentEnquiryRepliesPageHandsetState
             boxShadow: [
               if (_focusNode.hasFocus)
                 BoxShadow(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.12),
+                  color:
+                      Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(
+                        alpha: PRFOpacities.hairline,
+                      ),
                   blurRadius: 18,
                   offset: const Offset(0, -2),
                 ),

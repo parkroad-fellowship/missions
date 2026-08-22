@@ -121,7 +121,9 @@ class FaqCard extends StatelessWidget {
           color: theme.colorScheme.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
           border: Border.all(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
+            color: theme.colorScheme.outlineVariant.withValues(
+              alpha: PRFOpacities.accent,
+            ),
           ),
           boxShadow: PRFShadowTokens.raised(theme.colorScheme.primary),
         ),
@@ -238,7 +240,9 @@ Widget buildFaqsHeader(
                 Text(
                   l10n.whatWouldYouLikeToKnow,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
+                    color: theme.colorScheme.onPrimary.withValues(
+                      alpha: PRFOpacities.nearOpaque,
+                    ),
                   ),
                 ),
                 const SizedBox(height: PRFSpacingTokens.md),

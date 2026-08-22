@@ -39,7 +39,7 @@ Widget buildInfoField(
       color: theme.colorScheme.surfaceContainerHighest,
       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
       border: Border.all(
-        color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        color: theme.colorScheme.outline.withValues(alpha: PRFOpacities.muted),
       ),
     ),
     child: Row(
@@ -48,7 +48,9 @@ Widget buildInfoField(
         Container(
           padding: const EdgeInsets.all(PRFSpacingTokens.sm),
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            color: theme.colorScheme.primary.withValues(
+              alpha: PRFOpacities.subtle,
+            ),
             borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
           ),
           child: Icon(
@@ -119,14 +121,20 @@ Widget buildProfileCard(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    theme.colorScheme.primary.withValues(alpha: 0.1),
-                    theme.colorScheme.secondary.withValues(alpha: 0.1),
+                    theme.colorScheme.primary.withValues(
+                      alpha: PRFOpacities.subtle,
+                    ),
+                    theme.colorScheme.secondary.withValues(
+                      alpha: PRFOpacities.subtle,
+                    ),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  color: theme.colorScheme.primary.withValues(
+                    alpha: PRFOpacities.glow,
+                  ),
                   width: 3,
                 ),
               ),
@@ -308,7 +316,9 @@ Widget buildMembershipsSection(
               color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
-                color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                color: theme.colorScheme.outline.withValues(
+                  alpha: PRFOpacities.muted,
+                ),
               ),
             ),
             child: Row(
@@ -317,8 +327,12 @@ Widget buildMembershipsSection(
                   padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                   decoration: BoxDecoration(
                     color: entry.value.approved
-                        ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                        : theme.colorScheme.secondary.withValues(alpha: 0.1),
+                        ? theme.colorScheme.primary.withValues(
+                            alpha: PRFOpacities.subtle,
+                          )
+                        : theme.colorScheme.secondary.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Icon(
@@ -360,8 +374,12 @@ Widget buildMembershipsSection(
                   ),
                   decoration: BoxDecoration(
                     color: entry.value.approved
-                        ? theme.colorScheme.primary.withValues(alpha: 0.1)
-                        : theme.colorScheme.secondary.withValues(alpha: 0.1),
+                        ? theme.colorScheme.primary.withValues(
+                            alpha: PRFOpacities.subtle,
+                          )
+                        : theme.colorScheme.secondary.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   ),
                   child: Text(
@@ -596,7 +614,9 @@ class ChangeProfilePictureButton extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: PRFColors.black.withValues(alpha: 0.2),
+                    color: PRFColors.black.withValues(
+                      alpha: PRFOpacities.muted,
+                    ),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),

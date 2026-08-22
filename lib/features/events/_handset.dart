@@ -1,10 +1,10 @@
 import 'package:app/features/events/_shared.dart';
 import 'package:app/features/events/cubit/event_resource_cubit.dart';
 import 'package:app/features/events/cubit/event_subscription_resource_cubit.dart';
-import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/models/remote/event/prf_event_subscription.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:app/utils/router/router.gr.dart';

@@ -117,7 +117,7 @@ class HeroNumber extends StatelessWidget {
                 style: TextStyle(
                   fontSize: labelSize,
                   fontWeight: FontWeight.w500,
-                  color: PRFColors.white.withValues(alpha: 0.7),
+                  color: PRFColors.white.withValues(alpha: PRFOpacities.high),
                   letterSpacing: 0.5,
                 ),
               )
@@ -147,13 +147,17 @@ class _EmptySectionContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, size: 48, color: PRFColors.white.withValues(alpha: 0.3)),
+        Icon(
+          icon,
+          size: 48,
+          color: PRFColors.white.withValues(alpha: PRFOpacities.glow),
+        ),
         const SizedBox(height: PRFSpacingTokens.lg),
         Text(
           message,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: PRFColors.white.withValues(alpha: 0.7),
+            color: PRFColors.white.withValues(alpha: PRFOpacities.high),
           ),
         ),
       ],
@@ -191,7 +195,7 @@ class _StatLine extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: PRFColors.white.withValues(alpha: 0.7),
+              color: PRFColors.white.withValues(alpha: PRFOpacities.high),
             ),
           ),
         ],
@@ -225,7 +229,7 @@ class IntroWrappedPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: PRFColors.white.withValues(alpha: 0.5),
+            color: PRFColors.white.withValues(alpha: PRFOpacities.half),
             letterSpacing: 2,
           ),
         ).animate(delay: 600.ms).fadeIn(duration: 500.ms),
@@ -297,10 +301,10 @@ class MissionsWrappedPage extends StatelessWidget {
               vertical: 6,
             ),
             decoration: BoxDecoration(
-              color: PRFColors.white.withValues(alpha: 0.1),
+              color: PRFColors.white.withValues(alpha: PRFOpacities.subtle),
               borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: PRFColors.white.withValues(alpha: 0.2),
+                color: PRFColors.white.withValues(alpha: PRFOpacities.muted),
               ),
             ),
             child: Row(
@@ -368,7 +372,7 @@ class ImpactWrappedPage extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: PRFColors.white.withValues(alpha: 0.6),
+              color: PRFColors.white.withValues(alpha: PRFOpacities.prominent),
             ),
           ).animate(delay: 700.ms).fadeIn(),
         ],
@@ -417,10 +421,10 @@ class LearningWrappedPage extends StatelessWidget {
               vertical: 6,
             ),
             decoration: BoxDecoration(
-              color: PRFColors.white.withValues(alpha: 0.1),
+              color: PRFColors.white.withValues(alpha: PRFOpacities.subtle),
               borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: PRFColors.white.withValues(alpha: 0.2),
+                color: PRFColors.white.withValues(alpha: PRFOpacities.muted),
               ),
             ),
             child: Row(
@@ -475,10 +479,10 @@ class PrayerWrappedPage extends StatelessWidget {
               vertical: 6,
             ),
             decoration: BoxDecoration(
-              color: PRFColors.white.withValues(alpha: 0.1),
+              color: PRFColors.white.withValues(alpha: PRFOpacities.subtle),
               borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: PRFColors.white.withValues(alpha: 0.2),
+                color: PRFColors.white.withValues(alpha: PRFOpacities.muted),
               ),
             ),
             child: Row(
@@ -622,7 +626,7 @@ class SummaryWrappedPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: PRFColors.white.withValues(alpha: 0.6),
+            color: PRFColors.white.withValues(alpha: PRFOpacities.prominent),
             height: 1.4,
           ),
         ).animate(delay: 1100.ms).fadeIn(),

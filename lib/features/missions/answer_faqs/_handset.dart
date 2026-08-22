@@ -120,7 +120,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     Icons.question_answer_outlined,
                                     size: 64,
                                     color: theme.colorScheme.onSurface
-                                        .withValues(alpha: 0.2),
+                                        .withValues(alpha: PRFOpacities.muted),
                                   ),
                                   const SizedBox(
                                     height: PRFSpacingTokens.lg,
@@ -141,7 +141,9 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                         : l10n.tryDifferentSearchTerm,
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       color: theme.colorScheme.onSurface
-                                          .withValues(alpha: 0.6),
+                                          .withValues(
+                                            alpha: PRFOpacities.prominent,
+                                          ),
                                     ),
                                     textAlign: TextAlign.center,
                                   ),

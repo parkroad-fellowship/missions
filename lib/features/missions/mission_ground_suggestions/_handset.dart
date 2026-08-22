@@ -201,11 +201,15 @@ class _MissionGroundSuggestionsPageHandsetState
                                             PRFRadiusTokens.xl,
                                           ),
                                           splashColor: theme.colorScheme.primary
-                                              .withValues(alpha: 0.1),
+                                              .withValues(
+                                                alpha: PRFOpacities.subtle,
+                                              ),
                                           highlightColor: theme
                                               .colorScheme
                                               .primary
-                                              .withValues(alpha: 0.05),
+                                              .withValues(
+                                                alpha: PRFOpacities.faint,
+                                              ),
                                           child: MissionGroundSuggestionCard(
                                             missionGroundSuggestion: suggestion,
                                           ),

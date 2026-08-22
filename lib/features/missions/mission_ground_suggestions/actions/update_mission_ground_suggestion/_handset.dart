@@ -126,7 +126,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: PRFOpacities.faint),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -148,15 +150,20 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           Theme.of(context).colorScheme.primary,
                           Theme.of(
                             context,
-                          ).colorScheme.primary.withValues(alpha: 0.8),
+                          ).colorScheme.primary.withValues(
+                            alpha: PRFOpacities.stronger,
+                          ),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(
+                                alpha: PRFOpacities.glow,
+                              ),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -183,9 +190,12 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           l10n.editMissionSuggestionSubTitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary.withValues(
+                                      alpha: PRFOpacities.nearOpaque,
+                                    ),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -207,13 +217,16 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.shadow.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),

@@ -49,7 +49,9 @@ Widget buildLogo(ThemeData theme) {
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.12),
+          color: theme.colorScheme.outline.withValues(
+            alpha: PRFOpacities.hairline,
+          ),
         ),
         boxShadow: PRFShadowTokens.card(PRFColors.black),
       ),

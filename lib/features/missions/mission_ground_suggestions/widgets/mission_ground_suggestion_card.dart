@@ -27,7 +27,9 @@ class MissionGroundSuggestionCard extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
+          color: theme.colorScheme.outlineVariant.withValues(
+            alpha: PRFOpacities.accent,
+          ),
         ),
         boxShadow: PRFShadowTokens.raised(theme.colorScheme.primary),
       ),
@@ -178,7 +180,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
       case PRFMissionGroundSuggestionStatus.visitScheduled:
         return statusColors.scheduled.background;
       case PRFMissionGroundSuggestionStatus.missionScheduled:
-        return context.prfColors.purple.withValues(alpha: 0.2);
+        return context.prfColors.purple.withValues(alpha: PRFOpacities.muted);
       case PRFMissionGroundSuggestionStatus.completed:
         return statusColors.completed.background;
       case PRFMissionGroundSuggestionStatus.ignore:

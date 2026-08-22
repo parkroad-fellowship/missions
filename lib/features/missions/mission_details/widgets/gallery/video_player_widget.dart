@@ -164,7 +164,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           const PRFCircularProgressIndicator(color: PRFColors.white),
           const SizedBox(height: PRFSpacingTokens.lg),
           Text(
-            'Loading video...',
+            context.l10n.loadingVideo,
             style: theme.textTheme.bodyLarge?.copyWith(color: PRFColors.white),
           ),
         ],
@@ -184,7 +184,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             const SizedBox(height: PRFSpacingTokens.lg),
             Text(
-              'Error loading video',
+              context.l10n.errorLoadingVideo,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: PRFColors.white,
                 fontWeight: FontWeight.w600,
@@ -192,7 +192,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             const SizedBox(height: PRFSpacingTokens.sm),
             Text(
-              _errorMessage ?? 'Unknown error occurred',
+              _errorMessage ?? context.l10n.unknownErrorOccurred,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: Colors.white70,
               ),
@@ -256,10 +256,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              PRFColors.black.withValues(alpha: 0.7),
+              PRFColors.black.withValues(alpha: PRFOpacities.high),
               Colors.transparent,
               Colors.transparent,
-              PRFColors.black.withValues(alpha: 0.7),
+              PRFColors.black.withValues(alpha: PRFOpacities.high),
             ],
             stops: const [0.0, 0.3, 0.7, 1.0],
           ),
@@ -303,11 +303,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                   duration: PRFMotionTokens.slow,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.9),
+                      color: theme.colorScheme.primary.withValues(
+                        alpha: PRFOpacities.nearOpaque,
+                      ),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: PRFColors.black.withValues(alpha: 0.3),
+                          color: PRFColors.black.withValues(
+                            alpha: PRFOpacities.glow,
+                          ),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -424,13 +428,18 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 duration: PRFMotionTokens.slow,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.9),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(
+                          alpha: PRFOpacities.nearOpaque,
+                        ),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: PRFColors.black.withValues(alpha: 0.3),
+                        color: PRFColors.black.withValues(
+                          alpha: PRFOpacities.glow,
+                        ),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -455,7 +464,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 onTap: _toggleFullScreen,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: PRFColors.black.withValues(alpha: 0.6),
+                    color: PRFColors.black.withValues(
+                      alpha: PRFOpacities.prominent,
+                    ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                   ),
                   padding: const EdgeInsets.all(PRFSpacingTokens.sm),

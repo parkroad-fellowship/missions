@@ -201,7 +201,9 @@ class _AnswerFAQsPageTabletState extends State<AnswerFAQsPageTablet> {
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               border: Border.all(
-                color: theme.colorScheme.outline.withValues(alpha: 0.12),
+                color: theme.colorScheme.outline.withValues(
+                  alpha: PRFOpacities.hairline,
+                ),
               ),
             ),
             child: Column(
@@ -332,7 +334,7 @@ class _AnswerFAQsPageTabletState extends State<AnswerFAQsPageTablet> {
           child: Icon(
             Icons.mic_none_outlined,
             size: 64,
-            color: Colors.white.withValues(alpha: 0.5),
+            color: Colors.white.withValues(alpha: PRFOpacities.half),
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.md),
@@ -376,7 +378,7 @@ class _FaqStatChip extends StatelessWidget {
     return Material(
       color: highlight
           ? PRFColors.limeGreen
-          : Colors.white.withValues(alpha: 0.12),
+          : Colors.white.withValues(alpha: PRFOpacities.hairline),
       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
       child: InkWell(
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),

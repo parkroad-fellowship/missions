@@ -295,7 +295,7 @@ class TimelineSessionCard extends StatelessWidget {
                   height: 80,
                   color: Theme.of(
                     context,
-                  ).colorScheme.primary.withValues(alpha: 0.3),
+                  ).colorScheme.primary.withValues(alpha: PRFOpacities.glow),
                 ),
             ],
           ),

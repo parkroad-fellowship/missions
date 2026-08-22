@@ -63,7 +63,9 @@ Widget buildSchoolHeader(BuildContext context, PRFSchool school) {
           Container(
             padding: const EdgeInsets.all(PRFSpacingTokens.sm),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              color: theme.colorScheme.primary.withValues(
+                alpha: PRFOpacities.subtle,
+              ),
               borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             ),
             child: Icon(

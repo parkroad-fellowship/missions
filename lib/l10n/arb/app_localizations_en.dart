@@ -2265,4 +2265,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String dayLabel(int day) {
     return 'Day $day';
   }
+
+  @override
+  String get loadingVideo => 'Loading video...';
+
+  @override
+  String get errorLoadingVideo => 'Error loading video';
+
+  @override
+  String get unknownErrorOccurred => 'Unknown error occurred';
+
+  @override
+  String get missionGroundTab => 'Mission Ground';
+
+  @override
+  String get failedToLoadImage => 'Failed to load image';
+
+  @override
+  String get noFinancialDataForMission =>
+      'No financial data available for this mission.';
+
+  @override
+  String get noRequisitionsCreated =>
+      'No requisitions have been created for this mission.';
+
+  @override
+  String get noLineItems => 'No line items';
+
+  @override
+  String get subscribers => 'Subscribers';
 }

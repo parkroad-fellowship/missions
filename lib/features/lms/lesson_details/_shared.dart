@@ -130,7 +130,9 @@ class LessonContentCard extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
+          color: theme.colorScheme.outlineVariant.withValues(
+            alpha: PRFOpacities.accent,
+          ),
         ),
       ),
       child: Padding(
@@ -183,7 +185,9 @@ class LessonResourceTile extends StatelessWidget {
           color: theme.colorScheme.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
           border: Border.all(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
+            color: theme.colorScheme.outlineVariant.withValues(
+              alpha: PRFOpacities.accent,
+            ),
           ),
         ),
         child: Material(

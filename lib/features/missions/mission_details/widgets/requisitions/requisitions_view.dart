@@ -45,7 +45,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
     return widget.accountingEventUlid == null
         ? PRFEmptyView(
             label: context.l10n.requisitions,
-            description: 'No financial data available for this mission.',
+            description: context.l10n.noFinancialDataForMission,
             icon: Icons.receipt_long_outlined,
           )
         : BlocBuilder<RequisitionResourceCubit, ResourceState<PRFRequisition>>(
@@ -128,7 +128,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
         if (requisitions.isEmpty)
           PRFEmptyView(
             label: context.l10n.noRequisitions,
-            description: 'No requisitions have been created for this mission.',
+            description: context.l10n.noRequisitionsCreated,
             icon: Icons.receipt_long_outlined,
           )
         else
@@ -152,7 +152,9 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
           border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            color: theme.colorScheme.outline.withValues(
+              alpha: PRFOpacities.muted,
+            ),
           ),
         ),
         child: Theme(
@@ -215,7 +217,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
                   decoration: BoxDecoration(
                     color: requisition.approvalStatus
                         .color(theme)
-                        .withValues(alpha: 0.1),
+                        .withValues(alpha: PRFOpacities.subtle),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Text(
@@ -229,7 +231,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
               ],
               if (requisition.requisitionItems.isEmpty)
                 Text(
-                  'No line items',
+                  context.l10n.noLineItems,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),

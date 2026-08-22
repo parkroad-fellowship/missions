@@ -137,7 +137,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         Container(
           padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: PRFOpacities.subtle),
             shape: BoxShape.circle,
           ),
           child: Icon(
@@ -160,7 +162,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(
               context,
-            ).colorScheme.onSurface.withValues(alpha: 0.6),
+            ).colorScheme.onSurface.withValues(alpha: PRFOpacities.prominent),
           ),
           textAlign: TextAlign.center,
         ),
@@ -170,7 +172,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Theme.of(
               context,
-            ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ).colorScheme.onSurface.withValues(alpha: PRFOpacities.half),
           ),
           textAlign: TextAlign.center,
         ),
@@ -236,7 +238,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: Theme.of(
               context,
-            ).colorScheme.onSurface.withValues(alpha: 0.8),
+            ).colorScheme.onSurface.withValues(alpha: PRFOpacities.stronger),
           ),
         ),
 
@@ -294,7 +296,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           decoration: BoxDecoration(
             color: Theme.of(
               context,
-            ).colorScheme.secondary.withValues(alpha: 0.2),
+            ).colorScheme.secondary.withValues(alpha: PRFOpacities.muted),
             shape: BoxShape.circle,
           ),
           child: Icon(
@@ -321,7 +323,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: Theme.of(
               context,
-            ).colorScheme.onSurface.withValues(alpha: 0.8),
+            ).colorScheme.onSurface.withValues(alpha: PRFOpacities.stronger),
           ),
         ),
 
@@ -379,7 +381,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         Container(
           padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: PRFOpacities.subtle),
             shape: BoxShape.circle,
           ),
           child: Icon(
@@ -409,7 +413,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
             border: Border.all(
               color: Theme.of(
                 context,
-              ).colorScheme.outline.withValues(alpha: 0.2),
+              ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
             ),
           ),
           child: Column(
@@ -439,17 +443,23 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                   Icon(
                     Icons.schedule,
                     size: 16,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(
+                          alpha: PRFOpacities.prominent,
+                        ),
                   ),
                   const SizedBox(width: PRFSpacingTokens.xs),
                   Text(
                     'Duration: ${_formatDuration(duration)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.6),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(
+                            alpha: PRFOpacities.prominent,
+                          ),
                     ),
                   ),
                 ],
@@ -481,7 +491,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         Container(
           padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
+            color: Theme.of(
+              context,
+            ).colorScheme.error.withValues(alpha: PRFOpacities.subtle),
             shape: BoxShape.circle,
           ),
           child: Icon(
@@ -509,7 +521,7 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(
               context,
-            ).colorScheme.onSurface.withValues(alpha: 0.8),
+            ).colorScheme.onSurface.withValues(alpha: PRFOpacities.stronger),
           ),
           textAlign: TextAlign.center,
         ),

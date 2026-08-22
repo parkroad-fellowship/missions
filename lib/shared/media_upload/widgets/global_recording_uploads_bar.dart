@@ -42,9 +42,12 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       border: Border.all(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.outline.withValues(alpha: 0.2),
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(
+                              alpha: PRFOpacities.muted,
+                            ),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -243,7 +246,9 @@ class _UploadTile extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+          color: Theme.of(
+            context,
+          ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
         ),
       ),
       child: Row(
@@ -276,9 +281,12 @@ class _UploadTile extends StatelessWidget {
                 Text(
                   '${upload.model.collection} • ${dateFormat.format(upload.failedAt)} • retries ${upload.retryCount}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(
+                          alpha: PRFOpacities.prominent,
+                        ),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

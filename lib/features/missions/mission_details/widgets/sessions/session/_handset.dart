@@ -208,9 +208,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             ),
                             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(alpha: 0.1),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(
+                                    alpha: PRFOpacities.subtle,
+                                  ),
                               borderRadius: BorderRadius.circular(
                                 PRFRadiusTokens.smd,
                               ),
@@ -225,9 +228,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             ),
                             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.error.withValues(alpha: 0.1),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.error.withValues(
+                                    alpha: PRFOpacities.subtle,
+                                  ),
                               borderRadius: BorderRadius.circular(
                                 PRFRadiusTokens.smd,
                               ),
@@ -296,9 +302,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   PRFSpacingTokens.lg,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.error.withValues(alpha: 0.1),
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.error.withValues(
+                                        alpha: PRFOpacities.subtle,
+                                      ),
                                   borderRadius: BorderRadius.circular(
                                     PRFRadiusTokens.smd,
                                   ),
@@ -322,9 +331,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   PRFSpacingTokens.lg,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.error.withValues(alpha: 0.1),
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.error.withValues(
+                                        alpha: PRFOpacities.subtle,
+                                      ),
                                   borderRadius: BorderRadius.circular(
                                     PRFRadiusTokens.smd,
                                   ),
@@ -372,9 +384,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               PRFRadiusTokens.md,
                             ),
                             border: Border.all(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.outline.withValues(alpha: 0.2),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withValues(
+                                    alpha: PRFOpacities.muted,
+                                  ),
                             ),
                           ),
                           child: Row(
@@ -428,7 +443,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .onSurface
-                                                .withValues(alpha: 0.7),
+                                                .withValues(
+                                                  alpha: PRFOpacities.high,
+                                                ),
                                           ),
                                     ),
                                   ],
@@ -484,9 +501,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   PRFRadiusTokens.smd,
                                 ),
                                 border: Border.all(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.outline.withValues(alpha: 0.2),
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.outline.withValues(
+                                        alpha: PRFOpacities.muted,
+                                      ),
                                 ),
                               ),
                               child: Column(
@@ -645,7 +665,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSurface
-                                              .withValues(alpha: 0.5),
+                                              .withValues(
+                                                alpha: PRFOpacities.half,
+                                              ),
                                         ),
                                         const SizedBox(
                                           height: PRFSpacingTokens.lg,
@@ -659,7 +681,10 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .onSurface
-                                                    .withValues(alpha: 0.6),
+                                                    .withValues(
+                                                      alpha: PRFOpacities
+                                                          .prominent,
+                                                    ),
                                               ),
                                         ),
                                       ],
@@ -722,11 +747,15 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+          color: Theme.of(
+            context,
+          ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+            color: Theme.of(
+              context,
+            ).colorScheme.shadow.withValues(alpha: PRFOpacities.subtle),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -742,9 +771,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 Container(
                   padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.1),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(
+                          alpha: PRFOpacities.subtle,
+                        ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Icon(
@@ -833,7 +865,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  ).colorScheme.primary.withValues(alpha: 0.05),
+                  ).colorScheme.primary.withValues(alpha: PRFOpacities.faint),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Text(
@@ -1128,13 +1160,15 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
-            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+            color: Theme.of(
+              context,
+            ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
           ),
           boxShadow: [
             BoxShadow(
               color: Theme.of(
                 context,
-              ).colorScheme.shadow.withValues(alpha: 0.1),
+              ).colorScheme.shadow.withValues(alpha: PRFOpacities.subtle),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -1211,14 +1245,20 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     width: double.infinity,
                     padding: const EdgeInsets.all(PRFSpacingTokens.md),
                     decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.05),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(
+                            alpha: PRFOpacities.faint,
+                          ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       border: Border.all(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.2),
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(
+                              alpha: PRFOpacities.muted,
+                            ),
                       ),
                     ),
                     child: Column(
@@ -1252,8 +1292,11 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: notes == l10n.noNotesAvailable
-                                    ? Theme.of(context).colorScheme.onSurface
-                                          .withValues(alpha: 0.6)
+                                    ? Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withValues(
+                                        alpha: PRFOpacities.prominent,
+                                      )
                                     : Theme.of(context).colorScheme.onSurface,
                               ),
                         ),

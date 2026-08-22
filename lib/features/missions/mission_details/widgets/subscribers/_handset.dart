@@ -331,7 +331,7 @@ class _SubscriptionCard extends StatelessWidget {
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                 ),
                 child: Text(
@@ -365,8 +365,10 @@ class _SubscriptionCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            theme.colorScheme.primary.withValues(alpha: 0.8),
-            theme.colorScheme.secondary.withValues(alpha: 0.6),
+            theme.colorScheme.primary.withValues(alpha: PRFOpacities.stronger),
+            theme.colorScheme.secondary.withValues(
+              alpha: PRFOpacities.prominent,
+            ),
           ],
         ),
       ),

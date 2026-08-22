@@ -4215,6 +4215,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Day {day}'**
   String dayLabel(int day);
+
+  /// No description provided for @loadingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading video...'**
+  String get loadingVideo;
+
+  /// No description provided for @errorLoadingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading video'**
+  String get errorLoadingVideo;
+
+  /// No description provided for @unknownErrorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error occurred'**
+  String get unknownErrorOccurred;
+
+  /// No description provided for @missionGroundTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Ground'**
+  String get missionGroundTab;
+
+  /// No description provided for @failedToLoadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load image'**
+  String get failedToLoadImage;
+
+  /// No description provided for @noFinancialDataForMission.
+  ///
+  /// In en, this message translates to:
+  /// **'No financial data available for this mission.'**
+  String get noFinancialDataForMission;
+
+  /// No description provided for @noRequisitionsCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'No requisitions have been created for this mission.'**
+  String get noRequisitionsCreated;
+
+  /// No description provided for @noLineItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No line items'**
+  String get noLineItems;
+
+  /// No description provided for @subscribers.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribers'**
+  String get subscribers;
 }
 
 class _AppLocalizationsDelegate

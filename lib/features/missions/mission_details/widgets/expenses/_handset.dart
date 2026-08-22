@@ -301,7 +301,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   gradient: LinearGradient(
                     colors: [
                       theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.8),
+                      theme.colorScheme.primary.withValues(
+                        alpha: PRFOpacities.stronger,
+                      ),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -318,7 +320,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                         Text(
                           l10n.currentBalance,
                           style: theme.textTheme.titleMedium?.copyWith(
-                            color: PRFColors.white.withValues(alpha: 0.9),
+                            color: PRFColors.white.withValues(
+                              alpha: PRFOpacities.nearOpaque,
+                            ),
                           ),
                         ),
                         Container(
@@ -327,7 +331,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             vertical: PRFSpacingTokens.xs,
                           ),
                           decoration: BoxDecoration(
-                            color: PRFColors.white.withValues(alpha: 0.2),
+                            color: PRFColors.white.withValues(
+                              alpha: PRFOpacities.muted,
+                            ),
                             borderRadius: BorderRadius.circular(
                               PRFRadiusTokens.smd,
                             ),
@@ -358,7 +364,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     Container(
                       height: 6,
                       decoration: BoxDecoration(
-                        color: PRFColors.white.withValues(alpha: 0.3),
+                        color: PRFColors.white.withValues(
+                          alpha: PRFOpacities.glow,
+                        ),
                         borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                       ),
                       child: FractionallySizedBox(
@@ -448,7 +456,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              color: theme.colorScheme.outline.withValues(
+                alpha: PRFOpacities.muted,
+              ),
             ),
           ),
           child: Column(
@@ -459,7 +469,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   Container(
                     padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.1),
+                      color: color.withValues(alpha: PRFOpacities.subtle),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
@@ -578,7 +588,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   turns: _showBreakdown ? 0.5 : 0,
                   child: Icon(
                     Icons.keyboard_arrow_down,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    color: theme.colorScheme.onSurface.withValues(
+                      alpha: PRFOpacities.prominent,
+                    ),
                   ),
                 ),
               ],
@@ -602,7 +614,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          color: theme.colorScheme.outline.withValues(
+            alpha: PRFOpacities.muted,
+          ),
         ),
         boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
       ),
@@ -824,10 +838,14 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       child: Container(
         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+          color: theme.colorScheme.primaryContainer.withValues(
+            alpha: PRFOpacities.glow,
+          ),
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            color: theme.colorScheme.primary.withValues(
+              alpha: PRFOpacities.muted,
+            ),
           ),
         ),
         child: Column(
@@ -1071,7 +1089,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                     boxShadow: [
                                       BoxShadow(
                                         color: theme.colorScheme.shadow
-                                            .withValues(alpha: 0.2),
+                                            .withValues(
+                                              alpha: PRFOpacities.muted,
+                                            ),
                                         blurRadius: 4,
                                         offset: const Offset(0, 2),
                                       ),
@@ -1153,10 +1173,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     return Container(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
-        color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+        color: theme.colorScheme.errorContainer.withValues(
+          alpha: PRFOpacities.glow,
+        ),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
-          color: theme.colorScheme.error.withValues(alpha: 0.3),
+          color: theme.colorScheme.error.withValues(alpha: PRFOpacities.glow),
         ),
       ),
       child: LayoutBuilder(
@@ -1512,15 +1534,21 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      theme.colorScheme.tertiary.withValues(alpha: 0.1),
-                      theme.colorScheme.tertiary.withValues(alpha: 0.05),
+                      theme.colorScheme.tertiary.withValues(
+                        alpha: PRFOpacities.subtle,
+                      ),
+                      theme.colorScheme.tertiary.withValues(
+                        alpha: PRFOpacities.faint,
+                      ),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   border: Border.all(
-                    color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
+                    color: theme.colorScheme.tertiary.withValues(
+                      alpha: PRFOpacities.glow,
+                    ),
                   ),
                 ),
                 child: Column(
@@ -1705,7 +1733,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          color: theme.colorScheme.outline.withValues(
+            alpha: PRFOpacities.muted,
+          ),
         ),
       ),
       child: Column(
@@ -1751,7 +1781,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             physics: const NeverScrollableScrollPhysics(),
             itemCount: refunds.length,
             separatorBuilder: (context, index) => Divider(
-              color: theme.colorScheme.outline.withValues(alpha: 0.1),
+              color: theme.colorScheme.outline.withValues(
+                alpha: PRFOpacities.subtle,
+              ),
               height: PRFSpacingTokens.lg,
             ),
             itemBuilder: (context, index) {
@@ -1935,7 +1967,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
               border: Border.all(
-                color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                color: theme.colorScheme.outline.withValues(
+                  alpha: PRFOpacities.glow,
+                ),
               ),
             ),
             child: Row(

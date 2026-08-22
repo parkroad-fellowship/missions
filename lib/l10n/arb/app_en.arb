@@ -1677,5 +1677,23 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "loadingVideo": "Loading video...",
+    "@loadingVideo": {},
+    "errorLoadingVideo": "Error loading video",
+    "@errorLoadingVideo": {},
+    "unknownErrorOccurred": "Unknown error occurred",
+    "@unknownErrorOccurred": {},
+    "missionGroundTab": "Mission Ground",
+    "@missionGroundTab": {},
+    "failedToLoadImage": "Failed to load image",
+    "@failedToLoadImage": {},
+    "noFinancialDataForMission": "No financial data available for this mission.",
+    "@noFinancialDataForMission": {},
+    "noRequisitionsCreated": "No requisitions have been created for this mission.",
+    "@noRequisitionsCreated": {},
+    "noLineItems": "No line items",
+    "@noLineItems": {},
+    "subscribers": "Subscribers",
+    "@subscribers": {}
 }

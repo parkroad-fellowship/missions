@@ -20,7 +20,9 @@ class CourseDetailsActionCard extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
+          color: theme.colorScheme.outlineVariant.withValues(
+            alpha: PRFOpacities.accent,
+          ),
         ),
         boxShadow: PRFShadowTokens.raised(theme.colorScheme.primary),
       ),
